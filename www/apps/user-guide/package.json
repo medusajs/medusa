@@ -16,11 +16,11 @@
   "dependencies": {
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
-    "@medusajs/icons": "^1.2.0",
-    "@next/mdx": "^14.2.3",
+    "@medusajs/icons": "preview",
+    "@next/mdx": "^14.2.14",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "14.2.3",
+    "next": "14.2.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rehype-mdx-code-props": "^2.0.0",
@@ -47,6 +47,6 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20"
   }
 }

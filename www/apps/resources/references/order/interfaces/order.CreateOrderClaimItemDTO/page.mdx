@@ -1,0 +1,11 @@
+---
+displayed_sidebar: orderReference
+---
+
+import { TypeList } from "docs-ui"
+
+# CreateOrderClaimItemDTO
+
+The order claim item to be created.
+
+<TypeList types={[{"name":"claim_id","type":"`string`","description":"The associated claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"item_id","type":"`string`","description":"The associated item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason","type":"[ClaimReason](../../types/order.ClaimReason/page.mdx)","description":"The reason of the order claim item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_additional_item","type":"`boolean`","description":"Whether the order claim item is an additional item sent\nas a replacement to the customer.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"[BigNumberInput](../../types/order.BigNumberInput/page.mdx)","description":"The quantity of the order claim item","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../types/order.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"note","type":"`string`","description":"The note of the order claim item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="CreateOrderClaimItemDTO"/>

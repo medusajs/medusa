@@ -1,14 +1,22 @@
-import { PricingTypes, ProductTypes } from "@medusajs/types"
+import {
+  AdditionalData,
+  PricingTypes,
+  ProductTypes,
+} from "@medusajs/framework/types"
+import { ProductVariantWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
-import { updateProductVariantsStep } from "../steps"
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
+import { updateProductVariantsStep } from "../steps"
 import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 
-type UpdateProductVariantsStepInput =
+export type UpdateProductVariantsWorkflowInput =
   | {
       selector: ProductTypes.FilterableProductVariantProps
       update: ProductTypes.UpdateProductVariantDTO & {
@@ -21,14 +29,15 @@ type UpdateProductVariantsStepInput =
       })[]
     }
 
-type WorkflowInput = UpdateProductVariantsStepInput
-
 export const updateProductVariantsWorkflowId = "update-product-variants"
+/**
+ * This workflow updates one or more product variants.
+ */
 export const updateProductVariantsWorkflow = createWorkflow(
   updateProductVariantsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
+    input: WorkflowData<UpdateProductVariantsWorkflowInput & AdditionalData>
+  ) => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is updated.
     const updateWithoutPrices = transform({ input }, (data) => {
       if ("product_variants" in data.input) {
@@ -78,16 +87,24 @@ export const updateProductVariantsWorkflow = createWorkflow(
         }
 
         if ("product_variants" in data.input) {
-          return data.variantPriceSetLinks.map((link) => {
-            const variant = (data.input as any).product_variants.find(
-              (v) => v.id === link.variant_id
-            )
+          const priceSets = data.variantPriceSetLinks
+            .map((link) => {
+              if (!("product_variants" in data.input)) {
+                return
+              }
 
-            return {
-              id: link.price_set_id,
-              prices: variant.prices,
-            } as PricingTypes.UpsertPriceSetDTO
-          })
+              const variant = data.input.product_variants.find(
+                (v) => v.id === link.variant_id
+              )!
+
+              return {
+                id: link.price_set_id,
+                prices: variant.prices,
+              } as PricingTypes.UpsertPriceSetDTO
+            })
+            .filter(Boolean)
+
+          return { price_sets: priceSets }
         }
 
         return {
@@ -104,14 +121,14 @@ export const updateProductVariantsWorkflow = createWorkflow(
     const updatedPriceSets = updatePriceSetsStep(pricesToUpdate)
 
     // We want to correctly return the variants with their associated price sets and the prices coming from it
-    return transform(
+    const response = transform(
       {
         variantPriceSetLinks,
         updatedVariants,
         updatedPriceSets,
       },
       (data) => {
-        return data.updatedVariants.map((variant, i) => {
+        return data.updatedVariants.map((variant) => {
           const linkForVariant = data.variantPriceSetLinks?.find(
             (link) => link.variant_id === variant.id
           )
@@ -124,5 +141,25 @@ export const updateProductVariantsWorkflow = createWorkflow(
         })
       }
     )
+
+    const variantIdEvents = transform({ response }, ({ response }) => {
+      return response?.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.UPDATED,
+      data: variantIdEvents,
+    })
+
+    const productVariantsUpdated = createHook("productVariantsUpdated", {
+      product_variants: response,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(response, {
+      hooks: [productVariantsUpdated],
+    })
   }
 )

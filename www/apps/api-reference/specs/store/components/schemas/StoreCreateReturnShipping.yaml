@@ -1,0 +1,14 @@
+type: object
+description: The return's shipping details.
+x-schemaName: StoreCreateReturnShipping
+required:
+  - option_id
+properties:
+  option_id:
+    type: string
+    title: option_id
+    description: The ID of the shipping option to use.
+  price:
+    type: number
+    title: price
+    description: The shipping's price.

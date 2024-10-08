@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
-  searchFilters,
+  SearchProvider as UiSearchProvider,
+  searchFiltersV2,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -21,8 +21,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         mainIndexName:
           process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
         indices: [
-          process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
           process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
+          process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
         ],
       }}
       searchProps={{
@@ -32,15 +32,15 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Getting started? Try one of the following terms.",
             items: [
               "Install Medusa with create-medusa-app",
-              "What is a Service?",
               "What is an API route?",
+              "What is a Module?",
               "What is a Workflow?",
             ],
           },
           {
             title: "Developing with Medusa",
             items: [
-              "How to create a Service",
+              "How to create a Module",
               "How to create an API route",
               "How to create a data model",
               "How to create an admin widget",
@@ -48,15 +48,14 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}/([^(api|ui|resources)]/)*`
+          `^${config.baseUrl}/v2/([^(resources)])*`
         ),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV2,
       }}
-      initialDefaultFilters={["docs"]}
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
@@ -69,11 +68,13 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
+            badgeType: "shaded",
             children: "Beta",
           },
         },
       ]}
+      initialDefaultFilters={["guides"]}
     >
       {children}
     </UiSearchProvider>

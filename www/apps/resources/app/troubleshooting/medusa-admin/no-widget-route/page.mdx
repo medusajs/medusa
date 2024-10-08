@@ -1,0 +1,54 @@
+export const metadata = {
+  title: `Admin Widget / UI Route Not Showing`,
+}
+
+# {metadata.title}
+
+This guide provides some troubleshooting step as to why your admin widget / UI route isn't showing in the Medusa Admin dashboard.
+
+## Incorrect Zone
+
+If you're adding an admin widget, make sure you're using a correct zone.
+
+Refer to the [Admin Widget Injection Zones list](../../../admin-widget-injection-zones/page.mdx) for reference.
+
+---
+
+## Incorrect Function Definition
+
+Widget and UI routes must be defined as arrow functions. Any other type of declaration isn't accepted.
+
+Refer to the [Admin Development Constraints](!docs!/advanced-development/admin/constraints) documentation for more details.
+
+---
+
+## Incorrect Type of Zone Value
+
+A widget zone's value must be wrapped in double or single quotes:
+
+```ts
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+```
+
+Any other usage leads to the widget not being shown.
+
+Refer to the [Admin Development Constraints](!docs!/advanced-development/admin/constraints) documentation for more details.
+
+---
+
+## Errors in Docker
+
+If you're using a Docker image to host your Medusa application, make sure that the image's root path is different than the Medusa Admin's `path` configuration.
+
+For example, if your Docker image's root path is `/app`, make sure to change the `path` configuration in `medusa-config.js`, as it's `/app` by default:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  admin: {
+    path: `/dashboard`,
+  },
+  // ...
+})
+```

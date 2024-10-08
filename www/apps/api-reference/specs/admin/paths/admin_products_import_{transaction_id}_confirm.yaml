@@ -1,0 +1,40 @@
+post:
+  operationId: PostProductsImportTransaction_idConfirm
+  summary: Confirm Product Import
+  description: >-
+    Confirm that a created product import should start importing the products
+    into Medusa.
+  x-authenticated: true
+  parameters:
+    - name: transaction_id
+      in: path
+      description: The ID of the transaction returned when the product import was created.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_products_import_{transaction_id}_confirm/post.sh
+  tags:
+    - Products
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: importProductsWorkflowId

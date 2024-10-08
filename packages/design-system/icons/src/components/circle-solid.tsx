@@ -5,13 +5,25 @@ const CircleSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <circle cx={10} cy={10} r={7.25} stroke={color} strokeWidth={1.5} />
+        <g clipPath="url(#a)">
+          <path
+            fill={color}
+            fillRule="evenodd"
+            d="M7.5 1.722a5.778 5.778 0 1 0 0 11.556 5.778 5.778 0 0 0 0-11.556M.389 7.5a7.111 7.111 0 1 1 14.222 0A7.111 7.111 0 0 1 .39 7.5"
+            clipRule="evenodd"
+          />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

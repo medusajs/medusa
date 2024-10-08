@@ -5,51 +5,33 @@ const Loader = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill={color}
-          d="M10 6a.75.75 0 0 1-.75-.75v-2.5a.75.75 0 0 1 1.5 0v2.5A.75.75 0 0 1 10 6Z"
-        />
-        <path
-          fill={color}
-          d="M13.359 7.391a.75.75 0 0 1-.53-1.281l1.768-1.768a.75.75 0 1 1 1.061 1.061L13.89 7.171a.75.75 0 0 1-.531.22Z"
-          opacity={0.88}
-        />
-        <path
-          fill={color}
-          d="M17.25 10.75h-2.5a.75.75 0 0 1 0-1.5h2.5a.75.75 0 0 1 0 1.5Z"
-          opacity={0.75}
-        />
-        <path
-          fill={color}
-          d="M15.126 15.876a.744.744 0 0 1-.53-.22l-1.768-1.768a.75.75 0 1 1 1.061-1.061l1.768 1.768a.75.75 0 0 1-.531 1.28Z"
-          opacity={0.63}
-        />
-        <path
-          fill={color}
-          d="M10 18a.75.75 0 0 1-.75-.75v-2.5a.75.75 0 0 1 1.5 0v2.5A.75.75 0 0 1 10 18Z"
-          opacity={0.5}
-        />
-        <path
-          fill={color}
-          d="M4.874 15.876a.75.75 0 0 1-.53-1.281l1.768-1.768a.75.75 0 1 1 1.061 1.06l-1.768 1.769a.75.75 0 0 1-.531.22Z"
-          opacity={0.38}
-        />
-        <path
-          fill={color}
-          d="M5.25 10.75h-2.5a.75.75 0 0 1 0-1.5h2.5a.75.75 0 0 1 0 1.5Z"
-          opacity={0.25}
-        />
-        <path
-          fill={color}
-          d="M6.641 7.391a.744.744 0 0 1-.53-.22L4.343 5.403a.75.75 0 1 1 1.061-1.06L7.172 6.11a.75.75 0 0 1-.53 1.281h-.001Z"
-          opacity={0.13}
-        />
+        <g
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          clipPath="url(#a)"
+        >
+          <path d="M7.5 1.056v2.222" />
+          <path d="m12.057 2.943-1.571 1.571" opacity={0.88} />
+          <path d="M13.944 7.5h-2.222" opacity={0.75} />
+          <path d="m12.057 12.057-1.571-1.571" opacity={0.63} />
+          <path d="M7.5 13.945v-2.223" opacity={0.5} />
+          <path d="m2.943 12.057 1.571-1.571" opacity={0.38} />
+          <path d="M1.056 7.5h2.222" opacity={0.25} />
+          <path d="m2.943 2.943 1.571 1.571" opacity={0.13} />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

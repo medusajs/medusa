@@ -1,8 +1,8 @@
 import {
   CreateCustomerAddressDTO,
   ICustomerModuleService,
-} from "@medusajs/types"
-import { StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const unsetForCreate = async (
   data: CreateCustomerAddressDTO[],
@@ -16,12 +16,12 @@ export const unsetForCreate = async (
     return acc
   }, [])
 
-  const customerDefaultAddresses = await customerService.listAddresses({
+  const customerDefaultAddresses = await customerService.listCustomerAddresses({
     customer_id: customerIds,
     [field]: true,
   })
 
-  await customerService.updateAddresses(
+  await customerService.updateCustomerAddresses(
     { customer_id: customerIds, [field]: true },
     { [field]: false }
   )

@@ -1,16 +1,20 @@
-import { CreateCustomerGroupDTO, ICustomerModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  CreateCustomerGroupDTO,
+  ICustomerModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createCustomerGroupsStepId = "create-customer-groups"
+/**
+ * This step creates one or more customer groups.
+ */
 export const createCustomerGroupsStep = createStep(
   createCustomerGroupsStepId,
   async (data: CreateCustomerGroupDTO[], { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    const createdCustomerGroups = await service.createCustomerGroup(data)
+    const createdCustomerGroups = await service.createCustomerGroups(data)
 
     return new StepResponse(
       createdCustomerGroups,
@@ -24,10 +28,8 @@ export const createCustomerGroupsStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    await service.delete(createdCustomerGroupIds)
+    await service.deleteCustomers(createdCustomerGroupIds)
   }
 )

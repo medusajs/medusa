@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 
@@ -19,7 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
+        userModuleService = appContainer.resolve(Modules.USER)
       })
 
       beforeEach(async () => {
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to accept an invite with an invalid invite token", async () => {
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass/register`, {
           email: "potential_member@test.com",
           password: "supersecret",
         })
@@ -58,7 +58,7 @@ medusaIntegrationTestRunner({
           email: "potential_member@test.com",
         })
 
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass/register`, {
           email: "potential_member@test.com",
           password: "supersecret",
         })
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
           email: "potential_member@test.com",
         })
 
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass/register`, {
           email: "some-email@test.com",
           password: "supersecret",
         })

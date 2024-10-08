@@ -1,23 +1,26 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FindConfig,
   IFulfillmentModuleService,
   ShippingOptionDTO,
-} from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-interface StepInput {
+export interface ListShippingOptionsForContextStepInput {
   context: Record<string, unknown>
   config?: FindConfig<ShippingOptionDTO>
 }
 
 export const listShippingOptionsForContextStepId =
   "list-shipping-options-for-context"
+/**
+ * This step retrieves shipping options that can be used in the specified context.
+ */
 export const listShippingOptionsForContextStep = createStep(
   listShippingOptionsForContextStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ListShippingOptionsForContextStepInput, { container }) => {
     const fulfillmentService = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const shippingOptions =

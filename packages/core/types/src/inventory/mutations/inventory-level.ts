@@ -1,3 +1,5 @@
+import { BigNumberInput } from "../../totals/big-number"
+
 export interface CreateInventoryLevelInput {
   /**
    * The ID of the associated inventory item.
@@ -11,10 +13,6 @@ export interface CreateInventoryLevelInput {
    * The stocked quantity of the associated inventory item in the associated location.
    */
   stocked_quantity?: number
-  /**
-   * The reserved quantity of the associated inventory item in the associated location.
-   */
-  reserved_quantity?: number
   /**
    * The incoming quantity of the associated inventory item in the associated location.
    */
@@ -55,4 +53,20 @@ export type BulkUpdateInventoryLevelInput = {
    * The ID of the associated location.
    */
   location_id: string
+} & UpdateInventoryLevelInput
+
+export type BulkAdjustInventoryLevelInput = {
+  /**
+   * The ID of the associated inventory level.
+   */
+  inventory_item_id: string
+  /**
+   * The ID of the associated location.
+   */
+  location_id: string
+
+  /**
+   * The quantity to adjust the inventory level by.
+   */
+  adjustment: BigNumberInput
 } & UpdateInventoryLevelInput

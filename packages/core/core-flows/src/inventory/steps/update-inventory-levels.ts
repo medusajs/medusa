@@ -1,21 +1,24 @@
-import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
 import {
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 export const updateInventoryLevelsStepId = "update-inventory-levels-step"
+/**
+ * This step updates one or more inventory levels.
+ */
 export const updateInventoryLevelsStep = createStep(
   updateInventoryLevelsStepId,
   async (
-    input: InventoryNext.BulkUpdateInventoryLevelInput[],
+    input: InventoryTypes.BulkUpdateInventoryLevelInput[],
     { container }
   ) => {
-    const inventoryService: IInventoryServiceNext = container.resolve(
-      ModuleRegistrationName.INVENTORY
+    const inventoryService: IInventoryService = container.resolve(
+      Modules.INVENTORY
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
@@ -30,7 +33,7 @@ export const updateInventoryLevelsStep = createStep(
       {}
     )
 
-    const updatedLevels: InventoryNext.InventoryLevelDTO[] =
+    const updatedLevels: InventoryTypes.InventoryLevelDTO[] =
       await inventoryService.updateInventoryLevels(input)
 
     return new StepResponse(updatedLevels, {
@@ -46,12 +49,12 @@ export const updateInventoryLevelsStep = createStep(
 
     const { dataBeforeUpdate, selects, relations } = revertInput
 
-    const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
+    const inventoryService = container.resolve(Modules.INVENTORY)
 
     await inventoryService.updateInventoryLevels(
       dataBeforeUpdate.map((data) =>
         convertItemResponseToUpdateRequest(data, selects, relations)
-      ) as InventoryNext.BulkUpdateInventoryLevelInput[]
+      ) as InventoryTypes.BulkUpdateInventoryLevelInput[]
     )
   }
 )

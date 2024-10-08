@@ -1,0 +1,93 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Emailpass Auth Module Provider`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about the Emailpass auth module provider and how to install and use it in the Auth Module.
+
+Using the Emailpass auth module provider, you allow users to register and login with an email and password.
+
+---
+
+## Register the Emailpass Auth Module Provider
+
+The Emailpass auth provider is registered by default with the Auth Module.
+
+If you want to pass options to the provider, add the provider to the `providers` option of the Auth Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/framework/utils")
+
+// ...
+
+const modules = {
+  // ...
+  [Modules.AUTH]: {
+    resolve: "@medusajs/medusa/auth",
+    options: {
+      providers: [
+        // other providers...
+        {
+          resolve: "@medusajs/medusa/auth-emailpass",
+          id: "emailpass",
+          options: {
+            // options...
+          },
+        },
+      ],
+    },
+  },
+}
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Configuration</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `hashConfig`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of configurations to use when hashing the user's 
+      password. Refer to [scrypt-kdf](https://www.npmjs.com/package/scrypt-kdf#-hash)'s
+      documentation for accepted options. 
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      ```ts blockStyle="inline"
+      const hashConfig = {
+        logN: 15,
+        r: 8,
+        p: 1
+      }
+      ```
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Related Guides
+
+- [How to register a customer using email and password](../../../../storefront-development/customers/register/page.mdx)

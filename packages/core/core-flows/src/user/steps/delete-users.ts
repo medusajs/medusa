@@ -1,16 +1,17 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IUserModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IUserModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteUsersStepId = "delete-users-step"
+/**
+ * This step deletes one or more stores.
+ */
 export const deleteUsersStep = createStep(
   deleteUsersStepId,
   async (input: string[], { container }) => {
-    const service: IUserModuleService = container.resolve(
-      ModuleRegistrationName.USER
-    )
+    const service: IUserModuleService = container.resolve(Modules.USER)
 
-    await service.softDelete(input)
+    await service.softDeleteUsers(input)
 
     return new StepResponse(void 0, input)
   },
@@ -19,10 +20,8 @@ export const deleteUsersStep = createStep(
       return
     }
 
-    const service: IUserModuleService = container.resolve(
-      ModuleRegistrationName.USER
-    )
+    const service: IUserModuleService = container.resolve(Modules.USER)
 
-    await service.restore(prevUserIds)
+    await service.restoreUsers(prevUserIds)
   }
 )

@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -17,11 +17,12 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import TaxRateRule from "./tax-rate-rule"
 import TaxRegion from "./tax-region"
 
-type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
+type OptionalTaxRateProps = DAL.SoftDeletableModelDateColumns
 
 const TABLE_NAME = "tax_rate"
 
@@ -41,6 +42,11 @@ const taxRegionIdIndexStatement = createPsqlIndexStatementHelper({
   columns: "tax_region_id",
   where: "deleted_at IS NULL",
 })
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  tableName: TABLE_NAME,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 @singleDefaultRegionIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
@@ -55,18 +61,18 @@ export default class TaxRate {
   rate: number | null = null
 
   @Searchable()
-  @Property({ columnType: "text", nullable: true })
-  code: string | null = null
+  @Property({ columnType: "text" })
+  code: string
 
   @Searchable()
   @Property({ columnType: "text" })
   name: string
 
   @Property({ columnType: "bool", default: false })
-  is_default = false
+  is_default: boolean = false
 
   @Property({ columnType: "bool", default: false })
-  is_combinable = false
+  is_combinable: boolean = false
 
   @ManyToOne(() => TaxRegion, {
     columnType: "text",
@@ -78,12 +84,12 @@ export default class TaxRate {
   tax_region_id: string
 
   @ManyToOne({ entity: () => TaxRegion, persist: false })
-  tax_region: TaxRegion
+  tax_region: Rel<TaxRegion>
 
   @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
     cascade: ["soft-remove" as Cascade],
   })
-  rules = new Collection<TaxRateRule>(this)
+  rules = new Collection<Rel<TaxRateRule>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -106,11 +112,7 @@ export default class TaxRate {
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: TABLE_NAME,
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @deletedAtIndexStatement.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

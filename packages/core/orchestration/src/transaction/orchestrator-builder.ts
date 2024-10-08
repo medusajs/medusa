@@ -22,9 +22,11 @@ export class OrchestratorBuilder {
     this.steps = {
       depth: -1,
       parent: null,
-      next: steps
+      next: Object.keys(steps ?? {}).length
         ? JSON.parse(
-            JSON.stringify((steps.action ? steps : steps.next) as InternalStep)
+            JSON.stringify(
+              (steps!.action ? steps : steps!.next) as InternalStep
+            )
           )
         : undefined,
     }
@@ -294,7 +296,6 @@ export class OrchestratorBuilder {
   }
 
   pruneAction(action: string) {
-    const actionStep = this.findOrThrowStepByAction(action)
     const parentStep = this.findParentStepByAction(action, this.steps)!
 
     if (Array.isArray(parentStep.next)) {

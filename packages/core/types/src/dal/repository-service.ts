@@ -8,6 +8,15 @@ import {
   UpsertWithReplaceConfig,
 } from "./index"
 
+type EntityClassName = string
+type EntityValues = { id: string }[]
+
+export type PerformedActions = {
+  created: Record<EntityClassName, EntityValues>
+  updated: Record<EntityClassName, EntityValues>
+  deleted: Record<EntityClassName, EntityValues>
+}
+
 /**
  * Data access layer (DAL) interface to implements for any repository service.
  * This layer helps to separate the business logic (service layer) from accessing the
@@ -32,8 +41,6 @@ interface BaseRepositoryService<T = any> {
     options?: any
   ): Promise<TOutput>
 }
-
-type DtoBasedMutationMethods = "create" | "update"
 
 export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
@@ -80,7 +87,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     data: any[],
     config?: UpsertWithReplaceConfig<T>,
     context?: Context
-  ): Promise<T[]>
+  ): Promise<{ entities: T[]; performedActions: PerformedActions }>
 }
 
 export interface TreeRepositoryService<T = any>
@@ -97,9 +104,9 @@ export interface TreeRepositoryService<T = any>
     context?: Context
   ): Promise<[T[], number]>
 
-  create(data: unknown, context?: Context): Promise<T>
+  create(data: unknown[], context?: Context): Promise<T[]>
 
-  delete(id: string, context?: Context): Promise<void>
+  delete(ids: string[], context?: Context): Promise<void>
 }
 
 /**

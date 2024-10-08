@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels/batch
  * operationId: PostInventoryItemsIdLocationLevelsBatch
- * summary: Add Location Levels to Inventory Item
- * description: Add a list of location levels to a inventory item.
+ * summary: Manage Inventory Levels of Inventory Item
+ * x-sidebar-summary: Manage Inventory Levels
+ * description: Manage the inventory levels of an inventory item to create or delete them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -11,61 +12,82 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         description: The inventory levels to create or delete.
+ *         properties:
+ *           create:
+ *             type: array
+ *             description: The inventory levels to create.
+ *             items:
+ *               type: object
+ *               description: The inventory level's details.
+ *               required:
+ *                 - location_id
+ *               properties:
+ *                 location_id:
+ *                   type: string
+ *                   title: location_id
+ *                   description: The ID of the associated location.
+ *                 stocked_quantity:
+ *                   type: number
+ *                   title: stocked_quantity
+ *                   description: The inventory level's stocked quantity.
+ *                 incoming_quantity:
+ *                   type: number
+ *                   title: incoming_quantity
+ *                   description: The inventory level's incoming quantity.
+ *           update:
+ *             type: array
+ *             description: The inventory levels to update.
+ *             items:
+ *               type: object
+ *               description: The inventory level's details.
+ *               properties:
+ *                 stocked_quantity:
+ *                   type: number
+ *                   title: stocked_quantity
+ *                   description: The inventory level's stocked quantity.
+ *                 incoming_quantity:
+ *                   type: number
+ *                   title: incoming_quantity
+ *                   description: The inventory level's incoming quantity.
+ *           delete:
+ *             type: array
+ *             description: The inventory levels to delete.
+ *             items:
+ *               type: string
+ *               title: delete
+ *               description: The ID of the inventory level to delete.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X POST
- *       '{backend_url}/admin/inventory-items/{id}/location-levels/batch' \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/batch' \
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: The inventory item's details.
+ *           required:
+ *             - inventory_item
+ *           properties:
+ *             inventory_item:
+ *               type: object
+ *               description: The inventory item's details.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -78,61 +100,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         description: SUMMARY
- *         properties:
- *           create:
- *             type: array
- *             description: The inventory item's create.
- *             items:
- *               type: object
- *               description: The create's details.
- *               required:
- *                 - location_id
- *                 - stocked_quantity
- *                 - incoming_quantity
- *               properties:
- *                 location_id:
- *                   type: string
- *                   title: location_id
- *                   description: The create's location id.
- *                 stocked_quantity:
- *                   type: number
- *                   title: stocked_quantity
- *                   description: The create's stocked quantity.
- *                 incoming_quantity:
- *                   type: number
- *                   title: incoming_quantity
- *                   description: The create's incoming quantity.
- *           update:
- *             type: array
- *             description: The inventory item's update.
- *             items:
- *               type: object
- *               description: The update's details.
- *               required:
- *                 - stocked_quantity
- *                 - incoming_quantity
- *               properties:
- *                 stocked_quantity:
- *                   type: number
- *                   title: stocked_quantity
- *                   description: The update's stocked quantity.
- *                 incoming_quantity:
- *                   type: number
- *                   title: incoming_quantity
- *                   description: The update's incoming quantity.
- *           delete:
- *             type: array
- *             description: The inventory item's delete.
- *             items:
- *               type: string
- *               title: delete
- *               description: The delete's details.
+ * x-workflow: bulkCreateDeleteLevelsWorkflow
  * 
 */
 

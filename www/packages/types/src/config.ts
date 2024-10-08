@@ -1,9 +1,10 @@
-import { SidebarSectionItemsType } from "./sidebar.js"
+import { SidebarSectionItems } from "./sidebar.js"
 
 export declare type DocsConfig = {
   titleSuffix?: string
   baseUrl: string
-  sidebar: SidebarSectionItemsType
+  basePath?: string
+  sidebar: SidebarSectionItems
   filesBasePath?: string
   useNextLinks?: boolean
 }

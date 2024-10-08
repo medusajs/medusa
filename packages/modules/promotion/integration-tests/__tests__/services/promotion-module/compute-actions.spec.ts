@@ -1,8 +1,12 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
-import { ApplicationMethodType, PromotionType } from "@medusajs/utils"
+import { IPromotionModuleService } from "@medusajs/framework/types"
+import {
+  ApplicationMethodType,
+  Modules,
+  PromotionType,
+} from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
+import { createDefaultPromotion } from "../../../__fixtures__/promotion"
 
 jest.setTimeout(30000)
 
@@ -13,6 +17,10 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IPromotionModuleService>) => {
     describe("Promotion Service: computeActions", () => {
+      beforeEach(async () => {
+        await createCampaigns(MikroOrmWrapper.forkManager())
+      })
+
       describe("when code is not present in database", () => {
         it("should return empty array when promotion does not exist", async () => {
           const response = await service.computeActions(["DOES_NOT_EXIST"], {
@@ -51,19 +59,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw error when code in items adjustment does not exist", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: 200,
-                max_quantity: 1,
-              },
-            },
-          ])
+          await createDefaultPromotion(service, {})
 
           const error = await service
             .computeActions(["PROMOTION_TEST"], {
@@ -94,19 +90,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw error when code in shipping adjustment does not exist", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: 200,
-                max_quantity: 1,
-              },
-            },
-          ])
+          await createDefaultPromotion(service, {})
 
           const error = await service
             .computeActions(["PROMOTION_TEST"], {
@@ -140,33 +124,29 @@ moduleIntegrationTestRunner({
       describe("when promotion is for items and allocation is each", () => {
         describe("when application type is fixed", () => {
           it("should compute the correct item amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 200,
+                max_quantity: 1,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 1,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -200,7 +180,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -217,61 +197,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 30,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 30,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 50,
+                max_quantity: 1,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 50,
-                  max_quantity: 1,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -308,7 +281,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -337,61 +310,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 500,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 500,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 50,
+                max_quantity: 1,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 50,
-                  max_quantity: 1,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -428,7 +394,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -445,36 +411,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 500,
+                max_quantity: 5,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 500,
-                  max_quantity: 5,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -497,7 +456,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -508,37 +467,30 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 500,
+                max_quantity: 5,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "each",
-                  value: 500,
-                  max_quantity: 5,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
-
+              } as any,
+            })
             await service.updateCampaigns({
               id: "campaign-id-2",
               budget: { used: 1000 },
@@ -565,7 +517,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -573,33 +525,29 @@ moduleIntegrationTestRunner({
 
         describe("when application type is percentage", () => {
           it("should compute the correct item amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 10,
+                max_quantity: 1,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 1,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -633,7 +581,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -650,61 +598,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 30,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 30,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 10,
+                max_quantity: 1,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 1,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -741,7 +682,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -770,61 +711,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 100,
+                max_quantity: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 100,
-                  max_quantity: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 50,
+                max_quantity: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 50,
-                  max_quantity: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -861,7 +795,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -878,36 +812,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 100,
+                max_quantity: 5,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 100,
-                  max_quantity: 5,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -930,42 +857,36 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "each",
+                value: 100,
+                max_quantity: 5,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 5,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -993,7 +914,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1003,32 +924,29 @@ moduleIntegrationTestRunner({
       describe("when promotion is for items and allocation is across", () => {
         describe("when application type is fixed", () => {
           it("should compute the correct item amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 400,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 400,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -1062,7 +980,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1079,33 +997,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 400,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 400,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -1139,7 +1053,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1156,59 +1070,53 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 30,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 30,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 50,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 50,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -1245,7 +1153,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1274,59 +1182,53 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 1000,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 1000,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 50,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 50,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -1363,7 +1265,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1380,35 +1282,28 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 1500,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 1500,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -1431,41 +1326,35 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 500,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  allocation: "across",
-                  value: 500,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -1493,7 +1382,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1501,32 +1390,28 @@ moduleIntegrationTestRunner({
 
         describe("when application type is percentage", () => {
           it("should compute the correct item amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -1560,7 +1445,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1577,33 +1462,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -1637,7 +1518,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1654,59 +1535,52 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -1743,7 +1617,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1772,59 +1646,52 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -1861,7 +1728,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1890,35 +1757,28 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 100,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 100,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -1941,41 +1801,35 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "items",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "product_category.id",
-                      operator: "eq",
-                      values: ["catg_cotton"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -2003,7 +1857,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2013,33 +1867,29 @@ moduleIntegrationTestRunner({
       describe("when promotion is for shipping_method and allocation is each", () => {
         describe("when application type is fixed", () => {
           it("should compute the correct shipping_method amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -2072,7 +1922,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2089,34 +1939,30 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -2149,7 +1995,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2166,34 +2012,30 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic and prevent_auto_promotions is false", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               [],
@@ -2230,65 +2072,58 @@ moduleIntegrationTestRunner({
               { prevent_auto_promotions: true }
             )
 
-            expect(result).toEqual([])
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -2324,7 +2159,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2347,61 +2182,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 500,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 500,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -2437,7 +2265,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2454,36 +2282,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 1200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 1200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -2502,42 +2323,36 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 1200,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: "fixed",
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 1200,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -2561,7 +2376,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2569,33 +2384,29 @@ moduleIntegrationTestRunner({
 
         describe("when application type is percentage", () => {
           it("should compute the correct shipping_method amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -2628,7 +2439,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2645,34 +2456,30 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -2705,7 +2512,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2722,34 +2529,30 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic and prevent_auto_promotions is false", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               [],
@@ -2786,65 +2589,59 @@ moduleIntegrationTestRunner({
               { prevent_auto_promotions: true }
             )
 
-            expect(result).toEqual([])
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -2880,7 +2677,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2909,61 +2706,54 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotionTwo] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -2999,7 +2789,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3028,36 +2818,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 100,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 100,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -3076,42 +2859,36 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 10,
+                max_quantity: 2,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "each",
-                  value: 10,
-                  max_quantity: 2,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -3135,7 +2912,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3145,32 +2922,28 @@ moduleIntegrationTestRunner({
       describe("when promotion is for shipping_method and allocation is across", () => {
         describe("when application type is fixed", () => {
           it("should compute the correct shipping_method amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -3203,50 +2976,46 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
             ])
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -3279,76 +3048,69 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
             ])
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotion2] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -3384,17 +3146,17 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
               {
@@ -3413,59 +3175,52 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 1000,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 1000,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotion2] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -3501,7 +3256,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3518,35 +3273,28 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 1200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 1200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -3565,41 +3313,35 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.FIXED,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 1200,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: ApplicationMethodType.FIXED,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 1200,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -3623,7 +3365,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3631,32 +3373,28 @@ moduleIntegrationTestRunner({
 
         describe("when application type is percentage", () => {
           it("should compute the correct shipping_method amendments", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(["PROMOTION_TEST"], {
               customer: {
@@ -3689,7 +3427,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3706,33 +3444,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct shipping_method amendments when promotion is automatic", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                is_automatic: true,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              is_automatic: true,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions([], {
               customer: {
@@ -3765,7 +3499,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3782,59 +3516,52 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotion2] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -3870,7 +3597,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3899,59 +3626,52 @@ moduleIntegrationTestRunner({
           })
 
           it("should not compute actions when applicable total is 0", async () => {
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 100,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 100,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
-            const [createdPromotion2] = await service.create([
-              {
-                code: "PROMOTION_TEST_2",
-                type: PromotionType.STANDARD,
-                rules: [
+            await createDefaultPromotion(service, {
+              code: "PROMOTION_TEST_2",
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 10,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             const result = await service.computeActions(
               ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -3987,7 +3707,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -4004,88 +3724,29 @@ moduleIntegrationTestRunner({
           })
 
           it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
-                  {
-                    attribute: "customer.customer_group.id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
-                  },
-                ],
-                campaign_id: "campaign-id-1",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 100,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
-
-            const result = await service.computeActions(["PROMOTION_TEST"], {
-              customer: {
-                customer_group: {
-                  id: "VIP",
-                },
-              },
-              shipping_methods: [
+            await createDefaultPromotion(service, {
+              rules: [
                 {
-                  id: "shipping_method_express",
-                  subtotal: 1200,
-                  shipping_option: {
-                    id: "express",
-                  },
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
                 },
               ],
-            })
-
-            expect(result).toEqual([
-              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
-            ])
-          })
-
-          it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
-            await createCampaigns(MikroOrmWrapper.forkManager())
-
-            const [createdPromotion] = await service.create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 100,
+                target_rules: [
                   {
-                    attribute: "customer.customer_group.id",
+                    attribute: "shipping_option.id",
                     operator: "in",
-                    values: ["VIP", "top100"],
+                    values: ["express", "standard"],
                   },
                 ],
-                campaign_id: "campaign-id-2",
-                application_method: {
-                  type: ApplicationMethodType.PERCENTAGE,
-                  target_type: "shipping_methods",
-                  allocation: "across",
-                  value: 10,
-                  target_rules: [
-                    {
-                      attribute: "shipping_option.id",
-                      operator: "in",
-                      values: ["express", "standard"],
-                    },
-                  ],
-                },
-              },
-            ])
+              } as any,
+            })
 
             await service.updateCampaigns({
               id: "campaign-id-2",
@@ -4109,7 +3770,59 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          })
+
+          it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+            await createDefaultPromotion(service, {
+              rules: [
+                {
+                  attribute: "customer.customer_group.id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+              campaign_id: "campaign-id-2",
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "shipping_methods",
+                allocation: "across",
+                value: 100,
+                target_rules: [
+                  {
+                    attribute: "shipping_option.id",
+                    operator: "in",
+                    values: ["express", "standard"],
+                  },
+                ],
+              } as any,
+            })
+
+            await service.updateCampaigns({
+              id: "campaign-id-2",
+              budget: { used: 1000 },
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              customer: {
+                customer_group: {
+                  id: "VIP",
+                },
+              },
+              shipping_methods: [
+                {
+                  id: "shipping_method_express",
+                  subtotal: 1200,
+                  shipping_option: {
+                    id: "express",
+                  },
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -4118,25 +3831,22 @@ moduleIntegrationTestRunner({
 
       describe("when promotion is for the entire order", () => {
         it("should compute the correct item amendments", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 200,
-                max_quantity: 2,
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 200,
+              max_quantity: 2,
+              allocation: undefined,
+            } as any,
+          })
 
           const result = await service.computeActions(["PROMOTION_TEST"], {
             customer: {
@@ -4170,7 +3880,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4187,26 +3897,23 @@ moduleIntegrationTestRunner({
         })
 
         it("should compute the correct item amendments when promotion is automatic", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              is_automatic: true,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 200,
-                max_quantity: 2,
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            is_automatic: true,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 200,
+              max_quantity: 2,
+              allocation: undefined,
+            } as any,
+          })
 
           const result = await service.computeActions([], {
             customer: {
@@ -4240,7 +3947,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4257,45 +3964,40 @@ moduleIntegrationTestRunner({
         })
 
         it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 30,
-                max_quantity: 2,
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 30,
+              max_quantity: 2,
+              allocation: undefined,
+            } as any,
+          })
 
-          const [createdPromotionTwo] = await service.create([
-            {
-              code: "PROMOTION_TEST_2",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 50,
-                max_quantity: 1,
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_TEST_2",
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 50,
+              max_quantity: 1,
+              allocation: undefined,
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -4332,7 +4034,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4361,45 +4063,40 @@ moduleIntegrationTestRunner({
         })
 
         it("should not compute actions when applicable total is 0", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 500,
-                max_quantity: 2,
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 500,
+              max_quantity: 2,
+              allocation: undefined,
+            } as any,
+          })
 
-          const [createdPromotionTwo] = await service.create([
-            {
-              code: "PROMOTION_TEST_2",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: 50,
-                max_quantity: 1,
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_TEST_2",
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 50,
+              max_quantity: 1,
+              allocation: undefined,
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST", "PROMOTION_TEST_2"],
@@ -4436,7 +4133,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4455,40 +4152,33 @@ moduleIntegrationTestRunner({
 
       describe("when adjustments are present in the context", () => {
         it("should compute the correct item amendments along with removal of applied item adjustment", async () => {
-          const [adjustmentPromotion] = await service.create([
-            {
-              code: "ADJUSTMENT_CODE",
-              type: PromotionType.STANDARD,
-            },
-          ])
+          await createDefaultPromotion(service, {
+            code: "ADJUSTMENT_CODE",
+          })
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 200,
+              max_quantity: 1,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_cotton"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: 200,
-                max_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_cotton"],
-                  },
-                ],
-              },
-            },
-          ])
+            } as any,
+          })
 
           const result = await service.computeActions(["PROMOTION_TEST"], {
             customer: {
@@ -4528,7 +4218,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "removeItemAdjustment",
               adjustment_id: "test-adjustment",
@@ -4550,39 +4240,33 @@ moduleIntegrationTestRunner({
         })
 
         it("should compute the correct item amendments along with removal of applied shipping adjustment", async () => {
-          const [adjustmentPromotion] = await service.create([
-            {
-              code: "ADJUSTMENT_CODE",
-              type: PromotionType.STANDARD,
-            },
-          ])
+          await createDefaultPromotion(service, {
+            code: "ADJUSTMENT_CODE",
+          })
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
+          await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "shipping_methods",
+              allocation: "across",
+              value: 200,
+              max_quantity: undefined,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
+                  attribute: "shipping_option.id",
                   operator: "in",
-                  values: ["VIP", "top100"],
+                  values: ["express", "standard"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "shipping_methods",
-                allocation: "across",
-                value: 200,
-                target_rules: [
-                  {
-                    attribute: "shipping_option.id",
-                    operator: "in",
-                    values: ["express", "standard"],
-                  },
-                ],
-              },
-            },
-          ])
+            } as any,
+          })
 
           const result = await service.computeActions(["PROMOTION_TEST"], {
             customer: {
@@ -4621,7 +4305,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "removeShippingMethodAdjustment",
               adjustment_id: "test-adjustment",
@@ -4630,13 +4314,13 @@ moduleIntegrationTestRunner({
             {
               action: "addShippingMethodAdjustment",
               shipping_method_id: "shipping_method_express",
-              amount: 166.66666666666669,
+              amount: 166.66666666666666,
               code: "PROMOTION_TEST",
             },
             {
               action: "addShippingMethodAdjustment",
               shipping_method_id: "shipping_method_standard",
-              amount: 33.33333333333333,
+              amount: 33.333333333333336,
               code: "PROMOTION_TEST",
             },
           ])
@@ -4688,48 +4372,46 @@ moduleIntegrationTestRunner({
             ],
           }
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              rules: [
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              value: 1000,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                max_quantity: 1,
-                apply_to_quantity: 1,
-                buy_rules_min_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_tshirt"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_sweater"],
-                  },
-                ],
-              },
-            },
-          ])
+              buy_rules: [
+                {
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST"],
             context
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt2",
@@ -4783,48 +4465,46 @@ moduleIntegrationTestRunner({
             ],
           }
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              rules: [
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              value: 1000,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 4,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                max_quantity: 1,
-                apply_to_quantity: 1,
-                buy_rules_min_quantity: 4,
-                target_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_tshirt"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_sweater"],
-                  },
-                ],
-              },
-            },
-          ])
+              buy_rules: [
+                {
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST"],
             context
           )
 
-          expect(result).toEqual([])
+          expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
 
         it("should compute actions for multiple items when conditions for target qty exceed one item", async () => {
@@ -4871,48 +4551,47 @@ moduleIntegrationTestRunner({
             ],
           }
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              rules: [
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            campaign_id: undefined,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              max_quantity: 1,
+              value: 1000,
+              apply_to_quantity: 4,
+              buy_rules_min_quantity: 1,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                max_quantity: 1,
-                apply_to_quantity: 4,
-                buy_rules_min_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_tshirt"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_sweater"],
-                  },
-                ],
-              },
-            },
-          ])
+              buy_rules: [
+                {
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST"],
             context
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt2",
@@ -4972,48 +4651,430 @@ moduleIntegrationTestRunner({
             ],
           }
 
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              rules: [
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            campaign_id: undefined,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 1000,
+              max_quantity: 1,
+              apply_to_quantity: 4,
+              buy_rules_min_quantity: 1,
+              target_rules: [
                 {
-                  attribute: "customer.customer_group.id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_not-found"],
                 },
               ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                max_quantity: 1,
-                apply_to_quantity: 4,
-                buy_rules_min_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_not-found"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_category.id",
-                    operator: "eq",
-                    values: ["catg_sweater"],
-                  },
-                ],
-              },
-            },
-          ])
+              buy_rules: [
+                {
+                  attribute: "product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
 
           const result = await service.computeActions(
             ["PROMOTION_TEST"],
             context
           )
 
-          expect(result).toEqual([])
+          expect(JSON.parse(JSON.stringify(result))).toEqual([])
+        })
+
+        describe("when scenario is buy x get x", () => {
+          let buyXGetXPromotion
+          let product1 = "prod_tshirt_1"
+          let product2 = "prod_tshirt_2"
+
+          beforeEach(async () => {
+            buyXGetXPromotion = await createDefaultPromotion(service, {
+              type: PromotionType.BUYGET,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                value: 2000,
+                allocation: "each",
+                max_quantity: 2,
+                apply_to_quantity: 2,
+                buy_rules_min_quantity: 2,
+                target_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+              } as any,
+            })
+          })
+
+          it("should compute adjustment accurately for a single item", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 4,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 2,
+                  subtotal: 2000,
+                  product: { id: product2 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately for a single item when multiple buyget promos are applied", async () => {
+            const buyXGetXPromotionBulk1 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY50GET1000",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 1000,
+                  apply_to_quantity: 1000,
+                  buy_rules_min_quantity: 50,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const buyXGetXPromotionBulk2 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY10GET20",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 20,
+                  apply_to_quantity: 20,
+                  buy_rules_min_quantity: 10,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1080,
+                  subtotal: 2700,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotionBulk1.code!, buyXGetXPromotionBulk2.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 2500,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                amount: 50,
+                code: "BUY10GET20",
+                item_id: "item_cotton_tshirt",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately for multiple items when multiple buyget promos are applied", async () => {
+            const buyXGetXPromotionBulk1 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY50GET1000",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 1000,
+                  apply_to_quantity: 1000,
+                  buy_rules_min_quantity: 50,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const buyXGetXPromotionBulk2 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY10GET20",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 20,
+                  apply_to_quantity: 20,
+                  buy_rules_min_quantity: 10,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 540,
+                  subtotal: 1350,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 540,
+                  subtotal: 1350,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotionBulk1.code!, buyXGetXPromotionBulk2.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt2",
+                amount: 1225,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 1275,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt2",
+                amount: 50,
+                code: "BUY10GET20",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt3",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt1",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 3,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
         })
       })
     })

@@ -1,0 +1,659 @@
+import { Prerequisites, CodeTabs, CodeTab, Details } from "docs-ui"
+
+export const metadata = {
+  title: `Third-Party or Social Login in Storefront`,
+}
+
+# {metadata.title}
+
+To login a customer with a third-party service, such as Google or GitHub, you must follow the following flow:
+
+![Diagram illustrating the authentication flow between the storefront, Medusa application, and the third-party service.](https://res.cloudinary.com/dza7lstvk/image/upload/v1725531068/Medusa%20Resources/Social_Media_Graphics_third-party-auth-customer_kfn3k3.jpg)
+
+<Details summaryContent="Explanation" className="my-1">
+
+1. Authenticate the customer with the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider).
+2. The auth route returns a URL to authenticate with third-party service, such as login with Google. The storefront, when it receives a `location` property in the response, must redirect to the returned location.
+3. Once the authentication with the third-party service finishes, it redirects back to the storefront with a `code` query parameter. So, make sure your third-party service is configured to redirect to your storefront page after successful authentication.
+4. The storefront sends a request to the [Validate Authentication Callback API route](!api!/store#auth_postactor_typeauth_providercallback) passing the `code` query parameter.
+5. If the callback validation is successful, the storefront receives the authentication token.
+6. Decode the received token in the frontend using tools like [react-jwt](https://www.npmjs.com/package/react-jwt).
+    - If the decoded data has an `actor_id` property, then the user is already registered. So, use this token for subsequent authenticated requests.
+    - If not, follow the rest of the steps.
+7. The storefront uses the authentication token to create the customer using the [Create Customer API route](!api!/store#customers_postcustomers).
+8. The storefront sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token for the customer.
+
+</Details>
+
+You'll implement the flow in this guide using Google as an example.
+
+<Prerequisites
+  items={[
+    {
+      text: "Install the Google Auth Module Provider in your Medusa application, or follow along the same steps with the provider you're using.",
+      link: "/commerce-modules/auth/auth-providers/google"
+    }
+  ]}
+/>
+
+## Step 1: Authenticate Customer in Medusa
+
+When the customer clicks on a "Login with Google" button, send a request to the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider).
+
+For example:
+
+<CodeTabs group="authenticated-request">
+  <CodeTab label="Fetch API" value="fetch">
+  
+export const fetchHighlights = [
+  ["2", "fetch", "Send a request to the Authenticate Customer API route"],
+  ["10", "result.location", "If the request returns a location, redirect to that location to continue the authentication."],
+  ["17", "!result.token", "If the token isn't returned, the authentication has failed."],
+  ["26", "fetch", "Send a request as an authenticated customer."]
+]
+
+```ts highlights={fetchHighlights}
+const loginWithGoogle = async () => {
+  const result = await fetch(
+    `http://localhost:9000/auth/customer/google`,
+    {
+      credentials: "include",
+      method: "POST",
+    }
+  ).then((res) => res.json())
+
+  if (result.location) {
+    // redirect to Google for authentication
+    window.location.href = result.location
+
+    return
+  }
+  
+  if (!result.token) {
+    // result failed, show an error
+    alert("Authentication failed")
+    return
+  }
+
+  // authentication successful
+  // use token in the authorization header of 
+  // all follow up requests. For example:
+  const { customer } = await fetch(
+    `http://localhost:9000/store/customers/me`,
+    {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${result.token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+    }
+  )
+  .then((res) => res.json())
+}
+```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+  
+export const reactHighlights = [
+  ["5", "fetch", "Send a request to the Authenticate Customer API route"],
+  ["13", "result.location", "If the request returns a location, redirect to that location to continue the authentication."],
+  ["20", "!result.token", "If the token isn't returned, the authentication has failed."],
+  ["29", "fetch", "Send a request as an authenticated customer."]
+]
+
+```tsx highlights={reactHighlights}
+"use client" // include with Next.js 13+
+
+export default function Login() {
+  const loginWithGoogle = async () => {
+    const result = await fetch(
+      `http://localhost:9000/auth/customer/google`, 
+      {
+        credentials: "include",
+        method: "POST",
+      }
+    ).then((res) => res.json())
+
+    if (result.location) {
+      // redirect to Google for authentication
+      window.location.href = result.location
+
+      return
+    }
+    
+    if (!result.token) {
+      // result failed, show an error
+      alert("Authentication failed")
+      return
+    }
+
+    // authentication successful
+    // use token in the authorization header of 
+    // all follow up requests. For example:
+    const { customer } = await fetch(
+      `http://localhost:9000/store/customers/me`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${result.token}`,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
+      }
+    )
+    .then((res) => res.json())
+  }
+
+  return (
+    <div>
+      <button onClick={loginWithGoogle}>Login with Google</button>
+    </div>
+  )
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+If the Authenticate Customer API route returns a `location`, then you redirect to the returned page for authentication with the third-party service.
+
+If the route returns a `token`, then the customer has been authenticated before. You can use the token for subsequent authenticated request.
+
+<Note title="Tip">
+
+If you're using a provider other than Google, or if you've configured the Google provider with an ID other than `google`, replace `google` in the URL `http://localhost:9000/auth/customer/google` with your provider ID.
+
+</Note>
+
+---
+
+## Step 2: Callback Page in Storefront
+
+The next step is to create a page in your storefront that the customer is redirected to after they authenticate with Google.
+
+You'll use this page's URL as the Redirect Uri in your Google settings, and set it in the `callbackUrl` of your Google provider's configurations.
+
+First, install the [react-jwt library](https://www.npmjs.com/package/react-jwt) in your storefront to use it for decoding the token:
+
+```bash npm2yarn
+npm install react-jwt
+```
+
+Then, in a new page in your storefront that will be used as the callback / redirect uri destination, add the following:
+
+<CodeTabs group="authenticated-request">
+  <CodeTab label="Fetch API" value="fetch">
+  
+export const sendCallbackFetchHighlights = [
+  ["6", "code", "The code received from Google as a query parameter."],
+  ["9", "fetch", "Send a request to the Validate Authentication Callback API route"],
+  ["17", "!token", "If the token isn't returned, the authentication has failed."],
+]
+
+```ts highlights={sendCallbackFetchHighlights}
+import { decodeToken } from "react-jwt"
+
+// ...
+
+const queryParams = new URLSearchParams(window.location.search)
+const code = queryParams.get("code")
+
+const sendCallback = async () => {
+  const { token } = await fetch(
+    `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
+    {
+      credentials: "include",
+      method: "POST",
+    }
+  ).then((res) => res.json())
+
+  if (!token) {
+    alert("Authentication Failed")
+    return
+  }
+
+  return token
+}
+
+// TODO add more functions...
+```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+  
+export const sendCallbackReactHighlights = [
+  ["11", "code", "The code received from Google as a query parameter."],
+  ["18", "fetch", "Send a request to the Validate Authentication Callback API route"],
+  ["26", "!token", "If the token isn't returned, the authentication has failed."],
+]
+
+```tsx highlights={sendCallbackReactHighlights}
+"use client" // include with Next.js 13+
+
+import { HttpTypes } from "@medusajs/types"
+import { useEffect, useMemo, useState } from "react"
+import { decodeToken } from "react-jwt"
+
+export default function GoogleCallback() {
+  const [loading, setLoading] = useState(true)
+  const [customer, setCustomer] = useState<HttpTypes.StoreCustomer>()
+  // for other than Next.js
+  const code = useMemo(() => {
+    const queryParams = new URLSearchParams(window.location.search)
+
+    return queryParams.get("code")
+  }, [])
+
+  const sendCallback = async () => {
+    const { token } = await fetch(
+      `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
+      {
+        credentials: "include",
+        method: "POST",
+      }
+    ).then((res) => res.json())
+
+    if (!token) {
+      alert("Authentication Failed")
+      return
+    }
+
+    return token
+  }
+
+  // TODO add more functions
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {customer && <span>Created customer {customer.email} with Google.</span>}
+    </div>
+  )
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+This adds in the new page the function `sendCallback` which sends a request to the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback), passing it the `code` received from Google.
+
+Then, replace the `TODO` with the following:
+  
+export const createCustomerHighlights = [
+  ["1", "token", "The token received from the Validate Callback API route."],
+  ["2", "fetch", "Create a customer"]
+]
+
+```ts highlights={createCustomerHighlights} title="Fetch API / React Applicable"
+const createCustomer = async (token: string) => {
+  await fetch(`http://localhost:9000/store/customers`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
+    body: JSON.stringify({
+      // TODO show form to retrieve email from customer
+      email: "example@medusajs.com",
+    }),
+  }).then((res) => res.json())
+}
+
+// TODO add more functions...
+```
+
+This adds to the page the function `createCustomer` which, if the customer is new, it uses the token received from the Validate Callback API route to create a new customer.
+
+Next, replace the new `TODO` with the following:
+  
+export const refreshTokenHighlights = [
+  ["1", "token", "The token received from the Validate Callback API route."],
+  ["2", "fetch", "Fetch a new token for the created customer."]
+]
+
+```ts highlights={refreshTokenHighlights} title="Fetch API / React Applicable"
+const refreshToken = async (token: string) => {
+  const result = await fetch(`http://localhost:9000/auth/token/refresh`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  }).then((res) => res.json())
+
+  return result.token
+}
+
+// TODO add more functions...
+```
+
+This adds to the page the function `refreshToken` which is used after the new customer is created to refresh their authentication token. This ensures that the authentication token includes the details of the created customer.
+
+Finally, add in the place of the new `TODO` the `validateCallback` function that runs when the page first loads to validate the authentication:
+
+<CodeTabs group="authenticated-request">
+  <CodeTab label="Fetch API" value="fetch">
+  
+export const validateFetchHighlights = [
+  ["2", "sendCallback", "Validate the callback in Medusa and retrieve the authentication token"],
+  ["4", "shouldCreateCustomer", "Check if the decoded token has an `actor_id` property to decide whether a customer to be created."],
+  ["7", "createCustomer", "Create a customer if the decoded token doesn't have `actor_id`."],
+  ["9", "refreshToken", "Fetch a new token for the created customer."],
+  ["13", "fetch", "Send an authenticated request using the token."]
+]
+
+```ts highlights={validateFetchHighlights}
+const validateCallback = async () => {
+  let { token } = await sendCallback()
+
+  const shouldCreateCustomer = (decodeToken(token) as { actor_id: string }).actor_id === ""
+
+  if (shouldCreateCustomer) {
+    await createCustomer(token)
+
+    token = await refreshToken(token)
+  }
+
+  // use token to send authenticated requests
+  const { customer } =  await fetch(
+    `http://localhost:9000/store/customers/me`, 
+    {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({
+        // TODO show form to retrieve email from customer
+        email: "example@medusajs.com",
+      }),
+    }
+  ).then((res) => res.json())
+}
+```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+  
+export const validateReactHighlights = [
+  ["2", "sendCallback", "Validate the callback in Medusa and retrieve the authentication token"],
+  ["4", "shouldCreateCustomer", "Check if the decoded token has an `actor_id` property to decide whether a customer to be created."],
+  ["7", "createCustomer", "Create a customer if the decoded token doesn't have `actor_id`."],
+  ["9", "refetchToken", "Fetch a new token for the created customer."],
+  ["13", "fetch", "Send an authenticated request using the token."]
+]
+
+```tsx highlights={validateReactHighlights}
+const validateCallback = async () => {
+  let { token } = await sendCallback()
+
+  const shouldCreateCustomer = (decodeToken(token) as { actor_id: string }).actor_id === ""
+
+  if (shouldCreateCustomer) {
+    await createCustomer(token)
+
+    token = await refreshToken(token)
+  }
+
+  // use token to send authenticated requests
+  const { customer: customerData } =  await fetch(
+    `http://localhost:9000/store/customers/me`, 
+    {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({
+        // TODO show form to retrieve email from customer
+        email: "example@medusajs.com",
+      }),
+    }
+  ).then((res) => res.json())
+
+  setCustomer(customerData)
+  setLoading(false)
+}
+
+
+useEffect(() => {
+  if (!loading) {
+    return
+  }
+
+  validateCallback()
+}, [loading])
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The `validateCallback` function uses the functions added earlier to:
+
+1. Send a request to the Validate Callback API route, which returns an authentication token.
+2. Decodes the token to check if it has an `actor_id` property.
+  - If so, then the customer is previously registered, and the authentication token can be used for subsequent authenticated requests.
+  - If not:
+      1. Create a customer using the Create Customer API route.
+      2. Refetch the customer's token after it's created using the Refresh Token API route.
+      3. Use the token for subsequent authenticated requests.
+
+### Full Code Example for Callback Page
+
+<Details summaryContent="Full Example">
+
+<CodeTabs group="authenticated-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+```ts
+import { decodeToken } from "react-jwt"
+
+// ...
+
+const queryParams = new URLSearchParams(window.location.search)
+const code = queryParams.get("code")
+
+
+const sendCallback = async () => {
+  const { token } = await fetch(
+    `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
+    {
+      credentials: "include",
+      method: "POST",
+    }
+  ).then((res) => res.json())
+
+  if (!token) {
+    alert("Authentication Failed")
+    return
+  }
+
+  return token
+}
+
+const createCustomer = async (token: string) => {
+  await fetch(`http://localhost:9000/store/customers`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
+    body: JSON.stringify({
+      // TODO show form to retrieve email from customer
+      email: "example@medusajs.com",
+    }),
+  }).then((res) => res.json())
+}
+
+const refreshToken = async (token: string) => {
+  const result = await fetch(`http://localhost:9000/auth/token/refresh`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  }).then((res) => res.json())
+
+  return result.token
+}
+
+const validateCallback = async () => {
+  let { token } = await sendCallback()
+
+  const shouldCreateCustomer = (decodeToken(token) as { actor_id: string }).actor_id === ""
+
+  if (shouldCreateCustomer) {
+    await createCustomer(token)
+
+    token = await refreshToken(token)
+  }
+
+  // use token to send authenticated requests
+  const { customer } =  await fetch(
+    `http://localhost:9000/store/customers/me`, 
+    {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({
+        // TODO show form to retrieve email from customer
+        email: "example@medusajs.com",
+      }),
+    }
+  ).then((res) => res.json())
+}
+```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+```tsx
+"use client" // include with Next.js 13+
+
+import { HttpTypes } from "@medusajs/types"
+import { useEffect, useMemo, useState } from "react"
+import { decodeToken } from "react-jwt"
+
+export default function GoogleCallback() {
+  const [loading, setLoading] = useState(true)
+  const [customer, setCustomer] = useState<HttpTypes.StoreCustomer>()
+  // for other than Next.js
+  const code = useMemo(() => {
+    const queryParams = new URLSearchParams(window.location.search)
+
+    return queryParams.get("code")
+  }, [])
+
+  const sendCallback = async () => {
+    const { token } = await fetch(
+      `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
+      {
+        credentials: "include",
+        method: "POST",
+      }
+    ).then((res) => res.json())
+
+    if (!token) {
+      alert("Authentication Failed")
+      return
+    }
+
+    return token
+  }
+
+  const createCustomer = async (token: string) => {
+    await fetch(`http://localhost:9000/store/customers`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({
+        // TODO show form to retrieve email from customer
+        email: "example@medusajs.com",
+      }),
+    }).then((res) => res.json())
+  }
+
+  const refreshToken = async (token: string) => {
+    const result = await fetch(`http://localhost:9000/auth/token/refresh`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    }).then((res) => res.json())
+
+    return result.token
+  }
+
+  const validateCallback = async () => {
+    let { token } = await sendCallback()
+
+    const shouldCreateCustomer = (decodeToken(token) as { actor_id: string }).actor_id === ""
+
+    if (shouldCreateCustomer) {
+      await createCustomer(token)
+
+      token = await refreshToken(token)
+    }
+
+    // use token to send authenticated requests
+    const { customer: customerData } =  await fetch(
+      `http://localhost:9000/store/customers/me`, 
+      {
+        credentials: "include",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({
+          // TODO show form to retrieve email from customer
+          email: "example@medusajs.com",
+        }),
+      }
+    ).then((res) => res.json())
+
+    setCustomer(customerData)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      return
+    }
+
+    validateCallback()
+  }, [loading])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {customer && <span>Created customer {customer.email} with Google.</span>}
+    </div>
+  )
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+</Details>

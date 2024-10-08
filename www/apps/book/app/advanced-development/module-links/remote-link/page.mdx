@@ -1,0 +1,153 @@
+import { BetaBadge } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Remote Link`,
+}
+
+# {metadata.title} <BetaBadge text="Beta" tooltipText="Remote Links are in active development." />
+
+In this chapter, you’ll learn what the remote link is and how to use it to manage links.
+
+## What is the Remote Link?
+
+The remote link is a class with utility methods to manage links between data models. It’s registered in the Medusa container under the `remoteLink` registration name.
+
+For example:
+
+```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { 
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import { 
+  RemoteLink,
+} from "@medusajs/framework/modules-sdk"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const remoteLink: RemoteLink = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_LINK
+  )
+    
+  // ...
+}
+```
+
+You can use its methods to manage links, such as create or delete links.
+
+---
+
+## Create Link
+
+To create a link between records of two data models, use the `create` method of the remote link.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await remoteLink.create({
+  [Modules.PRODUCT]: {
+    product_id: "prod_123",
+  },
+  "helloModuleService": {
+    my_custom_id: "mc_123",
+  },
+})
+```
+
+The `create` method accepts as a parameter an object. The object’s keys are the names of the linked modules.
+
+<Note title="Important">
+
+The keys (names of linked modules) must be in the same direction of the link definition.
+
+</Note>
+
+The value of each module’s property is an object, whose keys are of the format `{data_model_snake_name}_id`, and values are the IDs of the linked record.
+
+So, in the example above, you link a record of the `MyCustom` data model in a `hello` module to a `Product` record in the Product Module.
+
+---
+
+## Dismiss Link
+
+To remove a link between records of two data models, use the `dismiss` method of the remote link.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await remoteLink.dismiss({
+  [Modules.PRODUCT]: {
+    product_id: "prod_123",
+  },
+  "helloModuleService": {
+    my_custom_id: "mc_123",
+  },
+})
+```
+
+The `dismiss` method accepts the same parameter type as the [create method](#create-link).
+
+<Note title="Important">
+
+The keys (names of linked modules) must be in the same direction of the link definition.
+
+</Note>
+
+---
+
+## Cascade Delete Linked Records
+
+If a record is deleted, use the `delete` method of the remote link to delete all linked records.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await productModuleService.deleteVariants([variant.id])
+
+await remoteLink.delete({
+  [Modules.PRODUCT]: {
+    product_id: "prod_123",
+  },
+})
+```
+
+This deletes all records linked to the deleted product.
+
+---
+
+## Restore Linked Records
+
+If a record that was previously soft-deleted is now restored, use the `restore` method of the remote link to restore all linked records.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await productModuleService.restoreProducts(["prod_123"])
+
+await remoteLink.restore({
+  [Modules.PRODUCT]: {
+    product_id: "prod_123",
+  },
+})
+```

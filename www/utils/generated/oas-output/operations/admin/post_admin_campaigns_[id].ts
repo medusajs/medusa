@@ -21,36 +21,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,84 +39,87 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: The promotion's campaign.
- *         required:
- *           - name
- *           - campaign_identifier
- *           - description
- *           - currency
- *           - budget
- *           - starts_at
- *           - ends_at
- *           - promotions
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The campaign's name.
- *           campaign_identifier:
- *             type: string
- *             title: campaign_identifier
- *             description: The campaign's campaign identifier.
- *           description:
- *             type: string
- *             title: description
- *             description: The campaign's description.
- *           currency:
- *             type: string
- *             title: currency
- *             description: The campaign's currency.
- *           budget:
- *             type: object
- *             description: The campaign's budget.
- *             properties:
- *               type:
- *                 enum:
- *                   - spend
- *                   - usage
- *                 type: string
- *               limit:
- *                 type: number
- *                 title: limit
- *                 description: The budget's limit.
+ *         allOf:
+ *           - type: object
+ *             description: The campaign's details.
  *             required:
- *               - type
- *               - limit
- *           starts_at:
- *             type: string
- *             title: starts_at
- *             description: The campaign's starts at.
- *           ends_at:
- *             type: string
- *             title: ends_at
- *             description: The campaign's ends at.
- *           promotions:
- *             type: array
- *             description: The campaign's promotions.
- *             items:
- *               type: object
- *               description: The promotion's promotions.
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The promotion's ID.
+ *               - description
+ *               - starts_at
+ *               - ends_at
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 title: name
+ *                 description: The campaign's name.
+ *               campaign_identifier:
+ *                 type: string
+ *                 title: campaign_identifier
+ *                 description: The campaign's identifier.
+ *               description:
+ *                 type: string
+ *                 title: description
+ *                 description: The campaign's description.
+ *               budget:
+ *                 type: object
+ *                 description: The campaign's budget.
+ *                 required:
+ *                   - limit
+ *                 properties:
+ *                   limit:
+ *                     type: number
+ *                     title: limit
+ *                     description: The campaign budget's limit.
+ *               starts_at:
+ *                 type: string
+ *                 title: starts_at
+ *                 description: The campaign's start date.
+ *                 format: date-time
+ *               ends_at:
+ *                 type: string
+ *                 title: ends_at
+ *                 description: The campaign's end date.
+ *                 format: date-time
+ *               promotions:
+ *                 type: array
+ *                 description: The campaign's promotions.
+ *                 items:
+ *                   type: object
+ *                   description: The promotions to add to the campaign.
+ *                   required:
+ *                     - id
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       title: id
+ *                       description: A promotion's ID.
+ *           - type: object
+ *             description: The campaign's details.
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
+ *         description: The campaign's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/campaigns/{id}' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Janessa"
+ *         "description": "{value}",
+ *         "starts_at": "2024-08-10T14:44:10.530Z",
+ *         "ends_at": "2024-07-13T17:45:37.462Z"
  *       }'
  * tags:
  *   - Campaigns
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminCampaignResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -149,6 +132,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: updateCampaignsWorkflow
  * 
 */
 

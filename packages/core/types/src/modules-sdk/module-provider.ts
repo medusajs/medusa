@@ -6,6 +6,6 @@ export type ModuleProviderExports = {
 
 export type ModuleProvider = {
   resolve: string | ModuleProviderExports
-  provider_name?: string
-  options: Record<string, unknown>
+  id: string
+  options?: Record<string, unknown>
 }

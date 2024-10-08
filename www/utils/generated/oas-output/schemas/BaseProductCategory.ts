@@ -1,0 +1,8 @@
+/**
+ * @schema BaseProductCategory
+ * type: object
+ * description: The category's categories.
+ * x-schemaName: BaseProductCategory
+ * 
+*/
+

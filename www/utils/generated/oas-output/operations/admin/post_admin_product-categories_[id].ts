@@ -21,36 +21,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -60,16 +40,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - name
- *           - description
- *           - handle
- *           - is_internal
- *           - is_active
- *           - parent_category_id
- *           - metadata
- *           - rank
+ *         description: The properties to update in the product category.
  *         properties:
  *           name:
  *             type: string
@@ -82,43 +53,36 @@
  *           handle:
  *             type: string
  *             title: handle
- *             description: The product category's handle.
+ *             description: The product category's handle. Must be a unique value.
  *           is_internal:
  *             type: boolean
  *             title: is_internal
- *             description: The product category's is internal.
+ *             description: Whether the product category is only used for internal purposes and shouldn't be shown the customer.
  *           is_active:
  *             type: boolean
  *             title: is_active
- *             description: The product category's is active.
+ *             description: Whether the product category is active.
  *           parent_category_id:
  *             type: string
  *             title: parent_category_id
- *             description: The product category's parent category id.
+ *             description: The ID of a parent category.
  *           metadata:
  *             type: object
- *             description: The product category's metadata.
- *             properties: {}
+ *             description: The product category's metadata. Can hold custom key-value pairs.
  *           rank:
  *             type: number
  *             title: rank
- *             description: The product category's rank.
+ *             description: The product category's rank among other categories.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/product-categories/{id}' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Xzavier",
- *         "description": "{value}",
- *         "handle": "{value}",
- *         "is_internal": true,
- *         "is_active": true,
  *         "parent_category_id": "{value}",
- *         "metadata": {},
- *         "rank": 6601863235371008
+ *         "metadata": {}
  *       }'
  * tags:
  *   - Product Categories
@@ -141,6 +105,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: updateProductCategoriesWorkflow
  * 
 */
 

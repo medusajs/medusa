@@ -1,0 +1,16 @@
+---
+slug: /references/medusa-workflows/steps/validateInventoryLocationsStep
+sidebar_label: validateInventoryLocationsStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateInventoryLocationsStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `validateInventoryLocationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step ensures that the inventory levels exist for each specified pair of inventory item and location.
+
+## Input
+
+<TypeList types={[{"name":"CreateInventoryLevelInput[]","type":"[CreateInventoryLevelInput](../../../../../types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryLevelInput/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateInventoryLevelInput","type":"[CreateInventoryLevelInput](../../../../../types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryLevelInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateInventoryLocationsStep"/>

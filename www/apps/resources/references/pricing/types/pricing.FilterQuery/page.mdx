@@ -1,0 +1,9 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import { TypeList } from "docs-ui"
+
+# FilterQuery
+
+ **FilterQuery**: Prev extends `never` ? `never` : &#123; [Key in keyof T]?: T[Key] extends boolean \| number \| string \| bigint \| symbol \| Date ? T[Key] \| OperatorMap&#60;T[Key]&#62; : T[Key] extends infer U ? U extends Object ? V extends object ? FilterQuery&#60;Partial&#60;V&#62;, PrevLimit[Prev]&#62; : never : never : never &#125;

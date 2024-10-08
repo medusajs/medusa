@@ -1,18 +1,14 @@
-import {
-  InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 
-import { MedusaModule } from "../../medusa-module"
 import { asValue } from "awilix"
+import { MedusaModule } from "../../medusa-module"
 
 const mockRegisterMedusaModule = jest.fn().mockImplementation(() => {
   return {
     moduleKey: {
       definition: {
         key: "moduleKey",
-        registrationName: "moduleKey",
       },
       moduleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
@@ -133,7 +129,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    const moduleB = await MedusaModule.bootstrap({
+    await MedusaModule.bootstrap({
       moduleKey: "moduleKey",
       defaultPath: "@path",
       declaration: {
@@ -150,7 +146,7 @@ describe("Medusa Modules", () => {
   })
 
   it("should return the module flagged as 'main' when multiple instances are available", async () => {
-    const moduleA = await MedusaModule.bootstrap({
+    await MedusaModule.bootstrap({
       moduleKey: "moduleKey",
       defaultPath: "@path",
       declaration: {
@@ -283,7 +279,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already have a 'main' registered."
     )
   })
@@ -317,7 +313,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already registed as 'module_alias'. Please choose a different alias."
     )
   })

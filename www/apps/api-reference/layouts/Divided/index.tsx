@@ -1,12 +1,13 @@
 import clsx from "clsx"
 import { forwardRef } from "react"
 
-type DividedLayoutProps = {
+export type DividedLayoutProps = {
   mainContent: React.ReactNode
   codeContent: React.ReactNode
   className?: string
   mainContentClassName?: string
   codeContentClassName?: string
+  addYSpacing?: boolean
 }
 
 const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
@@ -17,6 +18,7 @@ const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
       className,
       mainContentClassName,
       codeContentClassName,
+      addYSpacing = false,
     },
     ref
   ) {
@@ -24,6 +26,7 @@ const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
       <div
         className={clsx(
           "flex w-full flex-col justify-between lg:flex-row lg:gap-4",
+          addYSpacing && "my-3",
           className
         )}
         ref={ref}
@@ -39,6 +42,7 @@ const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
         <div
           className={clsx(
             "w-full flex-shrink-0 flex-grow-0 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pr-1.5",
+            "mt-2 lg:mt-0",
             codeContentClassName
           )}
         >

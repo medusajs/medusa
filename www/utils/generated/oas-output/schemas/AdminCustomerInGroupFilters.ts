@@ -1,0 +1,558 @@
+/**
+ * @schema AdminCustomerInGroupFilters
+ * type: object
+ * description: Filters to apply on customers to retrieve their groups.
+ * x-schemaName: AdminCustomerInGroupFilters
+ * properties:
+ *   id:
+ *     oneOf:
+ *       - type: string
+ *         title: id
+ *         description: Filter by a customer's ID.
+ *       - type: array
+ *         description: Filter by customer IDs.
+ *         items:
+ *           type: string
+ *           title: id
+ *           description: A customer's ID.
+ *   email:
+ *     oneOf:
+ *       - type: string
+ *         title: email
+ *         description: Filter by a customer's email.
+ *         format: email
+ *       - type: array
+ *         description: Filter by customer emails.
+ *         items:
+ *           type: string
+ *           title: email
+ *           description: A customer's email.
+ *           format: email
+ *       - type: object
+ *         description: Apply filters on the customer's email.
+ *         properties:
+ *           $and:
+ *             type: array
+ *             description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *             items:
+ *               type: object
+ *             title: $and
+ *           $or:
+ *             type: array
+ *             description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *             items:
+ *               type: object
+ *             title: $or
+ *           $eq:
+ *             oneOf:
+ *               - type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *               - type: array
+ *                 description: Filter by exact matches
+ *                 items:
+ *                   type: string
+ *                   title: $eq
+ *                   description: Filter by an exact match.
+ *           $ne:
+ *             type: string
+ *             title: $ne
+ *             description: Filter by values not equal to this parameter.
+ *           $in:
+ *             type: array
+ *             description: Filter by values in this array.
+ *             items:
+ *               type: string
+ *               title: $in
+ *               description: Filter by values in this array.
+ *           $nin:
+ *             type: array
+ *             description: Filter by values not in this array.
+ *             items:
+ *               type: string
+ *               title: $nin
+ *               description: Filter by values not in this array.
+ *           $not:
+ *             oneOf:
+ *               - type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *               - type: object
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *               - type: array
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *                 items:
+ *                   type: string
+ *                   title: $not
+ *                   description: Filter by values not matching the conditions in this parameter.
+ *           $gt:
+ *             type: string
+ *             title: $gt
+ *             description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *           $gte:
+ *             type: string
+ *             title: $gte
+ *             description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *           $lt:
+ *             type: string
+ *             title: $lt
+ *             description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *           $lte:
+ *             type: string
+ *             title: $lte
+ *             description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *           $like:
+ *             type: string
+ *             title: $like
+ *             description: Apply a `like` filter. Useful for strings only.
+ *           $re:
+ *             type: string
+ *             title: $re
+ *             description: Apply a regex filter. Useful for strings only.
+ *           $ilike:
+ *             type: string
+ *             title: $ilike
+ *             description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *           $fulltext:
+ *             type: string
+ *             title: $fulltext
+ *             description: Filter to apply on full-text properties.
+ *           $overlap:
+ *             type: array
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *             items:
+ *               type: string
+ *               title: $overlap
+ *               description: Filter arrays that have overlapping values with this parameter.
+ *           $contains:
+ *             type: array
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *             items:
+ *               type: string
+ *               title: $contains
+ *               description: Filter arrays that contain some of the values of this parameter.
+ *           $contained:
+ *             type: array
+ *             description: Filter arrays that contain all values of this parameter.
+ *             items:
+ *               type: string
+ *               title: $contained
+ *               description: Filter arrays that contain all values of this parameter.
+ *           $exists:
+ *             type: boolean
+ *             title: $exists
+ *             description: Filter by whether a value for this parameter exists (not `null`).
+ *   default_billing_address_id:
+ *     oneOf:
+ *       - type: string
+ *         title: default_billing_address_id
+ *         description: Filter by the ID of a customer's default billing address.
+ *       - type: array
+ *         description: Filter by the IDs of a customers' default billing address.
+ *         items:
+ *           type: string
+ *           title: default_billing_address_id
+ *           description: The ID of a customer's default billing address.
+ *   default_shipping_address_id:
+ *     oneOf:
+ *       - type: string
+ *         title: default_shipping_address_id
+ *         description: Filter by the ID of a customer's default shipping address.
+ *       - type: array
+ *         description: Filter by the IDs of a customers' default shipping address.
+ *         items:
+ *           type: string
+ *           title: default_shipping_address_id
+ *           description: The ID of a customer's default shipping address.
+ *   company_name:
+ *     oneOf:
+ *       - type: string
+ *         title: company_name
+ *         description: Filter by a customer's company name.
+ *       - type: array
+ *         description: Filter by customers' company names.
+ *         items:
+ *           type: string
+ *           title: company_name
+ *           description: A company name.
+ *   first_name:
+ *     oneOf:
+ *       - type: string
+ *         title: first_name
+ *         description: Filter by a customer's first name.
+ *       - type: array
+ *         description: Filter by customers' first names.
+ *         items:
+ *           type: string
+ *           title: first_name
+ *           description: A first name.
+ *   last_name:
+ *     oneOf:
+ *       - type: string
+ *         title: last_name
+ *         description: Filter by a customer's last name.
+ *       - type: array
+ *         description: Filter by customers' last names.
+ *         items:
+ *           type: string
+ *           title: last_name
+ *           description: A last name.
+ *   created_by:
+ *     oneOf:
+ *       - type: string
+ *         title: created_by
+ *         description: Filter by the ID of a user to retrieve the groups of the customers they created.
+ *       - type: array
+ *         description: Filter by the ID of users to retrieve the groups of the customers they created.
+ *         items:
+ *           type: string
+ *           title: created_by
+ *           description: A user's ID.
+ *   created_at:
+ *     type: object
+ *     description: Filter the customer's creation date.
+ *     properties:
+ *       $and:
+ *         type: array
+ *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $and
+ *       $or:
+ *         type: array
+ *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $or
+ *       $eq:
+ *         oneOf:
+ *           - type: string
+ *             title: $eq
+ *             description: Filter by an exact match.
+ *           - type: array
+ *             description: Filter by exact matches
+ *             items:
+ *               type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *       $ne:
+ *         type: string
+ *         title: $ne
+ *         description: Filter by values not equal to this parameter.
+ *       $in:
+ *         type: array
+ *         description: Filter by values in this array.
+ *         items:
+ *           type: string
+ *           title: $in
+ *           description: Filter by values in this array.
+ *       $nin:
+ *         type: array
+ *         description: Filter by values not in this array.
+ *         items:
+ *           type: string
+ *           title: $nin
+ *           description: Filter by values not in this array.
+ *       $not:
+ *         oneOf:
+ *           - type: string
+ *             title: $not
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: object
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: array
+ *             description: Filter by values not matching the conditions in this parameter.
+ *             items:
+ *               type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *       $gt:
+ *         type: string
+ *         title: $gt
+ *         description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *       $gte:
+ *         type: string
+ *         title: $gte
+ *         description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *       $lt:
+ *         type: string
+ *         title: $lt
+ *         description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *       $lte:
+ *         type: string
+ *         title: $lte
+ *         description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *       $like:
+ *         type: string
+ *         title: $like
+ *         description: Apply a `like` filter. Useful for strings only.
+ *       $re:
+ *         type: string
+ *         title: $re
+ *         description: Apply a regex filter. Useful for strings only.
+ *       $ilike:
+ *         type: string
+ *         title: $ilike
+ *         description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *       $fulltext:
+ *         type: string
+ *         title: $fulltext
+ *         description: Filter to apply on full-text properties.
+ *       $overlap:
+ *         type: array
+ *         description: Filter arrays that have overlapping values with this parameter.
+ *         items:
+ *           type: string
+ *           title: $overlap
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *       $contains:
+ *         type: array
+ *         description: Filter arrays that contain some of the values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contains
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *       $contained:
+ *         type: array
+ *         description: Filter arrays that contain all values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contained
+ *           description: Filter arrays that contain all values of this parameter.
+ *       $exists:
+ *         type: boolean
+ *         title: $exists
+ *         description: Filter by whether a value for this parameter exists (not `null`).
+ *   updated_at:
+ *     type: object
+ *     description: Filter the customer's update date.
+ *     properties:
+ *       $and:
+ *         type: array
+ *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $and
+ *       $or:
+ *         type: array
+ *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $or
+ *       $eq:
+ *         oneOf:
+ *           - type: string
+ *             title: $eq
+ *             description: Filter by an exact match.
+ *           - type: array
+ *             description: Filter by an exact match.
+ *             items:
+ *               type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *       $ne:
+ *         type: string
+ *         title: $ne
+ *         description: Filter by values not equal to this parameter.
+ *       $in:
+ *         type: array
+ *         description: Filter by values in this array.
+ *         items:
+ *           type: string
+ *           title: $in
+ *           description: Filter by values in this array.
+ *       $nin:
+ *         type: array
+ *         description: Filter by values not in this array.
+ *         items:
+ *           type: string
+ *           title: $nin
+ *           description: Filter by values not in this array.
+ *       $not:
+ *         oneOf:
+ *           - type: string
+ *             title: $not
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: object
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: array
+ *             description: Filter by values not matching the conditions in this parameter.
+ *             items:
+ *               type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *       $gt:
+ *         type: string
+ *         title: $gt
+ *         description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *       $gte:
+ *         type: string
+ *         title: $gte
+ *         description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *       $lt:
+ *         type: string
+ *         title: $lt
+ *         description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *       $lte:
+ *         type: string
+ *         title: $lte
+ *         description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *       $like:
+ *         type: string
+ *         title: $like
+ *         description: Apply a `like` filter. Useful for strings only.
+ *       $re:
+ *         type: string
+ *         title: $re
+ *         description: Apply a regex filter. Useful for strings only.
+ *       $ilike:
+ *         type: string
+ *         title: $ilike
+ *         description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *       $fulltext:
+ *         type: string
+ *         title: $fulltext
+ *         description: Filter to apply on full-text properties.
+ *       $overlap:
+ *         type: array
+ *         description: Filter arrays that have overlapping values with this parameter.
+ *         items:
+ *           type: string
+ *           title: $overlap
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *       $contains:
+ *         type: array
+ *         description: Filter arrays that contain some of the values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contains
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *       $contained:
+ *         type: array
+ *         description: Filter arrays that contain all values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contained
+ *           description: Filter arrays that contain all values of this parameter.
+ *       $exists:
+ *         type: boolean
+ *         title: $exists
+ *         description: Filter by whether a value for this parameter exists (not `null`).
+ *   deleted_at:
+ *     type: object
+ *     description: Filter the customer's deletion date.
+ *     properties:
+ *       $and:
+ *         type: array
+ *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $and
+ *       $or:
+ *         type: array
+ *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         items:
+ *           type: object
+ *         title: $or
+ *       $eq:
+ *         oneOf:
+ *           - type: string
+ *             title: $eq
+ *             description: Filter by an exact match.
+ *           - type: array
+ *             description: Filter by an exact match.
+ *             items:
+ *               type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *       $ne:
+ *         type: string
+ *         title: $ne
+ *         description: Filter by values not equal to this parameter.
+ *       $in:
+ *         type: array
+ *         description: Filter by values in this array.
+ *         items:
+ *           type: string
+ *           title: $in
+ *           description: Filter by values in this array.
+ *       $nin:
+ *         type: array
+ *         description: Filter by values not in this array.
+ *         items:
+ *           type: string
+ *           title: $nin
+ *           description: Filter by values not in this array.
+ *       $not:
+ *         oneOf:
+ *           - type: string
+ *             title: $not
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: object
+ *             description: Filter by values not matching the conditions in this parameter.
+ *           - type: array
+ *             description: Filter by values not matching the conditions in this parameter.
+ *             items:
+ *               type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *       $gt:
+ *         type: string
+ *         title: $gt
+ *         description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *       $gte:
+ *         type: string
+ *         title: $gte
+ *         description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *       $lt:
+ *         type: string
+ *         title: $lt
+ *         description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *       $lte:
+ *         type: string
+ *         title: $lte
+ *         description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *       $like:
+ *         type: string
+ *         title: $like
+ *         description: Apply a `like` filter. Useful for strings only.
+ *       $re:
+ *         type: string
+ *         title: $re
+ *         description: Apply a regex filter. Useful for strings only.
+ *       $ilike:
+ *         type: string
+ *         title: $ilike
+ *         description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *       $fulltext:
+ *         type: string
+ *         title: $fulltext
+ *         description: Filter to apply on full-text properties.
+ *       $overlap:
+ *         type: array
+ *         description: Filter arrays that have overlapping values with this parameter.
+ *         items:
+ *           type: string
+ *           title: $overlap
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *       $contains:
+ *         type: array
+ *         description: Filter arrays that contain some of the values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contains
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *       $contained:
+ *         type: array
+ *         description: Filter arrays that contain all values of this parameter.
+ *         items:
+ *           type: string
+ *           title: $contained
+ *           description: Filter arrays that contain all values of this parameter.
+ *       $exists:
+ *         type: boolean
+ *         title: $exists
+ *         description: Filter by whether a value for this parameter exists (not `null`).
+ * 
+*/
+

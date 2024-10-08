@@ -1,0 +1,907 @@
+{
+	"id": 0,
+	"name": "auth-provider",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "AbstractAuthModuleProvider",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the module's options using the second parameter.\n\nIf you're creating a client or establishing a connection with a third-party service, do it in the constructor.\n\nIn the constructor, you must pass to the parent constructor two parameters:\n\n1. The first one is an empty object.\n2. The second is an object having two properties:\n   - "
+					},
+					{
+						"kind": "code",
+						"text": "`provider`"
+					},
+					{
+						"kind": "text",
+						"text": ": The ID of the provider. For example, "
+					},
+					{
+						"kind": "code",
+						"text": "`emailpass`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n   - "
+					},
+					{
+						"kind": "code",
+						"text": "`displayName`"
+					},
+					{
+						"kind": "text",
+						"text": ": The label or displayable name of the provider. For example, "
+					},
+					{
+						"kind": "code",
+						"text": "`Email and Password Authentication`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { AbstractAuthModuleProvider } from \"@medusajs/framework/utils\"\nimport { Logger } from \"@medusajs/framework/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super(\n      {},\n      {\n        provider: \"my-auth\",\n        displayName: \"My Custom Authentication\"\n      }\n    )\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyAuthProviderService\n```"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 4,
+					"name": "validateOptions",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isStatic": true
+					},
+					"signatures": [
+						{
+							"id": 5,
+							"name": "validateOptions",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Override this static method in order for the loader to validate the options provided to the module provider."
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 6,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "any"
+											},
+											{
+												"type": "intrinsic",
+												"name": "any"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 20,
+					"name": "authenticate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 21,
+							"name": "authenticate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method authenticates the user.\n\nThe authentication happens either by directly authenticating or returning a redirect URL to continue\nthe authentication with a third party provider.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authentication response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, if your authentication provider doesn't require validating a callback:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AuthIdentityProviderService,\n  AuthenticationInput,\n  AuthenticationResponse\n} from \"@medusajs/framework/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async authenticate(\n    data: AuthenticationInput,\n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // for example, verifying a password\n\n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Incorrect credentials\"\n      }\n    }\n\n    // authentication is successful, retrieve the identity\n    const authIdentity = await authIdentityProviderService.retrieve({\n      entity_id: data.body.email, // email or some ID\n      provider: this.provider\n    })\n\n    return {\n      success: true,\n      authIdentity\n    }\n  }\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nIf your authentication provider requires validating callback:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AuthIdentityProviderService,\n  AuthenticationInput,\n  AuthenticationResponse\n} from \"@medusajs/framework/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async authenticate(\n    data: AuthenticationInput,\n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // ...\n\n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Incorrect credentials\"\n      }\n    }\n\n    return {\n      success: true,\n      location: \"some-url.com\"\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 22,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the authentication request."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationInput"
+										},
+										"name": "AuthenticationInput",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 23,
+									"name": "authIdentityProviderService",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or\ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/provider.ts",
+											"qualifiedName": "AuthIdentityProviderService"
+										},
+										"name": "AuthIdentityProviderService",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationResponse"
+										},
+										"name": "AuthenticationResponse",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthProvider.authenticate"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthProvider.authenticate"
+					}
+				},
+				{
+					"id": 24,
+					"name": "register",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 25,
+							"name": "register",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method receives credentails to create a new auth identity. It performs any validation necessary\nbefore creating the auth identity.\n\nFor example, in the "
+									},
+									{
+										"kind": "code",
+										"text": "`emailpass`"
+									},
+									{
+										"kind": "text",
+										"text": " provider, this method ensures that the provided email doesn't exist\nbefore creating the auth identity.\n\nThis method is only used in a basic authentication flow, such as when using an email and password\nto register and authenticate a user.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created authentication identity if no errors occur."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AuthIdentityProviderService,\n  AuthenticationInput,\n  AuthenticationResponse\n} from \"@medusajs/framework/types\"\nimport { MedusaError } from \"@medusajs/framework/utils\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async register(\n    data: AuthenticationInput,\n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    try {\n      await authIdentityService.retrieve({\n        entity_id: data.body.email, // email or some ID\n      })\n\n      return {\n        success: false,\n        error: \"Identity with email already exists\",\n      }\n    } catch (error) {\n      if (error.type === MedusaError.Types.NOT_FOUND) {\n        const createdAuthIdentity = await authIdentityProviderService.create({\n          entity_id: data.body.email, // email or some ID\n          provider: this.provider,\n          provider_metadata: {\n            // can include password or any other relevant information\n          }\n        })\n\n        return {\n          success: true,\n          authIdentity: createdAuthIdentity,\n        }\n      }\n\n      return { success: false, error: error.message }\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 26,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the authentication request."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationInput"
+										},
+										"name": "AuthenticationInput",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 27,
+									"name": "authIdentityProviderService",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or\ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/provider.ts",
+											"qualifiedName": "AuthIdentityProviderService"
+										},
+										"name": "AuthIdentityProviderService",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationResponse"
+										},
+										"name": "AuthenticationResponse",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthProvider.register"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthProvider.register"
+					}
+				},
+				{
+					"id": 28,
+					"name": "update",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 29,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update an auth identity's details.\n\nFor example, the "
+									},
+									{
+										"kind": "code",
+										"text": "`emailpass`"
+									},
+									{
+										"kind": "text",
+										"text": " provider's implementation of this method updates a user's password."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated authentication identity if no errors occur."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AuthIdentityProviderService,\n  AuthenticationInput,\n  AuthenticationResponse\n} from \"@medusajs/framework/types\"\nimport { MedusaError } from \"@medusajs/framework/utils\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async update(\n    data: Record<string, unknown>,\n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    try {\n      const authIdentity = await authIdentityService.update(\n        data.email, // email or some ID used to identify the auth identity\n        {\n          user: data.user // example\n        }\n      )\n\n      return { success: true, authIdentity }\n    } catch (error) {\n      return { success: false, error: error.message }\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 30,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Data relevant to identify the auth identity and what to update in it. For example,\nthe "
+											},
+											{
+												"kind": "code",
+												"text": "`emailpass`"
+											},
+											{
+												"kind": "text",
+												"text": " provider expects in this object an "
+											},
+											{
+												"kind": "code",
+												"text": "`email`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`password`"
+											},
+											{
+												"kind": "text",
+												"text": " properties."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 31,
+									"name": "authIdentityProviderService",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or\ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/provider.ts",
+											"qualifiedName": "AuthIdentityProviderService"
+										},
+										"name": "AuthIdentityProviderService",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationResponse"
+										},
+										"name": "AuthenticationResponse",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthProvider.update"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthProvider.update"
+					}
+				},
+				{
+					"id": 32,
+					"name": "validateCallback",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 33,
+							"name": "validateCallback",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method validates the callback of an authentication request.\n\nIn an authentication flow that requires performing an action with a third-party service, such as login\nwith a social account, the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "authenticate",
+										"target": 20,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method is called first.\n\nThen, the third-party service redirects to a frontend URL passing it a "
+									},
+									{
+										"kind": "code",
+										"text": "`code`"
+									},
+									{
+										"kind": "text",
+										"text": " query parameter.\nThe frontend should then send a request to the Medusa application's validate callback API route, passing it the code.\nThat route uses this method to verify the callback's code.\n\nIf the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.\n\nIn the auth identity, use the following properties to store additional data:\n\n- "
+									},
+									{
+										"kind": "code",
+										"text": "`provider_metadata`"
+									},
+									{
+										"kind": "text",
+										"text": ": Store metadata useful for the provider, such as a password hash.\n- "
+									},
+									{
+										"kind": "code",
+										"text": "`user_metadata`"
+									},
+									{
+										"kind": "text",
+										"text": ": Store metadata of the user's details. For example, if the third-party service returns the user's information such as email\nor name, you store this data in this property.\n\nRelated Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authentication response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AuthIdentityProviderService,\n  AuthenticationInput,\n  AuthenticationResponse\n} from \"@medusajs/framework/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async validateCallback(\n    data: AuthenticationInput,\n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // ...\n\n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Something went wrong\"\n      }\n    }\n\n    // authentication is successful, create an auth identity\n    // if doesn't exist\n    let authIdentity\n\n    try {\n      authIdentity = await authIdentityProviderService.retrieve({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider\n      })\n    } catch (e) {\n      // The auth identity doesn't exist so create it\n      authIdentity = await authIdentityProviderService.create({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider,\n        provider_metadata: {\n          // can include password or any other relevant information\n        },\n        user_metadata: {\n          // can include data retrieved from the third-party service\n        }\n      })\n    }\n\n    return {\n      success: true,\n      authIdentity\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 34,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the authentication request."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationInput"
+										},
+										"name": "AuthenticationInput",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 35,
+									"name": "authIdentityProviderService",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or\ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/provider.ts",
+											"qualifiedName": "AuthIdentityProviderService"
+										},
+										"name": "AuthIdentityProviderService",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/provider.ts",
+											"qualifiedName": "AuthenticationResponse"
+										},
+										"name": "AuthenticationResponse",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthProvider.validateCallback"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthProvider.validateCallback"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						4,
+						20,
+						24,
+						28,
+						32
+					]
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../../packages/core/types/src/auth/provider.ts",
+						"qualifiedName": "IAuthProvider"
+					},
+					"name": "IAuthProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider"
+		},
+		"4": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.validateOptions"
+		},
+		"5": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.validateOptions"
+		},
+		"6": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "options"
+		},
+		"20": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
+		},
+		"21": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
+		},
+		"22": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "data"
+		},
+		"23": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "authIdentityProviderService"
+		},
+		"24": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.register"
+		},
+		"25": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.register"
+		},
+		"26": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "data"
+		},
+		"27": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "authIdentityProviderService"
+		},
+		"28": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.update"
+		},
+		"29": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.update"
+		},
+		"30": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "data"
+		},
+		"31": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "authIdentityProviderService"
+		},
+		"32": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
+		},
+		"33": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
+		},
+		"34": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "data"
+		},
+		"35": {
+			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
+			"qualifiedName": "authIdentityProviderService"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}

@@ -1,16 +1,70 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
+import { ICustomerModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { CustomerModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ICustomerModuleService>({
   moduleName: Modules.CUSTOMER,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<ICustomerModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Customer Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.CUSTOMER, {
+          service: CustomerModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "customerAddress",
+          "customerGroupCustomer",
+          "customerGroup",
+          "customer",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          customerAddress: {
+            id: {
+              linkable: "customer_address_id",
+              entity: "CustomerAddress",
+              primaryKey: "id",
+              serviceName: "Customer",
+              field: "customerAddress",
+            },
+          },
+          customerGroupCustomer: {
+            id: {
+              linkable: "customer_group_customer_id",
+              entity: "CustomerGroupCustomer",
+              primaryKey: "id",
+              serviceName: "Customer",
+              field: "customerGroupCustomer",
+            },
+          },
+          customerGroup: {
+            id: {
+              linkable: "customer_group_id",
+              entity: "CustomerGroup",
+              primaryKey: "id",
+              serviceName: "Customer",
+              field: "customerGroup",
+            },
+          },
+          customer: {
+            id: {
+              linkable: "customer_id",
+              entity: "Customer",
+              primaryKey: "id",
+              serviceName: "Customer",
+              field: "customer",
+            },
+          },
+        })
+      })
+
       describe("create", () => {
         it("should create a single customer", async () => {
           const customerData = {
@@ -22,7 +76,7 @@ moduleIntegrationTestRunner({
             created_by: "admin",
             metadata: { membership: "gold" },
           }
-          const customer = await service.create(customerData)
+          const customer = await service.createCustomers(customerData)
 
           expect(customer).toEqual(
             expect.objectContaining({
@@ -35,6 +89,93 @@ moduleIntegrationTestRunner({
               created_by: "admin",
               metadata: expect.objectContaining({ membership: "gold" }),
             })
+          )
+        })
+
+        it("should create two customers with the same email but one has an account", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+          }
+          const customerData2 = {
+            ...customerData,
+            has_account: true,
+          }
+          const [customer, customer2] = await service.createCustomers([
+            customerData,
+            customerData2,
+          ])
+
+          expect(customer).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              company_name: "Acme Corp",
+              first_name: "John",
+              last_name: "Doe",
+              email: "john.doe@acmecorp.com",
+              phone: "123456789",
+              created_by: "admin",
+              metadata: expect.objectContaining({ membership: "gold" }),
+            })
+          )
+          expect(customer2).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              company_name: "Acme Corp",
+              first_name: "John",
+              last_name: "Doe",
+              email: "john.doe@acmecorp.com",
+              phone: "123456789",
+              created_by: "admin",
+              metadata: expect.objectContaining({ membership: "gold" }),
+              has_account: true,
+            })
+          )
+        })
+
+        it("should fail to create a duplicated guest customers", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+          }
+
+          const err = await service
+            .createCustomers([customerData, customerData])
+            .catch((err) => err)
+
+          expect(err.message).toBe(
+            "Customer with email: john.doe@acmecorp.com, has_account: false, already exists."
+          )
+        })
+
+        it("should fail to create a duplicated customers", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+            has_account: true,
+          }
+
+          const err = await service
+            .createCustomers([customerData, customerData])
+            .catch((err) => err)
+
+          expect(err.message).toBe(
+            "Customer with email: john.doe@acmecorp.com, has_account: true, already exists."
           )
         })
 
@@ -57,9 +198,9 @@ moduleIntegrationTestRunner({
               },
             ],
           }
-          const customer = await service.create(customerData)
+          const customer = await service.createCustomers(customerData)
 
-          const [address] = await service.listAddresses({
+          const [address] = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
 
@@ -105,7 +246,7 @@ moduleIntegrationTestRunner({
               },
             ],
           }
-          await expect(service.create(customerData)).rejects.toThrow(
+          await expect(service.createCustomers(customerData)).rejects.toThrow(
             /Customer address with customer_id: .*? already exists./
           )
         })
@@ -129,7 +270,7 @@ moduleIntegrationTestRunner({
               metadata: { membership: "silver" },
             },
           ]
-          const customer = await service.create(customersData)
+          const customer = await service.createCustomers(customersData)
 
           expect(customer).toEqual(
             expect.arrayContaining([
@@ -158,7 +299,7 @@ moduleIntegrationTestRunner({
 
       describe("createCustomerGroup", () => {
         it("should create a single customer group", async () => {
-          const group = await service.createCustomerGroup({
+          const group = await service.createCustomerGroups({
             name: "VIP Customers",
             metadata: { priority: "high" },
             created_by: "admin",
@@ -175,7 +316,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create multiple customer groups", async () => {
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             {
               name: "VIP Customers",
               metadata: { priority: "high" },
@@ -209,7 +350,7 @@ moduleIntegrationTestRunner({
 
       describe("list", () => {
         it("should list all customers when no filters are applied", async () => {
-          await service.create([
+          await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -222,7 +363,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const customers = await service.list()
+          const customers = await service.listCustomers()
 
           expect(customers.length).toBeGreaterThanOrEqual(2)
           expect(customers).toEqual(
@@ -242,7 +383,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list customers filtered by a specific email", async () => {
-          await service.create([
+          await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -256,7 +397,7 @@ moduleIntegrationTestRunner({
           ])
 
           const filter = { email: "unique.email@example.com" }
-          const customers = await service.list(filter)
+          const customers = await service.listCustomers(filter)
 
           expect(customers.length).toBe(1)
           expect(customers[0]).toEqual(
@@ -269,9 +410,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should list customers by a specific customer group", async () => {
-          const vipGroup = await service.createCustomerGroup({ name: "VIP" })
+          const vipGroup = await service.createCustomerGroups({ name: "VIP" })
 
-          const [john] = await service.create([
+          const [john] = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -290,7 +431,7 @@ moduleIntegrationTestRunner({
           })
 
           const filter = { groups: vipGroup.id }
-          const customers = await service.list(filter)
+          const customers = await service.listCustomers(filter)
 
           expect(customers).toEqual(
             expect.arrayContaining([
@@ -315,14 +456,14 @@ moduleIntegrationTestRunner({
 
       describe("addCustomerToGroup", () => {
         it("should add a single customer to a customer group", async () => {
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
               email: "john.doe@example.com",
             },
           ])
-          const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+          const [group] = await service.createCustomerGroups([{ name: "VIP" }])
 
           const result = await service.addCustomerToGroup({
             customer_id: customer.id,
@@ -334,7 +475,7 @@ moduleIntegrationTestRunner({
           )
 
           // Additional validation (optional): retrieve the customer and check if the group is assigned
-          const updatedCustomer = await service.retrieve(customer.id, {
+          const updatedCustomer = await service.retrieveCustomer(customer.id, {
             relations: ["groups"],
           })
           expect(updatedCustomer.groups).toContainEqual(
@@ -343,7 +484,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple customers to customer groups", async () => {
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -355,7 +496,7 @@ moduleIntegrationTestRunner({
               email: "jane.smith@example.com",
             },
           ])
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])
@@ -375,9 +516,12 @@ moduleIntegrationTestRunner({
           )
 
           for (const customer of customers) {
-            const updatedCustomer = await service.retrieve(customer.id, {
-              relations: ["groups"],
-            })
+            const updatedCustomer = await service.retrieveCustomer(
+              customer.id,
+              {
+                relations: ["groups"],
+              }
+            )
             expect(updatedCustomer.groups).toContainEqual(
               expect.objectContaining({
                 id: groups[customers.indexOf(customer) % groups.length].id,
@@ -389,7 +533,7 @@ moduleIntegrationTestRunner({
 
       describe("update", () => {
         it("should update a single customer", async () => {
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -398,7 +542,10 @@ moduleIntegrationTestRunner({
           ])
 
           const updateData = { first_name: "Jonathan" }
-          const updatedCustomer = await service.update(customer.id, updateData)
+          const updatedCustomer = await service.updateCustomers(
+            customer.id,
+            updateData
+          )
 
           expect(updatedCustomer).toEqual(
             expect.objectContaining({ id: customer.id, first_name: "Jonathan" })
@@ -406,7 +553,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update multiple customers by IDs", async () => {
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -421,7 +568,10 @@ moduleIntegrationTestRunner({
 
           const updateData = { last_name: "Updated" }
           const customerIds = customers.map((customer) => customer.id)
-          const updatedCustomers = await service.update(customerIds, updateData)
+          const updatedCustomers = await service.updateCustomers(
+            customerIds,
+            updateData
+          )
 
           updatedCustomers.forEach((updatedCustomer) => {
             expect(updatedCustomer).toEqual(
@@ -431,7 +581,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update customers using a selector", async () => {
-          await service.create([
+          await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -446,7 +596,10 @@ moduleIntegrationTestRunner({
 
           const selector = { last_name: "Doe" }
           const updateData = { last_name: "Updated" }
-          const updatedCustomers = await service.update(selector, updateData)
+          const updatedCustomers = await service.updateCustomers(
+            selector,
+            updateData
+          )
 
           updatedCustomers.forEach((updatedCustomer) => {
             expect(updatedCustomer).toEqual(
@@ -458,7 +611,7 @@ moduleIntegrationTestRunner({
 
       describe("delete", () => {
         it("should delete a single customer", async () => {
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -466,15 +619,15 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.delete(customer.id)
+          await service.deleteCustomers(customer.id)
 
-          await expect(service.retrieve(customer.id)).rejects.toThrow(
+          await expect(service.retrieveCustomer(customer.id)).rejects.toThrow(
             `Customer with id: ${customer.id} was not found`
           )
         })
 
         it("should delete multiple customers by IDs", async () => {
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -488,17 +641,17 @@ moduleIntegrationTestRunner({
           ])
 
           const customerIds = customers.map((customer) => customer.id)
-          await service.delete(customerIds)
+          await service.deleteCustomers(customerIds)
 
           for (const customer of customers) {
-            await expect(service.retrieve(customer.id)).rejects.toThrow(
+            await expect(service.retrieveCustomer(customer.id)).rejects.toThrow(
               `Customer with id: ${customer.id} was not found`
             )
           }
         })
 
         it("should delete customers using a selector", async () => {
-          await service.create([
+          await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -512,19 +665,21 @@ moduleIntegrationTestRunner({
           ])
 
           const selector = { last_name: "Doe" }
-          await service.delete(selector)
+          await service.deleteCustomers(selector)
 
-          const remainingCustomers = await service.list({ last_name: "Doe" })
+          const remainingCustomers = await service.listCustomers({
+            last_name: "Doe",
+          })
           expect(remainingCustomers.length).toBe(0)
         })
 
         it("should cascade address relationship when deleting customer", async () => {
           // Creating a customer and an address
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.addAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -533,14 +688,17 @@ moduleIntegrationTestRunner({
           })
 
           // verify that the address was added
-          const customerWithAddress = await service.retrieve(customer.id, {
-            relations: ["addresses"],
-          })
-          expect(customerWithAddress.addresses?.length).toBe(1)
+          const customerWithCustomerAddress = await service.retrieveCustomer(
+            customer.id,
+            {
+              relations: ["addresses"],
+            }
+          )
+          expect(customerWithCustomerAddress.addresses?.length).toBe(1)
 
-          await service.delete(customer.id)
+          await service.deleteCustomers(customer.id)
 
-          const res = await service.listAddresses({
+          const res = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
           expect(res.length).toBe(0)
@@ -548,11 +706,11 @@ moduleIntegrationTestRunner({
 
         it("should cascade relationship when deleting customer", async () => {
           // Creating a customer and a group
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const group = await service.createCustomerGroup({ name: "VIP" })
+          const group = await service.createCustomerGroups({ name: "VIP" })
 
           // Adding the customer to the groups
           await service.addCustomerToGroup({
@@ -560,7 +718,7 @@ moduleIntegrationTestRunner({
             customer_group_id: group.id,
           })
 
-          await service.delete(customer.id)
+          await service.deleteCustomers(customer.id)
 
           const res = await service.listCustomerGroupCustomers({
             customer_id: customer.id,
@@ -572,7 +730,7 @@ moduleIntegrationTestRunner({
 
       describe("deleteCustomerGroup", () => {
         it("should delete a single customer group", async () => {
-          const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+          const [group] = await service.createCustomerGroups([{ name: "VIP" }])
           await service.deleteCustomerGroups(group.id)
 
           await expect(
@@ -583,7 +741,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete multiple customer groups by IDs", async () => {
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])
@@ -601,7 +759,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete customer groups using a selector", async () => {
-          await service.createCustomerGroup([
+          await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])
@@ -617,11 +775,11 @@ moduleIntegrationTestRunner({
 
         it("should cascade relationship when deleting customer group", async () => {
           // Creating a customer and a group
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const group = await service.createCustomerGroup({ name: "VIP" })
+          const group = await service.createCustomerGroups({ name: "VIP" })
 
           // Adding the customer to the groups
           await service.addCustomerToGroup({
@@ -639,35 +797,35 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addAddresses", () => {
+      describe("addCustomerAddresses", () => {
         it("should add a single address to a customer", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const address = await service.addAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
             postal_code: "10001",
             country_code: "US",
           })
-          const [customerWithAddress] = await service.list(
+          const [customerWithCustomerAddress] = await service.listCustomers(
             { id: customer.id },
             { relations: ["addresses"] }
           )
 
-          expect(customerWithAddress.addresses).toEqual([
+          expect(customerWithCustomerAddress.addresses).toEqual([
             expect.objectContaining({ id: address.id }),
           ])
         })
 
         it("should add multiple addresses to a customer", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const addresses = await service.addAddresses([
+          const addresses = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               first_name: "John",
@@ -683,12 +841,12 @@ moduleIntegrationTestRunner({
               country_code: "US",
             },
           ])
-          const [customerWithAddresses] = await service.list(
+          const [customerWithCustomerAddresses] = await service.listCustomers(
             { id: customer.id },
             { relations: ["addresses"] }
           )
 
-          expect(customerWithAddresses.addresses).toEqual(
+          expect(customerWithCustomerAddresses.addresses).toEqual(
             expect.arrayContaining([
               expect.objectContaining({ id: addresses[0].id }),
               expect.objectContaining({ id: addresses[1].id }),
@@ -697,11 +855,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should only be possible to add one default shipping address per customer", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.addAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -709,7 +867,7 @@ moduleIntegrationTestRunner({
             country_code: "US",
             is_default_shipping: true,
           })
-          await service.addAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -719,7 +877,7 @@ moduleIntegrationTestRunner({
           })
 
           await expect(
-            service.addAddresses({
+            service.createCustomerAddresses({
               customer_id: customer.id,
               first_name: "John",
               last_name: "Doe",
@@ -733,11 +891,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should only be possible to add one default billing address per customer", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.addAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -745,7 +903,7 @@ moduleIntegrationTestRunner({
             country_code: "US",
             is_default_billing: true,
           })
-          await service.addAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -755,7 +913,7 @@ moduleIntegrationTestRunner({
           })
 
           await expect(
-            service.addAddresses({
+            service.createCustomerAddresses({
               customer_id: customer.id,
               first_name: "John",
               last_name: "Doe",
@@ -769,24 +927,24 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("updateAddresses", () => {
+      describe("updateCustomerAddresses", () => {
         it("should update a single address", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const address = await service.addAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Home",
             address_1: "123 Main St",
           })
 
-          await service.updateAddresses(address.id, {
+          await service.updateCustomerAddresses(address.id, {
             address_name: "Work",
             address_1: "456 Main St",
           })
 
-          const updatedCustomer = await service.retrieve(customer.id, {
+          const updatedCustomer = await service.retrieveCustomer(customer.id, {
             select: ["id"],
             relations: ["addresses"],
           })
@@ -801,29 +959,29 @@ moduleIntegrationTestRunner({
         })
 
         it("should update multiple addresses", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const address1 = await service.addAddresses({
+          const address1 = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Home",
             address_1: "123 Main St",
           })
-          const address2 = await service.addAddresses({
+          const address2 = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Work",
             address_1: "456 Main St",
           })
 
-          await service.updateAddresses(
+          await service.updateCustomerAddresses(
             { customer_id: customer.id },
             {
               address_name: "Under Construction",
             }
           )
 
-          const updatedCustomer = await service.retrieve(customer.id, {
+          const updatedCustomer = await service.retrieveCustomer(customer.id, {
             select: ["id"],
             relations: ["addresses"],
           })
@@ -843,11 +1001,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should update multiple addresses with ids", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const [address1, address2] = await service.addAddresses([
+          const [address1, address2] = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               address_name: "Home",
@@ -860,11 +1018,11 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.updateAddresses([address1.id, address2.id], {
+          await service.updateCustomerAddresses([address1.id, address2.id], {
             address_name: "Under Construction",
           })
 
-          const updatedCustomer = await service.retrieve(customer.id, {
+          const updatedCustomer = await service.retrieveCustomer(customer.id, {
             select: ["id"],
             relations: ["addresses"],
           })
@@ -884,7 +1042,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should fail when updating address to a default shipping address when one already exists", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
             addresses: [
@@ -895,27 +1053,29 @@ moduleIntegrationTestRunner({
               },
             ],
           })
-          const address = await service.addAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Work",
             address_1: "456 Main St",
           })
 
           await expect(
-            service.updateAddresses(address.id, { is_default_shipping: true })
+            service.updateCustomerAddresses(address.id, {
+              is_default_shipping: true,
+            })
           ).rejects.toThrow(
             /Customer address with customer_id: .*? already exists./
           )
         })
       })
 
-      describe("listAddresses", () => {
+      describe("listCustomerAddresses", () => {
         it("should list all addresses for a customer", async () => {
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const [address1, address2] = await service.addAddresses([
+          const [address1, address2] = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               address_name: "Home",
@@ -929,7 +1089,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const addresses = await service.listAddresses({
+          const addresses = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
 
@@ -953,14 +1113,14 @@ moduleIntegrationTestRunner({
       describe("removeCustomerFromGroup", () => {
         it("should remove a single customer from a group", async () => {
           // Creating a customer and a group
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
               email: "john.doe@example.com",
             },
           ])
-          const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+          const [group] = await service.createCustomerGroups([{ name: "VIP" }])
 
           // Adding the customer to the group
           await service.addCustomerToGroup({
@@ -968,7 +1128,7 @@ moduleIntegrationTestRunner({
             customer_group_id: group.id,
           })
 
-          const [customerInGroup] = await service.list(
+          const [customerInGroup] = await service.listCustomers(
             { id: customer.id },
             { relations: ["groups"] }
           )
@@ -982,7 +1142,7 @@ moduleIntegrationTestRunner({
             customer_group_id: group.id,
           })
 
-          const [updatedCustomer] = await service.list(
+          const [updatedCustomer] = await service.listCustomers(
             { id: customer.id },
             { relations: ["groups"] }
           )
@@ -991,7 +1151,7 @@ moduleIntegrationTestRunner({
 
         it("should remove multiple customers from groups", async () => {
           // Creating multiple customers and groups
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             {
               first_name: "John",
               last_name: "Doe",
@@ -1003,7 +1163,7 @@ moduleIntegrationTestRunner({
               email: "jane.smith@example.com",
             },
           ])
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])
@@ -1024,7 +1184,7 @@ moduleIntegrationTestRunner({
 
           // Verification for each customer
           for (const pair of pairsToRemove) {
-            const [updatedCustomer] = await service.list(
+            const [updatedCustomer] = await service.listCustomers(
               { id: pair.customer_id },
               { relations: ["groups"] }
             )
@@ -1037,15 +1197,15 @@ moduleIntegrationTestRunner({
 
       describe("softDelete", () => {
         it("should soft delete a single customer", async () => {
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             { first_name: "John", last_name: "Doe" },
           ])
-          await service.softDelete([customer.id])
+          await service.softDeleteCustomers([customer.id])
 
-          const res = await service.list({ id: customer.id })
+          const res = await service.listCustomers({ id: customer.id })
           expect(res.length).toBe(0)
 
-          const deletedCustomer = await service.retrieve(customer.id, {
+          const deletedCustomer = await service.retrieveCustomer(customer.id, {
             withDeleted: true,
           })
 
@@ -1053,17 +1213,17 @@ moduleIntegrationTestRunner({
         })
 
         it("should soft delete multiple customers", async () => {
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             { first_name: "John", last_name: "Doe" },
             { first_name: "Jane", last_name: "Smith" },
           ])
           const customerIds = customers.map((customer) => customer.id)
-          await service.softDelete(customerIds)
+          await service.softDeleteCustomers(customerIds)
 
-          const res = await service.list({ id: customerIds })
+          const res = await service.listCustomers({ id: customerIds })
           expect(res.length).toBe(0)
 
-          const deletedCustomers = await service.list(
+          const deletedCustomers = await service.listCustomers(
             { id: customerIds },
             { withDeleted: true }
           )
@@ -1072,11 +1232,11 @@ moduleIntegrationTestRunner({
 
         it("should remove customer in group relation", async () => {
           // Creating a customer and a group
-          const customer = await service.create({
+          const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const group = await service.createCustomerGroup({ name: "VIP" })
+          const group = await service.createCustomerGroups({ name: "VIP" })
 
           // Adding the customer to the group
           await service.addCustomerToGroup({
@@ -1084,7 +1244,7 @@ moduleIntegrationTestRunner({
             customer_group_id: group.id,
           })
 
-          await service.softDelete([customer.id])
+          await service.softDeleteCustomers([customer.id])
 
           const resGroup = await service.retrieveCustomerGroup(group.id, {
             relations: ["customers"],
@@ -1095,36 +1255,36 @@ moduleIntegrationTestRunner({
 
       describe("restore", () => {
         it("should restore a single customer", async () => {
-          const [customer] = await service.create([
+          const [customer] = await service.createCustomers([
             { first_name: "John", last_name: "Doe" },
           ])
-          await service.softDelete([customer.id])
+          await service.softDeleteCustomers([customer.id])
 
-          const res = await service.list({ id: customer.id })
+          const res = await service.listCustomers({ id: customer.id })
           expect(res.length).toBe(0)
 
-          await service.restore([customer.id])
+          await service.restoreCustomers([customer.id])
 
-          const restoredCustomer = await service.retrieve(customer.id, {
+          const restoredCustomer = await service.retrieveCustomer(customer.id, {
             withDeleted: true,
           })
           expect(restoredCustomer.deleted_at).toBeNull()
         })
 
         it("should restore multiple customers", async () => {
-          const customers = await service.create([
+          const customers = await service.createCustomers([
             { first_name: "John", last_name: "Doe" },
             { first_name: "Jane", last_name: "Smith" },
           ])
           const customerIds = customers.map((customer) => customer.id)
-          await service.softDelete(customerIds)
+          await service.softDeleteCustomers(customerIds)
 
-          const res = await service.list({ id: customerIds })
+          const res = await service.listCustomers({ id: customerIds })
           expect(res.length).toBe(0)
 
-          await service.restore(customerIds)
+          await service.restoreCustomers(customerIds)
 
-          const restoredCustomers = await service.list(
+          const restoredCustomers = await service.listCustomers(
             { id: customerIds },
             { withDeleted: true }
           )
@@ -1134,7 +1294,7 @@ moduleIntegrationTestRunner({
 
       describe("softDeleteCustomerGroup", () => {
         it("should soft delete a single customer group", async () => {
-          const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+          const [group] = await service.createCustomerGroups([{ name: "VIP" }])
           await service.softDeleteCustomerGroups([group.id])
 
           const res = await service.listCustomerGroups({ id: group.id })
@@ -1148,7 +1308,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should soft delete multiple customer groups", async () => {
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])
@@ -1168,7 +1328,7 @@ moduleIntegrationTestRunner({
 
       describe("restoreCustomerGroup", () => {
         it("should restore a single customer group", async () => {
-          const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+          const [group] = await service.createCustomerGroups([{ name: "VIP" }])
           await service.softDeleteCustomerGroups([group.id])
 
           const res = await service.listCustomerGroups({ id: group.id })
@@ -1183,7 +1343,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should restore multiple customer groups", async () => {
-          const groups = await service.createCustomerGroup([
+          const groups = await service.createCustomerGroups([
             { name: "VIP" },
             { name: "Regular" },
           ])

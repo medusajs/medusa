@@ -1,7 +1,7 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalTaxLineProps = DAL.SoftDeletableEntityDateColumns
+type OptionalTaxLineProps = DAL.SoftDeletableModelDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition

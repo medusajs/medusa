@@ -1,0 +1,8 @@
+type: object
+description: The exchange's details.
+x-schemaName: AdminExchangeResponse
+required:
+  - exchange
+properties:
+  exchange:
+    $ref: ./AdminExchange.yaml

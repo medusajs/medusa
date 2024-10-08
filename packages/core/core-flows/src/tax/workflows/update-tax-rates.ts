@@ -3,30 +3,29 @@ import {
   ITaxModuleService,
   TaxRateDTO,
   UpdateTaxRateDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   StepResponse,
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createTaxRateRulesStep,
   deleteTaxRateRulesStep,
   updateTaxRatesStep,
 } from "../steps"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 // import { setTaxRateRulesWorkflow } from "./set-tax-rate-rules"
 
-type UpdateTaxRatesStepInput = {
+export type UpdateTaxRatesWorkflowInput = {
   selector: FilterableTaxRateProps
   update: UpdateTaxRateDTO
 }
 
-type WorkflowInput = UpdateTaxRatesStepInput
-
-type StepInput = {
+export type MaybeListTaxRateRuleIdsStepInput = {
   tax_rate_ids: string[]
   update: UpdateTaxRateDTO
 }
@@ -64,18 +63,19 @@ type StepInput = {
 // )
 
 const maybeListTaxRateRuleIdsStepId = "maybe-list-tax-rate-rule-ids"
-const maybeListTaxRateRuleIdsStep = createStep(
+/**
+ * This step lists the rules to update in a tax rate update object.
+ */
+export const maybeListTaxRateRuleIdsStep = createStep(
   maybeListTaxRateRuleIdsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: MaybeListTaxRateRuleIdsStepInput, { container }) => {
     const { update, tax_rate_ids } = input
 
     if (!update.rules) {
       return new StepResponse([])
     }
 
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     const rules = await service.listTaxRateRules(
       { tax_rate_id: tax_rate_ids },
@@ -87,9 +87,14 @@ const maybeListTaxRateRuleIdsStep = createStep(
 )
 
 export const updateTaxRatesWorkflowId = "update-tax-rates"
+/**
+ * This workflow updates tax rates matching specified filters.
+ */
 export const updateTaxRatesWorkflow = createWorkflow(
   updateTaxRatesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<TaxRateDTO[]> => {
+  (
+    input: WorkflowData<UpdateTaxRatesWorkflowInput>
+  ): WorkflowResponse<TaxRateDTO[]> => {
     const cleanedUpdateInput = transform(input, (data) => {
       // Transform clones data so we can safely modify it
       if (data.update.rules) {
@@ -145,6 +150,6 @@ export const updateTaxRatesWorkflow = createWorkflow(
     createTaxRateRulesStep(rulesWithRateId)
     // end of COPY-PASTE from set-tax-rate-rules.ts
 
-    return updatedRates
+    return new WorkflowResponse(updatedRates)
   }
 )

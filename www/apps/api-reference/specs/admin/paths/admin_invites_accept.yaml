@@ -1,40 +1,64 @@
 post:
-  operationId: PostInvitesInviteAccept
-  summary: Accept an Invite
-  description: >-
-    Accept an Invite. This will also delete the invite and create a new user
-    that can log in and perform admin functionalities. The user will have the
-    email associated with the invite, and the password provided in the request
-    body.
+  operationId: PostInvitesAccept
+  summary: Accept Invite
+  description: >
+    Accept an invite and create a new user.
+
+    Since the user isn't created yet, the JWT token used in the authorization
+    header is retrieved from the `/auth/user/emailpass/register` API route (or a
+    provider other than `emailpass`). The user can then authenticate using the
+    `/auth/user/emailpass` API route.
+  x-authenticated: false
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostInvitesInviteAcceptReq.yaml
-  x-codegen:
-    method: accept
+          type: object
+          description: The details of the user to be created.
+          properties:
+            email:
+              type: string
+              title: email
+              description: The user's email.
+              format: email
+            first_name:
+              type: string
+              title: first_name
+              description: The user's first name.
+            last_name:
+              type: string
+              title: last_name
+              description: The user's last name.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_invites_accept/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_invites_accept/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_invites_accept/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Invites
   responses:
     '200':
       description: OK
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                description: The created user's details.
+                required:
+                  - user
+                properties:
+                  user:
+                    $ref: ../components/schemas/AdminUser.yaml
+              - type: object
+                description: An error's details.
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    title: message
+                    description: The error message.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -47,3 +71,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: acceptInviteWorkflow

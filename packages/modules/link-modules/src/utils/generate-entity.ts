@@ -1,12 +1,16 @@
-import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
+import {
+  JoinerRelationship,
+  ModuleJoinerConfig,
+} from "@medusajs/framework/types"
 import {
   SoftDeletableFilterKey,
+  composeTableName,
   mikroOrmSoftDeletableFilterOptions,
   simpleHash,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { composeTableName } from "./compose-link-name"
+import { compressName } from "./compress-name"
 
 function getClass(...properties) {
   return class LinkModel {
@@ -62,7 +66,7 @@ export function generateEntity(
     class: getClass(
       ...fieldNames.concat("created_at", "updated_at", "deleted_at")
     ) as any,
-    tableName,
+    tableName: compressName(tableName),
     properties: {
       id: {
         type: "string",

@@ -1,6 +1,5 @@
-import { knex } from "@mikro-orm/knex"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { isDefined } from "../common"
+import { knex } from "@mikro-orm/postgresql"
 
 type Options = ModuleServiceInitializeOptions["database"]
 
@@ -20,7 +19,7 @@ export function createPgConnection(options: Options) {
     searchPath: schema,
     connection: {
       connectionString: clientUrl,
-      ssl,
+      ssl: ssl as any,
       idle_in_transaction_session_timeout:
         (driverOptions?.idle_in_transaction_session_timeout as number) ??
         undefined, // prevent null to be passed
@@ -28,7 +27,7 @@ export function createPgConnection(options: Options) {
     pool: {
       // https://knexjs.org/guide/#pool
       ...(pool ?? {}),
-      min: (pool?.min as number) ?? 0,
+      min: (pool?.min as number) ?? 2,
     },
   })
 }

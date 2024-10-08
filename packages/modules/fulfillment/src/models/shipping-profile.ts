@@ -3,9 +3,9 @@ import {
   DALUtils,
   generateEntityId,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Collection,
@@ -16,10 +16,11 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
-type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingProfileOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",
@@ -55,7 +56,7 @@ export default class ShippingProfile {
     () => ShippingOption,
     (shippingOption) => shippingOption.shipping_profile
   )
-  shipping_options = new Collection<ShippingOption>(this)
+  shipping_options = new Collection<Rel<ShippingOption>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

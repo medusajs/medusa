@@ -1,5 +1,10 @@
-import { DAL } from "@medusajs/types"
-import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/framework/types"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -7,23 +12,32 @@ import {
   Entity,
   Filter,
   ManyToMany,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import CustomerAddress from "./address"
 import CustomerGroup from "./customer-group"
 import CustomerGroupCustomer from "./customer-group-customer"
 
 type OptionalCustomerProps =
   | "groups"
   | "addresses"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
+
+const CustomerUniqueEmail = createPsqlIndexStatementHelper({
+  tableName: "customer",
+  columns: ["email", "has_account"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
 @Entity({ tableName: "customer" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+@CustomerUniqueEmail.MikroORMIndex()
 export default class Customer {
   [OptionalProps]?: OptionalCustomerProps
 
@@ -61,12 +75,12 @@ export default class Customer {
     entity: () => CustomerGroup,
     pivotEntity: () => CustomerGroupCustomer,
   })
-  groups = new Collection<CustomerGroup>(this)
+  groups = new Collection<Rel<CustomerGroup>>(this)
 
-  @OneToMany(() => Address, (address) => address.customer, {
+  @OneToMany(() => CustomerAddress, (address) => address.customer, {
     cascade: [Cascade.REMOVE],
   })
-  addresses = new Collection<Address>(this)
+  addresses = new Collection<Rel<CustomerAddress>>(this)
 
   @Property({
     onCreate: () => new Date(),

@@ -5,8 +5,8 @@ const FolderIllustration = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -14,14 +14,14 @@ const FolderIllustration = React.forwardRef<SVGSVGElement, IconProps>(
         <path
           fill="#60A5FA"
           fillRule="evenodd"
-          d="M18.25 14.722a2.972 2.972 0 0 1-2.972 2.972H4.722a2.972 2.972 0 0 1-2.972-2.972V5.278a2.972 2.972 0 0 1 2.972-2.973H6.89c.902 0 1.754.41 2.318 1.112l.445.555h5.625a2.972 2.972 0 0 1 2.972 2.972v7.778Z"
+          d="M13.935 11.183a2.32 2.32 0 0 1-2.318 2.319H3.383a2.32 2.32 0 0 1-2.318-2.319V3.817a2.32 2.32 0 0 1 2.318-2.319h1.691c.704 0 1.368.32 1.808.867l.348.433h4.387a2.32 2.32 0 0 1 2.318 2.319z"
           clipRule="evenodd"
         />
         <path
           fill="url(#a)"
           fillOpacity={0.15}
           fillRule="evenodd"
-          d="M18.25 14.722a2.972 2.972 0 0 1-2.972 2.972H4.722a2.972 2.972 0 0 1-2.972-2.972V5.278a2.972 2.972 0 0 1 2.972-2.973H6.89c.902 0 1.754.41 2.318 1.112l.445.555h5.625a2.972 2.972 0 0 1 2.972 2.972v7.778Z"
+          d="M13.935 11.183a2.32 2.32 0 0 1-2.318 2.319H3.383a2.32 2.32 0 0 1-2.318-2.319V3.817a2.32 2.32 0 0 1 2.318-2.319h1.691c.704 0 1.368.32 1.808.867l.348.433h4.387a2.32 2.32 0 0 1 2.318 2.319z"
           clipRule="evenodd"
         />
         <path
@@ -30,26 +30,26 @@ const FolderIllustration = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinejoin="round"
           strokeOpacity={0.15}
           strokeWidth={0.5}
-          d="M9.458 4.128a.25.25 0 0 0 .195.094h5.625A2.722 2.722 0 0 1 18 6.944v7.778a2.722 2.722 0 0 1-2.722 2.722H4.722A2.722 2.722 0 0 1 2 14.722V5.278a2.722 2.722 0 0 1 2.722-2.723H6.89c.826 0 1.606.375 2.123 1.018l.445.555Z"
+          d="M7.034 2.955a.25.25 0 0 0 .196.093h4.387c1.142 0 2.068.926 2.068 2.069v6.066a2.07 2.07 0 0 1-2.068 2.069H3.383a2.07 2.07 0 0 1-2.068-2.069V3.817c0-1.143.926-2.069 2.068-2.069h1.691c.628 0 1.22.285 1.613.774z"
         />
         <g filter="url(#b)">
           <path
             fill="#60A5FA"
-            d="M1.75 9.722A2.972 2.972 0 0 1 4.722 6.75h10.556a2.972 2.972 0 0 1 2.972 2.972v5a2.972 2.972 0 0 1-2.972 2.972H4.722a2.972 2.972 0 0 1-2.972-2.972v-5Z"
+            d="M1.065 7.283a2.32 2.32 0 0 1 2.318-2.318h8.234a2.32 2.32 0 0 1 2.318 2.318v3.9a2.32 2.32 0 0 1-2.318 2.318H3.383a2.32 2.32 0 0 1-2.318-2.318z"
           />
           <path
             fill="url(#c)"
             fillOpacity={0.2}
-            d="M1.75 9.722A2.972 2.972 0 0 1 4.722 6.75h10.556a2.972 2.972 0 0 1 2.972 2.972v5a2.972 2.972 0 0 1-2.972 2.972H4.722a2.972 2.972 0 0 1-2.972-2.972v-5Z"
+            d="M1.065 7.283a2.32 2.32 0 0 1 2.318-2.318h8.234a2.32 2.32 0 0 1 2.318 2.318v3.9a2.32 2.32 0 0 1-2.318 2.318H3.383a2.32 2.32 0 0 1-2.318-2.318z"
           />
         </g>
         <defs>
           <linearGradient
             id="a"
-            x1={10}
-            x2={10}
-            y1={2.305}
-            y2={17.694}
+            x1={7.5}
+            x2={7.5}
+            y1={1.498}
+            y2={13.502}
             gradientUnits="userSpaceOnUse"
           >
             <stop />
@@ -57,10 +57,10 @@ const FolderIllustration = React.forwardRef<SVGSVGElement, IconProps>(
           </linearGradient>
           <linearGradient
             id="c"
-            x1={10}
-            x2={10}
-            y1={6.75}
-            y2={17.694}
+            x1={7.5}
+            x2={7.5}
+            y1={4.965}
+            y2={13.501}
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="#fff" />
@@ -68,10 +68,10 @@ const FolderIllustration = React.forwardRef<SVGSVGElement, IconProps>(
           </linearGradient>
           <filter
             id="b"
-            width={16.5}
-            height={10.944}
-            x={1.75}
-            y={6.75}
+            width={12.87}
+            height={8.537}
+            x={1.065}
+            y={4.965}
             colorInterpolationFilters="sRGB"
             filterUnits="userSpaceOnUse"
           >

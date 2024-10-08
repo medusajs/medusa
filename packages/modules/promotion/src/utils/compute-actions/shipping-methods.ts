@@ -1,11 +1,12 @@
-import { PromotionTypes } from "@medusajs/types"
+import { BigNumberInput, PromotionTypes } from "@medusajs/framework/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   ComputedActions,
+  MathBN,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 
@@ -27,7 +28,8 @@ export function getComputedActionsForShippingMethods(
   for (const shippingMethodContext of shippingMethodApplicationContext) {
     const isPromotionApplicableToItem = areRulesValidForContext(
       promotion.application_method?.target_rules!,
-      shippingMethodContext
+      shippingMethodContext,
+      ApplicationMethodTargetType.SHIPPING_METHODS
     )
 
     if (!isPromotionApplicableToItem) {
@@ -47,7 +49,7 @@ export function getComputedActionsForShippingMethods(
 export function applyPromotionToShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
   shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-  methodIdPromoValueMap: Map<string, number>
+  methodIdPromoValueMap: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
@@ -60,16 +62,19 @@ export function applyPromotionToShippingMethods(
       }
 
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
-      let promotionValue = applicationMethod?.value ?? 0
-      const applicableTotal = method.subtotal - appliedPromoValue
+      let promotionValue = MathBN.convert(applicationMethod?.value ?? 0)
+      const applicableTotal = MathBN.sub(method.subtotal, appliedPromoValue)
 
       if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
-        promotionValue = (promotionValue / 100) * applicableTotal
+        promotionValue = MathBN.mult(
+          MathBN.div(promotionValue, 100),
+          applicableTotal
+        )
       }
 
-      const amount = Math.min(promotionValue, applicableTotal)
+      const amount = MathBN.min(promotionValue, applicableTotal)
 
-      if (amount <= 0) {
+      if (MathBN.lte(amount, 0)) {
         continue
       }
 
@@ -84,7 +89,10 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
-      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
+      methodIdPromoValueMap.set(
+        method.id,
+        MathBN.add(appliedPromoValue, amount)
+      )
 
       computedActions.push({
         action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,
@@ -99,10 +107,13 @@ export function applyPromotionToShippingMethods(
     const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
-      return acc + (method.subtotal ?? 0) - appliedPromoValue
-    }, 0)
+      return MathBN.add(
+        acc,
+        MathBN.sub(method.subtotal ?? 0, appliedPromoValue)
+      )
+    }, MathBN.convert(0))
 
-    if (totalApplicableValue <= 0) {
+    if (MathBN.lte(totalApplicableValue, 0)) {
       return computedActions
     }
 
@@ -115,19 +126,22 @@ export function applyPromotionToShippingMethods(
       const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
-      // TODO: should we worry about precision here?
-      let applicablePromotionValue =
-        (applicableTotal / totalApplicableValue) * promotionValue -
+      const div = MathBN.eq(totalApplicableValue, 0) ? 1 : totalApplicableValue
+      let applicablePromotionValue = MathBN.sub(
+        MathBN.mult(MathBN.div(applicableTotal, div), promotionValue),
         appliedPromoValue
+      )
 
       if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
-        applicablePromotionValue =
-          (promotionValue / 100) * (applicableTotal - appliedPromoValue)
+        applicablePromotionValue = MathBN.sub(
+          MathBN.mult(MathBN.div(promotionValue, 100), applicableTotal),
+          appliedPromoValue
+        )
       }
 
-      const amount = Math.min(applicablePromotionValue, applicableTotal)
+      const amount = MathBN.min(applicablePromotionValue, applicableTotal)
 
-      if (amount <= 0) {
+      if (MathBN.lte(amount, 0)) {
         continue
       }
 
@@ -142,7 +156,10 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
-      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
+      methodIdPromoValueMap.set(
+        method.id,
+        MathBN.add(appliedPromoValue, amount)
+      )
 
       computedActions.push({
         action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,

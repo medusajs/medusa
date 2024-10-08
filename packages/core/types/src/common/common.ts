@@ -1,14 +1,9 @@
-import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOperator,
-  FindOptionsSelect,
-  FindOptionsWhere,
-  OrderByCondition,
-} from "typeorm"
-
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
-import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+/**
+ * Prettify complex types to a flat object structure
+ */
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -52,17 +47,6 @@ export interface SoftDeletableEntity extends BaseEntity {
    * The date an entity's record was deleted.
    */
   deleted_at: Date | null
-}
-
-/**
- * @ignore
- */
-export type Writable<T> = {
-  -readonly [key in keyof T]:
-    | T[key]
-    | FindOperator<T[key]>
-    | FindOperator<T[key][]>
-    | FindOperator<string[]>
 }
 
 /**
@@ -110,48 +94,11 @@ export interface FindConfig<Entity> {
    * Enable ORM specific defined filters
    */
   filters?: Record<string, any>
-}
 
-/**
- * @ignore
- */
-export type ExtendedFindConfig<TEntity> = (
-  | Omit<FindOneOptions<TEntity>, "where" | "relations" | "select">
-  | Omit<FindManyOptions<TEntity>, "where" | "relations" | "select">
-) & {
-  select?: FindOptionsSelect<TEntity>
-  relations?: FindOptionsRelations<TEntity>
-  where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[]
-  order?: FindOptionsOrder<TEntity>
-  skip?: number
-  take?: number
-}
-
-/**
- * @ignore
- */
-export type QuerySelector<TEntity> = Selector<TEntity> & {
-  q?: string
-}
-
-/**
- * @ignore
- */
-export type TreeQuerySelector<TEntity> = QuerySelector<TEntity> & {
-  include_descendants_tree?: boolean
-}
-
-/**
- * @ignore
- */
-export type Selector<TEntity> = {
-  [key in keyof TEntity]?:
-    | TEntity[key]
-    | TEntity[key][]
-    | DateComparisonOperator
-    | StringComparisonOperator
-    | NumericalComparisonOperator
-    | FindOperator<TEntity[key][] | string | string[]>
+  /**
+   * Enable ORM specific defined options
+   */
+  options?: Record<string, any>
 }
 
 /**
@@ -169,31 +116,6 @@ export type TotalField =
   | "gift_card_tax_total"
 
 /**
- * @ignore
- */
-export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
-  select?: FindManyOptions<TModel>["select"]
-  where?: FindManyOptions<TModel>["where"] & {
-    [P in InKeys]?: TModel[P][]
-  }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-}
-
-/**
- * @ignore
- */
-export type QueryConfig<TEntity extends BaseEntity> = {
-  defaultFields?: (keyof TEntity | string)[]
-  defaultRelations?: string[]
-  allowedFields?: string[]
-  allowedRelations?: string[]
-  defaultLimit?: number
-  isList?: boolean
-}
-
-/**
  * @interface
  *
  * Fields that can be passed in the query parameters of a request.
@@ -201,11 +123,14 @@ export type QueryConfig<TEntity extends BaseEntity> = {
 export type RequestQueryFields = {
   /**
    * Comma-separated relations that should be expanded in the returned data.
+   * @deprecated Use `fields` instead and the relations will be inferred
    */
   expand?: string
 
   /**
    * Comma-separated fields that should be included in the returned data.
+   * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+   * without prefix it will replace the entire default fields.
    */
   fields?: string
 
@@ -220,51 +145,9 @@ export type RequestQueryFields = {
   limit?: number
 
   /**
-   * Field to sort items in the list by.
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
    */
   order?: string
-}
-
-/**
- * @interface
- *
- * Fields included in the response if it's paginated.
- */
-export type PaginatedResponse<T = unknown> = {
-  /**
-   * The limit applied on the retrieved items.
-   */
-  limit: number
-
-  /**
-   * The number of items skipped before retrieving the list of items.
-   */
-  offset: number
-
-  /**
-   * The total count of items.
-   */
-  count: number
-} & T
-
-/**
- * The fields returned in the response of a DELETE request.
- */
-export type DeleteResponse<T = string> = {
-  /**
-   * The ID of the item that was deleted.
-   */
-  id: string
-
-  /**
-   * The type of the item that was deleted.
-   */
-  object: T
-
-  /**
-   * Whether the item was deleted successfully.
-   */
-  deleted: boolean
 }
 
 /**
@@ -366,170 +249,37 @@ export interface NumericalComparisonOperator {
 }
 
 /**
- * Address fields used when creating/updating an address.
- */
-export interface AddressPayload {
-  /**
-   * First name
-   */
-  first_name?: string
-
-  /**
-   * Last name
-   */
-  last_name?: string
-
-  /**
-   * Phone Number
-   */
-  phone?: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata?: Record<string, unknown>
-
-  /**
-   * Company
-   */
-  company?: string
-
-  /**
-   * Address line 1
-   */
-  address_1?: string
-
-  /**
-   * Address line 2
-   */
-  address_2?: string
-
-  /**
-   * City
-   */
-  city?: string
-
-  /**
-   * The 2 character ISO code of the country in lower case
-   */
-  country_code?: string
-
-  /**
-   * Province
-   */
-  province?: string
-
-  /**
-   * Postal Code
-   */
-  postal_code?: string
-}
-
-/**
- * Address fields used when creating an address.
- */
-export interface AddressCreatePayload {
-  /**
-   * First name
-   */
-  first_name: string
-
-  /**
-   * Last name
-   */
-  last_name: string
-
-  /**
-   * Phone Number
-   */
-  phone: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata: object
-
-  /**
-   * Company
-   */
-  company: string
-
-  /**
-   * Address line 1
-   */
-  address_1: string
-
-  /**
-   * Address line 2
-   */
-  address_2: string
-
-  /**
-   * City
-   */
-  city: string
-
-  /**
-   * The 2 character ISO code of the country in lower case
-   */
-  country_code: string
-
-  /**
-   * Province
-   */
-  province: string
-
-  /**
-   * Postal Code
-   */
-  postal_code: string
-}
-
-/**
- * Parameters that can be used to configure how data is retrieved.
- */
-export interface FindParams {
-  /**
-   * Comma-separated relations that should be expanded in the returned data.
-   */
-  expand?: string
-
-  /**
-   *Comma-separated fields that should be included in the returned data.
-   */
-  fields?: string
-}
-
-/**
- * Parameters that can be used to configure how a list of data is paginated.
- */
-export interface FindPaginationParams {
-  /**
-   * The number of items to skip when retrieving a list.
-   */
-  offset?: number
-
-  /**
-   * Limit the number of items returned in the list.
-   */
-  limit?: number
-}
-
-/**
  * @ignore
  */
-export type Pluralize<Singular extends string> = Singular extends `${infer R}y`
+export type Pluralize<Singular extends string> = Singular extends `${infer R}ss`
+  ? `${Singular}es`
+  : Singular extends `${infer R}sis`
+  ? `${R}ses`
+  : Singular extends `${infer R}is`
+  ? `${R}ises`
+  : Singular extends `${infer R}s`
+  ? `${Singular}`
+  : Singular extends `${infer R}ey`
+  ? `${R}eys`
+  : Singular extends `${infer R}y`
   ? `${R}ies`
   : Singular extends `${infer R}es`
   ? `${Singular}`
   : Singular extends
-      | `${infer R}ss`
       | `${infer R}sh`
       | `${infer R}ch`
       | `${infer R}x`
       | `${infer R}z`
       | `${infer R}o`
   ? `${Singular}es`
+  : Singular extends `${infer R}fe`
+  ? `${R}ves`
+  : Singular extends `${infer R}ex` | `${infer R}ix`
+  ? `${R}ices`
+  : Singular extends `${infer R}eau`
+  ? `${R}eaux`
+  : Singular extends `${infer R}ieu`
+  ? `${R}ieux`
   : `${Singular}s`
 
 export type SnakeCase<S extends string> =
@@ -545,3 +295,50 @@ export type KebabCase<S extends string> =
       ? `${Lowercase<T>}-${KebabCase<`${Lowercase<U>}${V}`>}`
       : `${T}${KebabCase<`${U}${V}`>}`
     : S
+
+export type MetadataType = Record<string, unknown> | null
+
+export type RawRounding = {
+  value: string
+  precision: number
+}
+
+/**
+ * @ignore
+ */
+export type QueryConfig<TEntity> = {
+  /**
+   * Default fields and relations to return
+   */
+  defaults?: (keyof TEntity | string)[]
+  /**
+   * @deprecated Use `defaults` instead
+   */
+  defaultFields?: (keyof TEntity | string)[]
+  /**
+   * @deprecated Use `defaultFields` instead and the relations will be inferred
+   */
+  defaultRelations?: string[]
+  /**
+   * Fields and relations that are allowed to be requested
+   */
+  allowed?: string[]
+  /**
+   * @deprecated Use `allowed` instead
+   */
+  allowedFields?: string[]
+  /**
+   * @deprecated Use `allowedFields` instead and the relations will be inferred
+   */
+  allowedRelations?: string[]
+  defaultLimit?: number
+  isList?: boolean
+}
+
+export type TransformObjectMethodToAsync<T extends object> = {
+  [K in keyof T]: T[K] extends (...args: infer A) => infer R
+    ? (...args: A) => Promise<Awaited<R>>
+    : T[K] extends object
+    ? TransformObjectMethodToAsync<T[K]>
+    : T[K]
+}

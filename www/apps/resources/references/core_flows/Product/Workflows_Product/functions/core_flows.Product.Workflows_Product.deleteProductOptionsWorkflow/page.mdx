@@ -1,0 +1,42 @@
+---
+slug: /references/medusa-workflows/deleteProductOptionsWorkflow
+sidebar_label: deleteProductOptionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteProductOptionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteProductOptionsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more product options.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteProductOptionsWorkflow","steps":[{"type":"step","name":"deleteProductOptionsStep","description":"This step deletes one or more product options.","link":"../../../../core_flows.Steps_Product/page.mdx#deleteproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsDeleted","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteProductOptionsWorkflowInput","type":"[DeleteProductOptionsWorkflowInput](../../../../types/core_flows.DeleteProductOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteProductOptionsWorkflow"/>
+
+## Hooks
+
+### productOptionsDeleted
+
+#### Example
+
+```ts
+import { deleteProductOptionsWorkflow } from "@medusajs/core-flows"
+
+deleteProductOptionsWorkflow.hooks.productOptionsDeleted(
+	(async ({ ids }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="productOptionsDeleted"/>

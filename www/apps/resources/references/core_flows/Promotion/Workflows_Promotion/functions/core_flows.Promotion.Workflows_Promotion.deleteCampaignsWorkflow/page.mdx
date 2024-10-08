@@ -1,0 +1,42 @@
+---
+slug: /references/medusa-workflows/deleteCampaignsWorkflow
+sidebar_label: deleteCampaignsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteCampaignsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteCampaignsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more campaigns.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteCampaignsWorkflow","steps":[{"type":"step","name":"deleteCampaignsStep","description":"This step deletes one or more campaigns.","link":"../../../../core_flows.Steps_Promotion/page.mdx#deletecampaignsstep","depth":1},{"type":"hook","name":"campaignsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#campaignsDeleted","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteCampaignsWorkflowInput","type":"[DeleteCampaignsWorkflowInput](../../../../types/core_flows.DeleteCampaignsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteCampaignsWorkflow"/>
+
+## Hooks
+
+### campaignsDeleted
+
+#### Example
+
+```ts
+import { deleteCampaignsWorkflow } from "@medusajs/core-flows"
+
+deleteCampaignsWorkflow.hooks.campaignsDeleted(
+	(async ({ ids }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="campaignsDeleted"/>

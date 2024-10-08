@@ -1,37 +1,38 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  UpdateCustomerAddressDTO,
   FilterableCustomerAddressProps,
   ICustomerModuleService,
-} from "@medusajs/types"
+  UpdateCustomerAddressDTO,
+} from "@medusajs/framework/types"
 import {
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
-} from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateCustomerAddresseStepInput = {
+export type UpdateCustomerAddresseStepInput = {
   selector: FilterableCustomerAddressProps
   update: UpdateCustomerAddressDTO
 }
 
 export const updateCustomerAddresseStepId = "update-customer-addresses"
+/**
+ * This step updates one or more customer addresses.
+ */
 export const updateCustomerAddressesStep = createStep(
   updateCustomerAddresseStepId,
   async (data: UpdateCustomerAddresseStepInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
     ])
-    const prevCustomers = await service.listAddresses(data.selector, {
+    const prevCustomers = await service.listCustomerAddresses(data.selector, {
       select: selects,
       relations,
     })
 
-    const customerAddresses = await service.updateAddresses(
+    const customerAddresses = await service.updateCustomerAddresses(
       data.selector,
       data.update
     )
@@ -43,12 +44,12 @@ export const updateCustomerAddressesStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await promiseAll(
-      prevCustomerAddresses.map((c) => service.updateAddresses(c.id, { ...c }))
+      prevCustomerAddresses.map((c) =>
+        service.updateCustomerAddresses(c.id, { ...c })
+      )
     )
   }
 )

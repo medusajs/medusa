@@ -6,7 +6,71 @@ export const metadata = {
 
 # {metadata.title}
 
-The Order Module is the `@medusajs/order` NPM package that provides order-related features in your Medusa and Node.js applications.
+The Order Module is the `@medusajs/medusa/order` NPM package that provides order-related features in your Medusa and Node.js applications.
+
+## How to Use Order Module's Service
+
+You can use the Order Module's main service by resolving from the Medusa container the resource `Modules.ORDER` imported from `@medusajs/framework/utils`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IOrderModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const orderModuleService: IOrderModuleService = req.scope.resolve(
+    Modules.ORDER
+  )
+
+  res.json({
+    orders: await orderModuleService.listOrders(),
+  })
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/framework"
+  import { IOrderModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const orderModuleService: IOrderModuleService = container.resolve(
+    Modules.ORDER
+  )
+
+  const orders = await orderModuleService.listOrders()
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/framework/workflows-sdk"
+  import { IOrderModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const orderModuleService: IOrderModuleService = container.resolve(
+    Modules.ORDER
+  )
+  const orders = await orderModuleService.listOrders()
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 ---
 
@@ -14,10 +78,10 @@ The Order Module is the `@medusajs/order` NPM package that provides order-relate
 
 ### Order Management
 
-Store and manage your orders by retrieving, creating, canceling, and performing other operations.
+Store and manage your orders to retriev, create, cancel, and perform other operations.
 
 ```ts
-const order = await orderModuleService.create({
+const order = await orderModuleService.createOrders({
   currency_code: "usd",
   items: [
     {
@@ -40,38 +104,11 @@ const order = await orderModuleService.create({
 Allow merchants to create orders on behalf of their customers as draft orders that later are transformed to regular orders.
 
 ```ts
-const draftOrder = await orderModuleService.create({
+const draftOrder = await orderModuleService.createOrders({
   currency_code: "usd",
   // other details...
   status: "draft",
 })
-```
-
-### Returns, Exchanges, and Other Order Changes
-
-Orders can be changed to return items from the customer, exchange an item with another, change the quantity of an item, or other changes.
-
-Changes are only applied after confirmation, and order history is preserved through versioning.
-
-```ts
-const orderChange =
-  await orderModuleService.createOrderChange({
-    order_id: "ord_123",
-  })
-
-// add item to the order
-await orderModuleService.addOrderAction({
-  order_change_id: orderChange.id,
-  action: "ADD_ITEM",
-  details: {
-    quantity: 1,
-    unit_price: 4000,
-    reference_id: "orditem_123",
-  },
-})
-
-// confirm order change and apply it to order
-await orderModuleService.confirmOrderChange("ord_123")
 ```
 
 ### Apply Promotions
@@ -79,12 +116,11 @@ await orderModuleService.confirmOrderChange("ord_123")
 Apply promotions or discounts to the order's items and shipping methods by adding adjustment lines that are factored into their subtotals.
 
 ```ts
-const lineAdjustments =
-  await orderModuleService.addLineItemAdjustments({
-    item_id: "cali_123",
-    code: "50OFF",
-    amount: 500,
-  })
+const lineAdjustments = await orderModuleService.addLineItemAdjustments({
+  item_id: "cali_123",
+  code: "50OFF",
+  amount: 500,
+})
 
 const shippingAdjustments =
   await orderModuleService.addShippingMethodAdjustments({
@@ -94,84 +130,16 @@ const shippingAdjustments =
   })
 ```
 
----
+### Returns, Exchanges, and Claims
 
-## Configure Order Module
+Return or exchange items, with version-based control over the order's timeline.
 
-After installing the `@medusajs/order` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  order: {
-    resolve: "@medusajs/order",
-  },
-}
+```ts
+const orderReturn = await orderModuleService.createReturn({
+  order_id: "order_123",
+  items: [{
+    id: "orditem_123",
+    quantity: 1,
+  }],
+})
 ```
-
----
-
-## How to Use Order Module's Service
-
-You can use the Order Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.ORDER` imported from `@medusajs/modules-sdk`.
-
-For example:
-
-<CodeTabs groupId="resource-type">
-  <CodeTab label="API Route" value="api-route">
-
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const orderModuleService: IOrderModuleService =
-      req.scope.resolve(ModuleRegistrationName.ORDER)
-
-    res.json({
-      orders: await orderModuleService.list(),
-    })
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Subscriber" value="subscribers">
-
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const orderModuleService: IOrderModuleService =
-      container.resolve(ModuleRegistrationName.API_KEY)
-
-    const orders = await orderModuleService.list()
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  const step1 = createStep("step-1", async (_, context) => {
-    const orderModuleService: IOrderModuleService =
-      context.container.resolve(
-        ModuleRegistrationName.API_KEY
-      )
-    const orders = await orderModuleService.list()
-  })
-  ```
-
-  </CodeTab>
-</CodeTabs>

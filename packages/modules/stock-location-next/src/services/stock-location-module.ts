@@ -1,65 +1,55 @@
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
   CreateStockLocationInput,
+  DAL,
+  FilterableStockLocationProps,
   IEventBusService,
+  InternalModuleDeclaration,
+  IStockLocationService,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   StockLocationAddressInput,
   StockLocationTypes,
   UpdateStockLocationInput,
-  ModulesSdkTypes,
-  DAL,
-  IStockLocationServiceNext,
-  FilterableStockLocationProps,
-} from "@medusajs/types"
+  UpsertStockLocationInput,
+} from "@medusajs/framework/types"
 import {
   InjectManager,
   InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
   isString,
-} from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+  MedusaContext,
+  MedusaService,
+  Modules,
+  promiseAll,
+} from "@medusajs/framework/utils"
+import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
-import { UpdateStockLocationNextInput } from "@medusajs/types"
-import { UpsertStockLocationInput } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  [Modules.EVENT_BUS]: IEventBusService
   baseRepository: DAL.RepositoryService
-  stockLocationService: ModulesSdkTypes.InternalModuleService<any>
-  stockLocationAddressService: ModulesSdkTypes.InternalModuleService<any>
+  stockLocationService: ModulesSdkTypes.IMedusaInternalService<any>
+  stockLocationAddressService: ModulesSdkTypes.IMedusaInternalService<any>
 }
-
-const generateMethodForModels = [StockLocationAddress]
 
 /**
  * Service for managing stock locations.
  */
-
-export default class StockLocationModuleService<
-    TEntity extends StockLocation = StockLocation,
-    TStockLocationAddress extends StockLocationAddress = StockLocationAddress
-  >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
-    StockLocationTypes.StockLocationDTO,
-    {
-      StockLocation: { dto: StockLocationTypes.StockLocationDTO }
-      StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
-    }
-  >(StockLocation, generateMethodForModels, entityNameToLinkableKeysMap)
-  implements IStockLocationServiceNext
+export default class StockLocationModuleService
+  extends MedusaService<{
+    StockLocation: { dto: StockLocationTypes.StockLocationDTO }
+    StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
+  }>({ StockLocation, StockLocationAddress })
+  implements IStockLocationService
 {
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusModuleService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
-  protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
-  protected readonly stockLocationAddressService_: ModulesSdkTypes.InternalModuleService<TStockLocationAddress>
+  protected readonly stockLocationService_: ModulesSdkTypes.IMedusaInternalService<StockLocation>
+  protected readonly stockLocationAddressService_: ModulesSdkTypes.IMedusaInternalService<StockLocationAddress>
 
   constructor(
     {
-      eventBusService,
+      [Modules.EVENT_BUS]: eventBusModuleService,
       baseRepository,
       stockLocationService,
       stockLocationAddressService,
@@ -72,30 +62,25 @@ export default class StockLocationModuleService<
     this.baseRepository_ = baseRepository
     this.stockLocationService_ = stockLocationService
     this.stockLocationAddressService_ = stockLocationAddressService
-    this.eventBusService_ = eventBusService
+    this.eventBusModuleService_ = eventBusModuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 
-  create(
+  // @ts-expect-error
+  createStockLocations(
     data: CreateStockLocationInput,
     context: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
-  create(
+  createStockLocations(
     data: CreateStockLocationInput[],
     context: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
 
-  /**
-   * Creates a new stock location.
-   * @param data - The input data for creating a Stock Location.
-   * @param context
-   * @returns The created stock location.
-   */
-  @InjectManager("baseRepository_")
-  async create(
+  @InjectManager()
+  async createStockLocations(
     data: CreateStockLocationInput | CreateStockLocationInput[],
     @MedusaContext() context: Context = {}
   ): Promise<
@@ -103,7 +88,7 @@ export default class StockLocationModuleService<
   > {
     const input = Array.isArray(data) ? data : [data]
 
-    const created = await this.create_(input, context)
+    const created = await this.createStockLocations_(input, context)
 
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO
@@ -113,25 +98,25 @@ export default class StockLocationModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async create_(
+  @InjectTransactionManager()
+  async createStockLocations_(
     data: CreateStockLocationInput[],
     @MedusaContext() context: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<StockLocation[]> {
     return await this.stockLocationService_.create(data, context)
   }
 
-  async upsert(
+  async upsertStockLocations(
     data: UpsertStockLocationInput,
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
-  async upsert(
+  async upsertStockLocations(
     data: UpsertStockLocationInput[],
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
 
-  @InjectManager("baseRepository_")
-  async upsert(
+  @InjectManager()
+  async upsertStockLocations(
     data: UpsertStockLocationInput | UpsertStockLocationInput[],
     @MedusaContext() context: Context = {}
   ): Promise<
@@ -139,7 +124,7 @@ export default class StockLocationModuleService<
   > {
     const input = Array.isArray(data) ? data : [data]
 
-    const result = await this.upsert_(input, context)
+    const result = await this.upsertStockLocations_(input, context)
 
     return await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO[]
@@ -147,14 +132,14 @@ export default class StockLocationModuleService<
     >(Array.isArray(data) ? result : result[0])
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async upsert_(
+  @InjectTransactionManager()
+  async upsertStockLocations_(
     input: UpsertStockLocationInput[],
     @MedusaContext() context: Context = {}
   ) {
     const toUpdate = input.filter(
-      (location): location is UpdateStockLocationNextInput => !!location.id
-    ) as UpdateStockLocationNextInput[]
+      (location): location is UpdateStockLocationInput => !!location.id
+    ) as UpdateStockLocationInput[]
     const toCreate = input.filter(
       (location) => !location.id
     ) as CreateStockLocationInput[]
@@ -162,23 +147,24 @@ export default class StockLocationModuleService<
     const operations: Promise<StockLocation[] | StockLocation>[] = []
 
     if (toCreate.length) {
-      operations.push(this.create_(toCreate, context))
+      operations.push(this.createStockLocations_(toCreate, context))
     }
     if (toUpdate.length) {
-      operations.push(this.update_(toUpdate, context))
+      operations.push(this.updateStockLocations_(toUpdate, context))
     }
 
     return (await promiseAll(operations)).flat()
   }
 
-  update(
+  // @ts-expect-error
+  updateStockLocations(
     id: string,
-    input: UpdateStockLocationNextInput,
+    input: UpdateStockLocationInput,
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
-  update(
+  updateStockLocations(
     selector: FilterableStockLocationProps,
-    input: UpdateStockLocationNextInput,
+    input: UpdateStockLocationInput,
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
   /**
@@ -188,23 +174,23 @@ export default class StockLocationModuleService<
    * @param context
    * @returns The updated stock location.
    */
-  @InjectManager("baseRepository_")
-  async update(
+  @InjectManager()
+  async updateStockLocations(
     idOrSelector: string | FilterableStockLocationProps,
-    data: UpdateStockLocationNextInput | UpdateStockLocationNextInput[],
+    data: UpdateStockLocationInput | UpdateStockLocationInput[],
     @MedusaContext() context: Context = {}
   ): Promise<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
   > {
     let normalizedInput:
-      | (UpdateStockLocationNextInput & { id: string })[]
+      | (UpdateStockLocationInput & { id: string })[]
       | { data: any; selector: FilterableStockLocationProps } = []
     if (isString(idOrSelector)) {
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
       normalizedInput = { data, selector: idOrSelector }
     }
-    const updated = await this.update_(normalizedInput, context)
+    const updated = await this.updateStockLocations_(normalizedInput, context)
 
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO
@@ -214,28 +200,29 @@ export default class StockLocationModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async update_(
+  @InjectTransactionManager()
+  async updateStockLocations_(
     data:
-      | UpdateStockLocationNextInput[]
-      | UpdateStockLocationNextInput
+      | UpdateStockLocationInput[]
+      | UpdateStockLocationInput
       | { data: any; selector: FilterableStockLocationProps },
     @MedusaContext() context: Context = {}
-  ): Promise<TEntity[] | TEntity> {
+  ): Promise<StockLocation[] | StockLocation> {
     return await this.stockLocationService_.update(data, context)
   }
 
-  updateStockLocationAddress(
+  // @ts-expect-error
+  updateStockLocationAddresses(
     data: StockLocationAddressInput & { id: string },
     context?: Context
   ): Promise<StockLocationTypes.StockLocationAddressDTO>
-  updateStockLocationAddress(
+  updateStockLocationAddresses(
     data: (StockLocationAddressInput & { id: string })[],
     context?: Context
   ): Promise<StockLocationTypes.StockLocationAddressDTO[]>
 
-  @InjectManager("baseRepository_")
-  async updateStockLocationAddress(
+  @InjectManager()
+  async updateStockLocationAddresses(
     data:
       | (StockLocationAddressInput & { id: string })
       | (StockLocationAddressInput & { id: string })[],
@@ -243,7 +230,7 @@ export default class StockLocationModuleService<
   ) {
     const input = Array.isArray(data) ? data : [data]
 
-    const updated = await this.updateStockLocationAddress_(input, context)
+    const updated = await this.updateStockLocationAddresses_(input, context)
 
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationAddressDTO
@@ -253,8 +240,8 @@ export default class StockLocationModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
-  private async updateStockLocationAddress_(
+  @InjectTransactionManager()
+  private async updateStockLocationAddresses_(
     input: (StockLocationAddressInput & { id: string })[],
     @MedusaContext() context: Context
   ) {

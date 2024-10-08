@@ -1,0 +1,152 @@
+/**
+ * @schema AdminUpdateProduct
+ * type: object
+ * description: The product's details.
+ * x-schemaName: AdminUpdateProduct
+ * properties:
+ *   title:
+ *     type: string
+ *     title: title
+ *     description: The product's title.
+ *   subtitle:
+ *     type: string
+ *     title: subtitle
+ *     description: The product's subtitle.
+ *   description:
+ *     type: string
+ *     title: description
+ *     description: The product's description.
+ *   is_giftcard:
+ *     type: boolean
+ *     title: is_giftcard
+ *     description: Whether the product is a gift card.
+ *   discountable:
+ *     type: boolean
+ *     title: discountable
+ *     description: Whether discounts can be applied on the product.
+ *   images:
+ *     type: array
+ *     description: The product's images.
+ *     items:
+ *       type: object
+ *       description: The image's details.
+ *       required:
+ *         - url
+ *       properties:
+ *         url:
+ *           type: string
+ *           title: url
+ *           description: The image's URL.
+ *   thumbnail:
+ *     type: string
+ *     title: thumbnail
+ *     description: The product's thumbnail URL.
+ *   handle:
+ *     type: string
+ *     title: handle
+ *     description: The product's unique handle.
+ *   status:
+ *     type: string
+ *     description: The product's status.
+ *     enum:
+ *       - draft
+ *       - proposed
+ *       - published
+ *       - rejected
+ *   type_id:
+ *     type: string
+ *     title: type_id
+ *     description: The ID of the product's type.
+ *   collection_id:
+ *     type: string
+ *     title: collection_id
+ *     description: The ID of the product's collection.
+ *   categories:
+ *     type: array
+ *     description: The product's categories.
+ *     items:
+ *       type: object
+ *       description: The product's category.
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           type: string
+ *           title: id
+ *           description: The category's ID.
+ *   tags:
+ *     type: array
+ *     description: The product's tags.
+ *     items:
+ *       type: object
+ *       description: The product's tag.
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           type: string
+ *           title: id
+ *           description: The tag's ID.
+ *   options:
+ *     type: array
+ *     description: The product's options.
+ *     items:
+ *       $ref: "#/components/schemas/AdminUpdateProductOption"
+ *   variants:
+ *     type: array
+ *     description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+ *     items:
+ *       oneOf:
+ *         - $ref: "#/components/schemas/AdminCreateProductVariant"
+ *         - $ref: "#/components/schemas/AdminUpdateProductVariant"
+ *   sales_channels:
+ *     type: array
+ *     description: The sales channels that the product is available in.
+ *     items:
+ *       type: object
+ *       description: The sales channel's details.
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           type: string
+ *           title: id
+ *           description: The sales channel's ID.
+ *   weight:
+ *     type: number
+ *     title: weight
+ *     description: The product's weight.
+ *   length:
+ *     type: number
+ *     title: length
+ *     description: The product's length.
+ *   height:
+ *     type: number
+ *     title: height
+ *     description: The product's height.
+ *   width:
+ *     type: number
+ *     title: width
+ *     description: The product's width.
+ *   hs_code:
+ *     type: string
+ *     title: hs_code
+ *     description: The product's HS code.
+ *   mid_code:
+ *     type: string
+ *     title: mid_code
+ *     description: The product's MID code.
+ *   origin_country:
+ *     type: string
+ *     title: origin_country
+ *     description: The product's origin country.
+ *   material:
+ *     type: string
+ *     title: material
+ *     description: The product's material.
+ *   metadata:
+ *     type: object
+ *     description: The product's metadata, can hold custom key-value pairs.
+ * 
+*/
+

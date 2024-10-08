@@ -16,4 +16,9 @@ export interface CreateFileDTO {
    * The file content as a binary-encoded string
    */
   content: string
+
+  /**
+   * The access level of the file. Defaults to private if not passed
+   */
+  access?: "public" | "private"
 }

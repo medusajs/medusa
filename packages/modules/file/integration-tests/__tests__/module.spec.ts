@@ -1,16 +1,10 @@
 import { resolve } from "path"
-import { Modules } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Entity, PrimaryKey } from "@mikro-orm/core"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { IFileModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { FileModuleService } from "@services"
 
 jest.setTimeout(100000)
-
-// The test runner throws if a model is not passed, so we create a dummy entity
-@Entity({ tableName: "dummy_file_entity" })
-export default class DummyEntity {
-  @PrimaryKey()
-  id: string
-}
 
 const moduleOptions = {
   providers: [
@@ -19,24 +13,32 @@ const moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "default-provider": {},
-        },
-      },
+      id: "default-provider",
     },
   ],
 }
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFileModuleService>({
   moduleName: Modules.FILE,
   moduleOptions: moduleOptions,
-  moduleModels: [DummyEntity],
-  // TODO: Fix the type of service, it complains for some reason if we pass IFileModuleService
-  testSuite: ({ service }: SuiteOptions<any>) => {
+  testSuite: ({ service }) => {
     describe("File Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.FILE, {
+          service: FileModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({})
+      })
+
       it("creates and gets a file", async () => {
-        const res = await service.create({
+        const res = await service.createFiles({
           filename: "test.jpg",
           mimeType: "image/jpeg",
           content: Buffer.from("test"),
@@ -48,7 +50,7 @@ moduleIntegrationTestRunner({
         })
 
         // The fake provider returns the file content as the url
-        const downloadUrl = await service.retrieve("test.jpg")
+        const downloadUrl = await service.retrieveFile("test.jpg")
         expect(await new Response(downloadUrl.url).text()).toEqual("test")
       })
     })

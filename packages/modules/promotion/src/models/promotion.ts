@@ -1,10 +1,10 @@
-import { DAL, PromotionTypeValues } from "@medusajs/types"
+import { DAL, PromotionTypeValues } from "@medusajs/framework/types"
 import {
   DALUtils,
   PromotionUtils,
   Searchable,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,
@@ -19,13 +19,14 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
 import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields = "is_automatic" | DAL.SoftDeletableEntityDateColumns
+type OptionalFields = "is_automatic" | DAL.SoftDeletableModelDateColumns
 type OptionalRelations = "application_method" | "campaign"
 
 @Entity({ tableName: "promotion" })
@@ -45,13 +46,16 @@ export default class Promotion {
   })
   code: string
 
-  @Searchable()
   @ManyToOne(() => Campaign, {
+    columnType: "text",
     fieldName: "campaign_id",
     nullable: true,
-    cascade: ["soft-remove"] as any,
+    mapToPk: true,
   })
-  campaign: Campaign | null = null
+  campaign_id: string | null = null
+
+  @ManyToOne(() => Campaign, { persist: false })
+  campaign: Rel<Campaign> | null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false
@@ -65,14 +69,14 @@ export default class Promotion {
     mappedBy: (am) => am.promotion,
     cascade: ["soft-remove"] as any,
   })
-  application_method: ApplicationMethod
+  application_method: Rel<ApplicationMethod>
 
   @ManyToMany(() => PromotionRule, "promotions", {
     owner: true,
     pivotTable: "promotion_promotion_rule",
     cascade: ["soft-remove"] as any,
   })
-  rules = new Collection<PromotionRule>(this)
+  rules = new Collection<Rel<PromotionRule>>(this)
 
   @Property({
     onCreate: () => new Date(),

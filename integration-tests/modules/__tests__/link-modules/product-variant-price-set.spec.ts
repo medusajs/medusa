@@ -1,7 +1,7 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -22,8 +22,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        pricingModule = appContainer.resolve(Modules.PRICING)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query product variants and price set link with remote query", async () => {
-        const [product] = await productModule.create([
+        const [product] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [
@@ -45,16 +45,8 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        await pricingModule.createRuleTypes([
+        const [priceSet1, priceSet2] = await pricingModule.createPriceSets([
           {
-            name: "customer_group_id",
-            rule_attribute: "customer_group_id",
-          },
-        ])
-
-        const [priceSet1, priceSet2] = await pricingModule.create([
-          {
-            rules: [{ rule_attribute: "customer_group_id" }],
             prices: [
               {
                 amount: 3000,
@@ -70,7 +62,6 @@ medusaIntegrationTestRunner({
             ],
           },
           {
-            rules: [{ rule_attribute: "customer_group_id" }],
             prices: [
               {
                 amount: 400,

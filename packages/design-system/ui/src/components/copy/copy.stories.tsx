@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
 import { Button } from "@/components/button"
+import { TooltipProvider } from "@/components/tooltip"
 import { Copy } from "./copy"
 
 const meta: Meta<typeof Copy> = {
@@ -10,6 +11,7 @@ const meta: Meta<typeof Copy> = {
   parameters: {
     layout: "centered",
   },
+  render: (args) => <TooltipProvider><Copy {...args} /></TooltipProvider>,
 }
 
 export default meta

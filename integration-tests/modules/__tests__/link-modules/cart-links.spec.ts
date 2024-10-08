@@ -1,4 +1,3 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -6,6 +5,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -26,35 +26,31 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        scModuleService = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentModuleService = appContainer.resolve(
-          ModuleRegistrationName.PAYMENT
-        )
+        cartModuleService = appContainer.resolve(Modules.CART)
+        regionModule = appContainer.resolve(Modules.REGION)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        scModuleService = appContainer.resolve(Modules.SALES_CHANNEL)
+        regionModule = appContainer.resolve(Modules.REGION)
+        paymentModuleService = appContainer.resolve(Modules.PAYMENT)
         remoteQuery = appContainer.resolve("remoteQuery")
         remoteLink = appContainer.resolve("remoteLink")
       })
 
       it("should query carts, sales channels, customers, regions with remote query", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Region",
           currency_code: "usd",
         })
 
-        const customer = await customerModule.create({
+        const customer = await customerModule.createCustomers({
           email: "tony@stark.com",
         })
 
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 
-        const cart = await cartModuleService.create({
+        const cart = await cartModuleService.createCarts({
           email: "tony@stark.com",
           currency_code: "usd",
           region_id: region.id,

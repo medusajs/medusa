@@ -1,4 +1,4 @@
-import { MedusaContainer } from "@medusajs/types"
+import { Event, MedusaContainer } from "@medusajs/framework/types"
 
 interface SubscriberContext extends Record<string, unknown> {
   subscriberId?: string
@@ -10,8 +10,7 @@ export type SubscriberConfig = {
 }
 
 export type SubscriberArgs<T = unknown> = {
-  data: T
-  eventName: string
+  event: Event<T>
   container: MedusaContainer
   pluginOptions: Record<string, unknown>
 }

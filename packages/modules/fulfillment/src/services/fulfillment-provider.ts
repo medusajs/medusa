@@ -3,9 +3,12 @@ import {
   DAL,
   FulfillmentTypes,
   IFulfillmentProvider,
-} from "@medusajs/types"
-import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {
@@ -15,7 +18,7 @@ type InjectedDependencies = {
 
 // TODO rework DTO's
 
-export default class FulfillmentProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+export default class FulfillmentProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   FulfillmentProvider
 ) {
   protected readonly fulfillmentProviderRepository_: DAL.RepositoryService
@@ -30,6 +33,12 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     providerClass: Constructor<IFulfillmentProvider>,
     optionName?: string
   ) {
+    if (!(providerClass as any).identifier) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `Trying to register a fulfillment provider without an identifier.`
+      )
+    }
     return `${(providerClass as any).identifier}_${optionName}`
   }
 
@@ -87,7 +96,7 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     providerId: string,
     data: object,
     items: object[],
-    order: object,
+    order: object | undefined,
     fulfillment: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProviderRegistration(providerId)
@@ -100,5 +109,10 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
   ): Promise<any> {
     const provider = this.retrieveProviderRegistration(providerId)
     return await provider.cancelFulfillment(fulfillment)
+  }
+
+  async createReturn(providerId: string, fulfillment: Record<string, unknown>) {
+    const provider = this.retrieveProviderRegistration(providerId)
+    return await provider.createReturnFulfillment(fulfillment)
   }
 }

@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -90,6 +88,17 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "revoked_by": {
           "name": "revoked_by",
           "type": "text",
@@ -115,9 +124,7 @@
       "indexes": [
         {
           "keyName": "IDX_api_key_token_unique",
-          "columnNames": [
-            "token"
-          ],
+          "columnNames": ["token"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -125,9 +132,7 @@
         },
         {
           "keyName": "IDX_api_key_type",
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -135,9 +140,7 @@
         },
         {
           "keyName": "api_key_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true

@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -151,9 +149,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_address_customer_id",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -161,9 +157,7 @@
         },
         {
           "keyName": "order_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -171,6 +165,293 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "display_id": {
+          "name": "display_id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "region_id": {
+          "name": "region_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "customer_id": {
+          "name": "customer_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "1",
+          "mappedType": "integer"
+        },
+        "sales_channel_id": {
+          "name": "sales_channel_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'pending'",
+          "enumItems": [
+            "pending",
+            "completed",
+            "draft",
+            "archived",
+            "canceled",
+            "requires_action"
+          ],
+          "mappedType": "enum"
+        },
+        "is_draft_order": {
+          "name": "is_draft_order",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "shipping_address_id": {
+          "name": "shipping_address_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "billing_address_id": {
+          "name": "billing_address_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "no_notification": {
+          "name": "no_notification",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "canceled_at": {
+          "name": "canceled_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_display_id",
+          "columnNames": ["display_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_display_id\" ON \"order\" (display_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_region_id",
+          "columnNames": ["region_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_region_id\" ON \"order\" (region_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_customer_id",
+          "columnNames": ["customer_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_customer_id\" ON \"order\" (customer_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_customer_id",
+          "columnNames": ["sales_channel_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_customer_id\" ON \"order\" (customer_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_is_draft_order",
+          "columnNames": ["is_draft_order"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_is_draft_order\" ON \"order\" (is_draft_order) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_currency_code",
+          "columnNames": ["currency_code"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_currency_code\" ON \"order\" (currency_code) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_address_id",
+          "columnNames": ["shipping_address_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_address_id\" ON \"order\" (shipping_address_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_billing_address_id",
+          "columnNames": ["billing_address_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_billing_address_id\" ON \"order\" (billing_address_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_deleted_at\" ON \"order\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_shipping_address_id_foreign": {
+          "constraintName": "order_shipping_address_id_foreign",
+          "columnNames": ["shipping_address_id"],
+          "localTableName": "public.order",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_address",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_billing_address_id_foreign": {
+          "constraintName": "order_billing_address_id_foreign",
+          "columnNames": ["billing_address_id"],
+          "localTableName": "public.order",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_address",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -381,6 +662,16 @@
           "nullable": false,
           "mappedType": "json"
         },
+        "is_custom_price": {
+          "name": "is_custom_price",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -411,6 +702,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "order_line_item",
@@ -418,29 +719,771 @@
       "indexes": [
         {
           "keyName": "IDX_order_line_item_variant_id",
-          "columnNames": [
-            "variant_id"
-          ],
+          "columnNames": ["variant_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_variant_id\" ON \"order_line_item\" (variant_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_variant_id\" ON \"order_line_item\" (variant_id) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_line_item_product_id",
-          "columnNames": [
-            "product_id"
-          ],
+          "columnNames": ["product_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_product_id\" ON \"order_line_item\" (product_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_product_id\" ON \"order_line_item\" (product_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_line_item_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_deleted_at\" ON \"order_line_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "order_line_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "unit_price": {
+          "name": "unit_price",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_unit_price": {
+          "name": "raw_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_quantity": {
+          "name": "raw_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "fulfilled_quantity": {
+          "name": "fulfilled_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_fulfilled_quantity": {
+          "name": "raw_fulfilled_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "delivered_quantity": {
+          "name": "delivered_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_delivered_quantity": {
+          "name": "raw_delivered_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "shipped_quantity": {
+          "name": "shipped_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_shipped_quantity": {
+          "name": "raw_shipped_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "return_requested_quantity": {
+          "name": "return_requested_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_return_requested_quantity": {
+          "name": "raw_return_requested_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "return_received_quantity": {
+          "name": "return_received_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_return_received_quantity": {
+          "name": "raw_return_received_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "return_dismissed_quantity": {
+          "name": "return_dismissed_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_return_dismissed_quantity": {
+          "name": "raw_return_dismissed_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "written_off_quantity": {
+          "name": "written_off_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_written_off_quantity": {
+          "name": "raw_written_off_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_item",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_item_order_id",
+          "columnNames": ["order_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_order_id\" ON \"order_item\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_item_version",
+          "columnNames": ["version"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_version\" ON \"order_item\" (version) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_item_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_item_id\" ON \"order_item\" (item_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_item_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_deleted_at\" ON \"order_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_item_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_item_order_id_foreign": {
+          "constraintName": "order_item_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "updateRule": "cascade"
+        },
+        "order_item_item_id_foreign": {
+          "constraintName": "order_item_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "promotion_id": {
+          "name": "promotion_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_amount": {
+          "name": "raw_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "order_line_item_adjustment",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_line_item_adjustment_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_adjustment_item_id\" ON \"order_line_item_adjustment\" (item_id)"
+        },
+        {
+          "keyName": "order_line_item_adjustment_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_line_item_adjustment_item_id_foreign": {
+          "constraintName": "order_line_item_adjustment_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_line_item_adjustment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tax_rate_id": {
+          "name": "tax_rate_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rate": {
+          "name": "rate",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_rate": {
+          "name": "raw_rate",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "order_line_item_tax_line",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_line_item_tax_line_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_tax_line_item_id\" ON \"order_line_item_tax_line\" (item_id)"
+        },
+        {
+          "keyName": "order_line_item_tax_line_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_line_item_tax_line_item_id_foreign": {
+          "constraintName": "order_line_item_tax_line_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_line_item_tax_line",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_amount": {
+          "name": "raw_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "is_tax_inclusive": {
+          "name": "is_tax_inclusive",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_custom_amount": {
+          "name": "is_custom_amount",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "shipping_option_id": {
+          "name": "shipping_option_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_shipping_method",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_shipping_method_shipping_option_id",
+          "columnNames": ["shipping_option_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_shipping_option_id\" ON \"order_shipping_method\" (shipping_option_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_method_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_deleted_at\" ON \"order_shipping_method\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_shipping_method_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -536,8 +1579,18 @@
           "default": "now()",
           "mappedType": "datetime"
         },
-        "item_id": {
-          "name": "item_id",
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "shipping_method_id": {
+          "name": "shipping_method_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -546,24 +1599,20 @@
           "mappedType": "text"
         }
       },
-      "name": "order_line_item_adjustment",
+      "name": "order_shipping_method_adjustment",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_line_item_adjustment_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "keyName": "IDX_order_shipping_method_adjustment_shipping_method_id",
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_adjustment_item_id\" ON \"order_line_item_adjustment\" (item_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_adjustment_shipping_method_id\" ON \"order_shipping_method_adjustment\" (shipping_method_id)"
         },
         {
-          "keyName": "order_line_item_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "keyName": "order_shipping_method_adjustment_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -571,16 +1620,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "order_line_item_adjustment_item_id_foreign": {
-          "constraintName": "order_line_item_adjustment_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
-          "localTableName": "public.order_line_item_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_line_item",
+        "order_shipping_method_adjustment_shipping_method_id_foreign": {
+          "constraintName": "order_shipping_method_adjustment_shipping_method_id_foreign",
+          "columnNames": ["shipping_method_id"],
+          "localTableName": "public.order_shipping_method_adjustment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -673,34 +1718,40 @@
           "default": "now()",
           "mappedType": "datetime"
         },
-        "item_id": {
-          "name": "item_id",
-          "type": "text",
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "shipping_method_id": {
+          "name": "shipping_method_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "text"
         }
       },
-      "name": "order_line_item_tax_line",
+      "name": "order_shipping_method_tax_line",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_line_item_tax_line_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "keyName": "IDX_order_shipping_method_tax_line_shipping_method_id",
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_tax_line_item_id\" ON \"order_line_item_tax_line\" (item_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_tax_line_shipping_method_id\" ON \"order_shipping_method_tax_line\" (shipping_method_id)"
         },
         {
-          "keyName": "order_line_item_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "keyName": "order_shipping_method_tax_line_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -708,16 +1759,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "order_line_item_tax_line_item_id_foreign": {
-          "constraintName": "order_line_item_tax_line_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
-          "localTableName": "public.order_line_item_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_line_item",
+        "order_shipping_method_tax_line_shipping_method_id_foreign": {
+          "constraintName": "order_shipping_method_tax_line_shipping_method_id_foreign",
+          "columnNames": ["shipping_method_id"],
+          "localTableName": "public.order_shipping_method_tax_line",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -734,31 +1781,13 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "display_id": {
-          "name": "display_id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
-        },
-        "region_id": {
-          "name": "region_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "customer_id": {
-          "name": "customer_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
           "mappedType": "text"
         },
         "version": {
@@ -771,14 +1800,143 @@
           "default": "1",
           "mappedType": "integer"
         },
-        "sales_channel_id": {
-          "name": "sales_channel_id",
+        "totals": {
+          "name": "totals",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_summary",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_summary_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_summary_deleted_at\" ON \"order_summary\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_summary_order_id_version",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_summary_order_id_version\" ON \"order_summary\" (order_id, version) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_summary_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_summary_order_id_foreign": {
+          "constraintName": "order_summary_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_summary",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "order_version": {
+          "name": "order_version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "display_id": {
+          "name": "display_id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         },
         "status": {
           "name": "status",
@@ -787,56 +1945,18 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'pending'",
+          "default": "'open'",
           "enumItems": [
-            "pending",
-            "completed",
-            "draft",
-            "archived",
-            "canceled",
-            "requires_action"
+            "open",
+            "requested",
+            "received",
+            "partially_received",
+            "canceled"
           ],
           "mappedType": "enum"
         },
-        "is_draft_order": {
-          "name": "is_draft_order",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "currency_code": {
-          "name": "currency_code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "shipping_address_id": {
-          "name": "shipping_address_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "billing_address_id": {
-          "name": "billing_address_id",
+        "location_id": {
+          "name": "location_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -852,6 +1972,293 @@
           "primary": false,
           "nullable": true,
           "mappedType": "boolean"
+        },
+        "refund_amount": {
+          "name": "refund_amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_refund_amount": {
+          "name": "raw_refund_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "requested_at": {
+          "name": "requested_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "received_at": {
+          "name": "received_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "canceled_at": {
+          "name": "canceled_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "return",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "keyName": "return_exchange_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "keyName": "return_claim_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "IDX_return_order_id",
+          "columnNames": ["order_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_order_id\" ON \"return\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_exchange_id\" ON \"return\" (exchange_id) WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_claim_id\" ON \"return\" (claim_id) WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_display_id",
+          "columnNames": ["display_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_display_id\" ON \"return\" (display_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_deleted_at\" ON \"return\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "return_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "return_order_id_foreign": {
+          "constraintName": "return_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.return",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "updateRule": "cascade"
+        },
+        "return_exchange_id_foreign": {
+          "constraintName": "return_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.return",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "return_claim_id_foreign": {
+          "constraintName": "return_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.return",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "order_version": {
+          "name": "order_version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "display_id": {
+          "name": "display_id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "no_notification": {
+          "name": "no_notification",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "difference_due": {
+          "name": "difference_due",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_difference_due": {
+          "name": "raw_difference_due",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "allow_backorder": {
+          "name": "allow_backorder",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
@@ -905,104 +2312,51 @@
           "mappedType": "datetime"
         }
       },
-      "name": "order",
+      "name": "order_exchange",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_display_id",
-          "columnNames": [
-            "display_id"
-          ],
+          "columnNames": ["return_id"],
+          "composite": false,
+          "keyName": "order_exchange_return_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "IDX_order_exchange_order_id",
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_display_id\" ON \"order\" (display_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_order_id\" ON \"order_exchange\" (order_id) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_region_id",
-          "columnNames": [
-            "region_id"
-          ],
+          "keyName": "IDX_order_exchange_return_id",
+          "columnNames": ["return_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_region_id\" ON \"order\" (region_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_return_id\" ON \"order_exchange\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_customer_id",
-          "columnNames": [
-            "customer_id"
-          ],
+          "keyName": "IDX_order_exchange_display_id",
+          "columnNames": ["display_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_customer_id\" ON \"order\" (customer_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_display_id\" ON \"order_exchange\" (display_id) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_customer_id",
-          "columnNames": [
-            "sales_channel_id"
-          ],
+          "keyName": "IDX_order_exchange_deleted_at",
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_customer_id\" ON \"order\" (customer_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_deleted_at\" ON \"order_exchange\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_is_draft_order",
-          "columnNames": [
-            "is_draft_order"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_is_draft_order\" ON \"order\" (is_draft_order) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_currency_code\" ON \"order\" (currency_code) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_shipping_address_id",
-          "columnNames": [
-            "shipping_address_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_address_id\" ON \"order\" (shipping_address_id) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_billing_address_id",
-          "columnNames": [
-            "billing_address_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_billing_address_id\" ON \"order\" (billing_address_id) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_deleted_at\" ON \"order\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "order_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "keyName": "order_exchange_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1010,29 +2364,390 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "order_shipping_address_id_foreign": {
-          "constraintName": "order_shipping_address_id_foreign",
-          "columnNames": [
-            "shipping_address_id"
-          ],
-          "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_address",
-          "deleteRule": "set null",
+        "order_exchange_order_id_foreign": {
+          "constraintName": "order_exchange_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_exchange",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
           "updateRule": "cascade"
         },
-        "order_billing_address_id_foreign": {
-          "constraintName": "order_billing_address_id_foreign",
-          "columnNames": [
-            "billing_address_id"
-          ],
-          "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_address",
+        "order_exchange_return_id_foreign": {
+          "constraintName": "order_exchange_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_exchange",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_quantity": {
+          "name": "raw_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_exchange_item",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_exchange_item_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_item_exchange_id\" ON \"order_exchange_item\" (exchange_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_exchange_item_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_exchange_item_item_id\" ON \"order_exchange_item\" (item_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_item_image_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_image_deleted_at\" ON \"order_claim_item_image\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_exchange_item_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_exchange_item_exchange_id_foreign": {
+          "constraintName": "order_exchange_item_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.order_exchange_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "order_exchange_item_item_id_foreign": {
+          "constraintName": "order_exchange_item_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_exchange_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "order_version": {
+          "name": "order_version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "display_id": {
+          "name": "display_id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": ["refund", "replace"],
+          "mappedType": "enum"
+        },
+        "no_notification": {
+          "name": "no_notification",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "refund_amount": {
+          "name": "refund_amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_refund_amount": {
+          "name": "raw_refund_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "canceled_at": {
+          "name": "canceled_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_claim",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["return_id"],
+          "composite": false,
+          "keyName": "order_claim_return_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "IDX_order_claim_order_id",
+          "columnNames": ["order_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_order_id\" ON \"order_claim\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_return_id",
+          "columnNames": ["return_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_return_id\" ON \"order_claim\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_display_id",
+          "columnNames": ["display_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_display_id\" ON \"order_claim\" (display_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_deleted_at\" ON \"order_claim\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_claim_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_claim_order_id_foreign": {
+          "constraintName": "order_claim_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_claim",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "updateRule": "cascade"
+        },
+        "order_claim_return_id_foreign": {
+          "constraintName": "order_claim_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_claim",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -1058,6 +2773,283 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "1",
+          "mappedType": "integer"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_amount": {
+          "name": "raw_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "reference": {
+          "name": "reference",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "reference_id": {
+          "name": "reference_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_transaction",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_transaction_order_id",
+          "columnNames": ["order_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_order_id\" ON \"order_transaction\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_return_id",
+          "columnNames": ["return_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_return_id\" ON \"order_transaction\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_exchange_id\" ON \"order_transaction\" (exchange_id) WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_claim_id\" ON \"order_transaction\" (claim_id) WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_currency_code",
+          "columnNames": ["currency_code"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_currency_code\" ON \"order_transaction\" (currency_code) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_reference_id",
+          "columnNames": ["reference_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_reference_id\" ON \"order_transaction\" (reference_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_deleted_at\" ON \"order_transaction\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_transaction_order_id_version",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_order_id_version\" ON \"order_transaction\" (order_id, version) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_transaction_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_transaction_order_id_foreign": {
+          "constraintName": "order_transaction_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_transaction",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "order_transaction_return_id_foreign": {
+          "constraintName": "order_transaction_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_transaction",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_transaction_exchange_id_foreign": {
+          "constraintName": "order_transaction_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.order_transaction",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_transaction_claim_id_foreign": {
+          "constraintName": "order_transaction_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.order_transaction",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "version": {
           "name": "version",
           "type": "integer",
@@ -1066,6 +3058,516 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "shipping_method_id": {
+          "name": "shipping_method_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_shipping",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_shipping_order_id",
+          "columnNames": ["order_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_order_id\" ON \"order_shipping\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_return_id",
+          "columnNames": ["return_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_return_id\" ON \"order_shipping\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_exchange_id\" ON \"order_shipping\" (exchange_id) WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_claim_id\" ON \"order_shipping\" (claim_id) WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_version",
+          "columnNames": ["version"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_version\" ON \"order_shipping\" (version) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_shipping_method_id",
+          "columnNames": ["shipping_method_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_shipping_method_id\" ON \"order_shipping\" (shipping_method_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_shipping_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_deleted_at\" ON \"order_shipping\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_shipping_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_shipping_order_id_foreign": {
+          "constraintName": "order_shipping_order_id_foreign",
+          "columnNames": ["order_id"],
+          "localTableName": "public.order_shipping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order",
+          "updateRule": "cascade"
+        },
+        "order_shipping_return_id_foreign": {
+          "constraintName": "order_shipping_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_shipping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_shipping_exchange_id_foreign": {
+          "constraintName": "order_shipping_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.order_shipping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_shipping_claim_id_foreign": {
+          "constraintName": "order_shipping_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.order_shipping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_shipping_shipping_method_id_foreign": {
+          "constraintName": "order_shipping_shipping_method_id_foreign",
+          "columnNames": ["shipping_method_id"],
+          "localTableName": "public.order_shipping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_shipping_method",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "missing_item",
+            "wrong_item",
+            "production_failure",
+            "other"
+          ],
+          "mappedType": "enum"
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_quantity": {
+          "name": "raw_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "is_additional_item": {
+          "name": "is_additional_item",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_claim_item",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_claim_item_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_claim_id\" ON \"order_claim_item\" (claim_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_item_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_item_id\" ON \"order_claim_item\" (item_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_item_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_deleted_at\" ON \"order_claim_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_claim_item_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_claim_item_claim_id_foreign": {
+          "constraintName": "order_claim_item_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.order_claim_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "order_claim_item_item_id_foreign": {
+          "constraintName": "order_claim_item_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_claim_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "claim_item_id": {
+          "name": "claim_item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_claim_item_image",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_claim_item_image_claim_item_id",
+          "columnNames": ["claim_item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_image_claim_item_id\" ON \"order_claim_item_image\" (claim_item_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_claim_item_image_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_claim_item_image_deleted_at\" ON \"order_claim_item_image\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "order_claim_item_image_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_claim_item_image_claim_item_id_foreign": {
+          "constraintName": "order_claim_item_image_claim_item_id_foreign",
+          "columnNames": ["claim_item_id"],
+          "localTableName": "public.order_claim_item_image",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim_item",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "change_type": {
+          "name": "change_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "description": {
           "name": "description",
@@ -1226,6 +3728,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "order_change",
@@ -1233,33 +3745,59 @@
       "indexes": [
         {
           "keyName": "IDX_order_change_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id\" ON \"order_change\" (order_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id\" ON \"order_change\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_return_id",
+          "columnNames": ["return_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_return_id\" ON \"order_change\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_claim_id\" ON \"order_change\" (claim_id) WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_exchange_id\" ON \"order_change\" (exchange_id) WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_change_order_id_version",
-          "columnNames": [
-            "version"
-          ],
+          "columnNames": ["version"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_change_status",
-          "columnNames": [
-            "status"
-          ],
+          "columnNames": ["status"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_status\" ON \"order_change\" (status)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_status\" ON \"order_change\" (status) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_deleted_at\" ON \"order_change\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_change_order_id_version",
@@ -1267,13 +3805,11 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "order_change_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1283,15 +3819,38 @@
       "foreignKeys": {
         "order_change_order_id_foreign": {
           "constraintName": "order_change_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_change",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "order_change_return_id_foreign": {
+          "constraintName": "order_change_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_change",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_change_claim_id_foreign": {
+          "constraintName": "order_change_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.order_change",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_change_exchange_id_foreign": {
+          "constraintName": "order_change_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.order_change",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -1318,6 +3877,33 @@
         },
         "order_id": {
           "name": "order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "exchange_id": {
+          "name": "exchange_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1437,6 +4023,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "order_change_action",
@@ -1444,39 +4040,63 @@
       "indexes": [
         {
           "keyName": "IDX_order_change_action_ordering",
-          "columnNames": [
-            "ordering"
-          ],
+          "columnNames": ["ordering"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_ordering\" ON \"order_change_action\" (ordering)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_ordering\" ON \"order_change_action\" (ordering) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_change_action_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_order_id\" ON \"order_change_action\" (order_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_order_id\" ON \"order_change_action\" (order_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_action_return_id",
+          "columnNames": ["return_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_return_id\" ON \"order_change_action\" (return_id) WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_action_claim_id",
+          "columnNames": ["claim_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_claim_id\" ON \"order_change_action\" (claim_id) WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_action_exchange_id",
+          "columnNames": ["exchange_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_exchange_id\" ON \"order_change_action\" (exchange_id) WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_order_change_action_order_change_id",
-          "columnNames": [
-            "order_change_id"
-          ],
+          "columnNames": ["order_change_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_order_change_id\" ON \"order_change_action\" (order_change_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_order_change_id\" ON \"order_change_action\" (order_change_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_order_change_action_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_deleted_at\" ON \"order_change_action\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "order_change_action_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1486,26 +4106,45 @@
       "foreignKeys": {
         "order_change_action_order_id_foreign": {
           "constraintName": "order_change_action_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_change_action",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
+        "order_change_action_return_id_foreign": {
+          "constraintName": "order_change_action_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.order_change_action",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_change_action_claim_id_foreign": {
+          "constraintName": "order_change_action_claim_id_foreign",
+          "columnNames": ["claim_id"],
+          "localTableName": "public.order_change_action",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_claim",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "order_change_action_exchange_id_foreign": {
+          "constraintName": "order_change_action_exchange_id_foreign",
+          "columnNames": ["exchange_id"],
+          "localTableName": "public.order_change_action",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_exchange",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "order_change_action_order_change_id_foreign": {
           "constraintName": "order_change_action_order_change_id_foreign",
-          "columnNames": [
-            "order_change_id"
-          ],
+          "columnNames": ["order_change_id"],
           "localTableName": "public.order_change_action",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_change",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1523,8 +4162,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "order_id": {
-          "name": "order_id",
+        "value": {
+          "name": "value",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1532,22 +4171,141 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "item_id": {
-          "name": "item_id",
+        "label": {
+          "name": "label",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "parent_return_reason_id": {
+          "name": "parent_return_reason_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "return_reason",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_return_reason_value",
+          "columnNames": ["value"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_reason_value\" ON \"return_reason\" (value) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_reason_parent_return_reason_id",
+          "columnNames": ["parent_return_reason_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_reason_parent_return_reason_id\" ON \"return_reason\" (parent_return_reason_id) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_return_reason_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_reason_deleted_at\" ON \"return_reason\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "return_reason_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "return_reason_parent_return_reason_id_foreign": {
+          "constraintName": "return_reason_parent_return_reason_id_foreign",
+          "columnNames": ["parent_return_reason_id"],
+          "localTableName": "public.return_reason",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return_reason",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "reason_id": {
+          "name": "reason_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "quantity": {
@@ -1568,17 +4326,18 @@
           "nullable": false,
           "mappedType": "json"
         },
-        "fulfilled_quantity": {
-          "name": "fulfilled_quantity",
+        "received_quantity": {
+          "name": "received_quantity",
           "type": "numeric",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
-        "raw_fulfilled_quantity": {
-          "name": "raw_fulfilled_quantity",
+        "raw_received_quantity": {
+          "name": "raw_received_quantity",
           "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
@@ -1586,17 +4345,18 @@
           "nullable": false,
           "mappedType": "json"
         },
-        "shipped_quantity": {
-          "name": "shipped_quantity",
+        "damaged_quantity": {
+          "name": "damaged_quantity",
           "type": "numeric",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
-        "raw_shipped_quantity": {
-          "name": "raw_shipped_quantity",
+        "raw_damaged_quantity": {
+          "name": "raw_damaged_quantity",
           "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
@@ -1604,77 +4364,32 @@
           "nullable": false,
           "mappedType": "json"
         },
-        "return_requested_quantity": {
-          "name": "return_requested_quantity",
-          "type": "numeric",
+        "return_id": {
+          "name": "return_id",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "decimal"
+          "mappedType": "text"
         },
-        "raw_return_requested_quantity": {
-          "name": "raw_return_requested_quantity",
-          "type": "jsonb",
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "json"
+          "mappedType": "text"
         },
-        "return_received_quantity": {
-          "name": "return_received_quantity",
-          "type": "numeric",
+        "note": {
+          "name": "note",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_return_received_quantity": {
-          "name": "raw_return_received_quantity",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "return_dismissed_quantity": {
-          "name": "return_dismissed_quantity",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_return_dismissed_quantity": {
-          "name": "raw_return_dismissed_quantity",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "written_off_quantity": {
-          "name": "written_off_quantity",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_written_off_quantity": {
-          "name": "raw_written_off_quantity",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
+          "nullable": true,
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
@@ -1718,54 +4433,44 @@
           "mappedType": "datetime"
         }
       },
-      "name": "order_item",
+      "name": "return_item",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_item_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "keyName": "IDX_return_item_reason_id",
+          "columnNames": ["reason_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_order_id\" ON \"order_item\" (order_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_item_reason_id\" ON \"return_item\" (reason_id) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_item_version",
-          "columnNames": [
-            "version"
-          ],
+          "keyName": "IDX_return_item_return_id",
+          "columnNames": ["return_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_version\" ON \"order_item\" (version) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_item_return_id\" ON \"return_item\" (return_id) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_item_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "keyName": "IDX_return_item_item_id",
+          "columnNames": ["item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_item_id\" ON \"order_item\" (item_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_item_item_id\" ON \"return_item\" (item_id) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "IDX_order_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "keyName": "IDX_return_item_deleted_at",
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_deleted_at\" ON \"order\" (deleted_at) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_return_item_deleted_at\" ON \"return_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
-          "keyName": "order_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "keyName": "return_item_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1773,855 +4478,30 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "order_item_order_id_foreign": {
-          "constraintName": "order_item_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
-          "localTableName": "public.order_item",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order",
+        "return_item_reason_id_foreign": {
+          "constraintName": "return_item_reason_id_foreign",
+          "columnNames": ["reason_id"],
+          "localTableName": "public.return_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return_reason",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "order_item_item_id_foreign": {
-          "constraintName": "order_item_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
-          "localTableName": "public.order_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+        "return_item_return_id_foreign": {
+          "constraintName": "return_item_return_id_foreign",
+          "columnNames": ["return_id"],
+          "localTableName": "public.return_item",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.return",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "return_item_item_id_foreign": {
+          "constraintName": "return_item_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.return_item",
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "1",
-          "mappedType": "integer"
-        },
-        "totals": {
-          "name": "totals",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "order_summary",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_deleted_at\" ON \"order\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_summary_order_id_version",
-          "columnNames": [],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_summary_order_id_version\" ON \"order_summary\" (order_id, version) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "order_summary_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_summary_order_id_foreign": {
-          "constraintName": "order_summary_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
-          "localTableName": "public.order_summary",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_amount": {
-          "name": "raw_amount",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "is_tax_inclusive": {
-          "name": "is_tax_inclusive",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "shipping_option_id": {
-          "name": "shipping_option_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "data": {
-          "name": "data",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "metadata": {
-          "name": "metadata",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "order_shipping_method",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_shipping_method_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_shipping_option_id\" ON \"order_shipping_method\" (shipping_option_id)"
-        },
-        {
-          "keyName": "order_shipping_method_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "shipping_method_id": {
-          "name": "shipping_method_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "order_shipping",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_shipping_order_id",
-          "columnNames": [
-            "order_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_order_id\" ON \"order_shipping\" (order_id) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_shipping_version",
-          "columnNames": [
-            "version"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_version\" ON \"order_shipping\" (version) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_shipping_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_shipping_method_id\" ON \"order_shipping\" (shipping_method_id) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_order_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_deleted_at\" ON \"order\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "order_shipping_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_shipping_order_id_foreign": {
-          "constraintName": "order_shipping_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
-          "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order",
-          "updateRule": "cascade"
-        },
-        "order_shipping_shipping_method_id_foreign": {
-          "constraintName": "order_shipping_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_shipping_method",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "promotion_id": {
-          "name": "promotion_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_amount": {
-          "name": "raw_amount",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "shipping_method_id": {
-          "name": "shipping_method_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "order_shipping_method_adjustment",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_shipping_method_adjustment_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_adjustment_shipping_method_id\" ON \"order_shipping_method_adjustment\" (shipping_method_id)"
-        },
-        {
-          "keyName": "order_shipping_method_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_shipping_method_adjustment_shipping_method_id_foreign": {
-          "constraintName": "order_shipping_method_adjustment_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "localTableName": "public.order_shipping_method_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_shipping_method",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "tax_rate_id": {
-          "name": "tax_rate_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rate": {
-          "name": "rate",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_rate": {
-          "name": "raw_rate",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "shipping_method_id": {
-          "name": "shipping_method_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "order_shipping_method_tax_line",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_shipping_method_tax_line_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_tax_line_shipping_method_id\" ON \"order_shipping_method_tax_line\" (shipping_method_id)"
-        },
-        {
-          "keyName": "order_shipping_method_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_shipping_method_tax_line_shipping_method_id_foreign": {
-          "constraintName": "order_shipping_method_tax_line_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
-          "localTableName": "public.order_shipping_method_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order_shipping_method",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_amount": {
-          "name": "raw_amount",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "currency_code": {
-          "name": "currency_code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "reference": {
-          "name": "reference",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "reference_id": {
-          "name": "reference_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "order_transaction",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_transaction_order_id",
-          "columnNames": [
-            "order_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_order_id\" ON \"order_transaction\" (order_id)"
-        },
-        {
-          "keyName": "IDX_order_transaction_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_currency_code\" ON \"order_transaction\" (currency_code)"
-        },
-        {
-          "keyName": "IDX_order_transaction_reference_id",
-          "columnNames": [
-            "reference_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_transaction_reference_id\" ON \"order_transaction\" (reference_id)"
-        },
-        {
-          "keyName": "order_transaction_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_transaction_order_id_foreign": {
-          "constraintName": "order_transaction_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
-          "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.order",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

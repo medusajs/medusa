@@ -1,8 +1,0 @@
-type: object
-description: The payment's details.
-required:
-  - payment
-properties:
-  payment:
-    description: Payment details
-    $ref: ./Payment.yaml

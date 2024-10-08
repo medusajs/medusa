@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useReducer } from "react"
+import React, { createContext, useContext, useMemo, useReducer } from "react"
 import { NotificationItemProps, NotificationContainer } from "@/components"
 import uuid from "react-uuid"
 
@@ -69,14 +69,26 @@ const NotificationContext = createContext<NotificationContextType | null>(null)
 
 export type NotificationProviderProps = {
   children?: React.ReactNode
+  initial?: NotificationItemType[]
 }
 
 export const NotificationProvider = ({
   children,
+  initial = [],
 }: NotificationProviderProps) => {
-  const [notifications, dispatch] = useReducer(notificationReducer, [])
-
   const generateId = () => uuid()
+
+  const normalizedInitial = useMemo(() => {
+    return initial.map((notif) => ({
+      id: generateId(),
+      ...notif,
+    }))
+  }, [initial])
+
+  const [notifications, dispatch] = useReducer(
+    notificationReducer,
+    normalizedInitial
+  )
 
   const addNotification = (notification: NotificationItemType) => {
     if (!notification.id) {

@@ -1,12 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICustomerModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
-  PriceListStatus,
-  PriceListType,
 } from "@medusajs/types"
+import { Modules, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
@@ -35,20 +33,23 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+        pricingModule = appContainer.resolve(Modules.PRICING)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        regionModule = appContainer.resolve(Modules.REGION)
       })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        customerGroup = await customerModule.createCustomerGroup({
+        customerGroup = await customerModule.createCustomerGroups({
           name: "VIP",
         })
-        region = await regionModule.create({ name: "US", currency_code: "USD" })
-        ;[product] = await productModule.create([
+        region = await regionModule.createRegions({
+          name: "US",
+          currency_code: "USD",
+        })
+        ;[product] = await productModule.createProducts([
           {
             title: "test product",
             variants: [
@@ -64,11 +65,6 @@ medusaIntegrationTestRunner({
 
         variant = product.variants[0]
         variant2 = product.variants[1]
-
-        await pricingModule.createRuleTypes([
-          { name: "Customer Group ID", rule_attribute: "customer_group_id" },
-          { name: "Region ID", rule_attribute: "region_id" },
-        ])
       })
 
       describe("GET /admin/price-lists", () => {

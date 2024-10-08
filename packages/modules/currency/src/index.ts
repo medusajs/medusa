@@ -1,14 +1,11 @@
-import { moduleDefinition } from "./module-definition"
-import { initializeFactory, Modules } from "@medusajs/modules-sdk"
+import { CurrencyModuleService } from "@services"
+import initialDataLoader from "./loaders/initial-data"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
+const service = CurrencyModuleService
+const loaders = [initialDataLoader]
 
-export const initialize = initializeFactory({
-  moduleName: Modules.CURRENCY,
-  moduleDefinition,
+export default Module(Modules.CURRENCY, {
+  service,
+  loaders,
 })
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
-export default moduleDefinition

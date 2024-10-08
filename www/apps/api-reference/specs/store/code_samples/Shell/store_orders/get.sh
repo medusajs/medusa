@@ -1,1 +1,2 @@
-curl '{backend_url}/store/orders?display_id=1&email=user@example.com'
+curl '{backend_url}/store/orders' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'

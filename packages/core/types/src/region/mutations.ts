@@ -1,3 +1,5 @@
+import { MetadataType } from "../common"
+
 /**
  * The region to be created.
  */
@@ -25,7 +27,7 @@ export interface CreateRegionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -57,7 +59,7 @@ export interface UpsertRegionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -83,5 +85,5 @@ export interface UpdateRegionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }

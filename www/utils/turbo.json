@@ -10,6 +10,21 @@
       ]
     },
     "lint": { },
-    "watch": { }
+    "watch": { },
+    "generate:references": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "generate:oas": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "generate:dml": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
   }
 }

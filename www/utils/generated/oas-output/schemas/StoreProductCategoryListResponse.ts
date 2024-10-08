@@ -1,31 +1,31 @@
 /**
  * @schema StoreProductCategoryListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of product categories.
  * x-schemaName: StoreProductCategoryListResponse
  * required:
- *   - product_categories
  *   - limit
  *   - offset
  *   - count
+ *   - product_categories
  * properties:
- *   product_categories:
- *     type: array
- *     description: The product category's product categories.
- *     items:
- *       $ref: "#/components/schemas/ProductCategoryResponse"
  *   limit:
  *     type: number
  *     title: limit
- *     description: The product category's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The product category's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The product category's count.
+ *     description: The total number of items.
+ *   product_categories:
+ *     type: array
+ *     description: The list of product categories.
+ *     items:
+ *       $ref: "#/components/schemas/StoreProductCategory"
  * 
 */
 

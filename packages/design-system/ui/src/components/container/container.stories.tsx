@@ -29,7 +29,7 @@ export const InLayout: Story = {
       <div className="border-ui-border-base w-full max-w-[216px] border-r p-4">
         <Heading level="h3">Menubar</Heading>
       </div>
-      <div className="flex w-full flex-col gap-y-2 px-8 pb-8 pt-6">
+      <div className="flex w-full flex-col gap-y-3 px-8 pb-8 pt-6">
         <Container>
           <Heading>Section 1</Heading>
         </Container>

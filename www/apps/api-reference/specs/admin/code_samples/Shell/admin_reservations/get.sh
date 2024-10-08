@@ -1,2 +1,2 @@
-curl '{backend_url}/admin/product-categories' \
--H 'x-medusa-access-token: {api_token}'
+curl '{backend_url}/admin/reservations' \
+-H 'Authorization: Bearer {access_token}'

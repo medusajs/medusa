@@ -1,32 +1,35 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   FulfillmentWorkflow,
   IFulfillmentModuleService,
   ShippingOptionDTO,
-} from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  UpsertShippingOptionDTO,
+} from "@medusajs/framework/types"
 import {
+  Modules,
   arrayDifference,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { UpsertShippingOptionDTO } from "@medusajs/types/src"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type StepInput = Omit<
+export type UpsertShippingOptionsStepInput = Omit<
   | FulfillmentWorkflow.CreateShippingOptionsWorkflowInput
   | FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput,
   "prices"
 >[]
 
 export const upsertShippingOptionsStepId = "create-shipping-options-step"
+/**
+ * This step creates or updates shipping options.
+ */
 export const upsertShippingOptionsStep = createStep(
   upsertShippingOptionsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpsertShippingOptionsStepInput, { container }) => {
     if (!input?.length) {
       return new StepResponse([], {})
     }
 
     const fulfillmentService = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const toUpdate: FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[] =
@@ -82,7 +85,7 @@ export const upsertShippingOptionsStep = createStep(
     }
 
     const fulfillmentService = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     if (shippingOptionIds.updatedPreviousData.length) {

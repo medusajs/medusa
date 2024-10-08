@@ -1,8 +1,0 @@
-type: object
-description: The user's details.
-required:
-  - user
-properties:
-  user:
-    description: User details.
-    $ref: ./User.yaml

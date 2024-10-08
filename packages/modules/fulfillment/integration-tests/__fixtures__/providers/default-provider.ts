@@ -1,4 +1,4 @@
-import { AbstractFulfillmentProviderService } from "@medusajs/utils/src"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 
 export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProviderService {
   static identifier = "fixtures-fulfillment-provider"
@@ -12,6 +12,10 @@ export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProvi
   }
 
   async getFulfillmentOptions(): Promise<any> {
+    return {}
+  }
+
+  async createReturnFulfillment(fulfillment): Promise<any> {
     return {}
   }
 }

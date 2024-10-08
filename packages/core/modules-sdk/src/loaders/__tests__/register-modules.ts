@@ -1,10 +1,6 @@
-import {
-  InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModuleDefinition,
-} from "@medusajs/types"
+import { InternalModuleDeclaration, ModuleDefinition } from "@medusajs/types"
 import { ModulesDefinition } from "../../definitions"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 import { registerMedusaModule } from "../register-modules"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
@@ -13,10 +9,8 @@ jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
 describe("module definitions loader", () => {
   const defaultDefinition: ModuleDefinition = {
     key: "testService",
-    registrationName: "testService",
     defaultPackage: "@medusajs/test-service",
     label: "TestService",
-    isLegacy: true,
     isRequired: false,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
@@ -68,7 +62,6 @@ describe("module definitions loader", () => {
         definition: expect.objectContaining({
           key: "customModulesABC",
           label: "Custom: customModulesABC",
-          registrationName: "customModulesABC",
         }),
         moduleDeclaration: {
           resources: "shared",

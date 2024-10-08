@@ -22,7 +22,7 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO[]>} The created regions.
    *
    * @example
-   * const region = await regionModuleService.create([
+   * const region = await regionModuleService.createRegions([
    *   {
    *     name: "Europe",
    *     currency_code: "eur",
@@ -35,7 +35,10 @@ export interface IRegionModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(data: CreateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
+  createRegions(
+    data: CreateRegionDTO[],
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
 
   /**
    * This method creates a region.
@@ -45,13 +48,16 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO>} The created region.
    *
    * @example
-   * const region = await regionModuleService.create({
+   * const region = await regionModuleService.createRegions({
    *   name: "Europe",
    *   currency_code: "eur",
    *   countries: ["dk", "de", "fr"],
    * })
    */
-  create(data: CreateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
+  createRegions(
+    data: CreateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
 
   /**
    * This method updates or creates regions if they don't exist.
@@ -61,7 +67,7 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO[]>} The created or updated regions.
    *
    * @example
-   * const region = await regionModuleService.upsert([
+   * const region = await regionModuleService.upsertRegions([
    *   {
    *     id: "reg_123",
    *     automatic_taxes: false,
@@ -72,7 +78,10 @@ export interface IRegionModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(data: UpsertRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
+  upsertRegions(
+    data: UpsertRegionDTO[],
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
 
   /**
    * This method updates or creates a region if it doesn't exist.
@@ -82,12 +91,15 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO>} The created or updated region.
    *
    * @example
-   * const region = await regionModuleService.upsert({
+   * const region = await regionModuleService.upsertRegions({
    *   id: "reg_123",
    *   automatic_taxes: false,
    * })
    */
-  upsert(data: UpsertRegionDTO, sharedContext?: Context): Promise<RegionDTO>
+  upsertRegions(
+    data: UpsertRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
 
   /**
    * This method updates an existing region.
@@ -98,11 +110,11 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO>} The updated region.
    *
    * @example
-   * const region = await regionModuleService.update("reg_123", {
+   * const region = await regionModuleService.updateRegions("reg_123", {
    *   automatic_taxes: false,
    * })
    */
-  update(
+  updateRegions(
     id: string,
     data: UpdateRegionDTO,
     sharedContext?: Context
@@ -117,7 +129,7 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO[]>} The updated regions.
    *
    * @example
-   * const region = await regionModuleService.update(
+   * const region = await regionModuleService.updateRegions(
    *   {
    *     name: "Europe",
    *   },
@@ -126,7 +138,7 @@ export interface IRegionModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateRegions(
     selector: FilterableRegionProps,
     data: UpdateRegionDTO,
     sharedContext?: Context
@@ -140,9 +152,9 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the regions are deleted.
    *
    * @example
-   * await regionModuleService.delete(["reg_123", "reg_321"])
+   * await regionModuleService.deleteRegions(["reg_123", "reg_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteRegions(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a region by its ID.
@@ -152,9 +164,9 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the region is deleted.
    *
    * @example
-   * await regionModuleService.delete("reg_123")
+   * await regionModuleService.deleteRegions("reg_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteRegions(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a region by its ID.
@@ -169,18 +181,18 @@ export interface IRegionModuleService extends IModuleService {
    * A simple example that retrieves a region by its ID:
    *
    * ```ts
-   * const region = await regionModuleService.retrieve("reg_123")
+   * const region = await regionModuleService.retrieveRegion("reg_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const region = await regionModuleService.retrieve("reg_123", {
+   * const region = await regionModuleService.retrieveRegion("reg_123", {
    *   relations: ["countries"],
    * })
    * ```
    */
-  retrieve(
+  retrieveRegion(
     id: string,
     config?: FindConfig<RegionDTO>,
     sharedContext?: Context
@@ -199,7 +211,7 @@ export interface IRegionModuleService extends IModuleService {
    * To retrieve a list of regions using their IDs:
    *
    * ```ts
-   * const regions = await regionModuleService.list({
+   * const regions = await regionModuleService.listRegions({
    *   id: ["reg_123", "reg_321"],
    * })
    * ```
@@ -207,7 +219,7 @@ export interface IRegionModuleService extends IModuleService {
    * To specify relations that should be retrieved within the regions:
    *
    * ```ts
-   * const regions = await regionModuleService.list(
+   * const regions = await regionModuleService.listRegions(
    *   {
    *     id: ["reg_123", "reg_321"],
    *   },
@@ -220,7 +232,7 @@ export interface IRegionModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const regions = await regionModuleService.list(
+   * const regions = await regionModuleService.listRegions(
    *   {
    *     id: ["reg_123", "reg_321"],
    *   },
@@ -232,7 +244,7 @@ export interface IRegionModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listRegions(
     filters?: FilterableRegionProps,
     config?: FindConfig<RegionDTO>,
     sharedContext?: Context
@@ -252,7 +264,7 @@ export interface IRegionModuleService extends IModuleService {
    *
    * ```ts
    * const [regions, count] =
-   *   await regionModuleService.listAndCount({
+   *   await regionModuleService.listAndCountRegions({
    *     id: ["reg_123", "reg_321"],
    *   })
    * ```
@@ -261,7 +273,7 @@ export interface IRegionModuleService extends IModuleService {
    *
    * ```ts
    * const [regions, count] =
-   *   await regionModuleService.listAndCount(
+   *   await regionModuleService.listAndCountRegions(
    *     {
    *       id: ["reg_123", "reg_321"],
    *     },
@@ -275,7 +287,7 @@ export interface IRegionModuleService extends IModuleService {
    *
    * ```ts
    * const [regions, count] =
-   * await regionModuleService.listAndCount(
+   * await regionModuleService.listAndCountRegions(
    *   {
    *     id: ["reg_123", "reg_321"],
    *   },
@@ -287,7 +299,7 @@ export interface IRegionModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountRegions(
     filters?: FilterableRegionProps,
     config?: FindConfig<RegionDTO>,
     sharedContext?: Context
@@ -447,11 +459,11 @@ export interface IRegionModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await regionModuleService.softDelete(["reg_123", "reg_321"], {
+   * await regionModuleService.softDeleteRegions(["reg_123", "reg_321"], {
    *   returnLinkableKeys: ["country_id"],
    * })
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteRegions<TReturnableLinkableKeys extends string = string>(
     regionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -472,11 +484,11 @@ export interface IRegionModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await regionModuleService.restore(["reg_123", "reg_321"], {
+   * await regionModuleService.restoreRegions(["reg_123", "reg_321"], {
    *   returnLinkableKeys: ["country_id"],
    * })
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreRegions<TReturnableLinkableKeys extends string = string>(
     regionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

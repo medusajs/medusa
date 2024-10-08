@@ -1,13 +1,31 @@
-import { CampaignDTO, CreateCampaignDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { AdditionalData, CreateCampaignDTO } from "@medusajs/framework/types"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createHook,
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import { createCampaignsStep } from "../steps"
 
-type WorkflowInput = { campaignsData: CreateCampaignDTO[] }
+export type CreateCampaignsWorkflowInput = {
+  campaignsData: CreateCampaignDTO[]
+} & AdditionalData
 
 export const createCampaignsWorkflowId = "create-campaigns"
+/**
+ * This workflow creates one or more campaigns.
+ */
 export const createCampaignsWorkflow = createWorkflow(
   createCampaignsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CampaignDTO[]> => {
-    return createCampaignsStep(input.campaignsData)
+  (input: WorkflowData<CreateCampaignsWorkflowInput>) => {
+    const createdCampaigns = createCampaignsStep(input.campaignsData)
+    const campaignsCreated = createHook("campaignsCreated", {
+      campaigns: createdCampaigns,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(createdCampaigns, {
+      hooks: [campaignsCreated],
+    })
   }
 )

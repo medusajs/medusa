@@ -9,7 +9,10 @@ export default function (theme: MarkdownTheme) {
     function (this: SignatureReflection, options: Handlebars.HelperOptions) {
       this.parent =
         getCorrectDeclarationReflection(this.parent, theme) || this.parent
-      return this.type && !this.parent?.kindOf(ReflectionKind.Constructor)
+      const { sections } = theme.getFormattingOptionsForLocation()
+      return sections?.member_returns !== false &&
+        this.type &&
+        !this.parent?.kindOf(ReflectionKind.Constructor)
         ? options.fn(this)
         : options.inverse(this)
     }

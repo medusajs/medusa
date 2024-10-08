@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/linkSalesChannelsToApiKeyWorkflow
+sidebar_label: linkSalesChannelsToApiKeyWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# linkSalesChannelsToApiKeyWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `linkSalesChannelsToApiKeyWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow links sales channels to API keys.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"linkSalesChannelsToApiKeyWorkflow","steps":[{"type":"step","name":"validateSalesChannelsExistStep","description":"This step validates that a sales channel exists before linking it to an API key.","link":"../../../../core_flows.Steps_Api_Key/page.mdx#validatesaleschannelsexiststep","depth":1},{"type":"step","name":"linkSalesChannelsToApiKeyStep","description":"This step links sales channels to API keys.","link":"../../../../core_flows.Steps_Api_Key/page.mdx#linksaleschannelstoapikeystep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkWorkflowInput","type":"[LinkWorkflowInput](../../../../../types/CommonTypes/types/types.CommonTypes.LinkWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="linkSalesChannelsToApiKeyWorkflow"/>

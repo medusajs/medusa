@@ -1,22 +1,26 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ISalesChannelModuleService } from "@medusajs/types"
-import { MedusaError, arrayDifference } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ISalesChannelModuleService } from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  arrayDifference,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-interface StepInput {
+export interface ValidateSalesChannelsExistStepInput {
   sales_channel_ids: string[]
 }
 
 export const validateSalesChannelsExistStepId = "validate-sales-channels-exist"
+/**
+ * This step validates that a sales channel exists before linking it to an API key.
+ */
 export const validateSalesChannelsExistStep = createStep(
   validateSalesChannelsExistStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ValidateSalesChannelsExistStepInput, { container }) => {
     const salesChannelModuleService =
-      container.resolve<ISalesChannelModuleService>(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
+      container.resolve<ISalesChannelModuleService>(Modules.SALES_CHANNEL)
 
-    const salesChannels = await salesChannelModuleService.list(
+    const salesChannels = await salesChannelModuleService.listSalesChannels(
       { id: data.sales_channel_ids },
       { select: ["id"] }
     )

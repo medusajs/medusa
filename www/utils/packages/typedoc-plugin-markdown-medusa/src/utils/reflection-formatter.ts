@@ -2,6 +2,7 @@ import {
   Comment,
   DeclarationReflection,
   ProjectReflection,
+  ReferenceType,
   ReflectionKind,
   ReflectionType,
 } from "typedoc"
@@ -9,12 +10,15 @@ import * as Handlebars from "handlebars"
 import { stripCode } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import {
+  getDmlRelationProperties,
   getReflectionType,
   getType,
   getTypeChildren,
+  isDmlRelation,
   stripLineBreaks,
 } from "utils"
 import { MarkdownTheme } from "../theme"
+import { getDmlProperties, isDmlEntity } from "utils"
 
 const ALLOWED_KINDS: ReflectionKind[] = [
   ReflectionKind.EnumMember,
@@ -33,6 +37,7 @@ type ReflectionFormatterOptions = {
   maxLevel?: number | undefined
   project?: ProjectReflection
   type?: ParameterStyle
+  isTypeParams?: boolean
 }
 
 export default function reflectionFormatter({
@@ -119,10 +124,13 @@ export function reflectionComponentFormatter({
   level = 1,
   maxLevel,
   project,
+  isTypeParams,
 }: ReflectionFormatterOptions): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
   const optional =
-    reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
+    isTypeParams ||
+    reflection.flags.isOptional ||
+    reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
   const componentItem: Parameter = {
     name: reflection.name,
@@ -151,18 +159,44 @@ export function reflectionComponentFormatter({
     children: [],
   }
 
+  if (level + 1 > (maxLevel || MarkdownTheme.MAX_LEVEL)) {
+    return componentItem
+  }
+
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if (
-    (reflection.type || hasChildren) &&
-    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
+  if (reflection.variant === "declaration" && isDmlEntity(reflection)) {
+    componentItem.children = getDmlProperties(
+      reflection.type as ReferenceType
+    ).map((childItem) =>
+      reflectionComponentFormatter({
+        reflection: childItem,
+        level: level + 1,
+        maxLevel,
+        project,
+      })
+    )
+  } else if (
+    reflection.variant === "declaration" &&
+    isDmlRelation(reflection)
   ) {
+    componentItem.children = getDmlRelationProperties(
+      reflection.type as ReferenceType
+    ).map((childItem) =>
+      reflectionComponentFormatter({
+        reflection: childItem,
+        level: level + 1,
+        maxLevel,
+        project,
+      })
+    )
+  } else if (reflection.type || hasChildren) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren({
           reflectionType: reflection.type!,
           project: project || reflection.project,
-          maxLevel,
+          maxLevel: maxLevel || MarkdownTheme.MAX_LEVEL,
         })
 
     children

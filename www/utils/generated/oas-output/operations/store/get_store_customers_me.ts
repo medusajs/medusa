@@ -1,10 +1,13 @@
 /**
  * @oas [get] /store/customers/me
  * operationId: GetCustomersMe
- * summary: List Customers
- * description: Retrieve a list of customers. The customers can be filtered by
- *   fields such as `id`. The customers can also be sorted or paginated.
- * x-authenticated: false
+ * summary: Get Logged-in Customer
+ * x-sidebar-summary: Get Customer
+ * description: Retrieve the logged-in customer. You can expand the customer's relations or select the fields that should be returned.
+ * x-authenticated: true
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
+ *   description: "Storefront guide: How to retrieve the logged-in customer."
  * parameters:
  *   - name: expand
  *     in: query
@@ -16,43 +19,35 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl '{backend_url}/store/customers/me'
+ *     source: |-
+ *       curl '{backend_url}/store/customers/me' \
+ *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Customers
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/StoreCustomerResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -65,18 +60,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - fields
- *         properties:
- *           fields:
- *             type: string
- *             title: fields
- *             description: The customer's fields.
  * 
 */
 

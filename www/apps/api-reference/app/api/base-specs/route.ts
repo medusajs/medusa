@@ -2,12 +2,11 @@ import { NextResponse } from "next/server"
 import path from "path"
 import OpenAPIParser from "@readme/openapi-parser"
 import getPathsOfTag from "@/utils/get-paths-of-tag"
-import type { ExpandedDocument, Version } from "@/types/openapi"
+import type { ExpandedDocument } from "@/types/openapi"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const area = searchParams.get("area")
-  const version = (searchParams.get("version") as Version) || "1"
   const expand = searchParams.get("expand")
   if (area !== "admin" && area !== "store") {
     return NextResponse.json(
@@ -21,11 +20,7 @@ export async function GET(request: Request) {
     )
   }
   const baseSpecs = (await OpenAPIParser.parse(
-    path.join(
-      process.cwd(),
-      version === "1" ? "specs" : "specs-v2",
-      `${area}/openapi.yaml`
-    )
+    path.join(process.cwd(), "specs", area, "openapi.yaml")
   )) as ExpandedDocument
 
   if (expand) {

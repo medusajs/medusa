@@ -1,10 +1,10 @@
+import { BaseFilterable, OperatorMap } from "../../dal"
 import {
   FilterableFulfillmentSetProps,
   FulfillmentSetDTO,
 } from "./fulfillment-set"
 import { FilterableGeoZoneProps, GeoZoneDTO } from "./geo-zone"
 import { ShippingOptionDTO } from "./shipping-option"
-import { BaseFilterable, OperatorMap } from "../../dal"
 
 /**
  * The service zone details.
@@ -26,9 +26,14 @@ export interface ServiceZoneDTO {
   metadata: Record<string, unknown> | null
 
   /**
-   * The fulfillment sets assoiated with the service zone.
+   * The fulfillment set assoiated with the service zone.
    */
-  fulfillment_sets: FulfillmentSetDTO[]
+  fulfillment_set: FulfillmentSetDTO
+
+  /**
+   * The fulfillment set id of the service zone.
+   */
+  fulfillment_set_id: string
 
   /**
    * The geo zones assoiated with the service zone.

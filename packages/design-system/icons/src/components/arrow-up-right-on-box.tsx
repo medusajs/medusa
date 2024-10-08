@@ -5,8 +5,8 @@ const ArrowUpRightOnBox = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const ArrowUpRightOnBox = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M9.054 5.327H4.743A1.752 1.752 0 0 0 2.99 7.079v8.178a1.752 1.752 0 0 0 1.753 1.753h8.178a1.752 1.752 0 0 0 1.752-1.753v-4.236m-7.67 1.993L17.01 2.99m0 0h-4.09m4.09 0v4.09"
+          d="M8.833 1.944h4.223v4.223M13.056 1.944 7.5 7.5M11.278 8.833v2.445c0 .982-.796 1.778-1.778 1.778H3.722a1.777 1.777 0 0 1-1.778-1.778V5.5c0-.982.796-1.778 1.778-1.778h2.445"
         />
       </svg>
     )

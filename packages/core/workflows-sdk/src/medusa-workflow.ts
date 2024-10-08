@@ -2,7 +2,7 @@ import { LocalWorkflow } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ExportedWorkflow } from "./helper"
 
-export class MedusaWorkflow {
+class MedusaWorkflow {
   static workflows: Record<
     string,
     (
@@ -16,16 +16,18 @@ export class MedusaWorkflow {
 
   static registerWorkflow(workflowId, exportedWorkflow) {
     if (workflowId in MedusaWorkflow.workflows) {
-      throw new Error(`Workflow with id ${workflowId} already registered.`)
+      return
     }
 
     MedusaWorkflow.workflows[workflowId] = exportedWorkflow
   }
 
-  static getWorkflow(workflowId) {
-    return MedusaWorkflow.workflows[workflowId]
+  static getWorkflow(workflowId): ExportedWorkflow {
+    return MedusaWorkflow.workflows[workflowId] as unknown as ExportedWorkflow
   }
 }
 
 global.MedusaWorkflow ??= MedusaWorkflow
-exports.MedusaWorkflow = global.MedusaWorkflow
+const GlobalMedusaWorkflow = global.MedusaWorkflow
+
+export { GlobalMedusaWorkflow as MedusaWorkflow }

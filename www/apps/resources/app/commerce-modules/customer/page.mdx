@@ -6,7 +6,71 @@ export const metadata = {
 
 # {metadata.title}
 
-The Customer Module is the `@medusajs/customer` NPM package that provides customer-related features in your Medusa and Node.js applications.
+The Customer Module is the `@medusajs/medusa/customer` NPM package that provides customer-related features in your Medusa and Node.js applications.
+
+## How to Use Customer Module's Service
+
+You can use the Customer Module's main service by resolving from the Medusa container the resource `Modules.CUSTOMER` imported from `@medusajs/framework/utils`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    Modules.CUSTOMER
+  )
+
+  res.json({
+    customers: await customerModuleService.listCustomers(),
+  })
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/framework"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const customerModuleService: ICustomerModuleService = container.resolve(
+    Modules.CUSTOMER
+  )
+
+  const customers = await customerModuleService.listCustomers()
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/framework/workflows-sdk"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const customerModuleService: ICustomerModuleService = container.resolve(
+    Modules.CUSTOMER
+  )
+
+  const customers = await customerModuleService.listCustomers()
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
 
 ## Features
 
@@ -15,7 +79,7 @@ The Customer Module is the `@medusajs/customer` NPM package that provides custom
 With the Customer Module, store and manage customers in your store.
 
 ```ts
-const customer = await customerModuleService.create({
+const customer = await customerModuleService.createCustomers({
   first_name: "Peter",
   last_name: "Hayes",
   email: "peter.hayes@example.com",
@@ -27,94 +91,12 @@ const customer = await customerModuleService.create({
 You can organize customers into groups. This has a lot of benefits and supports more use cases, such as provide discounts for specific customer groups using the Promotion Module.
 
 ```ts
-const customerGroup =
-  await customerModuleService.createCustomerGroup({
-    name: "VIP",
-  })
+const customerGroup = await customerModuleService.createCustomerGroups({
+  name: "VIP",
+})
 
 await customerModuleService.addCustomerToGroup({
   customer_id: "cus_123",
   customer_group_id: customerGroup.id,
 })
 ```
-
----
-
-## Configure Customer Module
-
-After installing the `@medusajs/customer` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  customer: {
-    resolve: "@medusajs/customer",
-  },
-}
-```
-
----
-
-## How to Use Customer Module's Service
-
-You can use the Customer Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CUSTOMER` imported from `@medusajs/modules-sdk`.
-
-For example:
-
-<CodeTabs groupId="resource-type">
-  <CodeTab label="API Route" value="api-route">
-
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
-
-    res.json({
-      customers: await customerModuleService.list(),
-    })
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Subscriber" value="subscribers">
-
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const customerModuleService: ICustomerModuleService =
-      container.resolve(ModuleRegistrationName.CUSTOMER)
-
-    const customers = await customerModuleService.list()
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  const step1 = createStep("step-1", async (_, context) => {
-    const customerModuleService: ICustomerModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
-
-    const customers = await customerModuleService.list()
-  })
-  ```
-
-  </CodeTab>
-</CodeTabs>

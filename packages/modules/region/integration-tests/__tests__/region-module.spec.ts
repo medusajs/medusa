@@ -1,23 +1,54 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IRegionModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { IRegionModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { RegionModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IRegionModuleService>({
   moduleName: Modules.REGION,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IRegionModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Region Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.REGION, {
+          service: RegionModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["region", "country"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          region: {
+            id: {
+              linkable: "region_id",
+              entity: "Region",
+              primaryKey: "id",
+              serviceName: "Region",
+              field: "region",
+            },
+          },
+          country: {
+            iso_2: {
+              linkable: "country_iso_2",
+              entity: "Country",
+              primaryKey: "iso_2",
+              serviceName: "Region",
+              field: "country",
+            },
+          },
+        })
+      })
+
       it("should create countries on application start", async () => {
-        const countries = await service.listCountries({}, { take: null })
+        const countries = await service.listCountries({}, {})
         expect(countries.length).toEqual(250)
       })
 
       it("should create and list a region", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "Europe",
           currency_code: "EUR",
           automatic_taxes: false,
@@ -33,7 +64,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        const region = await service.retrieve(createdRegion.id, {
+        const region = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
@@ -48,13 +79,13 @@ moduleIntegrationTestRunner({
       })
 
       it("should create a region with countries", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        const region = await service.retrieve(createdRegion.id, {
+        const region = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
@@ -80,7 +111,7 @@ moduleIntegrationTestRunner({
 
       it("should throw when country doesn't exist", async () => {
         await expect(
-          service.create({
+          service.createRegions({
             name: "North America",
             currency_code: "USD",
             countries: ["neverland"],
@@ -89,14 +120,14 @@ moduleIntegrationTestRunner({
       })
 
       it("should throw when country is already assigned to a region", async () => {
-        await service.create({
+        await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us"],
         })
 
         await expect(
-          service.create({
+          service.createRegions({
             name: "United States",
             currency_code: "USD",
             countries: ["us"],
@@ -108,7 +139,7 @@ moduleIntegrationTestRunner({
 
       it("should throw when country is being assigned to multiple regions", async () => {
         await expect(
-          service.create([
+          service.createRegions([
             {
               name: "United States",
               currency_code: "USD",
@@ -126,13 +157,13 @@ moduleIntegrationTestRunner({
       })
 
       it("should upsert the region successfully", async () => {
-        const createdRegion = await service.upsert({
+        const createdRegion = await service.upsertRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        await service.upsert({
+        await service.upsertRegions({
           id: createdRegion.id,
           name: "Americas",
           currency_code: "MXN",
@@ -140,7 +171,7 @@ moduleIntegrationTestRunner({
           automatic_taxes: false,
         })
 
-        const latestRegion = await service.retrieve(createdRegion.id, {
+        const latestRegion = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
@@ -154,13 +185,13 @@ moduleIntegrationTestRunner({
       })
 
       it("should allow mixing create and update operations in upsert", async () => {
-        const createdRegion = await service.upsert({
+        const createdRegion = await service.upsertRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        const upserted = await service.upsert([
+        const upserted = await service.upsertRegions([
           {
             id: createdRegion.id,
             name: "Americas",
@@ -190,29 +221,29 @@ moduleIntegrationTestRunner({
       })
 
       it("should update the region successfully", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        const shouldNotBeChangedRegion = await service.create({
+        const shouldNotBeChangedRegion = await service.createRegions({
           name: "Europe",
           currency_code: "EUR",
           countries: ["hr"],
         })
 
-        await service.update(createdRegion.id, {
+        await service.updateRegions(createdRegion.id, {
           name: "Americas",
           currency_code: "MXN",
           countries: ["us", "mx"],
         })
 
-        const latestRegion = await service.retrieve(createdRegion.id, {
+        const latestRegion = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
-        const shouldNotBeChangedRegionAfter = await service.retrieve(
+        const shouldNotBeChangedRegionAfter = await service.retrieveRegion(
           shouldNotBeChangedRegion.id,
           {
             relations: ["countries"],
@@ -235,18 +266,18 @@ moduleIntegrationTestRunner({
       })
 
       it("should update the region without affecting countries if countries are undefined", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        await service.update(createdRegion.id, {
+        await service.updateRegions(createdRegion.id, {
           name: "Americas",
           currency_code: "MXN",
         })
 
-        const updatedRegion = await service.retrieve(createdRegion.id, {
+        const updatedRegion = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
@@ -263,19 +294,19 @@ moduleIntegrationTestRunner({
       })
 
       it("should remove the countries in a region successfully", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        await service.update(createdRegion.id, {
+        await service.updateRegions(createdRegion.id, {
           name: "Americas",
           currency_code: "MXN",
           countries: [],
         })
 
-        const updatedRegion = await service.retrieve(createdRegion.id, {
+        const updatedRegion = await service.retrieveRegion(createdRegion.id, {
           relations: ["countries"],
         })
 
@@ -289,14 +320,14 @@ moduleIntegrationTestRunner({
       })
 
       it("should fail updating the region countries to non-existent ones", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
         await expect(
-          service.update(
+          service.updateRegions(
             { id: createdRegion.id },
             {
               countries: ["us", "neverland"],
@@ -306,14 +337,14 @@ moduleIntegrationTestRunner({
       })
 
       it("should fail updating the region if there are duplicate countries", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
         await expect(
-          service.update(
+          service.updateRegions(
             { id: createdRegion.id },
             {
               countries: ["us", "us"],
@@ -325,7 +356,7 @@ moduleIntegrationTestRunner({
       })
 
       it("should fail updating the region if country is already used", async () => {
-        const [createdRegion] = await service.create([
+        const [createdRegion] = await service.createRegions([
           {
             name: "North America",
             currency_code: "USD",
@@ -339,7 +370,7 @@ moduleIntegrationTestRunner({
         ])
 
         await expect(
-          service.update(
+          service.updateRegions(
             { id: createdRegion.id },
             {
               countries: ["us", "mx"],
@@ -351,21 +382,43 @@ moduleIntegrationTestRunner({
       })
 
       it("should unset the region ID on the country when deleting a region", async () => {
-        const createdRegion = await service.create({
+        const createdRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        await service.delete(createdRegion.id)
+        await service.deleteRegions(createdRegion.id)
 
-        const newRegion = await service.create({
+        const newRegion = await service.createRegions({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
         })
 
-        const resp = await service.retrieve(newRegion.id, {
+        const resp = await service.retrieveRegion(newRegion.id, {
+          relations: ["countries"],
+        })
+
+        expect(resp.countries).toHaveLength(2)
+      })
+
+      it("should unset the region ID on the country when soft deleting a region", async () => {
+        const createdRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        await service.softDeleteRegions([createdRegion.id])
+
+        const newRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        const resp = await service.retrieveRegion(newRegion.id, {
           relations: ["countries"],
         })
 

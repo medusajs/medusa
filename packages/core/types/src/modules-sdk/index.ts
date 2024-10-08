@@ -1,18 +1,31 @@
-import {
-  JoinerRelationship,
-  JoinerServiceConfig,
-  RemoteJoinerOptions,
-  RemoteJoinerQuery,
-} from "../joiner"
+import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
 
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
+import {
+  RemoteQueryGraph,
+  RemoteQueryInput,
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "./remote-query-object-from-string"
 
-export type Constructor<T> = new (...args: any[]) => T
+export {
+  RemoteQueryGraph,
+  RemoteQueryInput,
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+}
+
+export type Constructor<T> = new (...args: any[]) => T | (new () => T)
+
 export * from "../common/medusa-container"
-export * from "./internal-module-service"
+export * from "./medusa-internal-service"
 export * from "./module-provider"
+export * from "./remote-query"
+export * from "./remote-query-entry-points"
+export * from "./to-remote-query"
+export * from "./query-filter"
 
 export type LogLevel =
   | "query"
@@ -24,21 +37,18 @@ export type LogLevel =
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
-export enum MODULE_SCOPE {
-  INTERNAL = "internal",
-  EXTERNAL = "external",
-}
-
-export enum MODULE_RESOURCE_TYPE {
-  SHARED = "shared",
-  ISOLATED = "isolated",
+export type CustomModuleDefinition = {
+  key?: string
+  label?: string
+  isQueryable?: boolean // If the module is queryable via Remote Joiner
+  dependencies?: string[]
 }
 
 export type InternalModuleDeclaration = {
-  scope: MODULE_SCOPE.INTERNAL
-  resources: MODULE_RESOURCE_TYPE
+  scope: "internal"
+  resources: "shared" | "isolated"
   dependencies?: string[]
-  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
   options?: Record<string, unknown>
   /**
@@ -53,8 +63,8 @@ export type InternalModuleDeclaration = {
 }
 
 export type ExternalModuleDeclaration = {
-  scope: MODULE_SCOPE.EXTERNAL
-  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  scope: "external"
+  definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
@@ -82,13 +92,13 @@ export type ModuleResolution = {
 
 export type ModuleDefinition = {
   key: string
-  registrationName: string
   defaultPackage: string | false
   label: string
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
-  isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
   dependencies?: string[]
+  /** @internal only used in exceptional cases - relying on the shared contrainer breaks encapsulation */
+  __passSharedContainer?: boolean
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
@@ -96,7 +106,6 @@ export type ModuleDefinition = {
 
 export type LinkModuleDefinition = {
   key: string
-  registrationName: string
   label: string
   dependencies?: string[]
   defaultModuleDeclaration: InternalModuleDeclaration
@@ -122,7 +131,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
 }
 
 export type ModuleLoaderFunction = (
-  options: LoaderOptions,
+  options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
@@ -130,6 +139,54 @@ export type ModulesResponse = {
   module: string
   resolution: string | false
 }[]
+
+export type LinkModulesExtraFields = Record<
+  string,
+  {
+    type:
+      | "date"
+      | "time"
+      | "datetime"
+      | "bigint"
+      | "blob"
+      | "uint8array"
+      | "array"
+      | "enumArray"
+      | "enum"
+      | "json"
+      | "integer"
+      | "smallint"
+      | "tinyint"
+      | "mediumint"
+      | "float"
+      | "double"
+      | "boolean"
+      | "decimal"
+      | "string"
+      | "uuid"
+      | "text"
+    defaultValue?: string
+    nullable?: boolean
+    /**
+     * Mikro-orm options for the column
+     */
+    options?: Record<string, unknown>
+  }
+>
+
+/**
+ * A link for two records of linked data models.
+ *
+ * The keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.
+ */
+export type LinkDefinition = {
+  [moduleName: string]: {
+    // TODO: changing this to any temporarily as the "data" attribute is not being picked up correctly
+    [fieldName: string]: any
+  }
+} & {
+  data?: Record<string, unknown>
+}
 
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
@@ -167,6 +224,11 @@ export type ModuleJoinerConfig = Omit<
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
   isReadOnlyLink?: boolean
+  /**
+   * Fields that will be part of the link record aside from the primary keys that can be updated
+   * If not explicitly defined, this array will be populated by databaseConfig.extraFields
+   */
+  extraDataFields?: string[]
   databaseConfig?: {
     /**
      * Name of the pivot table. If not provided it is auto generated
@@ -176,64 +238,20 @@ export type ModuleJoinerConfig = Omit<
      * Prefix for the id column. If not provided it is "link"
      */
     idPrefix?: string
-    extraFields?: Record<
-      string,
-      {
-        type:
-          | "date"
-          | "time"
-          | "datetime"
-          | "bigint"
-          | "blob"
-          | "uint8array"
-          | "array"
-          | "enumArray"
-          | "enum"
-          | "json"
-          | "integer"
-          | "smallint"
-          | "tinyint"
-          | "mediumint"
-          | "float"
-          | "double"
-          | "boolean"
-          | "decimal"
-          | "string"
-          | "uuid"
-          | "text"
-        defaultValue?: string
-        nullable?: boolean
-        /**
-         * Mikro-orm options for the column
-         */
-        options?: Record<string, unknown>
-      }
-    >
+    extraFields?: LinkModulesExtraFields
   }
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
-  /**
-   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
-   */
-  isInternalService?: boolean
   /**
    * If true, the link joiner will cascade deleting the relationship
    */
   deleteCascade?: boolean
 }
 
-export type ModuleExports = {
-  service: Constructor<any>
+export type ModuleExports<T = Constructor<any>> = {
+  service: T
   loaders?: ModuleLoaderFunction[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  migrations?: any[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  models?: Constructor<any>[]
   runMigrations?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
@@ -242,6 +260,15 @@ export type ModuleExports = {
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+  generateMigration?(
+    options: LoaderOptions<any>,
+    moduleDeclaration?: InternalModuleDeclaration
+  ): Promise<void>
+  /**
+   * Explicitly set the the true location of the module resources.
+   * Can be used to re-export the module from a different location and specify its original location.
+   */
+  discoveryPath?: string
 }
 
 export interface ModuleServiceInitializeOptions {
@@ -278,12 +305,6 @@ export type ModuleBootstrapDeclaration =
 // TODO: These should be added back when the chain of types are fixed
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions
-
-export type RemoteQueryFunction = (
-  query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>,
-  options?: RemoteJoinerOptions
-) => Promise<any> | null
 
 export interface IModuleService {
   /**

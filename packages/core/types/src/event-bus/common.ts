@@ -1,7 +1,6 @@
-export type Subscriber<T = unknown> = (
-  data: T,
-  eventName: string
-) => Promise<void>
+import { Context } from "../shared-context"
+
+export type Subscriber<TData = unknown> = (data: Event<TData>) => Promise<void>
 
 export type SubscriberContext = {
   subscriberId: string
@@ -12,40 +11,26 @@ export type SubscriberDescriptor = {
   subscriber: Subscriber
 }
 
-export type EventHandler<T = unknown> = (
-  data: T,
-  eventName: string
-) => Promise<void>
+export type EventMetadata = Record<string, unknown> & {
+  eventGroupId?: string
+}
 
-export type EmitData<T = unknown> = {
-  eventName: string
-  data: T
+export type Event<TData = unknown> = {
+  name: string
+  metadata?: EventMetadata
+  data: TData
+}
+
+export type Message<TData = unknown> = Event<TData> & {
   options?: Record<string, unknown>
 }
 
-export type MessageBody<T = unknown> = {
-  metadata: {
-    service: string
-    action: string
-    object: string
-    eventGroupId?: string
-  }
-  data: T
-}
-
-export type Message<T = unknown> = {
+export type RawMessageFormat<TData = any> = {
   eventName: string
-  body: MessageBody<T>
-  options?: Record<string, unknown>
-}
-
-export type MessageFormat<T = unknown> = {
-  eventName: string
-  metadata: {
-    service: string
-    action: string
-    object: string
-    eventGroupId?: string
-  }
-  data: T | T[]
+  data: TData
+  source: string
+  object: string
+  action?: string
+  context?: Pick<Context, "eventGroupId">
+  options?: Record<string, any>
 }

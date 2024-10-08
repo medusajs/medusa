@@ -1,18 +1,24 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   PriceListDTO,
   UpdatePriceListDTO,
-} from "@medusajs/types"
-import { MedusaError, arrayDifference } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  arrayDifference,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const validatePriceListsStepId = "validate-price-lists"
+/**
+ * This step validates that the specified price lists exist.
+ */
 export const validatePriceListsStep = createStep(
   validatePriceListsStepId,
   async (data: Pick<UpdatePriceListDTO, "id">[], { container }) => {
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const priceListIds = data.map((d) => d.id)

@@ -1,10 +1,14 @@
-export function deepEqualObj(obj1: object, obj2: object): boolean {
+export function deepEqualObj(obj1: unknown, obj2: unknown): boolean {
   if (typeof obj1 !== typeof obj2) {
     return false
   }
 
   if (typeof obj1 !== "object" || obj1 === null) {
     return obj1 === obj2
+  }
+
+  if (typeof obj2 !== "object" || obj2 === null) {
+    return obj2 === obj1
   }
 
   const obj1Keys = Object.keys(obj1)

@@ -1,13 +1,10 @@
-module.exports = {
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
+const defineJestConfig = require("../../../../define_jest_config")
+module.exports = defineJestConfig({
+  moduleNameMapper: {
+    "^@models": "<rootDir>/src/models",
+    "^@services": "<rootDir>/src/services",
+    "^@repositories": "<rootDir>/src/repositories",
+    "^@types": "<rootDir>/src/types",
+    "^@utils": "<rootDir>/src/utils",
   },
-  transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
-  },
-  testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
-}
+})

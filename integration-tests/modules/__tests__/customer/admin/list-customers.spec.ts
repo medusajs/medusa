@@ -1,10 +1,10 @@
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -22,9 +22,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -32,7 +30,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all customers and its count", async () => {
-        await customerModuleService.create([
+        await customerModuleService.createCustomers([
           {
             first_name: "Test",
             last_name: "Test",
@@ -55,11 +53,11 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all customers in specific customer group and its count", async () => {
-        const vipGroup = await customerModuleService.createCustomerGroup({
+        const vipGroup = await customerModuleService.createCustomerGroups({
           name: "VIP",
         })
 
-        const [john] = await customerModuleService.create([
+        const [john] = await customerModuleService.createCustomers([
           {
             first_name: "John",
             last_name: "Doe",
@@ -94,7 +92,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should filter customers by last name", async () => {
-        await customerModuleService.create([
+        await customerModuleService.createCustomers([
           {
             first_name: "Jane",
             last_name: "Doe",
@@ -143,7 +141,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching of customers", async () => {
-        await customerModuleService.create([
+        await customerModuleService.createCustomers([
           {
             first_name: "Jane",
             last_name: "Doe",

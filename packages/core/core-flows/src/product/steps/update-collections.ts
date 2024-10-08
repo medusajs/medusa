@@ -1,31 +1,34 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateCollectionsStepInput = {
+export type UpdateCollectionsStepInput = {
   selector: ProductTypes.FilterableProductCollectionProps
   update: ProductTypes.UpdateProductCollectionDTO
 }
 
 export const updateCollectionsStepId = "update-collections"
+/**
+ * This step updates collections matching the specified filters.
+ */
 export const updateCollectionsStep = createStep(
   updateCollectionsStepId,
   async (data: UpdateCollectionsStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
     ])
 
-    const prevData = await service.listCollections(data.selector, {
+    const prevData = await service.listProductCollections(data.selector, {
       select: selects,
       relations,
     })
 
-    const collections = await service.updateCollections(
+    const collections = await service.updateProductCollections(
       data.selector,
       data.update
     )
@@ -36,11 +39,9 @@ export const updateCollectionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.upsertCollections(
+    await service.upsertProductCollections(
       prevData.map((r) => ({
         ...(r as unknown as ProductTypes.UpdateProductCollectionDTO),
       }))

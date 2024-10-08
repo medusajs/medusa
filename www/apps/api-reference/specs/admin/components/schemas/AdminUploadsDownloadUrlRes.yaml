@@ -1,8 +1,0 @@
-type: object
-description: The download URL details.
-required:
-  - download_url
-properties:
-  download_url:
-    description: The Download URL of the file
-    type: string

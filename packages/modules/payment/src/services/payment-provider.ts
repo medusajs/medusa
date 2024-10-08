@@ -1,31 +1,23 @@
 import {
-  Context,
-  CreatePaymentProviderDTO,
+  BigNumberInput,
   CreatePaymentProviderSession,
   DAL,
-  FilterablePaymentProviderProps,
-  FindConfig,
-  InternalModuleDeclaration,
   IPaymentProvider,
   PaymentProviderAuthorizeResponse,
   PaymentProviderDataInput,
-  PaymentProviderDTO,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
   ProviderWebhookPayload,
   UpdatePaymentProviderSession,
   WebhookActionResult,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
   isPaymentProviderError,
-  MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { PaymentProvider } from "@models"
-import { MedusaError } from "medusa-core-utils"
 import { EOL } from "os"
 
 type InjectedDependencies = {
@@ -33,64 +25,12 @@ type InjectedDependencies = {
   [key: `pp_${string}`]: IPaymentProvider
 }
 
-export default class PaymentProviderService {
-  protected readonly container_: InjectedDependencies
-  protected readonly paymentProviderRepository_: DAL.RepositoryService
-
-  constructor(
-    container: InjectedDependencies,
-
-    protected readonly moduleDeclaration: InternalModuleDeclaration
-  ) {
-    this.container_ = container
-    this.paymentProviderRepository_ = container.paymentProviderRepository
-  }
-
-  @InjectTransactionManager("paymentProviderRepository_")
-  async create(
-    data: CreatePaymentProviderDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentProvider[]> {
-    return await this.paymentProviderRepository_.create(data, sharedContext)
-  }
-
-  @InjectManager("paymentProviderRepository_")
-  async list(
-    filters: FilterablePaymentProviderProps,
-    config: FindConfig<PaymentProviderDTO>,
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentProvider[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
-      filters,
-      config
-    )
-
-    return await this.paymentProviderRepository_.find(
-      queryOptions,
-      sharedContext
-    )
-  }
-
-  @InjectManager("paymentProviderRepository_")
-  async listAndCount(
-    filters: FilterablePaymentProviderProps,
-    config: FindConfig<PaymentProviderDTO>,
-    @MedusaContext() sharedContext?: Context
-  ): Promise<[PaymentProvider[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
-      filters,
-      config
-    )
-
-    return await this.paymentProviderRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )
-  }
-
+export default class PaymentProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+  PaymentProvider
+) {
   retrieveProvider(providerId: string): IPaymentProvider {
     try {
-      return this.container_[providerId] as IPaymentProvider
+      return this.__container__[providerId] as IPaymentProvider
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -184,7 +124,7 @@ export default class PaymentProviderService {
 
   async refundPayment(
     input: PaymentProviderDataInput,
-    amount: number
+    amount: BigNumberInput
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProvider(input.provider_id)
 

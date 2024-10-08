@@ -1,0 +1,506 @@
+---
+slug: /references/fulfillment/provider
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create a Fulfillment Provider Module
+
+In this document, you’ll learn how to create a fulfillment provider module and the methods you must implement in its main service.
+
+---
+
+## 1. Create Module Directory
+
+Start by creating a new directory for your module. For example, `src/modules/my-fulfillment`.
+
+---
+
+## 2. Create the Fulfillment Provider Service
+
+Create the file `src/modules/my-fulfillment/service.ts` that holds the module's main service. It must extend the `AbstractFulfillmentProviderService` class imported from `@medusajs/framework/utils`:
+
+```ts title="src/modules/my-fulfillment/service.ts"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
+
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // TODO implement methods
+}
+
+export default MyFulfillmentProviderService
+```
+
+### constructor
+
+The constructor allows you to access resources from the module's container using the first parameter,
+and the module's options using the second parameter.
+
+:::note
+
+A module's options are passed when you register it in the Medusa application.
+
+:::
+
+If you're creating a client or establishing a connection with a third-party service, do it in the constructor.
+
+#### Example
+
+```ts
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  apiKey: string
+}
+
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  protected logger_: Logger
+  protected options_: Options
+  // assuming you're initializing a client
+  protected client
+
+  constructor(
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    super()
+
+    this.logger_ = logger
+    this.options_ = options
+  }
+}
+
+export default MyFulfillmentProviderService
+```
+
+### constructor
+
+### getFulfillmentOptions
+
+This method retrieves the shipping options this fulfillment provider supports.
+
+#### Example
+
+```ts
+// other imports...
+import { FulfillmentOption } from "@medusajs/framework/types"
+
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
+    return [
+      {
+        id: "express"
+      },
+      {
+        id: "return-express",
+        is_return: true
+      }
+    ]
+  }
+}
+```
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;FulfillmentOption[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options.","expandable":false,"children":[{"name":"FulfillmentOption[]","type":"`FulfillmentOption`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"FulfillmentOption","type":"`FulfillmentOption`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getFulfillmentOptions"/>
+
+### validateFulfillmentData
+
+This method validates the `data` property of a shipping method and returns it. The returned data
+is stored in the shipping method's `data` property.
+
+Your fulfillment provider can use the `data` property to store additional information useful for
+handling the fulfillment later. For example, you may store an ID from the third-party fulfillment
+system.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async validateFulfillmentData(
+    optionData: any,
+    data: any,
+    context: any
+  ): Promise<any> {
+    // assuming your client retrieves an ID from the
+    // third-party service
+    const externalId = await this.client.getId()
+
+    return {
+      ...data,
+      externalId
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"optionData","type":"`any`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"The `data` property of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`any`","description":"Context details, such as context of the cart or customer.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"the data to store in the `data` property of the shipping method.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>
+
+### validateOption
+
+This method validates the `data` property of a shipping option when it's created.
+
+The `data` property can hold useful information that's later added to the `data` attribute
+of shipping methods created from this option.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async validateOption(data: any): Promise<boolean> {
+    return data.external_id !== undefined
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The data to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOption"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the data is valid.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOption"/>
+
+### canCalculate
+
+This method indicates whether a shippin option's price is calculated during
+checkout or is fixed.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async canCalculate(data: any): Promise<boolean> {
+    return data.custom_type !== "fixed"
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canCalculate"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the price is calculated for the shipping option.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canCalculate"/>
+
+### calculatePrice
+
+This method calculates the price of a shipping option, or a shipping method when it's created.
+
+The Medusa application uses the [canCalculate](page.mdx#cancalculate) method first to check whether the shipping option's price is calculated.
+If it returns `true`, Medusa uses this method to retrieve the calculated price.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async calculatePrice(optionData: any, data: any, cart: any): Promise<number> {
+    // assuming the client can calculate the price using
+    // the third-party service
+    const price = await this.client.calculate(data)
+
+    return price
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"optionData","type":"`any`","description":"The `data` property of a shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"If the price is calculated for a shipping option, it's the `data` of the shipping option. Otherwise, it's the `data of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The cart details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="calculatePrice"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"The calculated price","expandable":false,"children":[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="calculatePrice"/>
+
+### createFulfillment
+
+This method is used when a fulfillment is created. If the method returns in the object a
+`data` property, it's stored in the fulfillment's `data` property.
+
+The `data` property is useful when handling the fulfillment later,
+as you can access information useful for your integration.
+
+You can also use this method to perform an action with the third-party fulfillment service.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async createFulfillment(
+    data: any,
+    items: any,
+    order: any,
+    fulfillment: any
+  ): Promise<any> {
+    // assuming the client creates a fulfillment
+    // in the third-party service
+    const externalData = await this.client.create(
+      fulfillment,
+      items
+    )
+
+    return {
+      data: {
+        ...data,
+        ...externalData
+      }
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipping method this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`any`","description":"The items in the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`any`","description":"The order this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"The data to store in the fulfillment's `data` property.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createFulfillment"/>
+
+### cancelFulfillment
+
+This method is used when a fulfillment is canceled. Use it to perform operations
+with the third-party fulfillment service.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async cancelFulfillment(fulfillment: any): Promise<any> {
+    // assuming the client cancels a fulfillment
+    // in the third-party service
+    await this.client.cancel(fulfillment.id)
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"This method is used when a fulfillment is canceled. Use it to perform operations\nwith the third-party fulfillment service.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelFulfillment"/>
+
+### getFulfillmentDocuments
+
+This method retrieves the documents of a fulfillment.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async getFulfillmentDocuments(data: any): Promise<never[]> {
+    // assuming the client retrieves documents
+    // from a third-party service
+    return await this.client.documents(data)
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getFulfillmentDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"The fulfillment's documents.","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getFulfillmentDocuments"/>
+
+### createReturnFulfillment
+
+This method is used when a fulfillment is created for a return. If the method returns in the object a
+`data` property, it's stored in the fulfillment's `data` property.
+
+The `data` property is useful when handling the fulfillment later,
+as you can access information useful for your integration.
+
+Use this method to perform actions necessary in the third-party fulfillment service.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async createReturnFulfillment(fulfillment: any): Promise<any> {
+    // assuming the client creates a fulfillment for a return
+    // in the third-party service
+    const externalData = await this.client.createReturn(
+      fulfillment
+    )
+
+    return {
+      data: {
+        ...fulfillment.data,
+        ...externalData
+      }
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createReturnFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"The data to store in the fulfillment's `data` property.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createReturnFulfillment"/>
+
+### getReturnDocuments
+
+This method retrieves documents for a return's fulfillment.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async getReturnDocuments(data: any): Promise<never[]> {
+    // assuming the client retrieves documents
+    // from a third-party service
+    return await this.client.documents(data)
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getReturnDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"The fulfillment's documents.","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getReturnDocuments"/>
+
+### getShipmentDocuments
+
+This method retrieves the documents for a shipment.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async getShipmentDocuments(data: any): Promise<never[]> {
+    // assuming the client retrieves documents
+    // from a third-party service
+    return await this.client.documents(data)
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipmnet.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getShipmentDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"The shipment's documents.","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getShipmentDocuments"/>
+
+### retrieveDocuments
+
+This method retrieves the documents of a fulfillment of a certain type.
+
+#### Example
+
+```ts
+class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
+  // ...
+  async retrieveDocuments(
+    fulfillmentData: any,
+    documentType: any
+  ): Promise<void> {
+    // assuming the client retrieves documents
+    // from a third-party service
+    return await this.client.documents(
+      fulfillmentData,
+      documentType
+    )
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fulfillmentData","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documentType","type":"`any`","description":"The document's type. For example, `invoice`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"The fulfillment's documents.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveDocuments"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-fulfillment/index.ts` with the following content:
+
+```ts title="src/modules/my-fulfillment/index.ts"
+import MyFulfillmentProviderService from "./service"
+
+export default {
+  services: [MyFulfillmentProviderService],
+}
+```
+
+This exports the module's definition, indicating that the `MyFulfillmentProviderService` is the module's service.
+
+---
+
+## 4. Use Module
+
+To use your Fulfillment Module Provider, add it to the `providers` array of the Fulfillment Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/framework/utils")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.FULFILLMENT]: {
+      resolve: "@medusajs/framework/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-fulfillment",
+            id: "my-fulfillment",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  }
+})
+```
+
+---
+
+## 5. Test it Out
+
+Before you use your fulfillment provider, in the Medusa Admin:
+
+1. Add the fulfillment provider to a location.
+2. Add in the location a delivery shipping option that uses the provider.
+
+Then, place an order, choosing the shipping option you created during checkout, and create a fulfillment in the Medusa Admin. The fulfillment is created using your provider.

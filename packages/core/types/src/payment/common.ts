@@ -2,69 +2,21 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberValue } from "../totals"
 /* ********** PAYMENT COLLECTION ********** */
-/**
- * @enum
- *
- * The payment collection's status.
- */
-export enum PaymentCollectionStatus {
-  /**
-   * The payment collection isn't paid.
-   */
-  NOT_PAID = "not_paid",
 
-  /**
-   * The payment sessions in the payment collection are await authorization.
-   */
-  AWAITING = "awaiting",
+export type PaymentCollectionStatus =
+  | "not_paid"
+  | "awaiting"
+  | "authorized"
+  | "partially_authorized"
+  | "canceled"
 
-  /**
-   * The payment sessions in the payment collection are authorized.
-   */
-  AUTHORIZED = "authorized",
-
-  /**
-   * Some of the payments in the payment collection are authorized.
-   */
-  PARTIALLY_AUTHORIZED = "partially_authorized",
-
-  /**
-   * The payments in the payment collection are canceled.
-   */
-  CANCELED = "canceled",
-}
-
-/**
- * @enum
- *
- * The status of a payment session.
- */
-export enum PaymentSessionStatus {
-  /**
-   * The payment is authorized.
-   */
-  AUTHORIZED = "authorized",
-
-  /**
-   * The payment is pending.
-   */
-  PENDING = "pending",
-
-  /**
-   * The payment requires an action.
-   */
-  REQUIRES_MORE = "requires_more",
-
-  /**
-   * An error occurred while processing the payment.
-   */
-  ERROR = "error",
-
-  /**
-   * The payment is canceled.
-   */
-  CANCELED = "canceled",
-}
+export type PaymentSessionStatus =
+  | "authorized"
+  | "captured"
+  | "pending"
+  | "requires_more"
+  | "error"
+  | "canceled"
 
 /**
  * The payment collection details.
@@ -99,6 +51,11 @@ export interface PaymentCollectionDTO {
    * The amount refunded within the associated payments.
    */
   refunded_amount?: BigNumberValue
+
+  /**
+   * The amount captured within the associated payments.
+   */
+  captured_amount?: BigNumberValue
 
   /**
    * When the payment collection was completed.
@@ -316,9 +273,19 @@ export interface PaymentDTO {
   amount: BigNumberValue
 
   /**
+   * The raw amount of the payment.
+   */
+  raw_amount?: BigNumberValue
+
+  /**
    * The authorized amount of the payment.
    */
   authorized_amount?: BigNumberValue
+
+  /**
+   * The raw authorized amount of the payment.
+   */
+  raw_authorized_amount?: BigNumberValue
 
   /**
    * The ISO 3 character currency code of the payment.
@@ -381,9 +348,19 @@ export interface PaymentDTO {
   captured_amount?: BigNumberValue
 
   /**
+   * The sum of the associated captures' raw amounts.
+   */
+  raw_captured_amount?: BigNumberValue
+
+  /**
    * The sum of the associated refunds' amounts.
    */
   refunded_amount?: BigNumberValue
+
+  /**
+   * The sum of the associated refunds' raw amounts.
+   */
+  raw_refunded_amount?: BigNumberValue
 
   /**
    * The associated captures.
@@ -398,6 +375,11 @@ export interface PaymentDTO {
    * @expandable
    */
   refunds?: RefundDTO[]
+
+  /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
 
   /**
    * The associated payment collection.
@@ -432,7 +414,7 @@ export interface FilterablePaymentProps
   /**
    * Filter the payments by the ID of their associated payment session.
    */
-  session_id?: string | string[] | OperatorMap<string>
+  payment_session_id?: string | string[] | OperatorMap<string>
 
   /**
    * Filter the payments by the ID of their associated customer.
@@ -521,6 +503,21 @@ export interface RefundDTO {
   amount: BigNumberValue
 
   /**
+   * The id of the refund_reason that is associated with the refund
+   */
+  refund_reason_id?: string | null
+
+  /**
+   * The id of the refund_reason that is associated with the refund
+   */
+  refund_reason?: RefundReasonDTO | null
+
+  /**
+   * A field to add some additional information about the refund
+   */
+  note?: string | null
+
+  /**
    * The creation date of the refund.
    */
   created_at: Date
@@ -582,6 +579,11 @@ export interface PaymentSessionDTO {
   authorized_at?: Date
 
   /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
+
+  /**
    * The payment collection the session is associated with.
    *
    * @expandable
@@ -608,7 +610,7 @@ export interface PaymentProviderDTO {
   /**
    * Whether the payment provider is enabled.
    */
-  is_enabled: string
+  is_enabled: boolean
 }
 
 /**
@@ -617,7 +619,7 @@ export interface PaymentProviderDTO {
 export interface FilterablePaymentProviderProps
   extends BaseFilterable<PaymentProviderDTO> {
   /**
-   * The IDs to filter the payment collection by.
+   * The IDs to filter the payment provider by.
    */
   id?: string | string[] | OperatorMap<string | string[]>
 
@@ -625,4 +627,39 @@ export interface FilterablePaymentProviderProps
    * Filter by whether the payment provider is enabled.
    */
   is_enabled?: boolean
+}
+
+export interface FilterableRefundReasonProps
+  extends BaseFilterable<FilterableRefundReasonProps> {
+  /**
+   * The IDs to filter the refund reasons by.
+   */
+  id?: string | string[]
+}
+
+export interface RefundReasonDTO {
+  /**
+   * The ID of the refund reason
+   */
+  id: string
+  /**
+   * The label of the refund reason
+   */
+  label: string
+  /**
+   * The description of the refund reason
+   */
+  description?: string | null
+  /**
+   * The metadata of the refund reason
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the refund reason was created
+   */
+  created_at: Date | string
+  /**
+   * When the refund reason was updated
+   */
+  updated_at: Date | string
 }

@@ -1,13 +1,8 @@
 import React, { useState } from "react"
 import { ThreadType } from "../.."
 import clsx from "clsx"
-import {
-  Button,
-  type ButtonProps,
-  ThumbDownIcon,
-  ThumbUpIcon,
-} from "@/components"
-import { Check, SquareTwoStack } from "@medusajs/icons"
+import { Button, type ButtonProps } from "@/components"
+import { Check, SquareTwoStackMini, ThumbDown, ThumbUp } from "@medusajs/icons"
 import { useCopy } from "@/hooks"
 import { AiAssistantFeedbackType, useAiAssistant } from "@/providers"
 
@@ -43,21 +38,17 @@ export const AiAssistantThreadItemActions = ({
 
   return (
     <div
-      className={clsx(
-        "hidden md:flex gap-docs_0.25",
-        "text-medusa-fg-muted",
-        "sticky top-docs_1"
-      )}
+      className={clsx("hidden md:flex gap-docs_0.25", "text-medusa-fg-muted")}
     >
       <ActionButton onClick={handleCopy}>
-        {isCopied ? <Check /> : <SquareTwoStack />}
+        {isCopied ? <Check /> : <SquareTwoStackMini />}
       </ActionButton>
       {(feedback === null || feedback === "upvote") && (
         <ActionButton
           onClick={async () => handleFeedback("upvote", item.question_id)}
           className={clsx(feedback === "upvote" && "!text-medusa-fg-subtle")}
         >
-          <ThumbUpIcon />
+          <ThumbUp />
         </ActionButton>
       )}
       {(feedback === null || feedback === "downvote") && (
@@ -65,7 +56,7 @@ export const AiAssistantThreadItemActions = ({
           onClick={async () => handleFeedback("downvote", item.question_id)}
           className={clsx(feedback === "downvote" && "!text-medusa-fg-subtle")}
         >
-          <ThumbDownIcon />
+          <ThumbDown />
         </ActionButton>
       )}
     </div>
@@ -75,11 +66,11 @@ export const AiAssistantThreadItemActions = ({
 const ActionButton = ({ children, className, ...props }: ButtonProps) => {
   return (
     <Button
-      variant="clear"
+      variant="transparent"
       className={clsx(
         "text-medusa-fg-muted hover:text-medusa-fg-subtle",
         "hover:bg-medusa-bg-subtle-hover",
-        "p-docs_0.125 rounded-docs_sm",
+        "!p-[4.5px] rounded-docs_sm",
         className
       )}
       {...props}

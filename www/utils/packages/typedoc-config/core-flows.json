@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../../packages/core/core-flows/tsconfig.json"
+  ],
+  "include": ["../../../../packages/core/core-flows/src"],
+  "exclude": [
+    "../../../../packages/core/core-flows/dist", 
+    "../../../../packages/core/core-flows/node_modules"
+  ]
+}

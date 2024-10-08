@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/updateRegionsWorkflow
+sidebar_label: updateRegionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateRegionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updateRegionsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates regions matching the specified filters.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updateRegionsWorkflow","steps":[{"type":"step","name":"updateRegionsStep","description":"This step updates regions matching the specified filters.","link":"../../../../core_flows.Steps_Region/page.mdx#updateregionsstep","depth":1},{"type":"when","condition":"{\n      return data.normalizedInput.is_tax_inclusive !== undefined\n    }","depth":"2","steps":[{"type":"workflow","name":"updatePricePreferencesWorkflow","description":"This workflow updates one or more price preferences.","link":"../../../../core_flows.Workflows_Pricing/page.mdx#updatepricepreferencesworkflow","depth":2}]},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdateRegionsWorkflowInput","type":"`UpdateRegionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRegionsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"UpdateRegionsWorkflowOutput","type":"`UpdateRegionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRegionsWorkflow"/>

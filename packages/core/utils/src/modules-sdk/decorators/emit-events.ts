@@ -1,16 +1,23 @@
 import { MessageAggregator } from "../../event-bus"
 import { InjectIntoContext } from "./inject-into-context"
-import {MessageAggregatorFormat} from "@medusajs/types";
+import { MessageAggregatorFormat } from "@medusajs/types"
 
-export function EmitEvents(options: MessageAggregatorFormat = {} as MessageAggregatorFormat) {
+/**
+ * @internal this decorator is not meant to be used except by the internal team for now
+ *
+ * @param options
+ * @constructor
+ */
+export function EmitEvents(
+  options: MessageAggregatorFormat = {} as MessageAggregatorFormat
+) {
   return function (
     target: any,
     propertyKey: string | symbol,
     descriptor: any
   ): void {
-    const aggregator = new MessageAggregator()
     InjectIntoContext({
-      messageAggregator: () => aggregator,
+      messageAggregator: () => new MessageAggregator(),
     })(target, propertyKey, descriptor)
 
     const original = descriptor.value
@@ -18,9 +25,23 @@ export function EmitEvents(options: MessageAggregatorFormat = {} as MessageAggre
     descriptor.value = async function (...args: any[]) {
       const result = await original.apply(this, args)
 
-      await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
+      if (!target.emitEvents_) {
+        const logger = Object.keys(this.__container__ ?? {}).includes("logger")
+          ? this.__container__.logger
+          : console
+        logger.warn(
+          `No emitEvents_ method found on ${target.constructor.name}. No events emitted. To be able to use the @EmitEvents() you need to have the emitEvents_ method implemented in the class.`
+        )
+      }
 
-      aggregator.clearMessages()
+      const argIndex = target.MedusaContextIndex_[propertyKey]
+      const aggregator = args[argIndex].messageAggregator as MessageAggregator
+
+      if (aggregator.count() > 0) {
+        await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
+        aggregator.clearMessages()
+      }
+
       return result
     }
   }

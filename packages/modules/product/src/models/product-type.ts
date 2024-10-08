@@ -13,7 +13,7 @@ import {
   Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const typeValueIndexName = "IDX_type_value_unique"
 const typeValueIndexStatement = createPsqlIndexStatementHelper({

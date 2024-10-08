@@ -5,8 +5,8 @@ const PaperClip = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const PaperClip = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m17.084 9.532-6.698 6.688a4.378 4.378 0 0 1-6.188 0 4.366 4.366 0 0 1 0-6.179l6.698-6.688a2.92 2.92 0 0 1 4.98 2.06 2.91 2.91 0 0 1-.855 2.06L8.316 14.16a1.46 1.46 0 0 1-2.49-1.03c0-.386.154-.757.428-1.03L12.44 5.93"
+          d="M9.264 4.32 5.022 8.562a1.333 1.333 0 1 0 1.885 1.886l4.4-4.4a2.666 2.666 0 1 0-3.771-3.772l-4.4 4.4a4 4 0 0 0 5.656 5.657l4.243-4.243"
         />
       </svg>
     )

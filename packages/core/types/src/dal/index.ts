@@ -1,4 +1,4 @@
-import { Dictionary, FilterQuery, OperatorMap, Order } from "./utils"
+import { Dictionary, FilterQuery, Order } from "./utils"
 
 export { FilterQuery, OperatorMap } from "./utils"
 

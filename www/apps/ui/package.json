@@ -30,13 +30,14 @@
     "docs-ui": "*",
     "eslint-config-docs": "*",
     "mdast-util-toc": "^7.0.0",
-    "next": "^14.2.3",
+    "next": "^14.2.14",
     "next-contentlayer": "^0.3.4",
     "next-themes": "^0.2.1",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "18.2.0",
+    "rehype-slug": "^6.0.0",
     "remark": "^14.0.3",
     "tailwind": "*",
     "tailwindcss": "3.3.3",
@@ -51,6 +52,6 @@
     "types": "*"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20"
   }
 }

@@ -13,7 +13,7 @@ const Container = React.forwardRef<
     <div
       ref={ref}
       className={clx(
-        "shadow-elevation-card-rest bg-ui-bg-base w-full rounded-lg px-8 pb-8 pt-6",
+        "shadow-elevation-card-rest bg-ui-bg-base w-full rounded-lg px-6 py-4",
         className
       )}
       {...props}

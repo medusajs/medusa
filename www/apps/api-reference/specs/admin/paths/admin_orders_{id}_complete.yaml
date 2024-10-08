@@ -1,47 +1,67 @@
 post:
-  operationId: PostOrdersOrderComplete
-  summary: Complete an Order
-  description: >-
-    Complete an Order and change its status. A canceled order can't be
-    completed.
+  operationId: PostOrdersIdComplete
+  summary: Complete Order
+  description: Mark an order as completed.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The order's ID.
       required: true
-      description: The ID of the Order.
       schema:
         type: string
-    - in: query
-      name: expand
-      description: Comma-separated relations that should be expanded in the returned order.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned order.
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-  x-codegen:
-    method: complete
-    params: AdminPostOrdersOrderCompleteParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_orders_{id}_complete/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_orders_{id}_complete/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_orders_{id}_complete/post.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: >-
+            Pass additional custom data to the API route. This data is passed to
+            the underlying workflow under the `additional_data` parameter.
+          properties:
+            additional_data:
+              type: object
+              description: >-
+                Pass additional custom data to the API route. This data is
+                passed to the underlying workflow under the `additional_data`
+                parameter.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_orders_{id}_complete/post.sh
   tags:
     - Orders
   responses:
@@ -50,7 +70,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminOrdersRes.yaml
+            $ref: ../components/schemas/AdminOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -63,3 +83,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: completeOrderWorkflow

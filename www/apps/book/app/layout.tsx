@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
-
-import Navbar from "@/components/Navbar"
 import Providers from "@/providers"
 import "./globals.css"
 import { TightLayout } from "docs-ui"
@@ -40,16 +38,15 @@ export default function RootLayout({
   return (
     <TightLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
       }}
       showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      feedbackComponent={<Feedback className="my-2" />}
+      editComponent={<EditButton />}
     >
       {children}
-      <Feedback className="my-2" />
-      <EditButton />
     </TightLayout>
   )
 }

@@ -1,19 +1,22 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   IFulfillmentModuleService,
-} from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createFulfillmentSetsId = "create-fulfillment-sets"
+/**
+ * This step creates one or more fulfillment sets.
+ */
 export const createFulfillmentSets = createStep(
   createFulfillmentSetsId,
   async (data: CreateFulfillmentSetDTO[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
-    const createSets = await service.create(data)
+    const createSets = await service.createFulfillmentSets(data)
 
     return new StepResponse(
       createSets,
@@ -26,9 +29,9 @@ export const createFulfillmentSets = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
-    await service.delete(createSetIds)
+    await service.deleteFulfillmentSets(createSetIds)
   }
 )

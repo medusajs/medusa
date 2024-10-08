@@ -56,8 +56,8 @@ Root.displayName = "Prompt"
 const Trigger = Primitives.Trigger
 Trigger.displayName = "Prompt.Trigger"
 
-const Portal = ({ className, ...props }: Primitives.AlertDialogPortalProps) => {
-  return <Primitives.AlertDialogPortal className={clx(className)} {...props} />
+const Portal = (props: Primitives.AlertDialogPortalProps) => {
+  return <Primitives.AlertDialogPortal {...props} />
 }
 Portal.displayName = "Prompt.Portal"
 

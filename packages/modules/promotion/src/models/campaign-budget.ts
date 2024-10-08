@@ -2,14 +2,14 @@ import {
   BigNumberRawValue,
   CampaignBudgetTypeValues,
   DAL,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   PromotionUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -21,6 +21,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Campaign from "./campaign"
 
@@ -28,7 +29,7 @@ type OptionalFields =
   | "description"
   | "limit"
   | "used"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 @Entity({ tableName: "promotion_campaign_budget" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -45,7 +46,10 @@ export default class CampaignBudget {
   @OneToOne({
     entity: () => Campaign,
   })
-  campaign: Campaign | null = null
+  campaign: Rel<Campaign> | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  currency_code: string | null = null
 
   @MikroOrmBigNumberProperty({ nullable: true })
   limit: BigNumber | number | null = null
@@ -53,11 +57,11 @@ export default class CampaignBudget {
   @Property({ columnType: "jsonb", nullable: true })
   raw_limit: BigNumberRawValue | null = null
 
-  @MikroOrmBigNumberProperty({ nullable: true })
-  used: BigNumber | number | null = null
+  @MikroOrmBigNumberProperty({ default: 0 })
+  used: BigNumber | number = 0
 
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_used: BigNumberRawValue | null = null
+  @Property({ columnType: "jsonb" })
+  raw_used: BigNumberRawValue
 
   @Property({
     onCreate: () => new Date(),

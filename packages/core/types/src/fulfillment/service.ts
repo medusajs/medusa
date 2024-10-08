@@ -40,7 +40,10 @@ import {
   UpsertShippingOptionDTO,
 } from "./mutations"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
-import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
+import {
+  CreateShippingProfileDTO,
+  UpsertShippingProfileDTO,
+} from "./mutations/shipping-profile"
 
 /**
  * The main service interface for the Fulfillment Module.
@@ -60,13 +63,13 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const fulfillmentSet =
-   *   await fulfillmentModuleService.retrieve("fuset_123")
+   *   await fulfillmentModuleService.retrieveFulfillmentSet("fuset_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const fulfillmentSet = await fulfillmentModuleService.retrieve(
+   * const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
    *   "fuset_123",
    *   {
    *     relations: ["service_zones"],
@@ -74,7 +77,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrieveFulfillmentSet(
     id: string,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -93,7 +96,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * To retrieve a list of fulfillment sets using their IDs:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.list({
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets({
    *   id: ["fuset_123", "fuset_321"],
    * })
    * ```
@@ -101,7 +104,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * To specify relations that should be retrieved within the fulfillment set:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.list(
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets(
    *   {
    *     id: ["fuset_123", "fuset_321"],
    *   },
@@ -114,7 +117,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.list(
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets(
    *   {
    *     id: ["fuset_123", "fuset_321"],
    *   },
@@ -126,7 +129,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listFulfillmentSets(
     filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -146,7 +149,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCount({
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets({
    *     id: ["fuset_123", "fuset_321"],
    *   })
    * ```
@@ -155,7 +158,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCount(
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets(
    *     {
    *       id: ["fuset_123", "fuset_321"],
    *     },
@@ -169,7 +172,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCount(
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets(
    *     {
    *       id: ["fuset_123", "fuset_321"],
    *     },
@@ -181,7 +184,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountFulfillmentSets(
     filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -195,7 +198,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO[]>} The created fulfillment sets.
    *
    * @example
-   * const fulfillmentSets = await fulfillmentModuleService.create(
+   * const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets(
    *   [
    *     {
    *       name: "Shipping",
@@ -208,7 +211,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ]
    * )
    */
-  create(
+  createFulfillmentSets(
     data: CreateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO[]>
@@ -221,12 +224,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO>} The created fulfillment set.
    *
    * @example
-   * const fulfillmentSet = await fulfillmentModuleService.create({
+   * const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
    *   name: "Shipping",
    *   type: "default",
    * })
    */
-  create(
+  createFulfillmentSets(
     data: CreateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO>
@@ -239,7 +242,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO[]>} The updated fulfillment sets.
    *
    * @example
-   * const fulfillmentSets = await fulfillmentModuleService.update(
+   * const fulfillmentSets = await fulfillmentModuleService.updateFulfillmentSets(
    *   [
    *     {
    *       id: "fuset_123",
@@ -252,7 +255,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ]
    * )
    */
-  update(
+  updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO[]>
@@ -265,12 +268,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO>} The updated fulfillment set.
    *
    * @example
-   * const fulfillmentSet = await fulfillmentModuleService.update({
+   * const fulfillmentSet = await fulfillmentModuleService.updateFulfillmentSets({
    *   id: "fuset_123",
    *   name: "Shipping",
    * })
    */
-  update(
+  updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO>
@@ -283,12 +286,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the fulfillment sets are deleted successfully.
    *
    * @example
-   * await fulfillmentModuleService.delete([
+   * await fulfillmentModuleService.deleteFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteFulfillmentSets(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a fulfillment set by its ID.
@@ -298,9 +301,9 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the fulfillment set is deleted successfully.
    *
    * @example
-   * await fulfillmentModuleService.delete("fuset_123")
+   * await fulfillmentModuleService.deleteFulfillmentSets("fuset_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteFulfillmentSets(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method soft deletes fulfillment sets by their IDs.
@@ -312,12 +315,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await fulfillmentModuleService.softDelete([
+   * await fulfillmentModuleService.softDeleteFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteFulfillmentSets<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -334,12 +337,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await fulfillmentModuleService.restore([
+   * await fulfillmentModuleService.restoreFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreFulfillmentSets<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1649,7 +1652,8 @@ export interface IFulfillmentModuleService extends IModuleService {
   /**
    * This method updates existing shipping profiles.
    *
-   * @param {CreateShippingProfileDTO[]} data - The shipping profiles to be created.
+   * @param {UpdateShippingProfileDTO} data - The shipping profiles update data.
+   * @param {FilterableShippingProfileProps} selector - The selector of shipping profiles to update
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ShippingProfileDTO[]>} The updated shipping profiles.
    *
@@ -1667,14 +1671,16 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ])
    */
   updateShippingProfiles(
-    data: UpdateShippingProfileDTO[],
+    selector: FilterableShippingProfileProps,
+    data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO[]>
 
   /**
    * This method updates an existing shipping profiles.
    *
-   * @param {CreateShippingProfileDTO} data - The shipping profile to be created.
+   * @param {string} id - The shipping profile to be updated.
+   * @param {UpdateShippingProfileDTO} data - The shipping profile to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ShippingProfileDTO>} The updated shipping profiles.
    *
@@ -1686,6 +1692,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   })
    */
   updateShippingProfiles(
+    id: string,
     data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO>
@@ -1718,6 +1725,51 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    */
   deleteShippingProfiles(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method updates existing shipping profiles, or creates new ones if they don't exist.
+   *
+   * @param {UpdateShippingProfileDTO[]} data - The attributes to update or create for each profile.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated and created profiles.
+   *
+   * @example
+   * const productTags = await productModuleService.upsertShippingProfiles([
+   *   {
+   *     id: "id_1234",
+   *     metadata: {
+   *       test: true,
+   *     },
+   *   },
+   *   {
+   *     name: "Digital",
+   *   },
+   * ])
+   */
+  upsertShippingProfiles(
+    data: UpsertShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO[]>
+
+  /**
+   * This method updates an existing shipping profile, or creates a new one if it doesn't exist.
+   *
+   * @param {UpdateShippingProfileDTO} data - The attributes to update or create for the profile.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated or created profile.
+   *
+   * @example
+   * const productTag = await productModuleService.upsertShippingProfiles({
+   *   id: "id_1234",
+   *   metadata: {
+   *     test: true,
+   *   },
+   * })
+   */
+  upsertShippingProfiles(
+    data: UpsertShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO>
 
   /**
    * This method soft deletes shipping profiles by their IDs.
@@ -2367,7 +2419,7 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<[FulfillmentDTO[], number]>
 
   /**
-   * This method creates a fulfillment.
+   * This method creates a fulfillment and call the provider to create a fulfillment.
    *
    * @param {CreateFulfillmentDTO} data - The fulfillment to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -2401,6 +2453,45 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   })
    */
   createFulfillment(
+    data: CreateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
+
+  /**
+   * This method creates a fulfillment and call the provider to create a return.
+   *
+   * @param {CreateFulfillmentDTO} data - The fulfillment to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<FulfillmentDTO>} The created fulfillment.
+   *
+   * @example
+   * const fulfillment =
+   *   await fulfillmentModuleService.createReturnFulfillment({
+   *     location_id: "loc_123",
+   *     provider_id: "webshipper",
+   *     delivery_address: {
+   *       address_1: "4120 Auto Park Cir",
+   *       country_code: "us",
+   *     },
+   *     items: [
+   *       {
+   *         title: "Shirt",
+   *         sku: "SHIRT",
+   *         quantity: 1,
+   *         barcode: "ABCED",
+   *       },
+   *     ],
+   *     labels: [
+   *       {
+   *         tracking_number: "1234567",
+   *         tracking_url: "https://example.com/tracking",
+   *         label_url: "https://example.com/label",
+   *       },
+   *     ],
+   *     order: {},
+   *   })
+   */
+  createReturnFulfillment(
     data: CreateFulfillmentDTO,
     sharedContext?: Context
   ): Promise<FulfillmentDTO>

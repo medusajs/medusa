@@ -5,8 +5,8 @@ const Stopwatch = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const Stopwatch = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M7.75 2.25h4.5M10 2.25v2.5M10 17.25a6.25 6.25 0 1 0 0-12.5 6.25 6.25 0 0 0 0 12.5ZM7.702 8.702 10 11M15.25 3.75l2 2"
+          d="M5.625 1.042h3.75M7.5 1.042v2.083M7.5 13.542a5.208 5.208 0 1 0 0-10.417 5.208 5.208 0 0 0 0 10.417M5.585 6.418 7.5 8.333M11.875 2.292l1.667 1.666"
         />
       </svg>
     )

@@ -6,9 +6,9 @@ export type CreateProductVariantWorkflowInputDTO =
   }
 
 export type UpdateProductVariantWorkflowInputDTO =
-  (ProductTypes.UpsertProductVariantDTO & {
+  ProductTypes.UpsertProductVariantDTO & {
     prices?: PricingTypes.CreateMoneyAmountDTO[]
-  })[]
+  }
 
 export type CreateProductWorkflowInputDTO = Omit<
   ProductTypes.CreateProductDTO,

@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # parallelize - Workflows API Reference
 
-This documentation provides a reference to the `parallelize` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `parallelize` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
 
@@ -16,8 +16,9 @@ This function is used to run multiple steps in parallel. The result of each step
 ```ts
 import {
   createWorkflow,
-  parallelize
-} from "@medusajs/workflows-sdk"
+  parallelize,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
 import {
   createProductStep,
   getProductStep,
@@ -29,10 +30,9 @@ interface WorkflowInput {
   title: string
 }
 
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  Product
->("my-workflow", (input) => {
+const myWorkflow = createWorkflow(
+  "my-workflow", 
+  (input: WorkflowInput) => {
    const product = createProductStep(input)
 
    const [prices, productSalesChannel] = parallelize(
@@ -41,19 +41,19 @@ const myWorkflow = createWorkflow<
    )
 
    const id = product.id
-   return getProductStep(product.id)
+   return new WorkflowResponse(getProductStep(product.id))
  }
 )
 ```
 
 ## Type Parameters
 
-<TypeList types={[{"name":"TResult","type":"[WorkflowData](../../types/workflows.WorkflowData/page.mdx)[]","description":"The type of the expected result.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>
+<TypeList types={[{"name":"TResult","type":"[WorkflowData](../../types/workflows.WorkflowData/page.mdx)[]","description":"The type of the expected result.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="parallelize"/>
 
 ## Parameters
 
-<TypeList types={[{"name":"steps","type":"TResult","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>
+<TypeList types={[{"name":"steps","type":"TResult","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="parallelize"/>
 
 ## Returns
 
-<TypeList types={[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"The step results. The results are ordered in the array by the order they're passed in the function's parameter.","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>
+<TypeList types={[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"The step results. The results are ordered in the array by the order they're passed in the function's parameter.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="parallelize"/>

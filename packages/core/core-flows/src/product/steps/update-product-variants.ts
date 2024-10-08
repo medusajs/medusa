@@ -1,12 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
 import {
   MedusaError,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateProductVariantsStepInput =
+export type UpdateProductVariantsStepInput =
   | {
       selector: ProductTypes.FilterableProductVariantProps
       update: ProductTypes.UpdateProductVariantDTO
@@ -16,12 +16,13 @@ type UpdateProductVariantsStepInput =
     }
 
 export const updateProductVariantsStepId = "update-product-variants"
+/**
+ * This step updates one or more product variants.
+ */
 export const updateProductVariantsStep = createStep(
   updateProductVariantsStepId,
   async (data: UpdateProductVariantsStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if ("product_variants" in data) {
       if (data.product_variants.some((p) => !p.id)) {
@@ -31,11 +32,11 @@ export const updateProductVariantsStep = createStep(
         )
       }
 
-      const prevData = await service.listVariants({
+      const prevData = await service.listProductVariants({
         id: data.product_variants.map((p) => p.id) as string[],
       })
 
-      const productVariants = await service.upsertVariants(
+      const productVariants = await service.upsertProductVariants(
         data.product_variants
       )
       return new StepResponse(productVariants, prevData)
@@ -45,12 +46,12 @@ export const updateProductVariantsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listVariants(data.selector, {
+    const prevData = await service.listProductVariants(data.selector, {
       select: selects,
       relations,
     })
 
-    const productVariants = await service.updateVariants(
+    const productVariants = await service.updateProductVariants(
       data.selector,
       data.update
     )
@@ -61,10 +62,8 @@ export const updateProductVariantsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.upsertVariants(prevData)
+    await service.upsertProductVariants(prevData)
   }
 )

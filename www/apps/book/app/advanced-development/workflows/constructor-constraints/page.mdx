@@ -1,83 +1,67 @@
 export const metadata = {
-  title: `${pageNumber} Constraints on Workflow Constructor Function`,
+  title: `${pageNumber} Workflow Constraints`,
 }
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining Workflow constructor functions.
+This chapter lists constraints of defining a workflow or its steps.
 
-## No Arrow Functions
+## Workflow Constraints
 
-The function passed to the `createWorkflow` function can’t be an arrow function:
+### No Async Functions
 
-```ts highlights={[["5", "=>", "Function can't be an arrow function"], ["13", "", "Correct way of defining the function."]]}
+The function passed to `createWorkflow` can’t be an async function:
+
+```ts highlights={[["4", "async", "Function can't be async."], ["11", "", "Correct way of defining the function."]]}
 // Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", (input) => {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  async function (input: WorkflowInput) {
   // ...
 })
 
 // Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   // ...
 })
 ```
 
-## No Async Functions
+### No Direct Variable Manipulation
 
-The function passed to the `createWorkflow` can’t be an async function:
+You can’t directly manipulate variables within the workflow's constructor function.
 
-```ts highlights={[["5", "async", "Function can't be async."], ["13", "", "Correct way of defining the function."]]}
-// Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", async function (input) {
-  // ...
-})
+<Note>
 
-// Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
-  // ...
-})
-```
+Learn more about why you can't manipulate variables [in this chapter](../conditions/page.mdx#why-if-conditions-arent-allowed-in-workflows)
 
-## No Direct Data Manipulation
+</Note>
 
-Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. Instead, use the `transform` function:
+Instead, use the `transform` utility function imported from `@medusajs/framework/workflows-sdk`:
 
 export const highlights = [
-  ["10", "", "Don't manipulate data directly."],
-  ["22", "transform", "Use the `transform` function to manipulate data."]
+  ["9", "", "Don't manipulate variables directly."],
+  ["20", "transform", "Use the `transform` function to manipulate variables."]
 ]
 
 ```ts  highlights={highlights}
 // Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   const str1 = step1(input)
   const str2 = step2(input)
 
-  return {
-    message: `${input.str1}${input.str2}`,
-  }
+  return new WorkflowResponse({
+    message: `${str1}${str2}`,
+  })
 })
 
 // Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   const str1 = step1(input)
   const str2 = step2(input)
 
@@ -91,6 +75,129 @@ const myWorkflow = createWorkflow<
     })
   )
 
-  return result
+  return new WorkflowResponse(result)
 })
+```
+
+### No If Conditions
+
+You can't use if-conditions in a workflow.
+
+<Note>
+
+Learn more about why you can't use if-conditions [in this chapter](../conditions/page.mdx#why-if-conditions-arent-allowed-in-workflows)
+
+</Note>
+
+Instead, use the when-then utility function imported from `@medusajs/framework/workflows-sdk`:
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+  if (input.is_active) {
+    // perform an action
+  }
+})
+
+// Do (explained in the next chapter)
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+  when(input, (input) => {
+    return input.is_active
+  })
+  .then(() => {
+    // perform an action
+  })
+})
+```
+
+### No Conditional Operators
+
+You can't use conditional operators in a workflow, such as `??` or `||`.
+
+<Note>
+
+Learn more about why you can't use if-conditions [in this chapter](../conditions/page.mdx#why-if-conditions-arent-allowed-in-workflows)
+
+</Note>
+
+Instead, use `transform` to store the desired value in a variable.
+
+For example:
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const message = input.message || "Hello"
+})
+
+// Do
+// other imports...
+import { transform } from "@medusajs/framework/workflows-sdk"
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const message = transform(
+      {
+        input
+      },
+      (data) => data.input.message || "hello"
+    )
+})
+```
+
+---
+
+## Step Constraints
+
+### Returned Values
+
+A step must only return serializable values, such as [primitive values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values) or an object.
+
+Values of other types, such as Maps, aren't allowed.
+
+```ts
+// Don't
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myMap = new Map()
+
+    // ...
+
+    return new StepResponse({
+      myMap,
+    })
+  }
+)
+
+// Do
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myObj: Record<string, unknown> = {}
+
+    // ...
+
+    return new StepResponse({
+      myObj,
+    })
+  }
+)
 ```

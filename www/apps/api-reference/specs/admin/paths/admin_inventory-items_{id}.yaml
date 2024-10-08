@@ -1,49 +1,54 @@
 get:
-  operationId: GetInventoryItemsInventoryItem
-  summary: Get an Inventory Item
-  description: Retrieve an Inventory Item's details.
+  operationId: GetInventoryItemsId
+  summary: Get a Inventory Item
+  description: >-
+    Retrieve a inventory item by its ID. You can expand the inventory item's
+    relations or select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory item.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
-      schema:
-        type: string
-  x-codegen:
-    method: retrieve
-    queryParams: AdminGetInventoryItemsItemParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items_{id}/get.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items_{id}/get.sh
   tags:
     - Inventory Items
   responses:
@@ -52,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            $ref: ../components/schemas/AdminInventoryItemResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -66,56 +71,121 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostInventoryItemsInventoryItem
+  operationId: PostInventoryItemsId
   summary: Update an Inventory Item
-  description: Update an Inventory Item's details.
+  description: Update an inventory item's details.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory level.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        level.
-      schema:
-        type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostInventoryItemsInventoryItemReq.yaml
-  x-codegen:
-    method: update
-    queryParams: AdminPostInventoryItemsInventoryItemParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items_{id}/post.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The properties to update in the inventory item.
+          properties:
+            sku:
+              type: string
+              title: sku
+              description: The inventory item's SKU.
+            hs_code:
+              type: string
+              title: hs_code
+              description: The inventory item's HS code.
+            weight:
+              type: number
+              title: weight
+              description: The inventory item's weight.
+            length:
+              type: number
+              title: length
+              description: The inventory item's length.
+            height:
+              type: number
+              title: height
+              description: The inventory item's height.
+            width:
+              type: number
+              title: width
+              description: The inventory item's width.
+            origin_country:
+              type: string
+              title: origin_country
+              description: The inventory item's origin country.
+            mid_code:
+              type: string
+              title: mid_code
+              description: The inventory item's MID code.
+            material:
+              type: string
+              title: material
+              description: The inventory item's material.
+            title:
+              type: string
+              title: title
+              description: The inventory item's title.
+            description:
+              type: string
+              title: description
+              description: The inventory item's description.
+            requires_shipping:
+              type: boolean
+              title: requires_shipping
+              description: Whether the inventory item requires shipping.
+            thumbnail:
+              type: string
+              title: thumbnail
+              description: >-
+                The URL of an image to be used as the inventory item's
+                thumbnail. You can use the Upload API routes to upload an image
+                and get its URL.
+            metadata:
+              type: object
+              description: >-
+                The inventory item's metadata. Can be custom data in key-value
+                pairs.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items_{id}/post.sh
   tags:
     - Inventory Items
   responses:
@@ -124,7 +194,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            $ref: ../components/schemas/AdminInventoryItemResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -137,39 +207,28 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateInventoryItemsWorkflow
 delete:
-  operationId: DeleteInventoryItemsInventoryItem
-  summary: Delete an Inventory Item
-  description: >-
-    Delete an Inventory Item. This does not delete the associated product
-    variant.
+  operationId: DeleteInventoryItemsId
+  summary: Delete Inventory Item
+  description: Delete an inventory item.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item to delete.
       schema:
         type: string
-  x-codegen:
-    method: delete
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/delete.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items_{id}/delete.sh
   tags:
     - Inventory Items
   responses:
@@ -178,6 +237,36 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsDeleteRes.yaml
+            type: object
+            description: The deletion's details.
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The inventory item's ID.
+              object:
+                type: string
+                title: object
+                description: The name of the deleted object.
+                default: inventory_item
+              deleted:
+                type: boolean
+                title: deleted
+                description: Whether the inventory item was deleted.
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteInventoryItemWorkflow

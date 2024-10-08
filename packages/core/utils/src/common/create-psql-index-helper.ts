@@ -31,7 +31,7 @@ import { Index } from "@mikro-orm/core"
  */
 export function createPsqlIndexStatementHelper({
   name,
-  tableName,
+  tableName: qualifiedName,
   columns,
   type,
   where,
@@ -45,6 +45,20 @@ export function createPsqlIndexStatementHelper({
   unique?: boolean
 }) {
   const columnsName = Array.isArray(columns) ? columns.join("_") : columns
+  const tokens = qualifiedName.replace(/"/g, "").split(".")
+
+  let pgSchemaName: string | undefined
+  let tableName: string
+  let tableReference: string
+
+  if (tokens.length > 1) {
+    pgSchemaName = tokens.shift()
+    tableName = tokens.join(".")
+    tableReference = `"${pgSchemaName}"."${tableName}"`
+  } else {
+    tableName = qualifiedName
+    tableReference = `"${tableName}"`
+  }
 
   columns = Array.isArray(columns) ? columns.join(", ") : columns
   name = name || `IDX_${tableName}_${columnsName}${unique ? "_unique" : ""}`
@@ -53,7 +67,7 @@ export function createPsqlIndexStatementHelper({
   const optionsStr = where ? ` WHERE ${where}` : ""
   const uniqueStr = unique ? "UNIQUE " : ""
 
-  const expression = `CREATE ${uniqueStr}INDEX IF NOT EXISTS "${name}" ON "${tableName}"${typeStr} (${columns})${optionsStr}`
+  const expression = `CREATE ${uniqueStr}INDEX IF NOT EXISTS "${name}" ON ${tableReference}${typeStr} (${columns})${optionsStr}`
   return {
     toString: () => {
       return expression

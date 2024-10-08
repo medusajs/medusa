@@ -1,0 +1,117 @@
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Product Variant's Prices in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to show a product's variants' prices in the storefront, including handling sale prices.
+
+## Pricing Query Parameters
+
+When you retrieve products either with the [List Products](!api!/store#products_getproducts) or [Retrieve Products](!api!/store#products_getproductsid) API routes, you must include in the beginning of the `fields` query parameter the value `*variants.calculated_price`.
+
+You also must pass at least one of the following query parameters to retrieve the correct product variant price:
+
+- `region_id`: The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
+- `country_code`: The customer's country code. This parameter must be included if you want to apply taxes on the product variant's price.
+- `province`: The province, which can be taken from a customer's address. This parameter helps further narrowing down the taxes applied on a the product variant's prices.
+- `cart_id`: The ID of the customer's cart, if available. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` parameters.
+
+For example:
+
+```ts
+const queryParams = new URLSearchParams({
+  fields: `*variants.calculated_price`,
+  region_id: region.id,
+})
+
+fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+  },
+})
+.then((res) => res.json())
+.then(({ product }) => {
+  // TODO use product
+  console.log(product)
+})
+```
+
+In this example, you pass the selected region's ID as a query parameter with the `fields` query parameter set to `*variants.calculated_price`.
+
+### Prices for Authenticated Customer
+
+If you pass the customer's authentication token / session in the request, the customer and their group, if available, are used to retrieve more accurate prices.
+
+For example, if a promotion applies to the customer's group, the promotion's prices are used.
+
+---
+
+## Product Variant's Price Properties
+
+If you pass the parameters mentioned above, each variant has a `calculated_price` object with the following properties:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Property</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Notes</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `calculated_amount`
+      </Table.Cell>
+      <Table.Cell>
+        The product variant's price.
+      </Table.Cell>
+      <Table.Cell>
+        Show this price if you didn't supply the `region_id` and `country_code` query parameters to retrieve prices with taxes applied.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `calculated_amount_with_tax`
+      </Table.Cell>
+      <Table.Cell>
+        The `calculated_amount` with taxes applied.
+      </Table.Cell>
+      <Table.Cell>
+        This property is only available if you supply both the `region_id` and `country_code` query parameters.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `calculated_amount_without_tax`
+      </Table.Cell>
+      <Table.Cell>
+         The `calculated_amount` without taxes applied.
+      </Table.Cell>
+      <Table.Cell>
+        This property is only available if you supply both the `region_id` and `country_code` query parameters.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `calculated_price.price_list_type`
+      </Table.Cell>
+      <Table.Cell>
+         The type of the variant price.
+      </Table.Cell>
+      <Table.Cell>
+        If its value is `sale`, it means the `calculated_amount` is a sale price. You can show the amount before the sale using the `original_amount` property.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Examples
+
+- [Example: Show Product Variant's Price](./examples/show-price/page.mdx).
+- [Example: Show Product Variant's Sale Price](./examples/sale-price/page.mdx).
+- [Example: Show Product Variant's Price with Taxes](./examples/tax-price/page.mdx).

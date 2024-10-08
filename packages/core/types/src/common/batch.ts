@@ -9,25 +9,22 @@ export type LinkWorkflowInput = {
   remove?: string[]
 }
 
-export type BatchMethodRequest<TCreate, TUpdate> = {
+export type BatchMethodRequest<TCreate, TUpdate, TDelete = string> = {
   create?: TCreate[]
   update?: TUpdate[]
-  delete?: string[]
+  delete?: TDelete[]
 }
 
 export type BatchMethodResponse<T> = {
   created: T[]
   updated: T[]
-  deleted: {
-    ids: string[]
-    object: string
-    deleted: boolean
-  }
+  deleted: string[]
 }
 
-export type BatchWorkflowInput<TCreate, TUpdate> = BatchMethodRequest<
+export type BatchWorkflowInput<
   TCreate,
-  TUpdate
->
+  TUpdate,
+  TDelete = string
+> = BatchMethodRequest<TCreate, TUpdate, TDelete>
 
 export type BatchWorkflowOutput<T> = BatchMethodResponse<T>

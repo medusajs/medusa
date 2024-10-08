@@ -5,8 +5,8 @@ const User = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const User = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M12.909 5.346a2.909 2.909 0 1 1-5.818 0 2.909 2.909 0 0 1 5.818 0v0Zm-8.726 10.95a5.818 5.818 0 0 1 11.633 0A13.91 13.91 0 0 1 10 17.564c-2.076 0-4.046-.453-5.817-1.266Z"
+          d="M7.5 5.944a2.444 2.444 0 1 0 0-4.888 2.444 2.444 0 0 0 0 4.888M11.733 13.292c.764-.24 1.166-1.085.842-1.818A5.55 5.55 0 0 0 7.5 8.167a5.55 5.55 0 0 0-5.075 3.307c-.324.733.078 1.577.842 1.818a14.1 14.1 0 0 0 8.466 0"
         />
       </svg>
     )

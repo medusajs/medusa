@@ -1,16 +1,19 @@
 import { BaseRepository, getLinkRepository } from "@repositories"
 import { LinkService, getModuleService } from "@services"
 
-import { LoaderOptions } from "@medusajs/modules-sdk"
 import {
   InternalModuleDeclaration,
+  LoaderOptions,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/types"
-import { lowerCaseFirst, simpleHash, toPascalCase } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  composeLinkName,
+  composeTableName,
+  simpleHash,
+  toPascalCase,
+} from "@medusajs/framework/utils"
 import { asClass, asValue } from "awilix"
-import { composeLinkName, composeTableName } from "../utils"
-
 export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
   return async (
     {
@@ -25,14 +28,12 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
     const [primary, foreign] = joinerConfig.relationships!
 
     const serviceName = !joinerConfig.isReadOnlyLink
-      ? lowerCaseFirst(
-          joinerConfig.serviceName ??
-            composeLinkName(
-              primary.serviceName,
-              primary.foreignKey,
-              foreign.serviceName,
-              foreign.foreignKey
-            )
+      ? joinerConfig.serviceName ??
+        composeLinkName(
+          primary.serviceName,
+          primary.foreignKey,
+          foreign.serviceName,
+          foreign.foreignKey
         )
       : simpleHash(JSON.stringify(joinerConfig.extends))
 

@@ -2,15 +2,15 @@
 sidebar_label: "Stripe"
 ---
 
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `Stripe Provider Module`,
+  title: `Stripe Module Provider`,
 }
 
 # {metadata.title}
 
-In this document, you’ll learn about the Stripe provider module and how to install and use it in the Payment Module.
+In this document, you’ll learn about the Stripe Module Provider and how to install and use it in the Payment Module.
 
 ## Features
 
@@ -20,45 +20,57 @@ These features are also available in a safe test environment, allowing for a con
 
 ---
 
-## Install the Stripe Provider Module
+## Register the Stripe Module Provider
 
-<Note type="check">
+<Prerequisites items={[
+  {
+    text: "Stripe account",
+    link: "https://stripe.com/"
+  },
+  {
+    text: "Stripe Secret API Key",
+    link: "https://support.stripe.com/questions/locate-api-keys-in-the-dashboard"
+  },
+  {
+    text: "For deployed Medusa applications, a Stripe webhook secret. When creating the Webhook, set the endpoint URL to {medusa_url}/hooks/payment/stripe, where {medusa_url} with the URL to your deployed Medusa application.",
+    link: "https://docs.stripe.com/webhooks#add-a-webhook-endpoint"
+  }
+]} />
 
-- [Stripe account](https://stripe.com/).
-- [Stripe API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
-- For deployed Medusa applications, a [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). When creating the Webhook, set the endpoint URL to `{medusa_url}/hooks/payment/stripe`, where `{medusa_url}` with the URL to your deployed Medusa application.
-
-</Note>
-
-To install the Stripe provider module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/payment-stripe
-```
-
-Next, add the module to the array of providers passed to the Payment Module:
+Add the module to the array of providers passed to the Payment Module:
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/framework/utils")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  payment: {
-    resolve: "@medusajs/payment",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/payment-stripe",
-          options: {
-            credentials: {
-              usd: {
-                apiKey: process.env.STRIPE_USD_API_KEY,
-              },
+  modules: {
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-stripe",
+            id: "stripe",
+            options: {
+              apiKey: process.env.STRIPE_API_KEY,
             },
           },
-        },
-      ],
+        ],
+      },
     },
   },
-}
+})
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 ```
 
 ### Module Options
@@ -76,17 +88,12 @@ const modules = {
     <Table.Row>
       <Table.Cell>
       
-      `credentials`
+      `apiKey`
       
       </Table.Cell>
       <Table.Cell>
       
-      An object where each entry is a stripe provider installation. The object’s keys are the name suffix of the provider, where the provider name will be formatted as `stripe-{key}`. For example, `stripe-usd`.
-
-      Each value is an object that accepts the following properties:
-
-      - `apiKey`: A string indicating the Stripe API key.
-      - `webhookSecret`: (optional in development) A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.
+      A string indicating the Stripe Secret API key.
       
       </Table.Cell>
       <Table.Cell>
@@ -96,7 +103,29 @@ const modules = {
       </Table.Cell>
       <Table.Cell>
       
-      \-
+      -
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `webhookSecret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      -
       
       </Table.Cell>
     </Table.Row>
@@ -168,16 +197,6 @@ const modules = {
     </Table.Row>
   </Table.Body>
 </Table>
-
-### Environment Variables
-
-Make sure to add the necessary environment variables for the above options in `.env`:
-
-```bash
-STRIPE_USD_API_KEY=<YOUR_STRIPE_API_KEY>
-```
-
----
 
 ## Use Provider
 

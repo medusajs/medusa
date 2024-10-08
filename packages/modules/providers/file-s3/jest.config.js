@@ -1,16 +1,10 @@
-module.exports = {
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
-  },
-  transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
-  },
-  testEnvironment: `node`,
+const defineJestConfig = require("../../../../define_jest_config")
+module.exports = defineJestConfig({
   moduleNameMapper: {
-    "^axios$": "axios/dist/node/axios.cjs",
+    "^@models": "<rootDir>/src/models",
+    "^@services": "<rootDir>/src/services",
+    "^@repositories": "<rootDir>/src/repositories",
+    "^@types": "<rootDir>/src/types",
+    "^@utils": "<rootDir>/src/utils",
   },
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
-}
+})

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/sales-channels/{id}/products
  * operationId: PostSalesChannelsIdProducts
- * summary: Add Products to Sales Channel
- * description: Add a list of products to a sales channel.
+ * summary: Manage Products in Sales Channel
+ * x-sidebar-summary: Manage Products
+ * description: Manage products in a sales channel to add or remove them from the channel.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -21,36 +22,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -60,31 +41,37 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The products to add or remove from the channel.
  *         properties:
  *           add:
  *             type: array
- *             description: The sales channel's add.
+ *             description: The products to add to the sales channel.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A product's ID.
  *           remove:
  *             type: array
- *             description: The sales channel's remove.
+ *             description: The products to remove from the sales channel.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A product's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/sales-channels/{id}/products' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Sales Channels
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminSalesChannelResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -97,6 +84,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: linkProductsToSalesChannelWorkflow
  * 
 */
 

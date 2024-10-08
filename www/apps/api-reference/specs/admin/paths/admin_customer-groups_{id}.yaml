@@ -1,51 +1,54 @@
 get:
-  operationId: GetCustomerGroupsGroup
+  operationId: GetCustomerGroupsId
   summary: Get a Customer Group
   description: >-
-    Retrieve a Customer Group by its ID. You can expand the customer group's
+    Retrieve a customer group by its ID. You can expand the customer group's
     relations or select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer group's ID.
       required: true
-      description: The ID of the Customer Group.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        customer group.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned customer
-        group.
-      schema:
-        type: string
-  x-codegen:
-    method: retrieve
-    queryParams: AdminGetCustomerGroupsGroupParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customer-groups_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customer-groups_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_customer-groups_{id}/get.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customer-groups_{id}/get.sh
   tags:
     - Customer Groups
   responses:
@@ -54,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
+            $ref: ../components/schemas/AdminCustomerGroupResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -68,41 +71,59 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostCustomerGroupsGroup
+  operationId: PostCustomerGroupsId
   summary: Update a Customer Group
-  description: Update a Customer Group's details.
+  description: Update a customer group's details.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer group's ID.
       required: true
-      description: The ID of the customer group.
       schema:
         type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostCustomerGroupsGroupReq.yaml
-  x-codegen:
-    method: update
+          $ref: ../components/schemas/AdminUpdateCustomerGroup.yaml
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customer-groups_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customer-groups_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customer-groups_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customer Groups
   responses:
@@ -111,7 +132,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
+            $ref: ../components/schemas/AdminCustomerGroupResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -124,39 +145,29 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateCustomerGroupsWorkflow
 delete:
-  operationId: DeleteCustomerGroupsCustomerGroup
+  operationId: DeleteCustomerGroupsId
   summary: Delete a Customer Group
-  description: >-
-    Delete a customer group. This doesn't delete the customers associated with
-    the customer group.
+  description: |
+    Delete a customer group. Customers in the group aren't deleted.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer group's ID.
       required: true
-      description: The ID of the Customer Group
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customer-groups_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customer-groups_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customer-groups_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customer Groups
   responses:
@@ -165,7 +176,25 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminCustomerGroupsDeleteRes.yaml
+            type: object
+            description: The deletion's details.
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The customer group's ID.
+              object:
+                type: string
+                title: object
+                description: The customer group's object.
+              deleted:
+                type: boolean
+                title: deleted
+                description: The customer group's deleted.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -178,3 +207,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteCustomerGroupsWorkflow

@@ -1,10 +1,9 @@
 /**
  * @oas [delete] /admin/fulfillment-sets/{id}/service-zones/{zone_id}
  * operationId: DeleteFulfillmentSetsIdServiceZonesZone_id
- * summary: Remove Service Zones from Fulfillment Set
- * description: Remove a list of service zones from a fulfillment set. This doesn't
- *   delete the Service Zone, only the association between the Service Zone and the
- *   fulfillment set.
+ * summary: Remove a Service Zone from Fulfillment Set
+ * x-sidebar-summary: Remove Service Zone
+ * description: Remove a service zone that belongs to a fulfillment set.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,50 +14,10 @@
  *       type: string
  *   - name: zone_id
  *     in: path
- *     description: The fulfillment set's zone id.
+ *     description: The service zone's ID.
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -66,11 +25,7 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: "curl -X DELETE '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \\ -H 'Authorization: Bearer {access_token}'"
  * tags:
  *   - Fulfillment Sets
  * responses:
@@ -92,10 +47,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
+ * x-workflow: deleteServiceZonesWorkflow
  * 
 */
 

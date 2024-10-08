@@ -1,0 +1,121 @@
+export const metadata = {
+  title: `${pageNumber} API Route Response`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to send a response in your API route.
+
+## Send a JSON Response
+
+To send a JSON response, use the `json` method of the `MedusaResponse` object passed as the second parameter of your API route handler.
+
+For example:
+
+export const jsonHighlights = [
+  ["7", "json", "Return a JSON object."]
+]
+
+```ts title="src/api/custom/route.ts" highlights={jsonHighlights}
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "Hello, World!",
+  })
+}
+```
+
+This API route returns the following JSON object:
+
+```json
+{
+  "message": "Hello, World!"
+}
+```
+
+---
+
+## Set Response Status Code
+
+By default, setting the JSON data using the `json` method returns a response with a `200` status code.
+
+To change the status code, use the `status` method of the `MedusaResponse` object.
+
+For example:
+
+export const statusHighlight = [
+  ["7", "status", "Set the response code to `201`."]
+]
+
+```ts title="src/api/custom/route.ts" highlights={statusHighlight}
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.status(201).json({
+    message: "Hello, World!",
+  })
+}
+```
+
+The response of this API route has the status code `201`.
+
+---
+
+## Change Response Content Type
+
+To return response data other than a JSON object, use the `writeHead` method of the `MedusaResponse` object. It allows you to set the response headers, including the content type.
+
+For example, to create an API route that returns an event stream:
+
+export const streamHighlights = [
+  ["7", "writeHead", "Set the response's headers."],
+  ["7", "200", "Set the status code."],
+  ["8", `"Content-Type"`, "Set the response's content type."],
+  ["13", "interval", "Simulate stream data using an interval"],
+  ["14", "write", "Write stream data."],
+  ["17", "on", "Stop the stream when the request is terminated."]
+]
+
+```ts highlights={streamHighlights}
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  })
+
+  const interval = setInterval(() => {
+    res.write("Streaming data...\n")
+  }, 3000)
+
+  req.on("end", () => {
+    clearInterval(interval)
+    res.end()
+  })
+}
+```
+
+The `writeHead` method accepts two parameters:
+
+1. The first one is the response's status code.
+2. The second is an object of key-value pairs to set the headers of the response.
+
+This API route opens a stream by setting the `Content-Type` in the header to `text/event-stream`. It then simulates a stream by creating an interval that writes the stream data every three seconds.
+
+---
+
+## Do More with Responses
+
+The `MedusaResponse` type is based on [Express's Response](https://expressjs.com/en/api.html#res). Refer to their API reference for other uses of responses.

@@ -1,0 +1,97 @@
+---
+sidebar_label: "softDelete"
+---
+
+export const metadata = {
+  title: `softDelete Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method soft deletes one or more records of the data model.
+
+## Soft Delete One Record
+
+```ts
+const deletedPosts = await postModuleService.softDeletePosts(
+  "123"
+)
+```
+
+### Parameters
+
+To soft delete a record, pass its ID as a parameter of the method.
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: ["123"],
+}
+```
+
+---
+
+## Soft Delete Multiple Records
+
+```ts
+const deletedPosts = await postModuleService.softDeletePosts([
+  "123",
+  "321",
+])
+```
+
+### Parameters
+
+To soft delete multiple records, pass an array of IDs as a parameter of the method.
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: [
+    "123",
+    "321",
+  ],
+}
+```
+
+---
+
+## Soft Delete Records Matching Filters
+
+```ts
+const deletedPosts = await postModuleService.softDeletePosts({
+  name: "My Post",
+})
+```
+
+### Parameters
+
+To soft delete records matching a set of filters, pass an object of filters as a parameter.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: ["123"],
+}
+```

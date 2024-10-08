@@ -5,8 +5,8 @@ const FlyingBox = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,14 +16,14 @@ const FlyingBox = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M2.623 5.902h-.819M3.442 3.443H1.804M14.098 16.556H2.624M14.323 3.443l-.808 2.694a.82.82 0 0 1-.786.585h-2.55a.82.82 0 0 1-.785-1.055l.667-2.224M6.72 10.82h1.745"
+          d="M7.5 1.5v5.333M11.278 4.167H3.722c-.982 0-1.778.796-1.778 1.778v5.333c0 .982.796 1.778 1.778 1.778h7.556c.982 0 1.778-.796 1.778-1.778V5.945c0-.982-.796-1.778-1.778-1.778"
         />
         <path
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M14.456 13.278H5.78a1.967 1.967 0 0 1-1.884-2.532l1.77-5.901a1.967 1.967 0 0 1 1.884-1.402h8.678a1.967 1.967 0 0 1 1.885 2.533l-1.77 5.9a1.968 1.968 0 0 1-1.886 1.402Z"
+          d="m2.167 5.086 1.288-2.598c.3-.605.917-.988 1.593-.988h4.904c.676 0 1.293.383 1.593.988l1.288 2.599M4.167 10.833h1.777"
         />
       </svg>
     )

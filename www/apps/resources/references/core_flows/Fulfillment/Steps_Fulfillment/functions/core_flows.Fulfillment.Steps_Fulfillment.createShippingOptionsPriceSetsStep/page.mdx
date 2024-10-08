@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/createShippingOptionsPriceSetsStep
+sidebar_label: createShippingOptionsPriceSetsStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createShippingOptionsPriceSetsStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createShippingOptionsPriceSetsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates price sets for one or more shipping options.
+
+## Input
+
+<TypeList types={[{"name":"CreateShippingOptionsPriceSetsStepInput","type":"[CreateShippingOptionsPriceSetsStepInput](../../../../types/core_flows.CreateShippingOptionsPriceSetsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"prices","type":"([ShippingOptionsPriceCurrencyCode](../../../../interfaces/core_flows.ShippingOptionsPriceCurrencyCode/page.mdx) \\| `ShippingOptionsPriceRegionId`)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShippingOptionsPriceSetsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"object[]","type":"`object`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"input.id","expandable":false,"children":[]},{"name":"priceSetId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShippingOptionsPriceSetsStep"/>

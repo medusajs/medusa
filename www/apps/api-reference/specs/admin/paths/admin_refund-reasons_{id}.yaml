@@ -1,0 +1,220 @@
+get:
+  operationId: GetRefundReasonsId
+  summary: Get a Refund Reason
+  description: >-
+    Retrieve a refund reason by its ID. You can expand the refund reason's
+    relations or select the fields that should be returned.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The refund reason's ID.
+      required: true
+      schema:
+        type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_refund-reasons_{id}/get.sh
+  tags:
+    - Refund Reasons
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/RefundReasonResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostRefundReasonsId
+  summary: Update a Refund Reason
+  description: Update a refund reason's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The refund reason's ID.
+      required: true
+      schema:
+        type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The properties to update in the refund reason.
+          properties:
+            label:
+              type: string
+              title: label
+              description: The refund reason's label.
+            description:
+              type: string
+              title: description
+              description: The refund reason's description.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_refund-reasons_{id}/post.sh
+  tags:
+    - Refund Reasons
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/RefundReasonResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: updateRefundReasonsWorkflow
+delete:
+  operationId: DeleteRefundReasonsId
+  summary: Delete a Refund Reason
+  description: Delete a refund reason.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The refund reason's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_refund-reasons_{id}/delete.sh
+  tags:
+    - Refund Reasons
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The deletion's details.
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The refund reason's ID.
+              object:
+                type: string
+                title: object
+                description: The name of the deleted object.
+                default: refund_reason
+              deleted:
+                type: boolean
+                title: deleted
+                description: Whether the refund reason was deleted.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteReturnReasonsWorkflow

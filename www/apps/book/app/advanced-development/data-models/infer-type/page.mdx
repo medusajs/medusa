@@ -1,0 +1,42 @@
+export const metadata = {
+  title: `${pageNumber} Infer Type of Data Model`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to infer the type of a data model.
+
+## How to Infer Type of Data Model?
+
+Consider you have a `MyCustom` data model. You can't reference this data model in a type, such as a workflow input or service method output types, since it's a variable.
+
+Instead, Medusa provides an `InferTypeOf` utility imported from `@medusajs/framework/types` that transforms your data model to a type.
+
+For example:
+
+```ts
+import { InferTypeOf } from "@medusajs/framework/types"
+import { MyCustom } from "../models/my-custom" // relative path to the model
+
+export type MyCustom = InferTypeOf<typeof MyCustom>
+```
+
+The `InferTypeOf` utility accepts as a type argument the type of the data model.
+
+Since the `MyCustom` data model is a variable, use the `typeof` operator to pass the data model as a type argument to `InferTypeOf`.
+
+You can now use the `MyCustom` type to reference a data model in other types, such as in workflow inputs or service method outputs:
+
+```ts title="Example Service"
+// other imports...
+import { InferTypeOf } from "@medusajs/framework/types"
+import { MyCustom } from "../models/my-custom"
+
+type MyCustom = InferTypeOf<typeof MyCustom>
+
+class HelloModuleService extends MedusaService({ MyCustom }) {
+  async doSomething(): Promise<MyCustom> {
+    // ...
+  }
+}
+```

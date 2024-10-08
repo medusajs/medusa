@@ -1,43 +1,50 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import LineItemAdjustment from "./line-item-adjustment"
-import LineItemTaxLine from "./line-item-tax-line"
+import OrderLineItemAdjustment from "./line-item-adjustment"
+import OrderLineItemTaxLine from "./line-item-tax-line"
 
-type OptionalLineItemProps =
-  | "is_discoutable"
-  | "is_tax_inclusive"
-  | "compare_at_unit_price"
-  | "requires_shipping"
-  | DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 const ProductIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "product_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const VariantIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "variant_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_line_item" })
-export default class LineItem {
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+export default class OrderLineItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
@@ -97,13 +104,13 @@ export default class LineItem {
   variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
-  requires_shipping = true
+  requires_shipping: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_discountable = true
+  is_discountable: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
 
   @MikroOrmBigNumberProperty({
     nullable: true,
@@ -121,15 +128,18 @@ export default class LineItem {
   @Property({ columnType: "jsonb" })
   raw_unit_price: BigNumberRawValue
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
-    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
-  })
-  tax_lines = new Collection<LineItemTaxLine>(this)
+  @Property({ columnType: "boolean", default: false })
+  is_custom_price: boolean = false
 
-  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+  @OneToMany(() => OrderLineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  adjustments = new Collection<LineItemAdjustment>(this)
+  tax_lines = new Collection<Rel<OrderLineItemTaxLine>>(this)
+
+  @OneToMany(() => OrderLineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
+  })
+  adjustments = new Collection<Rel<OrderLineItemAdjustment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -148,6 +158,10 @@ export default class LineItem {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

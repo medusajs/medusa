@@ -1,1 +1,1 @@
-export { default as ApiKeyModuleService } from "./api-key-module-service"
+export { ApiKeyModuleService } from "./api-key-module-service"

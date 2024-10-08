@@ -1,13 +1,11 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateProductDTO,
   IPricingModuleService,
   IProductModuleService,
-  PriceListStatus,
-  PriceListType,
   ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
+import { Modules, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
@@ -23,14 +21,14 @@ async function createProductsWithVariants(
 ): Promise<[ProductDTO, ProductVariantDTO[]]> {
   const { variants: variantsData, ...productData } = productsData
 
-  const [product] = await productModule.create([productData])
+  const [product] = await productModule.createProducts([productData])
 
   const variantsDataWithProductId = variantsData?.map((variantData) => {
     return { ...variantData, product_id: product.id }
   })
 
   const variants = variantsDataWithProductId
-    ? await productModule.createVariants(variantsDataWithProductId)
+    ? await productModule.createProductVariants(variantsDataWithProductId)
     : []
 
   return [product, variants]
@@ -52,8 +50,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
+        pricingModule = appContainer.resolve(Modules.PRICING)
+        productModule = appContainer.resolve(Modules.PRODUCT)
       })
 
       beforeEach(async () => {

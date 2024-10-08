@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `${pageNumber} Admin Development Constraints`,
+}
+
+# {metadata.title}
+
+This chapter lists some constraints of admin widgets and UI routes.
+
+## Arrow Functions
+
+Widget and UI route components must be created as arrow functions.
+
+export const arrowHighlights = [
+  ["2", "function", "Don't declare the widget / UI route as a function."],
+  ["7", "() => ", "Use arrow functions when creating a widget / UI route."]
+]
+
+```ts highlights={arrowHighlights}
+// Don't
+function ProductWidget() {
+  // ...
+}
+
+// Do
+const ProductWidget = () => {
+  // ...
+}
+```
+
+---
+
+## Widget Zone
+
+A widget zone's value must be wrapped in double or single quotes. It can't be a template literal or a variable.
+
+export const zoneHighlights = [
+  ["3", "`product.details.before`", "Don't specify the value of `zone` as a template literal."],
+  ["9", "ZONE", "Don't specify a variable as the value of `zone`."],
+  ["14", `"product.details.before"`, "Wrap the value of `zone` in double or single quotes."]
+]
+
+```ts highlights={zoneHighlights}
+// Don't
+export const config = defineWidgetConfig({
+  zone: `product.details.before`,
+})
+
+// Don't
+const ZONE = "product.details.after"
+export const config = defineWidgetConfig({
+  zone: ZONE,
+})
+
+// Do
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+```

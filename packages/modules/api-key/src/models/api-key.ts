@@ -2,7 +2,7 @@ import {
   Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import {
   BeforeCreate,
@@ -64,6 +64,14 @@ export default class ApiKey {
     defaultRaw: "now()",
   })
   created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at?: Date
 
   @Property({ columnType: "text", nullable: true })
   revoked_by: string | null = null

@@ -2,9 +2,9 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Entity,
@@ -14,10 +14,11 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
 
-type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentLabelOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_label",
@@ -58,7 +59,7 @@ export default class FulfillmentLabel {
   fulfillment_id: string
 
   @ManyToOne(() => Fulfillment, { persist: false })
-  fulfillment: Fulfillment
+  fulfillment: Rel<Fulfillment>
 
   @Property({
     onCreate: () => new Date(),

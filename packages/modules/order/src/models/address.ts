@@ -1,8 +1,9 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -12,7 +13,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.EntityDateColumns
+type OptionalAddressProps = DAL.ModelDateColumns
 
 const CustomerIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_address",
@@ -20,7 +21,7 @@ const CustomerIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_address" })
-export default class Address {
+export default class OrderAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })
@@ -30,33 +31,42 @@ export default class Address {
   @CustomerIdIndex.MikroORMIndex()
   customer_id: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   company: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   first_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   last_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   address_1: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   address_2: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   city: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   country_code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   province: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   postal_code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   phone: string | null = null
 

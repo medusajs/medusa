@@ -1,8 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-type StepInput = {
+export type CreateVariantPricingLinkStepInput = {
   links: {
     variant_id: string
     price_set_id: string
@@ -10,9 +9,12 @@ type StepInput = {
 }
 
 export const createVariantPricingLinkStepId = "create-variant-pricing-link"
+/**
+ * This step creates links between variant and price set records.
+ */
 export const createVariantPricingLinkStep = createStep(
   createVariantPricingLinkStepId,
-  async (data: StepInput, { container }) => {
+  async (data: CreateVariantPricingLinkStepInput, { container }) => {
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     await remoteLink.create(
       data.links.map((entry) => ({

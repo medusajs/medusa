@@ -16,20 +16,20 @@ export interface DecorateCartLikeInputDTO {
   items?: {
     id?: string
     unit_price: BigNumberInput
+    is_tax_inclusive?: boolean
     quantity: BigNumberInput
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   shipping_methods?: {
     id?: string
     amount: BigNumberInput
+    is_tax_inclusive?: boolean
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   region?: {
@@ -43,6 +43,15 @@ export function decorateCartTotals(
 ): CartLikeWithTotals {
   transformPropertiesToBigNumber(cartLike)
 
+  const optionalFields = {
+    "detail.fulfilled_quantity": "fulfilled_total",
+    "detail.shipped_quantity": "shipped_total",
+    "detail.return_requested_quantity": "return_requested_total",
+    "detail.return_received_quantity": "return_received_total",
+    "detail.return_dismissed_quantity": "return_dismissed_total",
+    "detail.written_off_quantity": "write_off_total",
+  }
+
   const items = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
   const shippingMethods = (cartLike.shipping_methods ??
     []) as unknown as GetShippingMethodTotalInput[]
@@ -51,15 +60,19 @@ export function decorateCartTotals(
 
   const itemsTotals = getLineItemsTotals(items, {
     includeTax,
+    extraQuantityFields: optionalFields,
   })
 
   const shippingMethodsTotals = getShippingMethodsTotals(shippingMethods, {
     includeTax,
   })
 
+  const extraTotals = {}
+
   let subtotal = MathBN.convert(0)
 
   let discountTotal = MathBN.convert(0)
+  let discountSubtotal = MathBN.convert(0)
   let discountTaxTotal = MathBN.convert(0)
 
   let itemsSubtotal = MathBN.convert(0)
@@ -79,14 +92,11 @@ export function decorateCartTotals(
   let shippingOriginalSubtotal = MathBN.convert(0)
 
   let shippingTaxTotal = MathBN.convert(0)
-  let shippingTaxSubTotal = MathBN.convert(0)
 
   let shippingOriginalTaxTotal = MathBN.convert(0)
-  let shippingOriginalTaxSubtotal = MathBN.convert(0)
 
   const cartItems = items.map((item, index) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
-
     const itemSubtotal = itemTotals.subtotal
 
     const itemTotal = MathBN.convert(itemTotals.total)
@@ -96,12 +106,14 @@ export function decorateCartTotals(
     const itemOriginalTaxTotal = MathBN.convert(itemTotals.original_tax_total)
 
     const itemDiscountTotal = MathBN.convert(itemTotals.discount_total)
+    const itemDiscountSubTotal = MathBN.convert(itemTotals.discount_subtotal)
 
     const itemDiscountTaxTotal = MathBN.convert(itemTotals.discount_tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
 
     discountTotal = MathBN.add(discountTotal, itemDiscountTotal)
+    discountSubtotal = MathBN.add(discountSubtotal, itemDiscountSubTotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, itemDiscountTaxTotal)
 
     itemsTotal = MathBN.add(itemsTotal, itemTotal)
@@ -117,54 +129,67 @@ export function decorateCartTotals(
       itemOriginalTaxTotal
     )
 
+    for (const key of Object.values(optionalFields)) {
+      if (key in itemTotals) {
+        extraTotals[key] ??= MathBN.convert(0)
+        extraTotals[key] = MathBN.add(extraTotals[key], itemTotals[key] ?? 0)
+      }
+    }
+
     return itemTotals
   })
 
   const cartShippingMethods = shippingMethods.map((shippingMethod, index) => {
-    const methodTotals = Object.assign(
+    const shippingMethodTotals = Object.assign(
       shippingMethod,
       shippingMethodsTotals[shippingMethod.id ?? index] ?? {}
     )
 
-    const methodSubtotal = MathBN.convert(methodTotals.subtotal)
+    subtotal = MathBN.add(subtotal, shippingMethodTotals.subtotal)
 
-    const methodTotal = MathBN.convert(methodTotals.total)
-    const methodOriginalTotal = MathBN.convert(methodTotals.original_total)
-    const methodTaxTotal = MathBN.convert(methodTotals.tax_total)
-    const methodOriginalTaxTotal = MathBN.convert(
-      methodTotals.original_tax_total
+    shippingSubtotal = MathBN.add(
+      shippingSubtotal,
+      shippingMethodTotals.subtotal
     )
 
-    const methodDiscountTotal = MathBN.convert(methodTotals.discount_total)
-    const methodDiscountTaxTotal = MathBN.convert(
-      methodTotals.discount_tax_total
-    )
+    shippingTotal = MathBN.add(shippingTotal, shippingMethodTotals.total)
 
-    shippingSubtotal = MathBN.add(shippingSubtotal, methodSubtotal)
-    shippingTotal = MathBN.add(shippingTotal, methodTotal)
     shippingOriginalTotal = MathBN.add(
       shippingOriginalTotal,
-      methodOriginalTotal
+      shippingMethodTotals.original_total
     )
+
     shippingOriginalSubtotal = MathBN.add(
       shippingOriginalSubtotal,
-      methodSubtotal
+      shippingMethodTotals.subtotal
     )
 
-    shippingTaxTotal = MathBN.add(shippingTaxTotal, methodTaxTotal)
+    shippingTaxTotal = MathBN.add(
+      shippingTaxTotal,
+      shippingMethodTotals.tax_total
+    )
+
     shippingOriginalTaxTotal = MathBN.add(
       shippingOriginalTaxTotal,
-      methodOriginalTaxTotal
-    )
-    shippingOriginalTaxSubtotal = MathBN.add(
-      shippingOriginalTaxSubtotal,
-      methodSubtotal
+      shippingMethodTotals.original_tax_total
     )
 
-    discountTotal = MathBN.add(discountTotal, methodDiscountTotal)
-    discountTaxTotal = MathBN.add(discountTaxTotal, methodDiscountTaxTotal)
+    discountTotal = MathBN.add(
+      discountTotal,
+      shippingMethodTotals.discount_total
+    )
 
-    return methodTotals
+    discountSubtotal = MathBN.add(
+      discountSubtotal,
+      shippingMethodTotals.discount_subtotal
+    )
+
+    discountTaxTotal = MathBN.add(
+      discountTaxTotal,
+      shippingMethodTotals.discount_tax_total
+    )
+
+    return shippingMethodTotals
   })
 
   const taxTotal = MathBN.add(itemsTaxTotal, shippingTaxTotal)
@@ -175,17 +200,11 @@ export function decorateCartTotals(
   )
 
   // TODO: Gift Card calculations
+  const originalTotal = MathBN.add(itemsOriginalTotal, shippingOriginalTotal)
 
-  const originalTempTotal = MathBN.add(
-    subtotal,
-    shippingOriginalTotal,
-    originalTaxTotal
-  )
-  const originalTotal = MathBN.sub(originalTempTotal, discountTotal)
   // TODO: subtract (cart.gift_card_total + cart.gift_card_tax_total)
-  const tempTotal = MathBN.add(subtotal, shippingTotal, taxTotal)
-  const total = MathBN.sub(tempTotal, discountTotal)
-
+  const tempTotal = MathBN.add(subtotal, taxTotal)
+  const total = MathBN.sub(tempTotal, discountSubtotal)
   const cart = cartLike as any
 
   cart.total = new BigNumber(total)
@@ -193,6 +212,7 @@ export function decorateCartTotals(
   cart.tax_total = new BigNumber(taxTotal)
 
   cart.discount_total = new BigNumber(discountTotal)
+  cart.discount_subtotal = new BigNumber(discountSubtotal)
   cart.discount_tax_total = new BigNumber(discountTaxTotal)
 
   // cart.gift_card_total = giftCardTotal.total || 0
@@ -213,6 +233,10 @@ export function decorateCartTotals(
     cart.original_item_total = new BigNumber(itemsOriginalTotal)
     cart.original_item_subtotal = new BigNumber(itemsOriginalSubtotal)
     cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
+
+    for (const key of Object.keys(extraTotals)) {
+      cart[key] = new BigNumber(extraTotals[key])
+    }
   }
 
   if (cart.shipping_methods) {
@@ -222,9 +246,7 @@ export function decorateCartTotals(
     cart.shipping_tax_total = new BigNumber(shippingTaxTotal)
 
     cart.original_shipping_tax_total = new BigNumber(shippingOriginalTaxTotal)
-    cart.original_shipping_tax_subtotal = new BigNumber(
-      shippingOriginalTaxSubtotal
-    )
+    cart.original_shipping_subtotal = new BigNumber(shippingOriginalSubtotal)
     cart.original_shipping_total = new BigNumber(shippingOriginalTotal)
   }
 

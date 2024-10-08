@@ -1,64 +1,77 @@
 post:
-  operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-  summary: Update a Location Level
-  description: Update a Location Level's details for a given Inventory Item.
+  operationId: PostInventoryItemsIdLocationLevelsLocation_id
+  summary: Update an Inventory Level of an Inventory Item
+  x-sidebar-summary: Update Inventory Level
+  description: >-
+    Updates the details of an inventory item's inventory level using its
+    associated location ID.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item that the location is associated with.
       schema:
         type: string
-    - in: path
-      name: location_id
+    - name: location_id
+      in: path
+      description: The ID of the location associated with the inventory level.
       required: true
-      description: The ID of the Location to update.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        location level.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned location
-        level.
-      schema:
-        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminPostInventoryItemsItemLocationLevelsLevelReq.yaml
-  x-codegen:
-    method: updateLocationLevel
-    queryParams: AdminPostInventoryItemsItemLocationLevelsLevelParams
+          type: object
+          description: The properties to update in the inventory level.
+          properties:
+            stocked_quantity:
+              type: number
+              title: stocked_quantity
+              description: The inventory level's stocked quantity.
+            incoming_quantity:
+              type: number
+              title: incoming_quantity
+              description: The inventory level's incoming quantity.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels_{location_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels_{location_id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
@@ -67,7 +80,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            $ref: ../components/schemas/AdminInventoryItemResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -80,46 +93,69 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateInventoryLevelsWorkflow
 delete:
-  operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-  summary: Delete a Location Level
-  description: Delete a location level of an Inventory Item.
+  operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
+  summary: Remove Inventory Level of Inventory Item
+  x-sidebar-summary: Remove Inventory Level
+  description: >
+    Remove the inventory level of an inventory item.
+
+
+    If the inventory level has reserved quantity greater than `0`, an error is
+    thrown.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: path
-      name: location_id
+    - name: location_id
+      in: path
+      description: The inventory item's location id.
       required: true
-      description: The ID of the location.
       schema:
         type: string
-  x-codegen:
-    method: deleteLocationLevel
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels_{location_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels_{location_id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
@@ -128,7 +164,32 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            allOf:
+              - type: object
+                description: The deletion's details.
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The inventory item's ID.
+                  object:
+                    type: string
+                    title: object
+                    description: The name of the deleted object.
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: Whether the Inventory Item was deleted.
+              - type: object
+                description: The deletion's details.
+                properties:
+                  parent:
+                    $ref: ../components/schemas/AdminInventoryItem.yaml
+            description: The deletion's details.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -141,3 +202,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteInventoryLevelsWorkflow

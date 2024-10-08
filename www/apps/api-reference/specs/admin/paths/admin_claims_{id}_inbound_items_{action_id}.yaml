@@ -1,0 +1,122 @@
+post:
+  operationId: PostClaimsIdInboundItemsAction_id
+  summary: Update Inbound Items of a Claim
+  x-sidebar-summary: Update Inbound Items
+  description: >
+    Update an inbound (or return) item of a claim using the `ID` of the item's
+    `RETURN_ITEM` action.
+
+
+    Every item has an `actions` property, whose value is an array of actions.
+    You can check the action's name using its `action` property, and use the
+    value of the `id` property.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The claim's ID.
+      required: true
+      schema:
+        type: string
+    - name: action_id
+      in: path
+      description: The ID of the return item's `RETURN_ITEM` action.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminPostReturnsRequestItemsActionReqSchema.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_claims_{id}_inbound_items_{action_id}/post.sh
+  tags:
+    - Claims
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimReturnPreviewResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: updateRequestItemReturnWorkflow
+delete:
+  operationId: DeleteClaimsIdInboundItemsAction_id
+  summary: Remove an Inbound Item from Claim
+  x-sidebar-summary: Remove Inbound Item
+  description: >
+    Remove an inbound (or return) item from a claim using the `ID` of the item's
+    `RETURN_ITEM` action.
+
+
+    Every item has an `actions` property, whose value is an array of actions.
+    You can check the action's name using its `action` property, and use the
+    value of the `id` property.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The claim's ID.
+      required: true
+      schema:
+        type: string
+    - name: action_id
+      in: path
+      description: The ID of the return item's `RETURN_ITEM` action.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_claims_{id}_inbound_items_{action_id}/delete.sh
+  tags:
+    - Claims
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimReturnPreviewResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: removeItemReturnActionWorkflow

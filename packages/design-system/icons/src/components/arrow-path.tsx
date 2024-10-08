@@ -5,19 +5,28 @@ const ArrowPath = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.352 7.79h4.16v0M2.489 16.37v-4.16m0 0h4.16m-4.161 0 2.65 2.652A6.874 6.874 0 0 0 16.64 11.78M3.36 8.221a6.875 6.875 0 0 1 11.502-3.083l2.65 2.651m0-4.159v4.158"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M4.752 9.616 1.935 8.86l-.755 2.817" />
+          <path d="M13.136 8.53a5.729 5.729 0 0 1-11.196.357M10.248 5.384l2.817.755.755-2.817" />
+          <path d="M1.864 6.469a5.729 5.729 0 0 1 11.184-.403" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

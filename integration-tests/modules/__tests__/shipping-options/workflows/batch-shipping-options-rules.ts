@@ -1,4 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  batchShippingOptionRulesWorkflow,
+  createShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
 import {
   BatchWorkflowInput,
   CreateShippingOptionRuleDTO,
@@ -10,16 +13,13 @@ import {
   ShippingProfileDTO,
   UpdateShippingOptionRuleDTO,
 } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import {
-  batchShippingOptionRulesWorkflow,
-  createShippingOptionsWorkflow,
-} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
+  Modules,
   RuleOperator,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -32,10 +32,10 @@ async function createShippingOptionFixture({
   shippingProfile,
 }) {
   const regionService = container.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   ) as IRegionModuleService
 
-  const [region] = await regionService.create([
+  const [region] = await regionService.createRegions([
     {
       name: "Test region",
       currency_code: "eur",
@@ -122,7 +122,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       container = getContainer()
-      service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+      service = container.resolve(Modules.FULFILLMENT)
     })
 
     describe("Fulfillment workflows", () => {
@@ -136,7 +136,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })
@@ -151,6 +151,35 @@ medusaIntegrationTestRunner({
             },
           ],
         })
+
+        const stockLocationModule = container.resolve(Modules.STOCK_LOCATION)
+
+        const location = await stockLocationModule.createStockLocations({
+          name: "Europe",
+        })
+
+        const remoteLink = container.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        await remoteLink.create([
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
+            },
+          },
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_provider_id: "manual_test-provider",
+            },
+          },
+        ])
       })
 
       it("should create, update and delete rules in batch", async () => {

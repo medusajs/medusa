@@ -1,0 +1,20 @@
+type: object
+description: The price preference's details.
+x-schemaName: AdminCreatePricePreference
+properties:
+  attribute:
+    type: string
+    title: attribute
+    description: The name of the attribute the price preference applies on.
+    example: currency_code
+  value:
+    type: string
+    title: value
+    description: The attribute's value.
+    example: usd
+  is_tax_inclusive:
+    type: boolean
+    title: is_tax_inclusive
+    description: >-
+      Whether the price is tax inclusive if the value of the specified attribute
+      matches the specified value.

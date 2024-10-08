@@ -37,7 +37,8 @@ const Close = React.forwardRef<
 })
 Close.displayName = "Popover.Close"
 
-interface ContentProps extends React.ComponentPropsWithoutRef<typeof Primitives.Content> {}
+interface ContentProps
+  extends React.ComponentPropsWithoutRef<typeof Primitives.Content> {}
 
 /**
  * @excludeExternal

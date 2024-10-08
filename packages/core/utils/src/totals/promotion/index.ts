@@ -1,15 +1,20 @@
+import { BigNumberInput } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodType,
 } from "../../promotion"
+import { MathBN } from "../math"
 
 function getPromotionValueForPercentage(promotion, lineItemTotal) {
-  return (promotion.value / 100) * lineItemTotal
+  return MathBN.mult(MathBN.div(promotion.value, 100), lineItemTotal)
 }
 
 function getPromotionValueForFixed(promotion, lineItemTotal, lineItemsTotal) {
   if (promotion.allocation === ApplicationMethodAllocation.ACROSS) {
-    return (lineItemTotal / lineItemsTotal) * promotion.value
+    return MathBN.mult(
+      MathBN.div(lineItemTotal, lineItemsTotal),
+      promotion.value
+    )
   }
 
   return promotion.value
@@ -25,26 +30,26 @@ export function getPromotionValue(promotion, lineItemTotal, lineItemsTotal) {
 
 export function getApplicableQuantity(lineItem, maxQuantity) {
   if (maxQuantity && lineItem.quantity) {
-    return Math.min(lineItem.quantity, maxQuantity)
+    return MathBN.min(lineItem.quantity, maxQuantity)
   }
 
   return lineItem.quantity
 }
 
 function getLineItemUnitPrice(lineItem) {
-  return lineItem.subtotal / lineItem.quantity
+  return MathBN.div(lineItem.subtotal, lineItem.quantity)
 }
 
 export function calculateAdjustmentAmountFromPromotion(
   lineItem,
   promotion,
-  lineItemsTotal = 0
+  lineItemsTotal: BigNumberInput = 0
 ) {
   const quantity = getApplicableQuantity(lineItem, promotion.max_quantity)
-  const lineItemTotal = getLineItemUnitPrice(lineItem) * quantity
-  const applicableTotal = lineItemTotal - promotion.applied_value
+  const lineItemTotal = MathBN.mult(getLineItemUnitPrice(lineItem), quantity)
+  const applicableTotal = MathBN.sub(lineItemTotal, promotion.applied_value)
 
-  if (applicableTotal <= 0) {
+  if (MathBN.lte(applicableTotal, 0)) {
     return applicableTotal
   }
 
@@ -54,5 +59,5 @@ export function calculateAdjustmentAmountFromPromotion(
     lineItemsTotal
   )
 
-  return Math.min(promotionValue, applicableTotal)
+  return MathBN.min(promotionValue, applicableTotal)
 }

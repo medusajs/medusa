@@ -1,12 +1,16 @@
-import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  MathBN,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { VirtualOrder } from "@types"
-import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
-  operation({ action, currentOrder }) {
-    const existing = currentOrder.items.find(
-      (item) => item.id === action.reference_id
+  operation({ action, currentOrder, options }) {
+    let existing = currentOrder.items.find(
+      (item) => item.id === action.details.reference_id
     )
 
     if (existing) {
@@ -19,43 +23,28 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
         action.details.quantity
       )
     } else {
-      currentOrder.items.push({
-        id: action.reference_id!,
+      existing = {
+        id: action.details.reference_id!,
+        order_id: currentOrder.id,
+        return_id: action.return_id,
+        claim_id: action.claim_id,
+        exchange_id: action.exchange_id,
+
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,
-      } as VirtualOrder["items"][0])
+      } as VirtualOrder["items"][0]
+
+      currentOrder.items.push(existing)
     }
+
+    setActionReference(existing, action, options)
 
     return MathBN.mult(action.details.unit_price, action.details.quantity)
   },
-  revert({ action, currentOrder }) {
-    const existingIndex = currentOrder.items.findIndex(
-      (item) => item.id === action.reference_id
-    )
-
-    if (existingIndex > -1) {
-      const existing = currentOrder.items[existingIndex]
-      existing.quantity = MathBN.sub(existing.quantity, action.details.quantity)
-      existing.detail.quantity = MathBN.sub(
-        existing.detail.quantity,
-        action.details.quantity
-      )
-
-      if (MathBN.lte(existing.quantity, 0)) {
-        currentOrder.items.splice(existingIndex, 1)
-      }
-    }
-  },
   validate({ action }) {
-    const refId = action.reference_id
-    if (!isDefined(action.reference_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Reference ID is required."
-      )
-    }
+    const refId = action.details?.reference_id
 
-    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
+    if (action.amount == null && action.details?.unit_price == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Unit price of item ${refId} is required if no action.amount is provided.`

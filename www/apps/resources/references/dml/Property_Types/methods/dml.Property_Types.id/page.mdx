@@ -1,0 +1,30 @@
+---
+slug: /references/data-model/property-types/id
+sidebar_label: id
+---
+
+import { TypeList } from "docs-ui"
+
+# id Property Method - API Reference
+
+This method defines an automatically generated string ID property.
+
+You must use the "primaryKey" modifier to mark the property as the
+primary key.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const User = model.define("User", {
+  id: model.id().primaryKey(),
+  // ...
+})
+
+export default User
+```
+
+## Parameters
+
+<TypeList types={[{"name":"options","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"prefix","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="id"/>

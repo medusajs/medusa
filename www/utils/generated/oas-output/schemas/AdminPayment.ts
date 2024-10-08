@@ -1,0 +1,97 @@
+/**
+ * @schema AdminPayment
+ * type: object
+ * description: The payment's details.
+ * x-schemaName: AdminPayment
+ * required:
+ *   - id
+ *   - amount
+ *   - currency_code
+ *   - provider_id
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The payment's ID.
+ *   amount:
+ *     type: number
+ *     title: amount
+ *     description: The payment's amount.
+ *   authorized_amount:
+ *     type: number
+ *     title: authorized_amount
+ *     description: The amount authorized of the payment.
+ *   currency_code:
+ *     type: string
+ *     title: currency_code
+ *     description: The payment's currency code.
+ *   provider_id:
+ *     type: string
+ *     title: provider_id
+ *     description: The ID of the payment provider used to process this payment.
+ *   cart_id:
+ *     type: string
+ *     title: cart_id
+ *     description: The ID of the associated cart.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The ID of the associated order.
+ *   order_edit_id:
+ *     type: string
+ *     title: order_edit_id
+ *     description: The ID of the associated order edit.
+ *   customer_id:
+ *     type: string
+ *     title: customer_id
+ *     description: ID of the associated customer.
+ *   data:
+ *     type: object
+ *     description: The payment's data, useful for processing by the payment provider.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment#whats-a-payment
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The date the payment was created.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The date the payment was updated.
+ *   captured_at:
+ *     type: string
+ *     format: date-time
+ *     title: captured_at
+ *     description: The date the payment was captured.
+ *   canceled_at:
+ *     type: string
+ *     format: date-time
+ *     title: canceled_at
+ *     description: The date the payment was canceled.
+ *   captured_amount:
+ *     type: number
+ *     title: captured_amount
+ *     description: The captured amount of the payment.
+ *   refunded_amount:
+ *     type: number
+ *     title: captured_amount
+ *     description: The refunded amount of the payment.
+ *   captures:
+ *     type: array
+ *     description: The details of payment captures.
+ *     items:
+ *       $ref: "#/components/schemas/BaseCapture"
+ *   refunds:
+ *     type: array
+ *     description: The details of payment refunds.
+ *     items:
+ *       $ref: "#/components/schemas/AdminRefund"
+ *   payment_collection:
+ *     $ref: "#/components/schemas/AdminPaymentCollection"
+ *   payment_session:
+ *     $ref: "#/components/schemas/AdminPaymentSession"
+ * 
+*/
+

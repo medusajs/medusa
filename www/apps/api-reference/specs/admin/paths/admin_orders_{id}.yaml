@@ -1,45 +1,54 @@
 get:
-  operationId: GetOrdersOrder
+  operationId: GetOrdersId
   summary: Get an Order
-  description: Retrieve an Order's details.
+  description: >-
+    Retrieve an order by its ID. You can expand the order's relations or select
+    the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The order's ID.
       required: true
-      description: The ID of the Order.
       schema:
         type: string
-    - in: query
-      name: expand
-      description: Comma-separated relations that should be expanded in the returned order.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned order.
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-  x-codegen:
-    method: retrieve
-    queryParams: AdminGetOrdersOrderParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_orders_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_orders_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_orders_{id}/get.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_orders_{id}/get.sh
   tags:
     - Orders
   responses:
@@ -48,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminOrdersRes.yaml
+            $ref: ../components/schemas/AdminOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -61,53 +70,56 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: getOrderDetailWorkflow
 post:
-  operationId: PostOrdersOrder
+  operationId: PostOrdersId
   summary: Update an Order
-  description: Update and order's details.
+  description: Update an order's details.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The order's ID.
       required: true
-      description: The ID of the Order.
       schema:
         type: string
-    - in: query
-      name: expand
-      description: Comma-separated relations that should be expanded in the returned order.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned order.
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostOrdersOrderReq.yaml
-  x-codegen:
-    method: update
-    params: AdminPostOrdersOrderParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_orders_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_orders_{id}/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_orders_{id}/post.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_orders_{id}/post.sh
   tags:
     - Orders
   responses:
@@ -116,7 +128,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminOrdersRes.yaml
+            $ref: ../components/schemas/AdminOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

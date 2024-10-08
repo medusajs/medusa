@@ -1,320 +1,612 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 2.0.0
   title: Medusa Admin API
   license:
     name: MIT
-    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+    url: https://github.com/medusajs/medusa/blob/develop/LICENSE
 tags:
-  - name: Apps Oauth
-    description: >
-      Some plugins may require to authenticate with third-party services and
-      store authentication details, such as the authentication token. To do
-      that, they can create an Oauth provider within the plugin that handles the
-      authentication.
-
-      The Apps Oauth API Routes allows admins to manage and generate token for an app using its oauth provider.
   - name: Auth
     description: >
-      Authentication API Routes allow admin users to manage their session, such
-      as login or log out.
-
-      When an admin user is logged in, the cookie header is set indicating the admin's login session.
-    externalDocs:
-      description: How to implement user profiles
-      url: https://docs.medusajs.com/modules/users/admin/manage-profile
-  - name: Batch Jobs
+      Auth API routes allow you to manage an admin user's authentication.
+  - name: Api Keys
     description: >
-      A batch job is a task that is performed by the Medusa backend
-      asynchronusly. For example, the Import Product feature is implemented
-      using batch jobs.
+      API keys can be used for authentication or resource-scoping.
 
-      Batch Job API Routes allow admins to manage the batch jobs and their state.
+
+      A secret API key can be used to authenticate admin users.  A publishable API key can be used to scope client requests to one or more sales channels.
+
+
+      These API routes allow admin users to manage both publishable and secret API keys.
     externalDocs:
-      description: How to import products
-      url: https://docs.medusajs.com/modules/products/admin/import-products
+      description: Learn more about the API Key Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/api-key
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminApiKey"
+  - name: Campaigns
+    description: >
+      A campaign is a group of promotions that have the same conditions, such as
+      start and end dates.
+
+
+      These API routes allow admin users to manage campaigns, their conditions, and promotions that belong to them.
+    externalDocs:
+      description: Learn more about campaigns.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/promotion/campaign
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCampaign"
+  - name: Claims
+    description: >
+      An admin creates a claim for an order when a customer reports that an item
+      is defective or incorrect.
+
+
+      Using these API routes, admin users manage order claims, their items, and more.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminClaim"
+    externalDocs:
+      description: Learn more about order claims.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/claim
+  - name: Collections
+    description: >
+      A product collection organizes products into a collection for marketing
+      purposes. For example, a summer collection.
+
+
+      These API routes allow admin users to manage collections and the products in them.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCollection"
   - name: Currencies
     description: >
       A store can use unlimited currencies, and each region must be associated
       with at least one currency.
 
-      Currencies are defined within the Medusa backend. Currency API Routes allow admins to list and update currencies.
+
+      Currencies are defined by the Currency Module. Currency API Routes allow admins to list and update currencies.
     externalDocs:
-      description: How to manage currencies
-      url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
+      description: Learn more about the Currency Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/currency
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCurrency"
   - name: Customer Groups
     description: >
-      Customer Groups can be used to organize customers that share similar data
-      or attributes into dedicated groups.
+      Customers can be organized into groups. These groups are useful for
+      segregation and marketing purposes.
 
-      This can be useful for different purposes such as setting a different price for a specific customer group.
+
+      For example, you can provide different prices for specific customers by creating a price list conditioned to their group.
+
+
+      These API routes allow admin users to manage groups and the customers in them.
     externalDocs:
-      description: How to manage customer groups
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
+      description: Learn more about the Customer Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/customer
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCustomerGroup"
   - name: Customers
     description: >
       Customers can either be created when they register through the Store APIs,
       or created by the admin using the Admin APIs.
-    externalDocs:
-      description: How to manage customers
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
-  - name: Discounts
-    description: >
-      Admins can create discounts with conditions and rules, providing them with
-      advanced settings for variety of cases.
 
-      The Discount API Routes can be used to manage discounts, their conditions, resources, and more.
+
+      These API routes allow admin users to manage customers in their store.
     externalDocs:
-      description: How to manage discounts
-      url: https://docs.medusajs.com/modules/discounts/admin/manage-discounts
+      description: Learn more about the Customer Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/customer
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCustomer"
   - name: Draft Orders
     description: >
-      A draft order is an order created manually by the admin. It allows admins
-      to create orders without direct involvement from the customer.
-    externalDocs:
-      description: How to manage draft orders
-      url: https://docs.medusajs.com/modules/orders/admin/manage-draft-orders
-  - name: Gift Cards
-    description: >
-      Admins can create gift cards and send them directly to customers,
-      specifying options like their balance, region, and more.
+      A draft order is an order created by the admin user. This is useful for
+      orders created offline or from clients other than a storefront, such as a
+      third-party integration.
 
-      These gift cards are different than the saleable gift cards in a store, which are created and managed through Product API Routes.
+
+      These API routes allow admin users to create and manage draft orders.
     externalDocs:
-      description: How to manage gift cards
-      url: https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards
-  - name: Inventory Items
+      description: Learn more about the Order Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order
+  - name: Exchanges
     description: >
-      Inventory items, provided by the [Inventory
-      Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module),
-      can be used to manage the inventory of saleable items in your store.
+      An exchange is the replacement of an item that the customer ordered with
+      another.
+
+
+      These API routes allow admin users t create and manage exchanges.
     externalDocs:
-      description: How to manage inventory items
-      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-inventory-items
+      description: Learn more about the order exchanges.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/exchange
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminExchange"
+  - name: Fulfillment Providers
+    description: >
+      A fulfillment provider is a third-party integration or custom logic used
+      to  fulfill an order's items.
+
+
+      Fulfillment providers are installed as module providers.
+    externalDocs:
+      description: Learn more about the fulfillment providers and how to create them.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/fulfillment-provider
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillmentProvider"
+  - name: Fulfillment Sets
+    description: >
+      A fulfillment set is a general form or way of fulfillment, such as
+      "shipping" or "pick up".
+
+
+      All fulfillment-related configurations in a store are related to a fulfillment set.
+
+
+      These API routes allow admin users to manage fulfillment sets.
+    externalDocs:
+      description: Learn more about fulfillment sets.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillmentSet"
+  - name: Fulfillments
+    description: >
+      A fulfillment is created for items in an order, return, exchanges, or
+      claims to deliver items to/from the customer.
+
+
+      These API routes allow admin users to manage fulfillments.
+    externalDocs:
+      description: Learn more about fulfillments.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/item-fulfillment
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillment"
+  - name: Inventory Items
+    description: |
+      An inventory item is a stock-kept product whose inventory is managed.
+
+      These API routes allow admin users to manage inventory items.
+    externalDocs:
+      description: Learn more about inventory items.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/inventory/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminInventoryItem"
   - name: Invites
     description: >
-      An admin can invite new users to manage their team. This would allow new
-      users to authenticate as admins and perform admin functionalities.
+      An admin can invite new users to manage their team. This allows new users
+      to authenticate as admins and perform admin functionalities.
+
+
+      These API routes allow admin users to manage invites.
     externalDocs:
-      description: How to manage invites
-      url: https://docs.medusajs.com/modules/users/admin/manage-invites
-  - name: Notes
-    description: >
-      Notes are created by admins and can be associated with any resource. For
-      example, an admin can add a note to an order for additional details or
-      remarks.
+      description: Learn more about the User Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/user
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminInvite"
   - name: Notifications
     description: >
-      Notifications are sent to customers to inform them of new updates. For
-      example, a notification can be sent to the customer when their order is
-      place or its state is updated.
+      A notification informs an admin user of store changes or status changes of
+      background tasks.
 
-      The notification's type, such as an email or SMS, is determined by the notification provider installed on the Medusa backend.
+
+      These API routes allow admin users to view and manage notifications.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminNotification"
   - name: Order Edits
     description: >
-      An admin can edit an order to remove, add, or update an item's quantity.
-      When an admin edits an order, they're stored as an `OrderEdit`.
-    externalDocs:
-      description: How to edit an order
-      url: https://docs.medusajs.com/modules/orders/admin/edit-order
-  - name: Orders
-    description: >
-      Orders are purchases made by customers, typically through a storefront
-      using the Store API. Draft orders created by the admin are also
-      transformed to an Order once the payment is captured.
+      An order edit is a change to an order's details, such as items, shipping
+      methods, and more.
 
-      Managing orders include managing fulfillment, payment, claims, reservations, and more.
+
+      Changes made by an order edit are only applied on the order once they're confirmed.
+
+
+      The order's previous version is retained due to versioning.
+
+
+      These API routes allow admin users to make edits to an order and manage those edits.
     externalDocs:
-      description: How to manage orders
-      url: https://docs.medusajs.com/modules/orders/admin/manage-orders
+      description: Learn more about the Order Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order
+  - name: Orders
+    description: |
+      An order is a purchase made by a customer through a storefront.
+
+      Orders can also originally be created as draft orders.
+
+      These API routes allow admin users to view and manage orders.
+    externalDocs:
+      description: Learn more about the orders
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminOrder"
   - name: Payment Collections
     description: >
-      A payment collection is useful for managing additional payments, such as
-      for Order Edits, or installment payments.
+      A payment collection is one or more payments of an order. They're also
+      used for outstanding payments due to order exchanges or claims.
+
+
+      Every purchase or request for payment starts with a payment collection.
+
+
+      A payment collection holds the payment sessions used to authorize the payment amount, and the payments to be captured / refunded.
+
+
+      These API routes allow admin users to manage payment collections.
+    externalDocs:
+      description: Learn more about payment collections.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-collection
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPaymentCollection"
   - name: Payments
     description: >
-      A payment can be related to an order, swap, return, or more. It can be
-      captured or refunded.
+      A payment is created when a payment amount is authorized. The payment can
+      then be captured or refunded.
+
+
+      A payment is created from the payment session that was authorized, and it belongs to the payment session's collection.
+
+
+      These API routes allow admin users to manage payments.
+    externalDocs:
+      description: Learn more about payments.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPayment"
   - name: Price Lists
     description: >
-      A price list are special prices applied to products based on a set of
-      conditions, such as customer group.
+      A price list is a group of prices applied if the specified conditions and
+      rules are satisfied.
+
+
+      Price lists are useful for sales or special prices for special conditions, such as applying prices for a set of customers.
+
+
+      These API routes allow admin users to manage price lists.
     externalDocs:
-      description: How to manage price lists
-      url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
+      description: Learn more about price lists.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/pricing/concepts#price-list
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPriceList"
+  - name: Price Preferences
+    description: >
+      A price preference is used to specify whether tax-inclusiveness is enabled
+      for a context, such as a region or currency code.
+
+
+      These API routes allow admin users to manage whether a region or currency is tax inclusive.
+    externalDocs:
+      description: Learn more about tax-inclusiveness and the role of a price preference.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/pricing/tax-inclusive-pricing
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPricePreference"
   - name: Product Categories
     description: >
-      Products can be categoriezed into categories. A product can be added into
-      more than one category.
+      Products can be categorized into categories.
+
+
+      Categories are nested and their heirarchy can be managed, giving admin users flexibility in how they categorize their products.
+
+
+      These API routes allow admin users to manage categories and the products in them.
     externalDocs:
-      description: How to manage product categories
-      url: https://docs.medusajs.com/modules/products/admin/manage-categories
-  - name: Product Collections
-    description: >
-      A product collection is used to organize products for different purposes
-      such as marketing or discount purposes. For example, you can create a
-      Summer Collection.
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductCategory"
   - name: Product Tags
     description: >
-      Product tags are string values created when you create or update a product
-      with a new tag.
+      A tag is another way of organizing a product. Each tag has a name and a
+      value.
 
-      Products can have more than one tag, and products can share tags. This allows admins to associate products to similar tags that can be used to filter products.
+
+      Products are organized into the same tag if they have the same value.
+
+
+      These API routes allow admin users to manage product tags.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductTag"
   - name: Product Types
-    description: >
-      Product types are string values created when you create or update a
-      product with a new type.
+    description: |
+      Products can be organized into types. Each type has a name and a value.
 
-      Products can have one type, and products can share types. This allows admins to associate products with a type that can be used to filter products.
+      Products are organized into the same type if they have the same value.
+
+      These API routes allow admin users to manage product types.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductType"
   - name: Product Variants
     description: >
-      Product variants are the actual salable item in your store. Each variant
-      is a combination of the different option values available on the product.
+      A product variant is a saleable form of the product.
 
-      Product variants can be managed through the Products API Routes.
+
+      Each variant has different option values. For example, a "Shirt" product may have a  "Blue" variant and a "Green" variant. Customers choose from these variants when they buy the product.
+
+
+      These API routes allow admin users to manage product variants.
     externalDocs:
-      description: How to manage product variants
-      url: https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductVariant"
   - name: Products
     description: >
-      Products are saleable items in a store. This also includes [saleable gift
-      cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product)
-      in a store.
+      A product is a set of variants that the customer chooses from when making
+      a purchase.
+
+
+      A product can be organized into categories or collections.
+
+
+      A product can have many options, and variants for each of these options' values.
+
+
+      These API routes allow admin users to manage products.
     externalDocs:
-      description: How to manage products
-      url: https://docs.medusajs.com/modules/products/admin/manage-products
-  - name: Publishable API Keys
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProduct"
+  - name: Promotions
     description: >
-      Publishable API Keys can be used to scope Store API calls with an API key,
-      determining what resources are retrieved when querying the API.
+      A promotion discounts an amount or percentage off a cart's items, shipping
+      methods, or the entire order.
 
-      For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,
 
-      the sales channels are inferred from the key and only products associated with those sales channels are retrieved.
+      Promotions have different types, such as a `standard` promotion that just discounts an amount, or a `buyget` promotion to enforce a "buy X get Y" promotion.
 
-      Admins can manage publishable API keys and their associated resources. Currently, only Sales Channels are supported as a resource.
+
+      A promotion has rules to restrict how and when they're applied.
+
+
+      Promotions belong to a campaign, which sets conditions on the promotion such as when it starts and ends.
+
+
+      These API routes allow admin users to manage promotions.
     externalDocs:
-      description: How to manage publishable API keys
-      url: https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys
+      description: Learn more about promotions.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/promotion/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPromotion"
+  - name: Refund Reasons
+    description: >
+      A refund reason is a possible reason used when issuing a refund to the
+      customer, such as when returning an item and refunding the customer.
+
+
+      These API routes allow admin users to manage refund reasons.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminRefundReason"
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
       store serves customers in.
 
-      Admins can manage these regions, their providers, and more.
+
+      These API routes allow admin users to manage regions, their providers, and more.
     externalDocs:
-      description: How to manage regions
-      url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+      description: Learn more about the Region Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/region
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminRegion"
   - name: Reservations
     description: >
-      Reservations, provided by the [Inventory
-      Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module),
-      are quantities of an item that are reserved, typically when an order is
-      placed but not yet fulfilled.
+      A reservation is unavailable quantity of an inventory item in a location.
 
-      Reservations can be associated with any resources, but commonly with line items of an order.
+
+      A reservation is created automatically for variants in an order whose `manage_inventory` is enabled. Admin users can also create reservations manually.
+
+
+      These API routes allow admin users to manage reservations.
     externalDocs:
-      description: How to manage item allocations in orders
-      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
+      description: Learn more about reservations and other inventory concepts.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/inventory/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminReservation"
   - name: Return Reasons
     description: >
-      Return reasons are key-value pairs that are used to specify why an order
-      return is being created.
+      A return reason is a possible reason that an item is returned from the
+      customer, such as when returning an item.
 
-      Admins can manage available return reasons, and they can be used by both admins and customers when creating a return.
-    externalDocs:
-      description: How to manage return reasons
-      url: https://docs.medusajs.com/modules/orders/admin/manage-returns#manage-return-reasons
+
+      These API routes allow admin users to manage return reasons.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminReturnReason"
   - name: Returns
     description: >
-      A return can be created by a customer or an admin to return items in an
-      order.
+      Admin users create a return when a customer returns an item to them.
 
-      Admins can manage these returns and change their state.
+
+      Returns can also be created by customers through the storefront, and admins will be able to manage them and make refunds, if necessary. Refunds are made through the [Payment API Routes](#payment)
+
+
+      These API routes allow admin users to manage returns.
     externalDocs:
-      description: How to manage returns
-      url: https://docs.medusajs.com/modules/orders/admin/manage-returns
+      description: Learn more about order returns.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/return
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminReturn"
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
       example, a webshop or a mobile app.
 
-      Admins can manage sales channels and the products available in them.
+
+      These API routes allow admins to manage sales channels and the products available in them.
     externalDocs:
-      description: How to manage sales channels
-      url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+      description: Learn more about the Sales Channel Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/sales-channel
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminSalesChannel"
   - name: Shipping Options
     description: >
-      A shipping option is used to define the available shipping methods during
-      checkout or when creating a return.
+      A shipping option is a way of shipping an item to or from the customer.
 
-      Admins can create an unlimited number of shipping options, each associated with a shipping profile and fulfillment provider, among other resources.
+
+      Shipping options are associated with the fulfillment provider used to handle their fulfillment.
+
+
+      Shipping options can be restricted geographically by service zones, and by custom rules, such as an item's weight or the customer's group.
+
+
+      These API routes allow admins to manage shipping options.
     externalDocs:
-      description: Shipping Option architecture
-      url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
+      description: Learn more about shipping options.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminShippingOption"
   - name: Shipping Profiles
     description: >
-      A shipping profile is used to group products that can be shipped in the
-      same manner.
+      A shipping profile defines a type of items that are shipping in a similar
+      manner. For example,  digital products may have a `digital` shipping
+      profile.
 
-      They are created by the admin and they're not associated with a fulfillment provider.
+
+      These API routes allow admin users to manage shipping profiles.
     externalDocs:
-      description: Shipping Profile architecture
-      url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
+      description: Learn more about shipping profiles and other fulfillment concepts.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/concepts#shipping-profile
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminShippingProfile"
   - name: Stock Locations
     description: >
-      A stock location, provided by the [Stock Location
-      module](https://docs.medusajs.com/modules/multiwarehouse/stock-location-module),
-      indicates a physical address that stock-kept items, such as physical
-      products, can be stored in.
+      A stock location is where stock-kept items (products) are kept.
 
-      An admin can create and manage available stock locations.
+
+      Stock locations are linked to fulfillment providers used to fulfill items from this location.
+
+
+      A stock location is also link to a fulfillment set, indicating where an item is fulfilled from  when an order is placed.
+
+
+      These API routes allow admin users to manage stock locations and their linked data.
     externalDocs:
-      description: How to manage stock locations.
-      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-stock-locations
-  - name: Store
+      description: Learn more about stock locations.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/stock-location/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminStockLocation"
+  - name: Stores
     description: >
-      A store indicates the general configurations and details about the
-      commerce store. By default, there's only one store in the Medusa backend.
+      A store holds the main configuration and information of your commerce
+      store, such as supported currencies or default sales channel.
 
-      Admins can manage the store and its details or configurations.
-  - name: Swaps
-    description: >
-      A swap is created by a customer or an admin to exchange an item with a new
-      one.
 
-      Creating a swap implicitely includes creating a return for the item being exchanged.
+      By default, the Medusa application has one default store. There are no API routes to create more stores. Instead, you'd have  to handle that customization manually.
+
+
+      These API routes allow admin users to manage their store.
     externalDocs:
-      description: How to manage swaps
-      url: https://docs.medusajs.com/modules/orders/admin/manage-swaps
+      description: Learn more about the Store Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/store
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminStore"
   - name: Tax Rates
     description: >
-      Each region has at least a default tax rate. Admins can create and manage
-      additional tax rates that can be applied for certain conditions, such as
-      for specific product types.
+      A tax rate is a percentage amount used to calculate the tax amount of each
+      taxable item's price, such as line items or shipping methods.
+
+
+      Each tax region has a default tax rate. You can create tax rates that override the default using tax rules.
+
+
+      These API routes allow admin users to manage tax rates and their rules.
     externalDocs:
-      description: How to manage tax rates
-      url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
+      description: Learn more about tax rates and rules.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminTaxRate"
+  - name: Tax Regions
+    description: >
+      A tax region is a region's tax settings. It has tax rates and rules. So,
+      after you create a region, you must create a tax region for it.
+
+
+      A tax region can extend settings from a parent tax region.
+
+
+      These API routes allow admin users to manage tax regions. 
+    externalDocs:
+      description: Learn more about tax regions.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-region
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminTaxRegion"
   - name: Uploads
     description: >
-      The upload API Routes are used to upload any type of resources. For
-      example, they can be used to upload CSV files that are used to import
-      products into the store.
+      Use these API routes to upload files to your Medusa application using the
+      installed file module provider.
+
+
+      You can upload public files, such as product images, or private files, such as CSV files used to import products.
     externalDocs:
-      description: How to upload CSV file when importing a product.
-      url: https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file
+      description: Check out available file module providers.
+      url: https://docs.medusajs.com/v2/resources/architectural-modules/file
   - name: Users
     description: >
-      A store can have more than one user, each having the same privileges.
-      Admins can manage users, their passwords, and more.
+      A user is an admin user that can authenticate and perform functionalities
+      as an admin user.
+
+
+      An admin user can invite other users to join their team. Once they accept the invite, they'll become admin users as well.
+
+
+      These API routes allow admin users to manage their team.
     externalDocs:
-      description: How to manage users
-      url: https://docs.medusajs.com/modules/users/admin/manage-users
+      description: Learn more about the User Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/user
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminUser"
+  - name: Workflows Executions
+    description: >
+      These API routes allow you to track workflow executions in your Medusa
+      application.
+
+
+      Depending on the workflow engine you use, executions may only be retained for a short while, or only until the Medusa application is restarted.
+    externalDocs:
+      description: Check out available Workflow Engine Modules
+      url: https://docs.medusajs.com/v2/resources/architectural-modules/workflow-engine
 servers:
   - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
+  - url: https://api.medusajs.com
 paths: {}
 components:
+  schemas:
+    Error:
+      title: Response Error
+      type: object
+      properties:
+        code:
+          type: string
+          description: A slug code to indicate the type of the error.
+          enum:
+            - invalid_state_error
+            - invalid_request_error
+            - api_error
+            - unknown_error
+        message:
+          type: string
+          description: Description of the error that occurred.
+          example: first_name must be a string
+        type:
+          type: string
+          description: A slug indicating the type of the error.
+          enum:
+            - QueryRunnerAlreadyReleasedError
+            - TransactionAlreadyStartedError
+            - TransactionNotStartedError
+            - conflict
+            - unauthorized
+            - payment_authorization_error
+            - duplicate_error
+            - not_allowed
+            - invalid_data
+            - not_found
+            - database_error
+            - unexpected_state
+            - invalid_argument
+            - unknown_error
   responses:
     default_error:
       description: Default Error
@@ -357,20 +649,16 @@ components:
             message: Entity with id 1 was not found
             type: not_found
     400_error:
-      description: Client Error or Multiple Errors
+      description: Client Error
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: "#/components/schemas/Error"
-              - $ref: "#/components/schemas/MultipleErrors"
+            $ref: "#/components/schemas/Error"
           examples:
             not_allowed:
               $ref: "#/components/examples/not_allowed_error"
             invalid_data:
               $ref: "#/components/examples/invalid_data_error"
-            MultipleErrors:
-              $ref: "#/components/examples/multiple_errors"
     500_error:
       description: Server Error
       content:

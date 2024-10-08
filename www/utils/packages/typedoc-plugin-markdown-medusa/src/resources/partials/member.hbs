@@ -46,7 +46,15 @@
 
 {{#if (sectionEnabled "member_declaration")}}
 
+{{#ifDmlEntity}}
+
+{{> member.dml}}
+
+{{else}}
+
 {{> member.declaration}}
+
+{{/ifDmlEntity}}
 
 {{/if}}
 

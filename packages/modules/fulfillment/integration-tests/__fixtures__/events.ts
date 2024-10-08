@@ -1,4 +1,4 @@
-import { EventBusTypes } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/framework/types"
 
 export function buildExpectedEventMessageShape(options: {
   eventName: string
@@ -9,16 +9,14 @@ export function buildExpectedEventMessageShape(options: {
   options?: Record<string, unknown>
 }): EventBusTypes.Message {
   return {
-    eventName: options.eventName,
-    body: {
-      metadata: {
-        action: options.action,
-        eventGroupId: options.eventGroupId,
-        service: "fulfillment",
-        object: options.object,
-      },
-      data: options.data,
+    name: options.eventName,
+    metadata: {
+      action: options.action,
+      eventGroupId: options.eventGroupId,
+      source: "Fulfillment",
+      object: options.object,
     },
+    data: options.data,
     options: options.options,
   }
 }

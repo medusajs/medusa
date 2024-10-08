@@ -1,32 +1,37 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IPricingModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { IPricingModuleService } from "@medusajs/framework/types"
+import {
+  CommonEvents,
+  composeMessage,
+  Modules,
+  PricingEvents,
+} from "@medusajs/framework/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("PriceList Service", () => {
       beforeEach(async () => {
         const testManager = await MikroOrmWrapper.forkManager()
         await createPriceSets(testManager)
         await createPriceLists(testManager)
-        await service.createRuleTypes([
-          {
-            name: "Region ID",
-            rule_attribute: "region_id",
-          },
-          {
-            name: "Customer Group ID",
-            rule_attribute: "customer_group_id",
-          },
-        ])
       })
 
       describe("list", () => {
@@ -272,20 +277,15 @@ moduleIntegrationTestRunner({
           const [priceList] = await service.listPriceLists(
             { id: [createdId] },
             {
-              relations: [
-                "prices",
-                "prices.price_set",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
-              ],
+              relations: ["prices", "price_list_rules"],
               select: [
                 "id",
                 "starts_at",
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -302,17 +302,8 @@ moduleIntegrationTestRunner({
               ]),
               price_list_rules: expect.arrayContaining([
                 expect.objectContaining({
-                  id: expect.any(String),
-                  rule_type: expect.objectContaining({
-                    id: expect.any(String),
-                    rule_attribute: "new_rule",
-                  }),
-                  price_list_rule_values: [
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "new-rule-value",
-                    }),
-                  ],
+                  attribute: "new_rule",
+                  value: ["new-rule-value"],
                 }),
               ]),
             })
@@ -334,7 +325,7 @@ moduleIntegrationTestRunner({
           }
 
           expect(error.message).toEqual(
-            'PriceList with id "does-not-exist" not found'
+            "Price lists with ids: 'does-not-exist' not found"
           )
         })
       })
@@ -400,8 +391,8 @@ moduleIntegrationTestRunner({
             {
               title: "test",
               description: "test",
-              starts_at: new Date("10/01/2023"),
-              ends_at: new Date("10/30/2023"),
+              starts_at: new Date("10/01/2023").toISOString(),
+              ends_at: new Date("10/30/2023").toISOString(),
               rules: {
                 customer_group_id: [
                   "vip-customer-group-id",
@@ -424,19 +415,14 @@ moduleIntegrationTestRunner({
               id: [created.id],
             },
             {
-              relations: [
-                "prices",
-                "prices.price_set",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
-              ],
+              relations: ["prices", "prices.price_set", "price_list_rules"],
               select: [
                 "id",
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -453,39 +439,53 @@ moduleIntegrationTestRunner({
               price_list_rules: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  rule_type: expect.objectContaining({
-                    id: expect.any(String),
-                    rule_attribute: "customer_group_id",
-                  }),
-                  price_list_rule_values: expect.arrayContaining([
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "vip-customer-group-id",
-                    }),
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "another-vip-customer-group-id",
-                    }),
-                  ]),
+                  attribute: "customer_group_id",
+                  value: [
+                    "vip-customer-group-id",
+                    "another-vip-customer-group-id",
+                  ],
                 }),
                 expect.objectContaining({
                   id: expect.any(String),
-                  rule_type: expect.objectContaining({
-                    id: expect.any(String),
-                    rule_attribute: "region_id",
-                  }),
-                  price_list_rule_values: expect.arrayContaining([
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "DE",
-                    }),
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "DK",
-                    }),
-                  ]),
+                  attribute: "region_id",
+                  value: ["DE", "DK"],
                 }),
               ]),
+            })
+          )
+
+          const events = eventBusEmitSpy.mock.calls[0][0]
+          expect(events).toHaveLength(4)
+          expect(events[0]).toEqual(
+            composeMessage(PricingEvents.PRICE_LIST_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list",
+              data: { id: priceList.id },
+            })
+          )
+          expect(events[1]).toEqual(
+            composeMessage(PricingEvents.PRICE_LIST_RULE_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list_rule",
+              data: { id: priceList.price_list_rules?.[0].id },
+            })
+          )
+          expect(events[2]).toEqual(
+            composeMessage(PricingEvents.PRICE_LIST_RULE_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list_rule",
+              data: { id: priceList.price_list_rules?.[1].id },
+            })
+          )
+          expect(events[3]).toEqual(
+            composeMessage(PricingEvents.PRICE_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceList.prices![0].id },
             })
           )
         })
@@ -531,8 +531,7 @@ moduleIntegrationTestRunner({
                 "prices",
                 "prices.price_set",
                 "prices.price_rules",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
+                "price_list_rules",
               ],
               select: [
                 "id",
@@ -541,8 +540,8 @@ moduleIntegrationTestRunner({
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -572,70 +571,76 @@ moduleIntegrationTestRunner({
               price_list_rules: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  rule_type: expect.objectContaining({
-                    id: expect.any(String),
-                    rule_attribute: "customer_group_id",
-                  }),
-                  price_list_rule_values: expect.arrayContaining([
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "vip-customer-group-id",
-                    }),
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "another-vip-customer-group-id",
-                    }),
-                  ]),
+                  attribute: "customer_group_id",
+                  value: [
+                    "vip-customer-group-id",
+                    "another-vip-customer-group-id",
+                  ],
                 }),
                 expect.objectContaining({
                   id: expect.any(String),
-                  rule_type: expect.objectContaining({
-                    id: expect.any(String),
-                    rule_attribute: "region_id",
-                  }),
-                  price_list_rule_values: expect.arrayContaining([
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "DE",
-                    }),
-                    expect.objectContaining({
-                      id: expect.any(String),
-                      value: "DK",
-                    }),
-                  ]),
+                  attribute: "region_id",
+                  value: ["DE", "DK"],
                 }),
               ]),
             })
           )
         })
 
-        it("should throw error when rule type does not exist", async () => {
-          const error = await service
-            .createPriceLists([
-              {
-                title: "test",
-                description: "test",
-                rules: {
-                  region_id: ["DE", "DK"],
-                  missing_1: ["test-missing-1"],
-                },
-                prices: [
-                  {
-                    amount: 400,
-                    currency_code: "EUR",
-                    price_set_id: "price-set-1",
-                    rules: {
-                      region_id: "DE",
-                      missing_2: "test-missing-2",
-                    },
+        it("should take the later price when passing two equivalent prices twice", async () => {
+          const [created] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              starts_at: "10/10/2010",
+              ends_at: "10/20/2030",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                  rules: {
+                    region_id: "DE",
                   },
-                ],
-              },
-            ])
-            .catch((e) => e)
+                },
+                {
+                  amount: 600,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                  rules: {
+                    region_id: "DE",
+                  },
+                },
+              ],
+            },
+          ])
 
-          expect(error.message).toEqual(
-            "Cannot find RuleTypes with rule_attribute - missing_1, missing_2"
+          const [priceList] = await service.listPriceLists(
+            {
+              id: [created.id],
+            },
+            {
+              relations: ["prices", "prices.price_rules"],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: [
+                expect.objectContaining({
+                  rules_count: 1,
+                  price_rules: [
+                    expect.objectContaining({
+                      id: expect.any(String),
+                      value: "DE",
+                    }),
+                  ],
+                  amount: 600,
+                  currency_code: "EUR",
+                }),
+              ],
+            })
           )
         })
       })
@@ -664,8 +669,7 @@ moduleIntegrationTestRunner({
                 "prices",
                 "prices.price_set",
                 "prices.price_rules",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
+                "price_list_rules",
               ],
               select: [
                 "id",
@@ -674,8 +678,8 @@ moduleIntegrationTestRunner({
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -695,56 +699,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
-          await service.createRuleTypes([
-            {
-              name: "twitter_handle",
-              rule_attribute: "twitter_handle",
-            },
-          ])
-
-          let error
-          try {
-            await service.addPriceListPrices([
-              {
-                price_list_id: "price-list-1",
-                prices: [
-                  {
-                    amount: 123,
-                    currency_code: "EUR",
-                    price_set_id: "price-set-1",
-                    rules: {
-                      twitter_handle: "owjuhl",
-                    },
-                  },
-                ],
-              },
-            ])
-          } catch (err) {
-            error = err
-          }
-
-          expect(error.message).toEqual(
-            "" +
-              `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set price-set-1`
-          )
-        })
-
         it("should add a price with rules to a priceList successfully", async () => {
-          await service.createRuleTypes([
-            {
-              name: "region_id",
-              rule_attribute: "region_id",
-            },
-          ])
-
-          const r = await service.addRules([
-            {
-              priceSetId: "price-set-1",
-              rules: [{ attribute: "region_id" }],
-            },
-          ])
-
           await service.addPriceListPrices([
             {
               price_list_id: "price-list-1",
@@ -770,20 +725,18 @@ moduleIntegrationTestRunner({
                 "prices",
                 "prices.price_set",
                 "prices.price_rules",
-                "prices.price_rules.rule_type",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
+                "price_list_rules",
               ],
               select: [
                 "id",
                 "prices.price_rules.value",
-                "prices.price_rules.rule_type.rule_attribute",
+                "prices.price_rules.attribute",
                 "prices.rules_count",
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -797,9 +750,7 @@ moduleIntegrationTestRunner({
                   price_rules: [
                     expect.objectContaining({
                       value: "EU",
-                      rule_type: expect.objectContaining({
-                        rule_attribute: "region_id",
-                      }),
+                      attribute: "region_id",
                     }),
                   ],
                   amount: 123,
@@ -809,19 +760,32 @@ moduleIntegrationTestRunner({
               price_list_rules: [],
             })
           )
+
+          const events = eventBusEmitSpy.mock.calls[0][0]
+
+          expect(events).toHaveLength(2)
+          expect(events[0]).toEqual(
+            composeMessage(PricingEvents.PRICE_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceList.prices![0].id },
+            })
+          )
+          expect(events[1]).toEqual(
+            composeMessage(PricingEvents.PRICE_RULE_CREATED, {
+              source: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_rule",
+              data: { id: priceList.prices![0].price_rules![0].id },
+            })
+          )
         })
       })
 
       describe("updatePriceListPrices", () => {
         it("should update a price to a priceList successfully", async () => {
-          const [priceSet] = await service.create([
-            {
-              rules: [
-                { rule_attribute: "region_id" },
-                { rule_attribute: "customer_group_id" },
-              ],
-            },
-          ])
+          const [priceSet] = await service.createPriceSets([{}])
 
           await service.addPriceListPrices([
             {
@@ -835,7 +799,7 @@ moduleIntegrationTestRunner({
                   rules: {
                     region_id: "test",
                   },
-                } as any,
+                },
               ],
             },
           ])
@@ -863,20 +827,18 @@ moduleIntegrationTestRunner({
                 "prices",
                 "prices.price_set",
                 "prices.price_rules",
-                "prices.price_rules.rule_type",
-                "price_list_rules.price_list_rule_values",
-                "price_list_rules.rule_type",
+                "price_list_rules",
               ],
               select: [
                 "id",
                 "prices.price_rules.value",
-                "prices.price_rules.rule_type.rule_attribute",
+                "prices.price_rules.attribute",
                 "prices.rules_count",
                 "prices.amount",
                 "prices.currency_code",
                 "prices.price_list_id",
-                "price_list_rules.price_list_rule_values.value",
-                "price_list_rules.rule_type.rule_attribute",
+                "price_list_rules.value",
+                "price_list_rules.attribute",
               ],
             }
           )
@@ -890,15 +852,11 @@ moduleIntegrationTestRunner({
                   price_rules: expect.arrayContaining([
                     expect.objectContaining({
                       value: "new test",
-                      rule_type: expect.objectContaining({
-                        rule_attribute: "region_id",
-                      }),
+                      attribute: "region_id",
                     }),
                     expect.objectContaining({
                       value: "new test",
-                      rule_type: expect.objectContaining({
-                        rule_attribute: "customer_group_id",
-                      }),
+                      attribute: "customer_group_id",
                     }),
                   ]),
                   amount: 123,
@@ -910,15 +868,8 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
-          await service.createRuleTypes([
-            { name: "twitter_handle", rule_attribute: "twitter_handle" },
-            { name: "region_id", rule_attribute: "region_id" },
-          ])
-
-          const [priceSet] = await service.create([
-            { rules: [{ rule_attribute: "region_id" }] },
-          ])
+        it("should do an update to the price if an equivalent price already exists", async () => {
+          const [priceSet] = await service.createPriceSets([{}])
 
           await service.addPriceListPrices([
             {
@@ -929,39 +880,61 @@ moduleIntegrationTestRunner({
                   amount: 123,
                   currency_code: "EUR",
                   price_set_id: priceSet.id,
-                  rules: { region_id: "test" },
-                } as any,
+                  rules: {
+                    region_id: "test",
+                  },
+                },
               ],
             },
           ])
 
-          const error = await service
-            .updatePriceListPrices([
-              {
-                price_list_id: "price-list-1",
-                prices: [
-                  {
-                    id: "test-price-id",
-                    amount: 123,
-                    price_set_id: priceSet.id,
-                    rules: { twitter_handle: "owjuhl" },
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 234,
+                  currency_code: "EUR",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: "test",
                   },
-                ],
-              },
-            ])
-            .catch((e) => e)
+                },
+              ],
+            },
+          ])
 
-          expect(error.message).toEqual(
-            `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set ${priceSet.id}`
+          const [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            {
+              relations: ["prices", "prices.price_rules"],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  price_rules: [
+                    expect.objectContaining({
+                      value: "test",
+                      attribute: "region_id",
+                    }),
+                  ],
+                  amount: 234,
+                  currency_code: "EUR",
+                }),
+              ]),
+            })
           )
         })
       })
 
       describe("removePrices", () => {
         it("should remove prices from a priceList successfully", async () => {
-          const [priceSet] = await service.create([
-            { rules: [{ rule_attribute: "region_id" }] },
-          ])
+          const [priceSet] = await service.createPriceSets([{}])
 
           await service.addPriceListPrices([
             {

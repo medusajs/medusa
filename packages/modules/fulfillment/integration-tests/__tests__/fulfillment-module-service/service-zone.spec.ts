@@ -1,22 +1,39 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateServiceZoneDTO,
   GeoZoneDTO,
   IFulfillmentModuleService,
   UpdateServiceZoneDTO,
-} from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+} from "@medusajs/framework/types"
+import {
+  FulfillmentEvents,
+  GeoZoneType,
+  Modules,
+} from "@medusajs/framework/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -71,7 +88,7 @@ moduleIntegrationTestRunner({
       describe("mutations", () => {
         describe("on create", () => {
           it("should create a new service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -105,7 +122,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -167,7 +184,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -191,7 +208,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail on creating a service zone and new geo zones that are not valid", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -263,7 +280,7 @@ moduleIntegrationTestRunner({
 
         describe("on update", () => {
           it("should update an existing service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -276,6 +293,14 @@ moduleIntegrationTestRunner({
                   type: GeoZoneType.COUNTRY,
                   country_code: "fr",
                 },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "us",
+                },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "uk",
+                },
               ],
             }
 
@@ -283,21 +308,40 @@ moduleIntegrationTestRunner({
               createData
             )
 
-            const updateData = {
+            const usGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "us"
+            )!
+            const frGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "fr"
+            )!
+            const ukGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "uk"
+            )!
+
+            const updateData: UpdateServiceZoneDTO = {
               name: "updated-service-zone-test",
               geo_zones: [
                 {
-                  id: createdServiceZone.geo_zones[0].id,
+                  id: usGeoZone.id,
                   type: GeoZoneType.COUNTRY,
-                  country_code: "us",
+                  country_code: "es",
                 },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "ch",
+                },
+                { id: frGeoZone.id },
               ],
             }
+
+            jest.clearAllMocks()
 
             const updatedServiceZone = await service.updateServiceZones(
               createdServiceZone.id,
               updateData
             )
+
+            expect(updatedServiceZone.geo_zones).toHaveLength(3)
 
             expect(updatedServiceZone).toEqual(
               expect.objectContaining({
@@ -305,17 +349,62 @@ moduleIntegrationTestRunner({
                 name: updateData.name,
                 geo_zones: expect.arrayContaining([
                   expect.objectContaining({
-                    id: updateData.geo_zones[0].id,
-                    type: updateData.geo_zones[0].type,
-                    country_code: updateData.geo_zones[0].country_code,
+                    id: frGeoZone.id,
+                  }),
+                  expect.objectContaining({
+                    id: usGeoZone.id,
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "es",
+                  }),
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "ch",
                   }),
                 ]),
               })
             )
+
+            const chGeoZone = updatedServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "ch"
+            )!
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_DELETED,
+                  action: "deleted",
+                  object: "geo_zone",
+                  data: { id: ukGeoZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
+                  action: "updated",
+                  object: "service_zone",
+                  data: { id: updatedServiceZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_CREATED,
+                  action: "created",
+                  object: "geo_zone",
+                  data: { id: chGeoZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
+                  action: "updated",
+                  object: "geo_zone",
+                  data: { id: usGeoZone.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -368,7 +457,7 @@ moduleIntegrationTestRunner({
 
         describe("on upsert", () => {
           it("should upsert a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -413,11 +502,15 @@ moduleIntegrationTestRunner({
               })
             )
 
+            jest.clearAllMocks()
+
             const updatedServiceZones = await service.upsertServiceZones(
               updateData
             )
 
             expect(updatedServiceZones).toHaveLength(2)
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(6) // Since the update only calls create and update which are already tested, only check the length
 
             for (const data_ of updateData) {
               const expectedServiceZone = updatedServiceZones.find(

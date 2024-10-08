@@ -10,11 +10,10 @@ export function buildPriceListRules(
   priceListRules?: PriceListRuleDTO[]
 ): Record<string, string[]> | undefined {
   return priceListRules?.reduce((acc, curr) => {
-    const ruleAttribute = curr.rule_type.rule_attribute
-    const ruleValues = curr.price_list_rule_values || []
+    const ruleAttribute = curr.attribute
+    const ruleValues = curr.value || []
 
-    acc[ruleAttribute] = ruleValues.map((ruleValue) => ruleValue.value)
-
+    acc[ruleAttribute] = ruleValues
     return acc
   }, {})
 }
@@ -27,11 +26,10 @@ export function buildPriceSetRules(
   }
 
   return priceRules?.reduce((acc, curr) => {
-    const ruleAttribute = curr.rule_type.rule_attribute
+    const ruleAttribute = curr.attribute
     const ruleValue = curr.value
 
     acc[ruleAttribute] = ruleValue
-
     return acc
   }, {})
 }

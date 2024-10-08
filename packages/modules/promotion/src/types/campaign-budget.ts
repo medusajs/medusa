@@ -1,16 +1,21 @@
-import { CampaignBudgetTypeValues } from "@medusajs/types"
+import {
+  BigNumberInput,
+  CampaignBudgetTypeValues,
+} from "@medusajs/framework/types"
 import { Campaign } from "@models"
 
 export interface CreateCampaignBudgetDTO {
-  type: CampaignBudgetTypeValues
-  limit: number | null
-  used?: number
+  type?: CampaignBudgetTypeValues
+  limit?: BigNumberInput | null
+  currency_code?: string | null
+  used?: BigNumberInput
   campaign?: Campaign | string
 }
 
 export interface UpdateCampaignBudgetDTO {
   id: string
   type?: CampaignBudgetTypeValues
-  limit?: number | null
-  used?: number
+  limit?: BigNumberInput | null
+  currency_code?: string | null
+  used?: BigNumberInput
 }

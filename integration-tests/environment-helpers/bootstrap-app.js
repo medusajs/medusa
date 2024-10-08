@@ -1,7 +1,7 @@
 const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
-const { isObject } = require("@medusajs/utils")
+const { isObject } = require("@medusajs/framework/utils")
 const { setContainer } = require("./use-container")
 const { setPort, setExpressServer } = require("./use-api")
 
@@ -63,15 +63,17 @@ module.exports = {
     }
 
     return await new Promise((resolve, reject) => {
-      expressServer = app.listen(port, async (err) => {
-        if (err) {
+      expressServer = app
+        .listen(port)
+        .on("error", async (err) => {
           await shutdown()
           return reject(err)
-        }
-        setPort(port)
-        process.send(port)
-        resolve(shutdown)
-      })
+        })
+        .on("listening", () => {
+          setPort(port)
+          process.send(port)
+          resolve(shutdown)
+        })
 
       setExpressServer(expressServer)
     })

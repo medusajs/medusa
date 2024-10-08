@@ -1,0 +1,8 @@
+type: object
+description: The collection's details.
+x-schemaName: StoreCollectionResponse
+required:
+  - collection
+properties:
+  collection:
+    $ref: ./StoreCollection.yaml

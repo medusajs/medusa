@@ -3,75 +3,44 @@ export const theme = {
     "colors": {
       "ui": {
         "tag": {
-          "green": {
-            "bg": {
-              "DEFAULT": "var(--tag-green-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-green-bg-hover)"
-              }
+          "neutral": {
+            "border": {
+              "DEFAULT": "var(--tag-neutral-border)"
             },
             "icon": {
-              "DEFAULT": "var(--tag-green-icon)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-green-border)"
+              "DEFAULT": "var(--tag-neutral-icon)"
             },
             "text": {
-              "DEFAULT": "var(--tag-green-text)"
+              "DEFAULT": "var(--tag-neutral-text)"
+            },
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-neutral-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-neutral-bg)"
             }
           },
           "red": {
+            "text": {
+              "DEFAULT": "var(--tag-red-text)"
+            },
             "bg": {
               "DEFAULT": "var(--tag-red-bg)",
               "hover": {
                 "DEFAULT": "var(--tag-red-bg-hover)"
               }
             },
-            "icon": {
-              "DEFAULT": "var(--tag-red-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-red-text)"
-            },
             "border": {
               "DEFAULT": "var(--tag-red-border)"
-            }
-          },
-          "orange": {
-            "bg": {
-              "DEFAULT": "var(--tag-orange-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-orange-bg-hover)"
-              }
             },
             "icon": {
-              "DEFAULT": "var(--tag-orange-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-orange-text)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-orange-border)"
-            }
-          },
-          "purple": {
-            "bg": {
-              "hover": {
-                "DEFAULT": "var(--tag-purple-bg-hover)"
-              },
-              "DEFAULT": "var(--tag-purple-bg)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-purple-text)"
-            },
-            "icon": {
-              "DEFAULT": "var(--tag-purple-icon)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-purple-border)"
+              "DEFAULT": "var(--tag-red-icon)"
             }
           },
           "blue": {
+            "text": {
+              "DEFAULT": "var(--tag-blue-text)"
+            },
             "border": {
               "DEFAULT": "var(--tag-blue-border)"
             },
@@ -83,183 +52,150 @@ export const theme = {
             },
             "icon": {
               "DEFAULT": "var(--tag-blue-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-blue-text)"
             }
           },
-          "neutral": {
-            "border": {
-              "DEFAULT": "var(--tag-neutral-border)"
-            },
+          "orange": {
             "text": {
-              "DEFAULT": "var(--tag-neutral-text)"
+              "DEFAULT": "var(--tag-orange-text)"
             },
-            "bg": {
-              "DEFAULT": "var(--tag-neutral-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-neutral-bg-hover)"
-              }
+            "border": {
+              "DEFAULT": "var(--tag-orange-border)"
             },
             "icon": {
-              "DEFAULT": "var(--tag-neutral-icon)"
+              "DEFAULT": "var(--tag-orange-icon)"
+            },
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-orange-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-orange-bg)"
             }
-          }
-        },
-        "border": {
-          "interactive": {
-            "DEFAULT": "var(--border-interactive)"
           },
-          "error": {
-            "DEFAULT": "var(--border-error)"
+          "green": {
+            "icon": {
+              "DEFAULT": "var(--tag-green-icon)"
+            },
+            "border": {
+              "DEFAULT": "var(--tag-green-border)"
+            },
+            "text": {
+              "DEFAULT": "var(--tag-green-text)"
+            },
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-green-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-green-bg)"
+            }
           },
-          "danger": {
-            "DEFAULT": "var(--border-danger)"
-          },
-          "loud": {
-            "DEFAULT": "var(--border-loud)"
-          },
-          "strong": {
-            "DEFAULT": "var(--border-strong)"
-          },
-          "base": {
-            "DEFAULT": "var(--border-base)"
-          },
-          "transparent": {
-            "DEFAULT": "var(--border-transparent)"
+          "purple": {
+            "bg": {
+              "DEFAULT": "var(--tag-purple-bg)",
+              "hover": {
+                "DEFAULT": "var(--tag-purple-bg-hover)"
+              }
+            },
+            "text": {
+              "DEFAULT": "var(--tag-purple-text)"
+            },
+            "icon": {
+              "DEFAULT": "var(--tag-purple-icon)"
+            },
+            "border": {
+              "DEFAULT": "var(--tag-purple-border)"
+            }
           }
         },
         "bg": {
+          "switch": {
+            "off": {
+              "hover": {
+                "DEFAULT": "var(--bg-switch-off-hover)"
+              },
+              "DEFAULT": "var(--bg-switch-off)"
+            }
+          },
+          "subtle": {
+            "hover": {
+              "DEFAULT": "var(--bg-subtle-hover)"
+            },
+            "DEFAULT": "var(--bg-subtle)",
+            "pressed": {
+              "DEFAULT": "var(--bg-subtle-pressed)"
+            }
+          },
+          "field": {
+            "component": {
+              "hover": {
+                "DEFAULT": "var(--bg-field-component-hover)"
+              },
+              "DEFAULT": "var(--bg-field-component)"
+            },
+            "DEFAULT": "var(--bg-field)",
+            "hover": {
+              "DEFAULT": "var(--bg-field-hover)"
+            }
+          },
+          "base": {
+            "pressed": {
+              "DEFAULT": "var(--bg-base-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--bg-base-hover)"
+            },
+            "DEFAULT": "var(--bg-base)"
+          },
           "highlight": {
             "DEFAULT": "var(--bg-highlight)",
             "hover": {
               "DEFAULT": "var(--bg-highlight-hover)"
             }
           },
-          "base": {
-            "DEFAULT": "var(--bg-base)",
+          "component": {
             "pressed": {
-              "DEFAULT": "var(--bg-base-pressed)"
+              "DEFAULT": "var(--bg-component-pressed)"
             },
+            "DEFAULT": "var(--bg-component)",
             "hover": {
-              "DEFAULT": "var(--bg-base-hover)"
-            }
-          },
-          "subtle": {
-            "pressed": {
-              "DEFAULT": "var(--bg-subtle-pressed)"
-            },
-            "DEFAULT": "var(--bg-subtle)",
-            "hover": {
-              "DEFAULT": "var(--bg-subtle-hover)"
+              "DEFAULT": "var(--bg-component-hover)"
             }
           },
           "interactive": {
             "DEFAULT": "var(--bg-interactive)"
           },
-          "overlay": {
-            "DEFAULT": "var(--bg-overlay)"
-          },
-          "switch": {
-            "off": {
-              "DEFAULT": "var(--bg-switch-off)",
-              "hover": {
-                "DEFAULT": "var(--bg-switch-off-hover)"
-              }
-            }
-          },
-          "field": {
-            "DEFAULT": "var(--bg-field)",
-            "hover": {
-              "DEFAULT": "var(--bg-field-hover)"
-            },
-            "component": {
-              "DEFAULT": "var(--bg-field-component)",
-              "hover": {
-                "DEFAULT": "var(--bg-field-component-hover)"
-              }
-            }
-          },
           "disabled": {
             "DEFAULT": "var(--bg-disabled)"
           },
-          "component": {
-            "hover": {
-              "DEFAULT": "var(--bg-component-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--bg-component-pressed)"
-            },
-            "DEFAULT": "var(--bg-component)"
+          "overlay": {
+            "DEFAULT": "var(--bg-overlay)"
           }
         },
-        "fg": {
-          "on": {
-            "inverted": {
-              "DEFAULT": "var(--fg-on-inverted)"
+        "border": {
+          "menu": {
+            "bot": {
+              "DEFAULT": "var(--border-menu-bot)"
             },
-            "color": {
-              "DEFAULT": "var(--fg-on-color)"
+            "top": {
+              "DEFAULT": "var(--border-menu-top)"
             }
+          },
+          "strong": {
+            "DEFAULT": "var(--border-strong)"
           },
           "interactive": {
-            "hover": {
-              "DEFAULT": "var(--fg-interactive-hover)"
-            },
-            "DEFAULT": "var(--fg-interactive)"
-          },
-          "error": {
-            "DEFAULT": "var(--fg-error)"
-          },
-          "muted": {
-            "DEFAULT": "var(--fg-muted)"
-          },
-          "disabled": {
-            "DEFAULT": "var(--fg-disabled)"
+            "DEFAULT": "var(--border-interactive)"
           },
           "base": {
-            "DEFAULT": "var(--fg-base)"
+            "DEFAULT": "var(--border-base)"
           },
-          "subtle": {
-            "DEFAULT": "var(--fg-subtle)"
-          }
-        },
-        "button": {
           "danger": {
-            "DEFAULT": "var(--button-danger)",
-            "pressed": {
-              "DEFAULT": "var(--button-danger-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--button-danger-hover)"
-            }
+            "DEFAULT": "var(--border-danger)"
+          },
+          "error": {
+            "DEFAULT": "var(--border-error)"
           },
           "transparent": {
-            "DEFAULT": "var(--button-transparent)",
-            "hover": {
-              "DEFAULT": "var(--button-transparent-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--button-transparent-pressed)"
-            }
-          },
-          "neutral": {
-            "DEFAULT": "var(--button-neutral)",
-            "hover": {
-              "DEFAULT": "var(--button-neutral-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--button-neutral-pressed)"
-            }
-          },
-          "inverted": {
-            "DEFAULT": "var(--button-inverted)",
-            "pressed": {
-              "DEFAULT": "var(--button-inverted-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--button-inverted-hover)"
-            }
+            "DEFAULT": "var(--border-transparent)"
           }
         },
         "contrast": {
@@ -283,39 +219,87 @@ export const theme = {
             },
             "subtle": {
               "DEFAULT": "var(--contrast-bg-subtle)"
-            },
-            "highlight": {
-              "DEFAULT": "var(--contrast-bg-highlight)"
             }
           },
           "border": {
             "base": {
               "DEFAULT": "var(--contrast-border-base)"
+            },
+            "bot": {
+              "DEFAULT": "var(--contrast-border-bot)"
+            },
+            "top": {
+              "DEFAULT": "var(--contrast-border-top)"
             }
           }
         },
-        "code": {
-          "fg": {
-            "subtle": {
-              "DEFAULT": "var(--code-fg-subtle)"
+        "fg": {
+          "disabled": {
+            "DEFAULT": "var(--fg-disabled)"
+          },
+          "muted": {
+            "DEFAULT": "var(--fg-muted)"
+          },
+          "on": {
+            "color": {
+              "DEFAULT": "var(--fg-on-color)"
             },
-            "muted": {
-              "DEFAULT": "var(--code-fg-muted)"
-            },
-            "base": {
-              "DEFAULT": "var(--code-fg-base)"
+            "inverted": {
+              "DEFAULT": "var(--fg-on-inverted)"
             }
           },
-          "bg": {
-            "base": {
-              "DEFAULT": "var(--code-bg-base)"
+          "interactive": {
+            "hover": {
+              "DEFAULT": "var(--fg-interactive-hover)"
             },
-            "subtle": {
-              "DEFAULT": "var(--code-bg-subtle)"
+            "DEFAULT": "var(--fg-interactive)"
+          },
+          "error": {
+            "DEFAULT": "var(--fg-error)"
+          },
+          "subtle": {
+            "DEFAULT": "var(--fg-subtle)"
+          },
+          "base": {
+            "DEFAULT": "var(--fg-base)"
+          }
+        },
+        "button": {
+          "inverted": {
+            "pressed": {
+              "DEFAULT": "var(--button-inverted-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--button-inverted-hover)"
+            },
+            "DEFAULT": "var(--button-inverted)"
+          },
+          "transparent": {
+            "DEFAULT": "var(--button-transparent)",
+            "hover": {
+              "DEFAULT": "var(--button-transparent-hover)"
+            },
+            "pressed": {
+              "DEFAULT": "var(--button-transparent-pressed)"
             }
           },
-          "border": {
-            "DEFAULT": "var(--code-border)"
+          "danger": {
+            "pressed": {
+              "DEFAULT": "var(--button-danger-pressed)"
+            },
+            "DEFAULT": "var(--button-danger)",
+            "hover": {
+              "DEFAULT": "var(--button-danger-hover)"
+            }
+          },
+          "neutral": {
+            "DEFAULT": "var(--button-neutral)",
+            "hover": {
+              "DEFAULT": "var(--button-neutral-hover)"
+            },
+            "pressed": {
+              "DEFAULT": "var(--button-neutral-pressed)"
+            }
           }
         }
       }
@@ -323,26 +307,27 @@ export const theme = {
     "boxShadow": {
       "borders-interactive-with-active": "var(--borders-interactive-with-active)",
       "buttons-danger-focus": "var(--buttons-danger-focus)",
-      "buttons-danger": "var(--buttons-danger)",
       "details-contrast-on-bg-interactive": "var(--details-contrast-on-bg-interactive)",
       "borders-interactive-with-focus": "var(--borders-interactive-with-focus)",
       "borders-error": "var(--borders-error)",
       "borders-focus": "var(--borders-focus)",
       "borders-interactive-with-shadow": "var(--borders-interactive-with-shadow)",
+      "buttons-danger": "var(--buttons-danger)",
+      "buttons-inverted-focus": "var(--buttons-inverted-focus)",
+      "elevation-card-hover": "var(--elevation-card-hover)",
+      "buttons-inverted": "var(--buttons-inverted)",
       "details-switch-handle": "var(--details-switch-handle)",
       "buttons-neutral": "var(--buttons-neutral)",
-      "details-commandbar": "var(--details-commandbar)",
-      "details-switch-background-focus": "var(--details-switch-background-focus)",
-      "buttons-inverted-focus": "var(--buttons-inverted-focus)",
-      "details-switch-background": "var(--details-switch-background)",
       "borders-base": "var(--borders-base)",
-      "elevation-tooltip": "var(--elevation-tooltip)",
-      "elevation-card-hover": "var(--elevation-card-hover)",
-      "elevation-modal": "var(--elevation-modal)",
-      "buttons-inverted": "var(--buttons-inverted)",
       "elevation-card-rest": "var(--elevation-card-rest)",
       "buttons-neutral-focus": "var(--buttons-neutral-focus)",
-      "elevation-flyout": "var(--elevation-flyout)"
+      "details-switch-background-focus": "var(--details-switch-background-focus)",
+      "details-switch-background": "var(--details-switch-background)",
+      "elevation-flyout": "var(--elevation-flyout)",
+      "elevation-tooltip": "var(--elevation-tooltip)",
+      "elevation-modal": "var(--elevation-modal)",
+      "elevation-commandbar": "var(--elevation-commandbar)",
+      "elevation-code-block": "var(--elevation-code-block)"
     }
   }
 }

@@ -1,14 +1,6 @@
-import { moduleDefinition } from "./module-definition"
-import { initializeFactory, Modules } from "@medusajs/modules-sdk"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { ApiKeyModuleService } from "@services"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
-
-export const initialize = initializeFactory({
-  moduleName: Modules.API_KEY,
-  moduleDefinition,
+export default Module(Modules.API_KEY, {
+  service: ApiKeyModuleService,
 })
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
-export default moduleDefinition

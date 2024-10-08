@@ -1,0 +1,183 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Retrieve Brand linked to Product using Query`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to retrieve the brand linked to a product using Query as a step of the ["Extend Models" chapter](../page.mdx).
+
+</Note>
+
+## What is Query?
+
+Query is a utility that retrieves data across modules and their links. It’s registered in the Medusa container under the `ContainerRegistrationKeys.QUERY` (`query`) registration name.
+
+---
+
+## Retrieve Brand of Product API Route
+
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    },
+    {
+      text: "Defined link between the Brand and Product data models.",
+      link: "/customization/extend-models/define-link"
+    }
+  ]}
+/>
+
+You'll create an API route that retrieves the brand of a product. You'll use this in a later chapter.
+
+Create the file `src/api/admin/products/[id]/brand/route.ts` with the following content:
+
+export const highlights = [
+  ["13", "resolve", "Resolve Query from the Medusa Container."],
+  ["17", "graph", "Run a query to retrieve a product by its ID and its brand."],
+  ["18", "entity", "The name of the model to query."],
+  ["19", "fields", "The fields and relations to retrieve."],
+  ["20", "filters", "The filters to apply on the retrieved data."]
+]
+
+```ts title="src/api/admin/products/[id]/brand/route.ts" highlights={highlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { data: [product] } = await query.graph({
+    entity: "product",
+    fields: ["brand.*"],
+    filters: {
+      id: req.params.id,
+    },
+  })
+
+  res.json({ brand: product.brand })
+}
+```
+
+In this example, you retrieve a product by its ID with its brand, and return the brand in the response.
+
+### query.graph Parameters
+
+The `graph` method of Query runs a query to retrieve data. It accepts an object having the following properties:
+
+- `entity`: The data model's name as specified in the first parameter of `model.define`.
+- `fields`: An array of properties and relations to retrieve. You can pass:
+    - A property's name, such as `id`.
+    - A relation or linked model's name, such as `brand`. You suffix the name with `.*` to retrieve all its properties.
+- `filters`: An object of filters to apply on the retrieved data model's properties.
+
+<Note>
+
+Filters currently don't work on models of another module, such as `brand` in this example.
+
+</Note>
+
+---
+
+## Test it Out
+
+To test the API route out, first, retrieve the authentication token of your admin user by sending a `POST` request to `/auth/user/emailpass`:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/user/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@medusa-test.com",
+    "password": "supersecret"
+}'
+```
+
+Make sure to replace the email and password with your user's credentials.
+
+Then, send a `GET` request to `/admin/products/:id/brand`:
+
+```bash
+curl 'http://localhost:9000/admin/products/prod_123/brand' \
+-H 'Authorization: Bearer {token}'
+```
+
+This returns the product's brand if it has one. For example:
+
+```json title="Example Response"
+{
+  "brand": {
+    "id": "123",
+    "name": "Acme",
+    // ...
+  }
+}
+```
+
+---
+
+## Retrieve Products of a Brand
+
+An example of retrieving the products of a brand:
+
+export const brandProductsHighlights = [
+  ["7", `"products.*"`, "Use the plural name of `product` since a brand has multiple products."]
+]
+
+```ts highlights={brandProductsHighlights}
+const query = req.scope.resolve(
+  ContainerRegistrationKeys.QUERY
+)
+
+const { data: [brand] } = await query.graph({
+  entity: "brand",
+  fields: ["products.*"],
+  filters: {
+    id: req.params.id,
+  },
+})
+```
+
+In this case, since a brand has multiple products, you specify the plural name of the `Product` data model (`products`) in `fields`.
+
+The retrieved `brand` now has a `products` field, which is an array of products linked to it:
+
+```json title="Example Response"
+{
+  "brand": {
+    "products": [
+      // ...
+    ]
+  }
+}
+```
+
+---
+
+## Summary
+
+By following the examples of the previous chapters, you:
+
+- Defined a link between the Brand and Product modules's data models, as if you're extending the `Product` model to add a brand.
+- Created a link between brand and product records.
+- Queried the brand linked to a product, and vice versa.
+
+---
+
+## Next Steps
+
+In the next chapters, you'll learn how to customize the Medusa Admin to show brands.

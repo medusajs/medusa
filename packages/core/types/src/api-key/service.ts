@@ -21,13 +21,16 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO[]>} The created API keys.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.create([{
+   * const apiKey = await apiKeyModuleService.createApiKeys([{
    *   title: "Development API key",
    *   type: "publishable",
    *   created_by: "user_123"
    * }])
    */
-  create(data: CreateApiKeyDTO[], sharedContext?: Context): Promise<ApiKeyDTO[]>
+  createApiKeys(
+    data: CreateApiKeyDTO[],
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO[]>
 
   /**
    * This method creates an API key.
@@ -37,13 +40,16 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO>} The created API key.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.create({
+   * const apiKey = await apiKeyModuleService.createApiKeys({
    *   title: "Development API key",
    *   type: "publishable",
    *   created_by: "user_123"
    * })
    */
-  create(data: CreateApiKeyDTO, sharedContext?: Context): Promise<ApiKeyDTO>
+  createApiKeys(
+    data: CreateApiKeyDTO,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO>
 
   /**
    * This method updates or creates API keys if they don't exist.
@@ -53,7 +59,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO[]>} The created or updated API keys.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.upsert([
+   * const apiKey = await apiKeyModuleService.upsertApiKeys([
    *   {
    *     id: "apk_123",
    *     title: "My development key",
@@ -65,7 +71,10 @@ export interface IApiKeyModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(data: UpsertApiKeyDTO[], sharedContext?: Context): Promise<ApiKeyDTO[]>
+  upsertApiKeys(
+    data: UpsertApiKeyDTO[],
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO[]>
 
   /**
    * This method updates or creates an API key if it doesn't exist.
@@ -75,12 +84,15 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO>} The created or updated API key.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.upsert({
+   * const apiKey = await apiKeyModuleService.upsertApiKeys({
    *   id: "apk_123",
    *   title: "My development key"
    * })
    */
-  upsert(data: UpsertApiKeyDTO, sharedContext?: Context): Promise<ApiKeyDTO>
+  upsertApiKeys(
+    data: UpsertApiKeyDTO,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO>
 
   /**
    * This method updates an existing API key.
@@ -91,11 +103,11 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO>} The updated API key.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.update("apk_123", {
+   * const apiKey = await apiKeyModuleService.updateApiKeys("apk_123", {
    *   title: "My development key"
    * })
    */
-  update(
+  updateApiKeys(
     id: string,
     data: UpdateApiKeyDTO,
     sharedContext?: Context
@@ -110,7 +122,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO[]>} The updated API keys.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.update(
+   * const apiKey = await apiKeyModuleService.updateApiKeys(
    *   {
    *     title: "Development key",
    *   },
@@ -119,7 +131,7 @@ export interface IApiKeyModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateApiKeys(
     selector: FilterableApiKeyProps,
     data: UpdateApiKeyDTO,
     sharedContext?: Context
@@ -133,9 +145,9 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the API keys are deleted successfully.
    *
    * @example
-   * await apiKeyModuleService.delete(["apk_123"])
+   * await apiKeyModuleService.deleteApiKeys(["apk_123"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteApiKeys(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes an API key by its ID.
@@ -145,9 +157,9 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the API key is deleted successfully.
    *
    * @example
-   * await apiKeyModuleService.delete("apk_123")
+   * await apiKeyModuleService.deleteApiKeys("apk_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteApiKeys(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves an API key by its ID.
@@ -159,9 +171,9 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<ApiKeyDTO>} The retrieved API key.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.retrieve("apk_123")
+   * const apiKey = await apiKeyModuleService.retrieveApiKey("apk_123")
    */
-  retrieve(
+  retrieveApiKey(
     id: string,
     config?: FindConfig<ApiKeyDTO>,
     sharedContext?: Context
@@ -180,7 +192,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * To retrieve a list of API keys using their IDs:
    *
    * ```ts
-   * const apiKeys = await apiKeyModuleService.list({
+   * const apiKeys = await apiKeyModuleService.listApiKeys({
    *   id: ["apk_123", "apk_321"]
    * })
    * ```
@@ -188,7 +200,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const apiKeys = await apiKeyModuleService.list(
+   * const apiKeys = await apiKeyModuleService.listApiKeys(
    *   {
    *     id: ["apk_123", "apk_321"],
    *   },
@@ -199,7 +211,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listApiKeys(
     filters?: FilterableApiKeyProps,
     config?: FindConfig<ApiKeyDTO>,
     sharedContext?: Context
@@ -219,7 +231,7 @@ export interface IApiKeyModuleService extends IModuleService {
    *
    * ```ts
    * const [apiKeys, count] =
-   * await apiKeyModuleService.listAndCount({
+   * await apiKeyModuleService.listAndCountApiKeys({
    *   id: ["apk_123", "apk_321"],
    * })
    * ```
@@ -228,7 +240,7 @@ export interface IApiKeyModuleService extends IModuleService {
    *
    * ```ts
    * const [apiKeys, count] =
-   *   await apiKeyModuleService.listAndCount(
+   *   await apiKeyModuleService.listAndCountApiKeys(
    *     {
    *       id: ["apk_123", "apk_321"],
    *     },
@@ -239,7 +251,7 @@ export interface IApiKeyModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountApiKeys(
     filters?: FilterableApiKeyProps,
     config?: FindConfig<ApiKeyDTO>,
     sharedContext?: Context

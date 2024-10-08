@@ -15,7 +15,15 @@
   }
 
   pre *::selection {
-    @apply !bg-medusa-code-text-highlight;
+    @apply !bg-medusa-contrast-bg-highlight;
+  }
+
+  * {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-base);
+  }
+
+  aside * {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-subtle);
   }
 
   body {

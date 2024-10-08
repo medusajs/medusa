@@ -1,43 +1,48 @@
 post:
-  summary: Complete a Cart
-  operationId: PostCartsCartComplete
-  description: >
-    Complete a cart and place an order or create a swap, based on the cart's
-    type. This includes attempting to authorize the cart's payment.
-
-    If authorizing the payment requires more action, the cart will not be
-    completed and the order will not be placed or the swap will not be created.
-
-
-    An idempotency key will be generated if none is provided in the header
-    `Idempotency-Key` and added to
-
-    the response. If an error occurs during cart completion or the request is
-    interrupted for any reason, the cart completion can be retried by passing
-    the idempotency
-
-    key in the `Idempotency-Key` header.
+  operationId: PostCartsIdComplete
+  summary: Complete Cart
+  description: Complete a cart and place an order.
+  x-authenticated: false
   externalDocs:
-    description: Cart completion overview
-    url: https://docs.medusajs.com/modules/carts-and-checkout/cart#cart-completion
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart
+    description: 'Storefront guide: How to implement cart completion during checkout.'
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The Cart ID.
       schema:
         type: string
-  x-codegen:
-    method: complete
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_carts_{id}_complete/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}_complete/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -46,19 +51,71 @@ post:
     - Carts
   responses:
     '200':
-      description: >-
-        If the payment of the cart was successfully authorized, but requires
-        further action from the customer, the response body will contain the
-        cart with an updated payment session. Otherwise, if the payment was
-        authorized and the cart was successfully completed, the response body
-        will contain either the newly created order or swap, depending on what
-        the cart was created for.
+      description: OK
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCompleteCartRes.yaml
+            oneOf:
+              - type: object
+                description: The created order's details.
+                required:
+                  - type
+                  - order
+                properties:
+                  type:
+                    type: string
+                    title: type
+                    description: >-
+                      The type of the returned object. In this case, the order
+                      is returned because the cart was completed successfully.
+                    default: order
+                  order:
+                    $ref: ../components/schemas/StoreOrder.yaml
+              - type: object
+                description: The details of why the cart completion failed.
+                required:
+                  - type
+                  - cart
+                  - error
+                properties:
+                  type:
+                    type: string
+                    title: type
+                    description: >-
+                      The type of the returned object. In this case, the cart is
+                      returned because an error has occurred.
+                    default: cart
+                  cart:
+                    $ref: ../components/schemas/StoreCart.yaml
+                  error:
+                    type: object
+                    description: The error's details.
+                    required:
+                      - message
+                      - name
+                      - type
+                    properties:
+                      message:
+                        type: string
+                        title: message
+                        description: The error's message.
+                      name:
+                        type: string
+                        title: name
+                        description: The error's name.
+                      type:
+                        type: string
+                        title: type
+                        description: >
+                          The error's type. Can be a [MedusaError
+                          type](https://docs.medusajs.com/v2/advanced-development/api-routes/errors#medusaerror-types)
+                          or `payment_authorization_error` or
+                          `payment_requires_more_error` for payment-related
+                          errors.
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -67,3 +124,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: completeCartWorkflow

@@ -1,33 +1,54 @@
 post:
-  operationId: PostCart
-  summary: Create a Cart
-  description: >
-    Create a Cart. Although optional, specifying the cart's region and sales
-    channel can affect the cart's pricing and
-
-    the products that can be added to the cart respectively. So, make sure to
-    set those early on and change them if necessary, such as when the customer
-    changes their region.
-
-
-    If a customer is logged in, make sure to pass its ID or email within the
-    cart's details so that the cart is attached to the customer.
+  operationId: PostCarts
+  summary: Create Cart
+  description: Create a cart.
+  x-authenticated: false
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/StorePostCartReq.yaml
-  x-codegen:
-    method: create
+          allOf:
+            - $ref: ../components/schemas/StoreCreateCart.yaml
+            - type: object
+              description: The cart's details.
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
+          description: The cart's details.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_carts/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -36,13 +57,15 @@ post:
     - Carts
   responses:
     '200':
-      description: Successfully created a new Cart
+      description: OK
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
+            $ref: ../components/schemas/StoreCartResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -51,3 +74,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createCartWorkflow

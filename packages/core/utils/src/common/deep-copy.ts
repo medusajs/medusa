@@ -6,9 +6,10 @@ import { isObject } from "./is-object"
  *
  * @param obj
  */
-export function deepCopy<T extends Record<any, any> = Record<any, any>>(
-  obj: T | T[]
-): T | T[] {
+export function deepCopy<
+  T extends Record<any, any> | Record<any, any>[] = Record<any, any>,
+  TOutput = T extends [] ? T[] : T
+>(obj: T): TOutput {
   if (obj === null || typeof obj !== "object") {
     return obj
   }
@@ -18,14 +19,14 @@ export function deepCopy<T extends Record<any, any> = Record<any, any>>(
     for (let i = 0; i < obj.length; i++) {
       copy[i] = deepCopy(obj[i])
     }
-    return copy
+    return copy as TOutput
   }
 
   if (isObject(obj)) {
     const copy: Record<any, any> = {}
     for (let attr in obj) {
       if (obj.hasOwnProperty(attr)) {
-        copy[attr] = deepCopy(obj[attr])
+        copy[attr] = deepCopy(obj[attr] as T)
       }
     }
     return copy

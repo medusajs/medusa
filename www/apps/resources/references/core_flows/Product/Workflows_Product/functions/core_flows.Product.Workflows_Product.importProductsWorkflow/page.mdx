@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/importProductsWorkflow
+sidebar_label: importProductsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# importProductsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `importProductsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow imports products from a CSV file.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"importProductsWorkflow","steps":[{"type":"step","name":"parseProductCsvStep","description":"This step parses a CSV file holding products to import.","link":"../../../../core_flows.Steps_Product/page.mdx#parseproductcsvstep","depth":1},{"type":"step","name":"groupProductsForBatchStep","description":"This step groups products to be created and updated.","link":"../../../../core_flows.Steps_Product/page.mdx#groupproductsforbatchstep","depth":2},{"type":"step","name":"waitConfirmationProductImportStep","description":"This step waits until a product import is confirmed.","link":"../../../../core_flows.Steps_Product/page.mdx#waitconfirmationproductimportstep","depth":3}]}} />
+
+## Input
+
+<TypeList types={[{"name":"ImportProductsDTO","type":"`ImportProductsDTO`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="importProductsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"ImportProductsSummary","type":"`ImportProductsSummary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="importProductsWorkflow"/>

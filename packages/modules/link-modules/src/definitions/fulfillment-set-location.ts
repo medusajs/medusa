@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const LocationFulfillmentSet: ModuleJoinerConfig = {
   serviceName: LINKS.LocationFulfillmentSet,
@@ -12,24 +11,30 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
   alias: [
     {
       name: ["location_fulfillment_set", "location_fulfillment_sets"],
-      args: {
-        entity: "LinkLocationFulfillmentSet",
-      },
+      entity: "LinkLocationFulfillmentSet",
     },
   ],
   primaryKeys: ["id", "stock_location_id", "fulfillment_set_id"],
   relationships: [
     {
       serviceName: Modules.STOCK_LOCATION,
+      entity: "StockLocation",
       primaryKey: "id",
       foreignKey: "stock_location_id",
       alias: "location",
+      args: {
+        methodSuffix: "StockLocations",
+      },
     },
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "FulfillmentSet",
       primaryKey: "id",
       foreignKey: "fulfillment_set_id",
       alias: "fulfillment_set",
+      args: {
+        methodSuffix: "FulfillmentSets",
+      },
       deleteCascade: true,
     },
   ],
@@ -44,11 +49,17 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
         isList: true,
       },
       fieldAlias: {
-        fulfillment_sets: "fulfillment_set_link.fulfillment_set",
+        fulfillment_sets: {
+          path: "fulfillment_set_link.fulfillment_set",
+          isList: true,
+        },
       },
     },
     {
       serviceName: Modules.FULFILLMENT,
+      fieldAlias: {
+        location: "locations_link.location",
+      },
       relationship: {
         serviceName: LINKS.LocationFulfillmentSet,
         primaryKey: "fulfillment_set_id",

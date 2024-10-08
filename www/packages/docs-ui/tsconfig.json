@@ -3,23 +3,17 @@
   "compilerOptions": {
     "paths": {
       "docs-ui": ["./src/index.ts"],
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "outDir": "dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo-client",
     "noEmit": false,
     "jsx": "react",
-    "lib": ["dom", "ES2015", "es2021"],
+    "lib": ["dom", "es2022"],
     "module": "ESNext",
-    "target": "es6",
+    "target": "ESNext",
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
-  "include": [
-    "src/**/*",
-    "tailwind.config.js",
-    "postcss.config.js"
-  ]
+  "include": ["src/**/*", "tailwind.config.js", "postcss.config.js"]
 }

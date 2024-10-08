@@ -2,7 +2,7 @@ import {
   JoinerRelationship,
   ModuleJoinerConfig,
   ModuleLoaderFunction,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import { generateEntity } from "../utils"
 import { connectionLoader } from "./connection"

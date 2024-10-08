@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/createDefaultStoreStep
+sidebar_label: createDefaultStoreStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createDefaultStoreStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createDefaultStoreStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates a default store.
+
+## Input
+
+<TypeList types={[{"name":"CreateDefaultStoreStepInput","type":"`CreateDefaultStoreStepInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createDefaultStoreStep"/>
+
+## Output
+
+<TypeList types={[{"name":"StoreDTO","type":"[StoreDTO](../../../../../store/interfaces/store.StoreDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, any>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The created at of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The updated at of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currencies","type":"[StoreCurrencyDTO](../../../../../store/interfaces/store.StoreCurrencyDTO/page.mdx)[]","description":"The supported currency codes of the store.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the store currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The currency code of the store currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"Whether the currency is the default one for the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"store_id","type":"`string`","description":"The store ID associated with the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The created date of the currency","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The updated date of the currency","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The deleted date of the currency","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"default_sales_channel_id","type":"`string`","description":"The associated default sales channel's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_region_id","type":"`string`","description":"The associated default region's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_location_id","type":"`string`","description":"The associated default location's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createDefaultStoreStep"/>

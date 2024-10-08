@@ -1,3 +1,4 @@
+import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isDefined, trimZeros } from "../common"
 import { BigNumber } from "./big-number"
 
@@ -11,6 +12,14 @@ export function createRawPropertiesFromBigNumber(
     exclude?: string[]
   } = {}
 ) {
+  const isBigNumber = (value) => {
+    return (
+      typeof value === "object" &&
+      isDefined(value.raw_) &&
+      isDefined(value.numeric_)
+    )
+  }
+
   const stack = [{ current: obj, path: "" }]
 
   while (stack.length > 0) {
@@ -19,7 +28,8 @@ export function createRawPropertiesFromBigNumber(
     if (
       current == null ||
       typeof current !== "object" ||
-      current instanceof BigNumber
+      isBigNumber(current) ||
+      path.includes("." + prefix)
     ) {
       continue
     }
@@ -30,16 +40,17 @@ export function createRawPropertiesFromBigNumber(
       )
     } else {
       for (const key of Object.keys(current)) {
-        const value = current[key]
+        let value = current[key]
         const currentPath = path ? `${path}.${key}` : key
 
         if (value != null && !exclude.includes(currentPath)) {
-          const isBigNumber =
-            typeof value === "object" &&
-            isDefined(value.raw_) &&
-            isDefined(value.numeric_)
+          const isBigNumberJS = BigNumberJS.isBigNumber(value)
+          if (isBigNumberJS) {
+            current[key] = new BigNumber(current[key])
+            value = current[key]
+          }
 
-          if (isBigNumber) {
+          if (isBigNumber(value)) {
             const newKey = prefix + key
             const newPath = path ? `${path}.${newKey}` : newKey
             if (!exclude.includes(newPath)) {

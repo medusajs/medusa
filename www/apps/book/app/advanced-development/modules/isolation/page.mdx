@@ -1,0 +1,113 @@
+export const metadata = {
+  title: `${pageNumber} Module Isolation`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how modules are isolated, and what that means for your custom development.
+
+<Note title="Summary">
+
+- Modules can't access resources, such as services or data models, from other modules.
+- Use Medusa's linking concepts, as explained in the [Module Links chapters](../../module-links/page.mdx), to extend a module's data models and retrieve data across modules.
+
+</Note>
+
+## How are Modules Isolated?
+
+A module is unaware of any resources other than its own, such as services or data models. This means it can't access these resources if they're implemented in another module.
+
+For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to the Product Module's data models.
+
+---
+
+## Why are Modules Isolated
+
+Some of the module isolation's benefits include:
+
+- Integrate your module into any Medusa application without side-effects to your setup.
+- Replace existing modules with your custom implementation, if your use case is drastically different.
+- Use modules in other environments, such as Edge functions and Next.js apps.
+
+---
+
+## How to Extend Data Model of Another Module?
+
+To extend the data model of another module, such as the `product` data model of the Product Module, use Medusa's linking concepts as explained in the [Module Links chapters](../../module-links/page.mdx).
+
+---
+
+## How to Use Services of Other Modules?
+
+If you're building a feature that uses functionalities from different modules, use a workflow whose steps resolve the modules' services to perform these functionalities.
+
+Workflows ensure data consistency through their roll-back mechanism and tracking of each execution's status, steps, input, and output.
+
+### Example
+
+For example, consider you have two modules:
+
+1. A module that stores and manages brands in your application.
+2. A module that integrates a third-party Content Management System (CMS).
+
+To sync brands from your application to the third-party system, create the following steps:
+
+export const stepsHighlights = [
+  ["1", "retrieveBrandsStep", "A step that retrieves brands using a brand module."],
+  ["14", "createBrandsInCmsStep", "A step that creates brands using a CMS module."],
+  ["25", "", "Add a compensation function to the step if an error occurs."]
+]
+
+```ts title="Example Steps" highlights={stepsHighlights}
+const retrieveBrandsStep = createStep(
+  "retrieve-brands",
+  async (_, { container }) => {
+    const brandModuleService = container.resolve(
+      "brandModuleService"
+    )
+
+    const brands = await brandModuleService.listBrands()
+
+    return new StepResponse(brands)
+  }
+)
+
+const createBrandsInCmsStep = createStep(
+  "create-brands-in-cms",
+  async ({ brands }, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cmsModuleService"
+    )
+
+    const cmsBrands = await cmsModuleService.createBrands(brands)
+
+    return new StepResponse(cmsBrands, cmsBrands)
+  },
+  async (brands, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cmsModuleService"
+    )
+
+    await cmsModuleService.deleteBrands(
+      brands.map((brand) => brand.id)
+    )
+  }
+)
+```
+
+The `retrieveBrandsStep` retrieves the brands from a brand module, and the `createBrandsInCmsStep` creates the brands in a third-party system using a CMS module.
+
+Then, create the following workflow that uses these steps:
+
+```ts title="Example Workflow"
+export const syncBrandsWorkflow = createWorkflow(
+  "sync-brands",
+  () => {
+    const brands = retrieveBrandsStep()
+
+    updateBrandsInCmsStep({ brands })
+  }
+)
+```
+
+You can then use this workflow in an API route, scheduled job, or other resources that use this functionality.

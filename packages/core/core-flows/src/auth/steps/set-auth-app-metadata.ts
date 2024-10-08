@@ -1,59 +1,70 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IAuthModuleService } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { isDefined, Modules } from "@medusajs/framework/utils"
 
-type StepInput = {
-  authUserId: string
-  key: string
-  value: string
+export type SetAuthAppMetadataStepInput = {
+  authIdentityId: string
+  actorType: string
+  value: string | null // null means delete the key
 }
 
 export const setAuthAppMetadataStepId = "set-auth-app-metadata"
+/**
+ * This step sets the `app_metadata` property of an auth identity.
+ */
 export const setAuthAppMetadataStep = createStep(
   setAuthAppMetadataStepId,
-  async (data: StepInput, { container }) => {
-    const service = container.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
+  async (data: SetAuthAppMetadataStepInput, { container }) => {
+    const service = container.resolve<IAuthModuleService>(Modules.AUTH)
 
-    const authUser = await service.retrieve(data.authUserId)
+    const key = `${data.actorType}_id`
+    const authIdentity = await service.retrieveAuthIdentity(data.authIdentityId)
 
-    const appMetadata = authUser.app_metadata || {}
-    if (isDefined(appMetadata[data.key])) {
-      throw new Error(`Key ${data.key} already exists in app metadata`)
+    const appMetadata = authIdentity.app_metadata || {}
+
+    // If the value is null, we are deleting the association with an actor
+    if (isDefined(appMetadata[key]) && data.value !== null) {
+      throw new Error(`Key ${key} already exists in app metadata`)
     }
 
-    appMetadata[data.key] = data.value
+    const oldValue = appMetadata[key]
+    appMetadata[key] = data.value
 
-    await service.update({
-      id: authUser.id,
+    await service.updateAuthIdentities({
+      id: authIdentity.id,
       app_metadata: appMetadata,
     })
 
-    return new StepResponse(authUser, { id: authUser.id, key: data.key })
+    return new StepResponse(authIdentity, {
+      id: authIdentity.id,
+      key: key,
+      value: data.value,
+      oldValue,
+    })
   },
-  async (idAndKey, { container }) => {
-    if (!idAndKey) {
+  async (idAndKeyAndValue, { container }) => {
+    if (!idAndKeyAndValue) {
       return
     }
 
-    const { id, key } = idAndKey
+    const { id, key, oldValue, value } = idAndKeyAndValue
 
-    const service = container.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
+    const service = container.resolve<IAuthModuleService>(Modules.AUTH)
 
-    const authUser = await service.retrieve(id)
+    const authIdentity = await service.retrieveAuthIdentity(id)
 
-    const appMetadata = authUser.app_metadata || {}
-    if (isDefined(appMetadata[key])) {
+    const appMetadata = authIdentity.app_metadata || {}
+
+    // If the value is null, we WERE deleting the association with an actor, so we need to restore it
+    if (value === null) {
+      appMetadata[key] = oldValue
+    } else {
       delete appMetadata[key]
     }
 
-    await service.update({
-      id: authUser.id,
+    await service.updateAuthIdentities({
+      id: authIdentity.id,
       app_metadata: appMetadata,
     })
   }

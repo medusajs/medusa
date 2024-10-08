@@ -1,3 +1,5 @@
+"use client"
+
 import type { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
@@ -5,6 +7,7 @@ import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import checkRequired from "@/utils/check-required"
 import { Loading, type DetailsProps } from "docs-ui"
+import { useMemo } from "react"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -41,9 +44,22 @@ const TagOperationParametersObject = ({
   isRequired,
   topLevel = false,
 }: TagOperationParametersObjectProps) => {
+  const isPropertiesEmpty = useMemo(
+    () => !schema.properties || !Object.values(schema.properties).length,
+    [schema]
+  )
+  const isAdditionalPropertiesEmpty = useMemo(
+    () =>
+      !schema.additionalProperties ||
+      schema.additionalProperties.type !== "object" ||
+      !schema.additionalProperties.properties ||
+      !Object.values(schema.additionalProperties.properties).length,
+    [schema]
+  )
+
   if (
     (schema.type !== "object" && schema.type !== undefined) ||
-    (!schema.properties && !name)
+    (isPropertiesEmpty && isAdditionalPropertiesEmpty && !name)
   ) {
     return <></>
   }
@@ -65,22 +81,19 @@ const TagOperationParametersObject = ({
   }
 
   const getPropertyParameterElms = (isNested = false) => {
+    const properties = isPropertiesEmpty
+      ? schema.additionalProperties!.properties
+      : schema.properties
     // sort properties to show required fields first
-    const sortedProperties = Object.keys(schema.properties).sort(
+    const sortedProperties = Object.keys(properties).sort(
       (property1, property2) => {
-        schema.properties[property1].isRequired = checkRequired(
-          schema,
-          property1
-        )
-        schema.properties[property2].isRequired = checkRequired(
-          schema,
-          property2
-        )
+        properties[property1].isRequired = checkRequired(schema, property1)
+        properties[property2].isRequired = checkRequired(schema, property2)
 
-        return schema.properties[property1].isRequired &&
-          schema.properties[property2].isRequired
+        return properties[property1].isRequired &&
+          properties[property2].isRequired
           ? 0
-          : schema.properties[property1].isRequired
+          : properties[property1].isRequired
           ? -1
           : 1
       }
@@ -90,13 +103,12 @@ const TagOperationParametersObject = ({
         {sortedProperties.map((property, index) => (
           <TagOperationParameters
             schemaObject={{
-              ...schema.properties[property],
+              ...properties[property],
               parameterName: property,
             }}
             key={index}
             isRequired={
-              schema.properties[property].isRequired ||
-              checkRequired(schema, property)
+              properties[property].isRequired || checkRequired(schema, property)
             }
           />
         ))}
@@ -114,7 +126,7 @@ const TagOperationParametersObject = ({
     )
   }
 
-  if (!schema.properties) {
+  if (isPropertiesEmpty && isAdditionalPropertiesEmpty) {
     return getPropertyDescriptionElm()
   }
 

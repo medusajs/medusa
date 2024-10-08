@@ -5,19 +5,26 @@ const CircleDottedLine = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M12.5 2.936a7.387 7.387 0 0 0-5 0M2.63 8.632a7.484 7.484 0 0 1 2.5-4.33M5.13 15.698a7.485 7.485 0 0 1-2.5-4.33M7.5 17.064a7.387 7.387 0 0 0 5 0M17.37 8.632a7.484 7.484 0 0 0-2.501-4.33M14.869 15.698a7.485 7.485 0 0 0 2.5-4.33"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M3.933 2.132a6.4 6.4 0 0 1 2.322-.956M1.17 6.283a6.4 6.4 0 0 1 .97-2.362M3.933 12.868c.691.46 1.477.791 2.322.956M1.17 8.717c.165.86.5 1.66.97 2.362M8.745 1.176c.845.165 1.63.496 2.322.956M12.86 3.921a6.4 6.4 0 0 1 .97 2.362M8.745 13.824a6.4 6.4 0 0 0 2.322-.956M12.86 11.079c.47-.703.805-1.502.97-2.362" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

@@ -2,57 +2,49 @@ import {
   Context,
   DAL,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
-  UserTypes,
   ModulesSdkTypes,
-  IEventBusModuleService,
-} from "@medusajs/types"
+  UserTypes,
+} from "@medusajs/framework/types"
 import {
+  arrayDifference,
+  CommonEvents,
   EmitEvents,
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
-  ModulesSdkUtils,
-  InjectManager,
-  CommonEvents,
+  MedusaError,
+  MedusaService,
   UserEvents,
-} from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+} from "@medusajs/framework/utils"
+import jwt, { JwtPayload } from "jsonwebtoken"
+import crypto from "node:crypto"
 
 import { Invite, User } from "@models"
-import InviteService from "./invite"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  userService: ModulesSdkTypes.InternalModuleService<any>
-  inviteService: InviteService<any>
-  eventBusModuleService: IEventBusModuleService
+  userService: ModulesSdkTypes.IMedusaInternalService<any>
+  inviteService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [Invite]
-
-export default class UserModuleService<
-    TUser extends User = User,
-    TInvite extends Invite = Invite
-  >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
-    UserTypes.UserDTO,
-    {
-      Invite: {
-        dto: UserTypes.InviteDTO
-      }
+// 1 day
+const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24 * 1000
+export default class UserModuleService
+  extends MedusaService<{
+    User: {
+      dto: UserTypes.UserDTO
     }
-  >(User, generateMethodForModels, entityNameToLinkableKeysMap)
+    Invite: {
+      dto: UserTypes.InviteDTO
+    }
+  }>({ User, Invite })
   implements UserTypes.IUserModuleService
 {
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
-  }
-
   protected baseRepository_: DAL.RepositoryService
 
-  protected readonly userService_: ModulesSdkTypes.InternalModuleService<TUser>
-  protected readonly inviteService_: InviteService<TInvite>
+  protected readonly userService_: ModulesSdkTypes.IMedusaInternalService<User>
+  protected readonly inviteService_: ModulesSdkTypes.IMedusaInternalService<Invite>
+  protected readonly config: { jwtSecret: string; expiresIn: number }
 
   constructor(
     { userService, inviteService, baseRepository }: InjectedDependencies,
@@ -63,27 +55,49 @@ export default class UserModuleService<
 
     this.baseRepository_ = baseRepository
     this.userService_ = userService
-    this.inviteService_ = inviteService.withModuleOptions(
-      this.moduleDeclaration
-    )
+    this.inviteService_ = inviteService
+    this.config = {
+      jwtSecret: moduleDeclaration["jwt_secret"],
+      expiresIn:
+        parseInt(moduleDeclaration["valid_duration"]) ||
+        DEFAULT_VALID_INVITE_DURATION,
+    }
+
+    if (!this.config.jwtSecret) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "No jwt_secret was provided in the UserModule's options. Please add one."
+      )
+    }
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async validateInviteToken(
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
-    const invite = await this.inviteService_.validateInviteToken(
-      token,
+    const jwtSecret = this.moduleDeclaration["jwt_secret"]
+    const decoded: JwtPayload = jwt.verify(token, jwtSecret, { complete: true })
+
+    const invite = await this.inviteService_.retrieve(
+      decoded.payload.id,
+      {},
       sharedContext
     )
+
+    if (invite.expires_at < new Date()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The invite has expired"
+      )
+    }
 
     return await this.baseRepository_.serialize<UserTypes.InviteDTO>(invite, {
       populate: true,
     })
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async refreshInviteTokens(
     inviteIds: string[],
@@ -93,12 +107,11 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_token_generated,
-        metadata: {
-          service: this.constructor.name,
-          action: "token_generated",
-          object: "invite",
-        },
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        source: this.constructor.name,
+        action: "token_generated",
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
@@ -111,29 +124,57 @@ export default class UserModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async refreshInviteTokens_(
     inviteIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.inviteService_.refreshInviteTokens(
-      inviteIds,
+    const [invites, count] = await this.inviteService_.listAndCount(
+      { id: inviteIds },
+      {},
       sharedContext
     )
+
+    if (count !== inviteIds.length) {
+      const missing = arrayDifference(
+        inviteIds,
+        invites.map((invite) => invite.id)
+      )
+
+      if (missing.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The following invites do not exist: ${missing.join(", ")}`
+        )
+      }
+    }
+
+    const updates = invites.map((invite) => {
+      return {
+        id: invite.id,
+        expires_at: new Date().setMilliseconds(
+          new Date().getMilliseconds() + this.config.expiresIn
+        ),
+        token: this.generateToken({ id: invite.id, email: invite.email }),
+      }
+    })
+
+    return await this.inviteService_.update(updates, sharedContext)
   }
 
-  create(
+  // @ts-expect-error
+  createUsers(
     data: UserTypes.CreateUserDTO[],
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO[]>
-  create(
+  createUsers(
     data: UserTypes.CreateUserDTO,
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
-  async create(
+  async createUsers(
     data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
@@ -149,12 +190,11 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       users.map((user) => ({
-        eventName: UserEvents.created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "user",
-        },
+        eventName: UserEvents.USER_CREATED,
+        source: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "user",
+        context: sharedContext,
         data: { id: user.id },
       }))
     )
@@ -162,18 +202,19 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
-  update(
+  // @ts-expect-error
+  updateUsers(
     data: UserTypes.UpdateUserDTO[],
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO[]>
-  update(
+  updateUsers(
     data: UserTypes.UpdateUserDTO,
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
-  async update(
+  async updateUsers(
     data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
@@ -189,12 +230,11 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       updatedUsers.map((user) => ({
-        eventName: UserEvents.updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "user",
-        },
+        eventName: UserEvents.USER_UPDATED,
+        source: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "user",
+        context: sharedContext,
         data: { id: user.id },
       }))
     )
@@ -202,6 +242,7 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  // @ts-ignore
   createInvites(
     data: UserTypes.CreateInviteDTO[],
     sharedContext?: Context
@@ -211,7 +252,7 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createInvites(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
@@ -229,24 +270,22 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "invite",
-        },
+        eventName: UserEvents.INVITE_CREATED,
+        source: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_token_generated,
-        metadata: {
-          service: this.constructor.name,
-          action: "token_generated",
-          object: "invite",
-        },
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        source: this.constructor.name,
+        action: "token_generated",
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
@@ -254,11 +293,24 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async createInvites_(
     data: UserTypes.CreateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TInvite[]> {
+  ): Promise<Invite[]> {
+    const alreadyExistingUsers = await this.listUsers({
+      email: data.map((d) => d.email),
+    })
+
+    if (alreadyExistingUsers.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `User account for following email(s) already exist: ${alreadyExistingUsers
+          .map((u) => u.email)
+          .join(", ")}`
+      )
+    }
+
     const toCreate = data.map((invite) => {
       return {
         ...invite,
@@ -267,9 +319,22 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_.create(toCreate, sharedContext)
+    const created = await this.inviteService_.create(toCreate, sharedContext)
+
+    const updates = created.map((invite) => {
+      return {
+        id: invite.id,
+        expires_at: new Date().setMilliseconds(
+          new Date().getMilliseconds() + this.config.expiresIn
+        ),
+        token: this.generateToken({ id: invite.id, email: invite.email }),
+      }
+    })
+
+    return await this.inviteService_.update(updates, sharedContext)
   }
 
+  // @ts-ignore
   updateInvites(
     data: UserTypes.UpdateInviteDTO[],
     sharedContext?: Context
@@ -279,7 +344,7 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async updateInvites(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
@@ -300,16 +365,23 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       serializedInvites.map((invite) => ({
-        eventName: UserEvents.invite_updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "invite",
-        },
+        eventName: UserEvents.INVITE_UPDATED,
+        source: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
+  }
+
+  private generateToken(data: any): string {
+    const jwtSecret: string = this.moduleDeclaration["jwt_secret"]
+    return jwt.sign(data, jwtSecret, {
+      jwtid: crypto.randomUUID(),
+      expiresIn: this.config.expiresIn,
+    })
   }
 }

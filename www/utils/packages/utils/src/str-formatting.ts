@@ -28,8 +28,23 @@ export function camelToTitle(str: string): string {
     .trim()
 }
 
+export function camelToPascal(str: string): string {
+  return `${str.charAt(0).toUpperCase()}${str.substring(1)}`
+}
+
 export function snakeToWords(str: string): string {
   return str.replaceAll("_", " ").toLowerCase()
+}
+
+export function snakeToPascal(str: string): string {
+  return str
+    .split("_")
+    .map((word) => capitalize(word))
+    .join("")
+}
+
+export function isSnakeCase(str: string): boolean {
+  return /[a-z]+_[a-z]+/g.test(str)
 }
 
 export function kebabToTitle(str: string): string {
@@ -74,6 +89,10 @@ export function wordsToPascal(str: string): string {
 
 export function pascalToCamel(str: string): string {
   return `${str.charAt(0).toLowerCase()}${str.substring(1)}`
+}
+
+export function pascalToWords(str: string): string {
+  return str.replaceAll(/([A-Z])/g, " $1")
 }
 
 /**

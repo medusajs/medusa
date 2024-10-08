@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -31,9 +29,7 @@
       "indexes": [
         {
           "keyName": "tax_provider_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -144,9 +140,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "parent_id"
-          ],
+          "columnNames": ["parent_id"],
           "composite": false,
           "keyName": "IDX_tax_region_parent_id",
           "primary": false,
@@ -154,9 +148,7 @@
         },
         {
           "keyName": "IDX_tax_region_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -168,13 +160,19 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_province\" ON \"tax_region\" (country_code, province_code)"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_province\" ON \"tax_region\" (country_code, province_code) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_tax_region_unique_country_nullable_province",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_nullable_province\" ON \"tax_region\" (country_code) WHERE province_code IS NULL AND deleted_at IS NULL"
         },
         {
           "keyName": "tax_region_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -195,26 +193,18 @@
       "foreignKeys": {
         "tax_region_provider_id_foreign": {
           "constraintName": "tax_region_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "localTableName": "public.tax_region",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.tax_provider",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "tax_region_parent_id_foreign": {
           "constraintName": "tax_region_parent_id_foreign",
-          "columnNames": [
-            "parent_id"
-          ],
+          "columnNames": ["parent_id"],
           "localTableName": "public.tax_region",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.tax_region",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -238,7 +228,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "float"
         },
         "code": {
@@ -247,7 +237,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "name": {
@@ -344,9 +334,7 @@
       "indexes": [
         {
           "keyName": "IDX_tax_rate_tax_region_id",
-          "columnNames": [
-            "tax_region_id"
-          ],
+          "columnNames": ["tax_region_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -354,9 +342,7 @@
         },
         {
           "keyName": "IDX_tax_rate_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -372,9 +358,7 @@
         },
         {
           "keyName": "tax_rate_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -384,13 +368,9 @@
       "foreignKeys": {
         "tax_rate_tax_region_id_foreign": {
           "constraintName": "tax_rate_tax_region_id_foreign",
-          "columnNames": [
-            "tax_region_id"
-          ],
+          "columnNames": ["tax_region_id"],
           "localTableName": "public.tax_rate",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.tax_region",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -491,9 +471,7 @@
       "indexes": [
         {
           "keyName": "IDX_tax_rate_rule_tax_rate_id",
-          "columnNames": [
-            "tax_rate_id"
-          ],
+          "columnNames": ["tax_rate_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -501,9 +479,7 @@
         },
         {
           "keyName": "IDX_tax_rate_rule_reference_id",
-          "columnNames": [
-            "reference_id"
-          ],
+          "columnNames": ["reference_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -511,9 +487,7 @@
         },
         {
           "keyName": "IDX_tax_rate_rule_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -529,9 +503,7 @@
         },
         {
           "keyName": "tax_rate_rule_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -541,13 +513,9 @@
       "foreignKeys": {
         "tax_rate_rule_tax_rate_id_foreign": {
           "constraintName": "tax_rate_rule_tax_rate_id_foreign",
-          "columnNames": [
-            "tax_rate_id"
-          ],
+          "columnNames": ["tax_rate_id"],
           "localTableName": "public.tax_rate_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.tax_rate",
           "deleteRule": "cascade",
           "updateRule": "cascade"

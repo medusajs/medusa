@@ -1,28 +1,50 @@
 post:
   operationId: PostCustomers
-  summary: Create a Customer
+  summary: Register Customer
   description: >-
-    Register a new customer. This will also automatically authenticate the
-    customer and set their login session in the response Cookie header. The
-    cookie session can be used in subsequent requests to authenticate the
-    customer. When using Medusa's JS or Medusa React clients, the cookie is
-    automatically attached to subsequent requests.
+    Register a customer. Use the `/auth/customer/emailpass/register` API route
+    first to retrieve the registration token and pass it in the header of the
+    request.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/register
+    description: 'Storefront guide: How to register a customer.'
+  x-authenticated: true
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/StorePostCustomersReq.yaml
-  x-codegen:
-    method: create
+          $ref: ../components/schemas/StoreCreateCustomer.yaml
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_customers/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_customers/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -35,34 +57,20 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCustomersRes.yaml
+            $ref: ../components/schemas/StoreCustomerResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
       $ref: ../components/responses/invalid_state_error.yaml
     '422':
-      description: A customer with the same email exists
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              code:
-                type: string
-                description: The error code
-              type:
-                type: string
-                description: The type of error
-              message:
-                type: string
-                description: Human-readable message with details about the error
-          example:
-            code: invalid_request_error
-            type: duplicate_error
-            message: >-
-              A customer with the given email already has an account. Log in
-              instead
+      $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createCustomerAccountWorkflow
+  security:
+    - cookie_auth: []
+    - jwt_token: []

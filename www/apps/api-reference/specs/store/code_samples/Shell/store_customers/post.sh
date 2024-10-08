@@ -1,8 +1,11 @@
 curl -X POST '{backend_url}/store/customers' \
--H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+-H 'Content-Type: application/json' \ \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 --data-raw '{
-    "first_name": "Alec",
-    "last_name": "Reynolds",
-    "email": "user@example.com",
-    "password": "supersecret"
+  "email": "Monserrate.Leannon88@yahoo.com",
+  "company_name": "{value}",
+  "first_name": "{value}",
+  "last_name": "{value}",
+  "phone": "{value}"
 }'

@@ -1,18 +1,49 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/modules-sdk"
+import {
+  Modules,
+  ProductVariantWorkflowEvents,
+} from "@medusajs/framework/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createHook,
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep, removeRemoteLinkStep } from "../../common"
 import { deleteProductVariantsStep } from "../steps"
-import { removeRemoteLinkStep } from "../../common"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteProductVariantsWorkflowInput = { ids: string[] }
 
 export const deleteProductVariantsWorkflowId = "delete-product-variants"
+/**
+ * This workflow deletes one or more product variants.
+ */
 export const deleteProductVariantsWorkflow = createWorkflow(
   deleteProductVariantsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<DeleteProductVariantsWorkflowInput>) => {
     removeRemoteLinkStep({
       [Modules.PRODUCT]: { variant_id: input.ids },
     }).config({ name: "remove-variant-link-step" })
 
-    return deleteProductVariantsStep(input.ids)
+    const deletedProductVariants = deleteProductVariantsStep(input.ids)
+
+    const variantIdEvents = transform({ input }, ({ input }) => {
+      return input.ids?.map((id) => {
+        return { id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.DELETED,
+      data: variantIdEvents,
+    })
+
+    const productVariantsDeleted = createHook("productVariantsDeleted", {
+      ids: input.ids,
+    })
+
+    return new WorkflowResponse(deletedProductVariants, {
+      hooks: [productVariantsDeleted],
+    })
   }
 )

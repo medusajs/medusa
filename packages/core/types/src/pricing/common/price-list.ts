@@ -5,39 +5,23 @@ import {
   UpdateMoneyAmountDTO,
 } from "./money-amount"
 import { PriceDTO } from "./price"
-import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @enum
  *
  * The price list's status.
  */
-export enum PriceListStatus {
-  /**
-   * The price list is enabled and its prices can be used.
-   */
-  ACTIVE = "active",
-  /**
-   * The price list is disabled, meaning its prices can't be used yet.
-   */
-  DRAFT = "draft",
-}
+export type PriceListStatus = "active" | "draft"
 
 /**
  * @enum
  *
  * The price list's type.
+ * "sale" - The price list's prices are used for a sale.
+ * "override" - The price list's prices override original prices. This affects the calculated price of associated price sets.
  */
-export enum PriceListType {
-  /**
-   * The price list's prices are used for a sale.
-   */
-  SALE = "sale",
-  /**
-   * The price list's prices override original prices. This affects the calculated price of associated price sets.
-   */
-  OVERRIDE = "override",
-}
+
+export type PriceListType = "sale" | "override"
 
 /**
  * @interface
@@ -54,6 +38,10 @@ export interface PriceListDTO {
    */
   title?: string
   /**
+   * The price list's description.
+   */
+  description?: string
+  /**
    * The price list is enabled starting from this date.
    */
   starts_at?: string | null
@@ -61,6 +49,10 @@ export interface PriceListDTO {
    * The price list's status.
    */
   status?: PriceListStatus
+  /**
+   * The price list's type.
+   */
+  type?: PriceListType
   /**
    * The price list expires after this date.
    */
@@ -70,7 +62,7 @@ export interface PriceListDTO {
    */
   rules_count?: number
   /**
-   * The associated price set money amounts.
+   * The associated price list money amounts.
    *
    * @expandable
    */
@@ -82,22 +74,7 @@ export interface PriceListDTO {
    */
   money_amounts?: MoneyAmountDTO[]
   /**
-   * The associated rule types.
-   *
-   * @expandable
-   */
-  rule_types?: RuleTypeDTO[]
-  /**
-   * The price set's rules.
-   *
-   * @expandable
-   */
-  rules?: PriceListRuleDTO[]
-  /**
-   * The price set's rules.
-   *
-   * @privateRemarks
-   * Do we need both this and `rules`?
+   * The price list's rules.
    *
    * @expandable
    */
@@ -115,9 +92,9 @@ export interface CreatePriceListPriceDTO extends CreateMoneyAmountDTO {
    */
   price_set_id: string
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
-  rules?: CreatePriceSetPriceRules
+  rules?: CreatePriceListPriceRules
 }
 
 export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
@@ -126,25 +103,25 @@ export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
    */
   price_set_id: string
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
-  rules?: CreatePriceSetPriceRules
+  rules?: CreatePriceListPriceRules
 }
 
 /**
  * @interface
  *
- * The price rules to be set for each price in the price set.
+ * The price rules to be set for each price in the price list.
  *
- * Each key of the object is a rule type's `rule_attribute`, and its value
+ * Each key of the object is an attribute, and its value
  * is the values of the rule.
  */
-export interface CreatePriceSetPriceRules extends Record<string, string> {}
+export interface CreatePriceListPriceRules extends Record<string, string> {}
 
 /**
  * @interface
  *
- * The price list's rules to be set. Each key of the object is a rule type's `rule_attribute`, and its value
+ * The price list's rules to be set. Each key of the object the attribute, and its value
  * is the values of the rule.
  */
 export interface CreatePriceListRules extends Record<string, string[]> {}
@@ -180,10 +157,6 @@ export interface CreatePriceListDTO {
    */
   type?: PriceListType
   /**
-   * The number of rules associated with the price list.
-   */
-  rules_count?: number
-  /**
    * The rules to be created and associated with the price list.
    */
   rules?: CreatePriceListRules
@@ -210,7 +183,7 @@ export interface UpdatePriceListDTO {
   /**
    * The price list's description.
    */
-  description?: string
+  description?: string | null
   /**
    * The price list is enabled starting from this date.
    */
@@ -223,10 +196,6 @@ export interface UpdatePriceListDTO {
    * The price list's status.
    */
   status?: PriceListStatus
-  /**
-   * The number of rules associated with the price list.
-   */
-  rules_count?: number
   /**
    * The rules to be created and associated with the price list.
    */
@@ -282,20 +251,9 @@ export interface FilterablePriceListRuleProps
    */
   value?: string[]
   /**
-   * Filter price list rules by the ID of their associated rule types.
-   */
-  rule_type?: string[]
-  /**
    * Filter price list rules by the ID of their associated price lists.
    */
   price_list_id?: string[]
-}
-
-export interface FilterablePriceListRuleValueProps
-  extends BaseFilterable<FilterablePriceListRuleValueProps> {
-  id?: string[]
-  value?: string[]
-  price_list_rule_id?: string[]
 }
 
 /**
@@ -309,30 +267,21 @@ export interface PriceListRuleDTO {
    */
   id: string
   /**
+   * The attribute of the rule.
+   *
+   */
+  attribute: string
+  /**
    * The value of the rule.
    *
-   * @privateRemarks
-   * Shouldn't this be in PriceListRuleValueDTO only?
    */
-  value: string
-  /**
-   * The associated rule type.
-   *
-   * @expandable
-   */
-  rule_type: RuleTypeDTO
+  value: string | string[]
   /**
    * The associated price list.
    *
    * @expandable
    */
   price_list: PriceListDTO
-  /**
-   * The associated rule values.
-   *
-   * @expandable
-   */
-  price_list_rule_values?: PriceListRuleValueDTO[]
 }
 
 /**
@@ -342,14 +291,6 @@ export interface PriceListRuleDTO {
  */
 export interface CreatePriceListRuleDTO {
   /**
-   * The ID of a rule type to be associated with the price list rule.
-   */
-  rule_type_id?: string
-  /**
-   * The ID of a rule type or the details of an existing rule type to be associated with the price list rule.
-   */
-  rule_type?: string | RuleTypeDTO
-  /**
    * The ID of a price list to be associated with the price list rule.
    */
   price_list_id?: string
@@ -357,68 +298,6 @@ export interface CreatePriceListRuleDTO {
    * The ID of a price list or the details of an existing price list to be associated with the price list rule.
    */
   price_list?: string | PriceListDTO
-}
-
-/**
- * @interface
- *
- * The attributes to update in a price list rule.
- */
-export interface UpdatePriceListRuleDTO {
-  /**
-   * The ID of the price list rule to update.
-   */
-  id: string
-  /**
-   * The ID of a price list to be associated with the price list rule.
-   */
-  price_list_id?: string
-  /**
-   * The ID of a rule type to be associated with the price list rule.
-   */
-  rule_type_id?: string
-  /**
-   * The ID of a price list to be associated with the price list rule.
-   */
-  price_list?: string
-  /**
-   * The ID of a rule type or the details of an existing rule type to be associated with the price list rule.
-   */
-  rule_type?: string
-}
-
-/**
- * @interface
- *
- * The price list rule value's details.
- */
-export interface PriceListRuleValueDTO {
-  /**
-   * The price list rule value's ID.
-   */
-  id: string
-  /**
-   * The rule's value.
-   */
-  value: string
-  /**
-   * The associated price list rule.
-   *
-   * @expandable
-   */
-  price_list_rule: PriceListRuleDTO
-}
-
-export interface CreatePriceListRuleValueDTO {
-  value: string
-  price_list_rule_id?: string
-  price_list_rule?: PriceListRuleDTO | string
-}
-
-export interface UpdatePriceListRuleValueDTO {
-  id: string
-  value: string
-  price_list_rule_id: string
 }
 
 /**
@@ -464,7 +343,7 @@ export interface SetPriceListRulesDTO {
    */
   price_list_id: string
   /**
-   * The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value
+   * The rules to add to the price list. Each key of the object is the attribute, and its value
    * is the value(s) of the rule.
    */
   rules: Record<string, string | string[]>
@@ -481,7 +360,7 @@ export interface RemovePriceListRulesDTO {
    */
   price_list_id: string
   /**
-   * The rules to remove from the price list. Each item being a rule type's `rule_attribute`.
+   * The rules to remove from the price list. Each item being the attribute.
    */
   rules: string[]
 }

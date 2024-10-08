@@ -18,7 +18,7 @@ async function main() {
 
   // run changeset
   await promiseExec(`yarn changeset --empty`, {
-    cwd: path.resolve("..", "..", ".."),
+    cwd: path.resolve("..", "..", "..", ".."),
   })
   console.log("Generated changeset.")
 }

@@ -1,20 +1,27 @@
-import { InviteWorkflow, UserDTO } from "@medusajs/types"
+import { InviteWorkflow, UserDTO } from "@medusajs/framework/types"
+import { InviteWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
+  parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
-import { createUsersStep } from "../../user"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { createUsersWorkflow } from "../../user"
 import { deleteInvitesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
+/**
+ * This workflow accepts an invite and creates a user.
+ */
 export const acceptInviteWorkflow = createWorkflow(
   acceptInviteWorkflowId,
   (
     input: WorkflowData<InviteWorkflow.AcceptInviteWorkflowInputDTO>
-  ): WorkflowData<UserDTO[]> => {
+  ): WorkflowResponse<UserDTO[]> => {
     const invite = validateTokenStep(input.invite_token)
 
     const createUserInput = transform(
@@ -29,22 +36,31 @@ export const acceptInviteWorkflow = createWorkflow(
       }
     )
 
-    const users = createUsersStep(createUserInput)
+    const users = createUsersWorkflow.runAsStep({
+      input: {
+        users: createUserInput,
+      },
+    })
 
     const authUserInput = transform({ input, users }, ({ input, users }) => {
       const createdUser = users[0]
 
       return {
-        authUserId: input.auth_user_id,
-        key: "user_id",
+        authIdentityId: input.auth_identity_id,
+        actorType: "user",
         value: createdUser.id,
       }
     })
 
-    setAuthAppMetadataStep(authUserInput)
+    parallelize(
+      setAuthAppMetadataStep(authUserInput),
+      deleteInvitesStep([invite.id]),
+      emitEventStep({
+        eventName: InviteWorkflowEvents.ACCEPTED,
+        data: { id: invite.id },
+      })
+    )
 
-    deleteInvitesStep([invite.id])
-
-    return users
+    return new WorkflowResponse(users)
   }
 )

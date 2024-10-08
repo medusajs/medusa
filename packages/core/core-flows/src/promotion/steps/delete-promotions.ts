@@ -1,16 +1,19 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IPromotionModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deletePromotionsStepId = "delete-promotions"
+/**
+ * This step deletes one or more promotions.
+ */
 export const deletePromotionsStep = createStep(
   deletePromotionsStepId,
   async (ids: string[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
-    await promotionModule.softDelete(ids)
+    await promotionModule.softDeletePromotions(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -20,9 +23,9 @@ export const deletePromotionsStep = createStep(
     }
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
-    await promotionModule.restore(idsToRestore)
+    await promotionModule.restorePromotions(idsToRestore)
   }
 )

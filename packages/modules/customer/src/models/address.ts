@@ -1,10 +1,13 @@
-import { DAL } from "@medusajs/types"
-import { Searchable, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/framework/types"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
   Entity,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -13,25 +16,30 @@ import {
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
-type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAddressProps = DAL.ModelDateColumns // TODO: To be revisited when more clear
 
-export const UNIQUE_CUSTOMER_SHIPPING_ADDRESS =
-  "IDX_customer_address_unique_customer_shipping"
-export const UNIQUE_CUSTOMER_BILLING_ADDRESS =
-  "IDX_customer_address_unique_customer_billing"
+const CustomerAddressUniqueCustomerShippingAddress =
+  createPsqlIndexStatementHelper({
+    name: "IDX_customer_address_unique_customer_shipping",
+    tableName: "customer_address",
+    columns: "customer_id",
+    unique: true,
+    where: '"is_default_shipping" = true',
+  })
+
+const CustomerAddressUniqueCustomerBillingAddress =
+  createPsqlIndexStatementHelper({
+    name: "IDX_customer_address_unique_customer_billing",
+    tableName: "customer_address",
+    columns: "customer_id",
+    unique: true,
+    where: '"is_default_billing" = true',
+  })
 
 @Entity({ tableName: "customer_address" })
-@Index({
-  name: UNIQUE_CUSTOMER_SHIPPING_ADDRESS,
-  expression:
-    'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true',
-})
-@Index({
-  name: UNIQUE_CUSTOMER_BILLING_ADDRESS,
-  expression:
-    'create unique index "IDX_customer_address_unique_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
-})
-export default class Address {
+@CustomerAddressUniqueCustomerShippingAddress.MikroORMIndex()
+@CustomerAddressUniqueCustomerBillingAddress.MikroORMIndex()
+export default class CustomerAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })

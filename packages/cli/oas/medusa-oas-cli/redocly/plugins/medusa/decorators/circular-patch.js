@@ -55,18 +55,21 @@ function CircularPatch({ schemas = {}, verbose = false }) {
         return
       }
       for (const patch of patches) {
-        if (resolved.location.pointer !== patch.schemaPointer) {
+        if (resolved.location.pointer.replaceAll("\n", "") !== patch.schemaPointer) {
           continue
         }
-        const ctxSchemaPointer =
-          ctx.location.pointer.match(refPathPrefixRegex)[0]
-        if (!patch.schemaToPatchPointers.includes(ctxSchemaPointer)) {
+        const pointerMatch = ctx.location.pointer.match(refPathPrefixRegex) || 
+          resolved.location.pointer.match(refPathPrefixRegex)
+        if (!pointerMatch.length) {
+          continue
+        }
+        if (!patch.schemaToPatchPointers.includes(pointerMatch[0])) {
           continue
         }
         applyPatch(ref)
         if (verbose) {
           logs.push(
-            `${ctxSchemaPointer.substring(refPathPrefixLength)} patch $ref to ${
+            `${pointerMatch[0].substring(refPathPrefixLength)} patch $ref to ${
               patch.schemaName
             }`
           )

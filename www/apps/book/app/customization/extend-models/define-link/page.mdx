@@ -1,0 +1,84 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Define Link Between a Brand and a Product`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to define a link between the `Brand` and `Product`data models as a step of the ["Extend Models" chapter](../page.mdx).
+
+</Note>
+
+## 1. Define the Link Between Product and Brand
+
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module having a Brand data model",
+      link: "/customization/custom-features/module"
+    }
+  ]}
+/>
+
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines and exports the link using the `defineLink` function imported from `@medusajs/framework/utils`.
+
+So, create the file `src/links/product-brand.ts` with the following content:
+
+export const highlights = [
+  ["7", "linkable", "Special `linkable` property that holds the linkable data models of `ProductModule`."],
+  ["10", "linkable", "Special `linkable` property that holds the linkable data models of `BrandModule`."],
+]
+
+```ts title="src/links/product-brand.ts" highlights={highlights}
+import BrandModule from "../modules/brand"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
+
+export default defineLink(
+  {
+    linkable: ProductModule.linkable.product,
+    isList: true,
+  },
+  BrandModule.linkable.brand
+)
+```
+
+The `defineLink` function accepts two parameters, each specifying the link configurations of each data model.
+
+Modules have a special `linkable` property that holds the data models' link configurations.
+
+`defineLink` accepts for each parameter either:
+
+- The data model's link configuration;
+- Or an object that has two properties:
+    - `linkable`: the link configuration of the data model.
+    - `isList`: Whether many records of the data model can be linked to the other model.
+
+So, in the above code snippet, you define a link between the `Product` and `Brand` data models. Since `isList` is enabled on the product's side, a brand can be associated with multiple products.
+
+---
+
+## 2. Sync the Link to the Database
+
+To reflect your link in the database, run the `db:sync-links` command:
+
+```bash
+npx medusa db:sync-links
+```
+
+This creates a table for the link in the database. The table stores the IDs of linked brand and product records.
+
+<Note title="Tip">
+
+You can also use the `db:migrate` command, which both runs the migrations and syncs the links.
+
+</Note>
+
+---
+
+## Next: Link Brand and Product Records
+
+In the next chapter, you'll learn how to associate brand and product records by creating a link between them.

@@ -1,4 +1,4 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
@@ -6,7 +6,7 @@ import {
   PriceListStatus,
   PriceListType,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -14,21 +14,20 @@ import {
   Entity,
   Enum,
   Filter,
-  ManyToMany,
   OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Price from "./price"
 import PriceListRule from "./price-list-rule"
-import RuleType from "./rule-type"
 
 type OptionalFields =
   | "starts_at"
   | "ends_at"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const tableName = "price_list"
 const PriceListDeletedAtIndex = createPsqlIndexStatementHelper({
@@ -76,18 +75,12 @@ export default class PriceList {
   @OneToMany(() => Price, (price) => price.price_list, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  prices = new Collection<Price>(this)
+  prices = new Collection<Rel<Price>>(this)
 
   @OneToMany(() => PriceListRule, (pr) => pr.price_list, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  price_list_rules = new Collection<PriceListRule>(this)
-
-  @ManyToMany({
-    entity: () => RuleType,
-    pivotEntity: () => PriceListRule,
-  })
-  rule_types = new Collection<RuleType>(this)
+  price_list_rules = new Collection<Rel<PriceListRule>>(this)
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0

@@ -1,11 +1,6 @@
 import { createMedusaContainer } from "@medusajs/utils"
-import { Lifetime, asFunction } from "awilix"
+import { asFunction, Lifetime } from "awilix"
 import { moduleProviderLoader } from "../module-provider-loader"
-
-const logger = {
-  warn: jest.fn(),
-  error: jest.fn(),
-} as any
 
 describe("modules loader", () => {
   let container
@@ -21,7 +16,8 @@ describe("modules loader", () => {
   it("should register the provider service", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/default",
+        resolve: "@providers/default",
+        id: "default",
         options: {},
       },
     ]
@@ -31,6 +27,24 @@ describe("modules loader", () => {
     const testService = container.resolve("testService")
     expect(testService).toBeTruthy()
     expect(testService.constructor.name).toEqual("TestService")
+  })
+
+  it("should fail to register the provider service", async () => {
+    const moduleProviders = [
+      {
+        resolve: "@providers/default-with-fail-validation",
+        id: "default",
+        options: {},
+      },
+    ]
+
+    const err = await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+    }).catch((e) => e)
+
+    expect(err).toBeTruthy()
+    expect(err.message).toBe("Wrong options")
   })
 
   it("should register the provider service with custom register fn", async () => {
@@ -46,7 +60,8 @@ describe("modules loader", () => {
     }
     const moduleProviders = [
       {
-        resolve: "@plugins/default",
+        resolve: "@providers/default",
+        id: "default",
         options: {},
       },
     ]
@@ -62,10 +77,40 @@ describe("modules loader", () => {
     expect(testService.constructor.name).toEqual("TestService")
   })
 
+  it("should fail to register the provider service with custom register fn", async () => {
+    const fn = async (klass, container, details) => {
+      container.register({
+        [`testServiceCustomRegistration`]: asFunction(
+          (cradle) => new klass(cradle, details.options),
+          {
+            lifetime: Lifetime.SINGLETON,
+          }
+        ),
+      })
+    }
+    const moduleProviders = [
+      {
+        resolve: "@providers/default-with-fail-validation",
+        id: "default",
+        options: {},
+      },
+    ]
+
+    const err = await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+      registerServiceFn: fn,
+    }).catch((e) => e)
+
+    expect(err).toBeTruthy()
+    expect(err.message).toBe("Wrong options")
+  })
+
   it("should log the errors if no service is defined", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/no-service",
+        resolve: "@providers/no-service",
+        id: "default",
         options: {},
       },
     ]
@@ -74,7 +119,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No services found in plugin @plugins/no-service -- make sure your plugin has a default export of services."
+        "@providers/no-service doesn't seem to have a main service exported -- make sure your module has a default export of a service."
       )
     }
   })
@@ -82,7 +127,8 @@ describe("modules loader", () => {
   it("should throw if no default export is defined", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/no-default",
+        resolve: "@providers/no-default",
+        id: "default",
         options: {},
       },
     ]
@@ -91,7 +137,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No services found in plugin @plugins/no-default -- make sure your plugin has a default export of services."
+        "@providers/no-default doesn't seem to have a main service exported -- make sure your module has a default export of a service."
       )
     }
   })

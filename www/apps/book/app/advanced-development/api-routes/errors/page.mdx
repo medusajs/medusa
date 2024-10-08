@@ -1,0 +1,284 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Throwing and Handling Errors`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to throw errors in your Medusa application, how it affects an API route's response, and how to change the default error handler of your Medusa application.
+
+## Throw MedusaError
+
+When throwing an error in your API routes, middlewares, workflows, or any customization, throw a `MedusaError`, which is imported from `@medusajs/framework/utils`.
+
+The Medusa application's API route error handler then wraps your thrown error in a uniform object and returns it in the response.
+
+For example:
+
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  if (!req.query.q) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "The `q` query parameter is required."
+    )
+  }
+
+  // ...
+}
+```
+
+The `MedusaError` class accepts in its constructor two parameters:
+
+1. The first is the error's type. `MedusaError` has a static property `Types` that you can use. `Types` is an enum whose possible values are explained in the next section.
+2. The second is the message to show in the error response.
+
+### Error Object in Response
+
+The error object returned in the response has two properties:
+
+- `type`: The error's type.
+- `message`: The error message, if available.
+- `code`: A common snake-case code. Its values can be:
+    - `invalid_request_error` for the `DUPLICATE_ERROR` type.
+    - `api_error`:  for the `DB_ERROR` type.
+    - `invalid_state_error` for `CONFLICT` error type.
+    - `unknown_error` for any unidentified error type.
+    - For other error types, this property won't be available unless you provide a code as a third parameter to the `MedusaError` constructor.
+
+### MedusaError Types
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Type</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/5">Status Code</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `DB_ERROR`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates a database error.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `500`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `DUPLICATE_ERROR`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates a duplicate of a record already exists. For example, when trying to create a customer whose email is registered by another customer.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `422`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `INVALID_ARGUMENT` and `UNEXPECTED_STATE`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates an error that occurred due to incorrect arguments or other unexpected state.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `500`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `INVALID_DATA`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates a validation error.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `400`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `UNAUTHORIZED`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates that a user is not authorized to perform an action or access a route.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `401`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `NOT_FOUND`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates that the requested resource, such as a route or a record, isn't found.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `404`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `NOT_ALLOWED`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates that an operation isn't allowed.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `400`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `CONFLICT`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored for a default message.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `409`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `PAYMENT_AUTHORIZATION_ERROR`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Indicates an error has occurred while authorizing a payment.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `422`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      Other error types
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Any other error type results in an `unknown_error` code and message.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `500`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Override Error Handler
+
+The `defineMiddlewares` function used to apply middlewares on routes accepts an `errorHandler` in its object parameter. Use it to override the default error handler for API routes.
+
+<Note>
+
+This error handler will also be used for errors thrown in Medusa's API routes and resources.
+
+</Note>
+
+For example, create `src/api/middlewares.ts` with the following:
+
+```ts title="src/api/middlewares.ts" collapsibleLines="1-8" expandMoreLabel="Show Imports"
+import { 
+  defineMiddlewares, 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default defineMiddlewares({
+  errorHandler: (
+    error: MedusaError | any, 
+    req: MedusaRequest, 
+    res: MedusaResponse, 
+    next: MedusaNextFunction
+  ) => {
+    res.status(400).json({
+      error: "Something happened.",
+    })
+  },
+})
+```
+
+The `errorHandler` property's value is a function that accepts four parameters:
+
+1. The error thrown. Its type can be `MedusaError` or any other thrown error type.
+2. A request object of type `MedusaRequest`.
+3. A response object of type `MedusaResponse`.
+4. A function of type MedusaNextFunction that executes the next middleware in the stack.
+
+This example overrides Medusa's default error handler with a handler that always returns a `400` status code with the same message.

@@ -1,5 +1,5 @@
-import { AcademicCapSolid, UsersSolid } from "@medusajs/icons"
-import { LearningPath } from "docs-ui"
+import { ChildDocs } from "docs-ui"
+import { AcademicCapSolid } from "@medusajs/icons"
 
 export const metadata = {
   title: `Marketplace Recipe`,
@@ -7,11 +7,17 @@ export const metadata = {
 
 # {metadata.title}
 
-In this recipe, you'll find resources to guide you in building a marketplace with Medusa.
+This recipe provides the general steps to implement a marketplace in your Medusa application.
+
+## Example Guides
+
+<ChildDocs type="item" onlyTopLevel={true} />
 
 ## Overview
 
 A marketplace is an online commerce store that allows different vendors to sell their products within the same commerce system. Customers can purchase products from any of these vendors, and vendors can manage their orders separately.
+
+In Medusa, you can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
 
 <Note title="Related use-case">
 
@@ -19,412 +25,122 @@ A marketplace is an online commerce store that allows different vendors to sell 
 
 </Note>
 
-<LearningPath pathName="marketplace" />
-
 ---
 
-## Associate Data Models with Stores
+## Create Custom Module with Data Models
 
-By default, data models like users, products, or orders aren't associated with a store, as it's assumed there's one store in Medusa. For a marketplace, each of these data models should be associated with their respective stores.
+In a marketplace, a business or a vendor has a user, and they can use that user to authenticate and manage the vendor's data.
 
-To associate these data models with the `Store` data model, extend and customize data models created in the Medusa core package `@medusajs/medusa`, such as the `User` data model, to add a relation to the `Store` data model.
+You can create a marketplace module that implements data models for vendors, their admins, anything else that fits your use case.
 
-<Card
-  href="#"
-  title="Extend a Data Model"
-  text="Learn how to extend a data model in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
-<Details summaryContent="Example: Associate User with Store">
-
-  For example, to associate the `User` data model with the `Store` data model, create the file `src/models/user.ts` with the following content:
-
-  ```ts title="src/models/user.ts"
-  import { 
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    ManyToOne,
-  } from "typeorm"
-  import {
-    User as MedusaUser,
-  } from "@medusajs/medusa"
-  import { Store } from "./store"
-
-  @Entity()
-  export class User extends MedusaUser {
-    @Index("UserStoreId")
-    @Column({ nullable: true })
-    store_id?: string
-
-    @ManyToOne(() => Store, (store) => store.members)
-    @JoinColumn({ name: "store_id", referencedColumnName: "id" })
-    store?: Store
-  }
-  ```
-
-  Then, you need to extend the `UserRepository` to point to your extended data model. To do that, create the file `src/repositories/user.ts` with the following content:
-
-  ```ts title="src/repositories/user.ts"
-  import { User } from "../models/user"
-  import { 
-    dataSource,
-  } from "@medusajs/medusa/dist/loaders/database"
-  import {
-    UserRepository as MedusaUserRepository,
-  } from "@medusajs/medusa/dist/repositories/user"
-
-  export const UserRepository = dataSource
-    .getRepository(User)
-    .extend({
-      ...Object.assign(
-        MedusaUserRepository, 
-        { target: User }
-      ),
-    })
-
-  export default UserRepository
-  ```
-
-  Next, you need to create a migration that reflects the changes on the `User` data model in your database. To do that, run the following command to create a migration file:
-
-  ```bash
-  npx typeorm migration:create src/migrations/add-user-store-id
-  ```
-
-  This creates a file in the `src/migrations` directory of the format `<TIMESTAMP>_add-user-store-id.ts`. Replace the `up` and `down` methods in that file with the methods here:
-
-  ```ts title="src/migrations/<TIMESTAMP>_add-user-store-id.ts"
-  // ...
-
-  export class AddUserStoreId1681287255173 
-    implements MigrationInterface {
-      // ...
-
-      public async up(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(
-            `ALTER TABLE "user" ADD "store_id" character varying`
-          )
-          await queryRunner.query(
-            `CREATE INDEX "UserStoreId" ON "user" ("store_id")`
-          )
-      }
-
-      public async down(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(
-            `DROP INDEX "public"."UserStoreId"`
-          )
-          await queryRunner.query(
-            `ALTER TABLE "user" DROP COLUMN "store_id"`
-          )
-      }
-
-  }
-  ```
-
-  Finally, to reflect these changes and start using them, `build` your changes and run migrations with the following commands:
-
-  ```bash npm2yarn
-  npm run build
-  npx medusa migrations run
-  ```
-
-  You can extend other data models in a similar manner to associate them with a store.
-
-</Details>
-
----
-
-## Access Logged-in User
-
-Throughout your development, you'll likely need access to the logged-in user. For example, you add a new product to the logged-in admin user's store.
-
-<Card
-  href="#"
-  title="Access Logged-in User"
-  text="Learn how to access the logged-in user throughout your project using a Middleware."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
----
-
-## Customize Data Management Functionalities
-
-After associating data models with stores, customize how certain data management functionalities are implemented in the Medusa core package.
-
-For example, when a new user is created, you ensure that it's associated either with a new store or with the store of the logged-in user. Another example is associating a new product with the logged-in user's store.
-
-To customize these functionalities, extend services.
-
-<Card
-  href="#"
-  title="Extend a Service"
-  text="Learn how to extend a service in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
-<Details summaryContent="Example: Extend User Service">
-
-  You can extend the user service to change how the `create` method is implemented.
-
-  To extend the user service, create the file `src/services/user.ts` with the following content:
-
-  ```ts title="src/services/user.ts"
-  import { Lifetime } from "awilix"
-  import { 
-    UserService as MedusaUserService,
-  } from "@medusajs/medusa"
-  import { User } from "../models/user"
-  import { 
-    CreateUserInput as MedusaCreateUserInput,
-  } from "@medusajs/medusa/dist/types/user"
-  import StoreRepository from "../repositories/store"
-
-  type CreateUserInput = {
-    store_id?: string
-  } & MedusaCreateUserInput
-
-  class UserService extends MedusaUserService {
-    static LIFE_TIME = Lifetime.SCOPED
-    protected readonly loggedInUser_: User | null
-    protected readonly storeRepository_: typeof StoreRepository
-
-    constructor(container, options) {
-      super(...arguments)
-      this.storeRepository_ = container.storeRepository
-
-      try {
-        this.loggedInUser_ = container.loggedInUser
-      } catch (e) {
-        // avoid errors when backend first runs
-      }
-    }
-
-    async create(
-      user: CreateUserInput,
-      password: string
-    ): Promise<User> {
-      if (!user.store_id) {
-        const storeRepo = this.manager_.withRepository(
-          this.storeRepository_
-        )
-        let newStore = storeRepo.create()
-        newStore = await storeRepo.save(newStore)
-        user.store_id = newStore.id
-      }
-
-      return await super.create(user, password)
-    }
-  }
-
-  export default UserService
-  ```
-
-  In the `create` method of this extended service, you create a new store if the user being created doesn't have a store associated with it.
-
-  You can then test out your customization by running the `build` command and starting the Medusa application:
-
-  ```bash npm2yarn
-  npm run build
-  npx medusa develop
-  ```
-
-</Details>
-
----
-
-## Listening to Events
-
-While implementing your marketplace, you'll need to listen to certain events then perform actions asynchronously. For example, you listen to the `order.placed` event and, when triggered, create child orders of the order, separating ordered items by their associated store.
-
-To listen to events, create Subscribers that subscribe a handler function to an event. In that handler function, implement the desired functionality.
-
-<Card
-  href="#"
-  title="Create a Subscriber"
-  text="Learn how to create a subscriber in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
-<Details summaryContent="Example: Listen to Order Created Event">
-
-  To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
-
-  ```ts title="src/subscribers/orderNotifier.ts"
-  import { 
-    type SubscriberConfig, 
-    type SubscriberArgs,
-    OrderService,
-  } from "@medusajs/medusa"
-
-  export default async function handleOrderPlaced({ 
-    data, eventName, container, pluginOptions, 
-  }: SubscriberArgs<Record<string, string>>) {
-    // TODO perform functionality
-  }
-
-  export const config: SubscriberConfig = {
-    event: OrderService.Events.PLACED,
-    context: {
-      subscriberId: "order-placed-handler",
-    },
-  }
-  ```
-
-  This subscribes the `handleOrder` method to be executed whenever the `order.placed` event is emitted.
-
-  You can then test out your subscriber by running the `build` command and starting the Medusa application:
-
-  ```bash npm2yarn
-  npm run build
-  npx medusa develop
-  ```
-
-</Details>
-
----
-
-## Add Payment and Fulfillment Providers
-
-Payment and fulfillment providers can be added through plugins or directly in your project. You can either create your own provider, use one of Medusa's official plugins, or use community plugins.
-
-<Note>
-
-Payment and fulfillment providers are associated with regions, which are not associated with a store, by default. To allow each store to specify its own payment and fulfillment providers, [associate the region with a store](#associate-data-models-with-stores).
-
-</Note>
-
-### Option 1: Create your own providers
-
-<CardList itemsPerRow={2} items={[
+<CardList items={[
   {
-    href: "#",
-    title: "Create a Payment Processor",
-    text: "Learn how to create a payment processor.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    href: "!docs!/basics/modules",
+    title: "Create a Module",
+    text: "Learn how to create a module.",
+    icon: AcademicCapSolid,
   },
   {
-    href: "#",
-    title: "Create a Fulfillment Provider",
-    text: "Learn how to create a fulfillment provider.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  }
+    href: "!docs!/basics/modules#1-create-data-model",
+    title: "Create Data Models",
+    text: "Create data models in the module.",
+    icon: AcademicCapSolid,
+  },
 ]} />
 
-### Option 2: Install a Plugin
+---
 
-<CardList itemsPerRow={2} items={[
+## Define Module Links
+
+Since a vendor has products, orders, and other models based on your use case, define module links between your module's data models and the commerce module's data models.
+
+For example, if you defined a vendor data model in a marketplace module, you can define a module link between the vendor and the Product Module's product data model.
+
+<Card
+  href="!docs!/advanced-development/module-links"
+  title="Define a Module Link"
+  text="Learn how to define a module link."
+  icon={AcademicCapSolid}
+/>
+
+---
+
+## Allow Vendor Admins to Authenticate
+
+If your marketplace module implements admins for sellers or vendors, you can create an actor type for it.
+
+Then, you guard custom API routes to only allow authenticated vendor admins.
+
+<Card
+  href="/commerce-modules/auth/create-actor-type"
+  title="Create an Actor Type"
+  text="Learn how to create an actor type and authenticate it."
+  icon={AcademicCapSolid}
+/>
+
+---
+
+## Create Vendor API Routes
+
+If you provide vendor or sellers with custom features, or a different way of managing products and orders, create API routes only accessible by vendors exposing your custom features.
+
+<CardList items={[
   {
-    href: "#",
-    title: "Install an Official Medusa Plugin",
-    text: "Check out available Medusa plugins to install.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    href: "!docs!/basics/api-routes",
+    title: "Create API Routes",
+    text: "Learn how to create an API Route in Medusa.",
+    icon: AcademicCapSolid,
   },
   {
-    href: "https://medusajs.com/plugins/",
-    title: "Install a Community Plugin",
-    text: "Check out available community plugins to install.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  }
+    href: "!docs!/advanced-development/api-routes/protected-routes",
+    title: "Protect Routes",
+    text: "Learn how to guard routes to allow authenticated users only.",
+    icon: AcademicCapSolid,
+  },
+]} />
+
+---
+
+## Split Orders Based on Vendors
+
+If your use case allows a customer's orders to have items from different vendors, you can override the [Complete Cart API route](https://docs.medusajs.com/v2/api/store#carts_postcartsidcomplete) to change how the order should be created.
+
+If your flow requires different steps, such as creating a parent order then creating a child order, create a workflow and execute it from the API route.
+
+<Card
+  href="!docs!/basics/workflows"
+  title="Create a Workflow"
+  text="Learn how to create a workflow in Medusa."
+  icon={AcademicCapSolid}
+/>
+
+---
+
+## Customize Storefront
+
+Medusa provides a Next.js Starter storefront that you can customize for your use case.
+
+You can also create a custom storefront from scratch.
+
+<CardList items={[
+  {
+    href: "/nextjs-starter",
+    title: "Next.js Storefront",
+    text: "Learn how to install and customize the Next.js storefront.",
+    icon: AcademicCapSolid,
+  },
+  {
+    href: "/storefront-development",
+    title: "Storefront Development",
+    text: "Find useful guides for creating a custom storefront.",
+    icon: AcademicCapSolid,
+  },
 ]} />
 
 ---
 
 ## Customize Admin
 
-You can customize the admin to provide an interface to manage your custom features.
+The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages.
 
-You can extend the Medusa Admin plugin to add widgets to existing pages, add new pages, or add setting pages.
-
-<CardList items={[
-  {
-    href: "#",
-    title: "Admin Widget",
-    text: "Learn how to add widgets into existing admin pages.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Admin UI Routes",
-    text: "Learn how to add new pages to your Medusa Admin.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Admin Setting Page",
-    text: "Learn how to add new page to the Medusa Admin settings.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  }
-]} />
-
----
-
-## Implement Role-Based Access Control
-
-In your marketplace, you may need to implement role-based access control (RBAC) within stores. This restricts some users' permissions to specified functionalities or API Routes.
-
-To implement this functionality, follow the RBAC recipe.
-
-<Card
-  href="#"
-  title="Implement Role-Based Access Control"
-  text="Learn how to implement role-based access control (RBAC) in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
----
-
-## Build a Storefront
-
-Medusa provides a Next.js Starter. Since you've customized your Medusa project, you must either customize the existing Next.js Starter, or create a custom storefront.
-
-<CardList itemsPerRow={2} items={[
-  {
-    href: "#",
-    title: "Option 1: Next.js Starter",
-    text: "Install the Next.js Starter to customize it.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Option 2: Custom Storefront",
-    text: "Find resources to build a storefront.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-]} />
-
----
-
-## Deploy Marketplace
-
-The Medusa Resources documentation includes deployment guides for a basic Medusa application. You can follow it to deploy your customized marketplace, as well.
-
-<Card
-  href="#"
-  title="Deploy Medusa application"
-  text="Learn how to deploy your marketplace to different hosting providers."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
----
-
-## Additional Development
-
-Refer to other guides in the Medusa Resources or the Medusa Book for additional guidance during your development.
+If your use case requires bigger customizations to the admin, such as showing different products and orders based on the logged-in vendor, use the [admin API routes](!api!/admin) to build a custom admin.

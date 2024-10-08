@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/createInviteStep
+sidebar_label: createInviteStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createInviteStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createInviteStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more invites.
+
+## Input
+
+<TypeList types={[{"name":"CreateInviteDTO[]","type":"[CreateInviteDTO](../../../../../user/interfaces/user.CreateInviteDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateInviteDTO","type":"[CreateInviteDTO](../../../../../user/interfaces/user.CreateInviteDTO/page.mdx)","optional":false,"defaultValue":"","description":"The invite to be created.","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the invite.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"accepted","type":"`boolean`","description":"Whether the invite is accepted.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createInviteStep"/>
+
+## Output
+
+<TypeList types={[{"name":"InviteDTO[]","type":"[InviteDTO](../../../../../user/interfaces/user.InviteDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"InviteDTO","type":"[InviteDTO](../../../../../user/interfaces/user.InviteDTO/page.mdx)","optional":false,"defaultValue":"","description":"The invite details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the invite.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the invite.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"accepted","type":"`boolean`","description":"Whether the invite is accepted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"token","type":"`string`","description":"The token of the invite.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date`","description":"The invite's expiry date.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The invite's creation date.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The invite's update date.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The invite's deletion date.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createInviteStep"/>

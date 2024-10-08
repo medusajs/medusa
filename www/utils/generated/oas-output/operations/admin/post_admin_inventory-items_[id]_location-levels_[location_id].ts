@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: PostInventoryItemsIdLocationLevelsLocation_id
- * summary: Add Location Levels to Inventory Item
- * description: Add a list of location levels to a inventory item.
+ * summary: Update an Inventory Level of an Inventory Item
+ * x-sidebar-summary: Update Inventory Level
+ * description: Updates the details of an inventory item's inventory level using its associated location ID.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: location_id
  *     in: path
- *     description: The inventory item's location id.
+ *     description: The ID of the location associated with the inventory level.
  *     required: true
  *     schema:
  *       type: string
@@ -27,36 +28,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -66,30 +47,31 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The properties to update in the inventory level.
  *         properties:
- *           incoming_quantity:
- *             type: number
- *             title: incoming_quantity
- *             description: The inventory item's incoming quantity.
  *           stocked_quantity:
  *             type: number
  *             title: stocked_quantity
- *             description: The inventory item's stocked quantity.
- *         required:
- *           - stocked_quantity
- *           - incoming_quantity
+ *             description: The inventory level's stocked quantity.
+ *           incoming_quantity:
+ *             type: number
+ *             title: incoming_quantity
+ *             description: The inventory level's incoming quantity.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X POST
- *       '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminInventoryItemResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -102,6 +84,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: updateInventoryLevelsWorkflow
  * 
 */
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import "core-js/stable"
-import "regenerator-runtime/runtime"
 import os from "os"
 import util from "util"
 import createCli from "./create-cli"
@@ -16,11 +14,6 @@ if (useJsonLogger) {
 if (os.platform() === `win32`) {
   // ensureWindowsDriveLetterIsUppercase()
 }
-
-// Check if update is available
-// updateNotifier({ pkg }).notify({ isGlobal: true })
-
-const MIN_NODE_VERSION = `10.13.0`
 
 process.on(`unhandledRejection`, (reason) => {
   // This will exit the process in newer Node anyway so lets be consistent

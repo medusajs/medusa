@@ -1,5 +1,5 @@
 name: Documentation Tests
-on: 
+on:
   pull_request:
     paths:
       - www/**
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
@@ -44,7 +44,7 @@ jobs:
           # TODO change once we have actual URLs
           NEXT_PUBLIC_RESOURCES_URL: "http://example.com"
           NEXT_PUBLIC_USER_GUIDE_URL: "http://example.com"
-        
+
   vale-book:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -59,6 +59,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -75,7 +81,7 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: www/utils/packages/scripts
-        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
         id: pr-files
 
       - name: Get Directories to Scan
@@ -90,13 +96,13 @@ jobs:
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   vale-resources:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -111,6 +117,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -127,7 +139,7 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: www/utils/packages/scripts
-        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
         id: pr-files
 
       - name: Get Directories to Scan
@@ -141,13 +153,13 @@ jobs:
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   vale-user-guide:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -162,6 +174,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -178,7 +196,7 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: www/utils/packages/scripts
-        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
         id: pr-files
 
       - name: Get Directories to Scan
@@ -192,13 +210,13 @@ jobs:
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   vale-ui:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -213,6 +231,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -229,7 +253,7 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: www/utils/packages/scripts
-        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
         id: pr-files
 
       - name: Get Directories to Scan
@@ -244,13 +268,13 @@ jobs:
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   vale-api:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -264,6 +288,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
 
       - name: Install www/utils Dependencies
         run: yarn
@@ -281,7 +311,7 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: www/utils/packages/scripts
-        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
         id: pr-files
 
       - name: Get Directories to Scan
@@ -296,13 +326,13 @@ jobs:
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: diff_context
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   content-eslint:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -324,7 +354,7 @@ jobs:
       - name: Run Eslint
         working-directory: www
         run: yarn lint:content
-  
+
   code-docs-eslint:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest

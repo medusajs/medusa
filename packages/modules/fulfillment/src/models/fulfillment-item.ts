@@ -4,9 +4,9 @@ import {
   DALUtils,
   generateEntityId,
   MikroOrmBigNumberProperty,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Entity,
@@ -16,10 +16,11 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
 
-type FulfillmentItemOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentItemOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",
@@ -86,7 +87,7 @@ export default class FulfillmentItem {
   fulfillment_id: string
 
   @ManyToOne(() => Fulfillment, { persist: false })
-  fulfillment: Fulfillment
+  fulfillment: Rel<Fulfillment>
 
   @Property({
     onCreate: () => new Date(),

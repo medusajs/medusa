@@ -1,7 +1,8 @@
-import { CommonTypes } from "@medusajs/types"
-import { Request } from "express"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
-import { FindConfig, RequestQueryFields } from "./common"
+import {
+  FindConfig,
+  MedusaContainer as coreMedusaContainer,
+  RequestQueryFields,
+} from "@medusajs/framework/types"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -57,8 +58,6 @@ declare global {
   }
 }
 
-export type ExtendedRequest<TEntity> = Request & { resource: TEntity }
-
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
@@ -82,5 +81,3 @@ export type Logger = {
 }
 
 export type Constructor<T> = new (...args: any[]) => T
-
-export type ConfigModule = CommonTypes.ConfigModule

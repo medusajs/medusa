@@ -1,13 +1,17 @@
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  Modules,
-  RemoteLink,
-} from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
-import { PromotionType } from "@medusajs/utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  PromotionType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -21,62 +25,69 @@ medusaIntegrationTestRunner({
       let cartModuleService: ICartModuleService
       let promotionModuleService: IPromotionModuleService
       let remoteLinkService: RemoteLink
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        promotionModuleService = appContainer.resolve(
-          ModuleRegistrationName.PROMOTION
+        cartModuleService = appContainer.resolve(Modules.CART)
+        promotionModuleService = appContainer.resolve(Modules.PROMOTION)
+        remoteLinkService = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
         )
-        remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       describe("POST /store/carts/:id/promotions", () => {
         it("should add line item adjustments to a cart based on promotions", async () => {
-          const appliedPromotion = await promotionModuleService.create({
-            code: "PROMOTION_APPLIED",
-            type: PromotionType.STANDARD,
-            application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "each",
-              value: "300",
-              apply_to_quantity: 1,
-              max_quantity: 1,
-              target_rules: [
-                {
-                  attribute: "product_id",
-                  operator: "eq",
-                  values: "prod_tshirt",
-                },
-              ],
-            },
-          })
+          const appliedPromotion =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_APPLIED",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: "300",
+                apply_to_quantity: 1,
+                currency_code: "usd",
+                max_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "items.product_id",
+                    operator: "eq",
+                    values: "prod_tshirt",
+                  },
+                ],
+              },
+            })
 
-          const createdPromotion = await promotionModuleService.create({
-            code: "PROMOTION_TEST",
-            type: PromotionType.STANDARD,
-            application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "across",
-              value: "1000",
-              apply_to_quantity: 1,
-              target_rules: [
-                {
-                  attribute: "product_id",
-                  operator: "eq",
-                  values: "prod_mat",
-                },
-              ],
-            },
-          })
+          const createdPromotion =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_TEST",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: "1000",
+                apply_to_quantity: 1,
+                currency_code: "usd",
+                target_rules: [
+                  {
+                    attribute: "product_id",
+                    operator: "eq",
+                    values: "prod_mat",
+                  },
+                ],
+              },
+            })
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             items: [
               // Adjustment to add
@@ -114,9 +125,11 @@ medusaIntegrationTestRunner({
             [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
           })
 
-          const created = await api.post(`/store/carts/${cart.id}/promotions`, {
-            promo_codes: [createdPromotion.code],
-          })
+          const created = await api.post(
+            `/store/carts/${cart.id}/promotions`,
+            { promo_codes: [createdPromotion.code] },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(
@@ -147,40 +160,42 @@ medusaIntegrationTestRunner({
         })
 
         it("should add shipping method adjustments to a cart based on promotions", async () => {
-          const [appliedPromotion] = await promotionModuleService.create([
-            {
-              code: "PROMOTION_APPLIED",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer_id",
-                  operator: "in",
-                  values: ["cus_test"],
-                },
-                {
-                  attribute: "currency_code",
-                  operator: "in",
-                  values: ["eur"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "shipping_methods",
-                allocation: "each",
-                value: "100",
-                max_quantity: 1,
-                target_rules: [
+          const [appliedPromotion] =
+            await promotionModuleService.createPromotions([
+              {
+                code: "PROMOTION_APPLIED",
+                type: PromotionType.STANDARD,
+                rules: [
                   {
-                    attribute: "name",
+                    attribute: "customer_id",
                     operator: "in",
-                    values: ["express"],
+                    values: ["cus_test"],
+                  },
+                  {
+                    attribute: "currency_code",
+                    operator: "in",
+                    values: ["eur"],
                   },
                 ],
+                application_method: {
+                  type: "fixed",
+                  target_type: "shipping_methods",
+                  allocation: "each",
+                  value: "100",
+                  max_quantity: 1,
+                  currency_code: "usd",
+                  target_rules: [
+                    {
+                      attribute: "name",
+                      operator: "in",
+                      values: ["express"],
+                    },
+                  ],
+                },
               },
-            },
-          ])
+            ])
 
-          const [newPromotion] = await promotionModuleService.create([
+          const [newPromotion] = await promotionModuleService.createPromotions([
             {
               code: "PROMOTION_NEW",
               type: PromotionType.STANDARD,
@@ -202,6 +217,7 @@ medusaIntegrationTestRunner({
                 allocation: "each",
                 value: "200",
                 max_quantity: 1,
+                currency_code: "usd",
                 target_rules: [
                   {
                     attribute: "name",
@@ -213,7 +229,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "eur",
             customer_id: "cus_test",
             items: [
@@ -252,9 +268,11 @@ medusaIntegrationTestRunner({
               },
             ])
 
-          const created = await api.post(`/store/carts/${cart.id}/promotions`, {
-            promo_codes: [newPromotion.code],
-          })
+          const created = await api.post(
+            `/store/carts/${cart.id}/promotions`,
+            { promo_codes: [newPromotion.code] },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(

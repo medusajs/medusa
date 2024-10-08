@@ -5,21 +5,26 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": "jest --silent --no-cache --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
-    "build": "babel src -d dist --extensions \".ts,.js\""
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules jest --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "NODE_OPTIONS=--experimental-vm-modules jest --silent --no-cache --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
+    "build": "tsc --allowJs --outDir ./dist"
   },
   "dependencies": {
     "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/core-flows": "workspace:^",
+    "@medusajs/currency": "workspace:^",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/framework": "workspace:^",
     "@medusajs/fulfillment": "workspace:^",
     "@medusajs/fulfillment-manual": "workspace:^",
     "@medusajs/inventory-next": "workspace:^",
+    "@medusajs/link-modules": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
+    "@medusajs/payment": "workspace:^",
     "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
@@ -31,20 +36,16 @@
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
-    "medusa-interfaces": "workspace:*",
+    "jsonwebtoken": "^9.0.2",
     "medusa-test-utils": "workspace:*",
-    "pg": "^8.11.0",
-    "typeorm": "^0.3.16"
+    "pg": "^8.11.3",
+    "scrypt-kdf": "^2.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
     "@medusajs/types": "workspace:^",
     "@swc/core": "^1.4.8",
     "@swc/jest": "^0.2.36",
-    "babel-preset-medusa-package": "*",
-    "jest": "^26.6.3",
-    "jest-environment-node": "26.6.2"
+    "jest": "^29.7.0",
+    "typescript": "^5.6.2"
   }
 }

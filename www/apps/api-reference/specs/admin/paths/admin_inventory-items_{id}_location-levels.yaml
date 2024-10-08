@@ -1,62 +1,125 @@
 get:
-  operationId: GetInventoryItemsInventoryItemLocationLevels
-  summary: List Inventory Level
+  operationId: GetInventoryItemsIdLocationLevels
+  summary: List Inventory Levels
   description: >-
-    Retrieve a list of inventory levels of an inventory item. The inventory
-    levels can be filtered by fields such as `location_id`.
+    Retrieve a list of inventory levels associated with an inventory item. The
+    inventory levels can be filtered by fields like `location_id`. The inventory
+    levels can also be paginated.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item the locations are associated with.
       schema:
         type: string
-    - in: query
-      name: location_id
-      style: form
-      explode: false
-      description: Filter by location IDs.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
+      schema:
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
+      schema:
+        type: string
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+    - name: location_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: location_id
+            description: Filter by an associated location's ID.
+          - type: array
+            description: Filter by associated location IDs.
+            items:
+              type: string
+              title: location_id
+              description: An associated location ID.
+    - name: $and
+      in: query
+      required: false
       schema:
         type: array
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
         items:
-          type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory levels.
+          type: object
+        title: $and
+    - name: $or
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        levels.
-      schema:
-        type: string
-  x-codegen:
-    method: listLocationLevels
-    queryParams: AdminGetInventoryItemsItemLocationLevelsParams
+        type: array
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
+        items:
+          type: object
+        title: $or
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}_location-levels/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
@@ -65,7 +128,38 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsLocationLevelsRes.yaml
+            allOf:
+              - type: object
+                description: The paginated list of inventory levels.
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The maximum number of items returned.
+                  offset:
+                    type: number
+                    title: offset
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
+                  count:
+                    type: number
+                    title: count
+                    description: The total number of items.
+              - type: object
+                description: The paginated list of inventory levels.
+                required:
+                  - inventory_levels
+                properties:
+                  inventory_levels:
+                    type: array
+                    description: The inventory item's inventory levels.
+                    items:
+                      $ref: ../components/schemas/InventoryLevel.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -79,60 +173,77 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostInventoryItemsInventoryItemLocationLevels
-  summary: Create a Location Level
-  description: Create a Location Level for a given Inventory Item.
+  operationId: PostInventoryItemsIdLocationLevels
+  summary: Create Inventory Level for Inventory Item
+  x-sidebar-summary: Create Inventory Level
+  description: Create an inventory level for an inventory item.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory item.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
-      schema:
-        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminPostInventoryItemsItemLocationLevelsReq.yaml
-  x-codegen:
-    method: createLocationLevel
-    queryParams: AdminPostInventoryItemsItemLocationLevelsParams
+          type: object
+          description: The inventory level's details.
+          required:
+            - location_id
+          properties:
+            location_id:
+              type: string
+              title: location_id
+              description: The ID of the associated location.
+            stocked_quantity:
+              type: number
+              title: stocked_quantity
+              description: The inventory level's stocked quantity.
+            incoming_quantity:
+              type: number
+              title: incoming_quantity
+              description: The inventory level's incoming quantity.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
@@ -141,7 +252,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            $ref: ../components/schemas/AdminInventoryItemResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -154,3 +265,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createInventoryLevelsWorkflow

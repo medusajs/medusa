@@ -1,8 +1,0 @@
-type: object
-description: The order's details.
-required:
-  - order
-properties:
-  order:
-    description: Order's details.
-    $ref: ./Order.yaml

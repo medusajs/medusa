@@ -14,40 +14,31 @@ const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     rehypePlugins: [
-      // TODO add V2 to path if necessary
       [
         crossProjectLinksPlugin,
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
             resources: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_RESOURCES_URL
-                  : undefined,
-              path: "resources",
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+              path: "v2/resources",
             },
             "user-guide": {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_USER_GUIDE_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+              path: "v2/user-guide",
             },
             ui: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_UI_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "ui",
             },
             api: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_API_URL
-                  : undefined,
-              path: "api",
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+              path: "v2/api",
             },
           },
+          useBaseUrl:
+            process.env.NODE_ENV === "production" ||
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [brokenLinkCheckerPlugin],
@@ -90,30 +81,100 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   transpilePackages: ["docs-ui"],
-  // TODO uncomment if we decide on baes path
-  // basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
   async rewrites() {
     return {
       fallback: [
         {
-          source: "/resources",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources`,
+          source: "/v2/resources",
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources`,
+          basePath: false,
         },
         {
-          source: "/resources/:path*",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources/:path*`,
+          source: "/v2/resources/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources/:path*`,
+          basePath: false,
+        },
+        {
+          source: "/v2/api/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_URL || "https://localhost:3001"
+          }/v2/api/:path*`,
+          basePath: false,
         },
         // TODO comment out once we have the user guide published
         // {
         //   source: "/user-guide",
         //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide`,
+        //   basePath: false,
         // },
         // {
         //   source: "/user-guide/:path*",
         //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide/:path*`,
+        //   basePath: false,
         // },
+        {
+          source: "/:path((?!v2).*)",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
+          }/:path*`,
+          basePath: false,
+        },
       ],
     }
+  },
+  async redirects() {
+    return [
+      {
+        source: "/advanced-development/modules/remote-query",
+        destination: "/advanced-development/module-links/query",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/query",
+        destination: "/advanced-development/module-links/query",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/module-links",
+        destination: "/advanced-development/module-links",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/module-link-directions",
+        destination: "/advanced-development/module-links/directions",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/remote-link",
+        destination: "/advanced-development/module-links/remote-link",
+        permanent: true,
+      },
+      {
+        source: "/cheatsheet",
+        destination: "/more-resources/cheatsheet",
+        permanent: true,
+      },
+      {
+        source: "/architectural-modules",
+        destination: "/advanced-development/architecture/architectural-modules",
+        permanent: true,
+      },
+      {
+        source: "/basics/modules-and-services",
+        destination: "/basics/modules",
+        permanent: true
+      },
+      {
+        source: "/basics/data-models",
+        destination: "/basics/modules",
+        permanent: true
+      }
+    ]
   },
 }
 

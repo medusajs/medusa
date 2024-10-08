@@ -1,0 +1,17 @@
+type: object
+description: the product collection's details.
+x-schemaName: AdminCreateCollection
+required:
+  - title
+properties:
+  title:
+    type: string
+    title: title
+    description: The collection's title.
+  handle:
+    type: string
+    title: handle
+    description: The collection's handle.
+  metadata:
+    type: object
+    description: The collection's metadata, used to store custom key-value pairs.

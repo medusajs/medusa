@@ -1,0 +1,115 @@
+export const metadata = {
+  title: `${pageNumber} Create Links between Brand and Product Records`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to create a link between the records of the `Brand` and `Product` data models as a step of the ["Extend Models" chapter](../page.mdx).
+
+</Note>
+
+## What is the Remote Link?
+
+The remote link is a class with utility methods to manage links between data models' records.
+
+It’s registered in the Medusa container under the `ContainerRegistrationKeys.REMOTE_LINK` (`remoteLink`) registration name.
+
+### Example: Create Link with Remote Link
+
+For example, consider the following step:
+
+export const stepHighlights = [
+  ["19", "resolve", "Resolve the remote link."],
+  ["23", "create", "Create a link between two records."]
+]
+
+```ts highlights={stepHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import { BRAND_MODULE } from "../../modules/brand"
+
+type LinkProductToBrandStepInput = {
+  productId: string
+  brandId: string
+}
+
+export const linkProductToBrandStep = createStep(
+  "link-product-to-brand",
+  async ({ productId, brandId }: LinkProductToBrandStepInput, { container }) => {
+    const remoteLink = container.resolve(
+      ContainerRegistrationKeys.REMOTE_LINK
+    )
+
+    remoteLink.create({
+      [Modules.PRODUCT]: {
+        product_id: productId,
+      },
+      [BRAND_MODULE]: {
+        brand_id: brandId,
+      },
+    })
+
+    return new StepResponse(undefined, {
+      productId,
+      brandId,
+    })
+  }
+)
+```
+
+In this step, you resolve the remote link, then use its `create` method to create a link between product and brand records.
+
+The `create` method accepts as a parameter an object whose properties are the names of each module, and the value is an object.
+
+<Note title="Tip">
+
+Use the `Modules` enum imported from `@medusajs/framework/utils` to for the commerce module's names.
+
+</Note>
+
+The value object has a property, which is the name of the data model (as specified in `model.define`'s first parameter) followed by `_id`, and its value is the ID of the record to link.
+
+### Dismiss Link in Compensation
+
+The above step can have the following compensation function that dismisses the link between the records:
+
+export const compensationHighlights = [
+  ["4", "resolve", "Resolve the remote link."],
+  ["8", "dismiss", "Create a link between two records."]
+]
+
+```ts highlights={compensationHighlights}
+export const linkProductToBrandStep = createStep(
+  // ...
+  async ({ productId, brandId }, { container }) => {
+    const remoteLink = container.resolve(
+      ContainerRegistrationKeys.REMOTE_LINK
+    )
+
+    remoteLink.dismiss({
+      [Modules.PRODUCT]: {
+        product_id: productId,
+      },
+      [BRAND_MODULE]: {
+        brand_id: brandId,
+      },
+    })
+  }
+)
+```
+
+The `dismiss` method removes the link to dismiss between two records. Its parameter is the same as that of the `create` method.
+
+---
+
+## Next Step: Extend Create Product API Route
+
+In the next step, you'll extend the Create Product API route to allow passing a brand ID, and link a product to a brand.

@@ -2,9 +2,11 @@
  * @oas [get] /store/product-categories/{id}
  * operationId: GetProductCategoriesId
  * summary: Get a Product Category
- * description: Retrieve a product category by its ID. You can expand the product
- *   category's relations or select the fields that should be returned.
+ * description: Retrieve a product category by its ID. You can expand the product category's relations or select the fields that should be returned.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/categories/retrieve
+ *   description: "Storefront guide: How to retrieve a product category."
  * parameters:
  *   - name: id
  *     in: path
@@ -22,70 +24,38 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
+ *   - name: include_ancestors_tree
  *     in: query
- *     description: The number of items to skip when retrieving a list.
+ *     description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
  *     required: false
  *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
+ *       type: boolean
+ *       title: include_ancestors_tree
+ *       description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
+ *   - name: include_descendants_tree
  *     in: query
- *     description: Limit the number of items returned in the list.
+ *     description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  *     required: false
  *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - fields
- *           - include_ancestors_tree
- *           - include_descendants_tree
- *         properties:
- *           fields:
- *             type: string
- *             title: fields
- *             description: The product category's fields.
- *           include_ancestors_tree:
- *             type: boolean
- *             title: include_ancestors_tree
- *             description: The product category's include ancestors tree.
- *           include_descendants_tree:
- *             type: boolean
- *             title: include_descendants_tree
- *             description: The product category's include descendants tree.
+ *       type: boolean
+ *       title: include_descendants_tree
+ *       description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/store/product-categories/{id}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "fields": "{value}",
- *         "include_ancestors_tree": true,
- *         "include_descendants_tree": false
- *       }'
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Product Categories
  * responses:

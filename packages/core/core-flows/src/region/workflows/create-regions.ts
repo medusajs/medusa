@@ -1,31 +1,43 @@
-import { WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/framework/types"
+import { RegionWorkflowEvents } from "@medusajs/framework/utils"
 import {
-  createWorkflow,
-  transform,
   WorkflowData,
-} from "@medusajs/workflows-sdk"
+  WorkflowResponse,
+  createWorkflow,
+  parallelize,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { createPricePreferencesWorkflow } from "../../pricing"
 import { createRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
 
 export const createRegionsWorkflowId = "create-regions"
+/**
+ * This workflow creates one or more regions.
+ */
 export const createRegionsWorkflow = createWorkflow(
   createRegionsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowInput>
-  ): WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
+  ): WorkflowResponse<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
     const data = transform(input, (data) => {
-      const regionIndexToPaymentProviders = data.regions.map(
-        (region, index) => {
-          return {
-            region_index: index,
-            payment_providers: region.payment_providers,
-          }
+      const regionIndexToAdditionalData = data.regions.map((region, index) => {
+        return {
+          region_index: index,
+          payment_providers: region.payment_providers,
+          is_tax_inclusive: region.is_tax_inclusive,
         }
-      )
+      })
 
       return {
-        regions: data.regions,
-        regionIndexToPaymentProviders,
+        regions: data.regions.map((r) => {
+          const resp = { ...r }
+          delete resp.is_tax_inclusive
+          delete resp.payment_providers
+          return resp
+        }),
+        regionIndexToAdditionalData,
       }
     })
 
@@ -33,11 +45,11 @@ export const createRegionsWorkflow = createWorkflow(
 
     const normalizedRegionProviderData = transform(
       {
-        regionIndexToPaymentProviders: data.regionIndexToPaymentProviders,
+        regionIndexToAdditionalData: data.regionIndexToAdditionalData,
         regions,
       },
       (data) => {
-        return data.regionIndexToPaymentProviders.map(
+        return data.regionIndexToAdditionalData.map(
           ({ region_index, payment_providers }) => {
             return {
               id: data.regions[region_index].id,
@@ -48,10 +60,43 @@ export const createRegionsWorkflow = createWorkflow(
       }
     )
 
-    setRegionsPaymentProvidersStep({
-      input: normalizedRegionProviderData,
+    const normalizedRegionPricePreferencesData = transform(
+      {
+        regionIndexToAdditionalData: data.regionIndexToAdditionalData,
+        regions,
+      },
+      (data) => {
+        return data.regionIndexToAdditionalData.map(
+          ({ region_index, is_tax_inclusive }) => {
+            return {
+              attribute: "region_id",
+              value: data.regions[region_index].id,
+              is_tax_inclusive,
+            } as WorkflowTypes.PricingWorkflow.CreatePricePreferencesWorkflowInput
+          }
+        )
+      }
+    )
+
+    const regionsIdEvents = transform({ regions }, ({ regions }) => {
+      return regions.map((v) => {
+        return { id: v.id }
+      })
     })
 
-    return regions
+    parallelize(
+      setRegionsPaymentProvidersStep({
+        input: normalizedRegionProviderData,
+      }),
+      createPricePreferencesWorkflow.runAsStep({
+        input: normalizedRegionPricePreferencesData,
+      }),
+      emitEventStep({
+        eventName: RegionWorkflowEvents.CREATED,
+        data: regionsIdEvents,
+      })
+    )
+
+    return new WorkflowResponse(regions)
   }
 )

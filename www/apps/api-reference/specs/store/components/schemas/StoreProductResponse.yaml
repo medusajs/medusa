@@ -1,0 +1,8 @@
+type: object
+description: The product's details.
+x-schemaName: StoreProductResponse
+required:
+  - product
+properties:
+  product:
+    $ref: ./StoreProduct.yaml

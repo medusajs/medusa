@@ -6,11 +6,16 @@ import { modules } from "./references.js"
 import {
   customModuleServiceNames,
   customModuleTitles,
+  dmlModules,
 } from "./references-details.js"
 import { FormattingOptionType } from "types"
 import { kebabToCamel, kebabToPascal, kebabToSnake, kebabToTitle } from "utils"
 import baseSectionsOptions from "./base-section-options.js"
 import mergerCustomOptions from "./merger-custom-options/index.js"
+import {
+  getCoreFlowNamespaces,
+  getNamespaceNames,
+} from "../utils/get-namespaces.js"
 
 const mergerOptions: Partial<TypeDocOptions> = {
   ...baseOptions,
@@ -28,8 +33,16 @@ const mergerOptions: Partial<TypeDocOptions> = {
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 3,
-  allReflectionsHaveOwnDocument: [...modules, "workflows"],
-  allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
+  allReflectionsHaveOwnDocument: [
+    ...modules,
+    ...dmlModules.map((module) => `${module}-models`),
+    "dml",
+    "helper-steps",
+    "workflows",
+  ],
+  allReflectionsHaveOwnDocumentInNamespace: [
+    ...getNamespaceNames(getCoreFlowNamespaces()),
+  ],
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -37,6 +50,10 @@ const mergerOptions: Partial<TypeDocOptions> = {
       parameterStyle: "component",
       parameterComponent: "TypeList",
       mdxImports: [`import { TypeList } from "docs-ui"`],
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation",
+      },
     },
     internal: {
       maxLevel: 1,
@@ -55,6 +72,8 @@ const mergerOptions: Partial<TypeDocOptions> = {
       )
         ? customModuleServiceNames[moduleName]
         : `I${kebabToPascal(moduleName)}ModuleService`
+      const isDmlModule = dmlModules.includes(moduleName)
+
       return Object.assign(obj, {
         // module config
         [`^${snakeCaseModuleName}`]: {
@@ -107,11 +126,15 @@ const mergerOptions: Partial<TypeDocOptions> = {
             typeParameters: false,
             suffix: `- ${titleModuleName} Module Data Models Reference`,
           },
-          reflectionGroups: {
-            Constructors: false,
-            Functions: false,
-            Methods: false,
-          },
+          reflectionGroups: isDmlModule
+            ? {
+                Variables: true,
+              }
+            : {
+                Constructors: false,
+                Functions: false,
+                Methods: false,
+              },
         },
         [`^modules/${snakeCaseModuleName}_models`]: {
           reflectionDescription: `This documentation provides a reference to the data models in the ${titleModuleName} Module`,
@@ -122,6 +145,11 @@ const mergerOptions: Partial<TypeDocOptions> = {
           reflectionTitle: {
             fullReplacement: `${titleModuleName} Module Data Models Reference`,
           },
+          reflectionGroupRename: isDmlModule
+            ? {
+                Variables: "Data Models",
+              }
+            : {},
         },
       } as FormattingOptionType)
     }, {} as FormattingOptionType),

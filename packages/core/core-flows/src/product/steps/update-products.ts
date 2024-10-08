@@ -1,12 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
 import {
   MedusaError,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateProductsStepInput =
+export type UpdateProductsStepInput =
   | {
       selector: ProductTypes.FilterableProductProps
       update: ProductTypes.UpdateProductDTO
@@ -16,12 +16,13 @@ type UpdateProductsStepInput =
     }
 
 export const updateProductsStepId = "update-products"
+/**
+ * This step updates one or more products.
+ */
 export const updateProductsStep = createStep(
   updateProductsStepId,
   async (data: UpdateProductsStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if ("products" in data) {
       if (data.products.some((p) => !p.id)) {
@@ -31,11 +32,15 @@ export const updateProductsStep = createStep(
         )
       }
 
-      const prevData = await service.list({
+      if (!data.products.length) {
+        return new StepResponse([], [])
+      }
+
+      const prevData = await service.listProducts({
         id: data.products.map((p) => p.id) as string[],
       })
 
-      const products = await service.upsert(data.products)
+      const products = await service.upsertProducts(data.products)
       return new StepResponse(products, prevData)
     }
 
@@ -43,12 +48,12 @@ export const updateProductsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listProducts(data.selector, {
       select: selects,
       relations,
     })
 
-    const products = await service.update(data.selector, data.update)
+    const products = await service.updateProducts(data.selector, data.update)
     return new StepResponse(products, prevData)
   },
   async (prevData, { container }) => {
@@ -56,11 +61,9 @@ export const updateProductsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.upsert(
+    await service.upsertProducts(
       prevData.map((r) => ({
         ...(r as unknown as ProductTypes.UpdateProductDTO),
       }))

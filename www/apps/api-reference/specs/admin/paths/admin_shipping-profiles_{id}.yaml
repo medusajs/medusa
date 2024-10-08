@@ -1,34 +1,54 @@
 get:
-  operationId: GetShippingProfilesProfile
+  operationId: GetShippingProfilesId
   summary: Get a Shipping Profile
-  description: Retrieve a Shipping Profile's details.
+  description: >-
+    Retrieve a shipping profile by its ID. You can expand the shipping profile's
+    relations or select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The shipping profile's ID.
       required: true
-      description: The ID of the Shipping Profile.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_shipping-profiles_{id}/get.sh
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_shipping-profiles_{id}/get.sh
   tags:
     - Shipping Profiles
   responses:
@@ -37,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminShippingProfilesRes.yaml
+            $ref: ../components/schemas/AdminShippingProfileResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -51,40 +71,72 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostShippingProfilesProfile
+  operationId: PostShippingProfilesId
   summary: Update a Shipping Profile
-  description: Update a Shipping Profile's details.
+  description: Update a shipping profile's details.
+  x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The shipping profile's ID.
       required: true
-      description: The ID of the Shipping Profile.
       schema:
         type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostShippingProfilesProfileReq.yaml
-  x-codegen:
-    method: update
+          type: object
+          description: The properties to update in the shipping profile.
+          properties:
+            name:
+              type: string
+              title: name
+              description: The shipping profile's name.
+            type:
+              type: string
+              title: type
+              description: The shipping profile's type.
+            metadata:
+              type: object
+              description: The shipping profile's metadata.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_shipping-profiles_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Shipping Profiles
   responses:
@@ -93,7 +145,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminShippingProfilesRes.yaml
+            $ref: ../components/schemas/AdminShippingProfileResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -106,37 +158,28 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateShippingProfilesWorkflow
 delete:
-  operationId: DeleteShippingProfilesProfile
+  operationId: DeleteShippingProfilesId
   summary: Delete a Shipping Profile
-  description: Delete a Shipping Profile. Associated shipping options are deleted as well.
+  description: Delete a shipping profile.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The shipping profile's ID.
       required: true
-      description: The ID of the Shipping Profile.
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_shipping-profiles_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Shipping Profiles
   responses:
@@ -145,7 +188,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminDeleteShippingProfileRes.yaml
+            $ref: ../components/schemas/AdminShippingProfileDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -158,3 +201,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteShippingProfileWorkflow

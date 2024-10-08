@@ -1,9 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   OrderStatus,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -16,17 +17,18 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import OrderAddress from "./address"
 import OrderItem from "./order-item"
-import OrderShippingMethod from "./order-shipping-method"
+import OrderShipping from "./order-shipping-method"
 import OrderSummary from "./order-summary"
-import Transaction from "./transaction"
+import OrderTransaction from "./transaction"
 
 type OptionalOrderProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns
+  | DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
@@ -89,6 +91,7 @@ export default class Order {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ autoincrement: true, primary: false })
   @DisplayIdIndex.MikroORMIndex()
   display_id: number
@@ -127,8 +130,9 @@ export default class Order {
     columnType: "boolean",
   })
   @IsDraftOrderIndex.MikroORMIndex()
-  is_draft_order = false
+  is_draft_order: boolean = false
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 
@@ -141,24 +145,24 @@ export default class Order {
   shipping_address_id?: string | null
 
   @ManyToOne({
-    entity: () => Address,
+    entity: () => OrderAddress,
     fieldName: "shipping_address_id",
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  shipping_address?: Address | null
+  shipping_address?: Rel<OrderAddress> | null
 
   @Property({ columnType: "text", nullable: true })
   @BillingAddressIdIndex.MikroORMIndex()
   billing_address_id?: string | null
 
   @ManyToOne({
-    entity: () => Address,
+    entity: () => OrderAddress,
     fieldName: "billing_address_id",
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  billing_address?: Address | null
+  billing_address?: Rel<OrderAddress> | null
 
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
@@ -166,7 +170,7 @@ export default class Order {
   @OneToMany(() => OrderSummary, (summary) => summary.order, {
     cascade: [Cascade.PERSIST],
   })
-  summary = new Collection<OrderSummary>(this)
+  summary = new Collection<Rel<OrderSummary>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -174,21 +178,17 @@ export default class Order {
   @OneToMany(() => OrderItem, (itemDetail) => itemDetail.order, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  items = new Collection<Rel<OrderItem>>(this)
 
-  @OneToMany(
-    () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.order,
-    {
-      cascade: [Cascade.PERSIST],
-    }
-  )
-  shipping_methods = new Collection<OrderShippingMethod>(this)
-
-  @OneToMany(() => Transaction, (transaction) => transaction.order, {
+  @OneToMany(() => OrderShipping, (shippingMethod) => shippingMethod.order, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Transaction>(this)
+  shipping_methods = new Collection<Rel<OrderShipping>>(this)
+
+  @OneToMany(() => OrderTransaction, (transaction) => transaction.order, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Rel<OrderTransaction>>(this)
 
   @Property({
     onCreate: () => new Date(),

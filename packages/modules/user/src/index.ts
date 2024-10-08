@@ -1,11 +1,6 @@
-import {
-  moduleDefinition,
-  revertMigration,
-  runMigrations,
-} from "./module-definition"
+import { UserModuleService } from "@services"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export default moduleDefinition
-export { revertMigration, runMigrations }
-
-export * from "./initialize"
-export * from "./loaders"
+export default Module(Modules.USER, {
+  service: UserModuleService,
+})

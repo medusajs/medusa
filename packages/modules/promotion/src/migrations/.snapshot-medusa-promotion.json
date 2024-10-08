@@ -31,15 +31,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "currency": {
-          "name": "currency",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "campaign_identifier": {
           "name": "campaign_identifier",
           "type": "text",
@@ -106,11 +97,12 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_campaign_identifier_unique",
+          "keyName": "IDX_promotion_campaign_campaign_identifier_unique",
           "columnNames": ["campaign_identifier"],
           "composite": false,
           "primary": false,
-          "unique": true
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_promotion_campaign_campaign_identifier_unique\" ON \"promotion_campaign\" (campaign_identifier) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "promotion_campaign_pkey",
@@ -153,6 +145,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "limit": {
           "name": "limit",
           "type": "numeric",
@@ -177,7 +178,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_used": {
@@ -186,7 +188,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "json"
         },
         "created_at": {
@@ -381,7 +383,8 @@
           "localTableName": "public.promotion",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_campaign",
-          "deleteRule": "set null"
+          "deleteRule": "set null",
+          "updateRule": "cascade"
         }
       }
     },
@@ -402,7 +405,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "decimal"
         },
         "raw_value": {
@@ -411,8 +414,17 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "json"
+        },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "max_quantity": {
           "name": "max_quantity",
@@ -543,6 +555,14 @@
           "keyName": "promotion_application_method_promotion_id_unique",
           "primary": false,
           "unique": true
+        },
+        {
+          "keyName": "IDX_promotion_application_method_currency_code",
+          "columnNames": ["currency_code"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_promotion_application_method_currency_code\" ON \"promotion_application_method\" (currency_code) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "promotion_application_method_pkey",

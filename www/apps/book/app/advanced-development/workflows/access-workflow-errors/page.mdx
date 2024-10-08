@@ -4,9 +4,9 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn how to access errors that occur during a workflow’s execution.
+In this chapter, you’ll learn how to access errors that occur during a workflow’s execution.
 
-## How to Access Workflow Errors
+## How to Access Workflow Errors?
 
 By default, when an error occurs in a workflow, it throws that error, and the execution stops.
 
@@ -19,11 +19,11 @@ export const highlights = [
   ["14", "throwOnError", "Specify that errors occuring during the workflow's execution should be returned, not thrown."],
 ]
 
-```ts title="src/api/store/workflows/route.ts" highlights={highlights}
+```ts title="src/api/workflows/route.ts" highlights={highlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import myWorkflow from "../../../workflows/hello-world"
 
 export async function GET(
@@ -47,6 +47,6 @@ export async function GET(
 
 ```
 
-The object passed to the `run` method accepts a `throwOnError` property. When disabled, the errors are returned in the `errors` property of the `run`'s output. The value of `errors` is an array of error objects.
+The object passed to the `run` method accepts a `throwOnError` property. When disabled, the errors are returned in the `errors` property of `run`'s output.
 
-Then, you can check the items in the `errors` array and handle them accordingly. Each error object has an `error` property, which holds the name or the text of the thrown error.
+The value of `errors` is an array of error objects. Each object has an `error` property, whose value is the name or text of the thrown error.

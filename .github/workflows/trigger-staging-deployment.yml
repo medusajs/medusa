@@ -1,0 +1,18 @@
+name: Trigger Staging Deployment
+
+on:
+  workflow_run:
+    workflows: [Trigger Release and Publish]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.STAGING_DEPLOY_ACCESS_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/medusajs/staging/actions/workflows/deploy.yml/dispatches \
+          -d '{"ref":"main"}'

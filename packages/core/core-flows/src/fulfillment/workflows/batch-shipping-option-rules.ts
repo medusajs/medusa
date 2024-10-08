@@ -4,13 +4,14 @@ import {
   CreateShippingOptionRuleDTO,
   ShippingOptionRuleDTO,
   UpdateShippingOptionRuleDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   createWorkflow,
   parallelize,
   transform,
   WorkflowData,
-} from "@medusajs/workflows-sdk"
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import {
   createShippingOptionRulesStep,
   deleteShippingOptionRulesStep,
@@ -18,6 +19,9 @@ import {
 import { updateShippingOptionRulesStep } from "../steps/update-shipping-option-rules"
 
 export const batchShippingOptionRulesWorkflowId = "batch-shipping-option-rules"
+/**
+ * This workflow manages shipping option rules by creating, updating, or deleting them.
+ */
 export const batchShippingOptionRulesWorkflow = createWorkflow(
   batchShippingOptionRulesWorkflowId,
   (
@@ -27,7 +31,7 @@ export const batchShippingOptionRulesWorkflow = createWorkflow(
         UpdateShippingOptionRuleDTO
       >
     >
-  ): WorkflowData<BatchWorkflowOutput<ShippingOptionRuleDTO>> => {
+  ): WorkflowResponse<BatchWorkflowOutput<ShippingOptionRuleDTO>> => {
     const actionInputs = transform({ input }, (data) => {
       const { create, update, delete: del } = data.input
       return {
@@ -43,6 +47,8 @@ export const batchShippingOptionRulesWorkflow = createWorkflow(
       deleteShippingOptionRulesStep(actionInputs.deleteInput)
     )
 
-    return transform({ created, deleted, updated }, (data) => data)
+    return new WorkflowResponse(
+      transform({ created, deleted, updated }, (data) => data)
+    )
   }
 )

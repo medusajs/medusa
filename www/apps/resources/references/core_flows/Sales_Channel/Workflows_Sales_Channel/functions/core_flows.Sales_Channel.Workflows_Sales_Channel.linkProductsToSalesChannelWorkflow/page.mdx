@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/linkProductsToSalesChannelWorkflow
+sidebar_label: linkProductsToSalesChannelWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# linkProductsToSalesChannelWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `linkProductsToSalesChannelWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates or dismisses links between product and sales channel records.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"linkProductsToSalesChannelWorkflow","steps":[{"type":"step","name":"associateProductsWithSalesChannelsStep","description":"This step creates links between products and sales channel records.","link":"../../../../core_flows.Steps_Sales_Channel/page.mdx#associateproductswithsaleschannelsstep","depth":1},{"type":"step","name":"detachProductsFromSalesChannelsStep","description":"This step dismisses links between product and sales channel records.","link":"../../../../core_flows.Steps_Sales_Channel/page.mdx#detachproductsfromsaleschannelsstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkWorkflowInput","type":"[LinkWorkflowInput](../../../../../types/CommonTypes/types/types.CommonTypes.LinkWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="linkProductsToSalesChannelWorkflow"/>

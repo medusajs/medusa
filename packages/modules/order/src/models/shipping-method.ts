@@ -1,30 +1,41 @@
-import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumberRawValue } from "@medusajs/framework/types"
 import {
   BigNumber,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   MikroOrmBigNumberProperty,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   OneToMany,
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import ShippingMethodAdjustment from "./shipping-method-adjustment"
-import ShippingMethodTaxLine from "./shipping-method-tax-line"
+import OrderShippingMethodAdjustment from "./shipping-method-adjustment"
+import OrderShippingMethodTaxLine from "./shipping-method-tax-line"
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping_method",
   columns: "shipping_option_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_shipping_method" })
-export default class ShippingMethod {
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+export default class OrderShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -41,7 +52,10 @@ export default class ShippingMethod {
   raw_amount: BigNumberRawValue
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
+
+  @Property({ columnType: "boolean", default: false })
+  is_custom_amount: boolean = false
 
   @Property({
     columnType: "text",
@@ -57,22 +71,22 @@ export default class ShippingMethod {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(
-    () => ShippingMethodTaxLine,
+    () => OrderShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.PERSIST],
+      cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
-  tax_lines = new Collection<ShippingMethodTaxLine>(this)
+  tax_lines = new Collection<Rel<OrderShippingMethodTaxLine>>(this)
 
   @OneToMany(
-    () => ShippingMethodAdjustment,
+    () => OrderShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.PERSIST],
+      cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
-  adjustments = new Collection<ShippingMethodAdjustment>(this)
+  adjustments = new Collection<Rel<OrderShippingMethodAdjustment>>(this)
 
   @Property({
     onCreate: () => new Date(),
@@ -88,6 +102,10 @@ export default class ShippingMethod {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -9,9 +9,9 @@ import {
   Reference,
   ReferenceType,
   SerializationContext,
+  SerializeOptions,
   Utils,
 } from "@mikro-orm/core"
-import { SerializeOptions } from "@mikro-orm/core/serialization/EntitySerializer"
 
 function isVisible<T extends object>(
   meta: EntityMetadata<T>,
@@ -64,20 +64,26 @@ function isPopulated<T extends object>(
 }
 
 /**
- * Customer property filtering for the serialization which takes into account the parent entity to filter out circular references if configured for.
+ * Custom property filtering for the serialization which takes into account circular references to not return them.
  * @param propName
  * @param meta
  * @param options
- * @param parent
+ * @param parents
  */
-function filterEntityPropToSerialize(
-  propName: string,
-  meta: EntityMetadata,
+function filterEntityPropToSerialize({
+  propName,
+  meta,
+  options,
+  parents,
+}: {
+  propName: string
+  meta: EntityMetadata
   options: SerializeOptions<object, any> & {
     preventCircularRef?: boolean
-  } = {},
-  parent?: object
-): boolean {
+  }
+  parents?: string[]
+}): boolean {
+  parents ??= []
   const isVisibleRes = isVisible(meta, propName, options)
   const prop = meta.properties[propName]
 
@@ -86,12 +92,16 @@ function filterEntityPropToSerialize(
     prop &&
     options.preventCircularRef &&
     isVisibleRes &&
-    parent &&
     prop.reference !== ReferenceType.SCALAR
   ) {
     // mapToPk would represent a foreign key and we want to keep them
-    return !!prop.mapToPk || parent.constructor.name !== prop.type
+    if (!!prop.mapToPk) {
+      return true
+    }
+
+    return !parents.some((parent) => parent === prop.type)
   }
+
   return isVisibleRes
 }
 
@@ -99,8 +109,10 @@ export class EntitySerializer {
   static serialize<T extends object, P extends string = never>(
     entity: T,
     options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {},
-    parent?: object
+    parents: string[] = []
   ): EntityDTO<Loaded<T, P>> {
+    const parents_ = Array.from(new Set(parents))
+
     const wrapped = helper(entity)
     const meta = wrapped.__meta
     let contextCreated = false
@@ -116,12 +128,16 @@ export class EntitySerializer {
       contextCreated = true
     }
 
-    const root = wrapped.__serializationContext.root!
+    const root = wrapped.__serializationContext
+      .root! as SerializationContext<any> & {
+      visitedSerialized?: Map<string, any>
+    }
+
     const ret = {} as EntityDTO<Loaded<T, P>>
     const keys = new Set<string>(meta.primaryKeys)
     Object.keys(entity).forEach((prop) => keys.add(prop))
-    const visited = root.visited.has(entity)
 
+    const visited = root.visited.has(entity)
     if (!visited) {
       root.visited.add(entity)
     }
@@ -129,7 +145,12 @@ export class EntitySerializer {
     ;[...keys]
       /** Medusa Custom properties filtering **/
       .filter((prop) =>
-        filterEntityPropToSerialize(prop, meta, options, parent)
+        filterEntityPropToSerialize({
+          propName: prop,
+          meta,
+          options,
+          parents: parents_,
+        })
       )
       .map((prop) => {
         const cycle = root.visit(meta.className, prop)
@@ -141,7 +162,8 @@ export class EntitySerializer {
         const val = this.processProperty<T>(
           prop as keyof T & string,
           entity,
-          options
+          options,
+          parents_
         )
 
         if (!cycle) {
@@ -189,7 +211,7 @@ export class EntitySerializer {
       .forEach(
         (prop) =>
           (ret[this.propertyName(meta, prop.name, wrapped.__platform)] =
-            this.processProperty(prop.name, entity, options))
+            this.processProperty(prop.name, entity, options, parents_))
       )
 
     // decorated get methods
@@ -206,7 +228,8 @@ export class EntitySerializer {
             this.processProperty(
               prop.getterName as keyof T & string,
               entity,
-              options
+              options,
+              parents_
             ))
       )
 
@@ -233,8 +256,11 @@ export class EntitySerializer {
   private static processProperty<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
+
     const parts = prop.split(".")
     prop = parts[0] as string & keyof T
     const wrapped = helper(entity)
@@ -258,11 +284,17 @@ export class EntitySerializer {
     }
 
     if (Utils.isCollection(entity[prop])) {
-      return this.processCollection(prop, entity, options)
+      return this.processCollection(prop, entity, options, parents_)
     }
 
     if (Utils.isEntity(entity[prop], true)) {
-      return this.processEntity(prop, entity, wrapped.__platform, options)
+      return this.processEntity(
+        prop,
+        entity,
+        wrapped.__platform,
+        options,
+        parents_
+      )
     }
 
     /* istanbul ignore next */
@@ -314,8 +346,11 @@ export class EntitySerializer {
     prop: keyof T & string,
     entity: T,
     platform: Platform,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
+
     const child = Reference.unwrapReference(entity[prop] as T)
     const wrapped = helper(child)
     const populated =
@@ -326,8 +361,7 @@ export class EntitySerializer {
       return this.serialize(
         child,
         this.extractChildOptions(options, prop),
-        /** passing the entity as the parent for circular filtering **/
-        entity
+        parents_
       ) as T[keyof T]
     }
 
@@ -339,8 +373,10 @@ export class EntitySerializer {
   private static processCollection<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
     const col = entity[prop] as unknown as Collection<T>
 
     if (!col.isInitialized()) {
@@ -352,8 +388,7 @@ export class EntitySerializer {
         return this.serialize(
           item,
           this.extractChildOptions(options, prop),
-          /** passing the entity as the parent for circular filtering **/
-          entity
+          parents_
         )
       }
 
@@ -367,34 +402,36 @@ export const mikroOrmSerializer = <TOutput extends object>(
   options?: Parameters<typeof EntitySerializer.serialize>[1] & {
     preventCircularRef?: boolean
   }
-): TOutput => {
-  options ??= {}
+): Promise<TOutput> => {
+  return new Promise<TOutput>((resolve) => {
+    options ??= {}
 
-  const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
+    const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
 
-  const forSerialization: unknown[] = []
-  const notForSerialization: unknown[] = []
+    const forSerialization: unknown[] = []
+    const notForSerialization: unknown[] = []
 
-  data_.forEach((object) => {
-    if (object.__meta) {
-      return forSerialization.push(object)
+    data_.forEach((object) => {
+      if (object.__meta) {
+        return forSerialization.push(object)
+      }
+
+      return notForSerialization.push(object)
+    })
+
+    let result: any = forSerialization.map((entity) =>
+      EntitySerializer.serialize(entity, {
+        forceObject: true,
+        populate: true,
+        preventCircularRef: true,
+        ...options,
+      } as SerializeOptions<any, any>)
+    ) as TOutput[]
+
+    if (notForSerialization.length) {
+      result = result.concat(notForSerialization)
     }
 
-    return notForSerialization.push(object)
+    resolve(Array.isArray(data) ? result : result[0])
   })
-
-  let result: any = forSerialization.map((entity) =>
-    EntitySerializer.serialize(entity, {
-      forceObject: true,
-      populate: true,
-      preventCircularRef: true,
-      ...options,
-    } as SerializeOptions<any, any>)
-  ) as TOutput[]
-
-  if (notForSerialization.length) {
-    result = result.concat(notForSerialization)
-  }
-
-  return Array.isArray(data) ? result : result[0]
 }

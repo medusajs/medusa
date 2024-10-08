@@ -1,11 +1,10 @@
-import {
-  moduleDefinition,
-  revertMigration,
-  runMigrations,
-} from "./module-definition"
+import { PaymentModuleService } from "@services"
+import loadProviders from "./loaders/providers"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export default moduleDefinition
-export { revertMigration, runMigrations }
+export default Module(Modules.PAYMENT, {
+  service: PaymentModuleService,
+  loaders: [loadProviders],
+})
 
-export * from "./initialize"
-export * from "./types"
+export { PaymentModuleOptions } from "./types"

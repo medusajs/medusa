@@ -22,7 +22,7 @@ export interface CreateServiceZonesWorkflowInput {
 }
 
 interface UpdateServiceZone {
-  name?: string
+  name?: string | null
   geo_zones?: (
     | Omit<CreateCountryGeoZoneDTO, "service_zone_id">
     | Omit<CreateProvinceGeoZoneDTO, "service_zone_id">

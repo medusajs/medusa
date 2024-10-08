@@ -1,4 +1,4 @@
-import { Modules } from "../modules-sdk"
+import { Modules } from "../modules-sdk/definition"
 import { composeLinkName } from "./compose-link-name"
 
 export const LINKS = {
@@ -44,6 +44,12 @@ export const LINKS = {
     Modules.STOCK_LOCATION,
     "location_id"
   ),
+  LocationFulfillmentProvider: composeLinkName(
+    Modules.STOCK_LOCATION,
+    "stock_location_id",
+    Modules.FULFILLMENT,
+    "fulfillment_provider_id"
+  ),
   LocationFulfillmentSet: composeLinkName(
     Modules.STOCK_LOCATION,
     "stock_location_id",
@@ -55,6 +61,12 @@ export const LINKS = {
     "order_id",
     Modules.PROMOTION,
     "promotion_id"
+  ),
+  OrderCart: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.CART,
+    "cart_id"
   ),
   OrderSalesChannel: composeLinkName(
     Modules.ORDER,
@@ -68,18 +80,40 @@ export const LINKS = {
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
-
-  // Internal services
-  ProductShippingProfile: composeLinkName(
-    Modules.PRODUCT,
-    "variant_id",
-    "shippingProfileService",
-    "profile_id"
-  ),
   ProductSalesChannel: composeLinkName(
     Modules.PRODUCT,
     "product_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
+  ),
+  OrderPaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  OrderClaimPaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "claim_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  OrderExchangePaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "exchange_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  OrderFulfillment: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.FULFILLMENT,
+    "fulfillment_id"
+  ),
+  ReturnFulfillment: composeLinkName(
+    Modules.ORDER,
+    "return_id",
+    Modules.FULFILLMENT,
+    "fulfillment_id"
   ),
 }

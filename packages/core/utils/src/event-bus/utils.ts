@@ -1,84 +1,87 @@
+import { KebabCase, SnakeCase } from "@medusajs/types"
 import { camelToSnakeCase, kebabCase, lowerCaseFirst } from "../common"
 import { CommonEvents } from "./common-events"
-import { KebabCase, SnakeCase } from "@medusajs/types"
 
-type ReturnType<TNames extends string[]> = TNames extends [
-  infer TFirstName,
-  ...infer TRest
-]
-  ? {
-      [K in Lowercase<CommonEvents>]: `${KebabCase<TFirstName & string>}.${K}`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_created`]: `${KebabCase<
-        K & string
-      >}.created`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_updated`]: `${KebabCase<
-        K & string
-      >}.updated`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_deleted`]: `${KebabCase<
-        K & string
-      >}.deleted`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_restored`]: `${KebabCase<
-        K & string
-      >}.restored`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_attached`]: `${KebabCase<
-        K & string
-      >}.attached`
-    } & {
-      [K in TRest[number] as `${SnakeCase<K & string>}_detached`]: `${KebabCase<
-        K & string
-      >}.detached`
-    }
-  : {}
+type ReturnType<TNames extends string[]> = {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_CREATED`]: `${KebabCase<K & string>}.created`
+} & {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_UPDATED`]: `${KebabCase<K & string>}.updated`
+} & {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_DELETED`]: `${KebabCase<K & string>}.deleted`
+} & {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_RESTORED`]: `${KebabCase<K & string>}.restored`
+} & {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_ATTACHED`]: `${KebabCase<K & string>}.attached`
+} & {
+  [K in TNames[number] as `${Uppercase<
+    SnakeCase<K & string>
+  >}_DETACHED`]: `${KebabCase<K & string>}.detached`
+}
+
+/**
+ * Build a conventional event name from the object name and the action and the prefix if provided
+ * @param prefix
+ * @param objectName
+ * @param action
+ */
+export function buildModuleResourceEventName({
+  prefix,
+  objectName,
+  action,
+}: {
+  prefix?: string
+  objectName: string
+  action: string
+}): string {
+  const kebabCaseName = lowerCaseFirst(kebabCase(objectName))
+  return `${prefix ? `${prefix}.` : ""}${kebabCaseName}.${action}`
+}
 
 /**
  * From the given strings it will produce the event names accordingly.
  * the result will look like:
  * input: 'serviceZone'
  * output: {
- *   created: 'fulfillment-set.created',
- *   updated: 'fulfillment-set.updated',
- *   deleted: 'fulfillment-set.deleted',
- *   restored: 'fulfillment-set.restored',
- *   attached: 'fulfillment-set.attached',
- *   detached: 'fulfillment-set.detached',
- *   service_zone_created: 'service-zone.created',
- *   service_zone_updated: 'service-zone.updated',
- *   service_zone_deleted: 'service-zone.deleted',
- *   service_zone_restored: 'service-zone.restored',
- *   service_zone_attached: 'service-zone.attached',
- *   service_zone_detached: 'service-zone.detached',
+ *   SERVICE_ZONE_CREATED: 'service-zone.created',
+ *   SERVICE_ZONE_UPDATED: 'service-zone.updated',
+ *   SERVICE_ZONE_DELETED: 'service-zone.deleted',
+ *   SERVICE_ZONE_RESTORED: 'service-zone.restored',
+ *   SERVICE_ZONE_ATTACHED: 'service-zone.attached',
+ *   SERVICE_ZONE_DETACHED: 'service-zone.detached',
  *   ...
  * }
  *
  * @param names
+ * @param prefix
  */
 export function buildEventNamesFromEntityName<TNames extends string[]>(
-  names: TNames
+  names: TNames,
+  prefix?: string
 ): ReturnType<TNames> {
   const events = {}
 
   for (let i = 0; i < names.length; i++) {
     const name = names[i]
-    const snakedCaseName = lowerCaseFirst(camelToSnakeCase(name))
-    const kebabCaseName = lowerCaseFirst(kebabCase(name))
-
-    if (i === 0) {
-      for (const event of Object.values(CommonEvents) as string[]) {
-        events[event] = `${kebabCaseName}.${event}`
-      }
-      continue
-    }
+    const snakedCaseName = camelToSnakeCase(name).toUpperCase()
 
     for (const event of Object.values(CommonEvents) as string[]) {
-      events[`${snakedCaseName}_${event}`] =
-        `${kebabCaseName}.${event}` as `${KebabCase<
-          typeof name
-        >}.${typeof event}`
+      const upperCasedEvent = event.toUpperCase()
+      events[`${snakedCaseName}_${upperCasedEvent}`] =
+        buildModuleResourceEventName({
+          prefix,
+          objectName: name,
+          action: event,
+        }) as `${KebabCase<typeof name>}.${typeof event}`
     }
   }
 

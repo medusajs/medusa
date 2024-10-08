@@ -1,6 +1,8 @@
 curl -X POST '{backend_url}/admin/product-categories' \
--H 'x-medusa-access-token: {api_token}' \
+-H 'Authorization: Bearer {access_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
-    "name": "Skinny Jeans"
+  "name": "Vesta",
+  "parent_category_id": "{value}",
+  "metadata": {}
 }'

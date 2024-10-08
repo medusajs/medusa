@@ -24,7 +24,6 @@ export interface RegionDTO {
    * Setting to indicate whether taxes need to be applied automatically
    */
   automatic_taxes: boolean
-
   /**
    * The countries of the region.
    */
@@ -72,7 +71,7 @@ export interface RegionCountryDTO {
   /**
    * The country's code number.
    */
-  num_code: number
+  num_code: string
 
   /**
    * The name of the country.
@@ -147,7 +146,7 @@ export interface FilterableRegionCountryProps
   /**
    * Filter countries by their code number.
    */
-  num_code?: number[] | string
+  num_code?: string[] | string
 
   /**
    * Filter countries by their name.

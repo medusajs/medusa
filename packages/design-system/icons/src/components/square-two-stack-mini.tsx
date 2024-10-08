@@ -5,19 +5,27 @@ const SquareTwoStackMini = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.276 7.27V5.632a1.638 1.638 0 0 0-1.638-1.638H5.632a1.638 1.638 0 0 0-1.638 1.638v6.006a1.638 1.638 0 0 0 1.638 1.638H7.27m6.006-6.006h1.092a1.638 1.638 0 0 1 1.638 1.638v5.46a1.638 1.638 0 0 1-1.638 1.638h-5.46a1.638 1.638 0 0 1-1.638-1.638v-1.092m6.006-6.006H8.908A1.638 1.638 0 0 0 7.27 8.908v4.368"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M12.167 4.166H5.944c-.981 0-1.777.796-1.777 1.778v6.222c0 .982.796 1.778 1.777 1.778h6.223c.982 0 1.777-.796 1.777-1.778V5.944c0-.982-.796-1.778-1.777-1.778" />
+          <path d="M1.99 10.165 1.075 4.01a1.78 1.78 0 0 1 1.497-2.02l6.155-.914a1.78 1.78 0 0 1 1.909 1.091" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

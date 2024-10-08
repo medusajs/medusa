@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const RegionPaymentProvider: ModuleJoinerConfig = {
   serviceName: LINKS.RegionPaymentProvider,
@@ -12,21 +11,24 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
   alias: [
     {
       name: ["region_payment_provider", "region_payment_providers"],
-      args: {
-        entity: "LinkRegionPaymentProvider",
-      },
+      entity: "LinkRegionPaymentProvider",
     },
   ],
   primaryKeys: ["id", "region_id", "payment_provider_id"],
   relationships: [
     {
       serviceName: Modules.REGION,
+      entity: "Region",
       primaryKey: "id",
       foreignKey: "region_id",
       alias: "region",
+      args: {
+        methodSuffix: "Regions",
+      },
     },
     {
       serviceName: Modules.PAYMENT,
+      entity: "PaymentProvider",
       primaryKey: "id",
       foreignKey: "payment_provider_id",
       alias: "payment_provider",
@@ -37,7 +39,10 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
     {
       serviceName: Modules.REGION,
       fieldAlias: {
-        payment_providers: "payment_provider_link.payment_provider",
+        payment_providers: {
+          path: "payment_provider_link.payment_provider",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.RegionPaymentProvider,
@@ -50,7 +55,10 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
     {
       serviceName: Modules.PAYMENT,
       fieldAlias: {
-        regions: "region_link.region",
+        regions: {
+          path: "region_link.region",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.RegionPaymentProvider,

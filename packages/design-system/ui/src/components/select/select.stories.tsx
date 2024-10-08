@@ -80,7 +80,7 @@ export const Default: Story = {
   render: () => {
     return (
       <div className="w-[250px]">
-        <Select>
+        <Select open>
           <Select.Trigger>
             <Select.Value placeholder="Select" />
           </Select.Trigger>

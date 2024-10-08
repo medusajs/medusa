@@ -9,11 +9,13 @@ import {
 } from "@medusajs/orchestration"
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ExportedWorkflow } from "../../helper"
+import { Hook } from "./create-hook"
+import { CompensateFn, InvokeFn } from "./create-step"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
-type StepFunctionReturnConfig<TOutput> = {
+export type StepFunctionReturnConfig<TOutput> = {
   config(
     config: { name?: string } & Omit<
       TransactionStepsDefinition,
@@ -23,6 +25,21 @@ type StepFunctionReturnConfig<TOutput> = {
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
+export type HookHandler = (...args: any[]) => void | Promise<void>
+
+/**
+ * Helper to convert an array of hooks to functions
+ */
+type ConvertHooksToFunctions<THooks extends any[]> = {
+  [K in keyof THooks]: THooks[K] extends Hook<infer Name, infer Input>
+    ? {
+        [Fn in Name]: <TOutput, TCompensateInput>(
+          invoke: InvokeFn<Input, TOutput, TCompensateInput>,
+          compensate?: CompensateFn<TCompensateInput>
+        ) => void
+      }
+    : never
+}[number]
 
 /**
  * A step function to be used in a workflow.
@@ -73,18 +90,20 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
   }
 
 export type CreateWorkflowComposerContext = {
-  hooks_: string[]
-  hooksCallback_: Record<string, Function[]>
+  __type: string
+  hooks_: {
+    declared: string[]
+    registered: string[]
+  }
+  hooksCallback_: Record<string, HookHandler>
   workflowId: string
   flow: OrchestratorBuilder
+  isAsync: boolean
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(
     fn: StepFunctionResult
   ) => WorkflowData<TOutput>
-  hookBinder: <TOutput = unknown>(
-    name: string,
-    fn: Function
-  ) => WorkflowData<TOutput>
+  hookBinder: (name: string, fn: () => HookHandler) => void
   parallelizeBinder: <TOutput extends WorkflowData[] = WorkflowData[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput
@@ -110,6 +129,11 @@ export interface StepExecutionContext {
   idempotencyKey: string
 
   /**
+   * The idempoency key of the parent step.
+   */
+  parentStepIdempotencyKey?: string
+
+  /**
    * The name of the step.
    */
   stepName: string
@@ -131,6 +155,14 @@ export interface StepExecutionContext {
    * {@inheritDoc types!Context}
    */
   context: Context
+  /**
+   * A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+   */
+  eventGroupId?: string
+  /**
+   * A string indicating the ID of the current transaction.
+   */
+  transactionId?: string
 }
 
 export type WorkflowTransactionContext = StepExecutionContext &
@@ -185,11 +217,7 @@ export type WorkflowTransactionContext = StepExecutionContext &
  * }
  * ```
  */
-export type ReturnWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function>
-> = {
+export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
@@ -197,22 +225,51 @@ export type ReturnWorkflow<
     "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
-} & THooks & {
-    runAsStep: ({
-      input,
-    }: {
-      input: TData
-    }) => ReturnType<StepFunction<TData, TResult>>
-    run: <TDataOverride = undefined, TResultOverride = undefined>(
-      ...args: Parameters<
-        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
-      >
-    ) => ReturnType<
+} & {
+  /**
+   * This method executes the workflow as a step. Useful when running a workflow within another.
+   *
+   * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/execute-another-workflow).
+   *
+   * @param param0 - The options to execute the workflow.
+   * @returns The workflow's result
+   */
+  runAsStep: ({
+    input,
+  }: {
+    /**
+     * The workflow's input.
+     */
+    input: TData | WorkflowData<TData>
+  }) => ReturnType<StepFunction<TData, TResult>>
+  /**
+   * This method executes a workflow.
+   *
+   * @param args - The options to execute the workflow.
+   * @returns Details of the workflow's execution, including its result.
+   */
+  run: <TDataOverride = undefined, TResultOverride = undefined>(
+    ...args: Parameters<
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
     >
-    getName: () => string
-    config: (config: TransactionModelOptions) => void
-  }
+  ) => ReturnType<
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+  >
+  /**
+   * This method retrieves the workflow's name.
+   */
+  getName: () => string
+  /**
+   * This method sets the workflow's configurations.
+   */
+  config: (config: TransactionModelOptions) => void
+  /**
+   * The workflow's exposed hooks, used to register a handler to consume the hook.
+   *
+   * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook#how-to-consume-a-hook).
+   */
+  hooks: ConvertHooksToFunctions<THooks>
+}
 
 /**
  * Extract the raw type of the expected input data of a workflow.

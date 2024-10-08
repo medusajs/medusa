@@ -7,16 +7,15 @@
   "bin": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node --esm src/index.ts",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
-    "glob": "^7.1.6",
     "inquirer": "^9.2.2",
     "medusa-telemetry": "^0.0.17",
     "nanoid": "^4.0.2",
@@ -24,7 +23,7 @@
     "node-fetch": "^3.3.1",
     "open": "^9.1.0",
     "ora": "^6.3.0",
-    "pg": "^8.10.0",
+    "pg": "^8.11.3",
     "slugify": "^1.6.6",
     "uuid": "^9.0.0",
     "validator": "^13.9.0",
@@ -36,6 +35,7 @@
     "@types/commander": "^2.12.2",
     "@types/configstore": "^6.0.0",
     "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.12.11",
     "@types/node-emoji": "^1.8.2",
     "@types/pg": "^8.6.6",
     "@types/uuid": "^9.0.1",
@@ -50,7 +50,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=14.16"

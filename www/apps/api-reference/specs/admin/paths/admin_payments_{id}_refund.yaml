@@ -1,39 +1,73 @@
 post:
-  operationId: PostPaymentsPaymentRefunds
+  operationId: PostPaymentsIdRefund
   summary: Refund Payment
-  description: Refund a payment. The payment must be captured first.
+  description: >-
+    Refund an amount of a payment. This uses the `refundPayment` method of the
+    payment provider associated with the payment's collection.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The payment's ID.
       required: true
-      description: The ID of the Payment.
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostPaymentRefundsReq.yaml
-  x-codegen:
-    method: refundPayment
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_payments_{id}_refund/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_payments_{id}_refund/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_payments_{id}_refund/post.sh
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The refund's details.
+          properties:
+            amount:
+              type: number
+              title: amount
+              description: The amount to refund.
+            refund_reason_id:
+              type: string
+              title: refund_reason_id
+              description: The ID of a refund reason.
+            note:
+              type: string
+              title: note
+              description: A note to attach to the refund.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_payments_{id}_refund/post.sh
   tags:
     - Payments
   responses:
@@ -42,7 +76,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminRefundRes.yaml
+            $ref: ../components/schemas/AdminPaymentResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -55,3 +89,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: refundPaymentWorkflow

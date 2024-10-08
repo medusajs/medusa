@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ITaxModuleService } from "@medusajs/types"
 
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -20,7 +20,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.TAX)
+        service = appContainer.resolve(Modules.TAX)
       })
 
       beforeEach(async () => {
@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
         const region = await service.createTaxRegions({
           country_code: "us",
         })
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           code: "test",
           rate: 2.5,
@@ -69,14 +69,14 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           code: "low",
           rate: 2.5,
           name: "low rate",
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           code: "high",
           rate: 5,
@@ -117,7 +117,7 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             provider_id: null,
             metadata: null,
             children: [],
@@ -151,7 +151,7 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             is_combinable: false,
             tax_region: expect.any(Object),
             rules: [
@@ -183,7 +183,7 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             metadata: null,
             provider_id: null,
             children: [],
@@ -222,7 +222,7 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               updated_at: expect.any(String),
               deleted_at: null,
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({ id: defRes.data.tax_rate.id }),
             expect.objectContaining({
@@ -232,6 +232,29 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
+      })
+
+      it("should fail to create a tax rate without a code", async () => {
+        const errResponse = await api
+          .post(
+            `/admin/tax-regions`,
+            {
+              country_code: "us",
+              default_tax_rate: {
+                rate: 2,
+                name: "default rate",
+              },
+            },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(errResponse.response.status).toEqual(400)
+        expect(errResponse.response.data).toEqual({
+          message:
+            "Invalid request: Field 'default_tax_rate, code' is required",
+          type: "invalid_data",
+        })
       })
 
       it("can create a tax rate and update it", async () => {
@@ -260,7 +283,7 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             provider_id: null,
             metadata: null,
             children: [],
@@ -294,7 +317,7 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             is_combinable: false,
             tax_region: expect.any(Object),
             rules: [
@@ -331,7 +354,7 @@ medusaIntegrationTestRunner({
             deleted_at: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user",
+            created_by: expect.any(String),
             is_combinable: true,
             tax_region: expect.any(Object),
             rules: [
@@ -384,7 +407,7 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
-        const rates = await service.list(
+        const rates = await service.listTaxRates(
           { id: rateRes.data.tax_rate.id },
           { withDeleted: true }
         )
@@ -397,7 +420,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           code: "test",
           rate: 2.5,
@@ -525,7 +548,7 @@ medusaIntegrationTestRunner({
             tax_rate_id: rateId,
             reference: "product",
             reference_id: "prod_1234",
-            created_by: "admin_user",
+            created_by: expect.any(String),
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
             deleted_at: null,
@@ -558,19 +581,19 @@ medusaIntegrationTestRunner({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_1234",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_1111",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_2222",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
           ])
         )
@@ -604,25 +627,25 @@ medusaIntegrationTestRunner({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_3333",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_4444",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_5555",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               tax_rate_id: rateId,
               reference: "product",
               reference_id: "prod_6666",
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
           ])
         )

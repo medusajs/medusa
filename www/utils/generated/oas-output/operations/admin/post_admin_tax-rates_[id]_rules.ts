@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/tax-rates/{id}/rules
  * operationId: PostTaxRatesIdRules
- * summary: Add Rules to Tax Rate
- * description: Add a list of rules to a tax rate.
+ * summary: Create Tax Rule for a Rate
+ * x-sidebar-summary: Create Tax Rule
+ * description: Create a tax rule for a rate.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -21,36 +22,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,26 +40,13 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - reference
- *           - reference_id
- *         properties:
- *           reference:
- *             type: string
- *             title: reference
- *             description: The tax rate's reference.
- *           reference_id:
- *             type: string
- *             title: reference_id
- *             description: The tax rate's reference id.
+ *         $ref: "#/components/schemas/AdminCreateTaxRateRule"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/tax-rates/{id}/rules' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "reference": "{value}",
@@ -87,6 +55,12 @@
  * tags:
  *   - Tax Rates
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminTaxRateResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -99,6 +73,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createTaxRateRulesWorkflow
  * 
 */
 

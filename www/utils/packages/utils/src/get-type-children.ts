@@ -34,6 +34,19 @@ export function getTypeChildren({
         )
       })
       break
+    case "union":
+      reflectionType.types.forEach((childItem) => {
+        // TODO this should ensure that the items are unique.
+        children.push(
+          ...getTypeChildren({
+            reflectionType: childItem,
+            project,
+            level: level + 1,
+            maxLevel,
+          })
+        )
+      })
+      break
     case "reference":
       // eslint-disable-next-line no-case-declarations
       const referencedReflection = reflectionType.reflection
@@ -53,7 +66,7 @@ export function getTypeChildren({
           children = getTypeChildren({
             reflectionType: referencedReflection.type,
             project,
-            level: level + 1,
+            level,
             maxLevel,
           })
         }

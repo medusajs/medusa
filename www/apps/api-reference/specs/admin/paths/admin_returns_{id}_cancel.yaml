@@ -1,35 +1,24 @@
 post:
-  operationId: PostReturnsReturnCancel
-  summary: Cancel a Return
-  description: >-
-    Registers a Return as canceled. The return can be associated with an order,
-    claim, or swap.
+  operationId: PostReturnsIdCancel
+  summary: Cancel a return.
+  description: Cancel a return.
+  x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The return's ID.
       required: true
-      description: The ID of the Return.
       schema:
         type: string
-  x-codegen:
-    method: cancel
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_returns_{id}_cancel/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_returns_{id}_cancel/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_returns_{id}_cancel/post.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_returns_{id}_cancel/post.sh
   tags:
     - Returns
   responses:
@@ -38,7 +27,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminReturnsCancelRes.yaml
+            $ref: ../components/schemas/AdminReturnResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -51,3 +40,9 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostCancelReturnReqSchema.yaml
+  x-workflow: cancelReturnWorkflow

@@ -1,16 +1,19 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
 
-import { isObject, isString } from "@medusajs/utils"
+import {
+  isObject,
+  isString,
+  normalizeImportPathWithSource,
+} from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../types"
 
 export const registerMedusaModule = (
   moduleKey: string,
@@ -62,9 +65,10 @@ function getCustomModuleResolution(
   key: string,
   moduleConfig: InternalModuleDeclaration | string
 ): ModuleResolution {
-  const resolutionPath = resolveCwd(
-    isString(moduleConfig) ? moduleConfig : (moduleConfig.resolve as string)
+  const originalPath = normalizeImportPathWithSource(
+    (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
   )
+  const resolutionPath = resolveCwd(originalPath)
 
   const conf = isObject(moduleConfig)
     ? moduleConfig
@@ -80,7 +84,6 @@ function getCustomModuleResolution(
       isRequired: false,
       defaultPackage: "",
       dependencies,
-      registrationName: key,
       defaultModuleDeclaration: {
         resources: MODULE_RESOURCE_TYPE.SHARED,
         scope: MODULE_SCOPE.INTERNAL,
@@ -137,11 +140,10 @@ function getInternalModuleResolution(
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
   if (isStr || (isObj && moduleConfig.resolve)) {
-    resolutionPath = !moduleExports
-      ? resolveCwd(isStr ? moduleConfig : (moduleConfig.resolve as string))
-      : // Explicitly assign an empty string, later, we will check if the value is exactly false.
-        // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
-        ""
+    const originalPath = normalizeImportPathWithSource(
+      (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
+    )
+    resolutionPath = resolveCwd(originalPath)
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}

@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICartModuleService, IRegionModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -17,18 +17,18 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+        cartModuleService = appContainer.resolve(Modules.CART)
+        regionModule = appContainer.resolve(Modules.REGION)
         remoteQuery = appContainer.resolve("remoteQuery")
       })
 
       it("should query carts and regions with remote query", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Region",
           currency_code: "usd",
         })
 
-        const cart = await cartModuleService.create({
+        const cart = await cartModuleService.createCarts({
           email: "tony@stark.com",
           currency_code: "usd",
           region_id: region.id,

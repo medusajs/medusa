@@ -1,14 +1,8 @@
-import {
-  moduleDefinition,
-  revertMigration,
-  runMigrations,
-} from "./module-definition"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { PricingModuleService } from "@services"
 
-export default moduleDefinition
-export { revertMigration, runMigrations }
+export default Module(Modules.PRICING, {
+  service: PricingModuleService,
+})
 
-export * from "./initialize"
-// TODO: remove export from models and services
-export * from "./models"
-export * from "./services"
 export * from "./types"

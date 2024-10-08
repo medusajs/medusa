@@ -1,0 +1,135 @@
+export const metadata = {
+  title: `${pageNumber} Request Body Parameter Validation`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to validate request body parameters in your custom API route.
+
+## Example Scenario
+
+Consider you're creating a `POST` API route at `/custom`. It accepts two paramters `a` and `b` that are required numbers, and returns their sum.
+
+The next steps explain how to add validation to this API route, as an example.
+
+---
+
+## Step 1: Create Zod Schema
+
+Medusa uses [Zod](https://zod.dev/) to validate the body parameters of an incoming request.
+
+To use Zod to validate your custom schemas, create a `validators.ts` file in any `src/api` subfolder. This file holds Zod schemas for each of your API routes.
+
+For example, create the file `src/api/custom/validators.ts` with the following content:
+
+```ts title="src/api/custom/validators.ts"
+import { z } from "zod"
+
+export const PostStoreCustomSchema = z.object({
+  a: z.number(),
+  b: z.number(),
+})
+```
+
+The `PostStoreCustomSchema` variable is a Zod schema that indicates the request body is valid if:
+
+1. It's an object.
+2. It has a property `a` that is a required number.
+3. It has a property `b` that is a required number.
+
+---
+
+## Step 2: Add Validation Middleware
+
+To use this schema for validating the body parameters of requests to `/custom`, use the `validateAndTransformBody` middleware provided by `@medusajs/framework/utils`. It accepts the Zod schema as a parameter.
+
+For example, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/medusa"
+import { 
+  validateAndTransformBody,
+} from "@medusajs/framework/utils"
+import { PostStoreCustomSchema } from "./custom/validators"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom",
+      method: "POST",
+      middlewares: [
+        validateAndTransformBody(PostStoreCustomSchema),
+      ],
+    },
+  ],
+})
+```
+
+This applies the `validateAndTransformBody` middleware on `POST` requests to `/custom`. It uses the `PostStoreCustomSchema` as the validation schema.
+
+### How the Validation Works
+
+If a request's body parameters don't pass the validation, the `validateAndTransformBody` middleware throws an error indicating the validation errors.
+
+If a request's body parameters are validated successfully, the middleware sets the validated body parameters in the `validatedBody` property of `MedusaRequest`.
+
+---
+
+## Step 3: Use Validated Body in API Route
+
+In your API route, consume the validated body using the `validatedBody` property of `MedusaRequest`.
+
+For example, create the file `src/api/custom/route.ts` with the following content:
+
+export const routeHighlights = [
+  ["5", "PostStoreCustomSchemaType", "Infer the request body type from the schema to pass it as a type parameter to `MedusaRequest`."],
+  ["14", "", "Access the body parameters using `validatedBody`."]
+]
+
+```ts title="src/api/custom/route.ts" highlights={routeHighlights}
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { z } from "zod"
+import { PostStoreCustomSchema } from "./validators"
+
+type PostStoreCustomSchemaType = z.infer<
+  typeof PostStoreCustomSchema
+>
+
+export const POST = async (
+  req: MedusaRequest<PostStoreCustomSchemaType>,
+  res: MedusaResponse
+) => {
+  res.json({
+    sum: req.validatedBody.a + req.validatedBody.b,
+  })
+}
+```
+
+In the API route, you use the `validatedBody` property of `MedusaRequest` to access the values of the `a` and `b` properties.
+
+<Note title="Tip">
+
+To pass the request body's type as a type parameter to `MedusaRequest`, use Zod's `infer` type that accepts the type of a schema as a parameter.
+
+</Note>
+
+---
+
+## Test it Out
+
+To test out the validation, send a `POST` request to `/custom`. You can try sending incorrect request body parameters.
+
+For example, if you omit the `a` parameter, you'll receive a `400` response code with the following response data:
+
+```json
+{
+  "type": "invalid_data",
+  "message": "Invalid request: Field 'a' is required"
+}
+```
+
+---
+
+## Learn More About Validation Schemas
+
+To see different examples and learn more about creating a validation schema, refer to [Zod's documentation](https://zod.dev).

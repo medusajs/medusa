@@ -1,47 +1,14 @@
-import { InventoryItem, InventoryLevel, ReservationItem } from "./models"
+import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
+import { default as schema } from "./schema"
 
-import { MapToConfig } from "@medusajs/utils"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
-import moduleSchema from "./schema"
-
-export const LinkableKeys = {
-  inventory_item_id: InventoryItem.name,
-  inventory_level_id: InventoryLevel.name,
-  reservation_item_id: ReservationItem.name,
-}
-
-const entityLinkableKeysMap: MapToConfig = {}
-Object.entries(LinkableKeys).forEach(([key, value]) => {
-  entityLinkableKeysMap[value] ??= []
-  entityLinkableKeysMap[value].push({
-    mapTo: key,
-    valueFrom: key.split("_").pop()!,
-  })
-})
-export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
-
-export const joinerConfig: ModuleJoinerConfig = {
-  serviceName: Modules.INVENTORY,
-  primaryKeys: ["id"],
-  linkableKeys: {
-    inventory_item_id: InventoryItem.name,
-    inventory_level_id: InventoryLevel.name,
-    reservation_item_id: ReservationItem.name,
-  },
-  schema: moduleSchema,
+export const joinerConfig = defineJoinerConfig(Modules.INVENTORY, {
+  schema,
   alias: [
     {
       name: ["inventory_items", "inventory_item", "inventory"],
+      entity: "InventoryItem",
       args: {
-        entity: "InventoryItem",
-      },
-    },
-    {
-      name: ["inventory_level", "inventory_levels"],
-      args: {
-        entity: "InventoryLevel",
-        methodSuffix: "InventoryLevels",
+        methodSuffix: "InventoryItems",
       },
     },
     {
@@ -51,10 +18,10 @@ export const joinerConfig: ModuleJoinerConfig = {
         "reservation_item",
         "reservation_items",
       ],
+      entity: "ReservationItem",
       args: {
-        entity: "ReservationItem",
         methodSuffix: "ReservationItems",
       },
     },
   ],
-}
+})

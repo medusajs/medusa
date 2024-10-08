@@ -4,15 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This document provides some possible flows to create a user.
-
-## Using the Auth Module
-
-The Auth Module allows you to create a user with different providers, such as creating a user with an email and password or creating a user using their Google account.
-
-Learn more about this creation flow in [this Auth Module guide](../../auth/user-creation/page.mdx).
-
----
+This document provides flows to create a user.
 
 ## Invite Users
 
@@ -33,7 +25,7 @@ await userModuleService.updateInvites({
   accepted: true,
 })
 
-const user = await userModuleService.create({
+const user = await userModuleService.createUsers({
   email: invite.email,
 })
 ```
@@ -50,12 +42,34 @@ await userModuleService.refreshInviteTokens(["invite_123"])
 
 ## Straightforward Creation
 
-Finally, you can create a user using the `create` method of the User Module’s main service (`IUserModuleService`):
+Finally, you can create a user using the [create method of the User Module’s main service](/references/user/create):
 
 ```ts
-const user = await userModuleService.create({
+const user = await userModuleService.createUsers({
   email: "user@example.com",
 })
 ```
 
-However, the User Module doesn’t handle authentication methods or store a user’s password. For that, you’d need to use the [Auth Module](../../auth/page.mdx).
+### With the Auth Module
+
+By combining the User and Auth Modules, you can use the Auth Module for authenticating users, and the User Module to manage those users.
+
+So, when a user is authenticated, and you receive the `AuthIdentity` object, you can use it to create a user if it doesn’t exist:
+
+```ts
+const { success, authIdentity } =
+  await authModuleService.authenticate("emailpass", {
+    // ...
+  })
+
+// assuming authIdentity is defined
+const [, count] = await userModuleService.listAndCountUsers({
+  email: authIdentity.entity_id,
+})
+
+if (!count) {
+  const user = await userModuleService.createUsers({
+    email: authIdentity.entity_id,
+  })
+}
+```

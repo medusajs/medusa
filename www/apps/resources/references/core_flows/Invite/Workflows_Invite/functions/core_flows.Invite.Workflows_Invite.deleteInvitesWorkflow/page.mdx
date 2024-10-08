@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/deleteInvitesWorkflow
+sidebar_label: deleteInvitesWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteInvitesWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteInvitesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more invites.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteInvitesWorkflow","steps":[{"type":"step","name":"deleteInvitesStep","description":"This step deletes one or more invites.","link":"../../../../core_flows.Steps_Invite/page.mdx#deleteinvitesstep","depth":1},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteInvitesWorkflowInput","type":"[DeleteInvitesWorkflowInput](../../../../../types/WorkflowTypes/InviteWorkflow/interfaces/types.WorkflowTypes.InviteWorkflow.DeleteInvitesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteInvitesWorkflow"/>

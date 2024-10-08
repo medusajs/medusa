@@ -1,6 +1,6 @@
-import { LinkWorkflowInput } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { transform } from "@medusajs/workflows-sdk"
+import { LinkWorkflowInput } from "@medusajs/framework/types"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { transform } from "@medusajs/framework/workflows-sdk"
 import {
   associateLocationsWithSalesChannelsStep,
   detachLocationsFromSalesChannelsStep,
@@ -8,9 +8,12 @@ import {
 
 export const linkSalesChannelsToStockLocationWorkflowId =
   "link-sales-channels-to-stock-location"
+/**
+ * This workflow creates and dismisses links between location and sales channel records.
+ */
 export const linkSalesChannelsToStockLocationWorkflow = createWorkflow(
   linkSalesChannelsToStockLocationWorkflowId,
-  (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<LinkWorkflowInput>): void => {
     const toAdd = transform({ input }, (data) => {
       return data.input.add?.map((salesChannelId) => ({
         sales_channel_id: salesChannelId,

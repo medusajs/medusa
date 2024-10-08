@@ -86,7 +86,7 @@ export class MermaidDiagramGenerator {
     }
 
     const mainFilePath = options.diagramAddToFile.startsWith("packages")
-      ? path.resolve("..", "..", "..", options.diagramAddToFile)
+      ? path.resolve("..", "..", "..", "..", options.diagramAddToFile)
       : options.diagramAddToFile
 
     const mainFileSource = context.program.getSourceFile(mainFilePath)

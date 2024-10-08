@@ -4,12 +4,14 @@ import {
   CreateProductCollectionDTO,
   CreateProductDTO,
   CreateProductOptionDTO,
+  CreateProductOptionValueDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
   CreateProductVariantDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductOptionProps,
+  FilterableProductOptionValueProps,
   FilterableProductProps,
   FilterableProductTagProps,
   FilterableProductTypeProps,
@@ -18,6 +20,7 @@ import {
   ProductCollectionDTO,
   ProductDTO,
   ProductOptionDTO,
+  ProductOptionValueDTO,
   ProductTagDTO,
   ProductTypeDTO,
   ProductVariantDTO,
@@ -25,12 +28,15 @@ import {
   UpdateProductCollectionDTO,
   UpdateProductDTO,
   UpdateProductOptionDTO,
+  UpdateProductOptionValueDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
+  UpsertProductCategoryDTO,
   UpsertProductCollectionDTO,
   UpsertProductDTO,
   UpsertProductOptionDTO,
+  UpsertProductTagDTO,
   UpsertProductTypeDTO,
   UpsertProductVariantDTO,
 } from "./common"
@@ -58,13 +64,13 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const product =
-   *   await productModuleService.retrieve("prod_123")
+   *   await productModuleService.retrieveProduct("prod_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const product = await productModuleService.retrieve(
+   * const product = await productModuleService.retrieveProduct(
    *   "prod_123",
    *   {
    *     relations: ["categories"],
@@ -72,14 +78,14 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrieveProduct(
     productId: string,
     config?: FindConfig<ProductDTO>,
     sharedContext?: Context
   ): Promise<ProductDTO>
 
   /**
-   * This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
+   * This method is used to retrieve a paginated list of products based on optional filters and configuration.
    *
    * @param {FilterableProductProps} filters - The filters to apply on the retrieved products.
    * @param {FindConfig<ProductDTO>} config -
@@ -92,7 +98,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of products using their IDs:
    *
    * ```ts
-   * const products = await productModuleService.list({
+   * const products = await productModuleService.listProducts({
    *   id: ["prod_123", "prod_321"],
    * })
    * ```
@@ -100,7 +106,7 @@ export interface IProductModuleService extends IModuleService {
    * To specify relations that should be retrieved within the products:
    *
    * ```ts
-   * const products = await productModuleService.list(
+   * const products = await productModuleService.listProducts(
    *   {
    *     id: ["prod_123", "prod_321"],
    *   },
@@ -113,7 +119,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const products = await productModuleService.list(
+   * const products = await productModuleService.listProducts(
    *   {
    *     id: ["prod_123", "prod_321"],
    *   },
@@ -125,7 +131,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listProducts(
     filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
     sharedContext?: Context
@@ -146,7 +152,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [products, count] =
-   *   await productModuleService.listAndCount({
+   *   await productModuleService.listAndCountProducts({
    *     id: ["prod_123", "prod_321"],
    *   })
    * ```
@@ -155,7 +161,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [products, count] =
-   *   await productModuleService.listAndCount(
+   *   await productModuleService.listAndCountProducts(
    *     {
    *       id: ["prod_123", "prod_321"],
    *     },
@@ -169,7 +175,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [products, count] =
-   *   await productModuleService.listAndCount(
+   *   await productModuleService.listAndCountProducts(
    *     {
    *       id: ["prod_123", "prod_321"],
    *     },
@@ -181,7 +187,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountProducts(
     filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
     sharedContext?: Context
@@ -195,7 +201,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO[]>} The list of created products.
    *
    * @example
-   * const products = await productModuleService.create([
+   * const products = await productModuleService.createProducts([
    *   {
    *     title: "Shirt",
    *   },
@@ -205,7 +211,7 @@ export interface IProductModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createProducts(
     data: CreateProductDTO[],
     sharedContext?: Context
   ): Promise<ProductDTO[]>
@@ -218,11 +224,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO>} The created product.
    *
    * @example
-   * const product = await productModuleService.create({
+   * const product = await productModuleService.createProducts({
    *   title: "Shirt",
    * })
    */
-  create(data: CreateProductDTO, sharedContext?: Context): Promise<ProductDTO>
+  createProducts(
+    data: CreateProductDTO,
+    sharedContext?: Context
+  ): Promise<ProductDTO>
 
   /**
    * This method updates existing products, or creates new ones if they don't exist.
@@ -232,7 +241,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO[]>} The updated and created products.
    *
    * @example
-   * const products = await productModuleService.upsert([
+   * const products = await productModuleService.upsertProducts([
    *   {
    *     id: "prod_123",
    *     handle: "pant",
@@ -242,7 +251,7 @@ export interface IProductModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(
+  upsertProducts(
     data: UpsertProductDTO[],
     sharedContext?: Context
   ): Promise<ProductDTO[]>
@@ -255,11 +264,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO>} The updated or created product.
    *
    * @example
-   * const product = await productModuleService.upsert({
+   * const product = await productModuleService.upsertProducts({
    *   title: "Shirt",
    * })
    */
-  upsert(data: UpsertProductDTO, sharedContext?: Context): Promise<ProductDTO>
+  upsertProducts(
+    data: UpsertProductDTO,
+    sharedContext?: Context
+  ): Promise<ProductDTO>
 
   /**
    * This method is used to update a product.
@@ -270,14 +282,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO>} The updated product.
    *
    * @example
-   * const product = await productModuleService.update(
+   * const product = await productModuleService.updateProducts(
    *   "prod_123",
    *   {
    *     handle: "pant",
    *   }
    * )
    */
-  update(
+  updateProducts(
     id: string,
     data: UpdateProductDTO,
     sharedContext?: Context
@@ -292,7 +304,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO[]>} The updated products.
    *
    * @example
-   * const products = await productModuleService.update(
+   * const products = await productModuleService.updateProducts(
    *   {
    *     title: "Pant",
    *   },
@@ -301,7 +313,7 @@ export interface IProductModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateProducts(
     selector: FilterableProductProps,
     data: UpdateProductDTO,
     sharedContext?: Context
@@ -315,9 +327,9 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the products are successfully deleted.
    *
    * @example
-   * await productModuleService.delete(["prod_123", "prod_321"])
+   * await productModuleService.deleteProducts(["prod_123", "prod_321"])
    */
-  delete(productIds: string[], sharedContext?: Context): Promise<void>
+  deleteProducts(productIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method is used to delete products. Unlike the {@link delete} method, this method won't completely remove the product. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
@@ -335,12 +347,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.softDelete([
+   * await productModuleService.softDeleteProducts([
    *   "prod_123",
    *   "prod_321",
    * ])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteProducts<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -360,9 +372,9 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.restore(["prod_123", "prod_321"])
+   * await productModuleService.restoreProducts(["prod_123", "prod_321"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreProducts<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -382,13 +394,13 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product tag by its ID:
    *
    * ```ts
-   * const tag = await productModuleService.retrieveTag("ptag_123")
+   * const tag = await productModuleService.retrieveProductTag("ptag_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const tag = await productModuleService.retrieveTag(
+   * const tag = await productModuleService.retrieveProductTag(
    *   "ptag_123",
    *   {
    *     relations: ["products"],
@@ -396,7 +408,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieveTag(
+  retrieveProductTag(
     tagId: string,
     config?: FindConfig<ProductTagDTO>,
     sharedContext?: Context
@@ -416,7 +428,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product tags using their IDs:
    *
    * ```ts
-   * const tags = await productModuleService.listTags({
+   * const tags = await productModuleService.listProductTags({
    *   id: ["ptag_123", "ptag_321"],
    * })
    * ```
@@ -424,7 +436,7 @@ export interface IProductModuleService extends IModuleService {
    * To specify relations that should be retrieved within the product tags:
    *
    * ```ts
-   * const tags = await productModuleService.listTags(
+   * const tags = await productModuleService.listProductTags(
    *   {
    *     id: ["ptag_123", "ptag_321"],
    *   },
@@ -437,7 +449,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const tags = await productModuleService.listTags(
+   * const tags = await productModuleService.listProductTags(
    *   {
    *     id: ["ptag_123", "ptag_321"],
    *   },
@@ -449,7 +461,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  listTags(
+  listProductTags(
     filters?: FilterableProductTagProps,
     config?: FindConfig<ProductTagDTO>,
     sharedContext?: Context
@@ -470,7 +482,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [tags, count] =
-   *   await productModuleService.listAndCountTags({
+   *   await productModuleService.listAndCountProductTags({
    *     id: ["ptag_123", "ptag_321"],
    *   })
    * ```
@@ -479,7 +491,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [tags, count] =
-   *   await productModuleService.listAndCountTags(
+   *   await productModuleService.listAndCountProductTags(
    *     {
    *       id: ["ptag_123", "ptag_321"],
    *     },
@@ -493,7 +505,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [tags, count] =
-   *   await productModuleService.listAndCountTags(
+   *   await productModuleService.listAndCountProductTags(
    *     {
    *       id: ["ptag_123", "ptag_321"],
    *     },
@@ -505,58 +517,137 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountTags(
+  listAndCountProductTags(
     filters?: FilterableProductTagProps,
     config?: FindConfig<ProductTagDTO>,
     sharedContext?: Context
   ): Promise<[ProductTagDTO[], number]>
 
   /**
-   * This method is used to create product tags.
+   * This method is used to create a product tag.
    *
-   * @param {CreateProductTagDTO[]} data - The product tags to create.
+   * @param {CreateProductTagDTO[]} data - The product tags to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} The list of product tags.
+   * @return {Promise<ProductTagDTO[]>} The list of created product tags.
    *
    * @example
-   * const tags = await productModuleService.createTags([
+   * const productTags = await productModuleService.createProductTags([
    *   {
-   *     value: "Clothes",
-   *   },
-   *   {
-   *     value: "Accessories",
+   *     value: "digital",
    *   },
    * ])
    */
-  createTags(
+  createProductTags(
     data: CreateProductTagDTO[],
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
   /**
-   * This method is used to update existing product tags.
+   * This method is used to create a product tag.
    *
-   * @param {UpdateProductTagDTO[]} data - The product tags to be updated, each having the attributes that should be updated in a product tag.
+   * @param {CreateProductTagDTO} data - The product tag to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} The list of updated product tags.
+   * @returns {Promise<ProductTagDTO>} The created product tag.
    *
    * @example
-   * const productTags = await productModule.updateTags([
-   *   {
-   *     id,
-   *     value
-   *   }
-   * ])
+   * const productTag = await productModuleService.createProductTags({
+   *   value: "digital",
+   * })
    *
-   * @ignore
-   *
-   * @privateRemarks
-   * This method needs an update as it doesn't allow passing an ID of the tag to update
-   * So, for now, we've added the `@\ignore` tag to not show it in the generated docs.
-   * Once fixed, the `@\ignore` tag (and this comment) can be removed safely.
    */
-  updateTags(
-    data: UpdateProductTagDTO[],
+  createProductTags(
+    data: CreateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method updates existing tags, or creates new ones if they don't exist.
+   *
+   * @param {UpsertProductTagDTO[]} data - The attributes to update or create for each tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated and created tags.
+   *
+   * @example
+   * const productTags = await productModuleService.upsertProductTags([
+   *   {
+   *     id: "ptag_123",
+   *     metadata: {
+   *       test: true,
+   *     },
+   *   },
+   *   {
+   *     value: "Digital",
+   *   },
+   * ])
+   */
+  upsertProductTags(
+    data: UpsertProductTagDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTagDTO[]>
+
+  /**
+   * This method updates an existing tag, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductTagDTO} data - The attributes to update or create for the tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated or created tag.
+   *
+   * @example
+   * const productTag = await productModuleService.upsertProductTags({
+   *   id: "ptag_123",
+   *   metadata: {
+   *     test: true,
+   *   },
+   * })
+   */
+  upsertProductTags(
+    data: UpsertProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method is used to update a tag.
+   *
+   * @param {string} id - The ID of the tag to be updated.
+   * @param {UpdateProductTagDTO} data - The attributes of the tag to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated tag.
+   *
+   * @example
+   * const productTag = await productModuleService.updateProductTags(
+   *   "ptag_123",
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
+   */
+  updateProductTags(
+    id: string,
+    data: UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method is used to update a list of tags matching the specified filters.
+   *
+   * @param {FilterableProductTagProps} selector - The filters specifying which tags to update.
+   * @param {UpdateProductTagDTO} data - The attributes to be updated on the selected tags
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated tags.
+   *
+   * @example
+   * const productTags = await productModuleService.updateProductTags(
+   *   {
+   *     id: ["ptag_123", "ptag_321"],
+   *   },
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
+   */
+  updateProductTags(
+    selector: FilterableProductTagProps,
+    data: UpdateProductTagDTO,
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
@@ -568,12 +659,67 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product tags are successfully deleted.
    *
    * @example
-   * await productModuleService.deleteTags([
+   * await productModuleService.deleteProductTags([
    *   "ptag_123",
    *   "ptag_321",
    * ])
    */
-  deleteTags(productTagIds: string[], sharedContext?: Context): Promise<void>
+  deleteProductTags(
+    productTagIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method is used to delete tags. Unlike the {@link delete} method, this method won't completely remove the tag. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted tags can be restored using the {@link restore} method.
+   *
+   * @param {string[]} tagIds - The IDs of the tags to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the tags. You can pass to its `returnLinkableKeys`
+   * property any of the tag's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the tag entity's relations, and its value is an array of strings, each being the ID of a record associated with the tag through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteProductTags([
+   *   "ptag_123",
+   *   "ptag_321",
+   * ])
+   */
+  softDeleteProductTags<TReturnableLinkableKeys extends string = string>(
+    tagIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore tags which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} tagIds - The IDs of the tags to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the tags. You can pass to its `returnLinkableKeys`
+   * property any of the tag's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the tag entity's relations, and its value is an array of strings, each being the ID of the record associated with the tag through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreProductTags([
+   *   "ptag_123",
+   *   "ptag_321",
+   * ])
+   */
+  restoreProductTags<TReturnableLinkableKeys extends string = string>(
+    tagIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a product type by its ID.
@@ -587,9 +733,9 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const productType =
-   *   await productModuleService.retrieveType("ptyp_123")
+   *   await productModuleService.retrieveProductType("ptyp_123")
    */
-  retrieveType(
+  retrieveProductType(
     typeId: string,
     config?: FindConfig<ProductTypeDTO>,
     sharedContext?: Context
@@ -609,7 +755,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product types using their IDs:
    *
    * ```ts
-   * const productTypes = await productModuleService.listTypes({
+   * const productTypes = await productModuleService.listProductTypes({
    *   id: ["ptyp_123", "ptyp_321"],
    * })
    * ```
@@ -617,7 +763,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const productTypes = await productModuleService.listTypes(
+   * const productTypes = await productModuleService.listProductTypes(
    *   {
    *     id: ["ptyp_123", "ptyp_321"],
    *   },
@@ -628,7 +774,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  listTypes(
+  listProductTypes(
     filters?: FilterableProductTypeProps,
     config?: FindConfig<ProductTypeDTO>,
     sharedContext?: Context
@@ -649,7 +795,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [productTypes, count] =
-   *   await productModuleService.listAndCountTypes({
+   *   await productModuleService.listAndCountProductTypes({
    *     id: ["ptyp_123", "ptyp_321"],
    *   })
    * ```
@@ -658,7 +804,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [productTypes, count] =
-   *   await productModuleService.listAndCountTypes(
+   *   await productModuleService.listAndCountProductTypes(
    *     {
    *       id: ["ptyp_123", "ptyp_321"],
    *     },
@@ -669,7 +815,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountTypes(
+  listAndCountProductTypes(
     filters?: FilterableProductTypeProps,
     config?: FindConfig<ProductTypeDTO>,
     sharedContext?: Context
@@ -683,13 +829,13 @@ export interface IProductModuleService extends IModuleService {
    * @return {Promise<ProductTypeDTO[]>} The list of created product types.
    *
    * @example
-   * const productTypes = await productModuleService.createTypes([
+   * const productTypes = await productModuleService.createProductTypes([
    *   {
    *     value: "digital",
    *   },
    * ])
    */
-  createTypes(
+  createProductTypes(
     data: CreateProductTypeDTO[],
     sharedContext?: Context
   ): Promise<ProductTypeDTO[]>
@@ -702,12 +848,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The created product type.
    *
    * @example
-   * const productType = await productModuleService.createTypes({
+   * const productType = await productModuleService.createProductTypes({
    *   value: "digital",
    * })
    *
    */
-  createTypes(
+  createProductTypes(
     data: CreateProductTypeDTO,
     sharedContext?: Context
   ): Promise<ProductTypeDTO>
@@ -720,7 +866,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO[]>} The updated and created types.
    *
    * @example
-   * const productTypes = await productModuleService.upsertTypes([
+   * const productTypes = await productModuleService.upsertProductTypes([
    *   {
    *     id: "ptyp_123",
    *     metadata: {
@@ -732,7 +878,7 @@ export interface IProductModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsertTypes(
+  upsertProductTypes(
     data: UpsertProductTypeDTO[],
     sharedContext?: Context
   ): Promise<ProductTypeDTO[]>
@@ -745,14 +891,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The updated or created type.
    *
    * @example
-   * const productType = await productModuleService.upsertTypes({
+   * const productType = await productModuleService.upsertProductTypes({
    *   id: "ptyp_123",
    *   metadata: {
    *     test: true,
    *   },
    * })
    */
-  upsertTypes(
+  upsertProductTypes(
     data: UpsertProductTypeDTO,
     sharedContext?: Context
   ): Promise<ProductTypeDTO>
@@ -766,14 +912,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The updated type.
    *
    * @example
-   * const productType = await productModuleService.updateTypes(
+   * const productType = await productModuleService.updateProductTypes(
    *   "ptyp_123",
    *   {
    *     value: "Digital",
    *   }
    * )
    */
-  updateTypes(
+  updateProductTypes(
     id: string,
     data: UpdateProductTypeDTO,
     sharedContext?: Context
@@ -788,7 +934,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO[]>} The updated types.
    *
    * @example
-   * const productTypes = await productModuleService.updateTypes(
+   * const productTypes = await productModuleService.updateProductTypes(
    *   {
    *     id: ["ptyp_123", "ptyp_321"],
    *   },
@@ -797,7 +943,7 @@ export interface IProductModuleService extends IModuleService {
    *   }
    * )
    */
-  updateTypes(
+  updateProductTypes(
     selector: FilterableProductTypeProps,
     data: UpdateProductTypeDTO,
     sharedContext?: Context
@@ -811,12 +957,15 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product types are successfully deleted.
    *
    * @example
-   * await productModuleService.deleteTypes([
+   * await productModuleService.deleteProductTypes([
    *   "ptyp_123",
    *   "ptyp_321",
    * ])
    */
-  deleteTypes(productTypeIds: string[], sharedContext?: Context): Promise<void>
+  deleteProductTypes(
+    productTypeIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method is used to delete types. Unlike the {@link delete} method, this method won't completely remove the type. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
@@ -834,12 +983,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.softDeleteTypes([
+   * await productModuleService.softDeleteProductTypes([
    *   "ptyp_123",
    *   "ptyp_321",
    * ])
    */
-  softDeleteTypes<TReturnableLinkableKeys extends string = string>(
+  softDeleteProductTypes<TReturnableLinkableKeys extends string = string>(
     typeIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -859,12 +1008,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.restoreTypes([
+   * await productModuleService.restoreProductTypes([
    *   "ptyp_123",
    *   "ptyp_321",
    * ])
    */
-  restoreTypes<TReturnableLinkableKeys extends string = string>(
+  restoreProductTypes<TReturnableLinkableKeys extends string = string>(
     typeIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -885,13 +1034,13 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const option =
-   *   await productModuleService.retrieveOption("opt_123")
+   *   await productModuleService.retrieveProductOption("opt_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const option = await productModuleService.retrieveOption(
+   * const option = await productModuleService.retrieveProductOption(
    *   "opt_123",
    *   {
    *     relations: ["product"],
@@ -899,7 +1048,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieveOption(
+  retrieveProductOption(
     optionId: string,
     config?: FindConfig<ProductOptionDTO>,
     sharedContext?: Context
@@ -919,7 +1068,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product options using their IDs:
    *
    * ```ts
-   * const options = await productModuleService.listOptions({
+   * const options = await productModuleService.listProductOptions({
     id: ["opt_123", "opt_321"],
    * })
    * ```
@@ -927,7 +1076,7 @@ export interface IProductModuleService extends IModuleService {
    * To specify relations that should be retrieved within the product options:
    *
    * ```ts
-   * const options = await productModuleService.listOptions(
+   * const options = await productModuleService.listProductOptions(
    *   {
    *     id: ["opt_123", "opt_321"],
    *   },
@@ -940,7 +1089,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const options = await productModuleService.listOptions(
+   * const options = await productModuleService.listProductOptions(
    *   {
    *     id: ["opt_123", "opt_321"],
    *   },
@@ -953,7 +1102,7 @@ export interface IProductModuleService extends IModuleService {
    * ```
    *
    */
-  listOptions(
+  listProductOptions(
     filters?: FilterableProductOptionProps,
     config?: FindConfig<ProductOptionDTO>,
     sharedContext?: Context
@@ -974,7 +1123,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [options, count] =
-   *   await productModuleService.listAndCountOptions({
+   *   await productModuleService.listAndCountProductOptions({
    *     id: ["opt_123", "opt_321"],
    *   })
    * ```
@@ -983,7 +1132,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [options, count] =
-   *   await productModuleService.listAndCountOptions(
+   *   await productModuleService.listAndCountProductOptions(
    *     {
    *       id: ["opt_123", "opt_321"],
    *     },
@@ -997,7 +1146,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [options, count] =
-   *   await productModuleService.listAndCountOptions(
+   *   await productModuleService.listAndCountProductOptions(
    *     {
    *       id: ["opt_123", "opt_321"],
    *     },
@@ -1009,7 +1158,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountOptions(
+  listAndCountProductOptions(
     filters?: FilterableProductOptionProps,
     config?: FindConfig<ProductOptionDTO>,
     sharedContext?: Context
@@ -1023,7 +1172,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO[]>} The list of created product options.
    *
    * @example
-   * const options = await productModuleService.createOptions([
+   * const options = await productModuleService.createProductOptions([
    *   {
    *     title: "Color",
    *     values: ["Blue", "Green"],
@@ -1037,7 +1186,7 @@ export interface IProductModuleService extends IModuleService {
    * ])
    *
    */
-  createOptions(
+  createProductOptions(
     data: CreateProductOptionDTO[],
     sharedContext?: Context
   ): Promise<ProductOptionDTO[]>
@@ -1050,14 +1199,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The created product option.
    *
    * @example
-   * const option = await productModuleService.createOptions({
+   * const option = await productModuleService.createProductOptions({
    *   title: "Color",
    *   values: ["Blue", "Green"],
    *   product_id: "prod_123",
    * })
    *
    */
-  createOptions(
+  createProductOptions(
     data: CreateProductOptionDTO,
     sharedContext?: Context
   ): Promise<ProductOptionDTO>
@@ -1070,7 +1219,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO[]>} The updated and created options.
    *
    * @example
-   * const options = await productModuleService.upsertOptions([
+   * const options = await productModuleService.upsertProductOptions([
    *   {
    *     id: "opt_123",
    *     title: "Color",
@@ -1082,7 +1231,7 @@ export interface IProductModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsertOptions(
+  upsertProductOptions(
     data: UpsertProductOptionDTO[],
     sharedContext?: Context
   ): Promise<ProductOptionDTO[]>
@@ -1095,12 +1244,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The updated or created option.
    *
    * @example
-   * const option = await productModuleService.upsertOptions({
+   * const option = await productModuleService.upsertProductOptions({
    *   id: "opt_123",
    *   title: "Color",
    * })
    */
-  upsertOptions(
+  upsertProductOptions(
     data: UpsertProductOptionDTO,
     sharedContext?: Context
   ): Promise<ProductOptionDTO>
@@ -1114,14 +1263,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The updated option.
    *
    * @example
-   * const option = await productModuleService.updateOptions(
+   * const option = await productModuleService.updateProductOptions(
    *   "opt_123",
    *   {
    *     title: "Color",
    *   }
    * )
    */
-  updateOptions(
+  updateProductOptions(
     id: string,
     data: UpdateProductOptionDTO,
     sharedContext?: Context
@@ -1136,7 +1285,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO[]>} The updated options.
    *
    * @example
-   * const options = await productModuleService.updateOptions(
+   * const options = await productModuleService.updateProductOptions(
    *   {
    *     title: "Color",
    *   },
@@ -1145,7 +1294,7 @@ export interface IProductModuleService extends IModuleService {
    *   }
    * )
    */
-  updateOptions(
+  updateProductOptions(
     selector: FilterableProductOptionProps,
     data: UpdateProductOptionDTO,
     sharedContext?: Context
@@ -1159,12 +1308,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    *
    * @example
-   * await productModuleService.deleteOptions([
+   * await productModuleService.deleteProductOptions([
    *   "opt_123",
    *   "opt_321",
    * ])
    */
-  deleteOptions(
+  deleteProductOptions(
     productOptionIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1185,12 +1334,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.softDeleteOptions([
+   * await productModuleService.softDeleteProductOptions([
    *   "opt_123",
    *   "opt_321",
    * ])
    */
-  softDeleteOptions<TReturnableLinkableKeys extends string = string>(
+  softDeleteProductOptions<TReturnableLinkableKeys extends string = string>(
     optionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1210,12 +1359,276 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.restoreOptions([
+   * await productModuleService.restoreProductOptions([
    *   "opt_123",
    *   "opt_321",
    * ])
    */
-  restoreOptions<TReturnableLinkableKeys extends string = string>(
+  restoreProductOptions<TReturnableLinkableKeys extends string = string>(
+    optionIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to retrieve a paginated list of product option values based on optional filters and configuration.
+   *
+   * @param {FilterableProductOptionValueProps} filters - The filters applied on the retrieved product option values.
+   * @param {FindConfig<ProductOptionValueDTO>} config -
+   * The configurations determining how the product option values are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a product option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The list of product option values.
+   *
+   * @example
+   * To retrieve a list of product option values using their IDs:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues({
+    id: ["optval_123", "optval_321"],
+   * })
+   * ```
+   *
+   * To specify relations that should be retrieved within the product option values:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues(
+   *   {
+   *     id: ["optval_123", "optval_321"],
+   *   }
+   * )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues(
+   *   {
+   *     id: ["optval_123", "optval_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   *
+   */
+  listProductOptionValues(
+    filters?: FilterableProductOptionValueProps,
+    config?: FindConfig<ProductOptionValueDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to retrieve a paginated list of product option values along with the total count of available product option values satisfying the provided filters.
+   *
+   * @param {FilterableProductOptionValueProps} filters - The filters applied on the retrieved product option values.
+   * @param {FindConfig<ProductOptionValueDTO>} config -
+   * The configurations determining how the product option values are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a product option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductOptionValueDTO[], number]>} The list of product option values along with the total count.
+   *
+   * @example
+   * To retrieve a list of product option values using their IDs:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues({
+   *     id: ["optval_123", "optval_321"],
+   *   })
+   * ```
+   *
+   * To specify relations that should be retrieved within the product types:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues(
+   *     {
+   *       id: ["optval_123", "optval_321"],
+   *     }
+   *   )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues(
+   *     {
+   *       id: ["optval_123", "optval_321"],
+   *     },
+   *     {
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
+   * ```
+   */
+  listAndCountProductOptionValues(
+    filters?: FilterableProductOptionValueProps,
+    config?: FindConfig<ProductOptionValueDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductOptionValueDTO[], number]>
+
+  /**
+   * This method is used to create product option values.
+   *
+   * @param {CreateProductOptionValueDTO[]} data - The product option values to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The list of created product option values.
+   *
+   * @example
+   * const options = await productModuleService.createProductOptionValues([
+   *   {
+   *     value: "Blue",
+   *     option_id: "opt_123",
+   *   },
+   *   {
+   *     value: "Green",
+   *     option_id: "opt_123",
+   *   },
+   * ])
+   *
+   */
+  createProductOptionValues(
+    data: CreateProductOptionValueDTO[],
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to create a product option.
+   *
+   * @param {CreateProductOptionValueDTO} data - The product option to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO>} The created product option.
+   *
+   * @example
+   * const option = await productModuleService.createProductOptionValues({
+   *   value: "Blue",
+   *   option_id: "opt_123",
+   * })
+   *
+   */
+  createProductOptionValues(
+    data: CreateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO>
+
+  /**
+   * This method is used to update a option.
+   *
+   * @param {string} id - The ID of the option to be updated.
+   * @param {UpdateProductOptionValueDTO} data - The attributes of the option to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO>} The updated option.
+   *
+   * @example
+   * const option = await productModuleService.updateProductOptionValues(
+   *   "optval_123",
+   *   {
+   *     value: "Green",
+   *   }
+   * )
+   */
+  updateProductOptionValues(
+    id: string,
+    data: UpdateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO>
+
+  /**
+   * This method is used to update a list of options matching the specified filters.
+   *
+   * @param {FilterableProductOptionValueProps} selector - The filters specifying which options to update.
+   * @param {UpdateProductOptionValueDTO} data - The attributes to be updated on the selected options
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The updated options.
+   *
+   * @example
+   * const options = await productModuleService.updateProductOptionValues(
+   *   {
+   *     value: "Green",
+   *   },
+   *   {
+   *     value: ["Red"],
+   *   }
+   * )
+   */
+  updateProductOptionValues(
+    selector: FilterableProductOptionValueProps,
+    data: UpdateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to delete a product option.
+   *
+   * @param {string[]} productOptionValueIds - The IDs of the product option values to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product option values are successfully deleted.
+   *
+   * @example
+   * await productModuleService.deleteProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  deleteProductOptionValues(
+    productOptionValueIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method is used to delete options. Unlike the {@link delete} method, this method won't completely remove the option. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted options can be restored using the {@link restore} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names, such as `option_value_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of a record associated with the option through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  softDeleteProductOptionValues<
+    TReturnableLinkableKeys extends string = string
+  >(
+    optionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore options which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of the record associated with the option through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  restoreProductOptionValues<TReturnableLinkableKeys extends string = string>(
     optionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1236,13 +1649,13 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const variant =
-   *   await productModuleService.retrieveVariant("variant_123")
+   *   await productModuleService.retrieveProductVariant("variant_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const variant = await productModuleService.retrieveVariant(
+   * const variant = await productModuleService.retrieveProductVariant(
    *   "variant_123",
    *   {
    *     relations: ["options"],
@@ -1250,7 +1663,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieveVariant(
+  retrieveProductVariant(
     productVariantId: string,
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
@@ -1270,7 +1683,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product variants using their IDs:
    *
    * ```ts
-   * const variants = await productModuleService.listVariants({
+   * const variants = await productModuleService.listProductVariants({
    *   id: ["variant_123", "variant_321"],
    * })
    * ```
@@ -1278,7 +1691,7 @@ export interface IProductModuleService extends IModuleService {
    * To specify relations that should be retrieved within the product variants:
    *
    * ```ts
-   * const variants = await productModuleService.listVariants(
+   * const variants = await productModuleService.listProductVariants(
    *   {
    *     id: ["variant_123", "variant_321"],
    *   },
@@ -1291,7 +1704,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const variants = await productModuleService.listVariants(
+   * const variants = await productModuleService.listProductVariants(
    *   {
    *     id: ["variant_123", "variant_321"],
    *   },
@@ -1303,7 +1716,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  listVariants(
+  listProductVariants(
     filters?: FilterableProductVariantProps,
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
@@ -1324,7 +1737,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [variants, count] =
-   *   await productModuleService.listAndCountVariants({
+   *   await productModuleService.listAndCountProductVariants({
    *     id: ["variant_123", "variant_321"],
    *   })
    * ```
@@ -1333,7 +1746,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [variants, count] =
-   *   await productModuleService.listAndCountVariants(
+   *   await productModuleService.listAndCountProductVariants(
    *     {
    *       id: ["variant_123", "variant_321"],
    *     },
@@ -1347,7 +1760,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [variants, count] =
-   *   await productModuleService.listAndCountVariants(
+   *   await productModuleService.listAndCountProductVariants(
    *     {
    *       id: ["variant_123", "variant_321"],
    *     },
@@ -1359,7 +1772,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountVariants(
+  listAndCountProductVariants(
     filters?: FilterableProductVariantProps,
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
@@ -1373,7 +1786,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO[]>} The list of created product variants.
    *
    * @example
-   * const variants = await productModuleService.createVariants([
+   * const variants = await productModuleService.createProductVariants([
    *   {
    *     title: "Blue Shirt",
    *     product_id: "prod_123",
@@ -1391,7 +1804,7 @@ export interface IProductModuleService extends IModuleService {
    * ])
    *
    */
-  createVariants(
+  createProductVariants(
     data: CreateProductVariantDTO[],
     sharedContext?: Context
   ): Promise<ProductVariantDTO[]>
@@ -1404,7 +1817,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The created product variant.
    *
    * @example
-   * const variant = await productModuleService.createVariants({
+   * const variant = await productModuleService.createProductVariants({
    *   title: "Blue Shirt",
    *   product_id: "prod_123",
    *   options: {
@@ -1413,7 +1826,7 @@ export interface IProductModuleService extends IModuleService {
    * })
    *
    */
-  createVariants(
+  createProductVariants(
     data: CreateProductVariantDTO,
     sharedContext?: Context
   ): Promise<ProductVariantDTO>
@@ -1426,7 +1839,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO[]>} The updated and created variants.
    *
    * @example
-   * const variants = await productModuleService.upsertVariants([
+   * const variants = await productModuleService.upsertProductVariants([
    *   {
    *     id: "variant_123",
    *     title: "Green Shirt",
@@ -1439,7 +1852,7 @@ export interface IProductModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsertVariants(
+  upsertProductVariants(
     data: UpsertProductVariantDTO[],
     sharedContext?: Context
   ): Promise<ProductVariantDTO[]>
@@ -1452,12 +1865,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The updated or created variant.
    *
    * @example
-   * const variant = await productModuleService.upsertVariants({
+   * const variant = await productModuleService.upsertProductVariants({
    *   id: "variant_123",
    *   title: "Green Shirt",
    * })
    */
-  upsertVariants(
+  upsertProductVariants(
     data: UpsertProductVariantDTO,
     sharedContext?: Context
   ): Promise<ProductVariantDTO>
@@ -1471,14 +1884,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The updated variant.
    *
    * @example
-   * const variant = await productModuleService.updateVariants(
+   * const variant = await productModuleService.updateProductVariants(
    *   "variant_123",
    *   {
    *     title: "Blue Shirt",
    *   }
    * )
    */
-  updateVariants(
+  updateProductVariants(
     id: string,
     data: UpdateProductVariantDTO,
     sharedContext?: Context
@@ -1493,7 +1906,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO[]>} The updated variants.
    *
    * @example
-   * const variants = await productModuleService.updateVariants(
+   * const variants = await productModuleService.updateProductVariants(
    *   {
    *     id: ["variant_123", "variant_321"],
    *   },
@@ -1502,7 +1915,7 @@ export interface IProductModuleService extends IModuleService {
    *   }
    * )
    */
-  updateVariants(
+  updateProductVariants(
     selector: FilterableProductVariantProps,
     data: UpdateProductVariantDTO,
     sharedContext?: Context
@@ -1516,12 +1929,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
    *
    * @example
-   * await productModuleService.deleteVariants([
+   * await productModuleService.deleteProductVariants([
    *   "variant_123",
    *   "variant_321",
    * ])
    */
-  deleteVariants(
+  deleteProductVariants(
     productVariantIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1542,12 +1955,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.softDeleteVariants([
+   * await productModuleService.softDeleteProductVariants([
    *   "variant_123",
    *   "variant_321",
    * ])
    */
-  softDeleteVariants<TReturnableLinkableKeys extends string = string>(
+  softDeleteProductVariants<TReturnableLinkableKeys extends string = string>(
     variantIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1567,12 +1980,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.restoreVariants([
+   * await productModuleService.restoreProductVariants([
    *   "variant_123",
    *   "variant_321",
    * ])
    */
-  restoreVariants<TReturnableLinkableKeys extends string = string>(
+  restoreProductVariants<TReturnableLinkableKeys extends string = string>(
     variantIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1593,19 +2006,19 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const collection =
-   *   await productModuleService.retrieveCollection("pcol_123")
+   *   await productModuleService.retrieveProductCollection("pcol_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
    * const collection =
-   *   await productModuleService.retrieveCollection("pcol_123", {
+   *   await productModuleService.retrieveProductCollection("pcol_123", {
    *     relations: ["products"],
    *   })
    * ```
    */
-  retrieveCollection(
+  retrieveProductCollection(
     productCollectionId: string,
     config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
@@ -1626,7 +2039,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const collections =
-   *   await productModuleService.listCollections({
+   *   await productModuleService.listProductCollections({
    *     id: ["pcol_123", "pcol_321"],
    *   })
    * ```
@@ -1635,7 +2048,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const collections =
-   *   await productModuleService.listCollections(
+   *   await productModuleService.listProductCollections(
    *     {
    *       id: ["pcol_123", "pcol_321"],
    *     },
@@ -1649,7 +2062,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const collections =
-   *   await productModuleService.listCollections(
+   *   await productModuleService.listProductCollections(
    *     {
    *       id: ["pcol_123", "pcol_321"],
    *     },
@@ -1661,7 +2074,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listCollections(
+  listProductCollections(
     filters?: FilterableProductCollectionProps,
     config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
@@ -1682,7 +2095,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [collections, count] =
-   *   await productModuleService.listAndCountCollections({
+   *   await productModuleService.listAndCountProductCollections({
    *     id: ["pcol_123", "pcol_321"],
    *   })
    * ```
@@ -1691,7 +2104,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [collections, count] =
-   *   await productModuleService.listAndCountCollections(
+   *   await productModuleService.listAndCountProductCollections(
    *     {
    *       id: ["pcol_123", "pcol_321"],
    *     },
@@ -1705,7 +2118,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [collections, count] =
-   *   await productModuleService.listAndCountCollections(
+   *   await productModuleService.listAndCountProductCollections(
    *     {
    *       id: ["pcol_123", "pcol_321"],
    *     },
@@ -1717,7 +2130,7 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountCollections(
+  listAndCountProductCollections(
     filters?: FilterableProductCollectionProps,
     config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
@@ -1732,7 +2145,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collections =
-   *   await productModuleService.createCollections([
+   *   await productModuleService.createProductCollections([
    *     {
    *       title: "Summer Collection",
    *     },
@@ -1742,7 +2155,7 @@ export interface IProductModuleService extends IModuleService {
    *   ])
    *
    */
-  createCollections(
+  createProductCollections(
     data: CreateProductCollectionDTO[],
     sharedContext?: Context
   ): Promise<ProductCollectionDTO[]>
@@ -1756,12 +2169,12 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collection =
-   *   await productModuleService.createCollections({
+   *   await productModuleService.createProductCollections({
    *     title: "Summer Collection",
    *   })
    *
    */
-  createCollections(
+  createProductCollections(
     data: CreateProductCollectionDTO,
     sharedContext?: Context
   ): Promise<ProductCollectionDTO>
@@ -1775,7 +2188,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collections =
-   *   await productModuleService.upsertCollections([
+   *   await productModuleService.upsertProductCollections([
    *     {
    *       id: "pcol_123",
    *       title: "Winter Collection",
@@ -1785,7 +2198,7 @@ export interface IProductModuleService extends IModuleService {
    *     },
    *   ])
    */
-  upsertCollections(
+  upsertProductCollections(
     data: UpsertProductCollectionDTO[],
     sharedContext?: Context
   ): Promise<ProductCollectionDTO[]>
@@ -1799,12 +2212,12 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collection =
-   *   await productModuleService.upsertCollections({
+   *   await productModuleService.upsertProductCollections({
    *     id: "pcol_123",
    *     title: "Winter Collection",
    *   })
    */
-  upsertCollections(
+  upsertProductCollections(
     data: UpsertProductCollectionDTO,
     sharedContext?: Context
   ): Promise<ProductCollectionDTO>
@@ -1819,11 +2232,11 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collection =
-   *   await productModuleService.updateCollections("pcol_123", {
+   *   await productModuleService.updateProductCollections("pcol_123", {
    *     title: "Summer Collection",
    *   })
    */
-  updateCollections(
+  updateProductCollections(
     id: string,
     data: UpdateProductCollectionDTO,
     sharedContext?: Context
@@ -1839,7 +2252,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * @example
    * const collections =
-   *   await productModuleService.updateCollections(
+   *   await productModuleService.updateProductCollections(
    *     {
    *       id: ["pcol_123", "pcol_321"],
    *     },
@@ -1848,7 +2261,7 @@ export interface IProductModuleService extends IModuleService {
    *     }
    *   )
    */
-  updateCollections(
+  updateProductCollections(
     selector: FilterableProductCollectionProps,
     data: UpdateProductCollectionDTO,
     sharedContext?: Context
@@ -1862,13 +2275,13 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    *
    * @example
-   * await productModuleService.deleteCollections([
+   * await productModuleService.deleteProductCollections([
    *   "pcol_123",
    *   "pcol_321",
    * ])
    *
    */
-  deleteCollections(
+  deleteProductCollections(
     productCollectionIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1889,12 +2302,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.softDeleteCollections([
+   * await productModuleService.softDeleteProductCollections([
    *   "pcol_123",
    *   "pcol_321",
    * ])
    */
-  softDeleteCollections<TReturnableLinkableKeys extends string = string>(
+  softDeleteProductCollections<TReturnableLinkableKeys extends string = string>(
     collectionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1914,12 +2327,12 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * await productModuleService.restoreCollections([
+   * await productModuleService.restoreProductCollections([
    *   "pcol_123",
    *   "pcol_321",
    * ])
    */
-  restoreCollections<TReturnableLinkableKeys extends string = string>(
+  restoreProductCollections<TReturnableLinkableKeys extends string = string>(
     collectionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1940,13 +2353,13 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const category =
-   *   await productModuleService.retrieveCategory("pcat_123")
+   *   await productModuleService.retrieveProductCategory("pcat_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const category = await productModuleService.retrieveCategory(
+   * const category = await productModuleService.retrieveProductCategory(
    *   "pcat_123",
    *   {
    *     relations: ["products"],
@@ -1954,7 +2367,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieveCategory(
+  retrieveProductCategory(
     productCategoryId: string,
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
@@ -1974,7 +2387,7 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product categories using their IDs:
    *
    * ```ts
-   * const categories = await productModuleService.listCategories({
+   * const categories = await productModuleService.listProductCategories({
    *   id: ["pcat_123", "pcat_321"],
    * })
    * ```
@@ -1982,7 +2395,7 @@ export interface IProductModuleService extends IModuleService {
    * To specify relations that should be retrieved within the product categories:
    *
    * ```ts
-   * const categories = await productModuleService.listCategories(
+   * const categories = await productModuleService.listProductCategories(
    *   {
    *     id: ["pcat_123", "pcat_321"],
    *   },
@@ -1995,7 +2408,7 @@ export interface IProductModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const categories = await productModuleService.listCategories(
+   * const categories = await productModuleService.listProductCategories(
    *   {
    *     id: ["pcat_123", "pcat_321"],
    *   },
@@ -2007,7 +2420,7 @@ export interface IProductModuleService extends IModuleService {
    * )
    * ```
    */
-  listCategories(
+  listProductCategories(
     filters?: FilterableProductCategoryProps,
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
@@ -2028,7 +2441,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [categories, count] =
-   *   await productModuleService.listAndCountCategories({
+   *   await productModuleService.listAndCountProductCategories({
    *     id: ["pcat_123", "pcat_321"],
    *   })
    * ```
@@ -2037,7 +2450,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [categories, count] =
-   *   await productModuleService.listAndCountCategories(
+   *   await productModuleService.listAndCountProductCategories(
    *     {
    *       id: ["pcat_123", "pcat_321"],
    *     },
@@ -2051,7 +2464,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * const [categories, count] =
-   *   await productModuleService.listAndCountCategories(
+   *   await productModuleService.listAndCountProductCategories(
    *     {
    *       id: ["pcat_123", "pcat_321"],
    *     },
@@ -2063,11 +2476,35 @@ export interface IProductModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountCategories(
+  listAndCountProductCategories(
     filters?: FilterableProductCategoryProps,
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
   ): Promise<[ProductCategoryDTO[], number]>
+
+  /**
+   * This method is used to create product categories.
+   *
+   * @param {CreateProductCategoryDTO[]} data - The product categories to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO[]>} The list of created product categories.
+   *
+   * @example
+   * const categories =
+   *   await productModuleService.createProductCategories([
+   *     {
+   *       name: "Tools",
+   *     },
+   *     {
+   *       name: "Clothing",
+   *     },
+   *   ])
+   *
+   */
+  createProductCategories(
+    data: CreateProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
 
   /**
    * This method is used to create a product category.
@@ -2077,48 +2514,173 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCategoryDTO>} The created product category.
    *
    * @example
-   * const category = await productModuleService.createCategory({
-   *   name: "Shirts",
-   *   parent_category_id: null,
-   * })
+   * const category =
+   *   await productModuleService.createProductCategories({
+   *     name: "Tools",
+   *   })
    *
    */
-  createCategory(
+  createProductCategories(
     data: CreateProductCategoryDTO,
     sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
   /**
-   * This method is used to update a product category by its ID.
+   * This method updates existing categories, or creates new ones if they don't exist.
    *
-   * @param {string} categoryId - The ID of the product category to update.
-   * @param {UpdateProductCategoryDTO} data - The attributes to update in th product category.
+   * @param {UpsertProductCategoryDTO[]} data - The attributes to update or create for each category.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO>} The updated product category.
+   * @returns {Promise<ProductCategoryDTO[]>} The updated and created categories.
    *
    * @example
-   * const category = await productModuleService.updateCategory(
-   *   "pcat_123",
-   *   {
-   *     name: "Shirts",
-   *   }
-   * )
+   * const categories =
+   *   await productModuleService.upsertProductCategories([
+   *     {
+   *       id: "pcat_123",
+   *       name: "Clothing",
+   *     },
+   *     {
+   *       name: "Tools",
+   *     },
+   *   ])
    */
-  updateCategory(
-    categoryId: string,
+  upsertProductCategories(
+    data: UpsertProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
+
+  /**
+   * This method updates an existing category, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductCategoryDTO} data - The attributes to update or create for the category.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The updated or created category.
+   *
+   * @example
+   * const category =
+   *   await productModuleService.upsertProductCategories({
+   *     id: "pcat_123",
+   *     name: "Clothing",
+   *   })
+   */
+  upsertProductCategories(
+    data: UpsertProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO>
+
+  /**
+   * This method is used to update a category.
+   *
+   * @param {string} id - The ID of the category to be updated.
+   * @param {UpdateProductCategoryDTO} data - The attributes of the category to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The updated category.
+   *
+   * @example
+   * const category =
+   *   await productModuleService.updateProductCategories("pcat_123", {
+   *     title: "Tools",
+   *   })
+   */
+  updateProductCategories(
+    id: string,
     data: UpdateProductCategoryDTO,
     sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
   /**
-   * This method is used to delete a product category by its ID.
+   * This method is used to update a list of categories matching the specified filters.
    *
-   * @param {string} categoryId - The ID of the product category to delete.
+   * @param {FilterableProductCategoryProps} selector - The filters specifying which categories to update.
+   * @param {UpdateProductCategoryDTO} data - The attributes to be updated on the selected categories
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the product category is successfully deleted.
+   * @returns {Promise<ProductCategoryDTO[]>} The updated categories.
    *
    * @example
-   * await productModuleService.deleteCategory("pcat_123")
+   * const categories =
+   *   await productModuleService.updateProductCategories(
+   *     {
+   *       id: ["pcat_123", "pcat_321"],
+   *     },
+   *     {
+   *       title: "Tools",
+   *     }
+   *   )
    */
-  deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
+  updateProductCategories(
+    selector: FilterableProductCategoryProps,
+    data: UpdateProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
+
+  /**
+   * This method is used to delete categories by their ID.
+   *
+   * @param {string[]} productCategoryIds - The IDs of the product categories to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product options are successfully deleted.
+   *
+   * @example
+   * await productModuleService.deleteProductCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   *
+   */
+  deleteProductCategories(
+    productCategoryIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method is used to delete product categories. Unlike the {@link deleteCategories} method, this method won't completely remove the category. It can still be accessed or retrieved using methods like {@link retrieveCategories} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted categories can be restored using the {@link restoreCategories} method.
+   *
+   * @param {string[]} categoryIds - The IDs of the categories to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the categories. You can pass to its `returnLinkableKeys`
+   * property any of the category's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the category entity's relations.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteProductCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   */
+  softDeleteProductCategories<TReturnableLinkableKeys extends string = string>(
+    categoryIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore categories which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} categoryIds - The IDs of the categories to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the categories. You can pass to its `returnLinkableKeys`
+   * property any of the category's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product entity's relations.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreProductCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   */
+  restoreProductCategories<TReturnableLinkableKeys extends string = string>(
+    categoryIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

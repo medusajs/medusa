@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/updateUsersStep
+sidebar_label: updateUsersStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateUsersStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updateUsersStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates one or more stores.
+
+## Input
+
+<TypeList types={[{"name":"UpdateUserDTO[]","type":"[UpdateUserDTO](../../../../../user/interfaces/user.UpdateUserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateUserDTO","type":"[UpdateUserDTO](../../../../../user/interfaces/user.UpdateUserDTO/page.mdx)","optional":false,"defaultValue":"","description":"The attributes to update in the user.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateUsersStep"/>
+
+## Output
+
+<TypeList types={[{"name":"UserDTO[]","type":"[UserDTO](../../../../../user/interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UserDTO","type":"[UserDTO](../../../../../user/interfaces/user.UserDTO/page.mdx)","optional":false,"defaultValue":"","description":"The user details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateUsersStep"/>

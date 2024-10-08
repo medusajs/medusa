@@ -1,8 +1,0 @@
-type: object
-description: The details of the payment session to set.
-required:
-  - provider_id
-properties:
-  provider_id:
-    type: string
-    description: The ID of the Payment Provider.

@@ -1,13 +1,18 @@
-import { DocsConfig } from "types"
-import { mobileSidebarItems } from "docs-ui"
+import { DocsConfig, SidebarItem } from "types"
+import { getMobileSidebarItems } from "docs-ui"
 import { generatedSidebar } from "../generated/sidebar.mjs"
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+
 export const config: DocsConfig = {
-  titleSuffix: "Medusa Resources",
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  titleSuffix: "Medusa Development Resources",
+  baseUrl,
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebar: {
-    top: generatedSidebar,
-    bottom: [],
-    mobile: mobileSidebarItems,
+    default: generatedSidebar as SidebarItem[],
+    mobile: getMobileSidebarItems({
+      baseUrl,
+      version: "v2",
+    }),
   },
 }

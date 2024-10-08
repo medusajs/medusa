@@ -5,8 +5,8 @@ const BarsArrowDown = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const BarsArrowDown = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M2.5 3.75h11.875M2.5 7.5h8.125M2.5 11.25h8.125m3.75-3.75v10m0 0-3.125-3.125m3.125 3.125 3.125-3.125"
+          d="m8.611 10.834 2.222 2.222 2.223-2.222M10.833 13.056v-8M1.944 8.166h5.778M1.944 5.056h5.778M1.944 1.944h8.89"
         />
       </svg>
     )

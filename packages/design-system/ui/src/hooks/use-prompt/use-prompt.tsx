@@ -11,19 +11,25 @@ const usePrompt = () => {
     return new Promise((resolve) => {
       let open = true
 
+      const mountRoot = createRoot(document.createElement("div"))
+
       const onCancel = () => {
         open = false
-        render()
+        mountRoot.unmount()
         resolve(false)
+
+        // TEMP FIX for Radix issue with dropdowns persisting pointer-events: none on body after closing
+        document.body.style.pointerEvents = "auto"
       }
 
       const onConfirm = () => {
         open = false
         resolve(true)
-        render()
-      }
+        mountRoot.unmount()
 
-      const mountRoot = createRoot(document.createElement("div"))
+        // TEMP FIX for Radix issue with dropdowns persisting pointer-events: none on body after closing
+        document.body.style.pointerEvents = "auto"
+      }
 
       const render = () => {
         mountRoot.render(

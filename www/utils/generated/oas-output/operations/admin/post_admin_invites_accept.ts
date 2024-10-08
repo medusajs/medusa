@@ -1,92 +1,68 @@
 /**
  * @oas [post] /admin/invites/accept
  * operationId: PostInvitesAccept
- * summary: Create Invite
- * description: Create a invite.
- * x-authenticated: true
- * parameters:
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
- * security:
- *   - api_token: []
- *   - cookie_auth: []
- *   - jwt_token: []
+ * summary: Accept Invite
+ * description: >
+ *   Accept an invite and create a new user.
+ * 
+ *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`). The user can then authenticate using the `/auth/user/emailpass` API route.
+ * x-authenticated: false
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - email
- *           - first_name
- *           - last_name
+ *         description: The details of the user to be created.
  *         properties:
- *           first_name:
- *             type: string
- *             title: first_name
- *             description: The invite's first name.
- *           last_name:
- *             type: string
- *             title: last_name
- *             description: The invite's last name.
  *           email:
  *             type: string
  *             title: email
- *             description: The invite's email.
+ *             description: The user's email.
  *             format: email
+ *           first_name:
+ *             type: string
+ *             title: first_name
+ *             description: The user's first name.
+ *           last_name:
+ *             type: string
+ *             title: last_name
+ *             description: The user's last name.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/invites/accept' \
- *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
+ *         "email": "Lila_Zemlak@hotmail.com",
  *         "first_name": "{value}",
  *         "last_name": "{value}"
  *       }'
  * tags:
  *   - Invites
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           oneOf:
+ *             - type: object
+ *               description: The created user's details.
+ *               required:
+ *                 - user
+ *               properties:
+ *                 user:
+ *                   $ref: "#/components/schemas/AdminUser"
+ *             - type: object
+ *               description: An error's details.
+ *               required:
+ *                 - message
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   title: message
+ *                   description: The error message.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -99,6 +75,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: acceptInviteWorkflow
  * 
 */
 

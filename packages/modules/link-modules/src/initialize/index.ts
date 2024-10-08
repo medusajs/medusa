@@ -1,34 +1,31 @@
 import {
-  InternalModuleDeclaration,
   MedusaModule,
-  ModuleRegistrationName,
-} from "@medusajs/modules-sdk"
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "@medusajs/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
   ILinkModule,
+  InternalModuleDeclaration,
   LinkModuleDefinition,
-  LoaderOptions,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
-  ContainerRegistrationKeys,
-  lowerCaseFirst,
-  simpleHash,
-  toPascalCase,
-} from "@medusajs/utils"
-import * as linkDefinitions from "../definitions"
-import { getMigration } from "../migration"
-import { InitializeModuleInjectableDependencies } from "../types"
-import {
+  arrayDifference,
   composeLinkName,
   composeTableName,
-  generateGraphQLSchema,
-} from "../utils"
+  ContainerRegistrationKeys,
+  Modules,
+  simpleHash,
+  toPascalCase,
+} from "@medusajs/framework/utils"
+import * as linkDefinitions from "../definitions"
+import { MigrationsExecutionPlanner } from "../migration"
+import { InitializeModuleInjectableDependencies } from "../types"
+import { generateGraphQLSchema } from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -37,7 +34,7 @@ export const initialize = async (
     | ModuleServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
-  modulesDefinition?: ModuleJoinerConfig[],
+  pluginLinksDefinitions?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<{ [link: string]: ILinkModule }> => {
   const allLinks = {}
@@ -46,11 +43,13 @@ export const initialize = async (
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinitions ?? []
   )
 
   for (const linkDefinition of allLinksToLoad) {
-    const definition = JSON.parse(JSON.stringify(linkDefinition))
+    const definition: ModuleJoinerConfig = JSON.parse(
+      JSON.stringify(linkDefinition)
+    )
 
     const [primary, foreign] = definition.relationships ?? []
 
@@ -65,15 +64,31 @@ export const initialize = async (
       throw new Error(`Foreign key cannot be a composed key.`)
     }
 
+    if (Array.isArray(definition.extraDataFields)) {
+      const extraDataFields = definition.extraDataFields
+      const definedDbFields = Object.keys(
+        definition.databaseConfig?.extraFields || {}
+      )
+      const difference = arrayDifference(extraDataFields, definedDbFields)
+
+      if (difference.length) {
+        throw new Error(
+          `extraDataFields (fieldNames: ${difference.join(
+            ","
+          )}) need to be configured under databaseConfig (serviceName: ${
+            definition.serviceName
+          }).`
+        )
+      }
+    }
+
     const serviceKey = !definition.isReadOnlyLink
-      ? lowerCaseFirst(
-          definition.serviceName ??
-            composeLinkName(
-              primary.serviceName,
-              primary.foreignKey,
-              foreign.serviceName,
-              foreign.foreignKey
-            )
+      ? definition.serviceName ??
+        composeLinkName(
+          primary.serviceName,
+          primary.foreignKey,
+          foreign.serviceName,
+          foreign.foreignKey
         )
       : simpleHash(JSON.stringify(definition.extends))
 
@@ -99,10 +114,8 @@ export const initialize = async (
         continue
       }
     } else if (
-      (!primary.isInternalService &&
-        !modulesLoadedKeys.includes(primary.serviceName)) ||
-      (!foreign.isInternalService &&
-        !modulesLoadedKeys.includes(foreign.serviceName))
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
       continue
     }
@@ -114,11 +127,14 @@ export const initialize = async (
       logger,
     })
 
-    definition.alias ??= []
+    if (!Array.isArray(definition.alias)) {
+      definition.alias = definition.alias ? [definition.alias] : []
+    }
+
     for (const alias of definition.alias) {
       alias.args ??= {}
 
-      alias.args.entity = toPascalCase(
+      alias.entity = toPascalCase(
         "Link_" +
           (definition.databaseConfig?.tableName ??
             composeTableName(
@@ -138,9 +154,8 @@ export const initialize = async (
 
     const linkModuleDefinition: LinkModuleDefinition = {
       key: serviceKey,
-      registrationName: serviceKey,
       label: serviceKey,
-      dependencies: [ModuleRegistrationName.EVENT_BUS],
+      dependencies: [Modules.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: injectedDependencies?.[
@@ -164,19 +179,24 @@ export const initialize = async (
   return allLinks
 }
 
-export async function runMigrations(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
+/**
+ * Prepare an execution plan and run the migrations accordingly.
+ * It includes creating, updating, deleting the tables according to the execution plan.
+ * If any unsafe sql is identified then we will notify the user to act manually.
+ *
+ * @param options
+ * @param pluginLinksDefinition
+ */
+export function getMigrationPlanner(
+  options: ModuleServiceInitializeOptions,
+  pluginLinksDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinition ?? []
   )
 
   const allLinks = new Set<string>()
@@ -192,15 +212,14 @@ export async function runMigrations(
     }
 
     const [primary, foreign] = definition.relationships ?? []
-    const serviceKey = lowerCaseFirst(
+    const serviceKey =
       definition.serviceName ??
-        composeLinkName(
-          primary.serviceName,
-          primary.foreignKey,
-          foreign.serviceName,
-          foreign.foreignKey
-        )
-    )
+      composeLinkName(
+        primary.serviceName,
+        primary.foreignKey,
+        foreign.serviceName,
+        foreign.foreignKey
+      )
 
     if (allLinks.has(serviceKey)) {
       throw new Error(`Link module ${serviceKey} already exists.`)
@@ -214,8 +233,7 @@ export async function runMigrations(
     ) {
       continue
     }
-
-    const migrate = getMigration(definition, serviceKey, primary, foreign)
-    await migrate({ options, logger })
   }
+
+  return new MigrationsExecutionPlanner(allLinksToLoad, options)
 }

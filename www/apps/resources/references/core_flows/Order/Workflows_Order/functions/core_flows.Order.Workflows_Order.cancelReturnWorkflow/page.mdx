@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/cancelReturnWorkflow
+sidebar_label: cancelReturnWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelReturnWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `cancelReturnWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow cancels a return.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelReturnWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#useremotequerystep","depth":1},{"type":"step","name":"cancelReturnValidateOrder","description":"This step validates that a return can be canceled.","link":"../../../../core_flows.Workflows_Order/page.mdx#cancelreturnvalidateorder","depth":2},{"type":"step","name":"cancelOrderReturnStep","description":"This step cancels a return.","link":"../../../../core_flows.Steps_Order/page.mdx#cancelorderreturnstep","depth":3}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelReturnWorkflowInput","type":"`CancelReturnWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelReturnWorkflow"/>

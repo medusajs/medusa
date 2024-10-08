@@ -1,37 +1,60 @@
 post:
-  operationId: PostCartsCartLineItemsItem
-  summary: Update a Line Item
-  description: Update a line item's quantity.
+  operationId: PostCartsIdLineItemsLine_id
+  summary: Update a Line Item in a Cart
+  x-sidebar-summary: Update Line Item
+  description: Update a line item's details in the cart.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#update-line-item-in-cart
+    description: 'Storefront guide: How to update a cart''s line item.'
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-    - in: path
-      name: line_id
+    - name: line_id
+      in: path
+      description: The line item's ID.
       required: true
-      description: The ID of the Line Item.
       schema:
         type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/StorePostCartsCartLineItemsItemReq.yaml
-  x-codegen:
-    method: updateLineItem
+          $ref: ../components/schemas/StoreUpdateCartLineItem.yaml
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -44,9 +67,11 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
+            $ref: ../components/schemas/StoreCartResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -55,37 +80,59 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateLineItemInCartWorkflow
 delete:
-  operationId: DeleteCartsCartLineItemsItem
-  summary: Delete a Line Item
-  description: >-
-    Delete a Line Item from a Cart. The payment sessions will be updated and the
-    totals will be recalculated.
+  operationId: DeleteCartsIdLineItemsLine_id
+  summary: Remove Line Item from Cart
+  x-sidebar-summary: Remove Line Item
+  description: Remove a line item from a cart.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#remove-line-item-from-cart
+    description: 'Storefront guide: How to remove line item from cart.'
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-    - in: path
-      name: line_id
+    - name: line_id
+      in: path
+      description: The line item's ID.
       required: true
-      description: The ID of the Line Item.
       schema:
         type: string
-  x-codegen:
-    method: deleteLineItem
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
@@ -98,9 +145,38 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
+            allOf:
+              - type: object
+                description: The deletion's details.
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The ID of the deleted line item.
+                  object:
+                    type: string
+                    title: object
+                    description: The name of the deleted object.
+                    default: line-item
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: Whether the item was deleted.
+              - type: object
+                description: The deletion's details.
+                properties:
+                  parent:
+                    $ref: ../components/schemas/StoreCart.yaml
+                    description: The cart that the item belonged to.
+            description: The deletion's details.
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -109,3 +185,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteLineItemsWorkflow

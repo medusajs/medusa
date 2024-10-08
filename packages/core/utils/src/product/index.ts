@@ -4,3 +4,5 @@ export enum ProductStatus {
   PUBLISHED = "published",
   REJECTED = "rejected",
 }
+
+export * from "./events"

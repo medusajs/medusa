@@ -1,15 +1,16 @@
-import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 export const createInventoryLevelsStepId = "create-inventory-levels"
+/**
+ * This step creates one or more inventory levels.
+ */
 export const createInventoryLevelsStep = createStep(
   createInventoryLevelsStepId,
-  async (data: InventoryNext.CreateInventoryLevelInput[], { container }) => {
-    const service = container.resolve<IInventoryServiceNext>(
-      ModuleRegistrationName.INVENTORY
-    )
+  async (data: InventoryTypes.CreateInventoryLevelInput[], { container }) => {
+    const service = container.resolve<IInventoryService>(Modules.INVENTORY)
 
     const inventoryLevels = await service.createInventoryLevels(data)
     return new StepResponse(
@@ -22,9 +23,7 @@ export const createInventoryLevelsStep = createStep(
       return
     }
 
-    const service = container.resolve<IInventoryServiceNext>(
-      ModuleRegistrationName.INVENTORY
-    )
+    const service = container.resolve<IInventoryService>(Modules.INVENTORY)
 
     await service.deleteInventoryLevels(ids)
   }

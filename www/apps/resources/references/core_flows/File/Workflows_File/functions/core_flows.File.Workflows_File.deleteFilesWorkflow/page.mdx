@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/deleteFilesWorkflow
+sidebar_label: deleteFilesWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteFilesWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteFilesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more files.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteFilesWorkflow","steps":[{"type":"step","name":"deleteFilesStep","description":"This step deletes one or more files.","link":"../../../../core_flows.Steps_File/page.mdx#deletefilesstep","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteFilesWorkflowInput","type":"[DeleteFilesWorkflowInput](../../../../types/core_flows.DeleteFilesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteFilesWorkflow"/>

@@ -4,19 +4,23 @@ import {
   CreatePromotionRuleDTO,
   PromotionRuleDTO,
   UpdatePromotionRuleDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
+import { RuleType } from "@medusajs/framework/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
-import { RuleType } from "@medusajs/utils"
-import { createPromotionRulesWorkflowStep } from "../steps/create-promotion-rules-workflow"
-import { updatePromotionRulesWorkflowStep } from "../steps/update-promotion-rules-workflow"
+} from "@medusajs/framework/workflows-sdk"
 import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules-workflow"
+import { createPromotionRulesWorkflow } from "./create-promotion-rules"
+import { updatePromotionRulesWorkflow } from "./update-promotion-rules"
 
 export const batchPromotionRulesWorkflowId = "batch-promotion-rules"
+/**
+ * This workflow creates, updates, or deletes promotion rules.
+ */
 export const batchPromotionRulesWorkflow = createWorkflow(
   batchPromotionRulesWorkflowId,
   (
@@ -26,7 +30,7 @@ export const batchPromotionRulesWorkflow = createWorkflow(
         rule_type: RuleType
       }
     >
-  ): WorkflowData<BatchWorkflowOutput<PromotionRuleDTO>> => {
+  ): WorkflowResponse<BatchWorkflowOutput<PromotionRuleDTO>> => {
     const createInput = transform({ input }, (data) => ({
       rule_type: data.input.rule_type,
       data: { id: data.input.id, rules: data.input.create ?? [] },
@@ -42,11 +46,17 @@ export const batchPromotionRulesWorkflow = createWorkflow(
     }))
 
     const [created, updated, deleted] = parallelize(
-      createPromotionRulesWorkflowStep(createInput),
-      updatePromotionRulesWorkflowStep(updateInput),
+      createPromotionRulesWorkflow.runAsStep({
+        input: createInput,
+      }),
+      updatePromotionRulesWorkflow.runAsStep({
+        input: updateInput,
+      }),
       deletePromotionRulesWorkflowStep(deleteInput)
     )
 
-    return transform({ created, updated, deleted }, (data) => data)
+    return new WorkflowResponse(
+      transform({ created, updated, deleted }, (data) => data)
+    )
   }
 )

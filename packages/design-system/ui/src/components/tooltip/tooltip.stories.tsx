@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
 import { InformationCircleSolid } from "@medusajs/icons"
-import { Tooltip } from "./tooltip"
+import { Tooltip, TooltipProvider } from "./tooltip"
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Tooltip",
@@ -21,6 +21,7 @@ const meta: Meta<typeof Tooltip> = {
       },
     },
   },
+  render: (args) => <TooltipProvider><Tooltip {...args} /></TooltipProvider>,
 }
 
 export default meta

@@ -16,6 +16,12 @@ describe("getSelectsAndRelationsFromObjectArray", function () {
               attr_null: null,
               attr_undefined: undefined,
             },
+            metadata: {
+              is_test: true,
+              nested_object: {
+                deeply_nested: true,
+              },
+            },
             attr_array: [
               {
                 attr_object: {
@@ -43,6 +49,8 @@ describe("getSelectsAndRelationsFromObjectArray", function () {
             "attr_object.attr_boolean",
             "attr_object.attr_null",
             "attr_object.attr_undefined",
+            "metadata.is_test",
+            "metadata.nested_object.deeply_nested",
             "attr_array.attr_object.attr_string",
             "attr_array.attr_object.attr_boolean",
             "attr_array.attr_object.attr_null",

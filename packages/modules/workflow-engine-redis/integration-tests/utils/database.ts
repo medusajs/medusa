@@ -20,10 +20,6 @@ interface TestDatabase {
 
 export const TestDatabase: TestDatabase = {
   clearTables: async (knex) => {
-    await knex.raw(`
-      TRUNCATE TABLE workflow_execution CASCADE;
-    `)
-
     await cleanRedis()
   },
 }
@@ -46,7 +42,7 @@ async function deleteKeysByPattern(pattern) {
 async function cleanRedis() {
   try {
     await deleteKeysByPattern("bull:*")
-    await deleteKeysByPattern("dtrans:*")
+    await deleteKeysByPattern("dtrx:*")
   } catch (error) {
     console.error("Error:", error)
   }

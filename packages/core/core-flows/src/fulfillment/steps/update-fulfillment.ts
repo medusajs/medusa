@@ -1,9 +1,17 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { FulfillmentWorkflow, IFulfillmentModuleService } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  FulfillmentWorkflow,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateFulfillmentStepId = "update-fulfillment"
+/**
+ * This step updates a fulfillment.
+ */
 export const updateFulfillmentStep = createStep(
   updateFulfillmentStepId,
   async (
@@ -11,8 +19,9 @@ export const updateFulfillmentStep = createStep(
     { container }
   ) => {
     const { id, ...data } = input
+
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([data])
@@ -21,9 +30,9 @@ export const updateFulfillmentStep = createStep(
       relations,
     })
 
-    await service.updateFulfillment(id, data)
+    const updated = await service.updateFulfillment(id, data)
 
-    return new StepResponse(void 0, fulfillment)
+    return new StepResponse(updated, fulfillment)
   },
   async (fulfillment, { container }) => {
     if (!fulfillment) {
@@ -31,7 +40,7 @@ export const updateFulfillmentStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
     const { id, ...data } = fulfillment
 

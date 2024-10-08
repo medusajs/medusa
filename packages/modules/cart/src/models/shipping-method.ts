@@ -1,11 +1,11 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
-  DALUtils,
-  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+  MikroOrmBigNumberProperty,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -14,11 +14,12 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
@@ -27,7 +28,7 @@ import ShippingMethodTaxLine from "./shipping-method-tax-line"
 type OptionalShippingMethodProps =
   | "cart"
   | "is_tax_inclusive"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const CartIdIndex = createPsqlIndexStatementHelper({
   name: "IDX_shipping_method_cart_id",
@@ -68,7 +69,7 @@ export default class ShippingMethod {
   cart_id: string
 
   @ManyToOne({ entity: () => Cart, persist: false })
-  cart: Cart
+  cart: Rel<Cart>
 
   @Property({ columnType: "text" })
   name: string
@@ -83,7 +84,7 @@ export default class ShippingMethod {
   raw_amount: BigNumberRawValue
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
 
   @ShippingOptionIdIndex()
   @Property({ columnType: "text", nullable: true })
@@ -102,7 +103,7 @@ export default class ShippingMethod {
       cascade: [Cascade.PERSIST, "soft-remove"] as any,
     }
   )
-  tax_lines = new Collection<ShippingMethodTaxLine>(this)
+  tax_lines = new Collection<Rel<ShippingMethodTaxLine>>(this)
 
   @OneToMany(
     () => ShippingMethodAdjustment,
@@ -111,7 +112,7 @@ export default class ShippingMethod {
       cascade: [Cascade.PERSIST, "soft-remove"] as any,
     }
   )
-  adjustments = new Collection<ShippingMethodAdjustment>(this)
+  adjustments = new Collection<Rel<ShippingMethodAdjustment>>(this)
 
   @Property({
     onCreate: () => new Date(),

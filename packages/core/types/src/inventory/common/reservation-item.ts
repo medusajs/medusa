@@ -2,6 +2,7 @@ import {
   NumericalComparisonOperator,
   StringComparisonOperator,
 } from "../../common"
+import { BigNumberInput } from "../../totals/big-number"
 
 /**
  * The reservation item details.
@@ -25,7 +26,7 @@ export interface ReservationItemDTO {
   /**
    * The quantity of the reservation item.
    */
-  quantity: number
+  quantity: BigNumberInput
 
   /**
    * The associated line item's ID.
@@ -36,6 +37,11 @@ export interface ReservationItemDTO {
    * The description of the reservation item.
    */
   description?: string | null
+
+  /**
+   * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+   */
+  allow_backorder?: boolean
 
   /**
    * The created by of the reservation item.
@@ -77,7 +83,7 @@ export interface FilterableReservationItemProps {
   /**
    * @ignore
    *
-   * @privateRemark
+   * @privateRemarks
    * This property is not used.
    */
   type?: string | string[]

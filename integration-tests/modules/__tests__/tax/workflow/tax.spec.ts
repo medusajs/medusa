@@ -1,12 +1,12 @@
 import { ITaxModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import {
   createTaxRateRulesStepId,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { Modules } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -24,7 +24,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.TAX)
+        service = appContainer.resolve(Modules.TAX)
       })
 
       beforeEach(async () => {
@@ -36,7 +36,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const [rateOne, rateTwo] = await service.create([
+        const [rateOne, rateTwo] = await service.createTaxRates([
           {
             tax_region_id: taxRegion.id,
             rate: 10,
@@ -123,7 +123,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const [rateOne, rateTwo] = await service.create([
+        const [rateOne, rateTwo] = await service.createTaxRates([
           {
             tax_region_id: taxRegion.id,
             rate: 10,

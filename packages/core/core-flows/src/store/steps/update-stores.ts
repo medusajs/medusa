@@ -1,35 +1,38 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FilterableStoreProps,
   IStoreModuleService,
   UpdateStoreDTO,
-} from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateStoresStepInput = {
+export type UpdateStoresStepInput = {
   selector: FilterableStoreProps
   update: UpdateStoreDTO
 }
 
 export const updateStoresStepId = "update-stores"
+/**
+ * This step updates stores matching the specified filters.
+ */
 export const updateStoresStep = createStep(
   updateStoresStepId,
   async (data: UpdateStoresStepInput, { container }) => {
-    const service = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listStores(data.selector, {
       select: selects,
       relations,
     })
 
-    const stores = await service.update(data.selector, data.update)
+    const stores = await service.updateStores(data.selector, data.update)
     return new StepResponse(stores, prevData)
   },
   async (prevData, { container }) => {
@@ -37,11 +40,9 @@ export const updateStoresStep = createStep(
       return
     }
 
-    const service = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
-    await service.upsert(
+    await service.upsertStores(
       prevData.map((r) => ({
         ...r,
         metadata: r.metadata || undefined,

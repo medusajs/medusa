@@ -7,7 +7,12 @@ import { load as eslintExamplePlugin } from "./eslint-example"
 import { load as signatureModifierPlugin } from "./signature-modifier"
 import { MermaidDiagramGenerator } from "./mermaid-diagram-generator"
 import { load as parentIgnorePlugin } from "./parent-ignore"
-import { GenerateNamespacePlugin } from "./generate-namespace"
+import { load as generateNamespacePlugin } from "./generate-path-namespaces"
+import { DmlRelationsResolver } from "./dml-relations-resolver"
+import { load as dmlTypesNormalizer } from "./dml-types-normalizer"
+import { MermaidDiagramDMLGenerator } from "./mermaid-diagram-dml-generator"
+import { load as dmlJsonParser } from "./dml-json-parser"
+import { GenerateCustomNamespacePlugin } from "./generate-custom-namespaces"
 
 export function load(app: Application) {
   resolveReferencesPluginLoad(app)
@@ -17,7 +22,12 @@ export function load(app: Application) {
   eslintExamplePlugin(app)
   signatureModifierPlugin(app)
   parentIgnorePlugin(app)
+  dmlTypesNormalizer(app)
+  dmlJsonParser(app)
+  generateNamespacePlugin(app)
 
-  new GenerateNamespacePlugin(app)
   new MermaidDiagramGenerator(app)
+  new DmlRelationsResolver(app)
+  new MermaidDiagramDMLGenerator(app)
+  new GenerateCustomNamespacePlugin(app)
 }

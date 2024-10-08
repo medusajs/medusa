@@ -1,5 +1,5 @@
-import { BigNumberRawValue } from "@medusajs/types"
-import {BigNumber, MikroOrmBigNumberProperty} from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/framework/types"
+import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/framework/utils"
 import { PrimaryKey, Property } from "@mikro-orm/core"
 
 /**
@@ -45,4 +45,7 @@ export default abstract class TaxLine {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 }

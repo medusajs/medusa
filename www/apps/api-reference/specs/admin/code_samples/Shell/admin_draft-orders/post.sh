@@ -1,17 +1,19 @@
 curl -X POST '{backend_url}/admin/draft-orders' \
--H 'x-medusa-access-token: {api_token}' \
+-H 'Authorization: Bearer {access_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
-    "email": "user@example.com",
-    "region_id": "{region_id}"
-    "items": [
-       {
-         "quantity": 1
-       }
-    ],
-    "shipping_methods": [
-       {
-         "option_id": "{option_id}"
-       }
-    ]
+  "sales_channel_id": "{value}",
+  "email": "Bartholome.Goodwin90@yahoo.com",
+  "customer_id": "{value}",
+  "region_id": "{value}",
+  "currency_code": "{value}",
+  "shipping_methods": [
+    {
+      "shipping_method_id": "{value}",
+      "order_id": "{value}",
+      "name": "Cheyanne",
+      "option_id": "{value}"
+    }
+  ],
+  "metadata": {}
 }'

@@ -1,6 +1,5 @@
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
-import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @interface
@@ -22,15 +21,9 @@ export interface PriceRuleDTO {
    */
   price_set: PriceSetDTO
   /**
-   * The ID of the associated rule type.
+   * The attribute of the price rule
    */
-  rule_type_id: string
-  /**
-   * The associated rule type.
-   *
-   * @expandable
-   */
-  rule_type: RuleTypeDTO
+  attribute: string
   /**
    * The value of the price rule.
    */
@@ -73,9 +66,9 @@ export interface CreatePriceRuleDTO {
    */
   price_set_id?: string
   /**
-   * The ID of the associated rule type.
+   * The attribute of the price rule
    */
-  rule_type_id?: string
+  attribute: string
   /**
    * The value of the price rule.
    */
@@ -99,7 +92,10 @@ export interface CreatePriceRuleDTO {
 export interface UpdatePriceRuleDTO {
   id: string
   price_set_id?: string
-  rule_type_id?: string
+  /**
+   * The attribute of the price rule
+   */
+  attribute?: string
   /**
    * The value of the price rule.
    */
@@ -136,8 +132,4 @@ export interface FilterablePriceRuleProps
    * The IDs to filter the price rule's associated price set.
    */
   price_set_id?: string[]
-  /**
-   * The IDs to filter the price rule's associated rule type.
-   */
-  rule_type_id?: string[]
 }

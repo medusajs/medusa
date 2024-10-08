@@ -9,7 +9,7 @@ const hintVariants = cva({
   variants: {
     variant: {
       info: "text-ui-fg-subtle",
-      error: "text-ui-fg-error grid grid-cols-[20px_1fr] gap-2 items-start",
+      error: "text-ui-fg-error grid grid-cols-[20px_1fr] gap-1 items-start",
     },
   },
   defaultVariants: {
@@ -40,7 +40,7 @@ const Hint = React.forwardRef<HTMLSpanElement, HintProps>(
         className={clx(hintVariants({ variant }), className)}
         {...props}
       >
-        {variant === "error" && <ExclamationCircleSolid />}
+        {variant === "error" && <div className="size-5 flex items-center justify-center"><ExclamationCircleSolid /></div>}
         {children}
       </span>
     )

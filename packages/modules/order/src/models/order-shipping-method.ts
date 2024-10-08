@@ -1,8 +1,8 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -11,38 +11,61 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
+import Claim from "./claim"
+import Exchange from "./exchange"
 import Order from "./order"
-import ShippingMethod from "./shipping-method"
+import Return from "./return"
+import OrderShippingMethod from "./shipping-method"
 
-type OptionalShippingMethodProps = DAL.EntityDateColumns
+type OptionalShippingMethodProps = DAL.ModelDateColumns
 
+const tableName = "order_shipping"
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
 })
 
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const ExchangeIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["exchange_id"],
+  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const ClaimIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["claim_id"],
+  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
 const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["version"],
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["shipping_method_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_shipping" })
-export default class OrderShippingMethod {
+@Entity({ tableName })
+export default class OrderShipping {
   [OptionalProps]?: OptionalShippingMethodProps
 
   @PrimaryKey({ columnType: "text" })
@@ -57,17 +80,65 @@ export default class OrderShippingMethod {
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
+  @ManyToOne(() => Order, {
+    persist: false,
+  })
+  order: Rel<Order>
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+    nullable: true,
+  })
+  return: Rel<Return>
+
+  @ManyToOne({
+    entity: () => Exchange,
+    mapToPk: true,
+    fieldName: "exchange_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ExchangeIdIndex.MikroORMIndex()
+  exchange_id: string | null
+
+  @ManyToOne(() => Exchange, {
+    persist: false,
+    nullable: true,
+  })
+  exchange: Rel<Exchange>
+
+  @ManyToOne({
+    entity: () => Claim,
+    mapToPk: true,
+    fieldName: "claim_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ClaimIdIndex.MikroORMIndex()
+  claim_id: string | null
+
+  @ManyToOne(() => Claim, {
+    persist: false,
+    nullable: true,
+  })
+  claim: Rel<Claim>
+
   @Property({ columnType: "integer" })
   @OrderVersionIndex.MikroORMIndex()
   version: number
 
-  @ManyToOne(() => Order, {
-    persist: false,
-  })
-  order: Order
-
   @ManyToOne({
-    entity: () => ShippingMethod,
+    entity: () => OrderShippingMethod,
     fieldName: "shipping_method_id",
     mapToPk: true,
     columnType: "text",
@@ -75,10 +146,10 @@ export default class OrderShippingMethod {
   @ItemIdIndex.MikroORMIndex()
   shipping_method_id: string
 
-  @ManyToOne(() => ShippingMethod, {
+  @ManyToOne(() => OrderShippingMethod, {
     persist: false,
   })
-  shipping_method: ShippingMethod
+  shipping_method: Rel<OrderShippingMethod>
 
   @Property({
     onCreate: () => new Date(),
@@ -103,6 +174,9 @@ export default class OrderShippingMethod {
   onCreate() {
     this.id = generateEntityId(this.id, "ordspmv")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
     this.shipping_method_id ??= this.shipping_method?.id
     this.version ??= this.order?.version
   }
@@ -111,6 +185,9 @@ export default class OrderShippingMethod {
   onInit() {
     this.id = generateEntityId(this.id, "ordspmv")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
     this.shipping_method_id ??= this.shipping_method?.id
     this.version ??= this.order?.version
   }

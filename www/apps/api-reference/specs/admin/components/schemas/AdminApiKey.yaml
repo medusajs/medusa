@@ -1,0 +1,67 @@
+type: object
+description: The API key's details.
+x-schemaName: AdminApiKey
+required:
+  - id
+  - token
+  - redacted
+  - title
+  - type
+  - last_used_at
+  - created_by
+  - created_at
+  - revoked_by
+  - revoked_at
+properties:
+  id:
+    type: string
+    title: id
+    description: The api key's ID.
+  token:
+    type: string
+    title: token
+    description: The api key's token.
+  redacted:
+    type: string
+    title: redacted
+    description: >-
+      The redacted form of the API key's token. This is useful when showing
+      portion of the token.
+    example: sk_...123
+  title:
+    type: string
+    title: title
+    description: The api key's title.
+  type:
+    type: string
+    description: >-
+      The api key's type. `secret` is used for a user's API key, whereas
+      `publishable` is used for Publishable API keys.
+    enum:
+      - secret
+      - publishable
+  last_used_at:
+    type: string
+    title: last_used_at
+    description: The date and time the API key was last used.
+    format: date-time
+  created_by:
+    type: string
+    title: created_by
+    description: The ID of the user that created the API key, if available.
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The date and time the API key was created.
+  revoked_by:
+    type: string
+    title: revoked_by
+    description: The ID of the user that revoked the API key, if available.
+  revoked_at:
+    type: string
+    title: revoked_at
+    description: >-
+      The date and time the API key was revoked. The API key is considered
+      revoked when this property is set.
+    format: date-time

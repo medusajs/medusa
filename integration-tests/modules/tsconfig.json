@@ -1,0 +1,13 @@
+{
+  "extends": "../../_tsconfig.base.json",
+  "include": ["src", "./medusa/**/*"],
+  "exclude": [
+    "./dist/**/*",
+    "__tests__",
+    "helpers",
+    "./**/helpers",
+    "./**/__snapshots__",
+    "node_modules"
+  ]
+}
+

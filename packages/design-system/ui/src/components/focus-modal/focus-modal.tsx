@@ -35,12 +35,9 @@ FocusModalTrigger.displayName = "FocusModal.Trigger"
 const FocusModalClose = FocusModalPrimitives.Close
 FocusModalClose.displayName = "FocusModal.Close"
 
-const FocusModalPortal = ({
-  className,
-  ...props
-}: FocusModalPrimitives.DialogPortalProps) => {
+const FocusModalPortal = (props: FocusModalPrimitives.DialogPortalProps) => {
   return (
-    <FocusModalPrimitives.DialogPortal className={clx(className)} {...props} />
+    <FocusModalPrimitives.DialogPortal {...props} />
   )
 }
 FocusModalPortal.displayName = "FocusModal.Portal"
@@ -65,11 +62,14 @@ FocusModalOverlay.displayName = "FocusModal.Overlay"
 
 const FocusModalContent = React.forwardRef<
   React.ElementRef<typeof FocusModalPrimitives.Content>,
-  React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Content>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Content> & {
+    overlayProps?: React.ComponentPropsWithoutRef<typeof FocusModalOverlay>
+    portalProps?: React.ComponentPropsWithoutRef<typeof FocusModalPortal>
+  }
+>(({ className, overlayProps, portalProps, ...props }, ref) => {
   return (
-    <FocusModalPortal>
-      <FocusModalOverlay />
+    <FocusModalPortal {...portalProps}>
+      <FocusModalOverlay {...overlayProps} />
       <FocusModalPrimitives.Content
         ref={ref}
         className={clx(
@@ -114,6 +114,38 @@ const FocusModalHeader = React.forwardRef<
 })
 FocusModalHeader.displayName = "FocusModal.Header"
 
+const FocusModalFooter = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<"div">
+>(({ children, className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={clx(
+        "border-ui-border-base flex items-center justify-end gap-x-2 border-t p-4",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+})
+FocusModalFooter.displayName = "FocusModal.Footer"
+
+const FocusModalTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Title>
+>(({ className, ...props }, ref) => {
+  return (
+    <FocusModalPrimitives.Title ref={ref} {...props} />
+  )
+})
+FocusModalTitle.displayName = "FocusModal.Title"
+
+const FocusModalDescription = FocusModalPrimitives.Description
+FocusModalDescription.displayName = "FocusModal.Description"
+
 /**
  * This component is based on the `div` element and supports all of its props
  */
@@ -127,10 +159,13 @@ FocusModalBody.displayName = "FocusModal.Body"
 
 const FocusModal = Object.assign(FocusModalRoot, {
   Trigger: FocusModalTrigger,
+  Title: FocusModalTitle,
+  Description: FocusModalDescription,
   Content: FocusModalContent,
   Header: FocusModalHeader,
   Body: FocusModalBody,
   Close: FocusModalClose,
+  Footer: FocusModalFooter,
 })
 
 export { FocusModal }

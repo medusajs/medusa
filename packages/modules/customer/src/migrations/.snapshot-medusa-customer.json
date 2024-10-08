@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -125,10 +123,16 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_customer_email_has_account_unique",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_email_has_account_unique\" ON \"customer\" (email, has_account) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "customer_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -312,35 +316,31 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "keyName": "IDX_customer_address_customer_id",
           "primary": false,
           "unique": false
         },
         {
-          "keyName": "IDX_customer_address_unqiue_customer_billing",
+          "keyName": "IDX_customer_address_unique_customer_billing",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "create unique index \"IDX_customer_address_unqiue_customer_billing\" on \"customer_address\" (\"customer_id\") where \"is_default_billing\" = true"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_address_unique_customer_billing\" ON \"customer_address\" (customer_id) WHERE \"is_default_billing\" = true"
         },
         {
-          "keyName": "IDX_customer_address_unqiue_customer_shipping",
+          "keyName": "IDX_customer_address_unique_customer_shipping",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "create unique index \"IDX_customer_address_unique_customer_shipping\" on \"customer_address\" (\"customer_id\") where \"is_default_shipping\" = true"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_address_unique_customer_shipping\" ON \"customer_address\" (customer_id) WHERE \"is_default_shipping\" = true"
         },
         {
           "keyName": "customer_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -350,13 +350,9 @@
       "foreignKeys": {
         "customer_address_customer_id_foreign": {
           "constraintName": "customer_address_customer_id_foreign",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "localTableName": "public.customer_address",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -380,7 +376,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "metadata": {
@@ -438,10 +434,16 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_customer_group_name_unique",
+          "columnNames": ["name"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_group_name_unique\" ON \"customer_group\" (name) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "customer_group_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -524,18 +526,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "customer_group_id"
-          ],
+          "columnNames": ["customer_group_id"],
           "composite": false,
           "keyName": "IDX_customer_group_customer_group_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "keyName": "IDX_customer_group_customer_customer_id",
           "primary": false,
@@ -543,9 +541,7 @@
         },
         {
           "keyName": "customer_group_customer_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -555,25 +551,17 @@
       "foreignKeys": {
         "customer_group_customer_customer_group_id_foreign": {
           "constraintName": "customer_group_customer_customer_group_id_foreign",
-          "columnNames": [
-            "customer_group_id"
-          ],
+          "columnNames": ["customer_group_id"],
           "localTableName": "public.customer_group_customer",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer_group",
           "deleteRule": "cascade"
         },
         "customer_group_customer_customer_id_foreign": {
           "constraintName": "customer_group_customer_customer_id_foreign",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "localTableName": "public.customer_group_customer",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer",
           "deleteRule": "cascade"
         }

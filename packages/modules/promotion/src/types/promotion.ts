@@ -1,10 +1,10 @@
-import { PromotionTypeValues } from "@medusajs/types"
+import { PromotionTypeValues } from "@medusajs/framework/types"
 
 export interface CreatePromotionDTO {
   code: string
   type: PromotionTypeValues
   is_automatic?: boolean
-  campaign?: string
+  campaign_id?: string | null
 }
 
 export interface UpdatePromotionDTO {
@@ -12,5 +12,5 @@ export interface UpdatePromotionDTO {
   code?: string
   type?: PromotionTypeValues
   is_automatic?: boolean
-  campaign?: string
+  campaign_id?: string | null
 }

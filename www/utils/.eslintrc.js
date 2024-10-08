@@ -94,7 +94,7 @@ module.exports = {
       parserOptions: {
         project: [
           "./tsconfig.json",
-          "./packages/docblock-generator/tsconfig.json",
+          "./packages/docs-generator/tsconfig.json",
           "./packages/react-docs-generator/tsconfig.json",
           "./packages/scripts/tsconfig.json",
           "./packages/typedoc-generate-references/tsconfig.json",

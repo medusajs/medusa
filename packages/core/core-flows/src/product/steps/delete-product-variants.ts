@@ -1,16 +1,17 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteProductVariantsStepId = "delete-product-variants"
+/**
+ * This step deletes one or more product variants.
+ */
 export const deleteProductVariantsStep = createStep(
   deleteProductVariantsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.softDeleteVariants(ids)
+    await service.softDeleteProductVariants(ids)
     return new StepResponse(void 0, ids)
   },
   async (prevIds, { container }) => {
@@ -18,10 +19,8 @@ export const deleteProductVariantsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.restoreVariants(prevIds)
+    await service.restoreProductVariants(prevIds)
   }
 )

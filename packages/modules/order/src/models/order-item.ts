@@ -1,10 +1,10 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -13,37 +13,39 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 import Order from "./order"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
+const tableName = "order_item"
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["version"],
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["item_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_item" })
+@Entity({ tableName })
 export default class OrderItem {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -59,17 +61,17 @@ export default class OrderItem {
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
+  @ManyToOne(() => Order, {
+    persist: false,
+  })
+  order: Rel<Order>
+
   @Property({ columnType: "integer" })
   @OrderVersionIndex.MikroORMIndex()
   version: number
 
-  @ManyToOne(() => Order, {
-    persist: false,
-  })
-  order: Order
-
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     fieldName: "item_id",
     mapToPk: true,
     columnType: "text",
@@ -77,10 +79,16 @@ export default class OrderItem {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne(() => LineItem, {
+  @ManyToOne(() => OrderLineItem, {
     persist: false,
   })
-  item: LineItem
+  item: Rel<OrderLineItem>
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  unit_price: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_unit_price: BigNumberRawValue | null = null
 
   @MikroOrmBigNumberProperty()
   quantity: BigNumber | number
@@ -93,6 +101,12 @@ export default class OrderItem {
 
   @Property({ columnType: "jsonb" })
   raw_fulfilled_quantity: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty()
+  delivered_quantity: BigNumber | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_delivered_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
   shipped_quantity: BigNumber | number = 0

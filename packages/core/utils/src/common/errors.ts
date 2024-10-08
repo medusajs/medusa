@@ -13,6 +13,7 @@ export const MedusaErrorTypes = {
   NOT_ALLOWED: "not_allowed",
   UNEXPECTED_STATE: "unexpected_state",
   CONFLICT: "conflict",
+  UNKNOWN_MODULES: "unknown_modules",
   PAYMENT_AUTHORIZATION_ERROR: "payment_authorization_error",
   PAYMENT_REQUIRES_MORE_ERROR: "payment_requires_more_error",
 }
@@ -20,6 +21,7 @@ export const MedusaErrorTypes = {
 export const MedusaErrorCodes = {
   INSUFFICIENT_INVENTORY: "insufficient_inventory",
   CART_INCOMPATIBLE_STATE: "cart_incompatible_state",
+  UNKNOWN_MODULES: "unknown_modules",
 }
 
 /**
@@ -27,6 +29,8 @@ export const MedusaErrorCodes = {
  * @extends Error
  */
 export class MedusaError extends Error {
+  __isMedusaError = true
+
   public type: string
   public message: string
   public code?: string
@@ -52,5 +56,12 @@ export class MedusaError extends Error {
     this.code = code
     this.message = message
     this.date = new Date()
+  }
+
+  /**
+   * Checks the object for the MedusaError type.
+   */
+  static isMedusaError(error: any): error is MedusaError {
+    return !!error.__isMedusaError
   }
 }

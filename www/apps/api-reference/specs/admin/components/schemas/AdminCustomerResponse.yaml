@@ -1,0 +1,8 @@
+type: object
+description: The customer's details.
+x-schemaName: AdminCustomerResponse
+required:
+  - customer
+properties:
+  customer:
+    $ref: ./AdminCustomer.yaml

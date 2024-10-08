@@ -1,4 +1,4 @@
-import { Table, DetailsList } from "docs-ui"
+import { Table, DetailsList, Prerequisites } from "docs-ui"
 import PortForwardingTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/forwarding.mdx"
 import DBUrlTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/db-url-error.mdx"
 import EaddrinuseTroubleshooting from "../troubleshooting/_sections/other/eaddrinuse.mdx"
@@ -17,13 +17,20 @@ export const metadata = {
 
 The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project and provides an onboarding experience.
 
-<Note type="check">
-
-- [Node.js v16+](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL](https://www.postgresql.org/download/)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
 
 ## Usage
 
@@ -65,23 +72,6 @@ npx create-medusa-app@latest
       </Table.Cell>
       <Table.Cell>
         Whether to seed the database with demo data.
-      </Table.Cell>
-      <Table.Cell>
-      
-        `false`
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `--no-boilerplate`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Whether to remove all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). Useful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
-
       </Table.Cell>
       <Table.Cell>
       
@@ -191,6 +181,40 @@ npx create-medusa-app@latest
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--verbose`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Shows detailed logs. Useful when you're reporting an issue with the tool.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--v2`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Installs Medusa v2, which is still not ready for production.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -215,7 +239,7 @@ If the database already has the necessary migrations and you don't need the comm
 To connect to a Supabase database, use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
 
 ```bash
-npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
+npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 ```
 
 <Note>

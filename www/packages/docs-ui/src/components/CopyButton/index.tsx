@@ -9,6 +9,7 @@ export type CopyButtonProps = {
   text: string
   buttonClassName?: string
   tooltipClassName?: string
+  tooltipInnerClassName?: string
   tooltipText?: string
   onCopy?: (
     e:
@@ -27,6 +28,7 @@ export const CopyButton = ({
   className,
   onCopy,
   handleTouch,
+  tooltipInnerClassName,
 }: CopyButtonProps) => {
   const { isCopied, handleCopy } = useCopy(text)
   const [touchCount, setTouchCount] = useState(0)
@@ -36,6 +38,7 @@ export const CopyButton = ({
       text={isCopied ? `Copied!` : tooltipText}
       tooltipClassName={clsx(tooltipClassName, handleTouch && "!block")}
       className={className}
+      innerClassName={tooltipInnerClassName}
     >
       <span
         className={clsx("cursor-pointer", buttonClassName)}

@@ -1,6 +1,6 @@
 import { Context, MedusaContainer } from "@medusajs/types"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   OrchestratorBuilder,
   TransactionHandlerType,
   TransactionMetadata,
@@ -10,6 +10,7 @@ import {
   TransactionStepHandler,
   TransactionStepsDefinition,
 } from "../transaction"
+import { WorkflowScheduler } from "./scheduler"
 
 export interface WorkflowDefinition {
   id: string
@@ -39,7 +40,7 @@ export type WorkflowStepHandlerArguments = {
   invoke: { [actions: string]: unknown }
   compensate: { [actions: string]: unknown }
   metadata: TransactionMetadata
-  transaction: DistributedTransaction
+  transaction: DistributedTransactionType
   step: TransactionStep
   orchestrator: TransactionOrchestrator
   context?: Context
@@ -49,15 +50,22 @@ export type WorkflowStepHandler = (
   args: WorkflowStepHandlerArguments
 ) => Promise<unknown>
 
-export class WorkflowManager {
+class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
+  protected static scheduler = new WorkflowScheduler()
 
   static unregister(workflowId: string) {
+    const workflow = WorkflowManager.workflows.get(workflowId)
+    if (workflow?.options.schedule) {
+      this.scheduler.clearWorkflow(workflow)
+    }
+
     WorkflowManager.workflows.delete(workflowId)
   }
 
   static unregisterAll() {
     WorkflowManager.workflows.clear()
+    this.scheduler.clear()
   }
 
   static getWorkflows() {
@@ -75,6 +83,10 @@ export class WorkflowManager {
 
     const workflow = WorkflowManager.workflows.get(workflowId)!
     return new OrchestratorBuilder(workflow.flow_)
+  }
+
+  static getEmptyTransactionDefinition(): OrchestratorBuilder {
+    return new OrchestratorBuilder()
   }
 
   static register(
@@ -101,28 +113,31 @@ export class WorkflowManager {
         : true
 
       if (!areStepsEqual) {
-        if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
-          throw new Error(
-            `Workflow with id "${workflowId}" and step definition already exists.`
-          )
-        }
+        throw new Error(
+          `Workflow with id "${workflowId}" and step definition already exists.`
+        )
       }
     }
 
-    WorkflowManager.workflows.set(workflowId, {
+    const workflow = {
       id: workflowId,
       flow_: finalFlow!,
-      orchestrator: new TransactionOrchestrator(
-        workflowId,
-        finalFlow ?? {},
-        options
-      ),
+      orchestrator: new TransactionOrchestrator({
+        id: workflowId,
+        definition: finalFlow ?? {},
+        options,
+      }),
       handler: WorkflowManager.buildHandlers(handlers),
       handlers_: handlers,
       options,
       requiredModules,
       optionalModules,
-    })
+    }
+
+    WorkflowManager.workflows.set(workflowId, workflow)
+    if (options.schedule) {
+      this.scheduler.scheduleWorkflow(workflow)
+    }
   }
 
   static update(
@@ -152,11 +167,11 @@ export class WorkflowManager {
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(
-        workflowId,
-        finalFlow,
-        updatedOptions
-      ),
+      orchestrator: new TransactionOrchestrator({
+        id: workflowId,
+        definition: finalFlow,
+        options,
+      }),
       handler: WorkflowManager.buildHandlers(workflow.handlers_),
       handlers_: workflow.handlers_,
       options: updatedOptions,
@@ -179,7 +194,7 @@ export class WorkflowManager {
         actionId: string,
         handlerType: TransactionHandlerType,
         payload: any,
-        transaction: DistributedTransaction,
+        transaction: DistributedTransactionType,
         step: TransactionStep,
         orchestrator: TransactionOrchestrator
       ) => {
@@ -202,7 +217,7 @@ export class WorkflowManager {
           invoke,
           compensate,
           metadata,
-          transaction: transaction as DistributedTransaction,
+          transaction: transaction as DistributedTransactionType,
           step,
           orchestrator,
           context,
@@ -213,4 +228,6 @@ export class WorkflowManager {
 }
 
 global.WorkflowManager ??= WorkflowManager
-exports.WorkflowManager = global.WorkflowManager
+const GlobalWorkflowManager = global.WorkflowManager
+
+export { GlobalWorkflowManager as WorkflowManager }

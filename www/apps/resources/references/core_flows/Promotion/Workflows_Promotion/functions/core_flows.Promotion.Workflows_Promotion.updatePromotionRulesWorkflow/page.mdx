@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/updatePromotionRulesWorkflow
+sidebar_label: updatePromotionRulesWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updatePromotionRulesWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updatePromotionRulesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates one or more promotion rules.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updatePromotionRulesWorkflow","steps":[{"type":"step","name":"updatePromotionRulesStep","description":"This step updates one or more promotion rules.","link":"../../../../core_flows.Steps_Promotion/page.mdx#updatepromotionrulesstep","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdatePromotionRulesWorkflowDTO","type":"[UpdatePromotionRulesWorkflowDTO](../../../../../types/types/types.UpdatePromotionRulesWorkflowDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"data","type":"[UpdatePromotionRuleDTO](../../../../../promotion/interfaces/promotion.UpdatePromotionRuleDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The description of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`string`","description":"The attribute of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"operator","type":"[PromotionRuleOperatorValues](../../../../../promotion/types/promotion.PromotionRuleOperatorValues/page.mdx)","description":"The operator of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"values","type":"`string` \\| `string`[]","description":"The values of the promotion rule.\nWhen provided, `PromotionRuleValue` records are\ncreated and associated with the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePromotionRulesWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"PromotionRuleDTO[]","type":"[PromotionRuleDTO](../../../../../promotion/interfaces/promotion.PromotionRuleDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PromotionRuleDTO","type":"[PromotionRuleDTO](../../../../../promotion/interfaces/promotion.PromotionRuleDTO/page.mdx)","optional":false,"defaultValue":"","description":"The promotion rule details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"values","type":"[PromotionRuleValueDTO](../../../../../promotion/interfaces/promotion.PromotionRuleValueDTO/page.mdx)[]","description":"The values of the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the promotion rule value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the promotion rule value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"description","type":"`null` \\| `string`","description":"The description of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`string`","description":"The attribute of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"operator","type":"[PromotionRuleOperatorValues](../../../../../promotion/types/promotion.PromotionRuleOperatorValues/page.mdx)","description":"The operator of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePromotionRulesWorkflow"/>

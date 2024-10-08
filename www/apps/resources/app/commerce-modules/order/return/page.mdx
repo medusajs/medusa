@@ -1,0 +1,54 @@
+export const metadata = {
+  title: `Order Return`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about order returns.
+
+## What is a Return?
+
+A return is the return of items delivered to the customer back to the merchant. It is represented by the [Return data model](/references/order/models/Return).
+
+A return is requested either by the customer or the merchant, supporting an automated Return Merchandise Authorization (RMA) flow.
+
+![Diagram showcasing the automated RMA flow.](https://res.cloudinary.com/dza7lstvk/image/upload/v1719578128/Medusa%20Resources/return-rma_pzprwq.jpg)
+
+Once the merchant receives the returned items, they mark the return as received.
+
+---
+
+## Returned Items
+
+The items to be returned are represented by the [ReturnItem data model](references/order/models/ReturnItem).
+
+---
+
+## Return Shipping Methods
+
+A return has shipping methods used to return the items to the merchant. The shipping methods are represented by the [OrderShippingMethod data model](references/order/models/OrderShippingMethod).
+
+---
+
+## Refund Payment
+
+The `refund_amount` property of the `Return` data model holds the amount a merchant must refund the customer.
+
+The [Transaction data model](references/order/models/Transaction) represents the refunds made for the return.
+
+---
+
+## Returns in Exchanges and Claims
+
+When a merchant creates an exchange or a claim, it includes returning items from the customer.
+
+The `Return` data model also represents the return of these items. In this case, the return is associated with the exchange or claim it was created for.
+
+---
+
+## How Returns Impact an Order’s Version
+
+The order’s version is incremented when:
+
+1. A return is requested.
+2. A return is marked as received.

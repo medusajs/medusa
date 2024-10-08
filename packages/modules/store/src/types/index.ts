@@ -1,9 +1,12 @@
-import { StoreTypes } from "@medusajs/types"
-import { IEventBusModuleService, Logger } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  Logger,
+  StoreTypes,
+} from "@medusajs/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  eventBusService?: IEventBusModuleService
+  EventBus?: IEventBusModuleService
 }
 
 export type UpdateStoreInput = StoreTypes.UpdateStoreDTO & { id: string }

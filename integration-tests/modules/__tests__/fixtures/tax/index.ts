@@ -46,7 +46,11 @@ export const setupTaxStructure = async (service: ITaxModuleService) => {
     },
     {
       country_code: "CA",
-      default_tax_rate: { name: "Canada Default Rate", rate: 5 },
+      default_tax_rate: {
+        name: "Canada Default Rate",
+        rate: 5,
+        code: "CA_DEF",
+      },
     },
   ])
 
@@ -105,7 +109,7 @@ export const setupTaxStructure = async (service: ITaxModuleService) => {
   ])
 
   const [calProd, calType, deType, canProd, canType, qcType] =
-    await service.create([
+    await service.createTaxRates([
       {
         tax_region_id: cal.id,
         name: "CA Reduced Rate for Products",

@@ -1,15 +1,16 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createProductVariantsStepId = "create-product-variants"
+/**
+ * This step creates one or more product variants.
+ */
 export const createProductVariantsStep = createStep(
   createProductVariantsStepId,
   async (data: ProductTypes.CreateProductVariantDTO[], { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
-    const created = await service.createVariants(data)
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
+    const created = await service.createProductVariants(data)
     return new StepResponse(
       created,
       created.map((productVariant) => productVariant.id)
@@ -20,10 +21,8 @@ export const createProductVariantsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.deleteVariants(createdIds)
+    await service.deleteProductVariants(createdIds)
   }
 )

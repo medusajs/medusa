@@ -1,36 +1,148 @@
-post:
-  operationId: PostCustomersCustomerAddresses
-  summary: Add a Shipping Address
-  description: Add a Shipping Address to a Customer's saved addresses.
+get:
+  operationId: GetCustomersMeAddresses
+  summary: List Customer's Addresses
+  x-sidebary-summary: List Addresses
+  description: >-
+    Retrieve the addresses of the logged-in customer. The addresses can be
+    filtered by fields such as `country_code`. The addresses can also be sorted
+    or paginated.
   x-authenticated: true
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/StorePostCustomersCustomerAddressesReq.yaml
-  x-codegen:
-    method: addAddress
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_customers_me_addresses/post.js
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/store_customers_me_addresses/post.sh
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#list-customer-addresses
+    description: 'Storefront guide: How to retrieve the logged-in customer''s addresses.'
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
+      schema:
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
+      schema:
+        type: string
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+    - name: city
+      in: query
+      description: Filter by the address's city.
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: city
+            description: Filter by a city.
+          - type: array
+            description: Filter by cities.
+            items:
+              type: string
+              title: city
+              description: A city.
+    - name: postal_code
+      in: query
+      description: Filter by the address's postal code.
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: postal_code
+            description: Filter by a postal code.
+          - type: array
+            description: Filter by postal codes.
+            items:
+              type: string
+              title: postal_code
+              description: A postal code.
+    - name: country_code
+      in: query
+      description: Filter by the address's country code.
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: country_code
+            description: Filter by a country code.
+          - type: array
+            description: Filter by country codes.
+            items:
+              type: string
+              title: country_code
+              description: A country code.
+    - name: q
+      in: query
+      description: Search term to filter the address's searchable properties.
+      required: false
+      schema:
+        type: string
+        title: q
+        description: Search term to filter the address's searchable properties.
   security:
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers_me_addresses/get.sh
   tags:
     - Customers
   responses:
     '200':
-      description: A successful response
+      description: OK
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreCustomersRes.yaml
+            $ref: ../components/schemas/StoreCustomerAddressListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -43,3 +155,138 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostCustomersMeAddresses
+  summary: Create Address for Logged-In Customer
+  x-sidebar-summary: Create Address
+  description: Create an address for the logged-in customer.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#add-customer-address
+    description: 'Storefront guide: How to create an address for the logged-in customer.'
+  x-authenticated: true
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The address's details.
+          properties:
+            first_name:
+              type: string
+              title: first_name
+              description: The customer's first name.
+            last_name:
+              type: string
+              title: last_name
+              description: The customer's last name.
+            phone:
+              type: string
+              title: phone
+              description: The customer's phone.
+            company:
+              type: string
+              title: company
+              description: The address's company.
+            address_1:
+              type: string
+              title: address_1
+              description: The address's first line.
+            address_2:
+              type: string
+              title: address_2
+              description: The address's second line.
+            city:
+              type: string
+              title: city
+              description: The address's city.
+            country_code:
+              type: string
+              title: country_code
+              description: The address's country code.
+            province:
+              type: string
+              title: province
+              description: The address's province.
+            postal_code:
+              type: string
+              title: postal_code
+              description: The address's postal code.
+            address_name:
+              type: string
+              title: address_name
+              description: The address's name.
+            is_default_shipping:
+              type: boolean
+              title: is_default_shipping
+              description: >-
+                Whether the address is used by default for shipping during
+                checkout.
+            is_default_billing:
+              type: boolean
+              title: is_default_billing
+              description: >-
+                Whether the address is used by default for billing during
+                checkout.
+            metadata:
+              type: object
+              description: Holds custom key-value pairs.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers_me_addresses/post.sh
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomerResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: createCustomerAddressesWorkflow

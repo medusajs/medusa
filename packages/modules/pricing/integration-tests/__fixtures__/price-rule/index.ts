@@ -1,6 +1,6 @@
 import { PriceRule } from "@models"
 
-import { CreatePriceRuleDTO } from "@medusajs/types"
+import { CreatePriceRuleDTO } from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { defaultPriceRuleData } from "./data"
 
@@ -16,7 +16,7 @@ export async function createPriceRules(
     const priceRuleDataClone: CreatePriceRuleDTO = { ...priceRuleData }
 
     priceRuleDataClone.price_set_id = priceRuleDataClone.price_set_id
-    priceRuleDataClone.rule_type_id = priceRuleDataClone.rule_type_id
+    priceRuleDataClone.attribute = priceRuleDataClone.attribute
     priceRuleDataClone.price_id = priceRuleDataClone.price_id
 
     const priceRule = manager.create(PriceRule, priceRuleDataClone)

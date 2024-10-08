@@ -8,282 +8,730 @@ import { TypeList } from "docs-ui"
 
 In this document, you’ll learn how to create a Payment Provider to be used with the Payment Module.
 
-## Overview
+---
 
-A payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.
+## 1. Create Module Directory
 
-Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.
-
-Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.
+Start by creating a new directory for your module. For example, `src/modules/my-payment`.
 
 ---
 
-## How to Create a Payment Provider
+## 2. Create the Payment Provider Service
 
-A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` class imported from `@medusajsa/utils`.
+Create the file `src/modules/my-payment/service.ts` that holds the module's main service. It must extend the `AbstractPaymentProvider` class imported from `@medusajs/framework/utils`:
 
-You can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's `providers` option. You can also pass the path to the file
-that defines the provider if it's created in the Medusa application's codebase.
+```ts title="src/modules/my-payment/service.ts"
+import { AbstractPaymentProvider } from "@medusajs/framework/utils"
 
-For example:
-
-```ts
-abstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {
-  // ...
-}
-```
-
----
-
-## Configuration Type Parameter
-
-The `AbstractPaymentProvider` class accepts an optional type parameter that defines the type of configuration that your payment provider expects.
-
-For example:
-
-```ts
-interface MyConfigurations {
+type Options = {
   apiKey: string
 }
 
-abstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {
-  // ...
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  // TODO implement methods
 }
+
+export default MyPaymentProviderService
 ```
 
----
+### Type parameters
 
-## Identifier Property
+<TypeList types={[{"name":"TConfig","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AbstractPaymentProvider"/>
 
-The `PaymentProvider` data model has 2 properties: `id` and `is_enabled`.
+### constructor
 
-```ts
-class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
-  static identifier = "my-payment"
-  // ...
-}
-```
-
----
-
-## PROVIDER Property
-
-The `PROVIDER` static property is used when registering the provider in the dependency container. Typically, it would have the
-same value as the `identifier` property.
-
-```ts
-class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
-  static PROVIDER = "my-payment"
-  // ...
-}
-```
-
----
-
-## PaymentProviderError
-
-Before diving into the methods of the Payment Provider, you'll notice that part of the expected return signature of these method includes `PaymentProviderError`.
-
-```ts
-interface PaymentProviderError {
-  error: string
-  code?: string
-  detail?: any
-}
-```
-
-While implementing the Payment Provider's methods, if you need to inform the Payment Module that an error occurred at a certain stage,
-return an object having the attributes defined in the `PaymentProviderError` interface.
-
-For example, the Stripe payment provider has the following method to create the error object, which is used within other methods:
-
-```ts
-abstract class StripeBase extends AbstractPaymentProvider {
-  // ...
-  protected buildError(
-   message: string,
-   error: Stripe.StripeRawError | PaymentProviderError | Error
- ): PaymentProviderError {
-   return {
-     error: message,
-     code: "code" in error ? error.code : "unknown",
-     detail: isPaymentProviderError(error)
-       ? `${error.error}${EOL}${error.detail ?? ""}`
-       : "detail" in error
-       ? error.detail
-       : error.message ?? "",
-   }
- }
-
-  // used in other methods
-  async retrievePayment(
-    paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError |
-    PaymentProviderSessionResponse["session_data"]
-  > {
-    try {
-      // ...
-    } catch (e) {
-      return this.buildError(
-        "An error occurred in retrievePayment",
-        e
-      )
-    }
-  }
-}
-```
-
-## Type parameters
-
-<TypeList types={[{"name":"TConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AbstractPaymentProvider"/>
-
-## constructor
-
-You can use the `constructor` of your Payment Provider to have access to resources in your application through the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection).
+You can use the `constructor` of the provider's service to access resources in your module's container.
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,
 you can initialize it in the constructor and use it in other methods in the service.
 
-The payment provider also can access the configurations of the module or plugin it's created in as a second parameter.
+The provider can also access the module's options as a second parameter.
 
-### Example
+#### Example
 
 ```ts
-class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
-  // ...
-  constructor(container, config) {
-    super(container, config)
-    // you can access options here
+import {
+  AbstractPaymentProvider
+} from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
 
-    // you can also initialize a client that
-    // communicates with a third-party service.
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  apiKey: string
+}
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  protected logger_: Logger
+  protected options_: Options
+  // Assuming you're using a client to integrate
+  // with a third-party service
+  protected client
+
+  constructor(
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    // @ts-ignore
+    super(...arguments)
+
+    this.logger_ = logger
+    this.options_ = options
+
+    // Assuming you're initializing a client
     this.client = new Client(options)
   }
+
+  // ...
+}
+
+export default MyPaymentProviderService
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"The module's container used to resolve resources.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"createScope","type":"() => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"TConfig","description":"The options passed to the payment module provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="new AbstractPaymentProvider"/>
+
+### validateOptions
+
+Override this static method in order for the loader to validate the options provided to the module provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+### capturePayment
+
+This method is used to capture a payment. The payment is captured in one of the following scenarios:
+
+- The [authorizePayment](page.mdx#authorizepayment) method returns the status `captured`, which automatically executed this method after authorization.
+- The merchant requests to capture the payment after its associated payment session was authorized.
+- A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events).
+
+In this method, use the third-party provider to capture the payment.
+
+#### Example
+
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async capturePayment(
+    paymentData: Record<string, unknown>
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
+    const externalId = paymentData.id
+
+    try {
+      const newData = await this.client.capturePayment(externalId)
+
+      return {
+        ...newData,
+        id: externalId
+      }
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
+
   // ...
 }
 ```
 
-### Parameters
+#### Parameters
 
-<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-2/page.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"TConfig","description":"If this provider processor is created in a module or plugin, their options are passed in this parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractPaymentProvider"/>
+<TypeList types={[{"name":"paymentData","type":"`Record<string, unknown>`","description":"The `data` property of the payment. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="capturePayment"/>
 
-___
+#### Returns
 
-## capturePayment
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"The new data to store in the payment's `data` property, or an error object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="capturePayment"/>
 
-### Parameters
+### authorizePayment
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="capturePayment"/>
+This method authorizes a payment session. When authorized successfully, a payment is created by the Payment
+Module which can be later captured using the [capturePayment](page.mdx#capturepayment) method.
 
-### Returns
+Refer to [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-flow#3-authorize-payment-session)
+to learn more about how this fits into the payment flow and how to handle required actions.
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="capturePayment"/>
+To automatically capture the payment after authorization, return the status `captured`.
 
-___
+#### Example
 
-## authorizePayment
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+  PaymentSessionStatus
+} from "@medusajs/framework/types"
 
-### Parameters
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async authorizePayment(
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    PaymentProviderError | {
+      status: PaymentSessionStatus
+      data: PaymentProviderSessionResponse["data"]
+    }
+  > {
+    const externalId = paymentSessionData.id
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
+    try {
+      const paymentData = await this.client.authorizePayment(externalId)
 
-### Returns
+      return {
+        data: {
+          ...paymentData,
+          id: externalId
+        },
+        status: "authorized"
+      }
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| object","type":"`PaymentProviderError` \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="authorizePayment"/>
+  // ...
+}
+```
 
-___
+#### Parameters
 
-## cancelPayment
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context in which the payment is being authorized. For example, in checkout,\nthe context has a `cart_id` property indicating the ID of the associated cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authorizePayment"/>
 
-### Parameters
+#### Returns
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancelPayment"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| object&#62;","optional":false,"defaultValue":"","description":"Either an object of the new data to store in the created payment's `data` property and the\npayment's status, or an error object. Make sure to set in `data` anything useful to later retrieve the session.","expandable":false,"children":[{"name":"PaymentProviderError \\| object","type":"`PaymentProviderError` \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authorizePayment"/>
 
-### Returns
+### cancelPayment
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelPayment"/>
+This method cancels a payment.
 
-___
+#### Example
 
-## initiatePayment
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
 
-### Parameters
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async cancelPayment(
+    paymentData: Record<string, unknown>
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
+    const externalId = paymentData.id
 
-<TypeList types={[{"name":"context","type":"`CreatePaymentProviderSession`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="initiatePayment"/>
+    try {
+      const paymentData = await this.client.cancelPayment(externalId)
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
 
-### Returns
+  // ...
+}
+```
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
+#### Parameters
 
-___
+<TypeList types={[{"name":"paymentData","type":"`Record<string, unknown>`","description":"The `data` property of the payment. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelPayment"/>
 
-## deletePayment
+#### Returns
 
-### Parameters
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"An error object if an error occurs, or the data received from the integration.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelPayment"/>
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deletePayment"/>
+### initiatePayment
 
-### Returns
+This method is used when a payment session is created. It can be used to initiate the payment
+in the third-party session, before authorizing or capturing the payment later.
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="deletePayment"/>
+#### Example
 
-___
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
 
-## getPaymentStatus
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async initiatePayment(
+    context: CreatePaymentProviderSession
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
+    const {
+      amount,
+      currency_code,
+      context: customerDetails
+    } = context
 
-### Parameters
+    try {
+      const response = await this.client.init(
+        amount, currency_code, customerDetails
+      )
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaymentStatus"/>
+      return {
+        ...response,
+        data: {
+          id: response.id
+        }
+      }
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
 
-### Returns
+  // ...
+}
+```
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../../payment/enums/payment.PaymentSessionStatus/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPaymentStatus"/>
+#### Parameters
 
-___
+<TypeList types={[{"name":"context","type":"`CreatePaymentProviderSession`","description":"The details of the payment session and its context.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="initiatePayment"/>
 
-## refundPayment
+#### Returns
 
-### Parameters
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"An object whose `data` property is set in the created payment session, or an error\nobject. Make sure to set in `data` anything useful to later retrieve the session.","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="initiatePayment"/>
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refundPayment"/>
+### deletePayment
 
-### Returns
+This method is used when a payment session is deleted, which can only happen if it isn't authorized, yet.
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="refundPayment"/>
+Use this to delete or cancel the payment in the third-party service.
 
-___
+#### Example
 
-## retrievePayment
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
 
-### Parameters
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async deletePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProviderError | PaymentProviderSessionResponse["data"]
+  > {
+    const externalId = paymentSessionData.id
 
-<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrievePayment"/>
+    try {
+      await this.client.cancelPayment(externalId)
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
 
-### Returns
+  // ...
+}
+```
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="retrievePayment"/>
+#### Parameters
 
-___
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePayment"/>
 
-## updatePayment
+#### Returns
 
-### Parameters
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"An error object or the response from the third-party service.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePayment"/>
 
-<TypeList types={[{"name":"context","type":"`UpdatePaymentProviderSession`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updatePayment"/>
+### getPaymentStatus
 
-### Returns
+This method gets the status of a payment session based on the status in the third-party integration.
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
+#### Example
 
-___
+```ts
+// other imports...
+import {
+  PaymentSessionStatus
+} from "@medusajs/framework/types"
 
-## getWebhookActionAndData
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus> {
+    const externalId = paymentSessionData.id
 
-### Parameters
+    try {
+      const status = await this.client.getStatus(externalId)
 
-<TypeList types={[{"name":"data","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data.data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getWebhookActionAndData"/>
+      switch (status) {
+        case "requires_capture":
+          return "authorized"
+        case "success":
+          return "captured"
+        case "canceled":
+          return "canceled"
+        default:
+          return "pending"
+      }
+    } catch (e) {
+      return "error"
+    }
+  }
 
-### Returns
+  // ...
+}
+```
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;WebhookActionResult&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"WebhookActionResult","type":"`WebhookActionResult`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getWebhookActionAndData"/>
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPaymentStatus"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../../payment/types/payment.PaymentSessionStatus/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The payment session's status.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`\"authorized\"` \\| `\"captured\"` \\| `\"pending\"` \\| `\"requires_more\"` \\| `\"error\"` \\| `\"canceled\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPaymentStatus"/>
+
+### refundPayment
+
+This method refunds an amount of a payment previously captured.
+
+#### Example
+
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async refundPayment(
+    paymentData: Record<string, unknown>,
+    refundAmount: number
+  ): Promise<
+    PaymentProviderError | PaymentProviderSessionResponse["data"]
+  > {
+    const externalId = paymentData.id
+
+    try {
+      const newData = await this.client.refund(
+        externalId,
+        refundAmount
+      )
+
+      return {
+        ...newData,
+        id: externalId
+      }
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentData","type":"`Record<string, unknown>`","description":"The `data` property of the payment. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"`number`","description":"The amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="refundPayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"The new data to store in the payment's `data` property, or an error object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="refundPayment"/>
+
+### retrievePayment
+
+Retrieves the payment's data from the third-party service.
+
+#### Example
+
+```ts
+// other imports...
+import {
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async retrievePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProviderError | PaymentProviderSessionResponse["data"]
+  > {
+    const externalId = paymentSessionData.id
+
+    try {
+      return await this.client.retrieve(externalId)
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` property of the payment. Make sure to store in it\nany helpful identification for your third-party integration.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrievePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"An object to be stored in the payment's `data` property, or an error object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrievePayment"/>
+
+### updatePayment
+
+Update a payment in the third-party service that was previously initiated with the [initiatePayment](page.mdx#initiatepayment) method.
+
+#### Example
+
+```ts
+// other imports...
+import {
+  UpdatePaymentProviderSession,
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/framework/types"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async updatePayment(
+    context: UpdatePaymentProviderSession
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
+    const {
+      amount,
+      currency_code,
+      context: customerDetails,
+      data
+    } = context
+    const externalId = data.id
+
+    try {
+      const response = await this.client.update(
+        externalId,
+        {
+          amount,
+          currency_code,
+          customerDetails
+        }
+      )
+
+      return {
+        ...response,
+        data: {
+          id: response.id
+        }
+      }
+    } catch (e) {
+      return {
+        error: e,
+        code: "unknown",
+        detail: e
+      }
+    }
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"context","type":"`UpdatePaymentProviderSession`","description":"The details of the payment session and its context.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"An object whose `data` property is set in the updated payment session, or an error\nobject. Make sure to set in `data` anything useful to later retrieve the session.","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePayment"/>
+
+### getWebhookActionAndData
+
+This method is executed when a webhook event is received from the third-party payment provider. Use it
+to process the action of the payment provider.
+
+Learn more in [this documentation](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events)
+
+#### Example
+
+```ts
+// other imports...
+import {
+  BigNumber
+} from "@medusajs/framework/utils"
+import {
+  ProviderWebhookPayload,
+  WebhookActionResult
+} from "@medusajs/framework/types"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async getWebhookActionAndData(
+    payload: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult> {
+    const {
+      data,
+      rawData,
+      headers
+    } = payload
+
+    try {
+      switch(data.event_type) {
+        case "authorized_amount":
+          return {
+            action: "authorized",
+            data: {
+              session_id: (data.metadata as Record<string, any>).session_id,
+              amount: new BigNumber(data.amount as number)
+            }
+          }
+        case "success":
+          return {
+            action: "captured",
+            data: {
+              session_id: (data.metadata as Record<string, any>).session_id,
+              amount: new BigNumber(data.amount as number)
+            }
+          }
+        default:
+          return {
+            action: "not_supported"
+          }
+      }
+    } catch (e) {
+      return {
+        action: "failed",
+        data: {
+          session_id: (data.metadata as Record<string, any>).session_id,
+          amount: new BigNumber(data.amount as number)
+        }
+      }
+    }
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The webhook event's data","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getWebhookActionAndData"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;WebhookActionResult&#62;","optional":false,"defaultValue":"","description":"The webhook result. If the `action`'s value is `captured`, the payment is captured within Medusa as well.\nIf the `action`'s value is `authorized`, the associated payment session is authorized within Medusa.","expandable":false,"children":[{"name":"WebhookActionResult","type":"`WebhookActionResult`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getWebhookActionAndData"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-payment/index.ts` with the following content:
+
+```ts title="src/modules/my-payment/index.ts"
+import MyPaymentProviderService from "./service"
+
+export default {
+  services: [MyPaymentProviderService],
+}
+```
+
+This exports the module's definition, indicating that the `MyPaymentProviderService` is the module's service.
+
+---
+
+## 4. Use Module
+
+To use your Payment Module Provider, add it to the `providers` array of the Payment Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/framework/utils")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/framework/payment",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-payment",
+            id: "my-payment",
+            options: {
+              // provider options...
+              apiKey: "..."
+            }
+          }
+        ]
+      }
+    }
+  }
+})
+```
+
+---
+
+## 5. Test it Out
+
+Before you use your payment provider, enable it in a region using the Medusa Admin.
+
+Then, go through checkout to place an order. Your payment provider is used to authorize the payment.
+
+---
+
+## Useful Guides
+
+- [Storefront Guide: how to implement UI for your payment provider during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment)

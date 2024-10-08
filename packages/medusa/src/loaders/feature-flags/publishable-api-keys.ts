@@ -1,4 +1,4 @@
-import { FlagSettings } from "../../types/feature-flags"
+import { FlagSettings } from "@medusajs/framework/feature-flags"
 
 const PublishableAPIKeysFeatureFlag: FlagSettings = {
   key: "publishable_api_keys",

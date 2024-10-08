@@ -81,7 +81,7 @@ export const Rating: React.FC<RatingProps> = ({
             (hoverRating !== 0 && hoverRating - 1 >= i)
           return (
             <Button
-              variant="clear"
+              variant="transparent"
               buttonRef={(element) => {
                 if (starElms.current.length - 1 < i) {
                   starElms.current.push(element as HTMLElement)

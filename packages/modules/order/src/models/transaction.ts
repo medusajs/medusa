@@ -1,40 +1,83 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
+import Claim from "./claim"
+import Exchange from "./exchange"
 import Order from "./order"
+import Return from "./return"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
+
+const tableName = "order_transaction"
 
 const ReferenceIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "reference_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "order_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const ExchangeIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["exchange_id"],
+  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const ClaimIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["claim_id"],
+  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const CurrencyCodeIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_transaction" })
-export default class Transaction {
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const OrderIdVersionIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["order_id", "version"],
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+@OrderIdVersionIndex.MikroORMIndex()
+export default class OrderTransaction {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
@@ -53,7 +96,61 @@ export default class Transaction {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+    nullable: true,
+  })
+  return: Rel<Return>
+
+  @ManyToOne({
+    entity: () => Exchange,
+    mapToPk: true,
+    fieldName: "exchange_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ExchangeIdIndex.MikroORMIndex()
+  exchange_id: string | null
+
+  @ManyToOne(() => Exchange, {
+    persist: false,
+    nullable: true,
+  })
+  exchange: Rel<Exchange>
+
+  @ManyToOne({
+    entity: () => Claim,
+    mapToPk: true,
+    fieldName: "claim_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ClaimIdIndex.MikroORMIndex()
+  claim_id: string | null
+
+  @ManyToOne(() => Claim, {
+    persist: false,
+    nullable: true,
+  })
+  claim: Rel<Claim>
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @MikroOrmBigNumberProperty()
   amount: BigNumber | number
@@ -93,15 +190,25 @@ export default class Transaction {
   })
   updated_at: Date
 
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordtrx")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordtrx")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
   }
 }

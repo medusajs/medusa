@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# ObjectToRemoteQueryFields
+
+ **ObjectToRemoteQueryFields**: Depth extends `never` ? `never` : T extends `object` ? &#123; [K in keyof T]: K extends \`$&#123;RawBigNumberPrefix&#125;$&#123;string&#125;\` ? Exclude&#60;K, symbol&#62; : K extends ExcludedProps ? never : K extends Exclusion[number] ? never : TypeOnly&#60;T[K]&#62; extends (infer R)[] ? TypeOnly&#60;R&#62; extends Date ? Exclude&#60;K, symbol&#62; : TypeOnly&#60;(...)&#62; extends Object ? \`$&#123;(...)&#125;.$&#123;(...)&#125;\` : (...) extends (...) ? (...) : (...) : TypeOnly&#60;(...)[(...)]&#62; extends Date ? Exclude&#60;K, symbol&#62; : TypeOnly&#60;(...)&#62; extends Object ? \`$&#123;(...)&#125;.$&#123;(...)&#125;\` : (...) extends (...) ? (...) : (...) &#125;[keyof T] : `never`
+
+Output an array of strings representing the path to each leaf node in an object
+
+## Type Parameters
+
+<TypeList types={[{"name":"MaybeT","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Depth","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Exclusion","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"T","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="ObjectToRemoteQueryFields"/>

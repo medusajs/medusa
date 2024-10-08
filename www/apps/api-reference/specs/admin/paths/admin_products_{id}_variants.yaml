@@ -1,154 +1,571 @@
 get:
-  operationId: GetProductsProductVariants
-  summary: List a Product's Variants
-  description: >
-    Retrieve a list of Product Variants associated with a Product. The variants
-    can be paginated.
+  operationId: GetProductsIdVariants
+  summary: List Variants of a Product
+  x-sidebar-summary: List Variants
+  description: >-
+    Retrieve a list of variants in a product. The variants can be filtered by
+    fields like FILTER FIELDS. The variants can also be paginated.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: ID of the product.
       schema:
         type: string
-    - in: query
-      name: id
-      description: IDs to filter product variants by.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated fields that should be included in the returned product
-        variants.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        product variants.
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
       schema:
-        type: string
-    - in: query
-      name: offset
-      description: >-
-        The number of product variants to skip when retrieving the product
-        variants.
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
       schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of product variants returned.
-      schema:
-        type: integer
-        default: 100
-    - in: query
-      name: q
-      description: Search term to search product variants' title, sku, and products' title.
-      schema:
-        type: string
-    - in: query
-      name: order
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
+    - name: order
+      in: query
       description: >-
         The field to sort the data by. By default, the sort order is ascending.
         To change the order to descending, prefix the field name with `-`.
+      required: false
       schema:
         type: string
-    - in: query
-      name: manage_inventory
-      description: Filter product variants by whether their inventory is managed or not.
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+    - name: q
+      in: query
+      description: Search term to filter the variant's search attributes.
+      required: false
       schema:
-        type: boolean
-    - in: query
-      name: allow_backorder
-      description: >-
-        Filter product variants by whether they are allowed to be backordered or
-        not.
-      schema:
-        type: boolean
-    - in: query
-      name: inventory_quantity
-      description: Filter by available inventory quantity
+        type: string
+        title: q
+        description: Search term to filter the variant's search attributes.
+    - name: id
+      in: query
+      required: false
       schema:
         oneOf:
-          - type: number
-            description: a specific number to filter by.
-          - type: object
-            description: filter using less and greater than comparisons.
-            properties:
-              lt:
-                type: number
-                description: filter by inventory quantity less than this number
-              gt:
-                type: number
-                description: filter by inventory quantity greater than this number
-              lte:
-                type: number
-                description: filter by inventory quantity less than or equal to this number
-              gte:
-                type: number
+          - type: string
+            title: id
+            description: Filter by a variant's ID.
+          - type: array
+            description: Filter by variant IDs.
+            items:
+              type: string
+              title: id
+              description: A variant ID.
+    - name: manage_inventory
+      in: query
+      description: Filter by whether a variant's `manage_inventory` property is enabled.
+      required: false
+      schema:
+        type: boolean
+        title: manage_inventory
+        description: Filter by whether a variant's `manage_inventory` property is enabled.
+    - name: allow_backorder
+      in: query
+      description: Filter by whether backorders are allowed for the variant.
+      required: false
+      schema:
+        type: boolean
+        title: allow_backorder
+        description: Filter by whether backorders are allowed for the variant.
+    - name: created_at
+      in: query
+      description: Filter by the product's creation date.
+      required: false
+      schema:
+        type: object
+        description: Filter by the product's creation date.
+        properties:
+          $and:
+            type: array
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $and
+          $or:
+            type: array
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $or
+          $eq:
+            oneOf:
+              - type: string
+                title: $eq
+                description: Filter by an exact match.
+              - type: array
+                description: Filter by an exact match.
+                items:
+                  type: string
+                  title: $eq
+                  description: Filter by an exact match.
+          $ne:
+            type: string
+            title: $ne
+            description: Filter by values not equal to this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array.
+            items:
+              type: string
+              title: $in
+              description: Filter by values in this array.
+          $nin:
+            type: array
+            description: Filter by values not in this array.
+            items:
+              type: string
+              title: $nin
+              description: Filter by values not in this array.
+          $not:
+            oneOf:
+              - type: string
+                title: $not
                 description: >-
-                  filter by inventory quantity greater than or equal to this
-                  number
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: object
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: array
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+                items:
+                  type: string
+                  title: $not
+                  description: >-
+                    Filter by values not matching the conditions in this
+                    parameter.
+          $gt:
+            type: string
+            title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+          $like:
+            type: string
+            title: $like
+            description: Apply a `like` filter. Useful for strings only.
+          $re:
+            type: string
+            title: $re
+            description: Apply a regex filter. Useful for strings only.
+          $ilike:
+            type: string
+            title: $ilike
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $fulltext:
+            type: string
+            title: $fulltext
+            description: Filter to apply on full-text properties.
+          $overlap:
+            type: array
+            description: Filter arrays that have overlapping values with this parameter.
+            items:
+              type: string
+              title: $overlap
+              description: Filter arrays that have overlapping values with this parameter.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+              title: $contains
+              description: Filter arrays that contain some of the values of this parameter.
+          $contained:
+            type: array
+            description: Filter arrays that contain all values of this parameter.
+            items:
+              type: string
+              title: $contained
+              description: Filter arrays that contain all values of this parameter.
+          $exists:
+            type: boolean
+            title: $exists
+            description: Filter by whether a value for this parameter exists (not `null`).
+    - name: updated_at
+      in: query
+      description: Filter by the product's update date.
+      required: false
       schema:
         type: object
+        description: Filter by the product's update date.
         properties:
-          lt:
+          $and:
+            type: array
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $and
+          $or:
+            type: array
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $or
+          $eq:
+            oneOf:
+              - type: string
+                title: $eq
+                description: Filter by an exact match.
+              - type: array
+                description: Filter by an exact match.
+                items:
+                  type: string
+                  title: $eq
+                  description: Filter by an exact match.
+          $ne:
             type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
+            title: $ne
+            description: Filter by values not equal to this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array.
+            items:
+              type: string
+              title: $in
+              description: Filter by values in this array.
+          $nin:
+            type: array
+            description: Filter by values not in this array.
+            items:
+              type: string
+              title: $nin
+              description: Filter by values not in this array.
+          $not:
+            oneOf:
+              - type: string
+                title: $not
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: object
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: array
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+                items:
+                  type: string
+                  title: $not
+                  description: >-
+                    Filter by values not matching the conditions in this
+                    parameter.
+          $gt:
             type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
+            title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
             type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
+            title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
             type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
+            title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+          $like:
+            type: string
+            title: $like
+            description: Apply a `like` filter. Useful for strings only.
+          $re:
+            type: string
+            title: $re
+            description: Apply a regex filter. Useful for strings only.
+          $ilike:
+            type: string
+            title: $ilike
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $fulltext:
+            type: string
+            title: $fulltext
+            description: Filter to apply on full-text properties.
+          $overlap:
+            type: array
+            description: Filter arrays that have overlapping values with this parameter.
+            items:
+              type: string
+              title: $overlap
+              description: Filter arrays that have overlapping values with this parameter.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+              title: $contains
+              description: Filter arrays that contain some of the values of this parameter.
+          $contained:
+            type: array
+            description: Filter arrays that contain all values of this parameter.
+            items:
+              type: string
+              title: $contained
+              description: Filter arrays that contain all values of this parameter.
+          $exists:
+            type: boolean
+            title: $exists
+            description: Filter by whether a value for this parameter exists (not `null`).
+    - name: deleted_at
+      in: query
+      description: Filter by the product's deletion date.
+      required: false
       schema:
         type: object
+        description: Filter by the product's deletion date.
         properties:
-          lt:
+          $and:
+            type: array
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $and
+          $or:
+            type: array
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $or
+          $eq:
+            oneOf:
+              - type: string
+                title: $eq
+                description: Filter by an exact match.
+              - type: array
+                description: Filter by an exact match.
+                items:
+                  type: string
+                  title: $eq
+                  description: Filter by an exact match.
+          $ne:
             type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
+            title: $ne
+            description: Filter by values not equal to this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array.
+            items:
+              type: string
+              title: $in
+              description: Filter by values in this array.
+          $nin:
+            type: array
+            description: Filter by values not in this array.
+            items:
+              type: string
+              title: $nin
+              description: Filter by values not in this array.
+          $not:
+            oneOf:
+              - type: string
+                title: $not
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: object
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+              - type: array
+                description: >-
+                  Filter by values not matching the conditions in this
+                  parameter.
+                items:
+                  type: string
+                  title: $not
+                  description: >-
+                    Filter by values not matching the conditions in this
+                    parameter.
+          $gt:
             type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
+            title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
             type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
+            title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
             type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-  x-codegen:
-    method: listVariants
-    queryParams: AdminGetProductsVariantsParams
+            title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+          $like:
+            type: string
+            title: $like
+            description: Apply a `like` filter. Useful for strings only.
+          $re:
+            type: string
+            title: $re
+            description: Apply a regex filter. Useful for strings only.
+          $ilike:
+            type: string
+            title: $ilike
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $fulltext:
+            type: string
+            title: $fulltext
+            description: Filter to apply on full-text properties.
+          $overlap:
+            type: array
+            description: Filter arrays that have overlapping values with this parameter.
+            items:
+              type: string
+              title: $overlap
+              description: Filter arrays that have overlapping values with this parameter.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+              title: $contains
+              description: Filter arrays that contain some of the values of this parameter.
+          $contained:
+            type: array
+            description: Filter arrays that contain all values of this parameter.
+            items:
+              type: string
+              title: $contained
+              description: Filter arrays that contain all values of this parameter.
+          $exists:
+            type: boolean
+            title: $exists
+            description: Filter by whether a value for this parameter exists (not `null`).
+    - name: $and
+      in: query
+      description: >-
+        Join query parameters with an AND condition. Each object's content is
+        the same type as the expected query parameters.
+      required: false
+      schema:
+        type: array
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
+        items:
+          type: object
+        title: $and
+    - name: $or
+      in: query
+      description: >-
+        Join query parameters with an OR condition. Each object's content is the
+        same type as the expected query parameters.
+      required: false
+      schema:
+        type: array
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
+        items:
+          type: object
+        title: $or
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_products_{id}_variants/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
@@ -157,7 +574,36 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsListVariantsRes.yaml
+            allOf:
+              - type: object
+                description: The paginated list of product variants.
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The maximum number of returned items.
+                  offset:
+                    type: number
+                    title: offset
+                    description: The number of items skipped before the returned item.
+                  count:
+                    type: number
+                    title: count
+                    description: The total number of items.
+              - type: object
+                description: The paginated list of product variants.
+                required:
+                  - variants
+                properties:
+                  variants:
+                    type: array
+                    description: The list of product variants.
+                    items:
+                      $ref: ../components/schemas/AdminProductVariant.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -171,43 +617,71 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostProductsProductVariants
+  operationId: PostProductsIdVariants
   summary: Create a Product Variant
-  description: >-
-    Create a Product Variant associated with a Product. Each product variant
-    must have a unique combination of Product Option values.
+  x-sidebar-summary: Create Variant
+  description: Create a variant for a product.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostProductsProductVariantsReq.yaml
-  x-codegen:
-    method: createVariant
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_products_{id}_variants/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}_variants/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_products_{id}_variants/post.sh
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: ../components/schemas/AdminCreateProductVariant.yaml
+            - type: object
+              description: The product variant's details.
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
+          description: The product variant's details.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_variants/post.sh
   tags:
     - Products
   responses:
@@ -216,7 +690,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
+            $ref: ../components/schemas/AdminProductResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -229,3 +703,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createProductVariantsWorkflow

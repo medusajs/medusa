@@ -1,9 +1,9 @@
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
-import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
-import ShippingMethod from "./shipping-method"
+} from "@medusajs/framework/utils"
+import { BeforeCreate, Entity, ManyToOne, OnInit, Rel } from "@mikro-orm/core"
+import OrderShippingMethod from "./shipping-method"
 import TaxLine from "./tax-line"
 
 const ShippingMethodIdIdIndex = createPsqlIndexStatementHelper({
@@ -12,14 +12,14 @@ const ShippingMethodIdIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_shipping_method_tax_line" })
-export default class ShippingMethodTaxLine extends TaxLine {
-  @ManyToOne(() => ShippingMethod, {
+export default class OrderShippingMethodTaxLine extends TaxLine {
+  @ManyToOne(() => OrderShippingMethod, {
     persist: false,
   })
-  shipping_method: ShippingMethod
+  shipping_method: Rel<OrderShippingMethod>
 
   @ManyToOne({
-    entity: () => ShippingMethod,
+    entity: () => OrderShippingMethod,
     fieldName: "shipping_method_id",
     columnType: "text",
     mapToPk: true,

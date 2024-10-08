@@ -4,25 +4,24 @@ import {
   FindConfig,
   OrderTypes,
   RepositoryService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Order } from "@models"
 
 type InjectedDependencies = {
   orderRepository: DAL.RepositoryService
 }
 
-export default class OrderService<
-  TEntity extends Order = Order
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+export default class OrderService extends ModulesSdkUtils.MedusaInternalService<
+  InjectedDependencies,
   Order
-)<TEntity> {
-  protected readonly orderRepository_: RepositoryService<TEntity>
+>(Order) {
+  protected readonly orderRepository_: RepositoryService<Order>
 
   constructor(container: InjectedDependencies) {
     // @ts-ignore
@@ -36,8 +35,8 @@ export default class OrderService<
     version: number,
     config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    const queryConfig = ModulesSdkUtils.buildQuery<TEntity>(
+  ): Promise<Order> {
+    const queryConfig = ModulesSdkUtils.buildQuery<Order>(
       { id, items: { version } },
       { ...config, take: 1 }
     )

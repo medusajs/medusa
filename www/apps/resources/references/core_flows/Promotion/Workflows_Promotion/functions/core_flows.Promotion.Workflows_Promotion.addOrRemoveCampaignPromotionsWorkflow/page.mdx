@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/addOrRemoveCampaignPromotionsWorkflow
+sidebar_label: addOrRemoveCampaignPromotionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# addOrRemoveCampaignPromotionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `addOrRemoveCampaignPromotionsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow adds or removes promotions from campaigns.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"addOrRemoveCampaignPromotionsWorkflow","steps":[{"type":"step","name":"addCampaignPromotionsStep","description":"This step adds promotions to a campaign.","link":"../../../../core_flows.Steps_Promotion/page.mdx#addcampaignpromotionsstep","depth":1},{"type":"step","name":"removeCampaignPromotionsStep","description":"This step removes promotions from a campaigns.","link":"../../../../core_flows.Steps_Promotion/page.mdx#removecampaignpromotionsstep","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkWorkflowInput","type":"[LinkWorkflowInput](../../../../../types/CommonTypes/types/types.CommonTypes.LinkWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addOrRemoveCampaignPromotionsWorkflow"/>

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/stock-locations/{id}/sales-channels
  * operationId: PostStockLocationsIdSalesChannels
- * summary: Add Sales Channels to Stock Location
- * description: Add a list of sales channels to a stock location.
+ * summary: Manage Sales Channels of a Stock Location
+ * x-sidebar-summary: Manage Sales Channels
+ * description: Manage the sales channels in a stock location by adding or removing them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -21,36 +22,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -60,31 +41,37 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The sales channels to add or remove.
  *         properties:
  *           add:
  *             type: array
- *             description: The stock location's add.
+ *             description: The sales channels to add.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A sales channel's ID.
  *           remove:
  *             type: array
- *             description: The stock location's remove.
+ *             description: The sales channels to remove.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A sales channel's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/stock-locations/{id}/sales-channels' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Stock Locations
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminStockLocationResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -97,6 +84,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: linkSalesChannelsToStockLocationWorkflow
  * 
 */
 

@@ -1,0 +1,59 @@
+post:
+  operationId: PostWorkflowsExecutionsWorkflow_idStepsFailure
+  summary: Fail a Step in a Workflow's Execution
+  x-sidebar-summary: Fail a Step
+  description: >-
+    Set the status of a step in a workflow's execution as failed. This is useful
+    for long-running workflows.
+  x-authenticated: true
+  parameters:
+    - name: workflow_id
+      in: path
+      description: The workflows execution's workflow id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminCreateWorkflowsAsyncResponse.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_steps_failure/post.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The details of failing the workflow step.
+            required:
+              - success
+            properties:
+              success:
+                type: boolean
+                title: success
+                description: Whether the workflow step has failed successfully.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

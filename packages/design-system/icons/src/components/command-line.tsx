@@ -5,19 +5,27 @@ const CommandLine = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m5.625 6.25 2.5 1.875L5.625 10m3.75 0h2.5m-7.5 6.875h11.25A1.875 1.875 0 0 0 17.5 15V5a1.875 1.875 0 0 0-1.875-1.875H4.375A1.875 1.875 0 0 0 2.5 5v10a1.875 1.875 0 0 0 1.875 1.875Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M11.278 1.944H3.722c-.982 0-1.778.796-1.778 1.778v7.556c0 .981.796 1.777 1.778 1.777h7.556c.982 0 1.778-.796 1.778-1.777V3.722c0-.982-.796-1.778-1.778-1.778M8.167 10.389h2.222" />
+          <path d="m4.611 10.389 2.222-2.222-2.222-2.223" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

@@ -1,37 +1,38 @@
 import {
   Context,
   DAL,
-  FindConfig,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
+  MedusaContainer,
   ModulesSdkTypes,
-} from "@medusajs/types"
+  WorkflowsSdkTypes,
+} from "@medusajs/framework/types"
 import {
-  InjectManager,
   InjectSharedContext,
-  isString,
   MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+  ModulesSdkUtils,
+} from "@medusajs/framework/utils"
 import type {
-  IWorkflowEngineService,
   ReturnWorkflow,
   UnwrapWorkflowInputDataType,
-  WorkflowOrchestratorTypes,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
+import { WorkflowExecution } from "@models"
 import { WorkflowOrchestratorService } from "@services"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
+  workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
 }
 
-export class WorkflowsModuleService implements IWorkflowEngineService {
+export class WorkflowsModuleService<
+  TWorkflowExecution extends WorkflowExecution = WorkflowExecution
+> extends ModulesSdkUtils.MedusaService<{
+  WorkflowExecution: { dto: WorkflowExecution }
+}>({ WorkflowExecution }) {
   protected baseRepository_: DAL.RepositoryService
-  protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
+  protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<TWorkflowExecution>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
+  protected container_: MedusaContainer
 
   constructor(
     {
@@ -41,135 +42,18 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    // @ts-ignore
+    super(...arguments)
+
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }
 
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
-  }
-
-  @InjectManager("baseRepository_")
-  async retrieveWorkflowExecution(
-    idOrObject:
-      | string
-      | {
-          workflow_id: string
-          transaction_id: string
-        },
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO> {
-    const objValue = isString(idOrObject)
-      ? { id: idOrObject }
-      : {
-          workflow_id: idOrObject.workflow_id,
-          transaction_id: idOrObject.transaction_id,
-        }
-
-    const wfExecution = await this.workflowExecutionService_.list(
-      objValue,
-      config,
-      sharedContext
-    )
-
-    if (wfExecution.length === 0) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `WorkflowExecution with ${Object.keys(objValue).join(
-          ", "
-        )}: ${Object.values(objValue).join(", ")} was not found`
-      )
-    }
-
-    // eslint-disable-next-line max-len
-    return await this.baseRepository_.serialize<WorkflowOrchestratorTypes.WorkflowExecutionDTO>(
-      wfExecution[0],
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectManager("baseRepository_")
-  async listWorkflowExecution(
-    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO[]> {
-    if (filters.transaction_id) {
-      if (Array.isArray(filters.transaction_id)) {
-        filters.transaction_id = {
-          $in: filters.transaction_id,
-        }
-      }
-    }
-
-    if (filters.workflow_id) {
-      if (Array.isArray(filters.workflow_id)) {
-        filters.workflow_id = {
-          $in: filters.workflow_id,
-        }
-      }
-    }
-
-    const wfExecutions = await this.workflowExecutionService_.list(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
-    >(wfExecutions, {
-      populate: true,
-    })
-  }
-
-  @InjectManager("baseRepository_")
-  async listAndCountWorkflowExecution(
-    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[WorkflowOrchestratorTypes.WorkflowExecutionDTO[], number]> {
-    if (filters.transaction_id) {
-      if (Array.isArray(filters.transaction_id)) {
-        filters.transaction_id = {
-          $in: filters.transaction_id,
-        }
-      }
-    }
-
-    if (filters.workflow_id) {
-      if (Array.isArray(filters.workflow_id)) {
-        filters.workflow_id = {
-          $in: filters.workflow_id,
-        }
-      }
-    }
-
-    const [wfExecutions, count] =
-      await this.workflowExecutionService_.listAndCount(
-        filters,
-        config,
-        sharedContext
-      )
-
-    return [
-      await this.baseRepository_.serialize<
-        WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
-      >(wfExecutions, {
-        populate: true,
-      }),
-      count,
-    ]
-  }
-
   @InjectSharedContext()
   async run<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
     workflowIdOrWorkflow: TWorkflow,
-    options: WorkflowOrchestratorTypes.WorkflowOrchestratorRunDTO<
+    options: WorkflowsSdkTypes.WorkflowOrchestratorRunDTO<
       TWorkflow extends ReturnWorkflow<any, any, any>
         ? UnwrapWorkflowInputDataType<TWorkflow>
         : unknown

@@ -1,5 +1,5 @@
 import { clx } from "@medusajs/ui"
-import { LegacyCodeTabs } from "docs-ui"
+import { CodeBlock, CodeTab, CodeTabs } from "docs-ui"
 
 type PackageInstallProps = {
   packageName: string
@@ -20,15 +20,20 @@ const PackageInstall = ({
   const npm = `npm install ${pkg} ${devDependency ? "--save-dev" : "--save"}`
   const pnpm = `pnpm add ${devDependency ? "-D " : ""}${pkg}`
 
+  const tabs = [
+    { code: { lang: "bash", source: npm }, label: "npm", value: "npm" },
+    { code: { lang: "bash", source: yarn }, label: "yarn", value: "yarn" },
+    { code: { lang: "bash", source: pnpm }, label: "pnpm", value: "pnpm" },
+  ]
+
   return (
-    <LegacyCodeTabs
-      tabs={[
-        { code: { lang: "bash", source: npm }, label: "npm", value: "npm" },
-        { code: { lang: "bash", source: yarn }, label: "yarn", value: "yarn" },
-        { code: { lang: "bash", source: pnpm }, label: "pnpm", value: "pnpm" },
-      ]}
-      className={clx("my-4", className)}
-    />
+    <CodeTabs group="npm2yarn" className={clx("my-4", className)}>
+      {tabs.map((tab, index) => (
+        <CodeTab label={tab.label} value={tab.value} key={index}>
+          <CodeBlock {...tab.code} />
+        </CodeTab>
+      ))}
+    </CodeTabs>
   )
 }
 

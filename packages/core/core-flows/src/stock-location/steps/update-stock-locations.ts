@@ -1,16 +1,12 @@
 import {
   FilterableStockLocationProps,
-  IStockLocationServiceNext,
-  UpdateStockLocationNextInput,
-} from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import {
-  convertItemResponseToUpdateRequest,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+  IStockLocationService,
+  UpdateStockLocationInput,
+} from "@medusajs/framework/types"
+import { getSelectsAndRelationsFromObjectArray } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { UpdateStockLocationInput } from "@medusajs/types"
+import { Modules } from "@medusajs/framework/utils"
 
 interface StepInput {
   selector: FilterableStockLocationProps
@@ -18,25 +14,32 @@ interface StepInput {
 }
 
 export const updateStockLocationsStepId = "update-stock-locations-step"
+/**
+ * This step updates stock locations matching the specified filters.
+ */
 export const updateStockLocationsStep = createStep(
   updateStockLocationsStepId,
   async (input: StepInput, { container }) => {
-    const stockLocationService = container.resolve<IStockLocationServiceNext>(
-      ModuleRegistrationName.STOCK_LOCATION
+    const stockLocationService = container.resolve<IStockLocationService>(
+      Modules.STOCK_LOCATION
     )
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       input.update,
     ])
 
-    const dataBeforeUpdate = await stockLocationService.list(input.selector, {
-      select: selects,
-      relations,
-    })
-
-    const updatedStockLocations = await stockLocationService.update(
+    const dataBeforeUpdate = await stockLocationService.listStockLocations(
       input.selector,
-      input.update
+      {
+        select: selects,
+        relations,
+      }
     )
+
+    const updatedStockLocations =
+      await stockLocationService.updateStockLocations(
+        input.selector,
+        input.update
+      )
 
     return new StepResponse(updatedStockLocations, dataBeforeUpdate)
   },
@@ -45,11 +48,11 @@ export const updateStockLocationsStep = createStep(
       return
     }
 
-    const stockLocationService = container.resolve<IStockLocationServiceNext>(
-      ModuleRegistrationName.STOCK_LOCATION
+    const stockLocationService = container.resolve<IStockLocationService>(
+      Modules.STOCK_LOCATION
     )
 
-    await stockLocationService.upsert(
+    await stockLocationService.upsertStockLocations(
       revertInput.map((item) => ({
         id: item.id,
         name: item.name,

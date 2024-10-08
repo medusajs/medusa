@@ -6,37 +6,88 @@ export const metadata = {
 
 In this chapter, you’ll learn how to create protected routes.
 
-## Default Protected Routes
+## What is a Protected Route?
 
 A protected route is a route that requires requests to be user-authenticated before performing the route's functionality. Otherwise, the request fails, and the user is prevented access.
 
-Medusa applies an authentication guard on the following routes:
+---
 
-- Routes starting with `/admin` require an authenticated admin user.
-- Routes starting with `/store/me` require an authenticated customer.
+## Default Protected Routes
 
-<Note>
+Medusa applies an authentication guard on routes starting with `/admin`, including custom API routes.
 
-Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authentication) and [Store](https://docs.medusajs.com/api/store#authentication) authentication methods.
+Requests to `/admin` must be user-authenticated to access the route.
+
+<Note title="Tip">
+
+Refer to the API Reference for [Admin](!api!/admin#authentication) and [Store](!api!/store#authentication) authentication methods.
 
 </Note>
 
 ---
 
-## Authentication Opt-Out
+## Protect Custom API Routes
 
-To disable the authentication guard on custom routes under the `/admin` or `/store/me` path prefixes, export an `AUTHENTICATE` variable in the route file with its value set to `false`.
+To protect custom API Routes to only allow authenticated customer or admin users, use the `authenticate` middleware imported from `@medusajs/medusa`.
 
 For example:
 
-```ts title="src/api/store/me/custom/route.ts" highlights={[["15"]]} apiTesting testApiUrl="http://localhost:9000/store/me/custom" testApiMethod="GET"
-import type {
-  MedusaRequest,
-  MedusaResponse,
+export const highlights = [
+  [
+    "10",
+    "authenticate",
+    "Only authenticated admin users can access routes starting with `/custom/admin`",
+  ],
+  [
+    "14",
+    "authenticate",
+    "Only authenticated customers can access routes starting with `/custom/customers`",
+  ],
+]
+
+```ts title="src/api/middlewares.ts" highlights={highlights}
+import { 
+  defineMiddlewares,
+  authenticate,
 } from "@medusajs/medusa"
 
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom/admin*",
+      middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+    },
+    {
+      matcher: "/custom/customer*",
+      middlewares: [authenticate("customer", ["session", "bearer"])],
+    },
+  ],
+})
+```
+
+The `authenticate` middleware function accepts three parameters:
+
+1. The type of user authenticating. Use `user` for authenticating admin users, and `customer` for authenticating customers. You can also pass `*` to allow all types of users.
+2. An array of the types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
+3. An optional object of configurations accepting the following property:
+    - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too.
+
+---
+
+## Authentication Opt-Out
+
+To disable the authentication guard on custom routes under the `/admin` path prefix, export an `AUTHENTICATE` variable in the route file with its value set to `false`.
+
+For example:
+
+```ts title="src/api/admin/custom/route.ts" highlights={[["15"]]}
+import type { 
+  AuthenticatedMedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
 export const GET = async (
-  req: MedusaRequest,
+  req: AuthenticatedMedusaRequest, 
   res: MedusaResponse
 ) => {
   res.json({
@@ -47,109 +98,85 @@ export const GET = async (
 export const AUTHENTICATE = false
 ```
 
-Now, any request sent to the `/store/me/custom` API route is allowed, regardless if the customer is authenticated or not.
+Now, any request sent to the `/admin/custom` API route is allowed, regardless if the admin user is authenticated.
 
 ---
 
-## Access Logged-In Customer
+## Authenticated Request Type
 
-You can access the logged-in customer’s ID in all API routes starting with `/store` using the `user.customer_id` property of the `MedusaRequest` object.
+To access the authentication details in an API route, such as the logged-in user's ID, set the type of the first request parameter to `AuthenticatedMedusaRequest`. It extends `MedusaRequest`.
+
+The `auth_context.actor_id` property of `AuthenticatedMedusaRequest` holds the ID of the authenticated user or customer. If there isn't any authenticated user or customer, `auth_context` is `undefined`.
+
+<Note>
+
+If you opt-out of authentication in a route as mentioned in the [previous section](#authentication-opt-out), you can't access the authenticated user or customer anymore. Use the [authenticate middleware](#protect-custom-api-routes) instead.
+
+</Note>
+
+### Retrieve Logged-In Customer's Details
+
+You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object.
 
 For example:
 
-
-
-```ts title="src/api/store/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]}
+```ts title="src/api/store/custom/route.ts" highlights={[["19", "req.auth_context.actor_id", "Access the logged-in customer's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import type {
-  MedusaRequest,
+  AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService } from "@medusajs/types"
+} from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { ICustomerModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerService: ICustomerModuleService =
-    req.scope.resolve(ModuleRegistrationName.CUSTOMER)
+  if (req.auth_context?.actor_id) {
+    // retrieve customer
+    const customerModuleService: ICustomerModuleService = req.scope.resolve(
+      Modules.CUSTOMER
+    )
 
-  const customer = await customerService.retrieve(
-    req.user.customer_id
+    const customer = await customerModuleService.retrieveCustomer(
+      req.auth_context.actor_id
+    )
+  }
+
+  // ...
+}
+```
+
+In this example, you resolve the Customer Module's main service, then use it to retrieve the logged-in customer, if available.
+
+### Retrieve Logged-In Admin User's Details
+
+You can access the logged-in admin user’s ID in all API Routes starting with `/admin` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object.
+
+For example:
+
+```ts title="src/api/admin/custom/route.ts" highlights={[["17", "req.auth_context.actor_id", "Access the logged-in admin user's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import type {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { IUserModuleService } from "@medusajs/framework/types"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    Modules.USER
+  )
+
+  const user = await userModuleService.retrieveUser(
+    req.auth_context.actor_id
   )
 
   // ...
 }
 ```
 
-In the route handler, you resolve the `CustomerService`, then use it to retrieve the logged-in customer, if available.
-
----
-
-## Access Logged-In Admin User
-
-You can access the logged-in admin user’s ID in all API Routes starting with `/admin` using the `user.userId` property of the `MedusaRequest` object.
-
-For example:
-
-```ts title="src/api/admin/custom/route.ts" highlights={[["16", "req.user.userId", "Access the logged-in admin user's ID."]]}
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IUserModuleService } from "@medusajs/types"
-
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const userService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
-  )
-
-  const user = await userService.retrieve(req.user.userId)
-
-  // ...
-}
-```
-
-In the route handler, you resolve the `UserService`, and then use it to retrieve the logged-in admin user.
-
----
-
-## Protect Custom API Routes
-
-To protect custom API Routes that don’t start with `/store/me` or `/admin`, apply one of the following middlewares exported by the `@medusajs/medusa` package on your routes:
-
-- `authenticate`: only authenticated admin users can access the API Route. You can access the user's ID in the API Route method handler using the `MedusaRequest` object's `user.userId`.
-- `authenticateCustomer`: customer authentication isn’t required, but if a customer is logged in, it attaches their ID to the `MedusaRequest` object's `user.customer_id`.
-- `requireCustomerAuthentication`: only authenticated customers can access the API Route. You can access the customer's ID in the API Route method handler using the `MedusaRequest` object's `user.customer_id`.
-
-For example:
-
-export const highlights = [
-  ["11", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
-  ["15", "requireCustomerAuthentication", "Only authenticated customers can access routes starting with `/custom/customers`"]
-]
-
-```ts title="src/api/middlewares.ts" highlights={highlights}
-import {
-  authenticate,
-  requireCustomerAuthentication,
-  type MiddlewaresConfig,
-} from "@medusajs/medusa"
-
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/custom/admin*",
-      middlewares: [authenticate()],
-    },
-    {
-      matcher: "/custom/customer*",
-      middlewares: [requireCustomerAuthentication()],
-    },
-  ],
-}
-```
+In the route handler, you resolve the User Module's main service, then use it to retrieve the logged-in admin user.

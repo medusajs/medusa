@@ -3,140 +3,452 @@ get:
   summary: List Inventory Items
   description: >-
     Retrieve a list of inventory items. The inventory items can be filtered by
-    fields such as `q` or `location_id`. The inventory items can also be
-    paginated.
+    fields such as `id`. The inventory items can also be sorted or paginated.
   x-authenticated: true
   parameters:
-    - in: query
-      name: offset
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        The number of inventory items to skip when retrieving the inventory
-        items.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of inventory items returned.
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
       schema:
-        type: integer
-        default: 20
-    - in: query
-      name: expand
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
+    - name: order
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in each returned
-        inventory item.
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+    - name: q
+      in: query
+      description: The inventory item's q.
+      required: false
       schema:
         type: string
-    - in: query
-      name: q
-      description: term to search inventory item's sku, title, and description.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: Field to sort-order inventory items by.
-      schema:
-        type: string
-    - in: query
-      name: location_id
-      style: form
-      explode: false
-      description: Filter by location IDs.
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: id
-      style: form
-      explode: false
-      description: Filter by the inventory ID
+        title: q
+        description: The inventory item's q.
+    - name: id
+      in: query
+      required: false
       schema:
         oneOf:
           - type: string
-            description: inventory ID
+            title: id
+            description: The inventory item's ID.
           - type: array
-            description: an array of inventory IDs
+            description: The inventory item's ID.
             items:
               type: string
-    - in: query
-      name: sku
-      description: Filter by SKU
+              title: id
+              description: The id's ID.
+    - name: sku
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: origin_country
-      description: Filter by origin country
+        oneOf:
+          - type: string
+            title: sku
+            description: The inventory item's sku.
+          - type: array
+            description: The inventory item's sku.
+            items:
+              type: string
+              title: sku
+              description: The sku's details.
+    - name: origin_country
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: mid_code
-      description: Filter by MID code
+        oneOf:
+          - type: string
+            title: origin_country
+            description: The inventory item's origin country.
+          - type: array
+            description: The inventory item's origin country.
+            items:
+              type: string
+              title: origin_country
+              description: The origin country's details.
+    - name: mid_code
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: material
-      description: Filter by material
+        oneOf:
+          - type: string
+            title: mid_code
+            description: The inventory item's mid code.
+          - type: array
+            description: The inventory item's mid code.
+            items:
+              type: string
+              title: mid_code
+              description: The mid code's details.
+    - name: hs_code
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: hs_code
-      description: Filter by HS Code
+        oneOf:
+          - type: string
+            title: hs_code
+            description: The inventory item's hs code.
+          - type: array
+            description: The inventory item's hs code.
+            items:
+              type: string
+              title: hs_code
+              description: The hs code's details.
+    - name: material
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: weight
-      description: Filter by weight
+        oneOf:
+          - type: string
+            title: material
+            description: The inventory item's material.
+          - type: array
+            description: The inventory item's material.
+            items:
+              type: string
+              title: material
+              description: The material's details.
+    - name: requires_shipping
+      in: query
+      description: The inventory item's requires shipping.
+      required: false
       schema:
-        type: string
-    - in: query
-      name: length
-      description: Filter by length
+        type: boolean
+        title: requires_shipping
+        description: The inventory item's requires shipping.
+    - name: weight
+      in: query
+      description: Filter the inventory item's weight.
+      required: false
       schema:
-        type: string
-    - in: query
-      name: height
-      description: Filter by height
+        description: Filter the inventory item's weight.
+        properties:
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+    - name: length
+      in: query
+      description: Filter the inventory item's length.
+      required: false
       schema:
-        type: string
-    - in: query
-      name: width
-      description: Filter by width
+        description: Filter the inventory item's length.
+        properties:
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+    - name: height
+      in: query
+      description: Filter by the inventory item's height.
+      required: false
       schema:
-        type: string
-    - in: query
-      name: requires_shipping
-      description: Filter by whether the item requires shipping
+        description: Filter by the inventory item's height.
+        properties:
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+    - name: width
+      in: query
+      description: Filter by the inventory item's width.
+      required: false
       schema:
-        type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetInventoryItemsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items/get.sh
+        description: Filter by the inventory item's width.
+        properties:
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
+    - name: location_levels
+      in: query
+      description: Filter by the inventory item's associated location IDs.
+      required: false
+      schema:
+        type: object
+        description: Filter by the inventory item's associated location IDs.
+        properties:
+          location_id:
+            oneOf:
+              - type: string
+                title: location_id
+                description: The associated location's ID.
+              - type: array
+                description: >-
+                  The location IDs to retrieve inventory items associated with
+                  them.
+                items:
+                  type: string
+                  title: location_id
+                  description: A location's ID.
+        required:
+          - location_id
+    - name: $and
+      in: query
+      required: false
+      schema:
+        type: array
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
+        items:
+          type: object
+        title: $and
+    - name: $or
+      in: query
+      required: false
+      schema:
+        type: array
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
+        items:
+          type: object
+        title: $or
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items/get.sh
   tags:
     - Inventory Items
   responses:
@@ -145,8 +457,38 @@ get:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminInventoryItemsListWithVariantsAndLocationLevelsRes.yaml
+            allOf:
+              - type: object
+                description: The paginated list of inventory items.
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The maximum number of items returned.
+                  offset:
+                    type: number
+                    title: offset
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
+                  count:
+                    type: number
+                    title: count
+                    description: The total number of items.
+              - type: object
+                description: The paginated list of inventory items.
+                required:
+                  - inventory_items
+                properties:
+                  inventory_items:
+                    type: array
+                    description: The inventory item's inventory items.
+                    items:
+                      $ref: ../components/schemas/AdminInventoryItem.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -161,49 +503,52 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItems
-  summary: Create an Inventory Item
-  description: Create an Inventory Item for a product variant.
+  summary: Create Inventory Item
+  description: Create an inventory item.
   x-authenticated: true
   parameters:
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory item.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostInventoryItemsReq.yaml
-  x-codegen:
-    method: create
-    queryParams: AdminPostInventoryItemsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items/post.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminCreateInventoryItem.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items/post.sh
   tags:
     - Inventory Items
   responses:
@@ -212,7 +557,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+            $ref: ../components/schemas/AdminInventoryItemResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -225,3 +570,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createInventoryItemsWorkflow

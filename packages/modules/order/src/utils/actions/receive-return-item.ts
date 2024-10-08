@@ -1,17 +1,14 @@
 import {
+  ChangeActionType,
   MathBN,
   MedusaError,
-  isDefined,
-  transformPropertiesToBigNumber,
-} from "@medusajs/utils"
-import { EVENT_STATUS } from "@types"
-import { ChangeActionType } from "../action-key"
+} from "@medusajs/framework/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
   isDeduction: true,
-  commitsAction: "return_item",
-  operation({ action, currentOrder, previousEvents }) {
+  operation({ action, currentOrder, previousEvents, options }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id
     )!
@@ -30,60 +27,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
       toReturn
     )
 
-    if (previousEvents) {
-      for (const previousEvent of previousEvents) {
-        previousEvent.original_ = JSON.parse(JSON.stringify(previousEvent))
-
-        let ret = MathBN.min(toReturn, previousEvent.details.quantity)
-        toReturn = MathBN.sub(toReturn, ret)
-
-        previousEvent.details.quantity = MathBN.sub(
-          previousEvent.details.quantity,
-          ret
-        )
-
-        if (MathBN.lte(previousEvent.details.quantity, 0)) {
-          previousEvent.status = EVENT_STATUS.DONE
-        }
-      }
-    }
+    setActionReference(existing, action, options)
 
     return MathBN.mult(existing.unit_price, action.details.quantity)
   },
-  revert({ action, currentOrder, previousEvents }) {
-    const existing = currentOrder.items.find(
-      (item) => item.id === action.details.reference_id
-    )!
-
-    existing.detail.return_received_quantity = MathBN.sub(
-      existing.detail.return_received_quantity,
-      action.details.quantity
-    )
-    existing.detail.return_requested_quantity = MathBN.add(
-      existing.detail.return_requested_quantity,
-      action.details.quantity
-    )
-
-    if (previousEvents) {
-      for (const previousEvent of previousEvents) {
-        if (!previousEvent.original_) {
-          continue
-        }
-
-        previousEvent.details = JSON.parse(
-          JSON.stringify(previousEvent.original_.details)
-        )
-        transformPropertiesToBigNumber(previousEvent.details?.metadata)
-
-        delete previousEvent.original_
-
-        previousEvent.status = EVENT_STATUS.PENDING
-      }
-    }
-  },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id
-    if (!isDefined(refId)) {
+    if (refId == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Details reference ID is required."
@@ -95,7 +45,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
     if (!existing) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Reference ID "${refId}" not found.`
+        `Item ID "${refId}" not found.`
       )
     }
 

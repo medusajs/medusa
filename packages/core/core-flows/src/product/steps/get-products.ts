@@ -1,22 +1,27 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-type StepInput = {
-  ids: string[]
+export type GetProductsStepInput = {
+  ids?: string[]
 }
 
 export const getProductsStepId = "get-products"
+/**
+ * This step retrieves products.
+ */
 export const getProductsStep = createStep(
   getProductsStepId,
-  async (data: StepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+  async (data: GetProductsStepInput, { container }) => {
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    const products = await service.list(
+    if (!data.ids?.length) {
+      return new StepResponse([], [])
+    }
+
+    const products = await service.listProducts(
       { id: data.ids },
-      { relations: ["variants"], take: null }
+      { relations: ["variants"] }
     )
     return new StepResponse(products, products)
   }

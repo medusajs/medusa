@@ -1,15 +1,24 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateShippingOptionDTO,
   IFulfillmentModuleService,
-} from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { generateCreateShippingOptionsData } from "../../__fixtures__"
-import { resolve } from "path"
+  UpdateShippingOptionDTO,
+} from "@medusajs/framework/types"
+import {
+  FulfillmentEvents,
+  GeoZoneType,
+  Modules,
+} from "@medusajs/framework/utils"
 import { FulfillmentProviderService } from "@services"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { resolve } from "path"
+import {
+  buildExpectedEventMessageShape,
+  generateCreateShippingOptionsData,
+} from "../../__fixtures__"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { GeoZoneType } from "@medusajs/utils"
-import { UpdateShippingOptionDTO } from "@medusajs/types/src"
 
 jest.setTimeout(100000)
 
@@ -20,11 +29,7 @@ const moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "test-provider": {},
-        },
-      },
+      id: "test-provider",
     },
   ],
 }
@@ -34,14 +39,24 @@ const providerId = FulfillmentProviderService.getRegistrationIdentifier(
   "test-provider"
 )
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   moduleOptions,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list shipping options with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
@@ -97,7 +112,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list shipping options with a context", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
@@ -208,13 +223,17 @@ moduleIntegrationTestRunner({
         })
 
         it(`should list the shipping options for a context with a specific address`, async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
               {
                 name: "test",
                 geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
                   {
                     type: GeoZoneType.ZIP,
                     country_code: "fr",
@@ -293,6 +312,42 @@ moduleIntegrationTestRunner({
               country_code: "fr",
               province_code: "rhone",
               city: "paris",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              province_code: "rhone",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              postal_expression: "75006",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "us",
+              province_code: "rhone",
+              city: "paris",
               postal_expression: "75001",
             },
           })
@@ -325,7 +380,7 @@ moduleIntegrationTestRunner({
       })
 
       it("should validate if a shipping option is applicable to a context", async function () {
-        const fulfillmentSet = await service.create({
+        const fulfillmentSet = await service.createFulfillmentSets({
           name: "test",
           type: "test-type",
           service_zones: [
@@ -416,7 +471,7 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -431,6 +486,8 @@ moduleIntegrationTestRunner({
                 shipping_profile_id: shippingProfile.id,
                 provider_id: providerId,
               })
+
+            jest.clearAllMocks()
 
             const createdShippingOption = await service.createShippingOptions(
               createData
@@ -462,6 +519,33 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(3)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_CREATED,
+                  action: "created",
+                  object: "shipping_option",
+                  data: { id: createdShippingOption.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
+                  action: "created",
+                  object: "shipping_option_type",
+                  data: { id: createdShippingOption.type.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
+                  action: "created",
+                  object: "shipping_option_rule",
+                  data: { id: createdShippingOption.rules[0].id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should create multiple new shipping options", async function () {
@@ -469,7 +553,7 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -491,11 +575,14 @@ moduleIntegrationTestRunner({
               }),
             ]
 
+            jest.clearAllMocks()
+
             const createdShippingOptions = await service.createShippingOptions(
               createData
             )
 
             expect(createdShippingOptions).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(6)
 
             let i = 0
             for (const data_ of createData) {
@@ -525,6 +612,33 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_CREATED,
+                    action: "created",
+                    object: "shipping_option",
+                    data: { id: createdShippingOptions[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
+                    action: "created",
+                    object: "shipping_option_type",
+                    data: { id: createdShippingOptions[i].type.id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
+                    action: "created",
+                    object: "shipping_option_rule",
+                    data: { id: createdShippingOptions[i].rules[0].id },
+                  }),
+                ]),
+                {
+                  internal: true,
+                }
+              )
+
               ++i
             }
           })
@@ -534,7 +648,7 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -570,7 +684,7 @@ moduleIntegrationTestRunner({
 
         describe("on update", () => {
           it("should update a shipping option", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -622,6 +736,8 @@ moduleIntegrationTestRunner({
                 },
               ],
             }
+
+            jest.clearAllMocks()
 
             const updatedShippingOption = await service.updateShippingOptions(
               updateData.id!,
@@ -681,10 +797,49 @@ moduleIntegrationTestRunner({
                 label: updateData.type.label,
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(5)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              expect.arrayContaining([
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_UPDATED,
+                  action: "updated",
+                  object: "shipping_option",
+                  data: { id: updatedShippingOption.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_DELETED,
+                  action: "deleted",
+                  object: "shipping_option_type",
+                  data: { id: shippingOption.type.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
+                  action: "created",
+                  object: "shipping_option_type",
+                  data: { id: updatedShippingOption.type.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
+                  action: "created",
+                  object: "shipping_option_rule",
+                  data: { id: updatedShippingOption.rules[1].id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_UPDATED,
+                  action: "updated",
+                  object: "shipping_option_rule",
+                  data: { id: updatedShippingOption.rules[0].id },
+                }),
+              ]),
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should update a shipping option without updating the rules or the type", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -775,7 +930,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should update a collection of shipping options", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -922,7 +1077,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail to update a non-existent shipping option", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -970,7 +1125,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail to update a shipping option when adding non existing rules", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1015,7 +1170,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail to update a shipping option when adding invalid rules", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1068,7 +1223,7 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1092,6 +1247,8 @@ moduleIntegrationTestRunner({
               shipping_option_id: shippingOption.id,
             }
 
+            jest.clearAllMocks()
+
             const rule = await service.createShippingOptionRules(ruleData)
 
             expect(rule).toEqual(
@@ -1102,6 +1259,21 @@ moduleIntegrationTestRunner({
                 value: ruleData.value,
                 shipping_option_id: ruleData.shipping_option_id,
               })
+            )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
+                  action: "created",
+                  object: "shipping_option_rule",
+                  data: { id: rule.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
             )
 
             const rules = await service.listShippingOptionRules()
@@ -1133,7 +1305,7 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1157,6 +1329,8 @@ moduleIntegrationTestRunner({
               value: "updated-test",
             }
 
+            jest.clearAllMocks()
+
             const updatedRule = await service.updateShippingOptionRules(
               updateData
             )
@@ -1168,6 +1342,20 @@ moduleIntegrationTestRunner({
                 operator: updateData.operator,
                 value: updateData.value,
               })
+            )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_UPDATED,
+                  action: "updated",
+                  object: "shipping_option_rule",
+                  data: { id: updatedRule.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
             )
           })
 

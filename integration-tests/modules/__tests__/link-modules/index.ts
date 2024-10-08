@@ -1,19 +1,17 @@
-import { initialize, runMigrations } from "@medusajs/link-modules"
-import { MedusaModule, ModuleJoinerConfig } from "@medusajs/modules-sdk"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { getMigrationPlanner, initialize } from "@medusajs/link-modules"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(5000000)
 
 medusaIntegrationTestRunner({
-  force_modules_migration: true,
-  testSuite: ({ dbConnection, getContainer }) => {
+  testSuite: ({ dbConfig: { clientUrl } }) => {
     let DB_URL
-    let container
     let links
 
     beforeAll(async () => {
-      DB_URL = dbConnection.manager.connection.options.url
-      container = getContainer()
+      DB_URL = clientUrl
 
       const linkDefinition: ModuleJoinerConfig[] = [
         {
@@ -74,7 +72,8 @@ medusaIntegrationTestRunner({
         ]
       }) as any)
 
-      await runMigrations({ options: dbConfig }, linkDefinition)
+      const planner = getMigrationPlanner(dbConfig, linkDefinition)
+      await planner.executePlan(await planner.createPlan())
       links = await initialize(dbConfig, linkDefinition)
     })
 

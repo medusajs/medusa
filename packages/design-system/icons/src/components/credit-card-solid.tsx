@@ -5,22 +5,20 @@ const CreditCardSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill={color}
-          d="M3.976 3.373a2.41 2.41 0 0 0-2.41 2.41v.602h16.868v-.602a2.41 2.41 0 0 0-2.41-2.41H3.976Z"
-        />
-        <path
-          fill={color}
-          fillRule="evenodd"
-          d="M18.434 8.193H1.566v6.024a2.41 2.41 0 0 0 2.41 2.41h12.048a2.41 2.41 0 0 0 2.41-2.41V8.193ZM3.976 11.205a.602.602 0 0 1 .602-.602h4.82a.603.603 0 0 1 0 1.205h-4.82a.603.603 0 0 1-.602-.603Zm.602 1.808a.603.603 0 0 0 0 1.204h2.41a.602.602 0 1 0 0-1.204h-2.41Z"
-          clipRule="evenodd"
-        />
+        <g fill={color} clipPath="url(#a)">
+          <path d="M14.611 4.611a2.446 2.446 0 0 0-2.444-2.444H2.833A2.446 2.446 0 0 0 .39 4.61v.667H14.61zM.389 10.389a2.446 2.446 0 0 0 2.444 2.444h9.334a2.446 2.446 0 0 0 2.444-2.444V6.61H.39zm10.444-1.556h.89a.667.667 0 0 1 0 1.334h-.89a.667.667 0 0 1 0-1.334m-7.555 0h2.666a.667.667 0 0 1 0 1.334H3.278a.667.667 0 0 1 0-1.334" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

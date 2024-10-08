@@ -3,36 +3,44 @@ import { EOL } from "os"
 import Stripe from "stripe"
 
 import {
+  CreatePaymentProviderSession,
   MedusaContainer,
   PaymentProviderError,
   PaymentProviderSessionResponse,
-  PaymentSessionStatus,
   ProviderWebhookPayload,
   UpdatePaymentProviderSession,
   WebhookActionResult,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   AbstractPaymentProvider,
-  BigNumber,
+  isDefined,
+  isPaymentProviderError,
+  isPresent,
   MedusaError,
   PaymentActions,
-  isPaymentProviderError,
-} from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
-
-import { CreatePaymentProviderSession } from "@medusajs/types"
+  PaymentSessionStatus,
+} from "@medusajs/framework/utils"
 import {
   ErrorCodes,
   ErrorIntentStatus,
   PaymentIntentOptions,
-  StripeCredentials,
   StripeOptions,
 } from "../types"
+import {
+  getAmountFromSmallestUnit,
+  getSmallestUnit,
+} from "../utils/get-smallest-unit"
 
-abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
+abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
   protected container_: MedusaContainer
+
+  static validateOptions(options: StripeOptions): void {
+    if (!isDefined(options.apiKey)) {
+      throw new Error("Required option `apiKey` is missing in Stripe plugin")
+    }
+  }
 
   protected constructor(container: MedusaContainer, options: StripeOptions) {
     // @ts-ignore
@@ -41,22 +49,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     this.container_ = container
     this.options_ = options
 
-    this.stripe_ = this.init()
-  }
-
-  protected init() {
-    this.validateOptions(this.config)
-
-    return new Stripe(this.config.apiKey)
+    this.stripe_ = new Stripe(options.apiKey)
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
-
-  private validateOptions(options: StripeCredentials): void {
-    if (!isDefined(options.apiKey)) {
-      throw new Error("Required option `apiKey` is missing in Stripe plugin")
-    }
-  }
 
   get options(): StripeOptions {
     return this.options_
@@ -97,8 +93,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       case "canceled":
         return PaymentSessionStatus.CANCELED
       case "requires_capture":
-      case "succeeded":
         return PaymentSessionStatus.AUTHORIZED
+      case "succeeded":
+        return PaymentSessionStatus.CAPTURED
       default:
         return PaymentSessionStatus.PENDING
     }
@@ -108,22 +105,22 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     input: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
-    const { email, extra, resource_id, customer } = input.context
+    const { email, extra, session_id, customer } = input.context
     const { currency_code, amount } = input
 
     const description = (extra?.payment_description ??
-      this.options_?.payment_description) as string
+      this.options_?.paymentDescription) as string
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
-      amount: Math.round(new BigNumber(amount).numeric),
+      amount: getSmallestUnit(amount, currency_code),
       currency: currency_code,
-      metadata: { resource_id: resource_id ?? "Medusa Payment" },
+      metadata: { session_id: session_id! },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
 
-    if (this.options_?.automatic_payment_methods) {
+    if (this.options_?.automaticPaymentMethods) {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
@@ -232,8 +229,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const id = paymentSessionData.id as string
 
     try {
+      const { currency } = paymentSessionData
       await this.stripe_.refunds.create({
-        amount: Math.round(refundAmount),
+        amount: getSmallestUnit(refundAmount, currency as string),
         payment_intent: id as string,
       })
     } catch (e) {
@@ -249,6 +247,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     try {
       const id = paymentSessionData.id as string
       const intent = await this.stripe_.paymentIntents.retrieve(id)
+
+      intent.amount = getAmountFromSmallestUnit(intent.amount, intent.currency)
+
       return intent as unknown as PaymentProviderSessionResponse["data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
@@ -258,9 +259,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   async updatePayment(
     input: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    const { context, data, amount } = input
+    const { context, data, currency_code, amount } = input
 
-    const amountNumeric = Math.round(new BigNumber(amount).numeric)
+    const amountNumeric = getSmallestUnit(amount, currency_code)
 
     const stripeId = context.customer?.metadata?.stripe_id
 
@@ -275,7 +276,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
       return result
     } else {
-      if (amount && data.amount === amountNumeric) {
+      if (isPresent(amount) && data.amount === amountNumeric) {
         return { data }
       }
 
@@ -296,7 +297,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     try {
       // Prevent from updating the amount from here as it should go through
       // the updatePayment method to perform the correct logic
-      if (data.amount) {
+      if (isPresent(data.amount)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Cannot update amount, use updatePayment instead"
@@ -317,29 +318,33 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const event = this.constructWebhookEvent(webhookData)
     const intent = event.data.object as Stripe.PaymentIntent
 
+    const { currency } = intent
     switch (event.type) {
       case "payment_intent.amount_capturable_updated":
         return {
           action: PaymentActions.AUTHORIZED,
           data: {
-            resource_id: intent.metadata.resource_id,
-            amount: intent.amount_capturable, // NOTE: revisit when implementing multicapture
+            session_id: intent.metadata.session_id,
+            amount: getAmountFromSmallestUnit(
+              intent.amount_capturable,
+              currency
+            ), // NOTE: revisit when implementing multicapture
           },
         }
       case "payment_intent.succeeded":
         return {
           action: PaymentActions.SUCCESSFUL,
           data: {
-            resource_id: intent.metadata.resource_id,
-            amount: intent.amount_received,
+            session_id: intent.metadata.session_id,
+            amount: getAmountFromSmallestUnit(intent.amount_received, currency),
           },
         }
       case "payment_intent.payment_failed":
         return {
           action: PaymentActions.FAILED,
           data: {
-            resource_id: intent.metadata.resource_id,
-            amount: intent.amount,
+            session_id: intent.metadata.session_id,
+            amount: getAmountFromSmallestUnit(intent.amount, currency),
           },
         }
       default:
@@ -359,7 +364,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     return this.stripe_.webhooks.constructEvent(
       data.rawData as string | Buffer,
       signature,
-      this.config.webhookSecret
+      this.options_.webhookSecret
     )
   }
   protected buildError(

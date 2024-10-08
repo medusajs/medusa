@@ -1,10 +1,10 @@
-import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumberRawValue } from "@medusajs/framework/types"
 import {
   BigNumber,
   generateEntityId,
   MikroOrmBigNumberProperty,
   PaymentSessionStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Payment from "./payment"
 import PaymentCollection from "./payment-collection"
@@ -60,7 +61,7 @@ export default class PaymentSession {
   @ManyToOne(() => PaymentCollection, {
     persist: false,
   })
-  payment_collection: PaymentCollection
+  payment_collection: Rel<PaymentCollection>
 
   @ManyToOne({
     entity: () => PaymentCollection,
@@ -76,7 +77,10 @@ export default class PaymentSession {
     nullable: true,
     mappedBy: "payment_session",
   })
-  payment?: Payment | null
+  payment?: Rel<Payment> | null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -103,10 +107,14 @@ export default class PaymentSession {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "payses")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "payses")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 }

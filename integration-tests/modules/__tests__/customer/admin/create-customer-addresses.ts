@@ -1,7 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -29,7 +27,7 @@ medusaIntegrationTestRunner({
       })
       it("should create a customer address", async () => {
         // Create a customer
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
@@ -56,16 +54,16 @@ medusaIntegrationTestRunner({
           ])
         )
 
-        const customerWithAddresses = await customerModuleService.retrieve(
-          customer.id,
-          { relations: ["addresses"] }
-        )
+        const customerWithAddresses =
+          await customerModuleService.retrieveCustomer(customer.id, {
+            relations: ["addresses"],
+          })
 
         expect(customerWithAddresses.addresses?.length).toEqual(1)
       })
 
       it("sets new shipping address as default and unsets the old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
           addresses: [
@@ -91,7 +89,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService.listCustomerAddresses({
           customer_id: customer.id,
           is_default_shipping: true,
         })
@@ -100,7 +98,7 @@ medusaIntegrationTestRunner({
       })
 
       it("sets new billing address as default and unsets the old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
           addresses: [
@@ -126,7 +124,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService.listCustomerAddresses({
           customer_id: customer.id,
           is_default_billing: true,
         })

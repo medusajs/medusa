@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/createProductTypesStep
+sidebar_label: createProductTypesStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createProductTypesStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createProductTypesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more product types.
+
+## Input
+
+<TypeList types={[{"name":"CreateProductTypeDTO[]","type":"[CreateProductTypeDTO](../../../../../product/interfaces/product.CreateProductTypeDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateProductTypeDTO","type":"[CreateProductTypeDTO](../../../../../product/interfaces/product.CreateProductTypeDTO/page.mdx)","optional":false,"defaultValue":"","description":"A product type to create.","expandable":false,"children":[{"name":"value","type":"`string`","description":"The product type's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createProductTypesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ProductTypeDTO[]","type":"[ProductTypeDTO](../../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductTypeDTO","type":"[ProductTypeDTO](../../../../../product/interfaces/product.ProductTypeDTO/page.mdx)","optional":false,"defaultValue":"","description":"A product type's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createProductTypesStep"/>

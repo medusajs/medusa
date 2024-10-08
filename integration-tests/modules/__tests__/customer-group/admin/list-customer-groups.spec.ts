@@ -1,7 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -29,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all customer groups and its count", async () => {
-        await customerModuleService.createCustomerGroup({
+        await customerModuleService.createCustomerGroups({
           name: "Test",
         })
 
@@ -46,7 +44,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching of customer groups", async () => {
-        await customerModuleService.createCustomerGroup([
+        await customerModuleService.createCustomerGroups([
           {
             name: "First group",
           },

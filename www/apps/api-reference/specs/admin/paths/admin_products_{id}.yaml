@@ -1,34 +1,54 @@
 get:
-  operationId: GetProductsProduct
+  operationId: GetProductsId
   summary: Get a Product
-  description: Retrieve a Product's details.
+  description: >-
+    Retrieve a product by its ID. You can expand the product's relations or
+    select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_products_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_products_{id}/get.sh
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}/get.sh
   tags:
     - Products
   responses:
@@ -37,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
+            $ref: ../components/schemas/AdminProductResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -51,41 +71,70 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostProductsProduct
+  operationId: PostProductsId
   summary: Update a Product
-  description: Update a Product's details.
+  description: Update a product's details.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostProductsProductReq.yaml
-  x-codegen:
-    method: update
+          allOf:
+            - $ref: ../components/schemas/AdminUpdateProduct.yaml
+            - type: object
+              description: The properties to update in a product.
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
+          description: The properties to update in a product.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_products_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_products_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
@@ -94,7 +143,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
+            $ref: ../components/schemas/AdminProductResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -107,37 +156,28 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateProductsWorkflow
 delete:
-  operationId: DeleteProductsProduct
+  operationId: DeleteProductsId
   summary: Delete a Product
-  description: Delete a Product and its associated product variants and options.
+  description: Delete a product.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_products_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_products_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
@@ -146,7 +186,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsDeleteRes.yaml
+            $ref: ../components/schemas/AdminProductDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -159,3 +199,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteProductsWorkflow

@@ -1,9 +1,9 @@
 import {
-  UpdateCustomerAddressDTO,
   FilterableCustomerAddressProps,
   ICustomerModuleService,
-} from "@medusajs/types"
-import { StepResponse } from "@medusajs/workflows-sdk"
+  UpdateCustomerAddressDTO,
+} from "@medusajs/framework/types"
+import { StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const unsetForUpdate = async (
   data: {
@@ -17,18 +17,21 @@ export const unsetForUpdate = async (
     return new StepResponse(void 0)
   }
 
-  const affectedCustomers = await customerService.listAddresses(data.selector, {
-    select: ["id", "customer_id"],
-  })
+  const affectedCustomers = await customerService.listCustomerAddresses(
+    data.selector,
+    {
+      select: ["id", "customer_id"],
+    }
+  )
 
   const customerIds = affectedCustomers.map((address) => address.customer_id)
 
-  const customerDefaultAddresses = await customerService.listAddresses({
+  const customerDefaultAddresses = await customerService.listCustomerAddresses({
     customer_id: customerIds,
     [field]: true,
   })
 
-  await customerService.updateAddresses(
+  await customerService.updateCustomerAddresses(
     { customer_id: customerIds, [field]: true },
     { [field]: false }
   )

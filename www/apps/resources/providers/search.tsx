@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
-  searchFilters,
+  SearchProvider as UiSearchProvider,
+  searchFiltersV2,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -21,8 +21,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         mainIndexName:
           process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
         indices: [
-          process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
           process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
+          process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
         ],
       }}
       searchProps={{
@@ -33,21 +33,18 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             items: [
               "Medusa Configurations",
               "Commerce Modules",
-              "Medusa JS Reference",
-              "Medusa React Reference",
-              "Workflows API Reference",
+              "Medusa Workflows Reference",
+              "Storefront Development",
             ],
           },
         ],
-        checkInternalPattern: new RegExp(`^${config.baseUrl}/resources/.*`),
-        filterOptions: searchFilters,
+        checkInternalPattern: new RegExp(`^${config.baseUrl}/v2/resources/.*`),
+        filterOptions: searchFiltersV2,
       }}
-      // TODO change once we have a dedicated index
-      initialDefaultFilters={["docs"]}
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
@@ -60,11 +57,13 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
+            badgeType: "shaded",
             children: "Beta",
           },
         },
       ]}
+      initialDefaultFilters={["guides"]}
     >
       {children}
     </UiSearchProvider>

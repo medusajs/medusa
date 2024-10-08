@@ -5,19 +5,26 @@ const Adjustments = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth={1.25}
-          d="M8.75 5h8.125M8.75 5a1.25 1.25 0 0 1-2.5 0m2.5 0a1.25 1.25 0 0 0-2.5 0M3.125 5H6.25m2.5 10h8.125M8.75 15a1.25 1.25 0 0 1-2.5 0m2.5 0a1.25 1.25 0 0 0-2.5 0m-3.125 0H6.25m7.5-5h3.125m-3.125 0a1.25 1.25 0 0 1-2.5 0m2.5 0a1.25 1.25 0 0 0-2.5 0m-8.125 0h8.125"
-        />
+          strokeWidth={1.5}
+          clipPath="url(#a)"
+        >
+          <path d="M12.611 7.5h.889M1.5 7.5h8.444M7.722 3.278H13.5M1.5 3.278h3.556M7.722 11.722H13.5M1.5 11.722h3.556M9.944 5.722v3.556M5.056 1.5v3.556M5.056 9.944V13.5" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

@@ -5,8 +5,8 @@ const Rss = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const Rss = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M10.625 16.25v-.625a6.25 6.25 0 0 0-6.25-6.25H3.75m0-5.625h.625c6.558 0 11.875 5.317 11.875 11.875v.625M5 15.625a.625.625 0 1 1-1.25 0 .625.625 0 0 1 1.25 0Z"
+          d="M8.05 13v-.55a5.5 5.5 0 0 0-5.5-5.5H2M2 2h.55C8.321 2 13 6.679 13 12.45V13m-9.9-.55a.55.55 0 1 1-1.1 0 .55.55 0 0 1 1.1 0"
         />
       </svg>
     )

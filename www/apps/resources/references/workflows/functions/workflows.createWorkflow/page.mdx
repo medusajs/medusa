@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # createWorkflow - Workflows API Reference
 
-This documentation provides a reference to the `createWorkflow` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `createWorkflow` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function creates a workflow with the provided name and a constructor function.
 The constructor function builds the workflow from steps created by the [createStep](../workflows.createStep/page.mdx) function.
@@ -17,8 +17,11 @@ invoke the exported workflow, then run its `run` method.
 ## Example
 
 ```ts
-import { createWorkflow } from "@medusajs/workflows-sdk"
-import { MedusaRequest, MedusaResponse, Product } from "@medusajs/medusa"
+import {
+  createWorkflow,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import {
   createProductStep,
   getProductStep,
@@ -29,16 +32,15 @@ interface WorkflowInput {
  title: string
 }
 
-const myWorkflow = createWorkflow<
-    WorkflowInput,
-    Product
-  >("my-workflow", (input) => {
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  (input: WorkflowInput) => {
    // Everything here will be executed and resolved later
    // during the execution. Including the data access.
 
     const product = createProductStep(input)
     const prices = createPricesStep(product)
-    return getProductStep(product.id)
+    return new WorkflowResponse(getProductStep(product.id))
   }
 )
 
@@ -61,12 +63,12 @@ export async function GET(
 
 ## Type Parameters
 
-<TypeList types={[{"name":"TData","type":"`object`","description":"The type of the input passed to the composer function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResult","type":"`object`","description":"The type of the output returned by the composer function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"THooks","type":"`Record<string, Function>`","description":"The type of hooks defined in the workflow.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createWorkflow"/>
+<TypeList types={[{"name":"TData","type":"`object`","description":"The type of the input passed to the composer function.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TResult","type":"`object`","description":"The type of the output returned by the composer function.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"THooks","type":"`any`[]","description":"The type of hooks defined in the workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createWorkflow"/>
 
 ## Parameters
 
-<TypeList types={[{"name":"nameOrConfig","type":"`string` \\| `object` & `TransactionModelOptions`","description":"The name of the workflow or its configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"composer","type":"(`input`: [WorkflowData](../../types/workflows.WorkflowData/page.mdx)&#60;TData&#62;) => `void` \\| [WorkflowData](../../types/workflows.WorkflowData/page.mdx)&#60;TResult&#62; \\| &#123; [K in string \\| number \\| symbol]: WorkflowDataProperties&#60;TResult[K]&#62; \\| WorkflowData&#60;TResult[K]&#62; &#125;","description":"The constructor function that is executed when the `run` method in [ReturnWorkflow](../../types/workflows.ReturnWorkflow/page.mdx) is used.\nThe function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.\nYou'll have to use the [transform](../workflows.transform/page.mdx) function if you need to directly manipulate data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createWorkflow"/>
+<TypeList types={[{"name":"nameOrConfig","type":"`string` \\| `object` & `TransactionModelOptions`","description":"The name of the workflow or its configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"composer","type":"(`input`: [WorkflowData](../../types/workflows.WorkflowData/page.mdx)&#60;TData&#62;) => `void` \\| [WorkflowResponse](../../classes/workflows.WorkflowResponse/page.mdx)&#60;TResult, THooks&#62;","description":"The constructor function that is executed when the `run` method in [ReturnWorkflow](../../types/workflows.ReturnWorkflow/page.mdx) is used.\nThe function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.\nYou'll have to use the [transform](../workflows.transform/page.mdx) function if you need to directly manipulate data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createWorkflow"/>
 
 ## Returns
 
-<TypeList types={[{"name":"ReturnWorkflow","type":"[ReturnWorkflow](../../types/workflows.ReturnWorkflow/page.mdx)&#60;TData, TResult, THooks&#62;","optional":false,"defaultValue":"","description":"The created workflow. You can later execute the workflow by invoking it, then using its `run` method.","expandable":false,"children":[]}]}  sectionTitle="createWorkflow"/>
+<TypeList types={[{"name":"ReturnWorkflow","type":"[ReturnWorkflow](../../types/workflows.ReturnWorkflow/page.mdx)&#60;TData, TResult, THooks&#62;","optional":false,"defaultValue":"","description":"The created workflow. You can later execute the workflow by invoking it, then using its `run` method.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createWorkflow"/>

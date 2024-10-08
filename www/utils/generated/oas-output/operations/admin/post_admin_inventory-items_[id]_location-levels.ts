@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: PostInventoryItemsIdLocationLevels
- * summary: Add Location Levels to Inventory Item
- * description: Add a list of location levels to a inventory item.
+ * summary: Create Inventory Level for Inventory Item
+ * x-sidebar-summary: Create Inventory Level
+ * description: Create an inventory level for an inventory item.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -21,36 +22,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -60,38 +41,41 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The inventory level's details.
  *         required:
  *           - location_id
- *           - stocked_quantity
- *           - incoming_quantity
  *         properties:
  *           location_id:
  *             type: string
  *             title: location_id
- *             description: The inventory item's location id.
+ *             description: The ID of the associated location.
  *           stocked_quantity:
  *             type: number
  *             title: stocked_quantity
- *             description: The inventory item's stocked quantity.
+ *             description: The inventory level's stocked quantity.
  *           incoming_quantity:
  *             type: number
  *             title: incoming_quantity
- *             description: The inventory item's incoming quantity.
+ *             description: The inventory level's incoming quantity.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "location_id": "{value}",
- *         "stocked_quantity": 1506469662949376
+ *         "location_id": "{value}"
  *       }'
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminInventoryItemResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -104,6 +88,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createInventoryLevelsWorkflow
  * 
 */
 

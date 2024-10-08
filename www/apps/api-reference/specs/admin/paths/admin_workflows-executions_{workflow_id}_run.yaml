@@ -1,0 +1,84 @@
+post:
+  operationId: PostWorkflowsExecutionsWorkflow_idRun
+  summary: Execute a Workflow
+  description: Execute a workflow by its ID.
+  x-authenticated: true
+  parameters:
+    - name: workflow_id
+      in: path
+      description: The workflow's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminCreateWorkflowsRun.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_run/post.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The execution's details.
+            required:
+              - acknowledgement
+            properties:
+              acknowledgement:
+                type: object
+                description: The workflow's details
+                required:
+                  - workflowId
+                  - transactionId
+                  - hasFinished
+                  - hasFailed
+                properties:
+                  workflowId:
+                    type: string
+                    description: The ID of the executed workflow.
+                    title: workflowId
+                  transactionId:
+                    type: string
+                    description: >-
+                      The ID of the workflow exection's transaction. Use this
+                      later to track the workflow execution's progress or
+                      succeed / fail its steps.
+                    title: transactionId
+                  parentStepIdempotencyKey:
+                    type: string
+                    title: parentStepIdempotencyKey
+                    description: The idempotency key of the workflow execution.
+                  hasFinished:
+                    type: boolean
+                    title: hasFinished
+                    description: Whether the workflow execution has finished.
+                  hasFailed:
+                    type: boolean
+                    title: hasFailed
+                    description: Whether the workflow execution has failed.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

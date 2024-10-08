@@ -5,6 +5,8 @@ import { notFound } from "next/navigation"
 import {
   typeListLinkFixerPlugin,
   localLinksRehypePlugin,
+  workflowDiagramLinkFixerPlugin,
+  prerequisitesLinkFixerPlugin,
 } from "remark-rehype-plugins"
 import MDXComponents from "@/components/MDXComponents"
 import mdxOptions from "../../../mdx-options.mjs"
@@ -47,7 +49,27 @@ export default async function ReferencesPage({ params }: PageProps) {
         mdxOptions: {
           rehypePlugins: [
             ...mdxOptions.options.rehypePlugins,
-            [typeListLinkFixerPlugin, pluginOptions],
+            [
+              typeListLinkFixerPlugin,
+              {
+                ...pluginOptions,
+                checkLinksType: "md",
+              },
+            ],
+            [
+              workflowDiagramLinkFixerPlugin,
+              {
+                ...pluginOptions,
+                checkLinksType: "value",
+              },
+            ],
+            [
+              prerequisitesLinkFixerPlugin,
+              {
+                ...pluginOptions,
+                checkLinksType: "value",
+              },
+            ],
             [localLinksRehypePlugin, pluginOptions],
           ],
           remarkPlugins: mdxOptions.options.remarkPlugins,

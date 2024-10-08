@@ -5,17 +5,15 @@ const PlayMiniSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
         <path
           fill={color}
-          fillRule="evenodd"
-          d="M5 5.768a1.25 1.25 0 0 1 1.853-1.095l7.693 4.232a1.25 1.25 0 0 1 0 2.19l-7.693 4.232a1.25 1.25 0 0 1-1.852-1.095L5 5.768Z"
-          clipRule="evenodd"
+          d="M12.926 6.147 4.487 1.475a1.55 1.55 0 0 0-1.555.02c-.478.282-.763.78-.763 1.333v9.344c0 .553.285 1.05.763 1.332.248.146.521.22.796.22.26 0 .52-.067.76-.198l8.436-4.672c.494-.273.8-.792.8-1.353s-.306-1.081-.8-1.354"
         />
       </svg>
     )

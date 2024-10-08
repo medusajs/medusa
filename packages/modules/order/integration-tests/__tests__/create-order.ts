@@ -1,12 +1,12 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { CreateOrderDTO, IOrderModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order Module Service", () => {
       const input = {
         email: "foo@bar.com",
@@ -132,7 +132,7 @@ moduleIntegrationTestRunner({
         billing_address: expect.objectContaining({
           id: expect.stringContaining("ordaddr_"),
         }),
-        items: [
+        items: expect.arrayContaining([
           expect.objectContaining({
             id: expect.stringContaining("ordli_"),
             quantity: 1,
@@ -174,7 +174,7 @@ moduleIntegrationTestRunner({
               version: 1,
             }),
           }),
-        ],
+        ]),
         shipping_methods: [
           expect.objectContaining({
             id: expect.stringContaining("ordsm_"),
@@ -193,15 +193,122 @@ moduleIntegrationTestRunner({
       })
 
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         const serializedOrder = JSON.parse(JSON.stringify(createdOrder))
+
         expect(serializedOrder).toEqual(expectation)
       })
 
+      it("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
+        const inpCopy = JSON.parse(JSON.stringify(input)) as CreateOrderDTO
+        inpCopy.transactions!.push({
+          amount: 10,
+          currency_code: "USD",
+        })
+        const created = await service.createOrders(inpCopy)
+
+        expect(created.summary).toEqual(
+          expect.objectContaining({
+            transaction_total: 68,
+            pending_difference: -20.10799200799201,
+            paid_total: 68,
+            refunded_total: 0,
+          })
+        )
+
+        const refund = await service.addOrderTransactions([
+          {
+            order_id: created.id,
+            amount: -20,
+            currency_code: "USD",
+          },
+        ])
+
+        const serializedOrder = JSON.parse(
+          JSON.stringify(
+            await service.retrieveOrder(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder.summary).toEqual(
+          expect.objectContaining({
+            transaction_total: 48,
+            pending_difference: -0.10799200799201,
+            paid_total: 68,
+            refunded_total: 20,
+          })
+        )
+
+        await service.softDeleteOrderTransactions([refund[0].id])
+
+        const serializedOrder2 = JSON.parse(
+          JSON.stringify(
+            await service.retrieveOrder(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder2.summary).toEqual(
+          expect.objectContaining({
+            transaction_total: 68,
+            pending_difference: -20.10799200799201,
+            paid_total: 68,
+            refunded_total: 0,
+          })
+        )
+
+        await service.addOrderTransactions([
+          {
+            order_id: created.id,
+            amount: -50,
+            currency_code: "USD",
+          },
+        ])
+
+        const serializedOrder3 = JSON.parse(
+          JSON.stringify(
+            await service.retrieveOrder(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder3.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 50,
+            transaction_total: 18,
+            pending_difference: 29.89200799200799,
+          })
+        )
+
+        await service.restoreOrderTransactions([refund[0].id])
+
+        const serializedOrder4 = JSON.parse(
+          JSON.stringify(
+            await service.retrieveOrder(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder4.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 70,
+            transaction_total: -2,
+            pending_difference: 49.89200799200799,
+          })
+        )
+      })
+
       it("should transform requested fields and relations to match the db schema and return the order", async function () {
-        const createdOrder = await service.create(input)
-        const getOrder = await service.retrieve(createdOrder.id, {
+        const createdOrder = await service.createOrders(input)
+        const getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "display_id",
@@ -240,8 +347,8 @@ moduleIntegrationTestRunner({
       })
 
       it("should return order transactions", async function () {
-        const createdOrder = await service.create(input)
-        const getOrder = await service.retrieve(createdOrder.id, {
+        const createdOrder = await service.createOrders(input)
+        const getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "transactions.amount",
@@ -267,8 +374,8 @@ moduleIntegrationTestRunner({
       })
 
       it("should transform where clause to match the db schema and return the order", async function () {
-        await service.create(input)
-        const orders = await service.list(
+        await service.createOrders(input)
+        const orders = await service.listOrders(
           {
             items: {
               quantity: 2,
@@ -277,12 +384,11 @@ moduleIntegrationTestRunner({
           {
             select: ["id"],
             relations: ["items"],
-            take: null,
           }
         )
         expect(orders.length).toEqual(1)
 
-        const orders2 = await service.list(
+        const orders2 = await service.listOrders(
           {
             items: {
               quantity: 5,
@@ -291,12 +397,11 @@ moduleIntegrationTestRunner({
           {
             select: ["items.quantity"],
             relations: ["items"],
-            take: null,
           }
         )
         expect(orders2.length).toEqual(0)
 
-        const orders3 = await service.list(
+        const orders3 = await service.listOrders(
           {
             items: {
               detail: {
@@ -307,12 +412,11 @@ moduleIntegrationTestRunner({
           {
             select: ["id"],
             relations: ["items.detail"],
-            take: null,
           }
         )
         expect(orders3.length).toEqual(1)
 
-        const orders4 = await service.list(
+        const orders4 = await service.listOrders(
           {
             items: {
               detail: {
@@ -323,213 +427,9 @@ moduleIntegrationTestRunner({
           {
             select: ["id"],
             relations: ["items.detail"],
-            take: null,
           }
         )
         expect(orders4.length).toEqual(0)
-      })
-
-      it("should create an order, fulfill, ship and return the items", async function () {
-        const createdOrder = await service.create(input)
-
-        // Fullfilment
-        await service.registerFulfillment({
-          order_id: createdOrder.id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        let getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        let serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 2,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 0,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 0,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 0,
-                }),
-              }),
-            ],
-          })
-        )
-
-        // Shipment
-        await service.registerShipment({
-          order_id: createdOrder.id,
-          reference: Modules.FULFILLMENT,
-          shipping_method: createdOrder.shipping_methods![0].id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 3,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 2,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                }),
-              }),
-            ],
-          })
-        )
-
-        // Return
-        await service.createReturn({
-          order_id: createdOrder.id,
-          reference: Modules.FULFILLMENT,
-          description: "Return all the items",
-          internal_note: "user wants to return all items",
-          shipping_method: createdOrder.shipping_methods![0].id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-            "items.detail.return_requested_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 4,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                  return_requested_quantity: 1,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 2,
-                  return_requested_quantity: 2,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                  return_requested_quantity: 1,
-                }),
-              }),
-            ],
-          })
-        )
       })
     })
   },

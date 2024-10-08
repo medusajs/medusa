@@ -14,59 +14,59 @@ In this document, you’ll find common examples of how you can use the Promotion
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const promotionModuleService: IPromotionModuleService =
-      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+    Modules.PROMOTION
+  )
 
-    const promotion = await promotionModuleService.create({
-      code: "10%OFF",
-      type: "standard",
-      application_method: {
-        type: "percentage",
-        target_type: "order",
-        value: "10",
-      },
-    })
+  const promotion = await promotionModuleService.createPromotions({
+    code: "10%OFF",
+    type: "standard",
+    application_method: {
+      type: "percentage",
+      target_type: "order",
+      value: "10",
+      currency_code: "usd",
+    },
+  })
 
-    res.json({ promotion })
-  }
-  ```
+  res.json({ promotion })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializePromotionModule,
-  } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
-  export async function POST(request: Request) {
-    const promotionModuleService =
-      await initializePromotionModule()
-    const body = await request.json()
+export async function POST(request: Request) {
+  const promotionModuleService = await initializePromotionModule()
+  const body = await request.json()
 
-    const promotion = await promotionModuleService.create({
-      code: "10%OFF",
-      type: "standard",
-      application_method: {
-        type: "percentage",
-        target_type: "order",
-        value: "10",
-      },
-    })
+  const promotion = await promotionModuleService.createPromotions({
+    code: "10%OFF",
+    type: "standard",
+    application_method: {
+      type: "percentage",
+      target_type: "order",
+      value: "10",
+      currency_code: "usd",
+    },
+  })
 
-    return NextResponse.json({ promotion })
-  }
-  ```
+  return NextResponse.json({ promotion })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -79,67 +79,51 @@ In this document, you’ll find common examples of how you can use the Promotion
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const promotionModuleService: IPromotionModuleService =
-      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+    Modules.PROMOTION
+  )
 
-    const campaign = await promotionModuleService.createCampaigns(
-      {
-        name: "Summer Discounts",
-        campaign_identifier: "G-123445",
-        starts_at: new Date("2024-05-02"),
-        ends_at: new Date("2024-07-20"),
-        promotions: [
-          {
-            id: "promo_123",
-          },
-        ],
-      }
-    )
+  const campaign = await promotionModuleService.createCampaigns({
+    name: "Summer Discounts",
+    campaign_identifier: "G-123445",
+    starts_at: new Date("2024-05-02"),
+    ends_at: new Date("2024-07-20"),
+  })
 
-    res.json({ campaign })
-  }
-  ```
+  res.json({ campaign })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializePromotionModule,
-  } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
-  export async function POST(request: Request) {
-    const promotionModuleService =
-      await initializePromotionModule()
-    const body = await request.json()
+export async function POST(request: Request) {
+  const promotionModuleService = await initializePromotionModule()
+  const body = await request.json()
 
-    const campaign = await promotionModuleService.createCampaigns(
-      {
-        name: "Summer Discounts",
-        campaign_identifier: "G-123445",
-        starts_at: new Date("2024-05-02"),
-        ends_at: new Date("2024-07-20"),
-        promotions: [
-          {
-            id: "promo_123",
-          },
-        ],
-      }
-    )
+  const campaign = await promotionModuleService.createCampaigns({
+    name: "Summer Discounts",
+    campaign_identifier: "G-123445",
+    starts_at: new Date("2024-05-02"),
+    ends_at: new Date("2024-07-20"),
+  })
 
-    return NextResponse.json({ campaign })
-  }
-  ```
+  return NextResponse.json({ campaign })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -152,72 +136,72 @@ In this document, you’ll find common examples of how you can use the Promotion
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const promotionModuleService: IPromotionModuleService =
-      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+    Modules.PROMOTION
+  )
 
-    const promotion = await promotionModuleService.create({
-      code: "10%OFF",
-      type: "standard",
-      application_method: {
-        type: "percentage",
-        target_type: "order",
-        value: "10",
+  const promotion = await promotionModuleService.createPromotions({
+    code: "10%OFF",
+    type: "standard",
+    application_method: {
+      type: "percentage",
+      target_type: "order",
+      value: "10",
+      currency_code: "usd",
+    },
+    rules: [
+      {
+        attribute: "customer_group_id",
+        operator: "eq",
+        values: ["VIP"],
       },
-      rules: [
-        {
-          field: "customer_group_id",
-          operator: "eq",
-          values: ["VIP"],
-        },
-      ],
-    })
+    ],
+  })
 
-    res.json({ promotion })
-  }
-  ```
+  res.json({ promotion })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializePromotionModule,
-  } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
-  export async function POST(request: Request) {
-    const promotionModuleService =
-      await initializePromotionModule()
+export async function POST(request: Request) {
+  const promotionModuleService = await initializePromotionModule()
 
-    const promotion = await promotionModuleService.create({
-      code: "10%OFF",
-      type: "standard",
-      application_method: {
-        type: "percentage",
-        target_type: "order",
-        value: "10",
+  const promotion = await promotionModuleService.createPromotions({
+    code: "10%OFF",
+    type: "standard",
+    application_method: {
+      type: "percentage",
+      target_type: "order",
+      value: "10",
+      currency_code: "usd",
+    },
+    rules: [
+      {
+        attribute: "customer_group_id",
+        operator: "eq",
+        values: ["VIP"],
       },
-      rules: [
-        {
-          field: "customer_group_id",
-          operator: "eq",
-          values: ["VIP"],
-        },
-      ],
-    })
+    ],
+  })
 
-    return NextResponse.json({ promotion })
-  }
-  ```
+  return NextResponse.json({ promotion })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -230,42 +214,40 @@ In this document, you’ll find common examples of how you can use the Promotion
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const promotionModuleService: IPromotionModuleService =
-      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+    Modules.PROMOTION
+  )
 
-    res.json({
-      promotions: await promotionModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    promotions: await promotionModuleService.listPromotions(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializePromotionModule,
-  } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
-  export async function POST(request: Request) {
-    const promotionModuleService =
-      await initializePromotionModule()
+export async function GET(request: Request) {
+  const promotionModuleService = await initializePromotionModule()
 
-    return NextResponse.json({
-      promotions: await promotionModuleService.list(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    promotions: await promotionModuleService.listPromotions(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -274,4 +256,4 @@ In this document, you’ll find common examples of how you can use the Promotion
 
 ## More Examples
 
-The [module interface reference](/references/promotion) provides a reference to all the methods available for use with examples for each.
+The [Promotion Module's main service reference](/references/promotion) provides a reference to all the methods available for use with examples for each.

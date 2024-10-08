@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes } from "@medusajs/framework/types"
 import faker from "faker"
 
 export const buildProductVariantOnlyData = ({
@@ -8,7 +8,6 @@ export const buildProductVariantOnlyData = ({
   ean,
   upc,
   allow_backorder,
-  inventory_quantity,
   manage_inventory,
   hs_code,
   origin_country,
@@ -28,7 +27,6 @@ export const buildProductVariantOnlyData = ({
     ean,
     upc,
     allow_backorder,
-    inventory_quantity,
     manage_inventory,
     hs_code,
     origin_country,

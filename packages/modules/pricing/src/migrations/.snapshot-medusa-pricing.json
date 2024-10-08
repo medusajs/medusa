@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -41,10 +39,7 @@
           "primary": false,
           "nullable": false,
           "default": "'draft'",
-          "enumItems": [
-            "active",
-            "draft"
-          ],
+          "enumItems": ["active", "draft"],
           "mappedType": "enum"
         },
         "type": {
@@ -55,10 +50,7 @@
           "primary": false,
           "nullable": false,
           "default": "'sale'",
-          "enumItems": [
-            "sale",
-            "override"
-          ],
+          "enumItems": ["sale", "override"],
           "mappedType": "enum"
         },
         "starts_at": {
@@ -129,9 +121,7 @@
       "indexes": [
         {
           "keyName": "IDX_price_list_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -139,9 +129,220 @@
         },
         {
           "keyName": "price_list_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "attribute": {
+          "name": "attribute",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "value": {
+          "name": "value",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "price_list_id": {
+          "name": "price_list_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "price_list_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_price_list_rule_price_list_id",
+          "columnNames": ["price_list_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_price_list_id\" ON \"price_list_rule\" (price_list_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_price_list_rule_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_deleted_at\" ON \"price_list_rule\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "price_list_rule_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "price_list_rule_price_list_id_foreign": {
+          "constraintName": "price_list_rule_price_list_id_foreign",
+          "columnNames": ["price_list_id"],
+          "localTableName": "public.price_list_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.price_list",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "attribute": {
+          "name": "attribute",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "is_tax_inclusive": {
+          "name": "is_tax_inclusive",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "price_preference",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_price_preference_deleted_at",
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_preference_deleted_at\" ON \"price_preference\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_price_preference_attribute_value",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_preference_attribute_value\" ON \"price_preference\" (attribute, value) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "price_preference_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -199,9 +400,7 @@
       "indexes": [
         {
           "keyName": "IDX_price_set_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -209,9 +408,7 @@
         },
         {
           "keyName": "price_set_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -351,9 +548,7 @@
       "indexes": [
         {
           "keyName": "IDX_price_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
+          "columnNames": ["currency_code"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -361,9 +556,7 @@
         },
         {
           "keyName": "IDX_price_price_set_id",
-          "columnNames": [
-            "price_set_id"
-          ],
+          "columnNames": ["price_set_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -371,9 +564,7 @@
         },
         {
           "keyName": "IDX_price_price_list_id",
-          "columnNames": [
-            "price_list_id"
-          ],
+          "columnNames": ["price_list_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -381,9 +572,7 @@
         },
         {
           "keyName": "IDX_price_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -391,9 +580,7 @@
         },
         {
           "keyName": "price_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -403,26 +590,18 @@
       "foreignKeys": {
         "price_price_set_id_foreign": {
           "constraintName": "price_price_set_id_foreign",
-          "columnNames": [
-            "price_set_id"
-          ],
+          "columnNames": ["price_set_id"],
           "localTableName": "public.price",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.price_set",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_price_list_id_foreign": {
           "constraintName": "price_price_list_id_foreign",
-          "columnNames": [
-            "price_list_id"
-          ],
+          "columnNames": ["price_list_id"],
           "localTableName": "public.price",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.price_list",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -440,260 +619,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rule_attribute": {
-          "name": "rule_attribute",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "default_priority": {
-          "name": "default_priority",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "rule_type",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_rule_type_rule_attribute",
-          "columnNames": [
-            "rule_attribute"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rule_type_rule_attribute\" ON \"rule_type\" (rule_attribute) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_rule_type_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rule_type_deleted_at\" ON \"rule_type\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "rule_type_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "price_set_id": {
-          "name": "price_set_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rule_type_id": {
-          "name": "rule_type_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "price_set_rule_type",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_price_set_rule_type_price_set_id",
-          "columnNames": [
-            "price_set_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_price_set_id\" ON \"price_set_rule_type\" (price_set_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_set_rule_type_rule_type_id",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_rule_type_id\" ON \"price_set_rule_type\" (rule_type_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_set_rule_type_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_deleted_at\" ON \"price_set_rule_type\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "price_set_rule_type_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "price_set_rule_type_price_set_id_foreign": {
-          "constraintName": "price_set_rule_type_price_set_id_foreign",
-          "columnNames": [
-            "price_set_id"
-          ],
-          "localTableName": "public.price_set_rule_type",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.price_set",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "price_set_rule_type_rule_type_id_foreign": {
-          "constraintName": "price_set_rule_type_rule_type_id_foreign",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "localTableName": "public.price_set_rule_type",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.rule_type",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "price_set_id": {
-          "name": "price_set_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rule_type_id": {
-          "name": "rule_type_id",
+        "attribute": {
+          "name": "attribute",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -766,40 +693,16 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_price_rule_price_set_id",
-          "columnNames": [
-            "price_set_id"
-          ],
+          "keyName": "IDX_price_rule_price_id_attribute_unique",
+          "columnNames": ["price_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_id\" ON \"price_rule\" (price_set_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_rule_rule_type_id",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_rule_type_id\" ON \"price_rule\" (rule_type_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_rule_price_id_rule_type_id_unique",
-          "columnNames": [
-            "price_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_id_rule_type_id_unique\" ON \"price_rule\" (price_id, rule_type_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_id_attribute_unique\" ON \"price_rule\" (price_id, attribute) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -807,9 +710,7 @@
         },
         {
           "keyName": "price_rule_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -817,287 +718,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "price_rule_price_set_id_foreign": {
-          "constraintName": "price_rule_price_set_id_foreign",
-          "columnNames": [
-            "price_set_id"
-          ],
-          "localTableName": "public.price_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.price_set",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "price_rule_rule_type_id_foreign": {
-          "constraintName": "price_rule_rule_type_id_foreign",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "localTableName": "public.price_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.rule_type",
-          "updateRule": "cascade"
-        },
         "price_rule_price_id_foreign": {
           "constraintName": "price_rule_price_id_foreign",
-          "columnNames": [
-            "price_id"
-          ],
+          "columnNames": ["price_id"],
           "localTableName": "public.price_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.price",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rule_type_id": {
-          "name": "rule_type_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "price_list_id": {
-          "name": "price_list_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "price_list_rule",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_price_list_rule_rule_type_id_unique",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_list_rule_rule_type_id_unique\" ON \"price_list_rule\" (rule_type_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_list_rule_price_list_id",
-          "columnNames": [
-            "price_list_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_price_list_id\" ON \"price_list_rule\" (price_list_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_list_rule_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_deleted_at\" ON \"price_list_rule\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "price_list_rule_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "price_list_rule_rule_type_id_foreign": {
-          "constraintName": "price_list_rule_rule_type_id_foreign",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "localTableName": "public.price_list_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.rule_type",
-          "updateRule": "cascade"
-        },
-        "price_list_rule_price_list_id_foreign": {
-          "constraintName": "price_list_rule_price_list_id_foreign",
-          "columnNames": [
-            "price_list_id"
-          ],
-          "localTableName": "public.price_list_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.price_list",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "price_list_rule_id": {
-          "name": "price_list_rule_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "price_list_rule_value",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_price_list_rule_value_price_list_rule_id",
-          "columnNames": [
-            "price_list_rule_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_value_price_list_rule_id\" ON \"price_list_rule_value\" (price_list_rule_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_price_list_rule_value_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_value_deleted_at\" ON \"price_list_rule_value\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "price_list_rule_value_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "price_list_rule_value_price_list_rule_id_foreign": {
-          "constraintName": "price_list_rule_value_price_list_rule_id_foreign",
-          "columnNames": [
-            "price_list_rule_id"
-          ],
-          "localTableName": "public.price_list_rule_value",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.price_list_rule",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

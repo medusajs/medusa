@@ -5,8 +5,8 @@ const Resize = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const Resize = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m16.754 12.437-4.313 4.313M16.75 7.75l-9 9"
+          d="m13.182 8.94-4.243 4.242M12.303 3.818l-8.485 8.485"
         />
       </svg>
     )

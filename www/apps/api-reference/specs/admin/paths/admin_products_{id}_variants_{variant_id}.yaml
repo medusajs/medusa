@@ -1,48 +1,153 @@
-post:
-  operationId: PostProductsProductVariantsVariant
-  summary: Update a Product Variant
-  description: Update a Product Variant's details.
+get:
+  operationId: GetProductsIdVariantsVariant_id
+  summary: Get Variant of a Product
+  x-sidebar-summary: Get Variant
+  description: Retrieve a product's variant by its ID.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-    - in: path
-      name: variant_id
+    - name: variant_id
+      in: path
+      description: The variant's ID.
       required: true
-      description: The ID of the Product Variant.
       schema:
         type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/get.sh
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductVariantResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostProductsIdVariantsVariant_id
+  summary: Update a Product Variant
+  x-sidebar-summary: Update Variant
+  description: Update a variant's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The product's ID.
+      required: true
+      schema:
+        type: string
+    - name: variant_id
+      in: path
+      description: The product's variant id.
+      required: true
+      schema:
+        type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminPostProductsProductVariantsVariantReq.yaml
-  x-codegen:
-    method: updateVariant
+          allOf:
+            - $ref: ../components/schemas/AdminUpdateProductVariant.yaml
+            - type: object
+              description: The properties to update in the variant.
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
+          description: The properties to update in the variant.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}_variants_{variant_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
@@ -51,7 +156,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
+            $ref: ../components/schemas/AdminProductResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -64,46 +169,64 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateProductVariantsWorkflow
 delete:
-  operationId: DeleteProductsProductVariantsVariant
-  summary: Delete a Product Variant
-  description: Delete a Product Variant.
+  operationId: DeleteProductsIdVariantsVariant_id
+  summary: Delete Product Variant
+  x-sidebar-summary: Delete Variant
+  description: Delete a variant of a product.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-    - in: path
-      name: variant_id
+    - name: variant_id
+      in: path
+      description: The product variant's ID.
       required: true
-      description: The ID of the Product Variant.
       schema:
         type: string
-  x-codegen:
-    method: deleteVariant
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_products_{id}_variants_{variant_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
@@ -112,7 +235,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductsDeleteVariantRes.yaml
+            $ref: ../components/schemas/AdminProductVariantDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -125,3 +248,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteProductVariantsWorkflow

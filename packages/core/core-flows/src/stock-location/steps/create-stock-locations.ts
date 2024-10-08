@@ -1,20 +1,23 @@
 import {
   CreateStockLocationInput,
-  IStockLocationServiceNext,
-} from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+  IStockLocationService,
+} from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 export const createStockLocationsStepId = "create-stock-locations"
+/**
+ * This step creates one or more stock locations.
+ */
 export const createStockLocations = createStep(
   createStockLocationsStepId,
   async (data: CreateStockLocationInput[], { container }) => {
-    const stockLocationService = container.resolve<IStockLocationServiceNext>(
-      ModuleRegistrationName.STOCK_LOCATION
+    const stockLocationService = container.resolve<IStockLocationService>(
+      Modules.STOCK_LOCATION
     )
 
-    const created = await stockLocationService.create(data)
+    const created = await stockLocationService.createStockLocations(data)
 
     return new StepResponse(
       created,
@@ -26,10 +29,8 @@ export const createStockLocations = createStep(
       return
     }
 
-    const stockLocationService = container.resolve(
-      ModuleRegistrationName.STOCK_LOCATION
-    )
+    const stockLocationService = container.resolve(Modules.STOCK_LOCATION)
 
-    await stockLocationService.delete(createdStockLocationIds)
+    await stockLocationService.deleteStockLocations(createdStockLocationIds)
   }
 )

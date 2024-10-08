@@ -1,10 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IPaymentModuleService } from "@medusajs/types"
-
-import {
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
+import { IPaymentModuleService } from "@medusajs/framework/types"
+import { Module, Modules, promiseAll } from "@medusajs/framework/utils"
+import { PaymentModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
   createPayments,
@@ -13,13 +10,76 @@ import {
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPaymentModuleService>({
   moduleName: Modules.PAYMENT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPaymentModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("Payment Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.PAYMENT, {
+          service: PaymentModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "payment",
+          "paymentCollection",
+          "paymentProvider",
+          "paymentSession",
+          "refundReason",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          payment: {
+            id: {
+              linkable: "payment_id",
+              entity: "Payment",
+              primaryKey: "id",
+              serviceName: "Payment",
+              field: "payment",
+            },
+          },
+          paymentCollection: {
+            id: {
+              linkable: "payment_collection_id",
+              entity: "PaymentCollection",
+              primaryKey: "id",
+              serviceName: "Payment",
+              field: "paymentCollection",
+            },
+          },
+          paymentProvider: {
+            id: {
+              linkable: "payment_provider_id",
+              entity: "PaymentProvider",
+              primaryKey: "id",
+              serviceName: "Payment",
+              field: "paymentProvider",
+            },
+          },
+          paymentSession: {
+            id: {
+              field: "paymentSession",
+              entity: "PaymentSession",
+              linkable: "payment_session_id",
+              primaryKey: "id",
+              serviceName: "Payment",
+            },
+          },
+          refundReason: {
+            id: {
+              linkable: "refund_reason_id",
+              entity: "RefundReason",
+              primaryKey: "id",
+              serviceName: "Payment",
+              field: "refundReason",
+            },
+          },
+        })
+      })
+
       describe("Payment Flow", () => {
         it("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({
@@ -66,9 +126,9 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               currency_code: "usd",
               amount: 200,
-              // TODO
-              // authorized_amount: 200,
-              // status: "authorized",
+              authorized_amount: 200,
+              captured_amount: 200,
+              status: "authorized",
               region_id: "reg_123",
               deleted_at: null,
               completed_at: expect.any(Date),
@@ -180,7 +240,7 @@ moduleIntegrationTestRunner({
 
             expect(collection.length).toEqual(1)
 
-            await service.deletePaymentCollections(["pay-col-id-1"])
+            await service.deletePaymentCollections("pay-col-id-1")
 
             collection = await service.listPaymentCollections({
               id: ["pay-col-id-1"],
@@ -459,9 +519,6 @@ moduleIntegrationTestRunner({
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
-                  payment_collection: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   payment_collection_id: expect.any(String),
                 }),
               })
@@ -579,21 +636,28 @@ moduleIntegrationTestRunner({
             )
           })
 
-          it("should fail to capture already captured payment", async () => {
+          it("should return payment if payment is already captured", async () => {
             await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
             })
 
-            const error = await service
-              .capturePayment({
-                amount: 100,
-                payment_id: "pay-id-1",
-              })
-              .catch((e) => e)
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
 
-            expect(error.message).toEqual(
-              "You cannot capture more than the authorized amount substracted by what is already captured."
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
             )
           })
 
@@ -635,8 +699,52 @@ moduleIntegrationTestRunner({
                     amount: 100,
                   }),
                 ],
-                // captured_amount: 100,
-                // refunded_amount: 100,
+              })
+            )
+          })
+
+          it("should fully refund a payment through two refunds", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPaymentOne = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPaymentTwo = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPaymentOne).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+            expect(refundedPaymentTwo).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
               })
             )
           })
@@ -650,6 +758,41 @@ moduleIntegrationTestRunner({
             const error = await service
               .refundPayment({
                 amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
+
+          it("should throw if total refunded amount is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            const refundedPayment1 = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            expect(refundedPayment1).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+
+            const error = await service
+              .refundPayment({
+                amount: 60,
                 payment_id: "pay-id-1",
               })
               .catch((e) => e)
@@ -684,6 +827,208 @@ moduleIntegrationTestRunner({
           //     "Cannot cancel a payment: pay-id-2 that has been captured."
           //   )
           // })
+        })
+
+        describe("concurrency", () => {
+          it("should authorize, capture and refund multiple payment sessions", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 500,
+              region_id: "test-region",
+              currency_code: "usd",
+            })
+
+            const session1 = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 120,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const session2 = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 180,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const session3 = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const session4 = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 500,
+              currency_code: "eur",
+              data: {},
+            })
+
+            // authorize
+            const [payment1, payment2, payment3, payment4] = await promiseAll([
+              service.authorizePaymentSession(session1.id, {}),
+              service.authorizePaymentSession(session2.id, {}),
+              service.authorizePaymentSession(session3.id, {}),
+              service.authorizePaymentSession(session4.id, {}),
+            ])
+
+            // capture
+            await promiseAll([
+              service.capturePayment({
+                amount: 60,
+                payment_id: payment1.id,
+              }),
+              service.capturePayment({
+                amount: 60,
+                payment_id: payment1.id,
+              }),
+              service.capturePayment({
+                amount: 180,
+                payment_id: payment2.id,
+              }),
+              service.capturePayment({
+                amount: 100,
+                payment_id: payment3.id,
+              }),
+              service.capturePayment({
+                amount: 40,
+                payment_id: payment3.id,
+              }),
+              service.capturePayment({
+                amount: 60,
+                payment_id: payment3.id,
+              }),
+              service.capturePayment({
+                amount: 200,
+                payment_id: payment4.id,
+              }),
+              service.capturePayment({
+                amount: 200,
+                payment_id: payment4.id,
+              }),
+              service.capturePayment({
+                amount: 100,
+                payment_id: payment4.id,
+              }),
+            ])
+
+            // refund
+            await promiseAll([
+              service.refundPayment({
+                amount: 70,
+                payment_id: payment1.id,
+              }),
+              service.refundPayment({
+                amount: 50,
+                payment_id: payment1.id,
+              }),
+              service.refundPayment({
+                amount: 180,
+                payment_id: payment2.id,
+              }),
+              service.refundPayment({
+                amount: 100,
+                payment_id: payment3.id,
+              }),
+              service.refundPayment({
+                amount: 40,
+                payment_id: payment3.id,
+              }),
+              service.refundPayment({
+                amount: 60,
+                payment_id: payment3.id,
+              }),
+              service.refundPayment({
+                amount: 400,
+                payment_id: payment4.id,
+              }),
+              service.refundPayment({
+                amount: 99,
+                payment_id: payment4.id,
+              }),
+            ])
+
+            expect(payment1).toEqual(
+              expect.objectContaining({
+                amount: 120,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                payment_session: expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 120,
+                  raw_amount: { value: "120", precision: 20 },
+                  provider_id: "pp_system_default",
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+
+            expect(payment2).toEqual(
+              expect.objectContaining({
+                amount: 180,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                payment_session: expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 180,
+                  raw_amount: { value: "180", precision: 20 },
+                  provider_id: "pp_system_default",
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+
+            expect(payment3).toEqual(
+              expect.objectContaining({
+                amount: 200,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                payment_session: expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 200,
+                  raw_amount: { value: "200", precision: 20 },
+                  provider_id: "pp_system_default",
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+
+            expect(payment4).toEqual(
+              expect.objectContaining({
+                amount: 500,
+                currency_code: "eur",
+                provider_id: "pp_system_default",
+                payment_session: expect.objectContaining({
+                  currency_code: "eur",
+                  amount: 500,
+                  raw_amount: { value: "500", precision: 20 },
+                  provider_id: "pp_system_default",
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+
+            const finalCollection = (
+              await service.listPaymentCollections({
+                id: collection.id,
+              })
+            )[0]
+
+            expect(finalCollection).toEqual(
+              expect.objectContaining({
+                status: "authorized",
+                amount: 500,
+                authorized_amount: 1000,
+                captured_amount: 1000,
+                refunded_amount: 999,
+              })
+            )
+          })
         })
       })
     })

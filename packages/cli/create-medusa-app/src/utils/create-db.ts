@@ -1,6 +1,9 @@
 import { EOL } from "os"
 import pg from "pg"
-import postgresClient from "./postgres-client.js"
+import postgresClient, {
+  DEFAULT_HOST,
+  DEFAULT_PORT,
+} from "./postgres-client.js"
 import inquirer from "inquirer"
 import logMessage from "./log-message.js"
 import formatConnectionString from "./format-connection-string.js"
@@ -14,6 +17,17 @@ type CreateDbOptions = {
 
 export default async function createDb({ client, db }: CreateDbOptions) {
   await client.query(`CREATE DATABASE "${db}"`)
+}
+
+async function doesDbExist(
+  client: pg.Client,
+  dbName: string
+): Promise<boolean> {
+  const result = await client.query(
+    `SELECT datname FROM pg_catalog.pg_database WHERE datname='${dbName}';`
+  )
+
+  return !!result.rowCount
 }
 
 export async function runCreateDb({
@@ -61,15 +75,22 @@ async function getForDbName({
 }): Promise<{
   client: pg.Client
   dbConnectionString: string
+  dbName: string
 }> {
   let client!: pg.Client
   let postgresUsername = "postgres"
   let postgresPassword = ""
 
+  const defaultConnectionOptions = {
+    host: DEFAULT_HOST,
+    port: DEFAULT_PORT,
+  }
+
   try {
     client = await postgresClient({
       user: postgresUsername,
       password: postgresPassword,
+      ...defaultConnectionOptions,
     })
   } catch (e) {
     if (verbose) {
@@ -99,10 +120,24 @@ async function getForDbName({
     postgresUsername = answers.postgresUsername
     postgresPassword = answers.postgresPassword
 
+    const { userDbName } = await inquirer.prompt([
+      {
+        type: "database",
+        name: "userDbName",
+        message: "Enter your Postgres user's database name",
+        default: answers.postgresUsername,
+        validate: (input) => {
+          return typeof input === "string" && input.length > 0
+        },
+      },
+    ])
+
     try {
       client = await postgresClient({
         user: postgresUsername,
         password: postgresPassword,
+        database: userDbName,
+        ...defaultConnectionOptions,
       })
     } catch (e) {
       logMessage({
@@ -110,6 +145,25 @@ async function getForDbName({
         type: "error",
       })
     }
+  }
+
+  // check if database exists
+  if (await doesDbExist(client, dbName)) {
+    const { newDbName } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "newDbName",
+        message: `A database already exists with the name ${dbName}, please enter a name for the database:`,
+        default: dbName,
+        validate: (input) => {
+          return (
+            typeof input === "string" && input.length > 0 && input !== dbName
+          )
+        },
+      },
+    ])
+
+    dbName = newDbName
   }
 
   // format connection string
@@ -123,6 +177,7 @@ async function getForDbName({
   return {
     client,
     dbConnectionString,
+    dbName,
   }
 }
 

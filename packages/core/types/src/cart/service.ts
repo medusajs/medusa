@@ -32,8 +32,8 @@ import {
   CreateShippingMethodForSingleCartDTO,
   CreateShippingMethodTaxLineDTO,
   UpdateAddressDTO,
-  UpdateCartDTO,
   UpdateCartDataDTO,
+  UpdateCartDTO,
   UpdateLineItemDTO,
   UpdateLineItemTaxLineDTO,
   UpdateLineItemWithSelectorDTO,
@@ -59,18 +59,18 @@ export interface ICartModuleService extends IModuleService {
    * A simple example that retrieves a cart by its ID:
    *
    * ```ts
-   * const cart = await cartModuleService.retrieve("cart_123")
+   * const cart = await cartModuleService.retrieveCart("cart_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const cart = await cartModuleService.retrieve("cart_123", {
+   * const cart = await cartModuleService.retrieveCart("cart_123", {
    *   relations: ["shipping_address"],
    * })
    * ```
    */
-  retrieve(
+  retrieveCart(
     cartId: string,
     config?: FindConfig<CartDTO>,
     sharedContext?: Context
@@ -89,7 +89,7 @@ export interface ICartModuleService extends IModuleService {
    * To retrieve a list of carts using their IDs:
    *
    * ```ts
-   * const carts = await cartModuleService.list({
+   * const carts = await cartModuleService.listCarts({
    *   id: ["cart_123", "cart_321"],
    * })
    * ```
@@ -97,7 +97,7 @@ export interface ICartModuleService extends IModuleService {
    * To specify relations that should be retrieved within the carts:
    *
    * ```ts
-   * const carts = await cartModuleService.list(
+   * const carts = await cartModuleService.listCarts(
    *   {
    *     id: ["cart_123", "cart_321"],
    *   },
@@ -110,7 +110,7 @@ export interface ICartModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const carts = await cartModuleService.list(
+   * const carts = await cartModuleService.listCarts(
    *   {
    *     id: ["cart_123", "cart_321"],
    *   },
@@ -122,7 +122,7 @@ export interface ICartModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listCarts(
     filters?: FilterableCartProps,
     config?: FindConfig<CartDTO>,
     sharedContext?: Context
@@ -141,7 +141,7 @@ export interface ICartModuleService extends IModuleService {
    * To retrieve a list of carts using their IDs:
    *
    * ```ts
-   * const [carts, count] = await cartModuleService.listAndCount({
+   * const [carts, count] = await cartModuleService.listAndCountCarts({
    *   id: ["cart_123", "cart_321"],
    * })
    * ```
@@ -149,7 +149,7 @@ export interface ICartModuleService extends IModuleService {
    * To specify relations that should be retrieved within the carts:
    *
    * ```ts
-   * const [carts, count] = await cartModuleService.listAndCount(
+   * const [carts, count] = await cartModuleService.listAndCountCarts(
    *   {
    *     id: ["cart_123", "cart_321"],
    *   },
@@ -162,7 +162,7 @@ export interface ICartModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [carts, count] = await cartModuleService.listAndCount(
+   * const [carts, count] = await cartModuleService.listAndCountCarts(
    *   {
    *     id: ["cart_123", "cart_321"],
    *   },
@@ -174,7 +174,7 @@ export interface ICartModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountCarts(
     filters?: FilterableCartProps,
     config?: FindConfig<CartDTO>,
     sharedContext?: Context
@@ -188,7 +188,7 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<CartDTO[]>} The created carts.
    *
    * @example
-   * const carts = await cartModuleService.create([
+   * const carts = await cartModuleService.createCarts([
    *   {
    *     currency_code: "usd",
    *   },
@@ -197,7 +197,10 @@ export interface ICartModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(data: CreateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
+  createCarts(
+    data: CreateCartDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
 
   /**
    * This method creates a cart.
@@ -207,11 +210,11 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<CartDTO>} The created cart.
    *
    * @example
-   * const cart = await cartModuleService.create({
+   * const cart = await cartModuleService.createCarts({
    *   currency_code: "usd",
    * })
    */
-  create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
+  createCarts(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
   /**
    * This method updates existing carts.
@@ -220,7 +223,7 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<CartDTO[]>} The updated carts.
    *
    * @example
-   * const carts = await cartModuleService.update([
+   * const carts = await cartModuleService.updateCarts([
    *   {
    *     id: "cart_123",
    *     region_id: "reg_123",
@@ -231,7 +234,7 @@ export interface ICartModuleService extends IModuleService {
    *   },
    * ])
    */
-  update(data: UpdateCartDTO[]): Promise<CartDTO[]>
+  updateCarts(data: UpdateCartDTO[]): Promise<CartDTO[]>
 
   /**
    * This method updates an existing cart.
@@ -242,11 +245,11 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<CartDTO>} The updated cart.
    *
    * @example
-   * const cart = await cartModuleService.update("cart_123", {
+   * const cart = await cartModuleService.updateCarts("cart_123", {
    *   region_id: "reg_123",
    * })
    */
-  update(
+  updateCarts(
     cartId: string,
     data: UpdateCartDataDTO,
     sharedContext?: Context
@@ -261,7 +264,7 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<CartDTO[]>} The updated carts.
    *
    * @example
-   * const carts = await cartModuleService.update(
+   * const carts = await cartModuleService.updateCarts(
    *   {
    *     currency_code: "usd",
    *   },
@@ -270,7 +273,7 @@ export interface ICartModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateCarts(
     selector: Partial<CartDTO>,
     data: UpdateCartDataDTO,
     sharedContext?: Context
@@ -284,9 +287,9 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the carts are deleted successfully.
    *
    * @example
-   * await cartModuleService.delete(["cart_123", "cart_321"])
+   * await cartModuleService.deleteCarts(["cart_123", "cart_321"])
    */
-  delete(cartIds: string[], sharedContext?: Context): Promise<void>
+  deleteCarts(cartIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a cart by its ID.
@@ -296,9 +299,9 @@ export interface ICartModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the carts are deleted successfully.
    *
    * @example
-   * await cartModuleService.delete("cart_123")
+   * await cartModuleService.deleteCarts("cart_123")
    */
-  delete(cartId: string, sharedContext?: Context): Promise<void>
+  deleteCarts(cartId: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a paginated list of addresses based on optional filters and configuration.
@@ -1461,30 +1464,6 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<ShippingMethodTaxLineDTO[]>
 
   /**
-   * This method deletes carts by their IDs.
-   *
-   * @param {string[]} ids - The IDs of the cart.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the carts are deleted successfully.
-   *
-   * @example
-   * await cartModuleService.delete(["cart_123", "cart_321"])
-   */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
-
-  /**
-   * This method deletes a cart by its ID.
-   *
-   * @param {string} id - The ID of the cart.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when a cart is deleted successfully.
-   *
-   * @example
-   * await cartModuleService.delete("cart_123")
-   */
-  delete(id: string, sharedContext?: Context): Promise<void>
-
-  /**
    * This method deletes line items by their IDs.
    *
    * @param {string[]} ids - The IDs of the line items.
@@ -1680,9 +1659,9 @@ export interface ICartModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await cartModuleService.softDelete(["cart_123", "cart_321"])
+   * await cartModuleService.softDeleteCarts(["cart_123", "cart_321"])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteCarts<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1703,9 +1682,9 @@ export interface ICartModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await cartModuleService.restore(["cart_123", "cart_321"])
+   * await cartModuleService.restoreCarts(["cart_123", "cart_321"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreCarts<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

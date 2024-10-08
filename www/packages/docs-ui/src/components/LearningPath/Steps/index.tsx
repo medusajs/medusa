@@ -63,7 +63,7 @@ export const LearningPathSteps = ({ ...rest }: LearningPathStepsProps) => {
           {!collapsed && (
             <div
               className={clsx(
-                "bg-medusa-bg-base shadow-flyout dark:shadow-flyout-dark rounded",
+                "bg-medusa-bg-base shadow-elevation-flyout dark:shadow-elevation-flyout-dark rounded",
                 "transition-transform origin-bottom-right flex flex-col"
               )}
               ref={stepsRef}
@@ -134,7 +134,7 @@ export const LearningPathSteps = ({ ...rest }: LearningPathStepsProps) => {
             <Button
               variant="secondary"
               className={clsx(
-                "!p-[10px] !shadow-flyout dark:!shadow-flyout-dark !text-medusa-fg-subtle w-fit h-fit",
+                "!p-[10px] !shadow-elevation-flyout dark:!shadow-elevation-flyout-dark !text-medusa-fg-subtle w-fit h-fit",
                 "rounded-full border-0 mr-0 ml-auto fixed md:relative max-[767px]:bottom-docs_1 max-[767px]:right-docs_1 "
               )}
               onClick={() => setCollapsed(false)}

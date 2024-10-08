@@ -34,8 +34,11 @@ export default function (theme: MarkdownTheme) {
         )
       }
 
-      if (this.flags && this.flags.length > 0 && !this.flags.isRest) {
-        md.push(" " + this.flags.map((flag) => `\`${flag}\``).join(" "))
+      const flags = this.flags.getFlagStrings(
+        theme.application.internationalization
+      )
+      if (flags.length > 0 && !this.flags.isRest) {
+        md.push(" " + flags.map((flag) => `\`${flag}\``).join(" "))
       }
       md.push(
         `${this.flags.isRest ? "... " : ""} **${escapeChars(this.name)}**`

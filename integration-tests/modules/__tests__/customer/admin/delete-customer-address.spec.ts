@@ -1,7 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -29,12 +27,12 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a customer address", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.addAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -48,7 +46,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const updatedCustomer = await customerModuleService.retrieve(
+        const updatedCustomer = await customerModuleService.retrieveCustomer(
           customer.id,
           {
             relations: ["addresses"],

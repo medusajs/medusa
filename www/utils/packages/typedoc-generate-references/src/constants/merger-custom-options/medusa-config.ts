@@ -9,13 +9,7 @@ const medusaConfigOptions: FormattingOptionsType = {
     frontmatterData: {
       slug: "/references/medusa-config",
     },
-    reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.
-
-## Prerequisites
-
-This document assumes you already followed along with the [Prepare Environment documentation](https://docs.medusajs.com/development/backend/prepare-environment) and have a Medusa backend installed.
-    
----`,
+    reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.`,
     reflectionTitle: {
       fullReplacement: "Configure Medusa Backend",
     },
@@ -25,6 +19,8 @@ This document assumes you already followed along with the [Prepare Environment d
       ...baseSectionsOptions,
       member_declaration_title: false,
       member_declaration_children: true,
+      member_declaration_typeDeclaration: false,
+      member_declaration_signatures: false,
     },
   },
 }

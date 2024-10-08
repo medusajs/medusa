@@ -1,27 +1,17 @@
-import {
-  Context,
-  CreateInventoryLevelInput,
-  DAL,
-  SharedContext,
-} from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { Context } from "@medusajs/framework/types"
+import { BigNumber, ModulesSdkUtils } from "@medusajs/framework/utils"
 
-import { InventoryLevel } from "../models/inventory-level"
 import { InventoryLevelRepository } from "@repositories"
+import { InventoryLevel } from "../models/inventory-level"
 
 type InjectedDependencies = {
   inventoryLevelRepository: InventoryLevelRepository
 }
 
-export default class InventoryLevelService<
-  TEntity extends InventoryLevel = InventoryLevel
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+export default class InventoryLevelService extends ModulesSdkUtils.MedusaInternalService<
+  InjectedDependencies,
   InventoryLevel
-)<TEntity> {
+>(InventoryLevel) {
   protected readonly inventoryLevelRepository: InventoryLevelRepository
 
   constructor(container: InjectedDependencies) {
@@ -33,7 +23,7 @@ export default class InventoryLevelService<
     inventoryItemId: string,
     locationIds: string[] | string,
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const locationIdArray = Array.isArray(locationIds)
       ? locationIds
       : [locationIds]
@@ -49,7 +39,7 @@ export default class InventoryLevelService<
     inventoryItemId: string,
     locationIds: string[] | string,
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const locationIdArray = Array.isArray(locationIds)
       ? locationIds
       : [locationIds]

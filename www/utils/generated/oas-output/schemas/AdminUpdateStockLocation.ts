@@ -1,0 +1,60 @@
+/**
+ * @schema AdminUpdateStockLocation
+ * type: object
+ * description: The properties to update in a stock location.
+ * x-schemaName: AdminUpdateStockLocation
+ * properties:
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The stock location's name.
+ *   address:
+ *     type: object
+ *     description: The stock location's address. Pass this property if you're creating a new address to associate with the location.
+ *     required:
+ *       - address_1
+ *       - country_code
+ *     properties:
+ *       address_1:
+ *         type: string
+ *         title: address_1
+ *         description: The address's first line.
+ *       address_2:
+ *         type: string
+ *         title: address_2
+ *         description: The address's second line.
+ *       company:
+ *         type: string
+ *         title: company
+ *         description: The address's company.
+ *       city:
+ *         type: string
+ *         title: city
+ *         description: The address's city.
+ *       country_code:
+ *         type: string
+ *         title: country_code
+ *         description: The address's country code.
+ *         example: us
+ *       phone:
+ *         type: string
+ *         title: phone
+ *         description: The address's phone.
+ *       postal_code:
+ *         type: string
+ *         title: postal_code
+ *         description: The address's postal code.
+ *       province:
+ *         type: string
+ *         title: province
+ *         description: The address's province.
+ *   address_id:
+ *     type: string
+ *     title: address_id
+ *     description: The ID of an existing stock location address to associate the stock location with.
+ *   metadata:
+ *     type: object
+ *     description: The stock location's metadata, can hold custom key-value pairs.
+ * 
+*/
+

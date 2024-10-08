@@ -1,5 +1,5 @@
 import type { Code } from "@/types/openapi"
-import { LegacyCodeTabs } from "docs-ui"
+import { CodeBlock, CodeTab, CodeTabs } from "docs-ui"
 import slugify from "slugify"
 
 export type TagOperationCodeSectionRequestSamplesProps = {
@@ -12,18 +12,17 @@ const TagOperationCodeSectionRequestSamples = ({
   return (
     <div>
       <h3>Request samples</h3>
-      <LegacyCodeTabs
-        tabs={codeSamples.map((codeSample) => ({
-          label: codeSample.label,
-          value: slugify(codeSample.label),
-          code: {
-            ...codeSample,
-            collapsed: true,
-            className: "!mb-0",
-          },
-        }))}
-        className="mt-2 !mb-0"
-      />
+      <CodeTabs className="mt-2 !mb-0" group="request-examples">
+        {codeSamples.map((codeSample, index) => (
+          <CodeTab
+            key={index}
+            label={codeSample.label}
+            value={slugify(codeSample.label)}
+          >
+            <CodeBlock {...codeSample} collapsed={true} className="!mb-0" />
+          </CodeTab>
+        ))}
+      </CodeTabs>
     </div>
   )
 }

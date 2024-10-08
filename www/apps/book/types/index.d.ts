@@ -1,11 +1,9 @@
-import {
-  SidebarSectionItemsType,
-  SidebarItemType as UiSidebarItemType,
-} from "docs-ui"
+import { SidebarSectionItems, SidebarItem as SidebarItemType } from "types"
 
-export declare type SidebarItemType = UiSidebarItemType & {
+export declare type SidebarItem = SidebarItemType & {
   isSoon: boolean
   number?: string
+  chapterTitle?: string
 }
 
-export declare type SidebarConfig = SidebarSectionItemsType
+export declare type SidebarConfig = SidebarSectionItems

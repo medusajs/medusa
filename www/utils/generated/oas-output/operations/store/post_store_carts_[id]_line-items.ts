@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsIdLineItems
- * summary: Add Line Items to Cart
- * description: Add a list of line items to a cart.
+ * summary: Add Line Item to Cart
+ * x-sidebar-summary: Add Line Item
+ * description: Add a product variant as a line item in the cart.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#add-product-variant-to-cart
+ *   description: "Storefront guide: How to add a product variant to the cart."
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -21,43 +25,42 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StoreAddCartLineItem"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/store/carts/{id}/line-items'
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items' \
+ *       -H 'Content-Type: application/json' \ \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
+ *       --data-raw '{
+ *         "variant_id": "{value}",
+ *         "quantity": 3360689747918848,
+ *         "metadata": {}
+ *       }'
  * tags:
  *   - Carts
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/StoreCartResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -70,28 +73,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - variant_id
- *           - quantity
- *           - metadata
- *         properties:
- *           variant_id:
- *             type: string
- *             title: variant_id
- *             description: The cart's variant id.
- *           quantity:
- *             type: number
- *             title: quantity
- *             description: The cart's quantity.
- *           metadata:
- *             type: object
- *             description: The cart's metadata.
- *             properties: {}
+ * x-workflow: addToCartWorkflow
  * 
 */
 

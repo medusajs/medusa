@@ -5,19 +5,37 @@ const RocketLaunch = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M12.784 11.838a4.653 4.653 0 0 1-4.53 5.725v-3.724m4.53-2a11.62 11.62 0 0 0 4.778-9.402 11.62 11.62 0 0 0-9.4 4.778m4.623 4.623a11.577 11.577 0 0 1-4.53 2.001m-.093-6.624a4.654 4.654 0 0 0-5.725 4.53h3.724m2.002-4.53a11.578 11.578 0 0 0-2.002 4.53m2.094 2.094c-.08.017-.16.032-.241.047a11.704 11.704 0 0 1-1.9-1.899l.047-.242M4.424 13.6a3.485 3.485 0 0 0-1.363 3.34 3.486 3.486 0 0 0 3.34-1.364m7.09-7.902a1.163 1.163 0 1 1-2.327 0 1.163 1.163 0 0 1 2.326 0Z"
-        />
+        <g clipPath="url(#a)">
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M11.265 8.386c3.118-3.271 2.736-7.084 2.704-7.355C13.697 1 9.885.617 6.614 3.735a10.4 10.4 0 0 0-2.842 4.702l2.79 2.79c.706-.193 2.815-.86 4.703-2.841"
+          />
+          <path
+            fill={color}
+            d="M9.743 6.75a1.493 1.493 0 1 0 0-2.985 1.493 1.493 0 0 0 0 2.985"
+          />
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M4.5 12.48c-.234.519-.757.88-1.363.88H1.64v-1.496c0-.606.36-1.13.88-1.364M11.211 8.442l.21 1.175a2.8 2.8 0 0 1-1.138 2.779L8.02 14s.548-1.434.238-3.416M6.558 3.789l-1.172-.21a2.8 2.8 0 0 0-2.784 1.14L1 6.98s1.434-.548 3.416-.238"
+          />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

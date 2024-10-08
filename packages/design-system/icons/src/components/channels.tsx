@@ -5,19 +5,27 @@ const Channels = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.031 4.188a1.687 1.687 0 1 0 3.375 0 1.687 1.687 0 0 0-3.375 0Zm0 0h-1.875a1.5 1.5 0 0 0-1.5 1.5v8.625a1.5 1.5 0 0 0 1.5 1.5h1.875M6.281 10a1.687 1.687 0 1 1-3.375 0 1.687 1.687 0 0 1 3.375 0Zm0 0h6.75m0 5.813a1.688 1.688 0 1 0 3.375 0 1.688 1.688 0 0 0-3.375 0ZM16.406 10a1.687 1.687 0 1 1-3.375 0 1.687 1.687 0 0 1 3.375 0Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M7.722 7.5h-3.11M10.389 3.722H9.5c-.982 0-1.778.796-1.778 1.778v4c0 .982.796 1.778 1.778 1.778h.889" />
+          <path d="M10.389 3.722a1.778 1.778 0 1 0 3.555 0 1.778 1.778 0 0 0-3.555 0M10.389 11.278a1.778 1.778 0 1 0 3.556 0 1.778 1.778 0 0 0-3.556 0M1.056 7.5a1.778 1.778 0 1 0 3.555 0 1.778 1.778 0 0 0-3.555 0" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

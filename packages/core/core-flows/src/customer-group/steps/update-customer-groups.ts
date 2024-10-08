@@ -1,27 +1,28 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CustomerGroupUpdatableFields,
   FilterableCustomerGroupProps,
   ICustomerModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
-} from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateCustomerGroupStepInput = {
+export type UpdateCustomerGroupStepInput = {
   selector: FilterableCustomerGroupProps
   update: CustomerGroupUpdatableFields
 }
 
 export const updateCustomerGroupStepId = "update-customer-groups"
+/**
+ * This step updates one or more customer groups.
+ */
 export const updateCustomerGroupsStep = createStep(
   updateCustomerGroupStepId,
   async (data: UpdateCustomerGroupStepInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -43,14 +44,13 @@ export const updateCustomerGroupsStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await promiseAll(
       prevCustomerGroups.map((c) =>
         service.updateCustomerGroups(c.id, {
           name: c.name,
+          metadata: c.metadata,
         })
       )
     )

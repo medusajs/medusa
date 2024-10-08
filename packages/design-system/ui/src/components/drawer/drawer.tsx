@@ -4,7 +4,6 @@ import { XMark } from "@medusajs/icons"
 import * as DrawerPrimitives from "@radix-ui/react-dialog"
 import * as React from "react"
 
-import { Heading } from "@/components/heading"
 import { IconButton } from "@/components/icon-button"
 import { Kbd } from "@/components/kbd"
 import { Text } from "@/components/text"
@@ -65,11 +64,14 @@ DrawerOverlay.displayName = "Drawer.Overlay"
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitives.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content> & {
+    overlayProps?: React.ComponentPropsWithoutRef<typeof DrawerOverlay>
+    portalProps?: React.ComponentPropsWithoutRef<typeof DrawerPortal>
+  }
+>(({ className, overlayProps, portalProps, ...props }, ref) => {
   return (
-    <DrawerPortal>
-      <DrawerOverlay />
+    <DrawerPortal {...portalProps}>
+      <DrawerOverlay {...overlayProps} />
       <DrawerPrimitives.Content
         ref={ref}
         className={clx(
@@ -134,19 +136,7 @@ const DrawerFooter = ({
 }
 DrawerFooter.displayName = "Drawer.Footer"
 
-const DrawerTitle = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitives.Title>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Title>
->(({ className, children, ...props }, ref) => (
-  <DrawerPrimitives.Title
-    ref={ref}
-    className={clx(className)}
-    asChild
-    {...props}
-  >
-    <Heading level="h1">{children}</Heading>
-  </DrawerPrimitives.Title>
-))
+const DrawerTitle = DrawerPrimitives.Title
 DrawerTitle.displayName = "Drawer.Title"
 
 const DrawerDescription = React.forwardRef<

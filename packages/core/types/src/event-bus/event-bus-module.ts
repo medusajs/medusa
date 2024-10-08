@@ -1,13 +1,10 @@
-import { EmitData, Message, Subscriber, SubscriberContext } from "./common"
+import { Message, Subscriber, SubscriberContext } from "./common"
 
 export interface IEventBusModuleService {
   emit<T>(
-    eventName: string,
-    data: T,
+    data: Message<T> | Message<T>[],
     options?: Record<string, unknown>
   ): Promise<void>
-  emit<T>(data: EmitData<T>[]): Promise<void>
-  emit<T>(data: Message<T>[]): Promise<void>
 
   subscribe(
     eventName: string | symbol,
@@ -20,4 +17,7 @@ export interface IEventBusModuleService {
     subscriber: Subscriber,
     context?: SubscriberContext
   ): this
+
+  releaseGroupedEvents(eventGroupId: string): Promise<void>
+  clearGroupedEvents(eventGroupId: string): Promise<void>
 }

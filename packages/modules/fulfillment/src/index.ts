@@ -1,14 +1,11 @@
-import { moduleDefinition } from "./module-definition"
-import { initializeFactory, Modules } from "@medusajs/modules-sdk"
+import { FulfillmentModuleService } from "@services"
+import loadProviders from "./loaders/providers"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
-
-export const initialize = initializeFactory({
-  moduleName: Modules.FULFILLMENT,
-  moduleDefinition,
+export default Module(Modules.FULFILLMENT, {
+  service: FulfillmentModuleService,
+  loaders: [loadProviders],
 })
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
-export default moduleDefinition
+
+// Module options types
+export { FulfillmentModuleOptions } from "./types"

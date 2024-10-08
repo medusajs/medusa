@@ -1,10 +1,8 @@
-import {
-  moduleDefinition,
-  revertMigration,
-  runMigrations,
-} from "./module-definition"
+import { RegionModuleService } from "./services"
+import loadDefaults from "./loaders/defaults"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export default moduleDefinition
-export { revertMigration, runMigrations }
-
-export * from "./initialize"
+export default Module(Modules.REGION, {
+  service: RegionModuleService,
+  loaders: [loadDefaults],
+})

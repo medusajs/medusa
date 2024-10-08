@@ -11,7 +11,7 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "target": "es5"
+    "target": "es2021"
   },
   "module": {
     "type": "commonjs",

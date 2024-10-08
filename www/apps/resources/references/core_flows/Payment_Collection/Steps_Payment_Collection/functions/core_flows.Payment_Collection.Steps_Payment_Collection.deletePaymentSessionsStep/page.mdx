@@ -1,0 +1,23 @@
+---
+slug: /references/medusa-workflows/steps/deletePaymentSessionsStep
+sidebar_label: deletePaymentSessionsStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deletePaymentSessionsStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deletePaymentSessionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step deletes one or more payment sessions.
+
+Note: This step should not be used alone as it doesn't consider a revert
+Use deletePaymentSessionsWorkflow instead that uses this step
+
+## Input
+
+<TypeList types={[{"name":"DeletePaymentSessionStepInput","type":"[DeletePaymentSessionStepInput](../../../../interfaces/core_flows.DeletePaymentSessionStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentSessionsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentSessionsStep"/>

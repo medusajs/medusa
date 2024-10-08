@@ -1,8 +1,33 @@
-import { Logger } from "@medusajs/types"
+import {
+  Logger,
+  ModuleProviderExports,
+  ModuleServiceInitializeOptions,
+} from "@medusajs/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
 }
 
-export * as RepositoryTypes from "./repositories"
-export * as ServiceTypes from "./services"
+export const AuthIdentifiersRegistrationName = "auth_providers_identifier"
+
+export const AuthProviderRegistrationPrefix = "au_"
+
+export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
+  /**
+   * Providers to be registered
+   */
+  providers?: {
+    /**
+     * The module provider to be registered
+     */
+    resolve: string | ModuleProviderExports
+    /**
+     * The id of the provider
+     */
+    id: string
+    /**
+     * key value pair of the configuration to be passed to the provider constructor
+     */
+    options?: Record<string, unknown>
+  }[]
+}

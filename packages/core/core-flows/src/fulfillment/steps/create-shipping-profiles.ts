@@ -1,18 +1,19 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateShippingProfileDTO,
   IFulfillmentModuleService,
-} from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-
-type StepInput = CreateShippingProfileDTO[]
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createShippingProfilesStepId = "create-shipping-profiles"
+/**
+ * This step creates one or more shipping profiles.
+ */
 export const createShippingProfilesStep = createStep(
   createShippingProfilesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CreateShippingProfileDTO[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const createdShippingProfiles = await service.createShippingProfiles(input)
@@ -28,7 +29,7 @@ export const createShippingProfilesStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.deleteShippingProfiles(createdShippingProfiles)

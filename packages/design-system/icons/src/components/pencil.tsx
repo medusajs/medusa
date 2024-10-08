@@ -5,8 +5,8 @@ const Pencil = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const Pencil = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m14.052 3.74 1.405-1.408a1.563 1.563 0 0 1 2.21 2.21L5.694 16.517a3.75 3.75 0 0 1-1.58.941l-2.238.667.667-2.238a3.75 3.75 0 0 1 .941-1.58l10.57-10.568h-.001Zm0 0 2.198 2.197"
+          d="m11.903 6.236.985-.986c.521-.52.521-1.365 0-1.885l-1.252-1.253a1.333 1.333 0 0 0-1.885 0l-.986.986zM7.43 4.43 3.187 8.676c-.222.222-.381.5-.462.804l-1.002 3.798 3.798-1.002c.304-.08.582-.24.804-.462l4.244-4.245M8.986 5.986 5.07 9.904"
         />
       </svg>
     )

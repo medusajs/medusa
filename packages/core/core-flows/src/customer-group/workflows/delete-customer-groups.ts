@@ -1,12 +1,17 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { deleteCustomerGroupStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteCustomerGroupsWorkflowInput = { ids: string[] }
 
 export const deleteCustomerGroupsWorkflowId = "delete-customer-groups"
+/**
+ * This workflow deletes one or more customer groups.
+ */
 export const deleteCustomerGroupsWorkflow = createWorkflow(
   deleteCustomerGroupsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (
+    input: WorkflowData<DeleteCustomerGroupsWorkflowInput>
+  ): WorkflowData<void> => {
     return deleteCustomerGroupStep(input.ids)
   }
 )

@@ -6,13 +6,17 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 
+import { BigNumberRawValue } from "@medusajs/framework/types"
 import {
+  BigNumber,
   DALUtils,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { InventoryItem } from "./inventory-item"
 
 const ReservationItemDeletedAtIndex = createPsqlIndexStatementHelper({
@@ -23,16 +27,19 @@ const ReservationItemDeletedAtIndex = createPsqlIndexStatementHelper({
 const ReservationItemLineItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "line_item_id",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemInventoryItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "inventory_item_id",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "location_id",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
@@ -71,8 +78,11 @@ export class ReservationItem {
   @Property({ type: "text" })
   location_id: string
 
-  @Property({ columnType: "integer" })
-  quantity: number
+  @MikroOrmBigNumberProperty()
+  quantity: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_quantity: BigNumberRawValue
 
   @Property({ type: "text", nullable: true })
   external_id: string | null = null
@@ -98,15 +108,15 @@ export class ReservationItem {
   @ManyToOne(() => InventoryItem, {
     persist: false,
   })
-  inventory_item: InventoryItem
+  inventory_item: Rel<InventoryItem>
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 }

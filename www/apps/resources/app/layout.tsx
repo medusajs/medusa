@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
-
-import Navbar from "@/components/Navbar"
 import Providers from "@/providers"
 import "./globals.css"
 import { TightLayout } from "docs-ui"
@@ -16,7 +14,7 @@ export const metadata: Metadata = {
     default: config.titleSuffix || "",
   },
   description:
-    "Explore Medusa's recipes, API references, configurations, and more.",
+    "Explore Medusa's recipes, API references, configurations, storefront guides, and more.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),
@@ -41,15 +39,14 @@ export default function RootLayout({
   return (
     <TightLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
       }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      feedbackComponent={<Feedback className="my-2" />}
+      editComponent={<EditButton />}
     >
       {children}
-      <Feedback className="my-2" />
-      <EditButton />
     </TightLayout>
   )
 }

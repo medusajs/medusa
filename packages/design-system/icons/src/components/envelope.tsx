@@ -5,19 +5,27 @@ const Envelope = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M17.563 5.928v8.144a1.745 1.745 0 0 1-1.746 1.745H4.183a1.745 1.745 0 0 1-1.745-1.745V5.928m15.124 0a1.745 1.745 0 0 0-1.745-1.745H4.183a1.745 1.745 0 0 0-1.745 1.745m15.124 0v.188a1.745 1.745 0 0 1-.83 1.487l-5.817 3.58a1.745 1.745 0 0 1-1.83 0l-5.818-3.58a1.745 1.745 0 0 1-.83-1.486v-.19"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M1.056 4.611 7.07 7.93a.89.89 0 0 0 .858 0l6.015-3.318" />
+          <path d="M2.833 12.611h9.334c.982 0 1.777-.796 1.777-1.778V4.167c0-.982-.796-1.778-1.777-1.778H2.833c-.981 0-1.777.796-1.777 1.778v6.666c0 .982.796 1.778 1.777 1.778" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

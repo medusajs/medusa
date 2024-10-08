@@ -15,11 +15,32 @@ export interface CreateShippingProfileDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /**
  * The attributes to update in the shipping profile.
  */
-export interface UpdateShippingProfileDTO
-  extends Partial<CreateShippingProfileDTO> {}
+export interface UpdateShippingProfileDTO {
+  /**
+   * The name of the shipping profile.
+   */
+  name?: string
+
+  /**
+   * The type of the shipping profile.
+   */
+  type?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+/**
+ * The attributes to update in the shipping profile.
+ */
+export interface UpsertShippingProfileDTO extends UpdateShippingProfileDTO {
+  id?: string
+}

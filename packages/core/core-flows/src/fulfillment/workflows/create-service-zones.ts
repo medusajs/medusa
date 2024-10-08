@@ -1,15 +1,20 @@
-import { FulfillmentWorkflow } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { FulfillmentWorkflow, ServiceZoneDTO } from "@medusajs/framework/types"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import { createServiceZonesStep } from "../steps"
 
 export const createServiceZonesWorkflowId = "create-service-zones-workflow"
+/**
+ * This workflow creates one or more service zones.
+ */
 export const createServiceZonesWorkflow = createWorkflow(
   createServiceZonesWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.CreateServiceZonesWorkflowInput>
-  ): WorkflowData => {
-    const serviceZones = createServiceZonesStep(input.data)
-
-    return serviceZones
+  ): WorkflowResponse<ServiceZoneDTO[]> => {
+    return new WorkflowResponse(createServiceZonesStep(input.data))
   }
 )

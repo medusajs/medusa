@@ -1,0 +1,150 @@
+export const metadata = {
+  title: `${pageNumber} Workflow Hooks`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn what a workflow hook is and how to consume them.
+
+## What is a Workflow Hook?
+
+A workflow hook is a point in a workflow where you can inject custom functionality as a step function, called a hook handler.
+
+Medusa exposes hooks in many of its workflows that are used in its API routes. You can consume those hooks to add your custom logic.
+
+<Note title="Tip">
+
+Refer to the [Workflows Reference](!resources!/medusa-workflows-reference) to view all workflows and their hooks.
+
+</Note>
+
+<Note title="Consume workflow hooks when" type="success">
+
+You want to perform a custom action during a workflow's execution, such as when a product is created.
+
+</Note>
+
+---
+
+## How to Consume a Hook?
+
+A workflow has a special `hooks` property which is an object that holds its hooks.
+
+So, in a TypeScript or JavaScript file created under the `src/workflows/hooks` directory:
+
+- Import the workflow.
+- Access its hook using the `hooks` property.
+- Pass the hook a step function as a parameter to consume it.
+
+For example, to consume the `productsCreated` hook of Medusa's `createProductsWorkflow`, create the file `src/workflows/hooks/product-created.ts` with the following content:
+
+export const handlerHighlights = [
+  ["3", "productsCreated", "Invoke the hook, passing it a step function as a parameter."],
+]
+
+```ts title="src/workflows/hooks/product-created.ts" highlights={handlerHighlights}
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+createProductsWorkflow.hooks.productsCreated(
+  async ({ products }, { container }) => {
+    // TODO perform an action
+  }
+)
+```
+
+The `productsCreated` hook is available on the workflow's `hooks` property by its name.
+
+You invoke the hook, passing a step function (the hook handler) as a parameter.
+
+Now, when a product is created using the [Create Product API route](!api!/admin#products_postproducts), your hook handler is executed after the product is created.
+
+<Note>
+
+A hook can have only one handler.
+
+</Note>
+
+<Note title="Tip">
+
+Refer to the [createProductsWorkflow reference](!resources!/references/medusa-workflows/createProductsWorkflow) to see at which point the hook handler is executed.
+
+</Note>
+
+### Hook Handler Parameter
+
+Since a hook handler is essentially a step function, it receives the hook's input as a first parameter, and an object holding a `container` property as a second parameter.
+
+Each hook has different input. For example, the `productsCreated` hook receives an object having a `products` property holding the created product.
+
+### Hook Handler Compensation
+
+Since the hook handler is a step function, you can set its compensation function as a second parameter of the hook.
+
+For example:
+
+```ts title="src/workflows/hooks/product-created.ts"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+createProductsWorkflow.productCreated(
+  async ({ productId }, { container }) => {
+    // TODO perform an action
+
+    return new StepResponse(undefined, { ids })
+  },
+  async ({ ids }, { container }) => {
+    // undo the performed action
+  }
+)
+```
+
+The compensation function is executed if an error occurs in the workflow to undo the actions performed by the hook handler.
+
+The compensation function receives as an input the second parameter passed to the `StepResponse` returned by the step function.
+
+It also accepts as a second parameter an object holding a `container` property to resolve resources from the Medusa container.
+
+### Additional Data Property
+
+Medusa's workflows pass in the hook's input an `additional_data` property:
+
+```ts title="src/workflows/hooks/product-created.ts" highlights={[["4", "additional_data"]]}
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+createProductsWorkflow.hooks.productsCreated(
+  async ({ products, additional_data }, { container }) => {
+    // TODO perform an action
+  }
+)
+```
+
+This property is an object that holds additional data passed to the workflow through the request sent to the API route using the workflow.
+
+<Note>
+
+Learn how to pass `additional_data` in requests to API routes in [this chapter](../../api-routes/additional-data/page.mdx).
+
+</Note>
+
+### Pass Additional Data to Workflow
+
+You can also pass that additional data when executing the workflow. Pass it as a parameter to the `.run` method of the workflow:
+
+```ts title="src/workflows/hooks/product-created.ts" highlights={[["10", "additional_data"]]}
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  await createProductsWorkflow(req.scope).run({
+    input: { 
+      products: [
+        // ...
+      ], 
+      additional_data: {
+        custom_field: "test",
+      },
+    },
+  })
+}
+```
+
+Your hook handler then receives that passed data in the `additional_data` object.

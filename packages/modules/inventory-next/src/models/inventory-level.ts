@@ -1,3 +1,4 @@
+import { DALUtils, isDefined, MathBN } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -7,12 +8,17 @@ import {
   OnLoad,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import { DALUtils, isDefined } from "@medusajs/utils"
 
+import { BigNumberRawValue } from "@medusajs/framework/types"
+import {
+  BigNumber,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+} from "@medusajs/framework/utils"
 import { InventoryItem } from "./inventory-item"
-import { createPsqlIndexStatementHelper } from "@medusajs/utils"
-import { generateEntityId } from "@medusajs/utils"
 
 const InventoryLevelDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
@@ -23,17 +29,21 @@ const InventoryLevelDeletedAtIndex = createPsqlIndexStatementHelper({
 const InventoryLevelInventoryItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
   columns: "inventory_item_id",
+  where: "deleted_at IS NULL",
 })
 
 const InventoryLevelLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
   columns: "location_id",
+  where: "deleted_at IS NULL",
 })
 
 const InventoryLevelLocationIdInventoryItemIdIndex =
   createPsqlIndexStatementHelper({
     tableName: "inventory_level",
-    columns: "location_id",
+    columns: ["inventory_item_id", "location_id"],
+    unique: true,
+    where: "deleted_at IS NULL",
   })
 
 @Entity()
@@ -75,14 +85,23 @@ export class InventoryLevel {
   @Property({ type: "text" })
   location_id: string
 
-  @Property({ type: "int" })
-  stocked_quantity: number = 0
+  @MikroOrmBigNumberProperty()
+  stocked_quantity: BigNumber | number = 0
 
-  @Property({ type: "int" })
-  reserved_quantity: number = 0
+  @Property({ columnType: "jsonb" })
+  raw_stocked_quantity: BigNumberRawValue
 
-  @Property({ type: "int" })
-  incoming_quantity: number = 0
+  @MikroOrmBigNumberProperty()
+  reserved_quantity: BigNumber | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_reserved_quantity: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty()
+  incoming_quantity: BigNumber | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_incoming_quantity: BigNumberRawValue
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -90,25 +109,27 @@ export class InventoryLevel {
   @ManyToOne(() => InventoryItem, {
     persist: false,
   })
-  inventory_item: InventoryItem
+  inventory_item: Rel<InventoryItem>
 
-  available_quantity: number | null = null
+  available_quantity: BigNumber | number | null = null
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "ilev")
     this.inventory_item_id ??= this.inventory_item?.id
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "ilev")
   }
 
   @OnLoad()
-  private onLoad(): void {
+  onLoad(): void {
     if (isDefined(this.stocked_quantity) && isDefined(this.reserved_quantity)) {
-      this.available_quantity = this.stocked_quantity - this.reserved_quantity
+      this.available_quantity = new BigNumber(
+        MathBN.sub(this.raw_stocked_quantity, this.raw_reserved_quantity)
+      )
     }
   }
 }

@@ -38,9 +38,7 @@ export class MarkdownTheme extends Theme {
   hideInPageTOC!: boolean
   hidePageTitle!: boolean
   hideMembersSymbol!: boolean
-  includes!: string
   indexTitle!: string
-  mediaDirectory!: string
   namedAnchors!: boolean
   readme!: string
   out!: string
@@ -77,9 +75,7 @@ export class MarkdownTheme extends Theme {
     this.hideInPageTOC = this.getOption("hideInPageTOC") as boolean
     this.hidePageTitle = this.getOption("hidePageTitle") as boolean
     this.hideMembersSymbol = this.getOption("hideMembersSymbol") as boolean
-    this.includes = this.getOption("includes") as string
     this.indexTitle = this.getOption("indexTitle") as string
-    this.mediaDirectory = this.getOption("media") as string
     this.namedAnchors = this.getOption("namedAnchors") as boolean
     this.readme = this.getOption("readme") as string
     this.out = this.getOption("out") as string
@@ -98,13 +94,11 @@ export class MarkdownTheme extends Theme {
     this.outputModules = this.getOption("outputModules") as boolean
     MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
-    this.listenTo(this.owner, {
-      [RendererEvent.BEGIN]: this.onBeginRenderer,
-      [PageEvent.BEGIN]: this.onBeginPage,
-    })
-
     registerPartials()
     registerHelpers(this)
+
+    renderer.on(RendererEvent.BEGIN, this.onBeginRenderer.bind(this))
+    renderer.on(PageEvent.BEGIN, this.onBeginPage.bind(this))
   }
 
   render(

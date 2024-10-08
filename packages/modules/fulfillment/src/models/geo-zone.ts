@@ -3,9 +3,9 @@ import {
   DALUtils,
   generateEntityId,
   GeoZoneType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Entity,
@@ -16,10 +16,11 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ServiceZone from "./service-zone"
 
-type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
+type GeoZoneOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
@@ -92,7 +93,7 @@ export default class GeoZone {
   @ManyToOne(() => ServiceZone, {
     persist: false,
   })
-  service_zone: ServiceZone
+  service_zone: Rel<ServiceZone>
 
   @Property({
     onCreate: () => new Date(),
@@ -115,7 +116,7 @@ export default class GeoZone {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, " fgz")
+    this.id = generateEntityId(this.id, "fgz")
     this.service_zone_id ??= this.service_zone?.id
   }
 

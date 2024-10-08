@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICustomerModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -29,10 +27,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should batch add customers to a group", async () => {
-        const group = await customerModuleService.createCustomerGroup({
+        const group = await customerModuleService.createCustomerGroups({
           name: "VIP",
         })
-        const customers = await customerModuleService.create([
+        const customers = await customerModuleService.createCustomers([
           {
             first_name: "Test",
             last_name: "Test",

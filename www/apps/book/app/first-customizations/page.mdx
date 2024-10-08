@@ -10,13 +10,13 @@ In this chapter, you’ll build your first customizations with Medusa.
 
 API Routes expose business logic through REST APIs. You can create custom API routes to expose custom business logic.
 
-To create an API route, create the file `src/api/store/hello-world/route.ts` with the following content:
+To create an API route, create the file `src/api/hello-world/route.ts` with the following content:
 
-```ts title="src/api/store/hello-world/route.ts"
+```ts title="src/api/hello-world/route.ts"
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 export const GET = (
   req: MedusaRequest,
@@ -40,10 +40,10 @@ To test out your customizations:
 npm run dev
 ```
 
-2. Send a `GET` request to `/store/hello-world`:
+2. Send a `GET` request to `/hello-world`:
 
-```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/hello-world"
-curl http://localhost:9000/store/hello-world
+```bash
+curl http://localhost:9000/hello-world
 ```
 
 In the response, you’ll receive the following object:
@@ -60,4 +60,4 @@ In the response, you’ll receive the following object:
 
 Congratulations, you’ve made your first customization with Medusa!
 
-You can now start your in-depth learning journey to become a Medusa expert.
+You can now start your in-depth learning journey to become an expert.

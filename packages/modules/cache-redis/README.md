@@ -13,14 +13,15 @@ yarn add @medusajs/cache-redis
 ```
    {
       ttl?: number                // Time to keep data in cache (in seconds)
-    
+
       redisUrl?: string           // Redis instance connection string
-    
+
       redisOptions?: RedisOptions // Redis client options
-    
+
       namespace?: string          // Prefix for event keys (the default is `medusa:`)
   }
 ```
 
 ### Other caching modules
+
 - [Medusa Cache In-Memory](../cache-inmemory/README.md)

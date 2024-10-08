@@ -1,5 +1,5 @@
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({
-          user: expect.objectContaining({ id: "admin_user" }),
+          user: expect.objectContaining({ id: expect.any(String) }),
         })
       })
     })

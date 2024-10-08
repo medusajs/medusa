@@ -1,11 +1,8 @@
+import { OrderDTO } from "../../order"
+import { StockLocationDTO } from "../../stock-location"
 import { CreateFulfillmentAddressDTO } from "./fulfillment-address"
 import { CreateFulfillmentItemDTO } from "./fulfillment-item"
 import { CreateFulfillmentLabelDTO } from "./fulfillment-label"
-
-/**
- * The fulfillment order to be created.
- */
-export interface CreateFulfillmentOrderDTO {}
 
 /**
  * The fulfillment to be created.
@@ -17,6 +14,11 @@ export interface CreateFulfillmentDTO {
   location_id: string
 
   /**
+   * The associated location's data.
+   */
+  location?: StockLocationDTO
+
+  /**
    * The date the fulfillment was packed.
    */
   packed_at?: Date | null
@@ -25,6 +27,11 @@ export interface CreateFulfillmentDTO {
    * The date the fulfillment was shipped.
    */
   shipped_at?: Date | null
+
+  /**
+   * The id of the user that created the fulfillment
+   */
+  created_by?: string | null
 
   /**
    * The date the fulfillment was delivered.
@@ -52,6 +59,11 @@ export interface CreateFulfillmentDTO {
   shipping_option_id?: string | null
 
   /**
+   * Flag to indicate whether shipping is required
+   */
+  requires_shipping?: boolean
+
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
@@ -69,12 +81,12 @@ export interface CreateFulfillmentDTO {
   /**
    * The labels associated with the fulfillment.
    */
-  labels: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
+  labels?: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
 
   /**
-   * The associated fulfillment order.
+   * The associated order to be sent to the provider.
    */
-  order: CreateFulfillmentOrderDTO
+  order?: Partial<OrderDTO>
 }
 
 /**
@@ -114,5 +126,8 @@ export interface UpdateFulfillmentDTO {
   /**
    * The labels associated with the fulfillment.
    */
-  labels?: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
+  labels?: (
+    | Omit<CreateFulfillmentLabelDTO, "fulfillment_id">
+    | { id: string }
+  )[]
 }

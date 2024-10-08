@@ -2,9 +2,7 @@
  * @oas [get] /admin/sales-channels
  * operationId: GetSalesChannels
  * summary: List Sales Channels
- * description: Retrieve a list of sales channels. The sales channels can be
- *   filtered by fields such as `id`. The sales channels can also be sorted or
- *   paginated.
+ * description: Retrieve a list of sales channels. The sales channels can be filtered by fields such as `id`. The sales channels can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -17,12 +15,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -31,6 +33,8 @@
  *       type: number
  *       title: offset
  *       description: The number of items to skip when retrieving a list.
+ *       externalDocs:
+ *         url: "#pagination"
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -39,14 +43,471 @@
  *       type: number
  *       title: limit
  *       description: Limit the number of items returned in the list.
+ *       externalDocs:
+ *         url: "#pagination"
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: q
+ *     in: query
+ *     description: Search term to filter the sales channel's searchable properties.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: Search term to filter the sales channel's searchable properties.
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: Filter by a sales channel ID.
+ *         - type: array
+ *           description: Filter by sales channel IDs.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: A sales channel ID.
+ *   - name: name
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: name
+ *           description: Filter by a sales channel name.
+ *         - type: array
+ *           description: Filter by sales channel names.
+ *           items:
+ *             type: string
+ *             title: name
+ *             description: A sales channel name.
+ *   - name: description
+ *     in: query
+ *     description: The sales channel's description.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: description
+ *       description: Filter by a description. This filter matches an entire description. To search by terms or keywords, use the `q` query parameter instead.
+ *   - name: is_disabled
+ *     in: query
+ *     description: Filter by whether the sales channel is disabled.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: is_disabled
+ *       description: Filter by whether the sales channel is disabled.
+ *   - name: created_at
+ *     in: query
+ *     description: Filter by a sales channel's creation date.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: Filter by a sales channel's creation date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
+ *   - name: updated_at
+ *     in: query
+ *     description: Filter by a sales channel's update date.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: Filter by a sales channel's update date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
+ *   - name: deleted_at
+ *     in: query
+ *     description: Filter by a sales channel's deletion date.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: Filter by a sales channel's deletion date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
+ *   - name: location_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: location_id
+ *           description: Filter by a location ID to retrieve its associated sales channels.
+ *         - type: array
+ *           description: Filter by location IDs to retrieve their associated sales channels.
+ *           items:
+ *             type: string
+ *             title: location_id
+ *             description: A location ID.
+ *   - name: publishable_key_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: publishable_key_id
+ *           description: Filter by a publishable API key's ID to retrieve its associated sales channels.
+ *         - type: array
+ *           description: Filter by publishable API key IDs to retrieve their associated sales channels.
+ *           items:
+ *             type: string
+ *             title: publishable_key_id
+ *             description: A publishable API key ID.
+ *   - name: $and
+ *     in: query
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -56,10 +517,45 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/sales-channels' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Sales Channels
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: The paginated list of sales channels.
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The maximum number of items returned.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The number of items skipped before retrieving the returned items.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The total number of items.
+ *             - type: object
+ *               description: The paginated list of sales channels.
+ *               required:
+ *                 - sales_channels
+ *               properties:
+ *                 sales_channels:
+ *                   type: array
+ *                   description: The list of sales channels.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminSalesChannel"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -72,10 +568,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

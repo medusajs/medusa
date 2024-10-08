@@ -15,36 +15,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -53,146 +33,26 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - name
- *           - service_zone_id
- *           - shipping_profile_id
- *           - data
- *           - price_type
- *           - provider_id
- *           - type
- *           - prices
- *           - rules
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The shipping option's name.
- *           service_zone_id:
- *             type: string
- *             title: service_zone_id
- *             description: The shipping option's service zone id.
- *           shipping_profile_id:
- *             type: string
- *             title: shipping_profile_id
- *             description: The shipping option's shipping profile id.
- *           data:
- *             type: object
- *             description: The shipping option's data.
- *             properties: {}
- *           price_type:
- *             type: string
- *           provider_id:
- *             type: string
- *             title: provider_id
- *             description: The shipping option's provider id.
- *           type:
- *             type: object
- *             description: The shipping option's type.
- *             required:
- *               - label
- *               - description
- *               - code
- *             properties:
- *               label:
- *                 type: string
- *                 title: label
- *                 description: The type's label.
- *               description:
- *                 type: string
- *                 title: description
- *                 description: The type's description.
- *               code:
- *                 type: string
- *                 title: code
- *                 description: The type's code.
- *           prices:
- *             type: array
- *             description: The shipping option's prices.
- *             items:
- *               oneOf:
- *                 - type: object
- *                   description: The price's prices.
- *                   required:
- *                     - currency_code
- *                     - amount
- *                   properties:
- *                     currency_code:
- *                       type: string
- *                       title: currency_code
- *                       description: The price's currency code.
- *                     amount:
- *                       type: number
- *                       title: amount
- *                       description: The price's amount.
- *                 - type: object
- *                   description: The price's prices.
- *                   required:
- *                     - region_id
- *                     - amount
- *                   properties:
- *                     region_id:
- *                       type: string
- *                       title: region_id
- *                       description: The price's region id.
- *                     amount:
- *                       type: number
- *                       title: amount
- *                       description: The price's amount.
- *           rules:
- *             type: array
- *             description: The shipping option's rules.
- *             items:
- *               type: object
- *               description: The rule's rules.
- *               required:
- *                 - operator
- *                 - attribute
- *                 - value
- *               properties:
- *                 operator:
- *                   type: string
- *                 attribute:
- *                   type: string
- *                   title: attribute
- *                   description: The rule's attribute.
- *                 value:
- *                   oneOf:
- *                     - type: string
- *                       title: value
- *                       description: The rule's value.
- *                     - type: array
- *                       description: The rule's value.
- *                       items:
- *                         type: string
- *                         title: value
- *                         description: The value's details.
+ *         $ref: "#/components/schemas/AdminCreateShippingOption"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/shipping-options' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Caitlyn",
+ *         "name": "Julie",
  *         "service_zone_id": "{value}",
  *         "shipping_profile_id": "{value}",
- *         "data": {},
+ *         "price_type": "{value}",
  *         "provider_id": "{value}",
  *         "type": {
  *           "label": "{value}",
  *           "description": "{value}",
  *           "code": "{value}"
  *         },
- *         "prices": [],
- *         "rules": [
- *           {
- *             "attribute": "{value}"
- *           }
- *         ]
+ *         "prices": []
  *       }'
  * tags:
  *   - Shipping Options
@@ -202,7 +62,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminShippingOptionRetrieveResponse"
+ *           $ref: "#/components/schemas/AdminShippingOptionResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -215,6 +75,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createShippingOptionsWorkflow
  * 
 */
 

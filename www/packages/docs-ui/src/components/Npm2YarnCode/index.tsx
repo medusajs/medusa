@@ -1,5 +1,5 @@
 import React from "react"
-import { CodeBlockMetaFields, LegacyCodeTabs } from "../.."
+import { CodeBlock, CodeBlockMetaFields, CodeTab, CodeTabs } from "../.."
 import convert from "npm-to-yarn"
 
 type Npm2YarnCodeProps = {
@@ -14,39 +14,43 @@ export const Npm2YarnCode = ({ npmCode, ...rest }: Npm2YarnCodeProps) => {
 
   const { title = "", ...codeOptions } = rest
 
+  const tabs = [
+    {
+      label: "npm",
+      value: "npm",
+      code: {
+        source: npmCode,
+        lang,
+        ...codeOptions,
+      },
+    },
+    {
+      label: "yarn",
+      value: "yarn",
+      code: {
+        source: yarnCode,
+        lang,
+        ...codeOptions,
+      },
+    },
+    {
+      label: "pnpm",
+      value: "pnpm",
+      code: {
+        source: pnpmCode,
+        lang,
+        ...codeOptions,
+      },
+    },
+  ]
+
   return (
-    <LegacyCodeTabs
-      group="npm2yarn"
-      title={title}
-      tabs={[
-        {
-          label: "npm",
-          value: "npm",
-          code: {
-            source: npmCode,
-            lang,
-            ...codeOptions,
-          },
-        },
-        {
-          label: "yarn",
-          value: "yarn",
-          code: {
-            source: yarnCode,
-            lang,
-            ...codeOptions,
-          },
-        },
-        {
-          label: "pnpm",
-          value: "pnpm",
-          code: {
-            source: pnpmCode,
-            lang,
-            ...codeOptions,
-          },
-        },
-      ]}
-    />
+    <CodeTabs group="npm2yarn" title={title}>
+      {tabs.map((tab, index) => (
+        <CodeTab label={tab.label} value={tab.value} key={index}>
+          <CodeBlock {...tab.code} />
+        </CodeTab>
+      ))}
+    </CodeTabs>
   )
 }

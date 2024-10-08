@@ -1,7 +1,0 @@
-allOf:
-  - $ref: ./StockLocationDTO.yaml
-  - type: object
-    properties:
-      sales_channels:
-        description: The associated sales channels.
-        $ref: ./SalesChannel.yaml

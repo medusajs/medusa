@@ -1,0 +1,65 @@
+post:
+  operationId: PostActor_typeAuth_provider
+  summary: Authenticate Customer
+  description: >
+    Authenticate a customer and receive the JWT token to be used in the header
+    of subsequent requests.
+
+
+    When used with a third-party provider, such as Google, the request returns a
+    `location` property. You redirect to the specified URL in your storefront to
+    continue authentication with the third-party service.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/storefront-development/customers/login#1-using-a-jwt-token
+    description: 'Storefront development: How to login as a customer'
+  x-authenticated: false
+  parameters:
+    - name: auth_provider
+      in: path
+      description: The provider used for authentication.
+      required: true
+      schema:
+        type: string
+        example: emailpass
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          title: input
+          description: >-
+            The input data necessary for authentication. For example, for
+            email-pass authentication, pass `email` and `password` properties.
+  x-codeSamples:
+    - lang: Shell
+      label: EmailPass Provider
+      source:
+        $ref: ../code_samples/Shell/auth_customer_{auth_provider}/post.sh
+    - lang: Bash
+      label: Google Provider
+      source:
+        $ref: ../code_samples/Bash/auth_customer_{auth_provider}/post.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../components/schemas/AuthResponse.yaml
+              - $ref: ../components/schemas/AuthCallbackResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

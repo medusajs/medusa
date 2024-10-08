@@ -1,13 +1,16 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IFulfillmentModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteServiceZonesStepId = "delete-service-zones"
+/**
+ * This step deletes one or more service zones.
+ */
 export const deleteServiceZonesStep = createStep(
   deleteServiceZonesStepId,
   async (ids: string[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.softDeleteServiceZones(ids)
@@ -20,7 +23,7 @@ export const deleteServiceZonesStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.restoreServiceZones(prevIds)

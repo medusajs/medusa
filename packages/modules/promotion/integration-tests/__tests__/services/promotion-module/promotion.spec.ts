@@ -1,14 +1,19 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
+import { IPromotionModuleService } from "@medusajs/framework/types"
 import {
-  ApplicationMethodTargetType,
   ApplicationMethodType,
   CampaignBudgetType,
+  Module,
+  Modules,
   PromotionType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
+import { PromotionModuleService } from "@services"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
-import { createPromotions } from "../../../__fixtures__/promotion"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  createDefaultPromotion,
+  createDefaultPromotions,
+  createPromotions,
+} from "../../../__fixtures__/promotion"
 
 jest.setTimeout(30000)
 
@@ -19,15 +24,61 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IPromotionModuleService>) => {
     describe("Promotion Service", () => {
+      beforeEach(async () => {
+        await createCampaigns(MikroOrmWrapper.forkManager())
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.PROMOTION, {
+          service: PromotionModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "promotion",
+          "campaign",
+          "promotionRule",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          promotion: {
+            id: {
+              linkable: "promotion_id",
+              entity: "Promotion",
+              primaryKey: "id",
+              serviceName: "Promotion",
+              field: "promotion",
+            },
+          },
+          campaign: {
+            id: {
+              linkable: "campaign_id",
+              entity: "Campaign",
+              primaryKey: "id",
+              serviceName: "Promotion",
+              field: "campaign",
+            },
+          },
+          promotionRule: {
+            id: {
+              linkable: "promotion_rule_id",
+              entity: "PromotionRule",
+              primaryKey: "id",
+              serviceName: "Promotion",
+              field: "promotionRule",
+            },
+          },
+        })
+      })
+
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {
-          const error = await service
-            .create([
-              {
-                type: PromotionType.STANDARD,
-              } as any,
-            ])
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            code: undefined,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "Value for Promotion.code is required, 'undefined' found"
@@ -35,14 +86,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a basic promotion successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-            },
-          ])
+          const createdPromotion = await createDefaultPromotion(service, {})
 
-          const [promotion] = await service.list({
+          const [promotion] = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -55,54 +101,14 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a promotion with order application method successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                value: "100",
-              },
-            },
-          ])
-
-          const [promotion] = await service.list(
-            {
-              id: [createdPromotion.id],
-            },
-            {
-              relations: ["application_method"],
-            }
-          )
-
-          expect(promotion).toEqual(
-            expect.objectContaining({
-              code: "PROMOTION_TEST",
-              is_automatic: false,
-              type: "standard",
-              application_method: expect.objectContaining({
-                type: "fixed",
-                target_type: "order",
-                value: 100,
-              }),
-            })
-          )
-        })
-
         it("should throw error when percentage type and value is greater than 100", async () => {
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: ApplicationMethodType.PERCENTAGE,
-                target_type: ApplicationMethodTargetType.ORDER,
-                value: "1000",
-              },
-            })
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: ApplicationMethodType.PERCENTAGE,
+              value: 1000,
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "Application Method value should be a percentage number between 0 and 100"
@@ -113,39 +119,8 @@ moduleIntegrationTestRunner({
           const startsAt = new Date("01/01/2023")
           const endsAt = new Date("01/01/2023")
 
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              campaign_id: "campaign-id-1",
-              campaign: {
-                name: "test",
-                campaign_identifier: "test-promotion-test",
-                starts_at: startsAt,
-                ends_at: endsAt,
-                budget: {
-                  type: CampaignBudgetType.SPEND,
-                  used: 100,
-                  limit: 100,
-                },
-              },
-            })
-            .catch((e) => e)
-
-          expect(error.message).toContain(
-            "Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously."
-          )
-        })
-
-        it("should create a basic promotion with campaign successfully", async () => {
-          const startsAt = new Date("01/01/2023")
-          const endsAt = new Date("01/01/2023")
-
-          await createCampaigns(MikroOrmWrapper.forkManager())
-
-          const createdPromotion = await service.create({
-            code: "PROMOTION_TEST",
-            type: PromotionType.STANDARD,
+          const error = await createDefaultPromotion(service, {
+            campaign_id: "campaign-id-1",
             campaign: {
               name: "test",
               campaign_identifier: "test-promotion-test",
@@ -157,9 +132,36 @@ moduleIntegrationTestRunner({
                 limit: 100,
               },
             },
+          }).catch((e) => e)
+
+          expect(error.message).toContain(
+            "Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously."
+          )
+        })
+
+        it("should create a basic promotion with campaign successfully", async () => {
+          const startsAt = new Date("01/01/2023")
+          const endsAt = new Date("01/01/2023")
+
+          const createdPromotion = await createDefaultPromotion(service, {
+            code: "PROMOTION_TEST",
+            type: PromotionType.STANDARD,
+            campaign_id: undefined,
+            campaign: {
+              name: "test",
+              campaign_identifier: "test-promotion-test",
+              starts_at: startsAt,
+              ends_at: endsAt,
+              budget: {
+                type: CampaignBudgetType.SPEND,
+                currency_code: "USD",
+                used: 100,
+                limit: 100,
+              },
+            },
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["campaign.budget"] }
           )
@@ -169,6 +171,7 @@ moduleIntegrationTestRunner({
               code: "PROMOTION_TEST",
               is_automatic: false,
               type: "standard",
+              application_method: expect.any(Object),
               campaign: expect.objectContaining({
                 name: "test",
                 campaign_identifier: "test-promotion-test",
@@ -176,6 +179,7 @@ moduleIntegrationTestRunner({
                 ends_at: endsAt,
                 budget: expect.objectContaining({
                   type: CampaignBudgetType.SPEND,
+                  currency_code: "USD",
                   used: 100,
                   limit: 100,
                 }),
@@ -185,15 +189,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a basic promotion with an existing campaign successfully", async () => {
-          await createCampaigns(MikroOrmWrapper.forkManager())
-
-          const createdPromotion = await service.create({
-            code: "PROMOTION_TEST",
-            type: PromotionType.STANDARD,
+          const createdPromotion = await createDefaultPromotion(service, {
             campaign_id: "campaign-id-1",
+            code: "PROMOTION_TEST",
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["campaign.budget"] }
           )
@@ -216,19 +217,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw error when creating an item application method without allocation", async () => {
-          const error = await service
-            .create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                application_method: {
-                  type: "fixed",
-                  target_type: "items",
-                  value: "100",
-                },
-              },
-            ])
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.STANDARD,
+            application_method: {
+              allocation: undefined,
+              target_type: "items",
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "application_method.allocation should be either 'across OR each' when application_method.target_type is either 'shipping_methods OR items'"
@@ -236,20 +231,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw error when creating an item application, each allocation, without max quanity", async () => {
-          const error = await service
-            .create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                application_method: {
-                  type: "fixed",
-                  allocation: "each",
-                  target_type: "shipping_methods",
-                  value: "100",
-                },
-              },
-            ])
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            application_method: {
+              allocation: "each",
+              max_quantity: undefined,
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "application_method.max_quantity is required when application_method.allocation is 'each'"
@@ -257,26 +244,18 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw error when creating an order application method with rules", async () => {
-          const error = await service
-            .create([
-              {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                application_method: {
-                  type: "fixed",
-                  target_type: "order",
-                  value: "100",
-                  target_rules: [
-                    {
-                      attribute: "product_id",
-                      operator: "eq",
-                      values: ["prod_tshirt"],
-                    },
-                  ],
+          const error = await createDefaultPromotion(service, {
+            application_method: {
+              target_type: "order",
+              target_rules: [
+                {
+                  attribute: "product_id",
+                  operator: "eq",
+                  values: ["prod_tshirt"],
                 },
-              },
-            ])
-            .catch((e) => e)
+              ],
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "Target rules for application method with target type (order) is not allowed"
@@ -284,27 +263,19 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a promotion with rules successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer_group_id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-            },
-          ])
+          const createdPromotion = await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer_group_id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+          })
 
-          const [promotion] = await service.list(
-            {
-              id: [createdPromotion.id],
-            },
-            {
-              relations: ["rules", "rules.values"],
-            }
+          const [promotion] = await service.listPromotions(
+            { id: [createdPromotion.id] },
+            { relations: ["rules", "rules.values"] }
           )
 
           expect(promotion).toEqual(
@@ -331,27 +302,19 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a promotion with rules with single value successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "PROMOTION_TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer_group_id",
-                  operator: "eq",
-                  values: "VIP",
-                },
-              ],
-            },
-          ])
+          const createdPromotion = await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer_group_id",
+                operator: "eq",
+                values: "VIP",
+              },
+            ],
+          })
 
-          const [promotion] = await service.list(
-            {
-              id: [createdPromotion.id],
-            },
-            {
-              relations: ["rules", "rules.values"],
-            }
+          const [promotion] = await service.listPromotions(
+            { id: [createdPromotion.id] },
+            { relations: ["rules", "rules.values"] }
           )
 
           expect(promotion).toEqual(
@@ -375,21 +338,15 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when rule attribute is invalid", async () => {
-          const error = await service
-            .create([
+          const error = await createDefaultPromotion(service, {
+            rules: [
               {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
-                  {
-                    attribute: "",
-                    operator: "eq",
-                    values: "VIP",
-                  } as any,
-                ],
-              },
-            ])
-            .catch((e) => e)
+                attribute: "",
+                operator: "eq",
+                values: "VIP",
+              } as any,
+            ],
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "rules[].attribute is a required field"
@@ -397,41 +354,29 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when rule operator is invalid", async () => {
-          let error = await service
-            .create([
+          let error = await createDefaultPromotion(service, {
+            rules: [
               {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
-                  {
-                    attribute: "customer_group",
-                    operator: "",
-                    values: "VIP",
-                  } as any,
-                ],
-              },
-            ])
-            .catch((e) => e)
+                attribute: "customer_group",
+                operator: "",
+                values: "VIP",
+              } as any,
+            ],
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "rules[].operator is a required field"
           )
 
-          error = await service
-            .create([
+          error = await createDefaultPromotion(service, {
+            rules: [
               {
-                code: "PROMOTION_TEST",
-                type: PromotionType.STANDARD,
-                rules: [
-                  {
-                    attribute: "customer_group",
-                    operator: "doesnotexist",
-                    values: "VIP",
-                  } as any,
-                ],
-              },
-            ])
-            .catch((e) => e)
+                attribute: "customer_group",
+                operator: "doesnotexist",
+                values: "VIP",
+              } as any,
+            ],
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "rules[].operator (doesnotexist) is invalid. It should be one of gte, lte, gt, lt, eq, ne, in"
@@ -439,14 +384,29 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a basic buyget promotion successfully", async () => {
-          const createdPromotion = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-            })
-            .catch((e) => e)
+          const createdPromotion = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              buy_rules: [
+                {
+                  attribute: "product_collection",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+              target_rules: [
+                {
+                  attribute: "product_collection",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+            } as any,
+          })
 
-          const [promotion] = await service.list({
+          const [promotion] = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -460,25 +420,20 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when target_rules are not present for buyget promotion", async () => {
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: "100",
-                buy_rules: [
-                  {
-                    attribute: "product_collection",
-                    operator: "eq",
-                    values: ["pcol_towel"],
-                  },
-                ],
-              },
-            })
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              buy_rules: [
+                {
+                  attribute: "product_collection",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "Target rules are required for buyget promotion type"
@@ -486,18 +441,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when buy_rules are not present for buyget promotion", async () => {
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: "100",
-              },
-            })
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "Buy rules are required for buyget promotion type"
@@ -505,33 +455,26 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when apply_to_quantity is not present for buyget promotion", async () => {
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: "100",
-                buy_rules_min_quantity: 1,
-                buy_rules: [
-                  {
-                    attribute: "product_collection.id",
-                    operator: "eq",
-                    values: ["pcol_towel"],
-                  },
-                ],
-                target_rules: [
-                  {
-                    attribute: "product.id",
-                    operator: "eq",
-                    values: ["prod_mat"],
-                  },
-                ],
-              },
-            })
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              buy_rules_min_quantity: 1,
+              buy_rules: [
+                {
+                  attribute: "product_collection.id",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+              target_rules: [
+                {
+                  attribute: "product.id",
+                  operator: "eq",
+                  values: ["prod_mat"],
+                },
+              ],
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "apply_to_quantity is a required field for Promotion type of buyget"
@@ -539,33 +482,26 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when buy_rules_min_quantity is not present for buyget promotion", async () => {
-          const error = await service
-            .create({
-              code: "PROMOTION_TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: "100",
-                apply_to_quantity: 1,
-                buy_rules: [
-                  {
-                    attribute: "product_collection.id",
-                    operator: "eq",
-                    values: ["pcol_towel"],
-                  },
-                ],
-                target_rules: [
-                  {
-                    attribute: "product.id",
-                    operator: "eq",
-                    values: ["prod_mat"],
-                  },
-                ],
-              },
-            })
-            .catch((e) => e)
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules: [
+                {
+                  attribute: "product_collection.id",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+              target_rules: [
+                {
+                  attribute: "product.id",
+                  operator: "eq",
+                  values: ["prod_mat"],
+                },
+              ],
+            } as any,
+          }).catch((e) => e)
 
           expect(error.message).toContain(
             "buy_rules_min_quantity is a required field for Promotion type of buyget"
@@ -573,14 +509,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a buyget promotion with rules successfully", async () => {
-          const createdPromotion = await service.create({
-            code: "PROMOTION_TEST",
+          const createdPromotion = await createDefaultPromotion(service, {
             type: PromotionType.BUYGET,
             application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "across",
-              value: "100",
               apply_to_quantity: 1,
               buy_rules_min_quantity: 1,
               buy_rules: [
@@ -597,19 +528,13 @@ moduleIntegrationTestRunner({
                   values: "prod_mat",
                 },
               ],
-            },
+            } as any,
           })
 
           expect(createdPromotion).toEqual(
             expect.objectContaining({
-              code: "PROMOTION_TEST",
-              is_automatic: false,
               type: PromotionType.BUYGET,
               application_method: expect.objectContaining({
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: 100,
                 apply_to_quantity: 1,
                 buy_rules_min_quantity: 1,
                 target_rules: [
@@ -635,7 +560,7 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service
-            .update([
+            .updatePromotions([
               {
                 type: PromotionType.STANDARD,
               } as any,
@@ -646,9 +571,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should update the attributes of a promotion successfully", async () => {
-          await createPromotions(MikroOrmWrapper.forkManager())
+          await createDefaultPromotions(service)
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: "promotion-id-1",
               is_automatic: true,
@@ -667,26 +592,17 @@ moduleIntegrationTestRunner({
         })
 
         it("should update the attributes of a application method successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "across",
-                value: "100",
-              },
-            },
-          ])
+          const createdPromotion = await createDefaultPromotion(service, {
+            application_method: { value: 100 },
+          } as any)
           const applicationMethod = createdPromotion.application_method
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               application_method: {
-                id: applicationMethod?.id as string,
-                value: "200",
+                id: applicationMethod?.id!,
+                value: 200,
               },
             },
           ])
@@ -701,22 +617,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should change max_quantity to 0 when target_type is changed to order", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-              },
-            },
-          ])
+          const createdPromotion = await createDefaultPromotion(service, {
+            application_method: { max_quantity: 500, allocation: "each" },
+          } as any)
           const applicationMethod = createdPromotion.application_method
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               application_method: {
@@ -739,26 +645,22 @@ moduleIntegrationTestRunner({
         })
 
         it("should validate the attributes of a application method successfully", async () => {
-          const [createdPromotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "order",
-                allocation: "across",
-                value: "100",
-              },
+          const createdPromotion = await createDefaultPromotion(service, {
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              allocation: "across",
             },
-          ])
+          } as any)
+
           const applicationMethod = createdPromotion.application_method
 
           let error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
-                  id: applicationMethod?.id as string,
+                  id: applicationMethod?.id!,
                   target_type: "should-error",
                 } as any,
               },
@@ -770,7 +672,7 @@ moduleIntegrationTestRunner({
           )
 
           error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
@@ -786,7 +688,7 @@ moduleIntegrationTestRunner({
           )
 
           error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
@@ -803,20 +705,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should update campaign of the promotion", async () => {
-          await createCampaigns(MikroOrmWrapper.forkManager())
-          const [createdPromotion] = await createPromotions(
-            MikroOrmWrapper.forkManager(),
-            [
-              {
-                is_automatic: true,
-                code: "TEST",
-                type: PromotionType.BUYGET,
-                campaign_id: "campaign-id-1",
-              },
-            ]
-          )
+          const createdPromotion = await createDefaultPromotion(service, {
+            campaign_id: "campaign-id-1",
+          })
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               campaign_id: "campaign-id-2",
@@ -835,13 +728,13 @@ moduleIntegrationTestRunner({
 
       describe("retrieve", () => {
         beforeEach(async () => {
-          await createPromotions(MikroOrmWrapper.forkManager())
+          await createDefaultPromotions(service)
         })
 
         const id = "promotion-id-1"
 
         it("should return promotion for the given id", async () => {
-          const promotion = await service.retrieve(id)
+          const promotion = await service.retrievePromotion(id)
 
           expect(promotion).toEqual(
             expect.objectContaining({
@@ -854,7 +747,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve("does-not-exist")
+            await service.retrievePromotion("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -868,7 +761,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve(undefined as unknown as string)
+            await service.retrievePromotion(undefined as unknown as string)
           } catch (e) {
             error = e
           }
@@ -877,7 +770,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return promotion based on config select param", async () => {
-          const promotion = await service.retrieve(id, {
+          const promotion = await service.retrievePromotion(id, {
             select: ["id"],
           })
 
@@ -900,6 +793,7 @@ moduleIntegrationTestRunner({
                 type: ApplicationMethodType.FIXED,
                 value: "200",
                 target_type: "items",
+                currency_code: "usd",
               },
             } as any,
             {
@@ -911,13 +805,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should return all promotions and count", async () => {
-          const [promotions, count] = await service.listAndCount()
+          const [promotions, count] = await service.listAndCountPromotions()
 
           expect(count).toEqual(2)
           expect(promotions).toEqual([
             {
               id: "promotion-id-1",
               code: "PROMOTION_1",
+              campaign_id: null,
               campaign: null,
               is_automatic: false,
               type: "standard",
@@ -929,6 +824,7 @@ moduleIntegrationTestRunner({
             {
               id: "promotion-id-2",
               code: "PROMOTION_2",
+              campaign_id: null,
               campaign: null,
               is_automatic: false,
               type: "standard",
@@ -941,7 +837,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return all promotions based on config select and relations param", async () => {
-          const [promotions, count] = await service.listAndCount(
+          const [promotions, count] = await service.listAndCountPromotions(
             {
               id: ["promotion-id-1"],
             },
@@ -967,14 +863,14 @@ moduleIntegrationTestRunner({
 
       describe("delete", () => {
         it("should soft delete the promotions given an id successfully", async () => {
-          const createdPromotion = await service.create({
+          const createdPromotion = await createDefaultPromotion(service, {
             code: "TEST",
             type: "standard",
           })
 
-          await service.delete([createdPromotion.id])
+          await service.deletePromotions([createdPromotion.id])
 
-          const promotions = await service.list(
+          const promotions = await service.listPromotions(
             {
               id: [createdPromotion.id],
             },
@@ -987,14 +883,14 @@ moduleIntegrationTestRunner({
 
       describe("softDelete", () => {
         it("should soft delete the promotions given an id successfully", async () => {
-          const createdPromotion = await service.create({
+          const createdPromotion = await createDefaultPromotion(service, {
             code: "TEST",
             type: "standard",
           })
 
-          await service.softDelete([createdPromotion.id])
+          await service.softDeletePromotions([createdPromotion.id])
 
-          const promotions = await service.list({
+          const promotions = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -1004,19 +900,23 @@ moduleIntegrationTestRunner({
 
       describe("restore", () => {
         it("should restore the promotions given an id successfully", async () => {
-          const createdPromotion = await service.create({
+          const createdPromotion = await createDefaultPromotion(service, {
             code: "TEST",
             type: "standard",
           })
 
-          await service.softDelete([createdPromotion.id])
+          await service.softDeletePromotions([createdPromotion.id])
 
-          let promotions = await service.list({ id: [createdPromotion.id] })
+          let promotions = await service.listPromotions({
+            id: [createdPromotion.id],
+          })
 
           expect(promotions).toHaveLength(0)
-          await service.restore([createdPromotion.id])
+          await service.restorePromotions([createdPromotion.id])
 
-          promotions = await service.list({ id: [createdPromotion.id] })
+          promotions = await service.listPromotions({
+            id: [createdPromotion.id],
+          })
           expect(promotions).toHaveLength(1)
         })
       })
@@ -1025,19 +925,16 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-              },
-            },
-          ])
+          promotion = await createDefaultPromotion(service, {
+            code: "TEST",
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 100,
+              max_quantity: 500,
+            } as any,
+          })
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1093,19 +990,7 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-              },
-            },
-          ])
+          promotion = await createDefaultPromotion(service, {})
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1167,35 +1052,27 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-                apply_to_quantity: 1,
-                buy_rules_min_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product.id",
-                    operator: "in",
-                    values: ["prod_1", "prod_2"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_collection.id",
-                    operator: "eq",
-                    values: ["pcol_towel"],
-                  },
-                ],
-              },
-            },
-          ])
+          promotion = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              buy_rules: [
+                {
+                  attribute: "product_collection.id",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+              target_rules: [
+                {
+                  attribute: "product.id",
+                  operator: "in",
+                  values: ["prod_1", "prod_2"],
+                },
+              ],
+            } as any,
+          })
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1257,26 +1134,15 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              rules: [
-                {
-                  attribute: "customer_group_id",
-                  operator: "in",
-                  values: ["VIP", "top100"],
-                },
-              ],
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
+          promotion = await createDefaultPromotion(service, {
+            rules: [
+              {
+                attribute: "customer_group_id",
+                operator: "in",
+                values: ["VIP", "top100"],
               },
-            },
-          ])
+            ],
+          })
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1313,9 +1179,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["rules", "rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["rules", "rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({
@@ -1330,26 +1199,17 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.STANDARD,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-                target_rules: [
-                  {
-                    attribute: "customer_group_id",
-                    operator: "in",
-                    values: ["VIP", "top100"],
-                  },
-                ],
-              },
-            },
-          ])
+          promotion = await createDefaultPromotion(service, {
+            application_method: {
+              target_rules: [
+                {
+                  attribute: "customer_group_id",
+                  operator: "in",
+                  values: ["VIP", "top100"],
+                },
+              ],
+            } as any,
+          })
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1388,9 +1248,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionTargetRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["application_method.target_rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["application_method.target_rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({
@@ -1407,35 +1270,27 @@ moduleIntegrationTestRunner({
         let promotion
 
         beforeEach(async () => {
-          ;[promotion] = await service.create([
-            {
-              code: "TEST",
-              type: PromotionType.BUYGET,
-              application_method: {
-                type: "fixed",
-                target_type: "items",
-                allocation: "each",
-                value: "100",
-                max_quantity: 500,
-                apply_to_quantity: 1,
-                buy_rules_min_quantity: 1,
-                target_rules: [
-                  {
-                    attribute: "product.id",
-                    operator: "in",
-                    values: ["prod_1", "prod_2"],
-                  },
-                ],
-                buy_rules: [
-                  {
-                    attribute: "product_collection",
-                    operator: "eq",
-                    values: ["pcol_towel"],
-                  },
-                ],
-              },
-            },
-          ])
+          promotion = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "product.id",
+                  operator: "in",
+                  values: ["prod_1", "prod_2"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "product_collection",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+            } as any,
+          })
         })
 
         it("should throw an error when promotion with id does not exist", async () => {
@@ -1474,9 +1329,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionBuyRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["application_method.buy_rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["application_method.buy_rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({

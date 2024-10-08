@@ -16,38 +16,70 @@ export interface UnistNode extends Node {
   children?: UnistNode[]
 }
 
+export type ArrayExpression = {
+  type: "ArrayExpression"
+  elements: Expression[]
+}
+
+export type ObjectExpression = {
+  type: "ObjectExpression"
+  properties: AttributeProperty[]
+}
+
+export type LiteralExpression = {
+  type: "Literal"
+  value: unknown
+  raw: string
+}
+
+export type Expression =
+  | {
+      type: string
+    }
+  | ArrayExpression
+  | ObjectExpression
+  | LiteralExpression
+
+export interface Estree {
+  body?: {
+    type?: string
+    expression?: Expression
+  }[]
+}
+
 export interface UnistNodeWithData extends UnistNode {
   attributes: {
     name: string
-    value: {
-      data?: {
-        estree?: {
-          body?: {
-            type?: string
-            expression?: {
-              type?: string
-              elements?: {
-                properties: AttributeProperty[]
-              }[]
-            }
-          }[]
+    value:
+      | {
+          data?: {
+            estree?: Estree
+          }
+          value?: string
         }
-      }
-      value?: string
-    }
+      | string
     type?: string
   }[]
 }
 
 export interface AttributeProperty {
   key: {
-    value: string
+    name?: string
+    value?: string
     raw: string
   }
-  value: {
-    value: unknown
-    raw: string
-  }
+  value:
+    | {
+        type: "Literal"
+        value: unknown
+        raw: string
+      }
+    | {
+        type: "JSXElement"
+        // TODO add correct type if necessary
+        openingElement: unknown
+      }
+    | ArrayExpression
 }
 
 export interface UnistTree extends Node {
@@ -83,14 +115,38 @@ export declare type CrossProjectLinksOptions = {
       path?: string
     }
   }
+  useBaseUrl?: boolean
 }
 
-export declare type TypeListLinkFixerOptions = {
+export declare type ComponentLinkFixerLinkType = "md" | "value"
+
+export declare type ComponentLinkFixerOptions = {
   filePath?: string
   basePath?: string
+  checkLinksType: ComponentLinkFixerLinkType
 }
 
 export declare type LocalLinkOptions = {
   filePath?: string
   basePath?: string
 }
+
+export type ExpressionJsVarItem = {
+  original: AttributeProperty
+  data?: unknown
+}
+
+export type ExpressionJsVarLiteral = {
+  original: {
+    type: "Literal"
+    value: unknown
+    raw: string
+  }
+  data?: unknown
+}
+
+export type ExpressionJsVarObj = {
+  [k: string]: ExpressionJsVarItem | ExpressionJsVar | ExpressionJsVar[]
+}
+
+export type ExpressionJsVar = ExpressionJsVarObj | ExpressionJsVarLiteral

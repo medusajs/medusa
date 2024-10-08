@@ -1,39 +1,29 @@
 /**
  * @oas [get] /admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}
  * operationId: GetPromotionsRuleValueOptionsRule_typeRule_attribute_id
- * summary: "List "
- * description: Retrieve a list of  in a promotion. The  can be filtered by fields
- *   like FILTER FIELDS. The  can also be paginated.
+ * summary: List Rule Values Given a Rule Attribute
+ * x-sidebar-summary: List Rule Values
+ * description: |
+ *   Retrieve all potential values for promotion rules and target and buy rules based on the specified rule attribute and type.
+ *   For example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to `rules`, a list of currencies are retrieved in label-value pairs.
  * x-authenticated: true
  * parameters:
  *   - name: rule_type
  *     in: path
- *     description: The promotion's rule type.
+ *     description: The rule type.
  *     required: true
  *     schema:
  *       type: string
+ *       enum:
+ *         - rules
+ *         - target-rules
+ *         - buy-rules
  *   - name: rule_attribute_id
  *     in: path
- *     description: The promotion's rule attribute id.
+ *     description: The rule attribute's ID.
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -42,6 +32,8 @@
  *       type: number
  *       title: offset
  *       description: The number of items to skip when retrieving a list.
+ *       externalDocs:
+ *         url: "#pagination"
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -50,14 +42,38 @@
  *       type: number
  *       title: limit
  *       description: Limit the number of items returned in the list.
+ *       externalDocs:
+ *         url: "#pagination"
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: promotion_type
+ *     in: query
+ *     description: The promotion type to retrieve rules for.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: promotion_type
+ *       description: The promotion type to retrieve rules for.
+ *       enum:
+ *         - standard
+ *         - buyget
+ *   - name: application_method_type
+ *     in: query
+ *     description: The application method type to retrieve rules for.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: application_method_type
+ *       description: The application method type to retrieve rules for.
+ *       enum:
+ *         - fixed
+ *         - percentage
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -65,15 +81,27 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl
- *       '{backend_url}/admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}'
- *       \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: |-
+ *       curl '{backend_url}/admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}' \
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: The list of rule values.
+ *           required:
+ *             - values
+ *           properties:
+ *             values:
+ *               type: array
+ *               description: The list of rule values.
+ *               items:
+ *                 $ref: "#/components/schemas/AdminRuleValueOption"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -86,10 +114,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

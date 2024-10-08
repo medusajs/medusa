@@ -1,14 +1,6 @@
-import { moduleDefinition } from "./module-definition"
-import { initializeFactory, Modules } from "@medusajs/modules-sdk"
+import { StoreModuleService } from "@services"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
-
-export const initialize = initializeFactory({
-  moduleName: Modules.STORE,
-  moduleDefinition,
+export default Module(Modules.STORE, {
+  service: StoreModuleService,
 })
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
-export default moduleDefinition

@@ -1,8 +1,0 @@
-type: object
-description: The details to create or update of the line item change.
-required:
-  - quantity
-properties:
-  quantity:
-    description: The quantity to update
-    type: number

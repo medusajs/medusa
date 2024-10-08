@@ -15,36 +15,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -53,68 +33,28 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - name
- *           - currency_code
- *           - countries
- *           - automatic_taxes
- *           - payment_providers
- *           - metadata
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The region's name.
- *           currency_code:
- *             type: string
- *             title: currency_code
- *             description: The region's currency code.
- *           countries:
- *             type: array
- *             description: The region's countries.
- *             items:
- *               type: string
- *               title: countries
- *               description: The country's countries.
- *           automatic_taxes:
- *             type: boolean
- *             title: automatic_taxes
- *             description: The region's automatic taxes.
- *           payment_providers:
- *             type: array
- *             description: The region's payment providers.
- *             items:
- *               type: string
- *               title: payment_providers
- *               description: The payment provider's payment providers.
- *           metadata:
- *             type: object
- *             description: The region's metadata.
- *             properties: {}
+ *         $ref: "#/components/schemas/AdminCreateRegion"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/regions' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Charlie",
+ *         "name": "Heloise",
  *         "currency_code": "{value}",
- *         "countries": [
- *           "{value}"
- *         ],
- *         "automatic_taxes": true,
- *         "payment_providers": [
- *           "{value}"
- *         ],
  *         "metadata": {}
  *       }'
  * tags:
  *   - Regions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminRegionResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -127,6 +67,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createRegionsWorkflow
  * 
 */
 

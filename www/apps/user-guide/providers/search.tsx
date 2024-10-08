@@ -2,9 +2,9 @@
 
 import {
   SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
-  searchFilters,
+  searchFiltersV1,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -42,13 +42,13 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(`^${config.baseUrl}/user-guide`),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV1,
       }}
       initialDefaultFilters={["user-guide"]}
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
@@ -61,8 +61,9 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
             children: "Beta",
+            badgeType: "shaded",
           },
         },
       ]}

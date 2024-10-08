@@ -1,12 +1,12 @@
-import {
-  DeleteEntityInput,
-  ModuleRegistrationName,
-} from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/utils"
+import { DeleteEntityInput } from "@medusajs/framework/modules-sdk"
+import { IFulfillmentModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteShippingOptionsStepId = "delete-shipping-options-step"
+/**
+ * This step deletes one or more shipping options.
+ */
 export const deleteShippingOptionsStep = createStep(
   deleteShippingOptionsStepId,
   async (ids: string[], { container }) => {
@@ -15,7 +15,7 @@ export const deleteShippingOptionsStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const softDeletedEntities = await service.softDeleteShippingOptions(ids)
@@ -33,7 +33,7 @@ export const deleteShippingOptionsStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.restoreShippingOptions(prevIds)

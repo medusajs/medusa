@@ -1,30 +1,33 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FilterableRegionProps,
   IRegionModuleService,
   UpdateRegionDTO,
-} from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateRegionsStepInput = {
+export type UpdateRegionsStepInput = {
   selector: FilterableRegionProps
   update: UpdateRegionDTO
 }
 
 export const updateRegionsStepId = "update-region"
+/**
+ * This step updates regions matching the specified filters.
+ */
 export const updateRegionsStep = createStep(
   updateRegionsStepId,
   async (data: UpdateRegionsStepInput, { container }) => {
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listRegions(data.selector, {
       select: selects,
       relations,
     })
@@ -33,7 +36,7 @@ export const updateRegionsStep = createStep(
       return new StepResponse(prevData, [])
     }
 
-    const regions = await service.update(data.selector, data.update)
+    const regions = await service.updateRegions(data.selector, data.update)
 
     return new StepResponse(regions, prevData)
   },
@@ -42,11 +45,9 @@ export const updateRegionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
-    await service.upsert(
+    await service.upsertRegions(
       prevData.map((r) => ({
         id: r.id,
         name: r.name,

@@ -1,0 +1,43 @@
+type: object
+description: The region's details.
+x-schemaName: AdminCreateRegion
+required:
+  - name
+  - currency_code
+properties:
+  name:
+    type: string
+    title: name
+    description: The region's name.
+  currency_code:
+    type: string
+    title: currency_code
+    description: The region's currency code.
+    example: usd
+  countries:
+    type: array
+    description: The region's countries.
+    items:
+      type: string
+      title: countries
+      description: A country code.
+      example: us
+  automatic_taxes:
+    type: boolean
+    title: automatic_taxes
+    description: Whether taxes are calculated automatically during checkout in this region.
+  is_tax_inclusive:
+    type: boolean
+    title: is_tax_inclusive
+    description: Whether prices in this region are tax inclusive.
+  payment_providers:
+    type: array
+    description: The payment providers enabled in this region.
+    items:
+      type: string
+      title: payment_providers
+      description: A payment provider's ID.
+      example: pp_stripe_stripe
+  metadata:
+    type: object
+    description: The region's metadata, used to store custom key-value pairs.

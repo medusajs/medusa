@@ -1,13 +1,15 @@
-import type { RawSidebarItemType } from "types"
-import findPageHeading from "./utils/find-page-heading.js"
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "fs"
+import type { RawSidebarItem, SidebarItem } from "types"
+import { existsSync, mkdirSync, readdirSync, statSync } from "fs"
 import path from "path"
-import { sidebarAttachHrefCommonOptions } from "./index.js"
-import { getFrontMatterUtil } from "remark-rehype-plugins"
-import findMetadataTitle from "./utils/find-metadata-title.js"
+import { getSidebarItemLink, sidebarAttachHrefCommonOptions } from "./index.js"
+import getCoreFlowsRefSidebarChildren from "./utils/get-core-flows-ref-sidebar-children.js"
 
-type ItemsToAdd = RawSidebarItemType & {
+export type ItemsToAdd = SidebarItem & {
   sidebar_position?: number
+}
+
+const customGenerators: Record<string, () => Promise<ItemsToAdd[]>> = {
+  "core-flows": getCoreFlowsRefSidebarChildren,
 }
 
 async function getSidebarItems(
@@ -35,54 +37,41 @@ async function getSidebarItems(
         true
       )
       if (nested && newItems.length > 1) {
-        items.push(
-          ...sidebarAttachHrefCommonOptions([
-            {
-              title:
-                fileBasename.charAt(0).toUpperCase() +
-                fileBasename.substring(1),
-              hasTitleStyling: true,
-              children: newItems,
-            },
-          ])
-        )
+        items.push({
+          type: "sub-category",
+          title:
+            fileBasename.charAt(0).toUpperCase() + fileBasename.substring(1),
+          children: newItems,
+          loaded: true,
+        })
       } else {
-        items.push(...sidebarAttachHrefCommonOptions(newItems))
+        items.push(
+          ...(sidebarAttachHrefCommonOptions(newItems) as ItemsToAdd[])
+        )
       }
       continue
     }
 
-    const frontmatter = await getFrontMatterUtil(filePath)
-    if (frontmatter.sidebar_autogenerate_exclude) {
+    const newItem = await getSidebarItemLink({
+      filePath,
+      basePath,
+      fileBasename,
+    })
+
+    if (!newItem) {
       continue
     }
 
-    const fileContent = frontmatter.sidebar_label
-      ? ""
-      : readFileSync(filePath, "utf-8")
-
-    const newItem = sidebarAttachHrefCommonOptions([
-      {
-        path:
-          frontmatter.slug ||
-          filePath.replace(basePath, "").replace(`/${fileBasename}`, ""),
-        title:
-          frontmatter.sidebar_label ||
-          findMetadataTitle(fileContent) ||
-          findPageHeading(fileContent) ||
-          "",
-      },
-    ])[0]
-
-    items.push({
-      ...newItem,
-      sidebar_position: frontmatter.sidebar_position,
-    })
+    items.push(newItem)
 
     mainPageIndex = items.length - 1
   }
 
-  if (mainPageIndex !== -1 && items.length > 1) {
+  if (
+    mainPageIndex !== -1 &&
+    items.length > 1 &&
+    items[0].type !== "separator"
+  ) {
     // push all other items to be children of that page.
     const mainPageChildren = [
       ...items.splice(0, mainPageIndex),
@@ -97,9 +86,19 @@ async function getSidebarItems(
   return items
 }
 
-async function checkItem(
-  item: RawSidebarItemType
-): Promise<RawSidebarItemType> {
+async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
+  if (!item.type) {
+    throw new Error(
+      `ERROR: The following item doesn't have a type: ${JSON.stringify(
+        item,
+        undefined,
+        2
+      )}`
+    )
+  }
+  if (item.type === "separator") {
+    return item
+  }
   if (item.autogenerate_path) {
     item.children = (await getSidebarItems(item.autogenerate_path)).map(
       (child) => {
@@ -108,9 +107,12 @@ async function checkItem(
         return child
       }
     )
-  }
-
-  if (item.children) {
+  } else if (
+    item.custom_autogenerate &&
+    Object.hasOwn(customGenerators, item.custom_autogenerate)
+  ) {
+    item.children = await customGenerators[item.custom_autogenerate]()
+  } else if (item.children) {
     item.children = await Promise.all(
       item.children.map(async (childItem) => await checkItem(childItem))
     )
@@ -119,7 +121,7 @@ async function checkItem(
   return item
 }
 
-export async function generateSidebar(sidebar: RawSidebarItemType[]) {
+export async function generateSidebar(sidebar: RawSidebarItem[]) {
   const path = await import("path")
   const { writeFileSync } = await import("fs")
 

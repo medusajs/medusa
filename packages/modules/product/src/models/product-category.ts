@@ -4,7 +4,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
   kebabCase,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,
@@ -68,8 +68,12 @@ class ProductCategory {
   @Property({ columnType: "boolean", default: false })
   is_internal?: boolean
 
-  @Property({ columnType: "numeric", nullable: false, default: 0 })
-  rank?: number
+  @Property({
+    columnType: "integer",
+    nullable: false,
+    default: 0,
+  })
+  rank: number
 
   @ManyToOne(() => ProductCategory, {
     columnType: "text",
@@ -108,6 +112,9 @@ class ProductCategory {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
 
@@ -126,22 +133,7 @@ class ProductCategory {
       this.handle = kebabCase(this.name)
     }
 
-    const { em } = args
-
-    let parentCategory: ProductCategory | null = null
-
-    if (this.parent_category_id) {
-      parentCategory = await em.findOne(
-        ProductCategory,
-        this.parent_category_id
-      )
-    }
-
-    if (parentCategory) {
-      this.mpath = `${parentCategory?.mpath}${this.id}.`
-    } else {
-      this.mpath = `${this.id}.`
-    }
+    this.mpath = `${this.mpath ? this.mpath + "." : ""}${this.id}`
   }
 }
 

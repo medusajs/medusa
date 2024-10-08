@@ -1,14 +1,20 @@
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
+import { ModulesDefinition } from "@medusajs/framework/modules-sdk"
+import {
+  FulfillmentSetDTO,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
   initModules,
   moduleIntegrationTestRunner,
   SuiteOptions,
-} from "medusa-test-utils/dist"
+} from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
-import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
+
+jest.setTimeout(60000)
 
 let moduleOptions = {
   providers: [
@@ -17,11 +23,7 @@ let moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "test-provider": {},
-        },
-      },
+      id: "test-provider",
     },
   ],
 }
@@ -30,14 +32,13 @@ let providerId = "fixtures-fulfillment-provider_test-provider"
 
 async function list(
   service: IFulfillmentModuleService,
-  ...args: Parameters<IFulfillmentModuleService["list"]>
+  ...args: Parameters<IFulfillmentModuleService["listFulfillmentSets"]>
 ) {
   const [filters = {}, config = {}] = args
 
   const finalConfig = {
     relations: [
       "service_zones.geo_zones",
-      "service_zones.shipping_options.shipping_profile",
       "service_zones.shipping_options.provider",
       "service_zones.shipping_options.type",
       "service_zones.shipping_options.rules",
@@ -48,7 +49,7 @@ async function list(
     ...config,
   }
 
-  return await service.list(filters, finalConfig)
+  return await service.listFulfillmentSets(filters, finalConfig)
 }
 
 function expectSoftDeleted(
@@ -106,10 +107,146 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IFulfillmentModuleService>) =>
     describe("Fulfillment Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.FULFILLMENT, {
+          service: FulfillmentModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "fulfillmentAddress",
+          "fulfillmentItem",
+          "fulfillmentLabel",
+          "fulfillmentProvider",
+          "fulfillmentSet",
+          "fulfillment",
+          "geoZone",
+          "serviceZone",
+          "shippingOptionRule",
+          "shippingOptionType",
+          "shippingOption",
+          "shippingProfile",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          fulfillmentAddress: {
+            id: {
+              linkable: "fulfillment_address_id",
+              entity: "FulfillmentAddress",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillmentAddress",
+            },
+          },
+          fulfillmentItem: {
+            id: {
+              linkable: "fulfillment_item_id",
+              entity: "FulfillmentItem",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillmentItem",
+            },
+          },
+          fulfillmentLabel: {
+            id: {
+              linkable: "fulfillment_label_id",
+              entity: "FulfillmentLabel",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillmentLabel",
+            },
+          },
+          fulfillmentProvider: {
+            id: {
+              linkable: "fulfillment_provider_id",
+              entity: "FulfillmentProvider",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillmentProvider",
+            },
+          },
+          fulfillmentSet: {
+            id: {
+              linkable: "fulfillment_set_id",
+              entity: "FulfillmentSet",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillmentSet",
+            },
+          },
+          fulfillment: {
+            id: {
+              linkable: "fulfillment_id",
+              entity: "Fulfillment",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "fulfillment",
+            },
+          },
+          geoZone: {
+            id: {
+              linkable: "geo_zone_id",
+              entity: "GeoZone",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "geoZone",
+            },
+          },
+          serviceZone: {
+            id: {
+              linkable: "service_zone_id",
+              entity: "ServiceZone",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "serviceZone",
+            },
+          },
+          shippingOptionRule: {
+            id: {
+              linkable: "shipping_option_rule_id",
+              entity: "ShippingOptionRule",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "shippingOptionRule",
+            },
+          },
+          shippingOptionType: {
+            id: {
+              linkable: "shipping_option_type_id",
+              entity: "ShippingOptionType",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "shippingOptionType",
+            },
+          },
+          shippingOption: {
+            id: {
+              linkable: "shipping_option_id",
+              entity: "ShippingOption",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "shippingOption",
+            },
+          },
+          shippingProfile: {
+            id: {
+              linkable: "shipping_profile_id",
+              entity: "ShippingProfile",
+              primaryKey: "id",
+              serviceName: "Fulfillment",
+              field: "shippingProfile",
+            },
+          },
+        })
+      })
+
       it("should load and save all the providers on bootstrap with the correct is_enabled value", async () => {
         const databaseConfig = {
           schema: "public",
-          clientUrl: MikroOrmWrapper.clientUrl,
+          clientUrl: MikroOrmWrapper.clientUrl!,
         }
 
         const providersConfig = {}
@@ -124,17 +261,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },
@@ -159,7 +292,7 @@ moduleIntegrationTestRunner({
                 name
               )
             )
-          })
+          })!
           expect(provider).toBeDefined()
           expect(provider.is_enabled).toBeTruthy()
         }
@@ -178,17 +311,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig2,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig2).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },
@@ -222,7 +351,7 @@ moduleIntegrationTestRunner({
                 name
               )
             )
-          })
+          })!
           expect(provider).toBeDefined()
 
           const isEnabled = !!providersConfig2[name]
@@ -242,7 +371,7 @@ moduleIntegrationTestRunner({
          * Soft delete the fulfillment set
          */
 
-        await service.softDelete(fulfillmentSets[0].id)
+        await service.softDeleteFulfillmentSets([fulfillmentSets[0].id])
         const deletedFulfillmentSets = await list(
           service,
           {},
@@ -256,8 +385,8 @@ moduleIntegrationTestRunner({
          * Restore the fulfillment set
          */
 
-        await service.restore(fulfillmentSets[0].id)
-        const restoredFulfillmentSets = await list(service)
+        await service.restoreFulfillmentSets([fulfillmentSets[0].id])
+        const restoredFulfillmentSets = await list(service, {})
         expectSoftDeleted(restoredFulfillmentSets)
       })
     }),

@@ -1,6 +1,5 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { IRegionModuleService, RemoteQueryFunction } from "@medusajs/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
 import { adminHeaders } from "../../../helpers/create-admin-user"
@@ -15,14 +14,12 @@ medusaIntegrationTestRunner({
     describe("Remote Query", () => {
       let appContainer
       let regionModule: IRegionModuleService
-      let paymentModule: IPaymentModuleService
       let remoteQuery
       let remoteLink
 
       beforeAll(async () => {
         appContainer = getContainer()
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
+        regionModule = appContainer.resolve(Modules.REGION)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -34,7 +31,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to retrieve a single non-existing id", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
@@ -65,29 +62,28 @@ medusaIntegrationTestRunner({
               },
             },
           },
-          undefined,
           { throwIfKeyNotFound: true }
         )
 
-        expect(getNonExistingRegion).rejects.toThrow(
-          "region id not found: region_123"
+        await expect(getNonExistingRegion).rejects.toThrow(
+          "Region id not found: region_123"
         )
       })
 
       it("should fail if a expected relation is not found", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
         })
 
-        const regionWithPayment = await regionModule.create({
+        const regionWithPayment = await regionModule.createRegions({
           name: "Test W/ Payment",
           currency_code: "brl",
           countries: ["br"],
         })
 
-        const regionNoLink = await regionModule.create({
+        const regionNoLink = await regionModule.createRegions({
           name: "No link",
           currency_code: "eur",
           countries: ["dk"],
@@ -113,7 +109,7 @@ medusaIntegrationTestRunner({
         ])
 
         // Validate all relations, including the link
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -126,17 +122,16 @@ medusaIntegrationTestRunner({
                 },
               },
             },
-            undefined,
             {
               throwIfRelationNotFound: true,
             }
           )
         ).rejects.toThrow(
-          `regionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
+          `RegionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
         )
 
         // Only validate the relations with Payment. It doesn't fail because the link didn't return any data
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -157,7 +152,7 @@ medusaIntegrationTestRunner({
         ).resolves.toHaveLength(1)
 
         // The link exists, but the payment doesn't
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -170,17 +165,16 @@ medusaIntegrationTestRunner({
                 },
               },
             },
-            undefined,
             {
               throwIfRelationNotFound: [Modules.PAYMENT],
             }
           )
         ).rejects.toThrow(
-          "payment id not found: pp_system_default_non_existent"
+          "PaymentProvider id not found: pp_system_default_non_existent"
         )
 
         // everything is fine
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -199,6 +193,138 @@ medusaIntegrationTestRunner({
             }
           )
         ).resolves.toHaveLength(1)
+      })
+    })
+
+    describe("Query", () => {
+      let appContainer
+      let query: RemoteQueryFunction
+
+      beforeAll(() => {
+        appContainer = getContainer()
+        query = appContainer.resolve(ContainerRegistrationKeys.QUERY)
+      })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        const payload = {
+          title: "Test Giftcard",
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          options: [{ title: "Denominations", values: ["100"] }],
+          variants: [
+            {
+              title: "Test variant",
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: {
+                Denominations: "100",
+              },
+            },
+          ],
+        }
+
+        await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+
+      it(`should throw if not exists`, async () => {
+        const err = await query
+          .graph(
+            {
+              entity: "product",
+              fields: ["id", "title", "variants.*", "variants.prices.amount"],
+              filters: {
+                id: "non-existing-id",
+                variants: {
+                  prices: {
+                    amount: {
+                      $gt: 100,
+                    },
+                  },
+                },
+              },
+            },
+            {
+              throwIfKeyNotFound: true,
+            }
+          )
+          .catch((err) => {
+            return err
+          })
+
+        expect(err).toEqual(
+          expect.objectContaining({
+            message: expect.stringContaining(
+              "Product id not found: non-existing-id"
+            ),
+          })
+        )
+      })
+
+      it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
+        const { data } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 100,
+                },
+              },
+            },
+          },
+        })
+
+        expect(data).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [],
+              }),
+            ],
+          }),
+        ])
+      })
+
+      it(`should perform cross module query and apply filters correctly to the correct modules [2]`, async () => {
+        const { data: dataWithPrice } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 50,
+                },
+              },
+            },
+          },
+        })
+
+        expect(dataWithPrice).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
       })
     })
   },

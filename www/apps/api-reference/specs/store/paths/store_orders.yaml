@@ -1,58 +1,141 @@
 get:
   operationId: GetOrders
-  summary: Look Up an Order
+  summary: List Logged-in Customer's Orders
+  x-sidebar-summary: List Orders
   description: >-
-    Look up an order using filters. If the filters don't narrow down the results
-    to a single order, a 404 response is returned with no orders.
+    Retrieve the orders of the logged-in customer. The orders can be filtered by
+    fields such as `id`. The orders can also be sorted or paginated.
+  x-authenticated: true
   parameters:
-    - in: query
-      name: display_id
-      required: true
-      description: Filter by ID.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: >-
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
       schema:
         type: number
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be expanded in the returned order.
+        title: offset
+        description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
       schema:
         type: string
-    - in: query
-      name: expand
-      description: Comma-separated relations that should be expanded in the returned order.
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+    - name: id
+      in: query
+      required: false
       schema:
-        type: string
-    - in: query
-      name: email
-      style: form
-      explode: false
-      description: Filter by email.
-      required: true
+        oneOf:
+          - type: string
+            title: id
+            description: Filter by an order ID.
+          - type: array
+            description: Filter by order IDs.
+            items:
+              type: string
+              title: id
+              description: An order ID.
+    - name: $and
+      in: query
+      required: false
       schema:
-        type: string
-        format: email
-    - in: query
-      name: shipping_address
-      style: form
-      explode: false
-      description: Filter by the shipping address's postal code.
+        type: array
+        description: The order's $and.
+        items:
+          type: object
+        title: $and
+    - name: $or
+      in: query
+      required: false
       schema:
-        type: object
-        properties:
-          postal_code:
-            type: string
-            description: The postal code of the shipping address
-  x-codegen:
-    method: lookupOrder
-    queryParams: StoreGetOrdersParams
+        type: array
+        description: The order's $or.
+        items:
+          type: object
+        title: $or
+    - name: status
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: status
+            description: The order's status.
+          - type: string
+            title: status
+            description: The order's status.
+          - type: string
+            title: status
+            description: The order's status.
+          - type: string
+            title: status
+            description: The order's status.
+          - type: string
+            title: status
+            description: The order's status.
+          - type: string
+            title: status
+            description: The order's status.
+          - type: array
+            description: The order's status.
+            items:
+              type: string
+              description: The status's details.
+              enum:
+                - canceled
+                - requires_action
+                - pending
+                - completed
+                - draft
+                - archived
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_orders/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_orders/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -65,9 +148,42 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreOrdersRes.yaml
+            allOf:
+              - type: object
+                description: The paginated list of orders.
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The maximum number of items returned.
+                  offset:
+                    type: number
+                    title: offset
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
+                  count:
+                    type: number
+                    title: count
+                    description: The total number of items.
+              - type: object
+                description: The paginated list of orders.
+                required:
+                  - orders
+                properties:
+                  orders:
+                    type: array
+                    description: The order's orders.
+                    items:
+                      $ref: ../components/schemas/StoreOrder.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -76,3 +192,6 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  security:
+    - cookie_auth: []
+    - jwt_token: []

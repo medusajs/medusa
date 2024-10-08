@@ -1,25 +1,32 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPaymentModuleService, Logger, PaymentDTO } from "@medusajs/types"
+import {
+  IPaymentModuleService,
+  Logger,
+  PaymentDTO,
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
   PaymentSessionStatus,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type StepInput = {
+export type AuthorizePaymentSessionStepInput = {
   id: string
   context: Record<string, unknown>
 }
 
 export const authorizePaymentSessionStepId = "authorize-payment-session-step"
+/**
+ * This step authorizes a payment session.
+ */
 export const authorizePaymentSessionStep = createStep(
   authorizePaymentSessionStepId,
-  async (input: StepInput, { container }) => {
+  async (input: AuthorizePaymentSessionStepInput, { container }) => {
     let payment: PaymentDTO | undefined
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
 
     try {
@@ -63,7 +70,7 @@ export const authorizePaymentSessionStep = createStep(
 
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
 
     // If the payment session status is requires_more, we don't have to revert the payment.

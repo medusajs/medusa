@@ -1,0 +1,114 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Create Brand API Route`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to define an API route that creates a brand as the last step of the ["Build Custom Features" chapter](../page.mdx).
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "createBrandWorkflow",
+      link: "/customization/custom-features/workflow"
+    }
+  ]}
+/>
+
+Create the file `src/api/admin/brands/route.ts` with the following content:
+
+```ts title="src/api/admin/brands/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { 
+  CreateBrandInput, 
+  createBrandWorkflow,
+} from "../../../workflows/create-brand"
+
+export const POST = async (
+  req: MedusaRequest<CreateBrandInput>,
+  res: MedusaResponse
+) => {
+  const { result } = await createBrandWorkflow(req.scope)
+    .run({
+      input: req.body,
+    })
+
+  res.json({ brand: result })
+}
+```
+
+This adds a `POST` API route at `/admin/brands`. In the API route's handler, you execute the `createBrandWorkflow`, passing it the request body as input.
+
+You return in the response the created brand.
+
+<Note>
+
+Learn more about API routes [in this guide](../../../basics/api-routes/page.mdx).
+
+</Note>
+
+---
+
+## Test API Route
+
+To test it out, first, retrieve an authenticated token of your admin user by sending a `POST` request to the `/auth/user/emailpass` API Route:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/user/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@medusa-test.com",
+    "password": "supersecret"
+}'
+```
+
+Make sure to replace the email and password with your user's credentials.
+
+Then, send a `POST` request to `/admin/brands`, passing the token received from the previous request in the `Authorization` header:
+
+```bash
+curl -X POST 'http://localhost:9000/admin/brands' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "name": "Acme"
+}'
+```
+
+This returns the created brand in the response:
+
+```json title="Example Response"
+{
+  "brand": {
+    "id": "01J7AX9ES4X113HKY6C681KDZJ",
+    "name": "Acme",
+    "created_at": "2024-09-09T08:09:34.244Z",
+    "updated_at": "2024-09-09T08:09:34.244Z"
+  }
+}
+```
+
+---
+
+## Summary
+
+By following the previous example chapters, you implemented a custom feature that allows admin users to create a brand by:
+
+1. Creating a module that defines and manages the `Brand` data model.
+2. Creating a workflow that uses the module's main service to create a brand record, and implements the compensation logic to delete that brand in case an error occurs.
+3. Creating an API route that allows admin users to create a brand.
+
+---
+
+## Next Steps
+
+In the next chapters, you'll learn how to extend data models and associate the brand with a product.

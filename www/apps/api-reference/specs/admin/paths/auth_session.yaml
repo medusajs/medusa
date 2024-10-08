@@ -1,0 +1,73 @@
+post:
+  operationId: PostSession
+  summary: Set Authentication Session
+  description: >-
+    Set the cookie session ID of an admin user. The admin must be previously
+    authenticated with the `/auth/user/{provider}` API route first, as the JWT
+    token is required in the header of the request.
+  x-authenticated: true
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_session/post.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuthAdminSessionResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteSession
+  summary: Delete Authentication Session
+  description: Deletes the cookie session ID previously set for authentication.
+  x-authenticated: true
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_session/delete.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The deletion's details.
+            required:
+              - success
+            properties:
+              success:
+                type: boolean
+                title: success
+                description: Whether the session was deleted successfully.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

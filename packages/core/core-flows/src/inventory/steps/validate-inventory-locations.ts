@@ -1,30 +1,30 @@
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  arrayDifference,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { InventoryNext } from "@medusajs/types"
-import { createStep } from "@medusajs/workflows-sdk"
+import { InventoryTypes } from "@medusajs/framework/types"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 
 export const validateInventoryLocationsStepId = "validate-inventory-levels-step"
+/**
+ * This step ensures that the inventory levels exist for each specified pair of inventory item and location.
+ */
 export const validateInventoryLocationsStep = createStep(
   validateInventoryLocationsStepId,
-  async (data: InventoryNext.CreateInventoryLevelInput[], { container }) => {
+  async (data: InventoryTypes.CreateInventoryLevelInput[], { container }) => {
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const locationQuery = remoteQueryObjectFromString({
+    const stockLocations = await remoteQuery({
       entryPoint: "stock_location",
       variables: {
         id: data.map((d) => d.location_id),
       },
       fields: ["id"],
     })
-
-    const stockLocations = await remoteQuery(locationQuery)
 
     const diff = arrayDifference(
       data.map((d) => d.location_id),

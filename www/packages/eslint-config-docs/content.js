@@ -18,7 +18,8 @@ module.exports = {
   plugins: ["prettier", "markdown"],
   ignorePatterns: [
     "**/references/**",
-    "**/events-reference/**"
+    "**/events-reference/**",
+    "**/_events-table/**"
   ],
   rules: {
     "no-undef": "off",

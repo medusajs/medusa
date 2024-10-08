@@ -1,9 +1,9 @@
-import { ShippingOptionDTO } from "./shipping-option"
-import { FulfillmentProviderDTO } from "./fulfillment-provider"
+import { BaseFilterable, OperatorMap } from "../../dal"
 import { FulfillmentAddressDTO } from "./address"
 import { FulfillmentItemDTO } from "./fulfillment-item"
 import { FulfillmentLabelDTO } from "./fulfillment-label"
-import { BaseFilterable, OperatorMap } from "../../dal"
+import { FulfillmentProviderDTO } from "./fulfillment-provider"
+import { ShippingOptionDTO } from "./shipping-option"
 
 /**
  * The fulfillment details.
@@ -40,6 +40,16 @@ export interface FulfillmentDTO {
   canceled_at: Date | null
 
   /**
+   * The id of the user that marked fulfillment as shipped
+   */
+  marked_shipped_by?: string | null
+
+  /**
+   * The id of the user that created the fulfillment
+   */
+  created_by?: string | null
+
+  /**
    * The data necessary for the fulfillment provider to process
    * the fulfillment.
    */
@@ -64,6 +74,11 @@ export interface FulfillmentDTO {
    * The associated shipping option.
    */
   shipping_option: ShippingOptionDTO | null
+
+  /**
+   * Flag to indidcate whether shipping is required
+   */
+  requires_shipping: boolean
 
   /**
    * The associated fulfillment provider.

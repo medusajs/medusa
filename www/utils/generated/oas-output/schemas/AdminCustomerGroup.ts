@@ -1,0 +1,42 @@
+/**
+ * @schema AdminCustomerGroup
+ * type: object
+ * description: The customer group's details.
+ * x-schemaName: AdminCustomerGroup
+ * required:
+ *   - customers
+ *   - id
+ *   - name
+ *   - metadata
+ *   - created_at
+ *   - updated_at
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The customer group's ID.
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The customer group's name.
+ *   customers:
+ *     type: array
+ *     description: The customer group's customers.
+ *     items:
+ *       $ref: "#/components/schemas/AdminCustomer"
+ *   metadata:
+ *     type: object
+ *     description: The customer group's metadata, used to store custom key-value pairs.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The customer group's creation date.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The customer group's update date.
+ * 
+*/
+

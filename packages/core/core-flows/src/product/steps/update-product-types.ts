@@ -1,31 +1,37 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-type UpdateProductTypesStepInput = {
+export type UpdateProductTypesStepInput = {
   selector: ProductTypes.FilterableProductTypeProps
   update: ProductTypes.UpdateProductTypeDTO
 }
 
 export const updateProductTypesStepId = "update-product-types"
+/**
+ * This step updates product types matching the specified filters.
+ */
 export const updateProductTypesStep = createStep(
   updateProductTypesStepId,
   async (data: UpdateProductTypesStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
     ])
 
-    const prevData = await service.listTypes(data.selector, {
+    const prevData = await service.listProductTypes(data.selector, {
       select: selects,
       relations,
     })
 
-    const productTypes = await service.updateTypes(data.selector, data.update)
+    const productTypes = await service.updateProductTypes(
+      data.selector,
+      data.update
+    )
     return new StepResponse(productTypes, prevData)
   },
   async (prevData, { container }) => {
@@ -33,10 +39,8 @@ export const updateProductTypesStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.upsertTypes(prevData)
+    await service.upsertProductTypes(prevData)
   }
 )

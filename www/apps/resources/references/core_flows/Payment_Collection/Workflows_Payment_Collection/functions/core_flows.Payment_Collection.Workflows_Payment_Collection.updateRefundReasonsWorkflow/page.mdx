@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/updateRefundReasonsWorkflow
+sidebar_label: updateRefundReasonsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateRefundReasonsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updateRefundReasonsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates one or more refund reasons.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updateRefundReasonsWorkflow","steps":[{"type":"step","name":"updateRefundReasonsStep","description":"This step updates one or more refund reasons.","link":"../../../../core_flows.Steps_Payment_Collection/page.mdx#updaterefundreasonsstep","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdateRefundReasonDTO[]","type":"[UpdateRefundReasonDTO](../../../../../payment/interfaces/payment.UpdateRefundReasonDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateRefundReasonDTO","type":"[UpdateRefundReasonDTO](../../../../../payment/interfaces/payment.UpdateRefundReasonDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the refund reason","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string`","description":"The label of the refund reason","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The description of the refund reason","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"The metadata of the refund reason","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRefundReasonsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"RefundReasonDTO[]","type":"[RefundReasonDTO](../../../../../payment/interfaces/payment.RefundReasonDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefundReasonDTO","type":"[RefundReasonDTO](../../../../../payment/interfaces/payment.RefundReasonDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the refund reason","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string`","description":"The label of the refund reason","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"The metadata of the refund reason","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the refund reason was created","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the refund reason was updated","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The description of the refund reason","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRefundReasonsWorkflow"/>

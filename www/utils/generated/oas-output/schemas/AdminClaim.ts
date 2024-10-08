@@ -1,0 +1,110 @@
+/**
+ * @schema AdminClaim
+ * type: object
+ * description: The claim's details.
+ * x-schemaName: AdminClaim
+ * required:
+ *   - order
+ *   - return
+ *   - id
+ *   - type
+ *   - order_id
+ *   - display_id
+ *   - order_version
+ *   - created_at
+ *   - updated_at
+ *   - canceled_at
+ *   - additional_items
+ *   - claim_items
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The claim's ID.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The ID of the order associated with the claim.
+ *   claim_items:
+ *     type: array
+ *     description: The order items targetted by the claim.
+ *     items:
+ *       $ref: "#/components/schemas/BaseClaimItem"
+ *   additional_items:
+ *     type: array
+ *     description: The outbound or new items of the claim.
+ *     items:
+ *       $ref: "#/components/schemas/BaseClaimItem"
+ *   return:
+ *     $ref: "#/components/schemas/AdminReturn"
+ *   return_id:
+ *     type: string
+ *     title: return_id
+ *     description: The ID of the associated return.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: Whether the customer should be notified about changes in the claim.
+ *   refund_amount:
+ *     type: number
+ *     title: refund_amount
+ *     description: The amount to be refunded.
+ *   display_id:
+ *     type: number
+ *     title: display_id
+ *     description: The claim's display ID.
+ *   shipping_methods:
+ *     type: array
+ *     description: The claim's shipping methods.
+ *     items:
+ *       $ref: "#/components/schemas/AdminOrderShippingMethod"
+ *   transactions:
+ *     type: array
+ *     description: The claim's transactions.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/order/transactions
+ *       description: Learn more about transactions of orders and associated models.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderTransaction"
+ *   metadata:
+ *     type: object
+ *     description: The claim's metadata, used to store custom key-value pairs.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The claim's creation date.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The claim's update date.
+ *   order:
+ *     $ref: "#/components/schemas/AdminOrder"
+ *   type:
+ *     type: string
+ *     description: The claim's type.
+ *     enum:
+ *       - replace
+ *       - refund
+ *   order_version:
+ *     type: string
+ *     title: order_version
+ *     description: The version of the order when the claim is applied.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the claim.
+ *   canceled_at:
+ *     type: string
+ *     title: canceled_at
+ *     description: The date the claim was canceled.
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the claim was deleted.
+ * 
+*/
+

@@ -14,7 +14,7 @@ const buttonVariants = cva({
   variants: {
     variant: {
       primary: clx(
-        "shadow-buttons-inverted text-ui-fg-on-inverted bg-ui-button-inverted after:button-inverted-gradient",
+        "shadow-buttons-inverted text-ui-contrast-fg-primary bg-ui-button-inverted after:button-inverted-gradient",
         "hover:bg-ui-button-inverted-hover hover:after:button-inverted-hover-gradient",
         "active:bg-ui-button-inverted-pressed active:after:button-inverted-pressed-gradient",
         "focus-visible:!shadow-buttons-inverted-focus"
@@ -41,7 +41,7 @@ const buttonVariants = cva({
       ),
     },
     size: {
-      small: "txt-compact-small-plus gap-x-1 px-2 py-1",
+      small: "txt-compact-small-plus gap-x-1.5 px-2 py-1",
       base: "txt-compact-small-plus gap-x-1.5 px-3 py-1.5",
       large: "txt-compact-medium-plus gap-x-1.5 px-4 py-2.5",
       xlarge: "txt-compact-large-plus gap-x-1.5 px-5 py-3.5",

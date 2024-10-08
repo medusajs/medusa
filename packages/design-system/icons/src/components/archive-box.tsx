@@ -5,19 +5,26 @@ const ArchiveBox = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m16.875 6.25-.52 8.86a1.875 1.875 0 0 1-1.873 1.765H5.518a1.875 1.875 0 0 1-1.872-1.765l-.521-8.86m5.208 3.125h3.334M2.813 6.25h14.374c.518 0 .938-.42.938-.938v-1.25a.938.938 0 0 0-.938-.937H2.813a.938.938 0 0 0-.937.938v1.25c0 .517.42.937.938.937Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M12.611 5.056v6.222c0 .982-.795 1.778-1.778 1.778H4.167a1.777 1.777 0 0 1-1.778-1.778V5.056M13.056 1.944H1.944a.89.89 0 0 0-.888.89v1.333c0 .49.398.888.888.888h11.112a.89.89 0 0 0 .888-.888V2.833a.89.89 0 0 0-.889-.889M5.722 7.722h3.556" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

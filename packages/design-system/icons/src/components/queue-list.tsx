@@ -5,8 +5,8 @@ const QueueList = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const QueueList = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M3.125 10h13.75m-13.75 3.125h13.75M3.125 16.25h13.75M4.687 3.75h10.625a1.563 1.563 0 0 1 0 3.125H4.688a1.562 1.562 0 1 1 0-3.125Z"
+          d="M12.167 1.944H2.833a.89.89 0 0 0-.889.89v3.11c0 .491.398.89.89.89h9.333c.49 0 .889-.399.889-.89v-3.11a.89.89 0 0 0-.89-.89M1.944 9.944h11.112M1.944 13.056h11.112"
         />
       </svg>
     )

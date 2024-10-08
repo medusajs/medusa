@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/updatePricePreferencesStep
+sidebar_label: updatePricePreferencesStep
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updatePricePreferencesStep - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updatePricePreferencesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates price preferences matching the specified filters.
+
+## Input
+
+<TypeList types={[{"name":"UpdatePricePreferencesWorkflowInput","type":"`UpdatePricePreferencesWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePricePreferencesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"PricePreferenceDTO[]","type":"[PricePreferenceDTO](../../../../../pricing/interfaces/pricing.PricePreferenceDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PricePreferenceDTO","type":"[PricePreferenceDTO](../../../../../pricing/interfaces/pricing.PricePreferenceDTO/page.mdx)","optional":false,"defaultValue":"","description":"A price preference's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a price preference.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`null` \\| `string`","description":"The rule attribute for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`null` \\| `string`","description":"The rule value for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Flag specifying whether prices for the specified rule are tax inclusive.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"When the price preference was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"When the price preference was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"When the price preference was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePricePreferencesStep"/>

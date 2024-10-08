@@ -70,7 +70,7 @@ export const SearchHitsWrapper = ({
   }
 
   return (
-    <div className="h-full overflow-auto">
+    <div className="h-full overflow-auto px-docs_0.5">
       {status !== "loading" && showNoResults && <SearchNoResult />}
       {indices.map((indexName, index) => (
         <Index indexName={indexName} key={index}>
@@ -97,7 +97,7 @@ export const SearchHits = ({
   setNoResults,
   checkInternalPattern,
 }: SearchHitsProps) => {
-  const { hits } = useHits<HitType>()
+  const { items: hits } = useHits<HitType>()
   const { status } = useInstantSearch()
   const { setIsOpen } = useSearch()
 

@@ -1,7 +1,0 @@
-type: object
-description: The variant's inventory details.
-properties:
-  variant:
-    type: object
-    description: The product variant's inventory details.
-    $ref: ./VariantInventory.yaml

@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -45,7 +45,7 @@ export default class PaymentMethodToken {
   @Property({
     columnType: "timestamptz",
     nullable: true,
-    index: "IDX_payment_metod_token_deleted_at",
+    index: "IDX_payment_method_token_deleted_at",
   })
   deleted_at: Date | null = null
 

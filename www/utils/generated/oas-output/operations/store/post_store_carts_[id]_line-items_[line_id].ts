@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsIdLineItemsLine_id
- * summary: Add Line Items to Cart
- * description: Add a list of line items to a cart.
+ * summary: Update a Line Item in a Cart
+ * x-sidebar-summary: Update Line Item
+ * description: Update a line item's details in the cart.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#update-line-item-in-cart
+ *   description: "Storefront guide: How to update a cart's line item."
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: line_id
  *     in: path
- *     description: The cart's line id.
+ *     description: The line item's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -27,43 +31,41 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StoreUpdateCartLineItem"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/store/carts/{id}/line-items/{line_id}'
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items/{line_id}' \
+ *       -H 'Content-Type: application/json' \ \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
+ *       --data-raw '{
+ *         "quantity": 8980402259623936,
+ *         "metadata": {}
+ *       }'
  * tags:
  *   - Carts
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/StoreCartResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -76,23 +78,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - quantity
- *           - metadata
- *         properties:
- *           quantity:
- *             type: number
- *             title: quantity
- *             description: The cart's quantity.
- *           metadata:
- *             type: object
- *             description: The cart's metadata.
- *             properties: {}
+ * x-workflow: updateLineItemInCartWorkflow
  * 
 */
 

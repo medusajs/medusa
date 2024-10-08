@@ -1,6 +1,9 @@
 curl -X POST '{backend_url}/admin/products/{id}/options' \
--H 'x-medusa-access-token: {api_token}' \
+-H 'Authorization: Bearer {access_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
-    "title": "Size"
+  "title": "{value}",
+  "values": [
+    "{value}"
+  ]
 }'

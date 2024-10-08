@@ -1,50 +1,62 @@
 import { sidebarAttachHrefCommonOptions } from "./utils/sidebar-attach-common-options.mjs"
 
-/** @type {import('types').RawSidebarItemType[]} */
+/** @type {import('types').RawSidebarItem[]} */
 export const sidebar = sidebarAttachHrefCommonOptions([
   {
+    type: "link",
     path: "/",
     title: "Overview",
-    hasTitleStyling: true,
   },
   {
+    type: "link",
     path: "/commerce-modules",
     title: "Commerce Modules",
     isChildSidebar: true,
-    hasTitleStyling: true,
     children: [
       {
-        path: "/commerce-modules/api-key",
+        type: "category",
         title: "API Key Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/api-key",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/api-key/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
-                path: "/commerce-modules/api-key/tokens",
-                title: "Tokens",
+                type: "link",
+                path: "/commerce-modules/api-key/concepts",
+                title: "API Key Concepts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/api-key/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/api-key",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IApiKeyModuleService Reference",
+                childSidebarTitle: "API Key Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
                     hasTitleStyling: true,
                     autogenerate_path:
@@ -53,12 +65,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
+                type: "link",
                 path: "/references/api-key/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "API Key Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/api_key_models/classes",
@@ -70,65 +84,122 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/auth",
+        type: "category",
         title: "Auth Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/auth",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/auth/module-options",
             title: "Module Options",
           },
           {
+            type: "link",
             path: "/commerce-modules/auth/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
+                path: "/commerce-modules/auth/auth-identity-and-actor-types",
+                title: "Identity and Actor Types",
+              },
+              {
+                type: "link",
                 path: "/commerce-modules/auth/auth-providers",
                 title: "Auth Providers",
               },
               {
+                type: "link",
                 path: "/commerce-modules/auth/auth-flows",
-                title: "Auth Flows",
+                title: "Auth Flow with Module",
               },
               {
-                path: "/commerce-modules/auth/user-creation",
-                title: "User Creation",
-              },
-              {
-                path: "/commerce-modules/auth/persisting-auth-user",
-                title: "Persisting Auth User",
+                type: "link",
+                path: "/commerce-modules/auth/authentication-route",
+                title: "Auth Flow with Routes",
               },
             ],
           },
           {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/auth/create-actor-type",
+                title: "Create an Actor Type",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/reset-password",
+                title: "Handle Password Reset Event",
+              },
+              {
+                type: "link",
+                path: "/references/auth/provider",
+                title: "Create Auth Provider Module",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Providers",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/emailpass",
+                title: "Emailpass Provider",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/google",
+                title: "Google Provider",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/github",
+                title: "GitHub Provider",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/auth",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IAuthModuleService Reference",
+                childSidebarTitle: "Auth Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/auth/IAuthModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/auth/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Auth Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/auth_models/classes",
                   },
                 ],
@@ -138,61 +209,75 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/cart",
+        type: "category",
         title: "Cart Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/cart",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/cart/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/cart/concepts",
                 title: "Cart Concepts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/cart/promotions",
                 title: "Promotion Adjustments",
               },
               {
+                type: "link",
                 path: "/commerce-modules/cart/tax-lines",
                 title: "Tax Lines",
               },
               {
+                type: "link",
                 path: "/commerce-modules/cart/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/cart",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICartModuleService Reference",
+                childSidebarTitle: "Cart Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/cart/ICartModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/cart/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Cart Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/cart_models/classes",
                   },
                 ],
@@ -202,41 +287,61 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/currency",
+        type: "category",
         title: "Currency Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/currency",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/currency/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
+            title: "Concepts",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/currency/relations-to-other-modules",
+                title: "Relation to Modules",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/currency",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICurrencyModuleService Reference",
+                childSidebarTitle: "Cart Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/currency/ICurrencyModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/currency/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Currency Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
-                    autogenerate_path: "/references/currency_models/classes",
+                    autogenerate_path: "/references/currency_models/variables",
                   },
                 ],
               },
@@ -245,53 +350,65 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/customer",
+        type: "category",
         title: "Customer Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/customer",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/customer/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/customer/customer-accounts",
                 title: "Customer Accounts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/customer/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/customer",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICustomerModuleService Reference",
+                childSidebarTitle: "Customer Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/customer/ICustomerModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/customer/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Customer Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/customer_models/classes",
                   },
                 ],
@@ -301,63 +418,91 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/fulfillment",
+        type: "category",
         title: "Fulfillment Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/fulfillment",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/fulfillment/module-options",
             title: "Module Options",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/fulfillment/concepts",
                 title: "Fulfillment Concepts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/fulfillment/fulfillment-provider",
                 title: "Fulfillment Provider",
               },
               {
-                path: "/commerce-modules/fulfillment/shipping-options",
-                title: "Shipping Options",
+                type: "link",
+                path: "/commerce-modules/fulfillment/shipping-option",
+                title: "Shipping Option",
               },
               {
+                type: "link",
                 path: "/commerce-modules/fulfillment/item-fulfillment",
                 title: "Item Fulfillment",
               },
               {
-                path: "/commerce-modules/fulfillment/relation-to-other-modules",
+                type: "link",
+                path: "/commerce-modules/fulfillment/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/references/fulfillment/provider",
+                title: "Create Fulfillment Provider Module",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/fulfillment",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IFulfillmentModuleService Reference",
+                childSidebarTitle:
+                  "Fulfillment Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/fulfillment/IFulfillmentModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/fulfillment/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Fulfillment Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/fulfillment_models/classes",
@@ -369,57 +514,70 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/inventory",
+        type: "category",
         title: "Inventory Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/inventory",
+            title: "Inventory Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/inventory/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/inventory/concepts",
                 title: "Inventory Concepts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/inventory/inventory-in-flows",
                 title: "Inventory in Flows",
               },
               {
+                type: "link",
                 path: "/commerce-modules/inventory/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
-                path: "/references/inventory_next",
-                title: "Interface Reference",
+                type: "link",
+                path: "/references/inventory-next",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IInventoryServiceNext Reference",
+                childSidebarTitle: "Inventory Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
-                      "/references/inventory_next/IInventoryServiceNext/methods",
+                      "/references/inventory_next/IInventoryService/methods",
                   },
                 ],
               },
               {
-                path: "/references/inventory_next/models",
+                type: "link",
+                path: "/references/inventory-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Inventory Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/inventory_next_models/classes",
                   },
@@ -430,71 +588,94 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/order",
+        type: "category",
         title: "Order Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/order",
+            title: "Order Module",
+          },
+          {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/order/concepts",
                 title: "Order Concepts",
               },
               {
-                path: "/commerce-modules/order/order-items",
-                title: "Order Title",
-              },
-              {
+                type: "link",
                 path: "/commerce-modules/order/promotion-adjustments",
                 title: "Promotions Adjustments",
               },
               {
+                type: "link",
                 path: "/commerce-modules/order/tax-lines",
                 title: "Tax Lines",
               },
               {
+                type: "link",
                 path: "/commerce-modules/order/transactions",
                 title: "Transactions",
               },
               {
-                path: "/commerce-modules/order/order-change",
-                title: "Order Change",
-              },
-              {
+                type: "link",
                 path: "/commerce-modules/order/order-versioning",
                 title: "Order Versioning",
               },
               {
+                type: "link",
+                path: "/commerce-modules/order/return",
+                title: "Return",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/exchange",
+                title: "Exchange",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/claim",
+                title: "Claim",
+              },
+              {
+                type: "link",
                 path: "/commerce-modules/order/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/order",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IOrderModuleService Reference",
+                childSidebarTitle: "Order Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/order/IOrderModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/order/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Order Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/order_models/classes",
@@ -506,81 +687,113 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/payment",
+        type: "category",
         title: "Payment Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/payment",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/payment/module-options",
             title: "Module Options",
           },
           {
+            type: "link",
             path: "/commerce-modules/payment/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/payment/payment-collection",
                 title: "Payment Collections",
               },
               {
+                type: "link",
                 path: "/commerce-modules/payment/payment-session",
                 title: "Payment Session",
               },
               {
+                type: "link",
                 path: "/commerce-modules/payment/payment",
                 title: "Payment",
               },
               {
+                type: "link",
                 path: "/commerce-modules/payment/payment-provider",
-                title: "Payment Provider",
+                title: "Payment Provider Module",
+                children: [
+                  {
+                    type: "link",
+                    path: "/commerce-modules/payment/payment-provider/stripe",
+                    title: "Stripe",
+                  },
+                ],
               },
               {
-                path: "/commerce-modules/payment/payment-flow",
-                title: "Payment Flow",
-              },
-              {
+                type: "link",
                 path: "/commerce-modules/payment/webhook-events",
                 title: "Webhook Events",
               },
               {
-                path: "/commerce-modules/payment/relation-to-other-modules",
+                type: "link",
+                path: "/commerce-modules/payment/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/payment/payment-flow",
+                title: "Accept Payment Flow",
+              },
+              {
+                type: "link",
+                path: "/references/payment/provider",
+                title: "Create Payment Provider",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
-                path: "/references/payment/provider",
-                title: "Payment Provider Reference",
-              },
-              {
+                type: "link",
                 path: "/references/payment",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPaymentModuleService Reference",
+                childSidebarTitle: "Payment Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/payment/IPaymentModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/payment/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Payment Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/payment_models/classes",
                   },
                 ],
@@ -590,55 +803,79 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/pricing",
+        type: "category",
         title: "Pricing Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/pricing",
+            title: "Pricing Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/pricing/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/pricing/concepts",
                 title: "Pricing Concepts",
               },
               {
+                type: "link",
+                path: "/commerce-modules/pricing/price-rules",
+                title: "Price Rules",
+              },
+              {
+                type: "link",
                 path: "/commerce-modules/pricing/price-calculation",
                 title: "Prices Calculation",
               },
               {
+                type: "link",
+                path: "/commerce-modules/pricing/tax-inclusive-pricing",
+                title: "Tax-Inclusive Pricing",
+              },
+              {
+                type: "link",
                 path: "/commerce-modules/pricing/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/pricing",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPricingModuleService Reference",
+                childSidebarTitle: "Pricing Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/pricing/IPricingModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/pricing/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Pricing Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/pricing_models/classes",
@@ -650,47 +887,64 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/product",
+        type: "category",
         title: "Product Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/product",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/product/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/product/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
+            title: "Guides",
+            autogenerate_path: "/commerce-modules/product/guides",
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/product",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IProductModuleService Reference",
+                childSidebarTitle: "Product Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/product/IProductModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/product/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Product Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/product_models/classes",
@@ -702,41 +956,64 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/promotion",
+        type: "category",
         title: "Promotion Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/promotion",
+            title: "Promotion Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/promotion/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/promotion/concepts",
-                title: "Promotion Concepts",
+                title: "Promotion",
               },
               {
+                type: "link",
+                path: "/commerce-modules/promotion/application-method",
+                title: "Application Method",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/promotion/campaign",
+                title: "Campaign",
+              },
+              {
+                type: "link",
                 path: "/commerce-modules/promotion/actions",
                 title: "Promotion Actions",
               },
               {
+                type: "link",
                 path: "/commerce-modules/promotion/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/promotion",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPromotionModuleService Reference",
+                childSidebarTitle: "Promotion Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
                     hasTitleStyling: true,
                     autogenerate_path:
@@ -745,12 +1022,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
+                type: "link",
                 path: "/references/promotion/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Promotion Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/promotion_models/classes",
@@ -762,50 +1041,61 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/region",
+        type: "category",
         title: "Region Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/region",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/region/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/region/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/region",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IRegionModuleService Reference",
+                childSidebarTitle: "Region Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/region/IRegionModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/region/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Region Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
-                    autogenerate_path: "/references/region_models/classes",
+                    autogenerate_path: "/references/region_models/variables",
                   },
                 ],
               },
@@ -814,53 +1104,66 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/sales-channel",
+        type: "category",
         title: "Sales Channel Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/sales-channel",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/sales-channel/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/sales-channel/publishable-api-keys",
                 title: "Publishable API Keys",
               },
               {
+                type: "link",
                 path: "/commerce-modules/sales-channel/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/sales-channel",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ISalesChannelModuleService Reference",
+                childSidebarTitle:
+                  "Sales Channel Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/sales_channel/ISalesChannelModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/sales-channel/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Sales Channel Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/sales_channel_models/classes",
                   },
@@ -871,54 +1174,67 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/stock-location",
+        type: "category",
         title: "Stock Location Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/stock-location",
+            title: "Stock Location Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/stock-location/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/stock-location/concepts",
                 title: "Stock Location Concepts",
               },
               {
+                type: "link",
                 path: "/commerce-modules/stock-location/relations-to-other-modules",
                 title: "Relation to Modules",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
-                path: "/references/stock-location",
-                title: "Interface Reference",
+                type: "link",
+                path: "/references/stock-location-next",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IStockLocationServiceNext Reference",
+                childSidebarTitle:
+                  "Stock Location Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
-                      "/references/stock_location_next/IStockLocationServiceNext/methods",
+                      "/references/stock_location_next/IStockLocationService/methods",
                   },
                 ],
               },
               {
-                path: "/references/stock-location/models",
+                type: "link",
+                path: "/references/stock-location-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle:
                   "Stock Location Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/stock_location_next_models/classes",
                   },
@@ -929,40 +1245,60 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/store",
+        type: "category",
         title: "Store Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/store",
+            title: "Store Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/store/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
+            title: "Concepts",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/store/relations-to-other-modules",
+                title: "Relation to Modules",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/store",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IStoreModuleService Reference",
+                childSidebarTitle: "Store Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/store/IStoreModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/store/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Store Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/store_models/classes",
                   },
                 ],
@@ -972,65 +1308,86 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/tax",
+        type: "category",
         title: "Tax Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/tax",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/tax/module-options",
             title: "Module Options",
           },
           {
+            type: "link",
             path: "/commerce-modules/tax/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/tax/tax-region",
                 title: "Tax Region",
               },
               {
+                type: "link",
                 path: "/commerce-modules/tax/tax-rates-and-rules",
                 title: "Tax Rates and Rules",
               },
               {
+                type: "link",
                 path: "/commerce-modules/tax/tax-calculation-with-provider",
-                title: "Tax Calculation",
+                title: "Tax Calculation and Providers",
               },
             ],
           },
           {
-            title: "References",
+            type: "sub-category",
+            title: "Guides",
             children: [
               {
+                type: "link",
                 path: "/references/tax/provider",
                 title: "Tax Provider Reference",
               },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "References",
+            children: [
               {
+                type: "link",
                 path: "/references/tax",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ITaxModuleService Reference",
+                childSidebarTitle: "Tax Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/tax/ITaxModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/tax/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Tax Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
-                    hasTitleStyling: true,
                     autogenerate_path: "/references/tax_models/classes",
                   },
                 ],
@@ -1040,51 +1397,64 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/commerce-modules/user",
+        type: "category",
         title: "User Module",
-        hasTitleStyling: true,
+        initialOpen: false,
         children: [
           {
+            type: "link",
+            path: "/commerce-modules/user",
+            title: "User Module",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/user/module-options",
             title: "Module Options",
           },
           {
+            type: "link",
             path: "/commerce-modules/user/examples",
             title: "Examples",
           },
           {
+            type: "sub-category",
             title: "Concepts",
             children: [
               {
+                type: "link",
                 path: "/commerce-modules/user/user-creation-flows",
                 title: "User Creation Flows",
               },
             ],
           },
           {
+            type: "sub-category",
             title: "References",
             children: [
               {
+                type: "link",
                 path: "/references/user",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IUserModuleService Reference",
+                childSidebarTitle: "User Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
-                    hasTitleStyling: true,
                     autogenerate_path:
                       "/references/user/IUserModuleService/methods",
                   },
                 ],
               },
               {
+                type: "link",
                 path: "/references/user/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "User Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/user_models/classes",
@@ -1098,536 +1468,336 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    path: "/plugins",
-    title: "Plugins",
+    type: "link",
+    path: "/integrations",
+    title: "Integrations",
     isChildSidebar: true,
-    hasTitleStyling: true,
     children: [
       {
-        title: "Analytics",
-        hasTitleStyling: true,
+        type: "category",
+        title: "File",
         children: [
           {
-            path: "/plugins/analytics/segment",
-            title: "Segment",
+            type: "link",
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
           },
         ],
       },
       {
-        title: "CMS",
-        hasTitleStyling: true,
+        type: "category",
+        title: "Notification",
         children: [
           {
-            path: "/plugins/cms/contentful",
-            title: "Contentful",
-          },
-          {
-            path: "/plugins/cms/strapi",
-            title: "Strapi",
-          },
-        ],
-      },
-      {
-        title: "ERP",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/erp/brightpearl",
-            title: "Brightpearl",
-          },
-        ],
-      },
-      {
-        title: "Fulfillment",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/fulfillment/manual",
-            title: "Manual Fulfillment",
-          },
-          {
-            path: "/plugins/fulfillment/webshipper",
-            title: "Webshipper",
-          },
-        ],
-      },
-      {
-        title: "Notifications",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/notifications/mailchimp",
-            title: "Mailchimp",
-          },
-          {
-            path: "/plugins/notifications/sendgrid",
+            type: "link",
+            path: "/architectural-modules/notification/sendgrid",
             title: "SendGrid",
           },
-          {
-            path: "/plugins/notifications/twilio-sms",
-            title: "Twilio SMS",
-          },
-          {
-            path: "/plugins/notifications/slack",
-            title: "Slack",
-          },
         ],
       },
       {
+        type: "category",
         title: "Payment",
-        hasTitleStyling: true,
         children: [
           {
-            path: "/plugins/payment/klarna",
-            title: "Klarna",
-          },
-          {
-            path: "/plugins/payment/paypal",
-            title: "PayPal",
-          },
-          {
-            path: "/plugins/payment/stripe",
+            type: "link",
+            path: "/commerce-modules/payment/payment-provider/stripe",
             title: "Stripe",
-          },
-        ],
-      },
-      {
-        title: "Search",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/search/algolia",
-            title: "Algolia",
-          },
-          {
-            path: "/plugins/search/meilisearch",
-            title: "MeiliSearch",
-          },
-        ],
-      },
-      {
-        title: "Source",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/source/shopify",
-            title: "Shopify",
-          },
-        ],
-      },
-      {
-        title: "Storage",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/storage/local",
-            title: "Local File Storage",
-          },
-          {
-            path: "/plugins/storage/minio",
-            title: "MinIO",
-          },
-          {
-            path: "/plugins/storage/s3",
-            title: "S3",
-          },
-          {
-            path: "/plugins/storage/spaces",
-            title: "Spaces",
-          },
-        ],
-      },
-      {
-        title: "Other",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/other/discount-generator",
-            title: "Discount Generator",
-          },
-          {
-            path: "/plugins/other/ip-lookup",
-            title: "IP Lookup",
-          },
-          {
-            path: "/plugins/other/restock-notifications",
-            title: "Restock Notifications",
-          },
-          {
-            path: "/plugins/other/wishlist",
-            title: "Wishlist",
           },
         ],
       },
     ],
   },
   {
-    title: "SDKs and Tools",
-    hasTitleStyling: true,
+    type: "link",
+    path: "/recipes",
+    title: "Recipes",
+    isChildSidebar: true,
     children: [
       {
+        type: "link",
+        path: "/recipes/marketplace",
+        title: "Marketplace",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/vendors",
+            title: "Example: Vendors",
+          },
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/restaurant-delivery",
+            title: "Example: Restaurant-Delivery",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/subscriptions/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/digital-products/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/b2b",
+        title: "B2B",
+      },
+      {
+        type: "link",
+        path: "/recipes/commerce-automation",
+        title: "Commerce Automation",
+      },
+      {
+        type: "link",
+        path: "/recipes/ecommerce",
+        title: "Ecommerce",
+      },
+      {
+        type: "link",
+        path: "/recipes/integrate-ecommerce-stack",
+        title: "Integrate Ecommerce Stack",
+      },
+      {
+        type: "link",
+        path: "/recipes/multi-region-store",
+        title: "Multi-Region Store",
+      },
+      {
+        type: "link",
+        path: "/recipes/omnichannel",
+        title: "Omnichannel Store",
+      },
+      {
+        type: "link",
+        path: "/recipes/oms",
+        title: "OMS",
+      },
+      {
+        type: "link",
+        path: "/recipes/personalized-products",
+        title: "Personalized Products",
+      },
+      {
+        type: "link",
+        path: "/recipes/pos",
+        title: "POS",
+      },
+    ],
+  },
+  {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "SDKs and Tools",
+    children: [
+      {
+        type: "link",
         path: "/create-medusa-app",
         title: "create-medusa-app",
       },
       {
+        type: "link",
         path: "/medusa-cli",
         title: "Medusa CLI",
-      },
-      {
-        path: "/js-client",
-        title: "Medusa JS Client",
         isChildSidebar: true,
+        childSidebarTitle: "Medusa CLI Reference",
         children: [
           {
-            path: "/references/js-client/AddressesResource",
-            title: "admin",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/references/js-client/AdminAuthResource",
-                title: "auth",
-              },
-              {
-                path: "/references/js-client/AdminBatchJobsResource",
-                title: "batchJobs",
-              },
-              {
-                path: "/references/js-client/AdminCollectionsResource",
-                title: "collections",
-              },
-              {
-                path: "/references/js-client/AdminCurrenciesResource",
-                title: "currencies",
-              },
-              {
-                path: "/references/js-client/AdminCustomResource",
-                title: "custom",
-              },
-              {
-                path: "/references/js-client/AdminCustomerGroupsResource",
-                title: "customerGroups",
-              },
-              {
-                path: "/references/js-client/AdminCustomersResource",
-                title: "customers",
-              },
-              {
-                path: "/references/js-client/AdminDiscountsResource",
-                title: "discounts",
-              },
-              {
-                path: "/references/js-client/AdminDraftOrdersResource",
-                title: "draftOrders",
-              },
-              {
-                path: "/references/js-client/AdminGiftCardsResource",
-                title: "giftCards",
-              },
-              {
-                path: "/references/js-client/AdminInventoryItemsResource",
-                title: "inventoryItems",
-              },
-              {
-                path: "/references/js-client/AdminInvitesResource",
-                title: "invites",
-              },
-              {
-                path: "/references/js-client/AdminNotesResource",
-                title: "notes",
-              },
-              {
-                path: "/references/js-client/AdminNotificationsResource",
-                title: "notifications",
-              },
-              {
-                path: "/references/js-client/AdminOrderEditsResource",
-                title: "orderEdits",
-              },
-              {
-                path: "/references/js-client/AdminOrdersResource",
-                title: "orders",
-              },
-              {
-                path: "/references/js-client/AdminPaymentCollectionsResource",
-                title: "paymentCollections",
-              },
-              {
-                path: "/references/js-client/AdminPaymentsResource",
-                title: "payments",
-              },
-              {
-                path: "/references/js-client/AdminPriceListResource",
-                title: "priceLists",
-              },
-              {
-                path: "/references/js-client/AdminProductCategoriesResource",
-                title: "productCategories",
-              },
-              {
-                path: "/references/js-client/AdminProductTagsResource",
-                title: "productTags",
-              },
-              {
-                path: "/references/js-client/AdminProductTypesResource",
-                title: "productTypes",
-              },
-              {
-                path: "/references/js-client/AdminProductsResource",
-                title: "products",
-              },
-              {
-                path: "/references/js-client/AdminPublishableApiKeyResource",
-                title: "publishableApiKeys",
-              },
-              {
-                path: "/references/js-client/AdminRegionsResource",
-                title: "regions",
-              },
-              {
-                path: "/references/js-client/AdminReservationsResource",
-                title: "reservations",
-              },
-              {
-                path: "/references/js-client/AdminReturnReasonsResource",
-                title: "returnReasons",
-              },
-              {
-                path: "/references/js-client/AdminReturnsResource",
-                title: "returns",
-              },
-              {
-                path: "/references/js-client/AdminSalesChannelsResource",
-                title: "salesChannels",
-              },
-              {
-                path: "/references/js-client/AdminShippingOptionsResource",
-                title: "shippingOptions",
-              },
-              {
-                path: "/references/js-client/AdminShippingProfilesResource",
-                title: "shippingProfiles",
-              },
-              {
-                path: "/references/js-client/AdminStockLocationsResource",
-                title: "stockLocations",
-              },
-              {
-                path: "/references/js-client/AdminStoresResource",
-                title: "store",
-              },
-              {
-                path: "/references/js-client/AdminSwapsResource",
-                title: "swaps",
-              },
-              {
-                path: "/references/js-client/AdminTaxRatesResource",
-                title: "taxRates",
-              },
-              {
-                path: "/references/js-client/AdminUploadsResource",
-                title: "uploads",
-              },
-              {
-                path: "/references/js-client/AdminUsersResource",
-                title: "users",
-              },
-              {
-                path: "/references/js-client/AdminVariantsResource",
-                title: "variants",
-              },
-            ],
+            type: "link",
+            path: "/medusa-cli",
+            title: "Overview",
           },
           {
-            title: "Store",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/references/js-client/AuthResource",
-                title: "auth",
-              },
-              {
-                title: "carts",
-                path: "/references/js-client/CartsResource",
-                children: [
-                  {
-                    path: "/references/js-client/LineItemsResource",
-                    title: "lineItems",
-                  },
-                ],
-              },
-              {
-                path: "/references/js-client/CollectionsResource",
-                title: "collections",
-              },
-              {
-                path: "/references/js-client/CustomersResource",
-                title: "customers",
-                children: [
-                  {
-                    path: "/references/js-client/AddressesResource",
-                    title: "addresses",
-                  },
-                  {
-                    path: "/references/js-client/PaymentMethodsResource",
-                    title: "paymentMethods",
-                  },
-                ],
-              },
-              {
-                path: "/references/js-client/GiftCardsResource",
-                title: "giftCards",
-              },
-              {
-                path: "/references/js-client/OrderEditsResource",
-                title: "orderEdits",
-              },
-              {
-                path: "/references/js-client/OrdersResource",
-                title: "orders",
-              },
-              {
-                path: "/references/js-client/PaymentCollectionsResource",
-                title: "paymentCollections",
-              },
-              {
-                path: "/references/js-client/PaymentMethodsResource",
-                title: "paymentMethods",
-              },
-              {
-                path: "/references/js-client/ProductCategoriesResource",
-                title: "productCategories",
-              },
-              {
-                path: "/references/js-client/ProductTagsResource",
-                title: "productTags",
-              },
-              {
-                path: "/references/js-client/ProductTypesResource",
-                title: "productTypes",
-              },
-              {
-                path: "/references/js-client/ProductTypesResource",
-                title: "productTypes",
-              },
-              {
-                path: "/references/js-client/ProductsResource",
-                title: "products",
-                children: [
-                  {
-                    path: "/references/js-client/ProductVariantsResource",
-                    title: "variants",
-                  },
-                ],
-              },
-              {
-                path: "/references/js-client/RegionsResource",
-                title: "regions",
-              },
-              {
-                path: "/references/js-client/ReturnReasonsResource",
-                title: "returnReasons",
-              },
-              {
-                path: "/references/js-client/ReturnsResource",
-                title: "returns",
-              },
-              {
-                path: "/references/js-client/ShippingOptionsResource",
-                title: "shippingOptions",
-              },
-              {
-                path: "/references/js-client/SwapsResource",
-                title: "swaps",
-              },
-            ],
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Commands",
+            autogenerate_path: "medusa-cli/commands",
           },
         ],
       },
       {
-        path: "/medusa-react",
-        title: "Medusa React",
-        isChildSidebar: true,
-        children: [
-          {
-            path: "/references/medusa-react/hooks",
-            title: "Hooks",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/references/medusa-react/hooks/admin",
-                title: "Admin",
-                autogenerate_path: "/references/medusa_react/Hooks/Admin",
-              },
-              {
-                path: "/references/medusa-react/hooks/store",
-                title: "Store",
-                autogenerate_path: "/references/medusa_react/Hooks/Store",
-              },
-            ],
-          },
-          {
-            path: "/references/medusa-react/providers",
-            title: "Providers",
-            hasTitleStyling: true,
-            autogenerate_path: "/references/medusa_react/Providers",
-          },
-          {
-            path: "/references/medusa-react/utilities",
-            title: "Utilities",
-            hasTitleStyling: true,
-            autogenerate_path: "/references/medusa_react/Utilities/functions",
-          },
-        ],
-      },
-      {
+        type: "link",
         path: "/nextjs-starter",
         title: "Next.js Starter",
       },
     ],
   },
   {
+    type: "link",
     path: "/architectural-modules",
     title: "Architectural Modules",
     isChildSidebar: true,
-    hasTitleStyling: true,
     children: [
       {
+        type: "category",
         title: "Cache Modules",
-        hasTitleStyling: true,
         children: [
           {
+            type: "link",
+            path: "/architectural-modules/cache",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/architectural-modules/cache/in-memory",
             title: "In-Memory",
           },
           {
+            type: "link",
             path: "/architectural-modules/cache/redis",
             title: "Redis",
+          },
+          {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/architectural-modules/cache/create",
+                title: "Create Cache Module",
+              },
+            ],
           },
         ],
       },
       {
+        type: "category",
         title: "Event Modules",
-        hasTitleStyling: true,
         children: [
           {
+            type: "link",
+            path: "/architectural-modules/event",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/architectural-modules/event/local",
             title: "Local",
           },
           {
+            type: "link",
             path: "/architectural-modules/event/redis",
             title: "Redis",
+          },
+          {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/architectural-modules/event/create",
+                title: "Create Event Module",
+              },
+            ],
           },
         ],
       },
       {
-        title: "Workflow Engine Modules",
-        hasTitleStyling: true,
+        type: "category",
+        title: "File Provider Modules",
         children: [
           {
+            type: "link",
+            path: "/architectural-modules/file",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/architectural-modules/file/local",
+            title: "Local",
+          },
+          {
+            type: "link",
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
+          },
+          {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/references/file-provider-module",
+                title: "Create File Provider",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Notification Provider Modules",
+        children: [
+          {
+            type: "link",
+            path: "/architectural-modules/notification",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/architectural-modules/notification/local",
+            title: "Local",
+          },
+          {
+            type: "link",
+            path: "/architectural-modules/notification/sendgrid",
+            title: "SendGrid",
+          },
+          {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/architectural-modules/notification/send-notification",
+                title: "Send Notification",
+              },
+              {
+                type: "link",
+                path: "/references/notification-provider-module",
+                title: "Create Notification Provider",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Workflow Engine Modules",
+        children: [
+          {
+            type: "link",
+            path: "/architectural-modules/workflow-engine",
+            title: "Overview",
+          },
+          {
+            type: "link",
             path: "/architectural-modules/workflow-engine/in-memory",
             title: "In-Memory",
           },
           {
+            type: "link",
             path: "/architectural-modules/workflow-engine/redis",
             title: "Redis",
           },
@@ -1636,320 +1806,570 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    title: "Recipes",
-    hasTitleStyling: true,
+    type: "link",
+    path: "/storefront-development",
+    title: "Storefront Development",
+    isChildSidebar: true,
     children: [
       {
-        path: "/recipes/ecommerce",
-        title: "Ecommerce",
+        type: "link",
+        path: "/storefront-development/tips",
+        title: "Tips",
       },
       {
-        path: "/recipes/marketplace",
-        title: "Marketplace",
+        type: "link",
+        path: "/storefront-development/publishable-api-keys",
+        title: "Publishable API Key",
       },
       {
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
+        type: "separator",
       },
       {
-        path: "/recipes/integrate-ecommerce-stack",
-        title: "Integrate Ecommerce Stack",
-      },
-      {
-        path: "/recipes/commerce-automation",
-        title: "Commerce Automation",
-      },
-      {
-        path: "/recipes/oms",
-        title: "Order Management System",
-      },
-      {
-        path: "/recipes/pos",
-        title: "POS",
-      },
-      {
-        path: "/recipes/digital-products",
-        title: "Digital Products",
-      },
-      {
-        path: "/recipes/personalized-products",
-        title: "Personalized Products",
-      },
-      {
-        path: "/recipes/b2b",
-        title: "B2B",
-      },
-      {
-        path: "/recipes/multi-region-store",
-        title: "Multi-Region Store",
-      },
-      {
-        path: "/recipes/omnichannel",
-        title: "Omnichannel Store",
-      },
-    ],
-  },
-  {
-    title: "Configurations",
-    hasTitleStyling: true,
-    children: [
-      {
-        path: "/references/medusa-config",
-        title: "Medusa Application",
-      },
-      {
-        path: "/configurations/medusa-admin",
-        title: "Medusa Admin",
-      },
-    ],
-  },
-  {
-    title: "General",
-    hasTitleStyling: true,
-    children: [
-      {
-        title: "Upgrade Guides",
-      },
-      {
-        path: "/deployment",
-        title: "Deployment Guides",
-        isChildSidebar: true,
+        type: "category",
+        title: "Regions",
         children: [
           {
-            title: "Medusa Application",
-            hasTitleStyling: true,
+            type: "link",
+            path: "/storefront-development/regions",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/regions/list",
+            title: "List Regions",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/regions/store-retrieve-region",
+            title: "Store and Retrieve Regions",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/regions/context",
+            title: "Region React Context",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Products",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/products",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/list",
+            title: "List Products",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/retrieve",
+            title: "Retrieve a Product",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/variants",
+            title: "Select a Variant",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/price",
+            title: "Retrieve Variant Prices",
+            autogenerate_path: "storefront-development/products/price/examples",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/inventory",
+            title: "Retrieve Variant Inventory",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/products/categories",
+            title: "Categories",
             children: [
               {
-                path: "/deployment/medusa-application/railway",
-                title: "Railway",
+                type: "link",
+                path: "/storefront-development/products/categories/list",
+                title: "List Categories",
               },
               {
-                path: "/deployment/medusa-application/heroku",
-                title: "Heroku",
+                type: "link",
+                path: "/storefront-development/products/categories/retrieve",
+                title: "Retrieve a Category",
               },
               {
-                path: "/deployment/medusa-application/digitalocean",
-                title: "DigitalOcean",
+                type: "link",
+                path: "/storefront-development/products/categories/products",
+                title: "Retrieve a Category's Products",
               },
               {
-                path: "/deployment/medusa-application/microtica",
-                title: "Microtica",
-              },
-              {
-                path: "/deployment/medusa-application/general",
-                title: "General Guide",
+                type: "link",
+                path: "/storefront-development/products/categories/nested-categories",
+                title: "Retrieve Nested Categories",
               },
             ],
           },
           {
-            title: "Medusa Admin",
-            hasTitleStyling: true,
+            type: "link",
+            path: "/storefront-development/products/collections",
+            title: "Collections",
             children: [
               {
-                path: "/deployment/admin/vercel",
-                title: "Vercel",
+                type: "link",
+                path: "/storefront-development/products/collections/list",
+                title: "List Collections",
               },
               {
-                path: "/deployment/admin/general",
-                title: "General Guide",
-              },
-            ],
-          },
-          {
-            title: "Next.js Starter",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/storefront/vercel",
-                title: "Vercel",
+                type: "link",
+                path: "/storefront-development/products/collections/retrieve",
+                title: "Retrieve a Collection",
               },
               {
-                path: "/deployment/storefront/general",
-                title: "General Guide",
+                type: "link",
+                path: "/storefront-development/products/collections/products",
+                title: "Retrieve a Collection's Products",
               },
             ],
           },
         ],
       },
       {
+        type: "category",
+        title: "Carts",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/cart",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/cart/create",
+            title: "Create Cart",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/cart/retrieve",
+            title: "Retrieve Cart",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/cart/context",
+            title: "Cart React Context",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/cart/update",
+            title: "Update Cart",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/cart/manage-items",
+            title: "Manage Line Items",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Checkout",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/checkout",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/checkout/email",
+            title: "1. Enter Email",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/checkout/address",
+            title: "2. Enter Address",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/checkout/shipping",
+            title: "3. Choose Shipping Method",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/checkout/payment",
+            title: "4. Choose Payment Provider",
+            children: [
+              {
+                type: "link",
+                path: "/storefront-development/checkout/payment/stripe",
+                title: "Example: Stripe",
+              },
+            ],
+          },
+          {
+            type: "link",
+            path: "/storefront-development/checkout/complete-cart",
+            title: "5. Complete Cart",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Customers",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/customers",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/register",
+            title: "Register Customer",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/login",
+            title: "Login Customer",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/third-party-login",
+            title: "Third-Party (Social) Login",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/reset-password",
+            title: "Reset Password",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/retrieve",
+            title: "Retrieve Customer",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/context",
+            title: "Customer React Context",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/profile",
+            title: "Edit Customer Profile",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/addresses",
+            title: "Manage Customer Addresses",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/log-out",
+            title: "Log-out Customer",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "link",
+    path: "/references/medusa-config",
+    title: "Medusa Configurations",
+  },
+  {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "General",
+    children: [
+      {
+        type: "link",
+        path: "/upgrade-guides",
+        title: "Upgrade Guides",
+      },
+      {
+        type: "link",
+        path: "/deployment",
+        title: "Deployment Guides",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Medusa Application",
+            autogenerate_path: "/deployment/medusa-application",
+          },
+          {
+            type: "category",
+            title: "Medusa Admin",
+            autogenerate_path: "/deployment/admin",
+          },
+          {
+            type: "category",
+            title: "Next.js Starter",
+            autogenerate_path: "/deployment/storefront",
+          },
+        ],
+      },
+      {
+        type: "link",
         path: "/troubleshooting",
         title: "Troubleshooting Guides",
         isChildSidebar: true,
         children: [
           {
+            type: "category",
             title: "Installation",
-            hasTitleStyling: true,
             children: [
               {
+                type: "link",
                 path: "/troubleshooting/create-medusa-app-errors",
                 title: "Create Medusa App Errors",
               },
               {
+                type: "link",
                 path: "/troubleshooting/errors-installing-cli",
                 title: "Errors Installing CLI",
               },
               {
+                type: "link",
                 path: "/troubleshooting/general-errors",
                 title: "General Errors",
               },
             ],
           },
           {
-            title: "Medusa Backend",
-            hasTitleStyling: true,
+            type: "category",
+            title: "Medusa Application",
             children: [
               {
+                type: "link",
                 path: "/troubleshooting/eaddrinuse",
                 title: "EADDRINUSE Error",
               },
               {
+                type: "link",
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
               },
               {
-                path: "/troubleshooting/transaction-promise-all",
-                title: "Transactions and Promise.all",
-              },
+                type: "link",
+                path: "/troubleshooting/dist-imports",
+                title: "Importing from /dist"
+              }
+            ],
+          },
+          {
+            type: "category",
+            title: "Admin Development",
+            children: [
               {
-                path: "/troubleshooting/payment-provider-missing",
-                title: "Payment Provider Missing",
+                type: "link",
+                path: "/troubleshooting/medusa-admin/no-widget-route",
+                title: "Widget or Route not Showing",
               },
             ],
           },
           {
+            type: "category",
             title: "Upgrade",
-            hasTitleStyling: true,
             children: [
               {
+                type: "link",
                 path: "/troubleshooting/errors-after-upgrading",
                 title: "Errors After Upgrading",
               },
             ],
           },
           {
+            type: "category",
             title: "Frontend",
-            hasTitleStyling: true,
             children: [
               {
+                type: "link",
                 path: "/troubleshooting/cors-errors",
                 title: "CORS Errors",
               },
             ],
           },
           {
-            title: "Medusa Admin",
+            type: "category",
+            title: "Integrations",
             hasTitleStyling: true,
             children: [
               {
-                path: "/troubleshooting/admin-sign-in",
-                title: "Signing In",
-              },
-              {
-                path: "/troubleshooting/admin-custom-hooks-error",
-                title: "Custom Hooks Error",
-              },
-              {
-                path: "/troubleshooting/admin-webpack-build-error",
-                title: "Webpack Build Error",
+                type: "link",
+                path: "/troubleshooting/s3",
+                title: "S3 Module Provider Errors",
               },
             ],
           },
           {
-            title: "Plugin",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/troubleshooting/s3-plugin-acl-error",
-                title: "S3 Plugin ACL Error",
-              },
-            ],
+            type: "link",
+            path: "/troubleshooting/deployment",
+            title: "Deployment",
           },
         ],
       },
     ],
   },
   {
+    type: "category",
     title: "Lists",
-    hasTitleStyling: true,
     children: [
       {
+        type: "link",
         path: "/medusa-container-resources",
-        title: "Medusa Container Resources",
+        title: "Container Dependencies",
       },
       {
+        type: "link",
         path: "/events-reference",
-        title: "Events",
+        title: "Events List",
       },
       {
+        type: "link",
         path: "/admin-widget-injection-zones",
         title: "Admin Widget Injection Zones",
       },
     ],
   },
   {
-    title: "API References",
-    hasTitleStyling: true,
+    type: "category",
+    title: "References",
     children: [
       {
+        type: "link",
         path: "/references/workflows",
         title: "Workflow API",
         isChildSidebar: true,
         children: [
           {
+            type: "category",
             title: "Functions",
-            hasTitleStyling: true,
             autogenerate_path: "/references/workflows/functions",
           },
         ],
       },
       {
-        title: "Integration Services",
+        type: "link",
+        path: "/references/data-model",
+        title: "Data Model API",
+        childSidebarTitle: "Data Model API Reference",
+        isChildSidebar: true,
         children: [
           {
-            path: "/references/notification-service",
-            title: "Notification Service",
+            type: "link",
+            path: "/references/data-model/define",
+            title: "Define Method",
           },
           {
-            path: "/references/file-service",
-            title: "File Service",
+            type: "separator",
           },
           {
-            path: "/references/search-service",
-            title: "Search Service",
+            type: "category",
+            title: "Property Types",
+            autogenerate_path: "/references/dml/Property_Types/methods",
+          },
+          {
+            type: "category",
+            title: "Relationship Methods",
+            autogenerate_path: "/references/dml/Relationship_Methods/methods",
+          },
+          {
+            type: "category",
+            title: "Model Methods",
+            autogenerate_path: "/references/dml/Model_Methods/methods",
+          },
+          {
+            type: "category",
+            title: "Property Configuration Methods",
+            autogenerate_path:
+              "/references/dml/Property_Configuration_Methods/methods",
           },
         ],
       },
       {
-        title: "Modules",
+        type: "link",
+        path: "/service-factory-reference",
+        title: "Service Factory Reference",
+        isChildSidebar: true,
         children: [
           {
-            title: "Cache Service",
+            type: "category",
+            title: "Methods",
+            autogenerate_path: "/service-factory-reference/methods",
           },
           {
-            title: "Event Bus Service",
+            type: "category",
+            title: "Tips",
+            autogenerate_path: "/service-factory-reference/tips",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/references/helper-steps",
+        title: "Helper Steps Reference",
+        isChildSidebar: true,
+        autogenerate_path: "/references/helper_steps/functions",
+      },
+      {
+        type: "link",
+        title: "Medusa Workflows Reference",
+        path: "/medusa-workflows-reference",
+        isChildSidebar: true,
+        custom_autogenerate: "core-flows",
+      },
+      {
+        type: "link",
+        title: "Testing Tools Reference",
+        path: "/test-tools-reference",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Functions",
+            children: [
+              {
+                type: "link",
+                title: "medusaIntegrationTestRunner",
+                path: "/test-tools-reference/medusaIntegrationTestRunner",
+              },
+              {
+                type: "link",
+                title: "moduleIntegrationTestRunner",
+                path: "/test-tools-reference/moduleIntegrationTestRunner",
+              },
+            ],
           },
         ],
       },
     ],
   },
   {
+    type: "category",
     title: "Other",
-    hasTitleStyling: true,
     children: [
       {
+        type: "sub-category",
         title: "Contribution Guidelines",
         children: [
           {
+            type: "link",
             path: "/contribution-guidelines/docs",
             title: "Docs",
           },
-          {
-            path: "/contribution-guidelines/admin-translations",
-            title: "Admin Translations",
-          },
+          // {
+          //   path: "/contribution-guidelines/admin-translations",
+          //   title: "Admin Translations",
+          // },
         ],
       },
       {
+        type: "link",
         path: "/usage",
         title: "Usage",
       },

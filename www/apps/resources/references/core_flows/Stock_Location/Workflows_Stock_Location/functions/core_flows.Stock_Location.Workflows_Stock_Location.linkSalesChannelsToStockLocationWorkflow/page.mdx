@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/linkSalesChannelsToStockLocationWorkflow
+sidebar_label: linkSalesChannelsToStockLocationWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# linkSalesChannelsToStockLocationWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `linkSalesChannelsToStockLocationWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates and dismisses links between location and sales channel records.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"linkSalesChannelsToStockLocationWorkflow","steps":[{"type":"step","name":"associateLocationsWithSalesChannelsStep","description":"This step creates links between locations and sales channel records.","link":"../../../../core_flows.Steps_Sales_Channel/page.mdx#associatelocationswithsaleschannelsstep","depth":1},{"type":"step","name":"detachLocationsFromSalesChannelsStep","description":"This step dismisses links between location and sales channel records.","link":"../../../../core_flows.Steps_Sales_Channel/page.mdx#detachlocationsfromsaleschannelsstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkWorkflowInput","type":"[LinkWorkflowInput](../../../../../types/CommonTypes/types/types.CommonTypes.LinkWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="linkSalesChannelsToStockLocationWorkflow"/>

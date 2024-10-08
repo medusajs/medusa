@@ -1,19 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  ICartModuleService,
-  ICustomerModuleService,
-  IFulfillmentModuleService,
-  IInventoryServiceNext,
-  IOrderModuleService,
-  IPaymentModuleService,
-  IPricingModuleService,
-  IProductModuleService,
-  IRegionModuleService,
-  ISalesChannelModuleService,
-  IStockLocationServiceNext,
-  ITaxModuleService,
-} from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { IOrderModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -25,50 +11,14 @@ jest.setTimeout(50000)
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
-  debug: true,
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
-    let cartModuleService: ICartModuleService
-    let regionModuleService: IRegionModuleService
-    let scModuleService: ISalesChannelModuleService
-    let customerModule: ICustomerModuleService
-    let productModule: IProductModuleService
-    let pricingModule: IPricingModuleService
-    let paymentModule: IPaymentModuleService
-    let inventoryModule: IInventoryServiceNext
-    let stockLocationModule: IStockLocationServiceNext
-    let fulfillmentModule: IFulfillmentModuleService
-    let locationModule: IStockLocationServiceNext
-    let taxModule: ITaxModuleService
     let orderModule: IOrderModuleService
-    let remoteLink, remoteQuery
 
     beforeAll(async () => {
       appContainer = getContainer()
-      cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-      regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      scModuleService = appContainer.resolve(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
-      customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-      productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-      pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-      inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
-      stockLocationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
-      fulfillmentModule = appContainer.resolve(
-        ModuleRegistrationName.FULFILLMENT
-      )
-      locationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
-      taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
-      remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-      remoteQuery = appContainer.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-      orderModule = appContainer.resolve(ModuleRegistrationName.ORDER)
+      orderModule = appContainer.resolve(Modules.ORDER)
     })
 
     beforeEach(async () => {
@@ -77,8 +27,8 @@ medusaIntegrationTestRunner({
 
     describe("Orders - Admin", () => {
       it("should get an order", async () => {
-        const created = await orderModule.create({
-          region_id: "test_region_idclear",
+        const created = await orderModule.createOrders({
+          region_id: "test_region_id",
           email: "foo@bar.com",
           items: [
             {
@@ -144,7 +94,7 @@ medusaIntegrationTestRunner({
         const response = await api.get(
           "/admin/orders/" +
             created.id +
-            "?fields=%2Braw_total,%2Braw_subtotal,%2Braw_discount_total",
+            "?fields=+raw_total,+raw_subtotal,+raw_discount_total",
           adminHeaders
         )
 
@@ -154,13 +104,18 @@ medusaIntegrationTestRunner({
           status: "pending",
           version: 1,
           display_id: 1,
+          payment_collections: [],
+          payment_status: "not_paid",
+          region_id: "test_region_id",
+          fulfillments: [],
+          fulfillment_status: "not_fulfilled",
           summary: expect.objectContaining({
             // TODO: add all summary fields
           }),
-          total: 59.8,
-          subtotal: 50,
+          total: 59.9,
+          subtotal: 60,
           tax_total: 0.9,
-          discount_total: 1,
+          discount_total: 1.1,
           discount_tax_total: 0.1,
           original_total: 61,
           original_tax_total: 1,
@@ -174,20 +129,20 @@ medusaIntegrationTestRunner({
           shipping_subtotal: 10,
           shipping_tax_total: 0.9,
           original_shipping_tax_total: 1,
-          original_shipping_tax_subtotal: 10,
+          original_shipping_subtotal: 10,
           original_shipping_total: 11,
           created_at: expect.any(String),
           updated_at: expect.any(String),
           raw_total: {
-            value: "59.799999999999999995",
+            value: "59.899999999999999995",
             precision: 20,
           },
           raw_subtotal: {
-            value: "50",
+            value: "60",
             precision: 20,
           },
           raw_discount_total: {
-            value: "1.000000000000000005",
+            value: "1.100000000000000005",
             precision: 20,
           },
           items: [
@@ -216,11 +171,13 @@ medusaIntegrationTestRunner({
                 value: "50",
                 precision: 20,
               },
+              is_custom_price: false,
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
+              deleted_at: null,
               tax_lines: [],
-              adjustments: [
+              adjustments: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "VIP discount",
@@ -233,6 +190,7 @@ medusaIntegrationTestRunner({
                   provider_id: expect.any(String),
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   item_id: expect.any(String),
                   amount: 5e-18,
                   subtotal: 5e-18,
@@ -246,7 +204,7 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
+              ]),
               compare_at_unit_price: null,
               unit_price: 50,
               quantity: 1,
@@ -254,7 +212,7 @@ medusaIntegrationTestRunner({
                 value: "1",
                 precision: 20,
               },
-              detail: {
+              detail: expect.objectContaining({
                 id: expect.any(String),
                 order_id: expect.any(String),
                 version: 1,
@@ -298,14 +256,23 @@ medusaIntegrationTestRunner({
                 return_received_quantity: 0,
                 return_dismissed_quantity: 0,
                 written_off_quantity: 0,
-              },
+              }),
               subtotal: 50,
               total: 50,
               original_total: 50,
               discount_total: 5e-18,
               discount_tax_total: 0,
+              discount_subtotal: 5e-18,
               tax_total: 0,
               original_tax_total: 0,
+              refundable_total: 50,
+              refundable_total_per_unit: 50,
+              fulfilled_total: 0,
+              return_dismissed_total: 0,
+              return_received_total: 0,
+              return_requested_total: 0,
+              shipped_total: 0,
+              write_off_total: 0,
               raw_subtotal: {
                 value: "50",
                 precision: 20,
@@ -322,6 +289,10 @@ medusaIntegrationTestRunner({
                 value: "5e-18",
                 precision: 20,
               },
+              raw_discount_subtotal: {
+                precision: 20,
+                value: "5e-18",
+              },
               raw_discount_tax_total: {
                 value: "0",
                 precision: 20,
@@ -333,6 +304,38 @@ medusaIntegrationTestRunner({
               raw_original_tax_total: {
                 value: "0",
                 precision: 20,
+              },
+              raw_refundable_total: {
+                precision: 20,
+                value: "49.999999999999999995",
+              },
+              raw_refundable_total_per_unit: {
+                precision: 20,
+                value: "49.999999999999999995",
+              },
+              raw_fulfilled_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_dismissed_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_received_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_requested_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_shipped_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_write_off_total: {
+                precision: 20,
+                value: "0",
               },
             },
           ],
@@ -386,7 +389,7 @@ medusaIntegrationTestRunner({
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              tax_lines: [
+              tax_lines: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "shipping Tax 1",
@@ -399,6 +402,7 @@ medusaIntegrationTestRunner({
                   provider_id: null,
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   shipping_method_id: expect.any(String),
                   rate: 10,
                   total: 0.9,
@@ -412,8 +416,8 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
-              adjustments: [
+              ]),
+              adjustments: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "VIP discount",
@@ -426,6 +430,7 @@ medusaIntegrationTestRunner({
                   provider_id: null,
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   shipping_method_id: expect.any(String),
                   amount: 1,
                   subtotal: 1,
@@ -439,12 +444,12 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
+              ]),
               amount: 10,
               subtotal: 10,
               total: 9.9,
               original_total: 11,
-              discount_total: 1,
+              discount_total: 1.1,
               discount_tax_total: 0.1,
               tax_total: 0.9,
               original_tax_total: 1,
@@ -461,7 +466,7 @@ medusaIntegrationTestRunner({
                 precision: 20,
               },
               raw_discount_total: {
-                value: "1",
+                value: "1.1",
                 precision: 20,
               },
               raw_discount_tax_total: {

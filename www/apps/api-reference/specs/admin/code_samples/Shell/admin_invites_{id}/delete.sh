@@ -1,0 +1,1 @@
+curl -X DELETE '{backend_url}/admin/invites/{id}'

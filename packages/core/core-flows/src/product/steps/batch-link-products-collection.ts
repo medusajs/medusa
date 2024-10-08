@@ -1,23 +1,25 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { LinkWorkflowInput } from "@medusajs/types/src"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IProductModuleService,
+  LinkWorkflowInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const batchLinkProductsToCollectionStepId =
   "batch-link-products-to-collection"
+/**
+ * This step creates links between product and collection records.
+ */
 export const batchLinkProductsToCollectionStep = createStep(
   batchLinkProductsToCollectionStepId,
   async (data: LinkWorkflowInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if (!data.add?.length && !data.remove?.length) {
       return new StepResponse(void 0, null)
     }
 
-    const dbCollection = await service.retrieveCollection(data.id, {
-      take: null,
+    const dbCollection = await service.retrieveProductCollection(data.id, {
       select: ["id", "products.id"],
       relations: ["products"],
     })
@@ -29,7 +31,7 @@ export const batchLinkProductsToCollectionStep = createStep(
       ...(data.add ?? []),
     ]
 
-    await service.updateCollections(data.id, {
+    await service.updateProductCollections(data.id, {
       product_ids: newProductIds,
     })
 
@@ -43,11 +45,9 @@ export const batchLinkProductsToCollectionStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.updateCollections(prevData.id, {
+    await service.updateProductCollections(prevData.id, {
       product_ids: prevData.productIds,
     })
   }

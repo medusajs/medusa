@@ -3,14 +3,14 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20240227120221 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table if not exists "promotion_campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_pkey" primary key ("id"));'
+      'create table if not exists "promotion_campaign" ("id" text not null, "name" text not null, "description" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_pkey" primary key ("id"));'
     )
     this.addSql(
       'alter table if exists "promotion_campaign" add constraint "IDX_campaign_identifier_unique" unique ("campaign_identifier");'
     )
 
     this.addSql(
-      'create table if not exists "promotion_campaign_budget" ("id" text not null, "type" text check ("type" in (\'spend\', \'usage\')) not null, "campaign_id" text not null, "limit" numeric null, "raw_limit" jsonb null, "used" numeric null, "raw_used" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_budget_pkey" primary key ("id"));'
+      'create table if not exists "promotion_campaign_budget" ("id" text not null, "type" text check ("type" in (\'spend\', \'usage\')) not null, "campaign_id" text not null, "limit" numeric null, "raw_limit" jsonb null, "used" numeric not null default 0, "raw_used" jsonb not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_budget_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index if not exists "IDX_campaign_budget_type" on "promotion_campaign_budget" ("type");'
@@ -112,6 +112,38 @@ export class Migration20240227120221 extends Migration {
 
     this.addSql(
       'alter table if exists "promotion_rule_value" add constraint "promotion_rule_value_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion" drop constraint if exists "promotion_campaign_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion" add constraint "promotion_campaign_id_foreign" foreign key ("campaign_id") references "promotion_campaign" ("id") on update cascade on delete set null;'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion_application_method" add column if not exists "currency_code" text not null;'
+    )
+
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_promotion_application_method_currency_code" ON "promotion_application_method" (currency_code) WHERE deleted_at IS NOT NULL;'
+    )
+
+    this.addSql(
+      'alter table "promotion_application_method" alter column "value" type numeric using ("value"::numeric);'
+    )
+
+    this.addSql(
+      'alter table "promotion_application_method" alter column "raw_value" type jsonb using ("raw_value"::jsonb);'
+    )
+
+    this.addSql(
+      'alter table "promotion_application_method" alter column "raw_value" set not null;'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion_campaign_budget" add column if not exists "currency_code" text null;'
     )
   }
 }

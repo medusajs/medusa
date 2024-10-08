@@ -1,8 +1,8 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
+type OptionalAddressProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
@@ -21,7 +21,7 @@ const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "fulfillment_address" })
-export default class Address {
+export default class FulfillmentAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })

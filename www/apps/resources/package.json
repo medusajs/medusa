@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn prep && next dev",
-    "dev:monorepo": "yarn prep && yarn dev -p 3003",
+    "dev": "next dev",
+    "dev:monorepo": "yarn dev -p 3003",
     "build": "next build",
-    "build:dev": "NODE_ENV=test yarn prep && yarn build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3003",
     "lint": "next lint --fix",
@@ -16,11 +15,11 @@
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@medusajs/icons": "^1.2.0",
-    "@next/mdx": "^14.2.3",
+    "@medusajs/icons": "preview",
+    "@next/mdx": "^14.2.14",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "14.2.3",
+    "next": "14.2.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rehype-mdx-code-props": "^2.0.0",
@@ -45,5 +44,8 @@
     "tsconfig": "*",
     "types": "*",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

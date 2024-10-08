@@ -23,3 +23,7 @@ build/**
 dist/**
 **/dist
 **/stats
+.favorites.json
+.vscode
+
+**/tsconfig.tsbuildinfo

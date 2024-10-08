@@ -21,13 +21,13 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO[]>} The created sales channels.
    *
    * @example
-   * const salesChannels = await salesChannelModuleService.create([
+   * const salesChannels = await salesChannelModuleService.createSalesChannels([
    *   {
    *     name: "B2B",
    *   },
    * ])
    */
-  create(
+  createSalesChannels(
     data: CreateSalesChannelDTO[],
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
@@ -40,11 +40,11 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO>} The created sales channel.
    *
    * @example
-   * const salesChannel = await salesChannelModuleService.create({
+   * const salesChannel = await salesChannelModuleService.createSalesChannels({
    *   name: "B2B",
    * })
    */
-  create(
+  createSalesChannels(
     data: CreateSalesChannelDTO,
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
@@ -58,14 +58,14 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO>} The updated sales channel.
    *
    * @example
-   * const salesChannel = await salesChannelModuleService.update(
+   * const salesChannel = await salesChannelModuleService.updateSalesChannels(
    *   "sc_123",
    *   {
    *     description: "Sales channel for B2B customers",
    *   }
    * )
    */
-  update(
+  updateSalesChannels(
     channelId: string,
     data: UpdateSalesChannelDTO,
     sharedContext?: Context
@@ -80,7 +80,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO[]>} The updated sales channels.
    *
    * @example
-   * const salesChannels = await salesChannelModuleService.update(
+   * const salesChannels = await salesChannelModuleService.updateSalesChannels(
    *   {
    *     name: "B2B",
    *   },
@@ -89,7 +89,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateSalesChannels(
     selector: FilterableSalesChannelProps,
     data: UpdateSalesChannelDTO,
     sharedContext?: Context
@@ -103,11 +103,11 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO>} The created or updated sales channel.
    *
    * @example
-   * const salesChannel = await salesChannelModuleService.upsert({
+   * const salesChannel = await salesChannelModuleService.upsertSalesChannels({
    *   name: "B2B",
    * })
    */
-  upsert(
+  upsertSalesChannels(
     data: UpsertSalesChannelDTO,
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
@@ -120,7 +120,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<SalesChannelDTO[]>} The created or updated sales channels.
    *
    * @example
-   * const salesChannels = await salesChannelModuleService.upsert([
+   * const salesChannels = await salesChannelModuleService.upsertSalesChannels([
    *   {
    *     name: "B2B",
    *   },
@@ -130,7 +130,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(
+  upsertSalesChannels(
     data: UpsertSalesChannelDTO[],
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
@@ -143,9 +143,9 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the sales channels are deleted successfully.
    *
    * @example
-   * await salesChannelModuleService.delete(["sc_123", "sc_321"])
+   * await salesChannelModuleService.deleteSalesChannels(["sc_123", "sc_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteSalesChannels(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a sales channel by its ID.
@@ -155,9 +155,9 @@ export interface ISalesChannelModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the sales channel is deleted successfully.
    *
    * @example
-   * await salesChannelModuleService.delete("sc_123")
+   * await salesChannelModuleService.deleteSalesChannels("sc_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteSalesChannels(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a sales channel by its ID.
@@ -170,9 +170,9 @@ export interface ISalesChannelModuleService extends IModuleService {
    *
    * @example
    * const salesChannel =
-   *   await salesChannelModuleService.retrieve("sc_123")
+   *   await salesChannelModuleService.retrieveSalesChannel("sc_123")
    */
-  retrieve(
+  retrieveSalesChannel(
     id: string,
     config?: FindConfig<SalesChannelDTO>,
     sharedContext?: Context
@@ -191,7 +191,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    * To retrieve a list of sales channels using their IDs:
    *
    * ```ts
-   * const salesChannels = await salesChannelModuleService.list({
+   * const salesChannels = await salesChannelModuleService.listSalesChannels({
    *   id: ["sc_123", "sc_321"],
    * })
    * ```
@@ -199,7 +199,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const salesChannels = await salesChannelModuleService.list(
+   * const salesChannels = await salesChannelModuleService.listSalesChannels(
    *   {
    *     id: ["sc_123", "sc_321"],
    *   },
@@ -210,7 +210,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listSalesChannels(
     filters?: FilterableSalesChannelProps,
     config?: FindConfig<SalesChannelDTO>,
     sharedContext?: Context
@@ -230,7 +230,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    *
    * ```ts
    * const [salesChannels, count] =
-   *   await salesChannelModuleService.listAndCount({
+   *   await salesChannelModuleService.listAndCountSalesChannels({
    *     id: ["sc_123", "sc_321"],
    *   })
    * ```
@@ -239,7 +239,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    *
    * ```ts
    * const [salesChannels, count] =
-   *   await salesChannelModuleService.listAndCount(
+   *   await salesChannelModuleService.listAndCountSalesChannels(
    *     {
    *       id: ["sc_123", "sc_321"],
    *     },
@@ -250,7 +250,7 @@ export interface ISalesChannelModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountSalesChannels(
     filters?: FilterableSalesChannelProps,
     config?: FindConfig<SalesChannelDTO>,
     sharedContext?: Context
@@ -266,9 +266,9 @@ export interface ISalesChannelModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await salesChannelModuleService.delete(["sc_123", "sc_321"])
+   * await salesChannelModuleService.softDeleteSalesChannels(["sc_123", "sc_321"])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteSalesChannels<TReturnableLinkableKeys extends string = string>(
     salesChannelIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -285,9 +285,9 @@ export interface ISalesChannelModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await salesChannelModuleService.restore(["sc_123", "sc_321"])
+   * await salesChannelModuleService.restoreSalesChannels(["sc_123", "sc_321"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreSalesChannels<TReturnableLinkableKeys extends string = string>(
     salesChannelIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

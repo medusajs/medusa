@@ -376,6 +376,10 @@ export interface CreateTaxLineDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+  /**
+   * The associated item's ID.
+   */
+  item_id?: string
 }
 
 /**
@@ -411,6 +415,11 @@ export interface UpdateTaxLineDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+
+  /**
+   * The associated item's ID.
+   */
+  item_id?: string
 }
 
 /**
@@ -560,6 +569,11 @@ export interface CreateLineItemDTO {
    * The adjustments of the line item.
    */
   adjustments?: CreateAdjustmentDTO[]
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**

@@ -14,92 +14,88 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICurrencyModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const currencyModuleService: ICurrencyModuleService =
-      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+    Modules.CURRENCY
+  )
 
-    res.json({
-      currencies: await currencyModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    currencies: await currencyModuleService.listCurrencies(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCurrencyModule,
-  } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
-  export async function GET(request: Request) {
-    const currencyModuleService = await initializeCurrencyModule()
+export async function GET(request: Request) {
+  const currencyModuleService = await initializeCurrencyModule()
 
-    return NextResponse.json({
-      currencies: await currencyModuleService.list(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    currencies: await currencyModuleService.listCurrencies(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
 
 ---
 
-## Retrieve a Currency by its ID
+## Retrieve a Currency by its Code
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICurrencyModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const currencyModuleService: ICurrencyModuleService =
-      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+    Modules.CURRENCY
+  )
 
-    const currency = await currencyModuleService.retrieve("usd")
+  const currency = await currencyModuleService.retrieveCurrency("usd")
 
-    res.json({
-      currency,
-    })
-  }
-  ```
+  res.json({
+    currency,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCurrencyModule,
-  } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
-  export async function GET(
-    request: Request
-  ) {
-    const currencyModuleService = await initializeCurrencyModule()
+export async function GET(request: Request) {
+  const currencyModuleService = await initializeCurrencyModule()
 
-    const currency = await currencyModuleService.retrieve("usd")
+  const currency = await currencyModuleService.retrieveCurrency("usd")
 
-    return NextResponse.json({ currency })
-  }
-  ```
+  return NextResponse.json({ currency })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -108,4 +104,4 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
 
 ## More Examples
 
-The [Currency Module interface reference](/references/currency) provides a reference to all the methods available for use with examples for each.
+The [Currency Module's main service reference](/references/currency) provides a reference to all the methods available for use with examples for each.

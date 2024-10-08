@@ -1,21 +1,20 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderLineItemTaxLineDTO,
   IOrderModuleService,
-} from "@medusajs/types"
-import { OrderStatus } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+} from "@medusajs/framework/types"
+import { Modules, OrderStatus } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order - Items and Shipping methods", () => {
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service
-            .create([
+            .createOrders([
               {
                 email: "test@email.com",
               } as any,
@@ -28,7 +27,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create an order successfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
               items: [
@@ -41,7 +40,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [order] = await service.list({ id: [createdOrder.id] })
+          const [order] = await service.listOrders({ id: [createdOrder.id] })
 
           expect(order).toEqual(
             expect.objectContaining({
@@ -52,7 +51,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create an order with billing + shipping address successfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
               billing_address: {
@@ -66,7 +65,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [order] = await service.list(
+          const [order] = await service.listOrders(
             { id: [createdOrder.id] },
             { relations: ["billing_address", "shipping_address"] }
           )
@@ -88,14 +87,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should create an order with billing id + shipping id successfully", async () => {
-          const [createdAddress] = await service.createAddresses([
+          const [createdAddress] = await service.createOrderAddresses([
             {
               first_name: "John",
               last_name: "Doe",
             },
           ])
 
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
               billing_address_id: createdAddress.id,
@@ -122,7 +121,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create an order with items", async () => {
-          const createdOrder = await service.create({
+          const createdOrder = await service.createOrders({
             currency_code: "eur",
             items: [
               {
@@ -133,7 +132,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item"],
           })
 
@@ -153,7 +152,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create multiple orders with items", async () => {
-          const createdOrders = await service.create([
+          const createdOrders = await service.createOrders([
             {
               currency_code: "eur",
               items: [
@@ -176,7 +175,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const orders = await service.list(
+          const orders = await service.listOrders(
             { id: createdOrders.map((c) => c.id) },
             {
               relations: ["items.item"],
@@ -222,7 +221,7 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         it("should throw an error if order does not exist", async () => {
           const error = await service
-            .update([
+            .updateOrders([
               {
                 id: "none-existing",
               },
@@ -235,20 +234,20 @@ moduleIntegrationTestRunner({
         })
 
         it("should update an order successfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [updatedOrder] = await service.update([
+          const [updatedOrder] = await service.updateOrders([
             {
               id: createdOrder.id,
               email: "test@email.com",
             },
           ])
 
-          const [order] = await service.list({ id: [createdOrder.id] })
+          const [order] = await service.listOrders({ id: [createdOrder.id] })
 
           expect(order).toEqual(
             expect.objectContaining({
@@ -260,11 +259,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should update an order with selector successfully", async () => {
-          const createdOrder = await service.create({
+          const createdOrder = await service.createOrders({
             currency_code: "eur",
           })
 
-          const [updatedOrder] = await service.update(
+          const [updatedOrder] = await service.updateOrders(
             { id: createdOrder.id },
             {
               email: "test@email.com",
@@ -272,7 +271,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          const [order] = await service.list({ id: [createdOrder.id] })
+          const [order] = await service.listOrders({ id: [createdOrder.id] })
 
           expect(order).toEqual(
             expect.objectContaining({
@@ -285,17 +284,17 @@ moduleIntegrationTestRunner({
         })
 
         it("should update an order with id successfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const updatedOrder = await service.update(createdOrder.id, {
+          const updatedOrder = await service.updateOrders(createdOrder.id, {
             email: "test@email.com",
           })
 
-          const [order] = await service.list({ id: [createdOrder.id] })
+          const [order] = await service.listOrders({ id: [createdOrder.id] })
 
           expect(order).toEqual(
             expect.objectContaining({
@@ -309,15 +308,15 @@ moduleIntegrationTestRunner({
 
       describe("delete", () => {
         it("should delete an order successfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          await service.delete([createdOrder.id])
+          await service.deleteOrders([createdOrder.id])
 
-          const orders = await service.list({ id: [createdOrder.id] })
+          const orders = await service.listOrders({ id: [createdOrder.id] })
 
           expect(orders.length).toEqual(0)
         })
@@ -325,13 +324,13 @@ moduleIntegrationTestRunner({
 
       describe("createAddresses", () => {
         it("should create an address successfully", async () => {
-          const [createdAddress] = await service.createAddresses([
+          const [createdAddress] = await service.createOrderAddresses([
             {
               first_name: "John",
             },
           ])
 
-          const [address] = await service.listAddresses({
+          const [address] = await service.listOrderAddresses({
             id: [createdAddress.id!],
           })
 
@@ -346,13 +345,13 @@ moduleIntegrationTestRunner({
 
       describe("updateAddresses", () => {
         it("should update an address successfully", async () => {
-          const [createdAddress] = await service.createAddresses([
+          const [createdAddress] = await service.createOrderAddresses([
             {
               first_name: "John",
             },
           ])
 
-          const [updatedAddress] = await service.updateAddresses([
+          const [updatedAddress] = await service.updateOrderAddresses([
             { id: createdAddress.id!, first_name: "Jane" },
           ])
 
@@ -367,15 +366,15 @@ moduleIntegrationTestRunner({
 
       describe("deleteAddresses", () => {
         it("should delete an address successfully", async () => {
-          const [createdAddress] = await service.createAddresses([
+          const [createdAddress] = await service.createOrderAddresses([
             {
               first_name: "John",
             },
           ])
 
-          await service.deleteAddresses([createdAddress.id!])
+          await service.deleteOrderAddresses([createdAddress.id!])
 
-          const [address] = await service.listAddresses({
+          const [address] = await service.listOrderAddresses({
             id: [createdAddress.id!],
           })
 
@@ -385,13 +384,13 @@ moduleIntegrationTestRunner({
 
       describe("createLineItems", () => {
         it("should add a line item to order succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          await service.createLineItems(createdOrder.id, [
+          await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -399,7 +398,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item"],
           })
 
@@ -415,13 +414,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line items to order succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          await service.createLineItems([
+          await service.createOrderLineItems([
             {
               quantity: 1,
               unit_price: 100,
@@ -438,7 +437,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item"],
           })
 
@@ -462,7 +461,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line items to multiple orders succesfully", async () => {
-          let [eurOrder, usdOrder] = await service.create([
+          let [eurOrder, usdOrder] = await service.createOrders([
             {
               currency_code: "eur",
               status: OrderStatus.DRAFT,
@@ -473,7 +472,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const items = await service.createLineItems([
+          const items = await service.createOrderLineItems([
             {
               order_id: eurOrder.id,
               quantity: 1,
@@ -488,7 +487,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const orders = await service.list(
+          const orders = await service.listOrders(
             { id: [eurOrder.id, usdOrder.id] },
             { relations: ["items.item"] }
           )
@@ -509,7 +508,7 @@ moduleIntegrationTestRunner({
 
         it("should throw if order does not exist", async () => {
           const error = await service
-            .createLineItems("foo", [
+            .createOrderLineItems("foo", [
               {
                 quantity: 1,
                 unit_price: 100,
@@ -523,14 +522,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when required params are not passed adding to a single order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
           const error = await service
-            .createLineItems(createdOrder.id, [
+            .createOrderLineItems(createdOrder.id, [
               {
                 unit_price: 10,
                 title: "test",
@@ -544,14 +543,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw a generic error when required params are not passed using bulk add method", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
           const error = await service
-            .createLineItems([
+            .createOrderLineItems([
               {
                 order_id: createdOrder.id,
                 unit_price: 10,
@@ -568,13 +567,13 @@ moduleIntegrationTestRunner({
 
       describe("updateLineItems", () => {
         it("should update a line item in order succesfully with selector approach", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -585,7 +584,7 @@ moduleIntegrationTestRunner({
 
           expect(item.title).toBe("test")
 
-          const [updatedItem] = await service.updateLineItems(
+          const [updatedItem] = await service.updateOrderLineItems(
             { id: item.id },
             {
               title: "test2",
@@ -596,13 +595,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should update a line item in order succesfully with id approach", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -613,7 +612,7 @@ moduleIntegrationTestRunner({
 
           expect(item.title).toBe("test")
 
-          const updatedItem = await service.updateLineItems(item.id, {
+          const updatedItem = await service.updateOrderLineItems(item.id, {
             title: "test2",
           })
 
@@ -621,13 +620,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line items in orders succesfully with multi-selector approach", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const items = await service.createLineItems(createdOrder.id, [
+          const items = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -655,7 +654,7 @@ moduleIntegrationTestRunner({
 
           const itemTwo = items.find((i) => i.title === "other-test")
 
-          await service.updateLineItems([
+          await service.updateOrderLineItems([
             {
               selector: { unit_price: 100 },
               data: {
@@ -672,7 +671,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item"],
           })
 
@@ -696,13 +695,13 @@ moduleIntegrationTestRunner({
 
       describe("deleteLineItems", () => {
         it("should delete a line item succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -713,9 +712,9 @@ moduleIntegrationTestRunner({
 
           expect(item.title).toBe("test")
 
-          await service.deleteLineItems([item.id])
+          await service.deleteOrderLineItems([item.id])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items"],
           })
 
@@ -723,28 +722,31 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete multiple line items succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item, item2] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test-2",
-            },
-          ])
+          const [item, item2] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test-2",
+              },
+            ]
+          )
 
-          await service.deleteLineItems([item.id, item2.id])
+          await service.deleteOrderLineItems([item.id, item2.id])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items"],
           })
 
@@ -754,13 +756,13 @@ moduleIntegrationTestRunner({
 
       describe("createShippingMethods", () => {
         it("should add a shipping method to order succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [method] = await service.createShippingMethods(
+          const [method] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -770,7 +772,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["shipping_methods"],
           })
 
@@ -778,32 +780,33 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple shipping methods to multiple orders succesfully", async () => {
-          let [eurOrder] = await service.create([
+          let [eurOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          let [usdOrder] = await service.create([
+          let [usdOrder] = await service.createOrders([
             {
               currency_code: "usd",
             },
           ])
 
-          const [eurMethod, usdMethod] = await service.createShippingMethods([
-            {
-              order_id: eurOrder.id,
-              amount: 100,
-              name: "Test One",
-            },
-            {
-              order_id: usdOrder.id,
-              amount: 100,
-              name: "Test One",
-            },
-          ])
+          const [eurMethod, usdMethod] =
+            await service.createOrderShippingMethods([
+              {
+                order_id: eurOrder.id,
+                amount: 100,
+                name: "Test One",
+              },
+              {
+                order_id: usdOrder.id,
+                amount: 100,
+                name: "Test One",
+              },
+            ])
 
-          const orders = await service.list(
+          const orders = await service.listOrders(
             { id: [eurOrder.id, usdOrder.id] },
             { relations: ["shipping_methods"] }
           )
@@ -819,31 +822,37 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("setLineItemAdjustments", () => {
+      describe("setOrderLineItemAdjustments", () => {
         it("should set line item adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const [itemTwo] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 2,
-              unit_price: 200,
-              title: "test-2",
-            },
-          ])
+          const [itemTwo] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 2,
+                unit_price: 200,
+                title: "test-2",
+              },
+            ]
+          )
 
-          const adjustments = await service.setLineItemAdjustments(
+          const adjustments = await service.setOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -876,21 +885,24 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace line item adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const adjustments = await service.setLineItemAdjustments(
+          const adjustments = await service.setOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -911,7 +923,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemAdjustments(createdOrder.id, [
+          await service.setOrderLineItemAdjustments(createdOrder.id, [
             {
               item_id: itemOne.id,
               amount: 50,
@@ -919,7 +931,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.adjustments"],
           })
 
@@ -944,21 +956,24 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete all line item adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const adjustments = await service.setLineItemAdjustments(
+          const adjustments = await service.setOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -979,9 +994,9 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemAdjustments(createdOrder.id, [])
+          await service.setOrderLineItemAdjustments(createdOrder.id, [])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.adjustments"],
           })
 
@@ -999,21 +1014,24 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line item adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const adjustments = await service.setLineItemAdjustments(
+          const adjustments = await service.setOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1034,7 +1052,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemAdjustments(createdOrder.id, [
+          await service.setOrderLineItemAdjustments(createdOrder.id, [
             {
               id: adjustments[0].id,
               item_id: itemOne.id,
@@ -1043,7 +1061,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.adjustments"],
           })
 
@@ -1071,21 +1089,24 @@ moduleIntegrationTestRunner({
 
       describe("createLineItemAdjustments", () => {
         it("should add line item adjustments for items in an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const adjustments = await service.createLineItemAdjustments(
+          const adjustments = await service.createOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1108,28 +1129,34 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line item adjustments for multiple line items", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
-          const [itemTwo] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 2,
-              unit_price: 200,
-              title: "test-2",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
+          const [itemTwo] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 2,
+                unit_price: 200,
+                title: "test-2",
+              },
+            ]
+          )
 
-          const adjustments = await service.createLineItemAdjustments(
+          const adjustments = await service.createOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1162,7 +1189,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add line item adjustments for line items on multiple orders", async () => {
-          let [orderOne, orderTwo] = await service.create([
+          let [orderOne, orderTwo] = await service.createOrders([
             {
               currency_code: "eur",
             },
@@ -1171,14 +1198,14 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.createLineItems(orderOne.id, [
+          const [itemOne] = await service.createOrderLineItems(orderOne.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.createLineItems(orderTwo.id, [
+          const [itemTwo] = await service.createOrderLineItems(orderTwo.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -1186,7 +1213,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.createLineItemAdjustments([
+          await service.createOrderLineItemAdjustments([
             // item from order one
             {
               item_id: itemOne.id,
@@ -1203,7 +1230,10 @@ moduleIntegrationTestRunner({
 
           const [checkOrderOne, checkOrderTwo] = JSON.parse(
             JSON.stringify(
-              await service.list({}, { relations: ["items.item.adjustments"] })
+              await service.listOrders(
+                {},
+                { relations: ["items.item.adjustments"] }
+              )
             )
           )
 
@@ -1241,13 +1271,13 @@ moduleIntegrationTestRunner({
 
       describe("deleteLineItemAdjustments", () => {
         it("should delete a line item succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1255,7 +1285,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [adjustment] = await service.createLineItemAdjustments(
+          const [adjustment] = await service.createOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1267,9 +1297,9 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.item_id).toBe(item.id)
 
-          await service.deleteLineItemAdjustments(adjustment.id)
+          await service.deleteOrderLineItemAdjustments(adjustment.id)
 
-          const adjustments = await service.listLineItemAdjustments({
+          const adjustments = await service.listOrderLineItemAdjustments({
             item_id: item.id,
           })
 
@@ -1277,13 +1307,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete a line item succesfully with selector", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1291,7 +1321,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [adjustment] = await service.createLineItemAdjustments(
+          const [adjustment] = await service.createOrderLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1303,9 +1333,9 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.item_id).toBe(item.id)
 
-          await service.deleteLineItemAdjustments({ item_id: item.id })
+          await service.deleteOrderLineItemAdjustments({ item_id: item.id })
 
-          const adjustments = await service.listLineItemAdjustments({
+          const adjustments = await service.listOrderLineItemAdjustments({
             item_id: item.id,
           })
 
@@ -1315,13 +1345,13 @@ moduleIntegrationTestRunner({
 
       describe("setShippingMethodAdjustments", () => {
         it("should set shipping method adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1331,7 +1361,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const [shippingMethodTwo] = await service.createShippingMethods(
+          const [shippingMethodTwo] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1341,7 +1371,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.setShippingMethodAdjustments(
+          const adjustments = await service.setOrderShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1374,13 +1404,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace shipping method adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1390,7 +1420,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.setShippingMethodAdjustments(
+          const adjustments = await service.setOrderShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1411,7 +1441,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setShippingMethodAdjustments(createdOrder.id, [
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [
             {
               shipping_method_id: shippingMethodOne.id,
               amount: 50,
@@ -1419,7 +1449,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1446,13 +1476,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete all shipping method adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1462,7 +1492,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.setShippingMethodAdjustments(
+          const adjustments = await service.setOrderShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1483,9 +1513,9 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setShippingMethodAdjustments(createdOrder.id, [])
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1503,13 +1533,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should update shipping method adjustments for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1519,7 +1549,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.setShippingMethodAdjustments(
+          const adjustments = await service.setOrderShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1540,7 +1570,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setShippingMethodAdjustments(createdOrder.id, [
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [
             {
               id: adjustments[0].id,
               amount: 50,
@@ -1548,7 +1578,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1576,13 +1606,13 @@ moduleIntegrationTestRunner({
 
       describe("createShippingMethodAdjustments", () => {
         it("should add shipping method adjustments in an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1592,16 +1622,17 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.createShippingMethodAdjustments(
-            createdOrder.id,
-            [
-              {
-                shipping_method_id: shippingMethodOne.id,
-                amount: 100,
-                code: "FREE",
-              },
-            ]
-          )
+          const adjustments =
+            await service.createOrderShippingMethodAdjustments(
+              createdOrder.id,
+              [
+                {
+                  shipping_method_id: shippingMethodOne.id,
+                  amount: 100,
+                  code: "FREE",
+                },
+              ]
+            )
 
           expect(adjustments).toEqual(
             expect.arrayContaining([
@@ -1615,13 +1646,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple shipping method adjustments for multiple shipping methods", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1630,7 +1661,7 @@ moduleIntegrationTestRunner({
               },
             ]
           )
-          const [shippingMethodTwo] = await service.createShippingMethods(
+          const [shippingMethodTwo] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1640,21 +1671,22 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.createShippingMethodAdjustments(
-            createdOrder.id,
-            [
-              {
-                shipping_method_id: shippingMethodOne.id,
-                amount: 100,
-                code: "FREE",
-              },
-              {
-                shipping_method_id: shippingMethodTwo.id,
-                amount: 150,
-                code: "CODE-2",
-              },
-            ]
-          )
+          const adjustments =
+            await service.createOrderShippingMethodAdjustments(
+              createdOrder.id,
+              [
+                {
+                  shipping_method_id: shippingMethodOne.id,
+                  amount: 100,
+                  code: "FREE",
+                },
+                {
+                  shipping_method_id: shippingMethodTwo.id,
+                  amount: 150,
+                  code: "CODE-2",
+                },
+              ]
+            )
 
           expect(adjustments).toEqual(
             expect.arrayContaining([
@@ -1673,18 +1705,18 @@ moduleIntegrationTestRunner({
         })
 
         it("should add shipping method adjustments for shipping methods on multiple orders", async () => {
-          const [orderOne] = await service.create([
+          const [orderOne] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
-          const [orderTwo] = await service.create([
+          const [orderTwo] = await service.createOrders([
             {
               currency_code: "usd",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             orderOne.id,
             [
               {
@@ -1693,7 +1725,7 @@ moduleIntegrationTestRunner({
               },
             ]
           )
-          const [shippingMethodTwo] = await service.createShippingMethods(
+          const [shippingMethodTwo] = await service.createOrderShippingMethods(
             orderTwo.id,
             [
               {
@@ -1703,7 +1735,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          await service.createShippingMethodAdjustments([
+          await service.createOrderShippingMethodAdjustments([
             // item from order one
             {
               shipping_method_id: shippingMethodOne.id,
@@ -1718,12 +1750,12 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const orderOneMethods = await service.listOrderShippingMethods(
+          const orderOneMethods = await (service as any).listOrderShippings(
             { order_id: orderOne.id },
             { relations: ["shipping_method.adjustments"] }
           )
 
-          const orderTwoMethods = await service.listOrderShippingMethods(
+          const orderTwoMethods = await (service as any).listOrderShippings(
             { order_id: orderTwo.id },
             { relations: ["shipping_method.adjustments"] }
           )
@@ -1761,19 +1793,19 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw if shipping method is not associated with order", async () => {
-          const [orderOne] = await service.create([
+          const [orderOne] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [orderTwo] = await service.create([
+          const [orderTwo] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethodOne] = await service.createShippingMethods(
+          const [shippingMethodOne] = await service.createOrderShippingMethods(
             orderOne.id,
             [
               {
@@ -1784,7 +1816,7 @@ moduleIntegrationTestRunner({
           )
 
           const error = await service
-            .createShippingMethodAdjustments(orderTwo.id, [
+            .createOrderShippingMethodAdjustments(orderTwo.id, [
               {
                 shipping_method_id: shippingMethodOne.id,
                 amount: 100,
@@ -1801,13 +1833,13 @@ moduleIntegrationTestRunner({
 
       describe("deleteShippingMethodAdjustments", () => {
         it("should delete a shipping method adjustment succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [method] = await service.createShippingMethods(
+          const [method] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1817,22 +1849,23 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const [adjustment] = await service.createShippingMethodAdjustments(
-            createdOrder.id,
-            [
-              {
-                shipping_method_id: method.id,
-                amount: 50,
-                code: "50%",
-              },
-            ]
-          )
+          const [adjustment] =
+            await service.createOrderShippingMethodAdjustments(
+              createdOrder.id,
+              [
+                {
+                  shipping_method_id: method.id,
+                  amount: 50,
+                  code: "50%",
+                },
+              ]
+            )
 
           expect(adjustment.shipping_method_id).toBe(method.id)
 
-          await service.deleteShippingMethodAdjustments(adjustment.id)
+          await service.deleteOrderShippingMethodAdjustments(adjustment.id)
 
-          const adjustments = await service.listShippingMethodAdjustments({
+          const adjustments = await service.listOrderShippingMethodAdjustments({
             shipping_method_id: method.id,
           })
 
@@ -1840,13 +1873,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete a shipping method succesfully with selector", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [shippingMethod] = await service.createShippingMethods(
+          const [shippingMethod] = await service.createOrderShippingMethods(
             createdOrder.id,
             [
               {
@@ -1856,24 +1889,25 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const [adjustment] = await service.createShippingMethodAdjustments(
-            createdOrder.id,
-            [
-              {
-                shipping_method_id: shippingMethod.id,
-                amount: 50,
-                code: "50%",
-              },
-            ]
-          )
+          const [adjustment] =
+            await service.createOrderShippingMethodAdjustments(
+              createdOrder.id,
+              [
+                {
+                  shipping_method_id: shippingMethod.id,
+                  amount: 50,
+                  code: "50%",
+                },
+              ]
+            )
 
           expect(adjustment.shipping_method_id).toBe(shippingMethod.id)
 
-          await service.deleteShippingMethodAdjustments({
+          await service.deleteOrderShippingMethodAdjustments({
             shipping_method_id: shippingMethod.id,
           })
 
-          const adjustments = await service.listShippingMethodAdjustments({
+          const adjustments = await service.listOrderShippingMethodAdjustments({
             shipping_method_id: shippingMethod.id,
           })
 
@@ -1881,42 +1915,51 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("setLineItemTaxLines", () => {
+      describe("setOrderLineItemTaxLines", () => {
         it("should set line item tax lines for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const [itemTwo] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 2,
-              unit_price: 200,
-              title: "test-2",
-            },
-          ])
+          const [itemTwo] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 2,
+                unit_price: 200,
+                title: "test-2",
+              },
+            ]
+          )
 
-          const taxLines = await service.setLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-            {
-              item_id: itemTwo.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+              {
+                item_id: itemTwo.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -1935,27 +1978,33 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace line item tax lines for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const taxLines = await service.setLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -1967,7 +2016,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemTaxLines(createdOrder.id, [
+          await service.setOrderLineItemTaxLines(createdOrder.id, [
             {
               item_id: itemOne.id,
               rate: 25,
@@ -1975,7 +2024,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.tax_lines"],
           })
 
@@ -2000,27 +2049,33 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete all line item tax lines for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const taxLines = await service.setLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -2032,9 +2087,9 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemTaxLines(createdOrder.id, [])
+          await service.setOrderLineItemTaxLines(createdOrder.id, [])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.tax_lines"],
           })
 
@@ -2052,27 +2107,33 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line item tax lines for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const taxLines = await service.setLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -2084,7 +2145,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          await service.setLineItemTaxLines(createdOrder.id, [
+          await service.setOrderLineItemTaxLines(createdOrder.id, [
             {
               id: taxLines[0].id,
               item_id: itemOne.id,
@@ -2093,7 +2154,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.tax_lines"],
           })
 
@@ -2119,32 +2180,38 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete, update, and create line item tax lines for an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const taxLines = await service.setLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-            {
-              item_id: itemOne.id,
-              rate: 25,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+              {
+                item_id: itemOne.id,
+                rate: 25,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -2163,7 +2230,7 @@ moduleIntegrationTestRunner({
 
           const taxLine = taxLines.find((tx) => tx.item_id === itemOne.id)!
 
-          await service.setLineItemTaxLines(createdOrder.id, [
+          await service.setOrderLineItemTaxLines(createdOrder.id, [
             // update
             {
               id: taxLine.id,
@@ -2179,16 +2246,17 @@ moduleIntegrationTestRunner({
             // delete: should delete the initial tax line for itemOne
           ])
 
-          const order = await service.retrieve(createdOrder.id, {
+          const order = await service.retrieveOrder(createdOrder.id, {
             relations: ["items.item.tax_lines"],
           })
 
           const serialized = JSON.parse(JSON.stringify(order))
+
           expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
-                tax_lines: [
+                tax_lines: expect.arrayContaining([
                   expect.objectContaining({
                     id: taxLine!.id,
                     item_id: itemOne.id,
@@ -2200,7 +2268,7 @@ moduleIntegrationTestRunner({
                     rate: 25,
                     code: "TX-2",
                   }),
-                ],
+                ]),
               }),
             ])
           )
@@ -2212,21 +2280,24 @@ moduleIntegrationTestRunner({
 
       describe("createLineItemAdjustments", () => {
         it("should add line item tax lines for items in an order", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
 
-          const taxLines = await service.createLineItemTaxLines(
+          const taxLines = await service.createOrderLineItemTaxLines(
             createdOrder.id,
             [
               {
@@ -2249,28 +2320,34 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line item tax lines for multiple line items", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-            },
-          ])
-          const [itemTwo] = await service.createLineItems(createdOrder.id, [
-            {
-              quantity: 2,
-              unit_price: 200,
-              title: "test-2",
-            },
-          ])
+          const [itemOne] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 1,
+                unit_price: 100,
+                title: "test",
+              },
+            ]
+          )
+          const [itemTwo] = await service.createOrderLineItems(
+            createdOrder.id,
+            [
+              {
+                quantity: 2,
+                unit_price: 200,
+                title: "test-2",
+              },
+            ]
+          )
 
-          const taxLines = await service.createLineItemTaxLines(
+          const taxLines = await service.createOrderLineItemTaxLines(
             createdOrder.id,
             [
               {
@@ -2303,25 +2380,25 @@ moduleIntegrationTestRunner({
         })
 
         it("should add line item tax lines for line items on multiple orders", async () => {
-          const [orderOne] = await service.create([
+          const [orderOne] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
-          const [orderTwo] = await service.create([
+          const [orderTwo] = await service.createOrders([
             {
               currency_code: "usd",
             },
           ])
 
-          const [itemOne] = await service.createLineItems(orderOne.id, [
+          const [itemOne] = await service.createOrderLineItems(orderOne.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.createLineItems(orderTwo.id, [
+          const [itemTwo] = await service.createOrderLineItems(orderTwo.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -2329,7 +2406,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.createLineItemTaxLines([
+          await service.createOrderLineItemTaxLines([
             // item from order one
             {
               item_id: itemOne.id,
@@ -2346,7 +2423,10 @@ moduleIntegrationTestRunner({
 
           const [checkOrderOne, checkOrderTwo] = JSON.parse(
             JSON.stringify(
-              await service.list({}, { relations: ["items.item.tax_lines"] })
+              await service.listOrders(
+                {},
+                { relations: ["items.item.tax_lines"] }
+              )
             )
           )
 
@@ -2384,13 +2464,13 @@ moduleIntegrationTestRunner({
 
       describe("deleteLineItemAdjustments", () => {
         it("should delete line item tax line succesfully", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2398,7 +2478,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [taxLine] = await service.createLineItemTaxLines(
+          const [taxLine] = await service.createOrderLineItemTaxLines(
             createdOrder.id,
             [
               {
@@ -2411,9 +2491,9 @@ moduleIntegrationTestRunner({
 
           expect(taxLine.item_id).toBe(item.id)
 
-          await service.deleteLineItemTaxLines(taxLine.id)
+          await service.deleteOrderLineItemTaxLines(taxLine.id)
 
-          const taxLines = await service.listLineItemTaxLines({
+          const taxLines = await service.listOrderLineItemTaxLines({
             item_id: item.id,
           })
 
@@ -2421,13 +2501,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should delete line item tax lines succesfully with selector", async () => {
-          const [createdOrder] = await service.create([
+          const [createdOrder] = await service.createOrders([
             {
               currency_code: "eur",
             },
           ])
 
-          const [item] = await service.createLineItems(createdOrder.id, [
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2435,7 +2515,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [taxLine] = await service.createLineItemTaxLines(
+          const [taxLine] = await service.createOrderLineItemTaxLines(
             createdOrder.id,
             [
               {
@@ -2448,9 +2528,9 @@ moduleIntegrationTestRunner({
 
           expect(taxLine.item_id).toBe(item.id)
 
-          await service.deleteLineItemTaxLines({ item_id: item.id })
+          await service.deleteOrderLineItemTaxLines({ item_id: item.id })
 
-          const taxLines = await service.listLineItemTaxLines({
+          const taxLines = await service.listOrderLineItemTaxLines({
             item_id: item.id,
           })
 

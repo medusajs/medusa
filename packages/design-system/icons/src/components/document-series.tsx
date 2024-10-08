@@ -5,8 +5,8 @@ const DocumentSeries = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,21 @@ const DocumentSeries = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.125 14.375v2.813c0 .517-.42.937-.938.937H4.063a.938.938 0 0 1-.938-.938V6.563c0-.517.42-.937.938-.937h1.562c.419 0 .837.034 1.25.103m6.25 8.647h2.813c.517 0 .937-.42.937-.938V9.375a7.502 7.502 0 0 0-7.5-7.5H7.812a.938.938 0 0 0-.937.938v2.915m6.25 8.647H7.812a.938.938 0 0 1-.937-.938V5.729m10 5.522V9.687a2.812 2.812 0 0 0-2.813-2.812h-1.25a.937.937 0 0 1-.937-.938v-1.25a2.811 2.811 0 0 0-2.813-2.812h-.937"
+          d="M4.389 11.5H3.5a1.777 1.777 0 0 1-1.778-1.778V2.611c0-.982.796-1.778 1.778-1.778h4.444c.983 0 1.778.796 1.778 1.778v.935"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M4.389 12.389V5.278c0-.983.795-1.778 1.778-1.778h3.632c.235 0 .462.093.628.26l2.59 2.59c.168.168.26.393.26.629v5.41c0 .982-.795 1.777-1.777 1.777H6.167a1.777 1.777 0 0 1-1.778-1.777"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M13.278 7.055H10.61a.89.89 0 0 1-.889-.888V3.5"
         />
       </svg>
     )

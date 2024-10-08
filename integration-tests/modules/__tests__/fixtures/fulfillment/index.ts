@@ -8,12 +8,14 @@ export function generateCreateFulfillmentData(
   data: Partial<CreateFulfillmentDTO> & {
     provider_id: string
     shipping_option_id: string
+    order_id: string
+    location_id: string
   }
 ) {
   const randomString = Math.random().toString(36).substring(7)
 
   return {
-    location_id: "test-location",
+    location_id: data.location_id,
     packed_at: null,
     shipped_at: null,
     delivered_at: null,
@@ -48,7 +50,7 @@ export function generateCreateFulfillmentData(
         label_url: "test-label-url_" + randomString,
       },
     ],
-    order: data.order ?? {},
+    order_id: data.order_id,
   }
 }
 
@@ -96,8 +98,10 @@ export async function setupFullDataFulfillmentStructure(
   service: IFulfillmentModuleService,
   {
     providerId,
+    locationId,
   }: {
     providerId: string
+    locationId: string
   }
 ) {
   const randomString = Math.random().toString(36).substring(7)
@@ -107,7 +111,7 @@ export async function setupFullDataFulfillmentStructure(
     name: "test_" + randomString,
     type: "default",
   })
-  const fulfillmentSet = await service.create({
+  const fulfillmentSet = await service.createFulfillmentSets({
     name: "test_" + randomString,
     type: "test-type",
   })
@@ -132,6 +136,8 @@ export async function setupFullDataFulfillmentStructure(
 
   await service.createFulfillment(
     generateCreateFulfillmentData({
+      order_id: "fake-order",
+      location_id: locationId,
       provider_id: providerId,
       shipping_option_id: shippingOption.id,
     })

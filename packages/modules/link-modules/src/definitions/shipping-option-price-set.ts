@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const ShippingOptionPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ShippingOptionPriceSet,
@@ -12,15 +11,14 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
   alias: [
     {
       name: ["shipping_option_price_set", "shipping_option_price_sets"],
-      args: {
-        entity: "LinkShippingOptionPriceSet",
-      },
+      entity: "LinkShippingOptionPriceSet",
     },
   ],
   primaryKeys: ["id", "shipping_option_id", "price_set_id"],
   relationships: [
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "ShippingOption",
       primaryKey: "id",
       foreignKey: "shipping_option_id",
       alias: "shipping_option",
@@ -30,9 +28,13 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PRICING,
+      entity: "PriceSet",
       primaryKey: "id",
       foreignKey: "price_set_id",
       alias: "price_set",
+      args: {
+        methodSuffix: "PriceSets",
+      },
       deleteCascade: true,
     },
   ],

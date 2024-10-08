@@ -1,15 +1,21 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   PriceDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPricesDTO,
+  UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPriceWorkflowStepDTO,
-} from "@medusajs/types"
-import { buildPriceSetPricesForModule } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  buildPriceSetPricesForModule,
+  Modules,
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const updatePriceListPricesStepId = "update-price-list-prices"
+/**
+ * This step updates a price list's prices.
+ */
 export const updatePriceListPricesStep = createStep(
   updatePriceListPricesStepId,
   async (stepInput: UpdatePriceListPriceWorkflowStepDTO, { container }) => {
@@ -17,7 +23,7 @@ export const updatePriceListPricesStep = createStep(
     const priceListPricesToUpdate: UpdatePriceListPricesDTO[] = []
     const priceIds: string[] = []
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     for (const priceListData of data) {
@@ -25,10 +31,13 @@ export const updatePriceListPricesStep = createStep(
       const { prices = [], id } = priceListData
 
       for (const price of prices) {
-        pricesToUpdate.push({
+        const toPush = {
           ...price,
           price_set_id: variantPriceSetMap[price.variant_id!],
-        })
+        } as UpdatePriceListPriceDTO
+        delete (toPush as Partial<UpdatePriceListPriceWorkflowDTO>).variant_id
+
+        pricesToUpdate.push(toPush)
 
         if (price.id) {
           priceIds.push(price.id)
@@ -77,7 +86,7 @@ export const updatePriceListPricesStep = createStep(
     }
 
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     if (dataBeforePriceUpdate.length) {

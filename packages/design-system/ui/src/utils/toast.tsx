@@ -1,44 +1,45 @@
 import { Toast } from "@/components/toast"
 import { ToastAction, ToastVariant, ToasterPosition } from "@/types"
 import * as React from "react"
-import { toast as toastFn } from "sonner"
+import { ExternalToast, toast as toastFn } from "sonner"
 
 interface BaseToastProps {
   id?: string | number
   position?: ToasterPosition
-  dismissable?: boolean
-  dismissLabel?: string
   duration?: number
+  dismissable?: boolean
+  icon?: React.ReactNode
 }
 
 interface ToastProps extends BaseToastProps {
-  description?: string
+  description?: React.ReactNode
   action?: ToastAction
 }
 
-function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
-  return toastFn.custom(
-    (t) => {
-      return (
-        <Toast
-          id={props.id || t}
-          title={title}
-          description={props.description}
-          onDismiss={
-            props.dismissable ? () => toastFn.dismiss(props.id || t) : undefined
-          }
-          dismissLabel={props.dismissLabel}
-          variant={variant}
-          action={props.action}
-        />
-      )
-    },
-    {
-      id: props.id,
-      position: props.position,
-      dismissible: props.dismissable,
-    }
-  )
+function create(variant: ToastVariant, title: React.ReactNode, props: ToastProps = {}) {
+  const external: ExternalToast = {
+    position: props.position,
+    duration: props.duration,
+    dismissible: props.dismissable,
+  }
+
+  if (props.id) {
+    external.id = props.id
+  }
+
+  return toastFn.custom((t) => {
+    return (
+      <Toast
+        id={t}
+        title={title}
+        description={props.description}
+        dismissable={props.dismissable}
+        variant={variant}
+        action={props.action}
+        icon={props.icon}
+      />
+    )
+  }, external)
 }
 
 function message(
@@ -54,6 +55,12 @@ function message(
   return create("message", title, props)
 }
 
+function custom() {
+  return create("message", "Custom",)
+}
+
+interface VariantToastProps extends Omit<ToastProps, "icon"> {}
+
 function info(
   /**
    * The title of the toast.
@@ -61,7 +68,7 @@ function info(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("info", title, props)
 }
@@ -73,7 +80,7 @@ function error(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("error", title, props)
 }
@@ -85,7 +92,7 @@ function success(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = { }
 ) {
   return create("success", title, props)
 }
@@ -97,22 +104,19 @@ function warning(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("warning", title, props)
 }
 
-type LoadingToastProps = Omit<ToastProps, "dismissable" | "dismissLabel">
-
-function loading
-/**
- * The title of the toast.
- */(
-  title: string,
+function loading(
+  /**
+   * The title of the toast.
+   */ title: string,
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("loading", title, { ...props, dismissable: false })
 }
@@ -124,7 +128,7 @@ type PromiseStateProps =
       description?: string
     }
 
-interface PromiseToastProps extends BaseToastProps {
+interface PromiseToastProps extends Omit<BaseToastProps, "icon"> {
   loading: PromiseStateProps
   success: PromiseStateProps
   error: PromiseStateProps
@@ -158,6 +162,7 @@ async function promise<TData>(
           ? undefined
           : props.loading.description,
       duration: Infinity,
+      dismissable: false,
     }
   )
 

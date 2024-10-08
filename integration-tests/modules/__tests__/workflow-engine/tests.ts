@@ -3,7 +3,7 @@ import {
   createWorkflow,
   StepResponse,
   WorkflowData,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 
@@ -165,6 +165,8 @@ export const workflowEngineTestSuite = (
               acknowledgement: {
                 transactionId: "trx_123",
                 workflowId: "my-workflow-name",
+                hasFailed: false,
+                hasFinished: false,
               },
             })
 

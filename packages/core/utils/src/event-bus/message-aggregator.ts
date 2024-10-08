@@ -1,41 +1,55 @@
 import {
+  Context,
   EventBusTypes,
   IMessageAggregator,
   Message,
   MessageAggregatorFormat,
 } from "@medusajs/types"
 
-import { buildEventMessages } from "./build-event-messages"
+import { composeMessage } from "./build-event-messages"
 
 export class MessageAggregator implements IMessageAggregator {
-  private messages: Message[]
+  private messages: Message[] = []
 
-  constructor() {
-    this.messages = []
+  constructor() {}
+
+  count(): number {
+    return this.messages.length
   }
 
   save(msg: Message | Message[]): void {
-    if (!msg || (Array.isArray(msg) && msg.length === 0)) {
+    const messages = Array.isArray(msg) ? msg : [msg]
+    if (messages.length === 0) {
       return
     }
 
-    if (Array.isArray(msg)) {
-      this.messages.push(...msg)
-    } else {
-      this.messages.push(msg)
-    }
+    this.messages.push(...messages)
   }
 
   saveRawMessageData<T>(
     messageData:
-      | EventBusTypes.MessageFormat<T>
-      | EventBusTypes.MessageFormat<T>[],
-    options?: Record<string, unknown>
+      | EventBusTypes.RawMessageFormat<T>
+      | EventBusTypes.RawMessageFormat<T>[],
+    {
+      options,
+      sharedContext,
+    }: { options?: Record<string, unknown>; sharedContext?: Context } = {}
   ): void {
-    this.save(buildEventMessages(messageData, options))
+    const messages = Array.isArray(messageData) ? messageData : [messageData]
+    const composedMessages = messages.map((message) => {
+      return composeMessage(message.eventName, {
+        data: message.data,
+        source: message.source,
+        object: message.object,
+        action: message.action,
+        options,
+        context: sharedContext,
+      })
+    })
+    this.save(composedMessages)
   }
 
-  getMessages(format?: MessageAggregatorFormat): {
+  getMessages(format: MessageAggregatorFormat = {}): {
     [group: string]: Message[]
   } {
     const { groupBy, sortBy } = format ?? {}
@@ -44,10 +58,12 @@ export class MessageAggregator implements IMessageAggregator {
       this.messages.sort((a, b) => this.compareMessages(a, b, sortBy))
     }
 
-    let messages: { [group: string]: Message[] } = { default: this.messages }
+    let messages: { [group: string]: Message[] } = {
+      default: [...this.messages],
+    }
 
     if (groupBy) {
-      const groupedMessages = this.messages.reduce<{
+      messages = this.messages.reduce<{
         [key: string]: Message[]
       }>((acc, msg) => {
         const key = groupBy
@@ -59,24 +75,31 @@ export class MessageAggregator implements IMessageAggregator {
         acc[key].push(msg)
         return acc
       }, {})
+    }
 
-      messages = groupedMessages
+    if (format.internal) {
+      Object.values(messages).forEach((group) => {
+        group.forEach((msg) => {
+          msg.options = msg.options ?? {}
+          msg.options.internal = format.internal
+        })
+      })
     }
 
     return messages
   }
 
   clearMessages(): void {
-    this.messages = []
+    // Ensure no references are left over in case something rely on messages
+    this.messages.length = 0
   }
 
   private getValueFromPath(obj: any, path: string): any {
     const keys = path.split(".")
-    for (const key of keys) {
-      obj = obj[key]
-      if (obj === undefined) break
-    }
-    return obj
+    return keys.reduce((acc, key) => {
+      if (acc === undefined) return undefined
+      return acc[key]
+    }, obj)
   }
 
   private compareMessages(

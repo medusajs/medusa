@@ -18,12 +18,9 @@ export default function (theme: MarkdownTheme) {
           reflection: parameter,
           level: 1,
           maxLevel,
+          isTypeParams: true,
         })
       )
-
-      // if (typeof options.hash.sectionTitle !== "string") {
-      //   console.log("here3")
-      // }
 
       return formatParameterComponent({
         parameterComponent,

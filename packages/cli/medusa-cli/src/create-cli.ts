@@ -1,12 +1,10 @@
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
+
 import resolveCwd from "resolve-cwd"
-
-import { didYouMean } from "./did-you-mean"
-import { getLocalMedusaVersion } from "./util/version"
-
 import { newStarter } from "./commands/new"
+import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
 
 const yargs = require(`yargs`)
@@ -37,21 +35,15 @@ function buildLocalCommands(cli, isLocalProject) {
 
   function resolveLocalCommand(command) {
     if (!isLocalProject) {
-      cli.showHelp()
+      cli.showHelp((s: string) => console.log(s))
     }
 
     try {
-      const cmdPath = resolveCwd.silent(
-        `@medusajs/medusa/dist/commands/${command}`
-      )!
+      const cmdPath = resolveCwd.silent(`@medusajs/medusa/commands/${command}`)!
       return require(cmdPath).default
     } catch (err) {
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
-      }
-      cli.showHelp()
+      console.error(err)
+      cli.showHelp((s: string) => console.error(s))
     }
   }
 
@@ -117,10 +109,152 @@ function buildLocalCommands(cli, isLocalProject) {
           .option(`v2`, {
             type: `boolean`,
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
-            default: false
+            default: false,
+          })
+          .option(`branch`, {
+            type: `string`,
+            describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
+    })
+    .command({
+      command: "db:setup",
+      desc: "Create the database, run migrations and sync links",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+        builder.option("skip-links", {
+          type: "boolean",
+          describe: "Do not sync links",
+        })
+        builder.option("execute-all-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions from sync links",
+        })
+        builder.option("execute-safe-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions from sync links",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/setup", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:create",
+      desc: "Create the database used by your application",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/create", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:migrate",
+      desc: "Migrate the database by executing pending migrations",
+      builder: (builder) => {
+        builder.option("skip-links", {
+          type: "boolean",
+          describe: "Do not sync links",
+        })
+        builder.option("execute-all-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions from sync links",
+        })
+        builder.option("execute-safe-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions from sync links",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/migrate", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:rollback [modules...]",
+      desc: "Rollback last batch of executed migrations for a given module",
+      builder: {
+        modules: {
+          type: "array",
+          description: "Modules for which to rollback migrations",
+          demand: true,
+        },
+      },
+      handler: handlerP(
+        getCommandHandler("db/rollback", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:generate [modules...]",
+      desc: "Generate migrations for a given module",
+      builder: {
+        modules: {
+          type: "array",
+          description: "Modules for which to generate migration files",
+          demand: true,
+        },
+      },
+      handler: handlerP(
+        getCommandHandler("db/generate", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:sync-links",
+      desc: "Sync database schema with the links defined by your application and Medusa core",
+      builder: (builder) => {
+        builder.option("execute-all", {
+          type: "boolean",
+          describe: "Skip prompts and execute all (including unsafe) actions",
+        })
+        builder.option("execute-safe", {
+          type: "boolean",
+          describe: "Skip prompts and execute only safe actions",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/sync-links", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
     })
     .command({
       command: `telemetry`,
@@ -167,12 +301,17 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `migrations [action]`,
+      command: `migrations [action] [modules...]`,
       desc: `Manage migrations from the core and your own project`,
       builder: {
         action: {
           demand: true,
-          choices: ["run", "revert", "show"],
+          description: "The action to perform on migrations",
+          choices: ["run", "revert", "show", "generate"],
+        },
+        modules: {
+          description: "Modules for which to run the action (revert, generate)",
+          demand: false,
         },
       },
       handler: handlerP(
@@ -183,25 +322,50 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: `links [action]`,
+      desc: `Manage migrations for the links from the core, your project and packages`,
+      builder: {
+        action: {
+          demand: true,
+          description: "The action to perform on links",
+          choices: ["sync"],
+        },
+      },
+      handler: handlerP(
+        getCommandHandler(`links`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
-        _.option(`H`, {
-          alias: `host`,
-          type: `string`,
-          default: defaultHost,
-          describe: `Set host. Defaults to ${defaultHost}`,
-        }).option(`p`, {
-          alias: `port`,
-          type: `string`,
-          default: process.env.PORT || defaultPort,
-          describe: process.env.PORT
-            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-            : `Set port. Defaults to ${defaultPort}`,
-        }),
+        _.option("types", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Generate automated types for modules inside the .medusa directory",
+        })
+          .option(`H`, {
+            alias: `host`,
+            type: `string`,
+            default: defaultHost,
+            describe: `Set host. Defaults to ${defaultHost}`,
+          })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          }),
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
+
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
@@ -212,21 +376,28 @@ function buildLocalCommands(cli, isLocalProject) {
     })
     .command({
       command: `start`,
-      desc: `Start development server.`,
+      desc: `Start production server.`,
       builder: (_) =>
-        _.option(`H`, {
-          alias: `host`,
-          type: `string`,
-          default: defaultHost,
-          describe: `Set host. Defaults to ${defaultHost}`,
-        }).option(`p`, {
-          alias: `port`,
-          type: `string`,
-          default: process.env.PORT || defaultPort,
-          describe: process.env.PORT
-            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-            : `Set port. Defaults to ${defaultPort}`,
-        }),
+        _.option("types", {
+          type: "boolean",
+          default: false,
+          describe:
+            "Generate automated types for modules inside the .medusa directory",
+        })
+          .option(`H`, {
+            alias: `host`,
+            type: `string`,
+            default: defaultHost,
+            describe: `Set host. Defaults to ${defaultHost}`,
+          })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
@@ -234,6 +405,19 @@ function buildLocalCommands(cli, isLocalProject) {
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
+      command: `build`,
+      desc: `Build your project.`,
+      builder: (_) => _,
+      handler: handlerP(
+        getCommandHandler(`build`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+
           return new Promise((resolve) => {})
         })
       ),
@@ -308,6 +492,19 @@ function buildLocalCommands(cli, isLocalProject) {
         })
       ),
     })
+    .command({
+      command: `exec [file] [args..]`,
+      desc: `Run a function defined in a file.`,
+      handler: handlerP(
+        getCommandHandler(`exec`, (args, cmd) => {
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {
@@ -332,7 +529,17 @@ function getVersionInfo() {
   const { version } = require(`../package.json`)
   const isMedusaProject = isLocalMedusaProject()
   if (isMedusaProject) {
-    let medusaVersion = getLocalMedusaVersion()
+    let medusaVersion = ""
+    try {
+      medusaVersion = require(path.join(
+        process.cwd(),
+        `node_modules`,
+        `@medusajs/medusa`,
+        `package.json`
+      )).version
+    } catch (e) {
+      /* noop */
+    }
 
     if (!medusaVersion) {
       medusaVersion = `unknown`
@@ -401,15 +608,23 @@ export default (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
+      if (msg) {
+        reporter.error(msg)
+        console.log()
+      }
+      if (suggestion) {
+        reporter.info(suggestion)
+        console.log()
       }
 
-      cli.showHelp()
-      reporter.info(suggestion)
-      reporter.info(msg)
+      if (err) {
+        console.error("--------------- ERROR ---------------------")
+        console.error(err)
+        console.error("-------------------------------------------")
+      }
+
+      cli.showHelp((s: string) => console.error(s))
+      process.exit(1)
     })
     .parse(argv.slice(2))
 }

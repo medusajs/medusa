@@ -18,23 +18,9 @@ import { dropDatabase } from "pg-god"
 import { MikroOrmBigNumberProperty } from "../../big-number-field"
 import BigNumber from "bignumber.js"
 import { BigNumberRawValue } from "@medusajs/types"
+import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? ""
-const DB_PASSWORD = process.env.DB_PASSWORD
-const DB_NAME = "mikroorm-integration-1"
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-export function getDatabaseURL(): string {
-  return `postgres://${DB_USERNAME}${
-    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
-  }@${DB_HOST}/${DB_NAME}`
-}
+const dbName = "mikroorm-integration-1"
 
 jest.setTimeout(300000)
 @Entity()
@@ -79,6 +65,10 @@ class Entity2 {
 
   @Property()
   title: string
+
+  @Unique()
+  @Property()
+  handle: string
 
   @Property({ nullable: true })
   deleted_at: Date | null
@@ -149,13 +139,13 @@ describe("mikroOrmRepository", () => {
 
   beforeEach(async () => {
     await dropDatabase(
-      { databaseName: DB_NAME, errorIfNonExist: false },
+      { databaseName: dbName, errorIfNonExist: false },
       pgGodCredentials
     )
 
     orm = await MikroORM.init({
       entities: [Entity1, Entity2],
-      clientUrl: getDatabaseURL(),
+      clientUrl: getDatabaseURL(dbName),
       type: "postgresql",
     })
 
@@ -176,7 +166,16 @@ describe("mikroOrmRepository", () => {
     it("should successfully create a flat entity", async () => {
       const entity1 = { id: "1", title: "en1", amount: 100 }
 
-      const resp = await manager1().upsertWithReplace([entity1])
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        updated: {},
+        deleted: {},
+      })
+
       const listedEntities = await manager1().find()
 
       expect(listedEntities).toHaveLength(1)
@@ -193,9 +192,29 @@ describe("mikroOrmRepository", () => {
     it("should successfully update a flat entity", async () => {
       const entity1 = { id: "1", title: "en1" }
 
-      await manager1().upsertWithReplace([entity1])
+      const { performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        updated: {},
+        deleted: {},
+      })
+
       entity1.title = "newen1"
-      await manager1().upsertWithReplace([entity1])
+      const { performedActions: performedActions2 } =
+        await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions2).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
+      })
+
       const listedEntities = await manager1().find()
 
       expect(listedEntities).toHaveLength(1)
@@ -210,9 +229,30 @@ describe("mikroOrmRepository", () => {
     it("should successfully do a partial update a flat entity", async () => {
       const entity1 = { id: "1", title: "en1" }
 
-      await manager1().upsertWithReplace([entity1])
+      const { performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        updated: {},
+        deleted: {},
+      })
+
       entity1.title = undefined as any
-      await manager1().upsertWithReplace([entity1])
+
+      const { performedActions: performedActions2 } =
+        await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions2).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
+      })
+
       const listedEntities = await manager1().find()
 
       expect(listedEntities).toHaveLength(1)
@@ -228,6 +268,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { title: "en1" },
       }
 
@@ -240,9 +281,11 @@ describe("mikroOrmRepository", () => {
       )
     })
 
+    // TODO: I believe this should not be allowed
     it("should successfully create the parent entity of a many-to-one", async () => {
       const entity2 = {
         id: "2",
+        handle: "some-handle",
         title: "en2",
       }
 
@@ -273,6 +316,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { id: "1" },
       }
 
@@ -305,6 +349,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { id: "1" },
       }
 
@@ -343,9 +388,19 @@ describe("mikroOrmRepository", () => {
         entity2: [{ title: "en2-1" }, { title: "en2-2" }],
       }
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: [],
+      const { performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: [],
+        })
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        updated: {},
+        deleted: {},
       })
+
       const listedEntities = await manager1().find({
         where: { id: "1" },
         options: { populate: ["entity2"] },
@@ -365,15 +420,33 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1" }, { title: "en2-2" }],
+        entity2: [
+          { title: "en2-1", handle: "some-handle" },
+          { title: "en2-2", handle: "some-other-handle" },
+        ],
       }
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: ["entity2"],
-      })
+      const { performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: ["entity2"],
+        })
+
       const listedEntities = await manager1().find({
         where: { id: "1" },
         options: { populate: ["entity2"] },
+      })
+
+      const entities2 = listedEntities.flatMap((entity1) =>
+        entity1.entity2.getItems()
+      )
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+          [Entity2.name]: entities2.map((entity2) => ({ id: entity2.id })),
+        },
+        updated: {},
+        deleted: {},
       })
 
       expect(listedEntities).toHaveLength(1)
@@ -400,15 +473,27 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1", entity1: null }],
+        entity2: [{ title: "en2-1", handle: "some-handle", entity1: null }],
       }
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: ["entity2"],
-      })
+      const { performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: ["entity2"],
+        })
       const listedEntities = await manager1().find({
         where: { id: "1" },
         options: { populate: ["entity2"] },
+      })
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+          [Entity2.name]: [
+            expect.objectContaining({ id: listedEntities[0].entity2[0].id }),
+          ],
+        },
+        updated: {},
+        deleted: {},
       })
 
       expect(listedEntities).toHaveLength(1)
@@ -432,15 +517,41 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1" }, { title: "en2-2" }],
+        entity2: [
+          { title: "en2-1", handle: "some-handle" },
+          { title: "en2-2", handle: "some-other-handle" },
+        ],
       }
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: ["entity2"],
+      const { entities: entities1, performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: ["entity2"],
+        })
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+          [Entity2.name]: entities1[0].entity2.map((entity2) =>
+            expect.objectContaining({ id: entity2.id })
+          ),
+        },
+        updated: {},
+        deleted: {},
       })
-      entity1.entity2.push({ title: "en2-3" })
-      await manager1().upsertWithReplace([entity1], {
-        relations: [],
+
+      entity1.entity2.push({ title: "en2-3", handle: "some-new-handle" })
+
+      const { performedActions: performedActions2 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: [],
+        })
+
+      expect(performedActions2).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
       })
 
       const listedEntities = await manager1().find({
@@ -473,19 +584,50 @@ describe("mikroOrmRepository", () => {
         id: "1",
         title: "en1",
         entity2: [
-          { id: "2", title: "en2-1" },
-          { id: "3", title: "en2-2" },
+          { id: "2", title: "en2-1", handle: "some-handle" },
+          { id: "3", title: "en2-2", handle: "some-other-handle" },
         ] as any[],
       }
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: ["entity2"],
+      const { entities: entities1, performedActions: performedActions1 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: ["entity2"],
+        })
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+          [Entity2.name]: entities1[0].entity2.map((entity2) =>
+            expect.objectContaining({ id: entity2.id })
+          ),
+        },
+        updated: {},
+        deleted: {},
       })
 
-      entity1.entity2 = [{ id: "2", title: "newen2-1" }, { title: "en2-3" }]
+      entity1.entity2 = [
+        { id: "2", title: "newen2-1" },
+        { title: "en2-3", handle: "some-new-handle" },
+      ]
 
-      await manager1().upsertWithReplace([entity1], {
-        relations: ["entity2"],
+      const { entities: entities2, performedActions: performedActions2 } =
+        await manager1().upsertWithReplace([entity1], {
+          relations: ["entity2"],
+        })
+
+      const entity2En23 = entities2[0].entity2.find((e) => e.title === "en2-3")!
+
+      expect(performedActions2).toEqual({
+        created: {
+          [Entity2.name]: [expect.objectContaining({ id: entity2En23.id })],
+        },
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+          [Entity2.name]: [expect.objectContaining({ id: "2" })],
+        },
+        deleted: {
+          [Entity2.name]: [expect.objectContaining({ id: "3" })],
+        },
       })
 
       const listedEntities = await manager1().find({
@@ -508,6 +650,45 @@ describe("mikroOrmRepository", () => {
           }),
           expect.objectContaining({
             title: "en2-3",
+          }),
+        ])
+      )
+    })
+
+    it("should update an entity with a one-to-many relation that has the same unique constraint key", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ id: "2", title: "en2-1", handle: "some-handle" }] as any[],
+      }
+
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+
+      entity1.entity2 = [{ title: "newen2-1", handle: "some-handle" }]
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+
+      const listedEntities = await manager1().find({
+        where: { id: "1" },
+        options: { populate: ["entity2"] },
+      })
+
+      expect(listedEntities).toHaveLength(1)
+      expect(listedEntities[0]).toEqual(
+        expect.objectContaining({
+          id: "1",
+          title: "en1",
+        })
+      )
+      expect(listedEntities[0].entity2.getItems()).toHaveLength(1)
+      expect(listedEntities[0].entity2.getItems()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "newen2-1",
+            handle: "some-handle",
           }),
         ])
       )
@@ -640,7 +821,7 @@ describe("mikroOrmRepository", () => {
         ] as any,
       }
 
-      let resp = await manager1().upsertWithReplace([entity1], {
+      await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
 
@@ -648,7 +829,7 @@ describe("mikroOrmRepository", () => {
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
 
       // We don't do many-to-many updates, so id: 4 entity should remain unchanged
-      resp = await manager1().upsertWithReplace([entity1], {
+      await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
 
@@ -718,9 +899,12 @@ describe("mikroOrmRepository", () => {
         ] as any,
       }
 
-      const mainEntity = await manager1().upsertWithReplace([entity1], {
-        relations: ["entity3"],
-      })
+      const { entities: mainEntity } = await manager1().upsertWithReplace(
+        [entity1],
+        {
+          relations: ["entity3"],
+        }
+      )
 
       entity1.title = "newen1"
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
@@ -732,7 +916,12 @@ describe("mikroOrmRepository", () => {
 
       // The sub-entity upsert should happen after the main was created
       await manager2().upsertWithReplace([
-        { id: "2", title: "en2", entity1_id: mainEntity[0].id },
+        {
+          id: "2",
+          title: "en2",
+          handle: "some-handle",
+          entity1_id: mainEntity[0].id,
+        },
       ])
 
       const listedEntities = await manager1().find({
@@ -767,15 +956,35 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2" }],
+        entity2: [{ title: "en2", handle: "some-handle" }],
         entity3: [{ title: "en3-1" }, { title: "en3-2" }] as any,
       }
 
-      const [createResp] = await manager1().upsertWithReplace([entity1], {
+      const {
+        entities: [createResp],
+        performedActions: performedActions1,
+      } = await manager1().upsertWithReplace([entity1], {
         relations: ["entity2", "entity3"],
       })
+
+      expect(performedActions1).toEqual({
+        created: {
+          [Entity1.name]: [expect.objectContaining({ id: createResp.id })],
+          [Entity2.name]: [
+            expect.objectContaining({ id: createResp.entity2[0].id }),
+          ],
+          [Entity3.name]: createResp.entity3.map((entity3) =>
+            expect.objectContaining({ id: entity3.id })
+          ),
+        },
+        updated: {},
+        deleted: {},
+      })
+
       createResp.title = "newen1"
-      const [updateResp] = await manager1().upsertWithReplace([createResp], {
+      const {
+        entities: [updateResp],
+      } = await manager1().upsertWithReplace([createResp], {
         relations: ["entity2", "entity3"],
       })
 
@@ -864,7 +1073,7 @@ describe("mikroOrmRepository", () => {
         .upsertWithReplace([entity3])
         .catch((e) => e.message)
 
-      expect(err).toEqual("Entity3 with title: en3 already exists.")
+      expect(err).toEqual("Entity3 with title: en3, already exists.")
     })
 
     it("should map NotNullConstraintViolationException MedusaError on upsertWithReplace", async () => {
@@ -887,7 +1096,11 @@ describe("mikroOrmRepository", () => {
       )
     })
     it("should map ForeignKeyConstraintViolationException MedusaError on upsertWithReplace", async () => {
-      const entity2 = { title: "en2", entity1: { id: "1" } }
+      const entity2 = {
+        title: "en2",
+        handle: "some-handle",
+        entity1: { id: "1" },
+      }
       const err = await manager2()
         .upsertWithReplace([entity2])
         .catch((e) => e.message)

@@ -1,10 +1,11 @@
 /**
  * @oas [get] /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe
  * operationId: GetWorkflowsExecutionsWorkflow_idTransaction_idStep_idSubscribe
- * summary: List Subscribes
- * description: Retrieve a list of subscribes in a workflows execution. The
- *   subscribes can be filtered by fields like FILTER FIELDS. The subscribes can
- *   also be paginated.
+ * summary: Subscribe to Step of a Workflow's Execution
+ * x-sidebar-summary: Subscribe to Step
+ * description: |
+ *   Subscribe to a step in a workflow's execution to receive real-time information about its status and data.
+ *   This route returns an event stream that you can consume using the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource).
  * x-authenticated: true
  * parameters:
  *   - name: workflow_id
@@ -25,46 +26,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -72,15 +33,22 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl
- *       '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe'
- *       \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: |-
+ *       curl '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe' \
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Workflows Executions
  * responses:
+ *   "200":
+ *     description: Stream of the step's status.
+ *     content:
+ *       text/event-stream:
+ *         schema:
+ *           type: string
+ *           description: The step's status update and data changes.
+ *           example: |-
+ *             event: success
+ *              data: {}
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -93,10 +61,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

@@ -1,0 +1,8 @@
+type: object
+description: The cart's details.
+x-schemaName: StoreCartResponse
+required:
+  - cart
+properties:
+  cart:
+    $ref: ./StoreCart.yaml

@@ -1,11 +1,11 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   PaymentCollectionStatus,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -19,12 +19,13 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
 
-type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
+type OptionalPaymentCollectionProps = "status" | DAL.ModelDateColumns
 
 @Entity({ tableName: "payment_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -42,6 +43,24 @@ export default class PaymentCollection {
 
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  authorized_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_authorized_amount: BigNumberRawValue | null = null
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  captured_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_captured_amount: BigNumberRawValue | null = null
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  refunded_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_refunded_amount: BigNumberRawValue | null = null
 
   @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
@@ -81,17 +100,17 @@ export default class PaymentCollection {
   status: PaymentCollectionStatus = PaymentCollectionStatus.NOT_PAID
 
   @ManyToMany(() => PaymentProvider)
-  payment_providers = new Collection<PaymentProvider>(this)
+  payment_providers = new Collection<Rel<PaymentProvider>>(this)
 
   @OneToMany(() => PaymentSession, (ps) => ps.payment_collection, {
-    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST] as any,
   })
-  payment_sessions = new Collection<PaymentSession>(this)
+  payment_sessions = new Collection<Rel<PaymentSession>>(this)
 
   @OneToMany(() => Payment, (payment) => payment.payment_collection, {
-    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST] as any,
   })
-  payments = new Collection<Payment>(this)
+  payments = new Collection<Rel<Payment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

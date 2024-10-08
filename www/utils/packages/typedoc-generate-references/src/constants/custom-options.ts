@@ -8,47 +8,63 @@ import { baseOptions } from "./base-options.js"
 import path from "path"
 import { rootPathPrefix } from "./general.js"
 import { modules } from "./references.js"
+import { getCoreFlowNamespaces } from "../utils/get-namespaces.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
-  entities: getOptions({
-    entryPointPath: "packages/medusa/src/models/index.ts",
-    tsConfigName: "medusa.json",
-    name: "entities",
+  "core-flows": getOptions({
+    entryPointPath: "packages/core/core-flows/src/index.ts",
+    tsConfigName: "core-flows.json",
+    name: "core-flows",
+    plugin: ["typedoc-plugin-workflows"],
+    enableWorkflowsPlugins: true,
+    enablePathNamespaceGenerator: true,
+    // @ts-expect-error there's a typing issue in typedoc
+    generatePathNamespaces: getCoreFlowNamespaces(),
+  }),
+  "auth-provider": getOptions({
+    entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
+    tsConfigName: "utils.json",
+    name: "auth-provider",
+    parentIgnore: true,
+  }),
+  dml: getOptions({
+    entryPointPath: [
+      "packages/core/utils/src/dml/entity-builder.ts",
+      "packages/core/utils/src/dml/entity.ts",
+      "packages/core/utils/src/dml/properties/base.ts",
+    ],
+    tsConfigName: "utils.json",
+    name: "dml",
+    generateCustomNamespaces: true,
   }),
   file: getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/file-service.ts",
-    tsConfigName: "medusa.json",
+    entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",
+    tsConfigName: "utils.json",
     name: "file",
     parentIgnore: true,
   }),
-  "fulfillment-service": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/fulfillment-service.ts",
-    tsConfigName: "medusa.json",
-    name: "fulfillment-service",
+  "fulfillment-provider": getOptions({
+    entryPointPath: "packages/core/utils/src/fulfillment/provider.ts",
+    tsConfigName: "utils.json",
+    name: "fulfillment-provider",
     parentIgnore: true,
   }),
-  "js-client": getOptions({
-    entryPointPath: "packages/medusa-js/src/resources",
-    tsConfigName: "js-client.json",
-    name: "js-client",
-    plugin: ["typedoc-plugin-rename-defaults"],
+  "helper-steps": getOptions({
+    entryPointPath: "packages/core/core-flows/src/common/index.ts",
+    tsConfigName: "core-flows.json",
+    name: "helper-steps",
     exclude: [
       ...(baseOptions.exclude || []),
-      path.join(rootPathPrefix, "packages/medusa-js/src/resources/base.ts"),
+      path.join(
+        rootPathPrefix,
+        "packages/core/core-flows/src/common/workflows/**.ts"
+      ),
     ],
-    ignoreApi: true,
   }),
   "medusa-config": getOptions({
-    entryPointPath: "packages/core/types/src/common/config-module.ts",
-    tsConfigName: "types.json",
+    entryPointPath: "packages/frameworksrc/config/types.ts",
+    tsConfigName: "framework.json",
     name: "medusa-config",
-  }),
-  "medusa-react": getOptions({
-    entryPointPath: "packages/medusa-react/src/index.ts",
-    tsConfigName: "medusa-react.json",
-    name: "medusa-react",
-    generateNamespaces: true,
-    ignoreApi: true,
   }),
   medusa: getOptions({
     entryPointPath: "packages/medusa/src/index.js",
@@ -78,15 +94,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
   }),
   notification: getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/notification-service.ts",
-    tsConfigName: "medusa.json",
+    entryPointPath:
+      "packages/core/utils/src/notification/abstract-notification-provider.ts",
+    tsConfigName: "utils.json",
     name: "notification",
     parentIgnore: true,
-  }),
-  "payment-processor": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/payment-processor.ts",
-    tsConfigName: "medusa.json",
-    name: "payment-processor",
   }),
   "payment-provider": getOptions({
     entryPointPath:
@@ -94,40 +106,15 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "utils.json",
     name: "payment-provider",
   }),
-  "price-selection": getOptions({
-    entryPointPath:
-      "packages/medusa/src/interfaces/price-selection-strategy.ts",
-    tsConfigName: "medusa.json",
-    name: "price-selection",
-    parentIgnore: true,
-  }),
   search: getOptions({
     entryPointPath: "packages/core/utils/src/search/abstract-service.ts",
     tsConfigName: "utils.json",
     name: "search",
   }),
-  services: getOptions({
-    entryPointPath: "packages/medusa/src/services/index.ts",
-    tsConfigName: "medusa.json",
-    name: "services",
-  }),
-  "tax-calculation": getOptions({
-    entryPointPath:
-      "packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-    tsConfigName: "medusa.json",
-    name: "tax-calculation",
-    parentIgnore: true,
-  }),
   "tax-provider": getOptions({
     entryPointPath: "packages/core/types/src/tax/provider.ts",
     tsConfigName: "types.json",
     name: "tax-provider",
-  }),
-  "tax-service": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/tax-service.ts",
-    tsConfigName: "medusa.json",
-    name: "tax-service",
-    parentIgnore: true,
   }),
   types: getOptions({
     entryPointPath: "packages/core/types/src/index.ts",
@@ -137,13 +124,13 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     enableInternalResolve: true,
     exclude: [
       ...(baseOptions.exclude || []),
-      ...modules.map((moduleName) => `**/${moduleName}/**/*.ts`),
+      ...modules.map((moduleName) => `**/${moduleName}/**/!(workflows).ts`),
     ],
   }),
-  workflows: getOptions({
-    entryPointPath: "packages/core/workflows-sdk/src/utils/composer/index.ts",
-    tsConfigName: "workflows.json",
-    name: "workflows",
+  "modules-sdk": getOptions({
+    entryPointPath: "packages/core/modules-sdk/src/index.ts",
+    tsConfigName: "modules-sdk.json",
+    name: "modules-sdk",
   }),
   utils: getOptions({
     entryPointPath: "packages/core/utils/src/index.ts",
@@ -167,7 +154,13 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       "**/pricing/builders.ts",
       "**/search/**",
       "**/totals/**",
+      "**/dml/**",
     ],
+  }),
+  workflows: getOptions({
+    entryPointPath: "packages/core/workflows-sdk/src/utils/composer/index.ts",
+    tsConfigName: "workflows.json",
+    name: "workflows",
   }),
 }
 

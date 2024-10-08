@@ -1,11 +1,12 @@
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   Searchable,
+  createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -19,15 +20,22 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Capture from "./capture"
 import PaymentCollection from "./payment-collection"
 import PaymentSession from "./payment-session"
 import Refund from "./refund"
 
-type OptionalPaymentProps = DAL.EntityDateColumns
+type OptionalPaymentProps = DAL.ModelDateColumns
 
-@Entity({ tableName: "payment" })
+const tableName = "payment"
+const ProviderIdIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "provider_id",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Payment {
   [OptionalProps]?: OptionalPaymentProps
@@ -45,6 +53,7 @@ export default class Payment {
   currency_code: string
 
   @Property({ columnType: "text" })
+  @ProviderIdIndex.MikroORMIndex()
   provider_id: string
 
   @Searchable()
@@ -102,18 +111,18 @@ export default class Payment {
   @OneToMany(() => Refund, (refund) => refund.payment, {
     cascade: [Cascade.REMOVE],
   })
-  refunds = new Collection<Refund>(this)
+  refunds = new Collection<Rel<Refund>>(this)
 
   @OneToMany(() => Capture, (capture) => capture.payment, {
     cascade: [Cascade.REMOVE],
   })
-  captures = new Collection<Capture>(this)
+  captures = new Collection<Rel<Capture>>(this)
 
   @ManyToOne({
     entity: () => PaymentCollection,
     persist: false,
   })
-  payment_collection: PaymentCollection
+  payment_collection: Rel<PaymentCollection>
 
   @ManyToOne({
     entity: () => PaymentCollection,
@@ -125,26 +134,24 @@ export default class Payment {
   payment_collection_id: string
 
   @OneToOne({
+    entity: () => PaymentSession,
     owner: true,
     fieldName: "payment_session_id",
     index: "IDX_payment_payment_session_id",
   })
-  payment_session: PaymentSession
-
-  /** COMPUTED PROPERTIES START **/
-
-  captured_amount: number // sum of the associated captures
-  refunded_amount: number // sum of the associated refunds
-
-  /** COMPUTED PROPERTIES END **/
+  payment_session: Rel<PaymentSession>
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pay")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "pay")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 }

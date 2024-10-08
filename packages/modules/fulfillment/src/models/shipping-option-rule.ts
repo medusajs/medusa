@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
   RuleOperator,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -15,10 +15,11 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
-type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingOptionRuleOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_rule",
@@ -64,7 +65,7 @@ export default class ShippingOptionRule {
   @ManyToOne(() => ShippingOption, {
     persist: false,
   })
-  shipping_option: ShippingOption
+  shipping_option: Rel<ShippingOption>
 
   @Property({
     onCreate: () => new Date(),

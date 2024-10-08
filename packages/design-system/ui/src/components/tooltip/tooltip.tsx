@@ -40,7 +40,6 @@ const Tooltip = ({
   ...props
 }: TooltipProps) => {
   return (
-    <Primitives.Provider delayDuration={100}>
       <Primitives.Root
         open={open}
         defaultOpen={defaultOpen}
@@ -67,8 +66,18 @@ const Tooltip = ({
           </Primitives.Content>
         </Primitives.Portal>
       </Primitives.Root>
-    </Primitives.Provider>
   )
 }
 
-export { Tooltip }
+interface TooltipProviderProps extends Primitives.TooltipProviderProps {}
+
+const TooltipProvider = ({ children, delayDuration = 100, skipDelayDuration = 300, ...props }: TooltipProviderProps) => {
+  return (
+    <Primitives.TooltipProvider delayDuration={delayDuration} skipDelayDuration={skipDelayDuration} {...props}>
+      {children}
+    </Primitives.TooltipProvider>
+  )
+}
+
+
+export { Tooltip, TooltipProvider }

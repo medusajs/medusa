@@ -1,6 +1,12 @@
 import { MedusaContainer, ModuleProvider } from "@medusajs/types"
-import { isString, lowerCaseFirst, promiseAll } from "@medusajs/utils"
-import { Lifetime, asFunction } from "awilix"
+import {
+  dynamicImport,
+  isString,
+  lowerCaseFirst,
+  normalizeImportPathWithSource,
+  promiseAll,
+} from "@medusajs/utils"
+import { asFunction, Lifetime } from "awilix"
 
 export async function moduleProviderLoader({
   container,
@@ -12,7 +18,7 @@ export async function moduleProviderLoader({
   registerServiceFn?: (
     klass,
     container: MedusaContainer,
-    pluginDetails: any
+    moduleDetails: any
   ) => Promise<void>
 }) {
   if (!providers?.length) {
@@ -20,8 +26,8 @@ export async function moduleProviderLoader({
   }
 
   await promiseAll(
-    providers.map(async (pluginDetails) => {
-      await loadModuleProvider(container, pluginDetails, registerServiceFn)
+    providers.map(async (moduleDetails) => {
+      await loadModuleProvider(container, moduleDetails, registerServiceFn)
     })
   )
 }
@@ -29,21 +35,21 @@ export async function moduleProviderLoader({
 export async function loadModuleProvider(
   container: MedusaContainer,
   provider: ModuleProvider,
-  registerServiceFn?: (klass, container, pluginDetails) => Promise<void>
+  registerServiceFn?: (klass, container, moduleDetails) => Promise<void>
 ) {
   let loadedProvider: any
-
-  const pluginName = provider.resolve ?? provider.provider_name ?? ""
+  const moduleName = provider.resolve ?? ""
 
   try {
     loadedProvider = provider.resolve
 
     if (isString(provider.resolve)) {
-      loadedProvider = await import(provider.resolve)
+      const normalizedPath = normalizeImportPathWithSource(provider.resolve)
+      loadedProvider = await dynamicImport(normalizedPath)
     }
   } catch (error) {
     throw new Error(
-      `Unable to find plugin ${pluginName} -- perhaps you need to install its package?`
+      `Unable to find module ${moduleName} -- perhaps you need to install its package?`
     )
   }
 
@@ -51,16 +57,22 @@ export async function loadModuleProvider(
 
   if (!loadedProvider?.services?.length) {
     throw new Error(
-      `No services found in plugin ${provider.resolve} -- make sure your plugin has a default export of services.`
+      `${provider.resolve} doesn't seem to have a main service exported -- make sure your module has a default export of a service.`
     )
   }
 
-  const services = await promiseAll(
+  return await promiseAll(
     loadedProvider.services.map(async (service) => {
+      // Ask the provider to validate its options
+      await service.validateOptions?.(provider.options)
+
       const name = lowerCaseFirst(service.name)
       if (registerServiceFn) {
         // Used to register the specific type of service in the provider
-        await registerServiceFn(service, container, provider.options)
+        await registerServiceFn(service, container, {
+          id: provider.id,
+          options: provider.options,
+        })
       } else {
         container.register({
           [name]: asFunction(
@@ -75,6 +87,4 @@ export async function loadModuleProvider(
       return service
     })
   )
-
-  return services
 }

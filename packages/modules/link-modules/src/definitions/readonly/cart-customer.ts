@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const CartCustomer: ModuleJoinerConfig = {
   isLink: true,
@@ -9,18 +9,26 @@ export const CartCustomer: ModuleJoinerConfig = {
       serviceName: Modules.CART,
       relationship: {
         serviceName: Modules.CUSTOMER,
+        entity: "Customer",
         primaryKey: "id",
         foreignKey: "customer_id",
         alias: "customer",
+        args: {
+          methodSuffix: "Customers",
+        },
       },
     },
     {
       serviceName: Modules.CUSTOMER,
       relationship: {
         serviceName: Modules.CART,
+        entity: "Cart",
         primaryKey: "customer_id",
         foreignKey: "id",
         alias: "carts",
+        args: {
+          methodSuffix: "Carts",
+        },
         isList: true,
       },
     },

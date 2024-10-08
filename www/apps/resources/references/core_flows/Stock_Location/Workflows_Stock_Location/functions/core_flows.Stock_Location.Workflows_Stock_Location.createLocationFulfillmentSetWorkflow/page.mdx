@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/createLocationFulfillmentSetWorkflow
+sidebar_label: createLocationFulfillmentSetWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createLocationFulfillmentSetWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createLocationFulfillmentSetWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates links between location and fulfillment set records.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"createLocationFulfillmentSetWorkflow","steps":[{"type":"step","name":"createFulfillmentSets","description":"This step creates one or more fulfillment sets.","link":"../../../../core_flows.Steps_Fulfillment/page.mdx#createfulfillmentsets","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CreateLocationFulfillmentSetWorkflowInputDTO","type":"[CreateLocationFulfillmentSetWorkflowInputDTO](../../../../../types/interfaces/types.CreateLocationFulfillmentSetWorkflowInputDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"location_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_set_data","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createLocationFulfillmentSetWorkflow"/>

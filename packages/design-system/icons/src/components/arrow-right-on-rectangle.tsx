@@ -5,8 +5,8 @@ const ArrowRightOnRectangle = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,14 @@ const ArrowRightOnRectangle = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.125 7.5V4.375A1.875 1.875 0 0 0 11.25 2.5h-5a1.875 1.875 0 0 0-1.875 1.875v11.25A1.875 1.875 0 0 0 6.25 17.5h5a1.875 1.875 0 0 0 1.875-1.875V12.5m2.5 0 2.5-2.5m0 0-2.5-2.5m2.5 2.5H7.5"
+          d="M8.167 1.944h3.11c.983 0 1.779.796 1.779 1.778v7.556c0 .982-.796 1.778-1.778 1.778H8.167"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M5.5 10.611 8.611 7.5 5.5 4.389M8.611 7.5H1.944"
         />
       </svg>
     )

@@ -3,59 +3,57 @@ import {
   CreateRegionDTO,
   DAL,
   FilterableRegionProps,
+  InferEntityType,
   InternalModuleDeclaration,
   IRegionModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
   RegionDTO,
+  SoftDeleteReturn,
   UpdateRegionDTO,
   UpsertRegionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
+  getDuplicates,
   InjectManager,
   InjectTransactionManager,
   isString,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
   removeUndefined,
-  getDuplicates,
-} from "@medusajs/utils"
-
+} from "@medusajs/framework/utils"
 import { Country, Region } from "@models"
-
 import { UpdateRegionInput } from "@types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  regionService: ModulesSdkTypes.InternalModuleService<any>
-  countryService: ModulesSdkTypes.InternalModuleService<any>
+  regionService: ModulesSdkTypes.IMedusaInternalService<any>
+  countryService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [Country]
-
-export default class RegionModuleService<
-    TRegion extends Region = Region,
-    TCountry extends Country = Country
-  >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
-    RegionDTO,
-    {
-      Country: {
-        dto: RegionCountryDTO
-      }
+export default class RegionModuleService
+  extends MedusaService<{
+    Region: {
+      dto: RegionDTO
+      model: typeof Region
     }
-  >(Region, generateMethodForModels, entityNameToLinkableKeysMap)
+    Country: {
+      dto: RegionCountryDTO
+      model: typeof Country
+    }
+  }>({ Region, Country })
   implements IRegionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly regionService_: ModulesSdkTypes.InternalModuleService<TRegion>
-  protected readonly countryService_: ModulesSdkTypes.InternalModuleService<TCountry>
+  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Region
+  >
+  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Country
+  >
 
   constructor(
     { baseRepository, regionService, countryService }: InjectedDependencies,
@@ -68,37 +66,35 @@ export default class RegionModuleService<
     this.countryService_ = countryService
   }
 
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
-  }
-
-  async create(
+  // @ts-expect-error
+  async createRegions(
     data: CreateRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async create(
+  async createRegions(
     data: CreateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  @InjectManager("baseRepository_")
-  async create(
+
+  @InjectManager()
+  async createRegions(
     data: CreateRegionDTO | CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const result = await this.create_(input, sharedContext)
+    const result = await this.createRegions_(input, sharedContext)
 
     return await this.baseRepository_.serialize<RegionDTO[]>(
       Array.isArray(data) ? result : result[0]
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async create_(
+  @InjectTransactionManager()
+  async createRegions_(
     data: CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Region[]> {
+  ): Promise<InferEntityType<typeof Region>[]> {
     let normalizedInput = RegionModuleService.normalizeInput(data)
 
     let normalizedDbRegions = normalizedInput.map((region) =>
@@ -133,16 +129,37 @@ export default class RegionModuleService<
     return result
   }
 
-  async upsert(
+  @InjectManager()
+  // @ts-ignore
+  async softDeleteRegions(
+    ids: string | object | string[] | object[],
+    config?: SoftDeleteReturn<string>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    const result = await super.softDeleteRegions(ids, config, sharedContext)
+    // Note: You cannot revert the state of a region by simply restoring it. The association with countries is lost.
+    await super.updateCountries(
+      {
+        selector: { region_id: ids },
+        data: { region_id: null },
+      },
+      sharedContext
+    )
+
+    return result
+  }
+
+  async upsertRegions(
     data: UpsertRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async upsert(
+  async upsertRegions(
     data: UpsertRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  @InjectTransactionManager("baseRepository_")
-  async upsert(
+
+  @InjectTransactionManager()
+  async upsertRegions(
     data: UpsertRegionDTO | UpsertRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
@@ -154,13 +171,13 @@ export default class RegionModuleService<
       (region): region is CreateRegionDTO => !region.id
     )
 
-    const operations: Promise<Region[]>[] = []
+    const operations: Promise<InferEntityType<typeof Region>[]>[] = []
 
     if (forCreate.length) {
-      operations.push(this.create_(forCreate, sharedContext))
+      operations.push(this.createRegions_(forCreate, sharedContext))
     }
     if (forUpdate.length) {
-      operations.push(this.update_(forUpdate, sharedContext))
+      operations.push(this.updateRegions_(forUpdate, sharedContext))
     }
 
     const result = (await promiseAll(operations)).flat()
@@ -169,18 +186,20 @@ export default class RegionModuleService<
     )
   }
 
-  async update(
+  // @ts-expect-error
+  async updateRegions(
     id: string,
     data: UpdateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  async update(
+  async updateRegions(
     selector: FilterableRegionProps,
     data: UpdateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  @InjectManager("baseRepository_")
-  async update(
+
+  @InjectManager()
+  async updateRegions(
     idOrSelector: string | FilterableRegionProps,
     data: UpdateRegionDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -201,7 +220,10 @@ export default class RegionModuleService<
       }))
     }
 
-    const updateResult = await this.update_(normalizedInput, sharedContext)
+    const updateResult = await this.updateRegions_(
+      normalizedInput,
+      sharedContext
+    )
 
     const regions = await this.baseRepository_.serialize<
       RegionDTO[] | RegionDTO
@@ -210,11 +232,11 @@ export default class RegionModuleService<
     return isString(idOrSelector) ? regions[0] : regions
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async update_(
+  @InjectTransactionManager()
+  protected async updateRegions_(
     data: UpdateRegionInput[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Region[]> {
+  ): Promise<InferEntityType<typeof Region>[]> {
     const normalizedInput = RegionModuleService.normalizeInput(data)
 
     // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
@@ -283,7 +305,7 @@ export default class RegionModuleService<
   private async validateCountries(
     countries: string[] | undefined,
     sharedContext: Context
-  ): Promise<TCountry[]> {
+  ): Promise<InferEntityType<typeof Country>[]> {
     if (!countries?.length) {
       return []
     }
@@ -301,7 +323,7 @@ export default class RegionModuleService<
 
     const countriesInDb = await this.countryService_.list(
       { iso_2: uniqueCountries },
-      { select: ["iso_2", "region_id"], take: null },
+      { select: ["iso_2", "region_id"] },
       sharedContext
     )
     const countryCodesInDb = countriesInDb.map((c) => c.iso_2.toLowerCase())
@@ -320,6 +342,7 @@ export default class RegionModuleService<
     }
 
     // Countries that already have a region already assigned to them
+    // @ts-ignore
     const countriesWithRegion = countriesInDb.filter((c) => !!c.region_id)
     if (countriesWithRegion.length) {
       throw new MedusaError(

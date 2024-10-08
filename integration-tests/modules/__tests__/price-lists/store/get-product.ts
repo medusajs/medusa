@@ -1,19 +1,11 @@
-import {
-  simpleCustomerFactory,
-  simpleCustomerGroupFactory,
-  simpleProductFactory,
-  simpleRegionFactory,
-} from "../../../../factories"
-
-import {
-  IPricingModuleService,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/types"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
+import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(50000)
 
@@ -34,60 +26,53 @@ medusaIntegrationTestRunner({
       let appContainer
       let product
       let variant
-      let priceSetId
-      let pricingModuleService: IPricingModuleService
+      let region
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        pricingModuleService = appContainer.resolve("pricingModuleService")
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
-        await createDefaultRuleTypes(appContainer)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+        appContainer = getContainer()
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
 
-        await simpleRegionFactory(dbConnection, {
-          id: "test-region",
-          name: "Test Region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+        region = (
+          await api.post(
+            "/admin/regions",
+            {
+              name: "Test Region",
+              currency_code: "usd",
+            },
+            adminHeaders
+          )
+        ).data.region
 
-        product = await simpleProductFactory(dbConnection, {
-          id: "test-product-with-variant",
-          status: "published",
-          variants: [
-            {
-              options: [{ option_id: "test-product-option-1", value: "test" }],
-            },
-          ],
-          options: [
-            {
-              id: "test-product-option-1",
-              title: "Test option 1",
-            },
-          ],
-        })
+        product = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "test1",
+              status: "published",
+              variants: [
+                {
+                  title: "Test taxes",
+                  prices: [
+                    {
+                      amount: 3000,
+                      currency_code: "eur",
+                    },
+                  ],
+                },
+              ],
+            }),
+            adminHeaders
+          )
+        ).data.product
 
         variant = product.variants[0]
-
-        const priceSet = await createVariantPriceSet({
-          container: appContainer,
-          variantId: variant.id,
-          prices: [
-            {
-              amount: 3000,
-              currency_code: "usd",
-            },
-            {
-              amount: 4000,
-              currency_code: "usd",
-            },
-          ],
-          rules: [],
-        })
-
-        priceSetId = priceSet.id
       })
 
       it("should get product and its prices from price-list created through the price list workflow", async () => {
@@ -110,7 +95,8 @@ medusaIntegrationTestRunner({
         )
 
         let response = await api.get(
-          `/store/products/${product.id}?currency_code=usd`
+          `/store/products/${product.id}?currency_code=usd`,
+          storeHeaders
         )
 
         expect(response.status).toEqual(200)
@@ -141,9 +127,16 @@ medusaIntegrationTestRunner({
       })
 
       it("should not list prices from price-list with customer groups if not logged in", async () => {
-        const { id: customerGroupId } = await simpleCustomerGroupFactory(
-          dbConnection
-        )
+        const customerGroup = (
+          await api.post(
+            "/admin/customer-groups",
+            {
+              name: "VIP",
+            },
+            adminHeaders
+          )
+        ).data.customer_group
+        const customerGroupId = customerGroup.id
 
         const priceListResponse = await api.post(
           `/admin/price-lists`,
@@ -165,7 +158,8 @@ medusaIntegrationTestRunner({
         )
 
         let response = await api.get(
-          `/store/products/${product.id}?currency_code=usd`
+          `/store/products/${product.id}?currency_code=usd`,
+          storeHeaders
         )
 
         expect(response.status).toEqual(200)
@@ -188,21 +182,26 @@ medusaIntegrationTestRunner({
       })
 
       it("should list prices from price-list with customer groups", async () => {
-        await simpleCustomerFactory(dbConnection, {
-          id: "test-customer-5-pl",
-          email: "test5@email-pl.com",
-          first_name: "John",
-          last_name: "Deere",
-          password_hash:
-            "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
-          has_account: true,
-          groups: [{ id: "customer-group-1" }],
-        })
+        const customer = (
+          await api.post(
+            "/admin/customers",
+            {
+              email: "test5@email-pl.com",
+              first_name: "John",
+              last_name: "Deere",
+            },
+            adminHeaders
+          )
+        ).data.customer_group
 
-        const authResponse = await api.post("/store/auth", {
-          email: "test5@email-pl.com",
-          password: "test",
-        })
+        const authResponse = await api.post(
+          "/store/auth",
+          {
+            email: "test5@email-pl.com",
+            password: "test",
+          },
+          storeHeaders
+        )
 
         const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
@@ -230,6 +229,7 @@ medusaIntegrationTestRunner({
           {
             headers: {
               Cookie: authCookie,
+              ...storeHeaders.headers,
             },
           }
         )

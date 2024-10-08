@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/updatePriceListsWorkflow
+sidebar_label: updatePriceListsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updatePriceListsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updatePriceListsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates one or more price lists.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updatePriceListsWorkflow","steps":[{"type":"step","name":"validatePriceListsStep","description":"This step validates that the specified price lists exist.","link":"../../../../core_flows.Steps_Price_List/page.mdx#validatepricelistsstep","depth":1},{"type":"step","name":"updatePriceListsStep","description":"This step updates one or more price lists.","link":"../../../../core_flows.Steps_Price_List/page.mdx#updatepricelistsstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"price_lists_data","type":"[UpdatePriceListWorkflowInputDTO](../../../../../types/interfaces/types.UpdatePriceListWorkflowInputDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"starts_at","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ends_at","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PriceListStatus](../../../../../pricing/types/pricing.PriceListStatus/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"`Record<string, string[]>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePriceListsWorkflow"/>

@@ -6,17 +6,13 @@ export const metadata = {
 
 In this chapter, you’ll learn how to customize the Medusa Admin dashboard.
 
-<Note type="soon">
+## What is the Medusa Admin?
 
-Admin customizations are coming soon.
+The Medusa Admin is an admin dashboard that merchants use to manage their store's data.
 
-</Note>
+You can extend the Medusa Admin to add widgets and new pages. In your customizations, you interact with API routes to provide merchants with custom functionalities.
 
-## Overview
-
-The Medusa Admin is installed in your Medusa application and runs at port `7001` when you start the Medusa application.
-
-You can extend or customize the Medusa Admin to add widgets or new pages that interact with API routes and provide admin users with custom functionalities.
+The Medusa Admin is installed in your Medusa application and runs at `http://localhost:9000/app` when you start the application.
 
 ---
 
@@ -27,7 +23,7 @@ A widget is a React component that can be injected into an existing page in the 
 For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
 
 ```tsx title="src/admin/widgets/product-widget.tsx"
-import type { WidgetConfig } from "@medusajs/admin"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
 
 const ProductWidget = () => {
   return (
@@ -37,14 +33,14 @@ const ProductWidget = () => {
   )
 }
 
-export const config: WidgetConfig = {
-  zone: "product.details.after",
-}
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
 
 export default ProductWidget
 ```
 
-This inserts a widget with the text “Product Widget” at the end of a product’s details page.
+This inserts a widget with the text “Product Widget” at the beginning of a product’s details page.
 
 ### Test the Widget
 
@@ -54,4 +50,4 @@ To test out the widget, start the Medusa application:
 npm run dev
 ```
 
-Then, open a product’s details page. You’ll find your custom widget at the bottom of the page.
+Then, open a product’s details page in the Medusa Admin. You’ll find your custom widget at the top of the page.

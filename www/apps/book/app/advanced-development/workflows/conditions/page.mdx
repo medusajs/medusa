@@ -1,0 +1,82 @@
+export const metadata = {
+  title: `${pageNumber} Conditions in Workflows with When-Then`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to execute an action based on a condition in a workflow using the when-then utility.
+
+## Why If-Conditions Aren't Allowed in Workflows?
+
+Medusa creates an internal representation of the workflow definition you pass to `createWorkflow` to track and store its steps.
+
+At that point, variables in the workflow don't have any values. They only do when you execute the workflow.
+
+So, you can't use an if-condition that checks a variable's value, as the condition will be evaluated when Medusa creates the internal representation of the workflow, rather than during execution.
+
+Instead, use the when-then utility.
+
+---
+
+## What is the When-Then Utility?
+
+The when-then utility functions execute an action if a condition is satisfied.
+
+The `when` function accepts as a parameter a function that returns a boolean value, and the `then` function is chained to `when`. `then` accepts as a parameter a function that's executed if `when`'s parameter function returns a `true` value.
+
+For example:
+
+export const highlights = [
+  ["15", "input", "The data to pass as a parameter to the function in the second parameter"],
+  ["17", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
+  ["19", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
+]
+
+```ts highlights={highlights}
+import { 
+  createWorkflow,
+  WorkflowResponse,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+// step imports...
+
+const workflow = createWorkflow(
+  "workflow", 
+  function (input: {
+    is_active: boolean
+  }) {
+
+    const result = when(
+      input, 
+      (input) => {
+        return input.is_active
+      }
+    ).then(() => {
+      const stepResult = isActiveStep()
+      return stepResult
+    })
+
+    // executed without condition
+    const anotherStepResult = anotherStep(result)
+
+    return new WorkflowResponse(
+      anotherStepResult
+    )
+  }
+)
+```
+
+In this code snippet, you execute the `isActiveStep` only if the `input.is_active`'s value is `true`.
+
+### When Parameters
+
+`when` utility is a function imported from `@medusajs/framework/workflows-sdk`. It accepts the following parameters:
+
+1. The first parameter is either an object or the workflow's input. This data is passed as a parameter to the function in `when`'s second parameter.
+2. The second parameter is a function that returns a boolean indicating whether to execute the action in `then`.
+
+### Then Parameters
+
+To specify the action to perform if the condition is satisfied, chain a `then` function to `when` and pass it a callback function.
+
+The callback function is only executed if `when`'s second parameter function returns a `true` value.

@@ -1,4 +1,4 @@
-import { LoaderOptions } from "@medusajs/modules-sdk"
+import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "awilix"
 import Redis from "ioredis"
 import { EOL } from "os"
@@ -13,7 +13,7 @@ export default async ({
 
   if (!redisUrl) {
     throw Error(
-      "No `redis_url` provided in project config. It is required for the Redis Event Bus."
+      "No `redisUrl` provided in project config. It is required for the Redis Event Bus."
     )
   }
 
@@ -27,7 +27,7 @@ export default async ({
   })
 
   try {
-    await new Promise(async resolve => {
+    await new Promise(async (resolve) => {
       await connection.connect(resolve)
     })
     logger?.info(`Connection to Redis in module 'event-bus-redis' established`)

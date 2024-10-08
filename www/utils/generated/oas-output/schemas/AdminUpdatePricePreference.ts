@@ -1,0 +1,23 @@
+/**
+ * @schema AdminUpdatePricePreference
+ * type: object
+ * description: The details to update in the price preference.
+ * x-schemaName: AdminUpdatePricePreference
+ * properties:
+ *   attribute:
+ *     type: string
+ *     title: attribute
+ *     description: The price preference's attribute.
+ *     example: region_id
+ *   value:
+ *     type: string
+ *     title: value
+ *     description: The price preference's value.
+ *     example: reg_123
+ *   is_tax_inclusive:
+ *     type: boolean
+ *     title: is_tax_inclusive
+ *     description: Whether prices are tax inclusive for this price preference.
+ * 
+*/
+

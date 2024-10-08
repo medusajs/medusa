@@ -1,0 +1,47 @@
+/**
+ * @schema AdminShippingProfile
+ * type: object
+ * description: The shipping profile's details..
+ * x-schemaName: AdminShippingProfile
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The shipping profile's ID.
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The shipping profile's name.
+ *   type:
+ *     type: string
+ *     title: type
+ *     description: The shipping profile's type.
+ *   metadata:
+ *     type: object
+ *     description: The shipping profile's metadata, holds custom key-value pairs.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The date the shipping profile was created.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The date the shipping profile was updated.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the shipping profile was deleted.
+ * required:
+ *   - id
+ *   - name
+ *   - type
+ *   - metadata
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
+ * 
+*/
+

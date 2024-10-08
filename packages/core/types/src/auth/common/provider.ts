@@ -1,3 +1,5 @@
+import { AuthIdentityDTO } from "./auth-identity"
+
 /**
  * @interface
  *
@@ -12,7 +14,7 @@ export type AuthenticationResponse = {
   /**
    * The authenticated user's details.
    */
-  authUser?: any
+  authIdentity?: AuthIdentityDTO
 
   /**
    * If an error occurs during the authentication process,
@@ -31,41 +33,7 @@ export type AuthenticationResponse = {
    * specified location.
    */
   location?: string
-
-  /**
-   * Some authentication providers support redirecting to a specified URL on
-   * success. In those cases, the URL to redirect to is set in this field.
-   *
-   * So, if `success` is true, there's no `location` set, and this field
-   * is set, you can redirect to this URL.
-   */
-  successRedirectUrl?: string
 }
-
-/**
- * @interface
- *
- * The configurations of the `providers` option
- * passed to the Auth Module.
- */
-export type AuthModuleProviderConfig = {
-  /**
-   * The provider's name.
-   */
-  name: string
-
-  /**
-   * The scopes configuration of that provider.
-   */
-  scopes: Record<string, AuthProviderScope>
-}
-
-/**
- * @interface
- *
- * The scope configurations of an auth provider.
- */
-export type AuthProviderScope = Record<string, unknown>
 
 /**
  * @interface
@@ -77,30 +45,25 @@ export type AuthenticationInput = {
   /**
    * URL of the incoming authentication request.
    */
-  url: string
+  url?: string
 
   /**
    * Headers of incoming authentication request.
    */
-  headers: Record<string, string>
+  headers?: Record<string, string>
 
   /**
    *  Query params of the incoming authentication request.
    */
-  query: Record<string, string>
+  query?: Record<string, string>
 
   /**
    * Body of the incoming authentication request.
    */
-  body: Record<string, string>
-
-  /**
-   * Scope for the authentication request.
-   */
-  authScope: string
+  body?: Record<string, string>
 
   /**
    * Protocol of the incoming authentication request (For example, `https`).
    */
-  protocol: string
+  protocol?: string
 }

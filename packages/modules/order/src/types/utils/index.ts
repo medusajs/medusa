@@ -1,16 +1,31 @@
-import { BigNumberInput } from "@medusajs/types"
+import { BigNumberInput } from "@medusajs/framework/types"
 
 export type VirtualOrder = {
+  id: string
+
   items: {
     id: string
+    order_id: string
+    return_id?: string
+    claim_id?: string
+    exchange_id?: string
+
     unit_price: BigNumberInput
     quantity: BigNumberInput
 
     detail: {
       id?: string
+      order_id: string
+      return_id?: string
+      claim_id?: string
+      exchange_id?: string
+
+      item_id?: string
+      unit_price?: BigNumberInput
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput
+      delivered_quantity: BigNumberInput
       return_requested_quantity: BigNumberInput
       return_received_quantity: BigNumberInput
       return_dismissed_quantity: BigNumberInput
@@ -21,29 +36,41 @@ export type VirtualOrder = {
 
   shipping_methods: {
     id: string
-    price: BigNumberInput
+    order_id: string
+    return_id?: string
+    claim_id?: string
+    exchange_id?: string
+
+    detail?: {
+      id?: string
+      order_id: string
+      return_id?: string
+      claim_id?: string
+      exchange_id?: string
+    }
+
+    amount: BigNumberInput
   }[]
 
   total: BigNumberInput
 
+  transactions?: OrderTransaction[]
   metadata?: Record<string, unknown>
 }
 
 export enum EVENT_STATUS {
   PENDING = "pending",
-  VOIDED = "voided",
   DONE = "done",
 }
 
 export interface OrderSummaryCalculated {
-  currentOrderTotal: BigNumberInput
-  originalOrderTotal: BigNumberInput
-  transactionTotal: BigNumberInput
-  futureDifference: BigNumberInput
-  pendingDifference: BigNumberInput
-  futureTemporaryDifference: BigNumberInput
-  temporaryDifference: BigNumberInput
-  differenceSum: BigNumberInput
+  current_order_total: BigNumberInput
+  original_order_total: BigNumberInput
+  transaction_total: BigNumberInput
+  pending_difference: BigNumberInput
+  difference_sum: BigNumberInput
+  paid_total: BigNumberInput
+  refunded_total: BigNumberInput
 }
 
 export interface OrderTransaction {
@@ -57,17 +84,13 @@ export interface OrderChangeEvent {
   reference?: string
   reference_id?: string
 
-  group_id?: string
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
 
-  evaluationOnly?: boolean
+  change_id?: string
 
   details?: any
-
-  resolve?: {
-    group_id?: string
-    reference_id?: string
-    amount?: BigNumberInput
-  }
 }
 
 export type InternalOrderChangeEvent = OrderChangeEvent & {
@@ -83,16 +106,15 @@ export type OrderReferences = {
   transactions: OrderTransaction[]
   type: ActionTypeDefinition
   actions: InternalOrderChangeEvent[]
+  options?: {
+    addActionReferenceToObject?: boolean
+    [key: string]: unknown
+  }
 }
 
 export interface ActionTypeDefinition {
   isDeduction?: boolean
-  awaitRequired?: boolean
-  versioning?: boolean
-  void?: boolean
-  commitsAction?: string
   operation?: (obj: OrderReferences) => BigNumberInput | void
-  revert?: (obj: OrderReferences) => BigNumberInput | void
   validate?: (obj: OrderReferences) => void
   [key: string]: unknown
 }

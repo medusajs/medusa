@@ -1,10 +1,6 @@
-import {
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
+import { ModuleResolution } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
-import { EOL } from "os"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
 const logger = {
@@ -28,7 +24,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: false,
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -57,7 +52,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/default",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -98,7 +92,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/brokenloader",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -114,11 +107,9 @@ describe("modules loader", () => {
       },
     }
 
-    await moduleLoader({ container, moduleResolutions, logger })
-
-    expect(logger.warn).toHaveBeenCalledWith(
-      `Could not resolve module: TestService. Error: Loaders for module TestService failed: loader${EOL}`
-    )
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow("Loaders for module TestService failed: loader")
   })
 
   it("should log the errors if no service is defined", async () => {
@@ -126,7 +117,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -142,20 +132,18 @@ describe("modules loader", () => {
       },
     }
 
-    await moduleLoader({ container, moduleResolutions, logger })
-
-    expect(logger.warn).toHaveBeenCalledWith(
-      `Could not resolve module: TestService. Error: No service found in module. Make sure your module exports a service.${EOL}`
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow(
+      "No service found in module TestService. Make sure your module exports a service."
     )
   })
 
   it("should throw an error if no service is defined and the module is required", async () => {
-    expect.assertions(1)
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -172,13 +160,11 @@ describe("modules loader", () => {
       },
     }
 
-    try {
-      await moduleLoader({ container, moduleResolutions, logger })
-    } catch (err) {
-      expect(err.message).toEqual(
-        "No service found in module. Make sure your module exports a service."
-      )
-    }
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow(
+      "No service found in module TestService. Make sure your module exports a service."
+    )
   })
 
   it("should throw an error if the default package isn't found and the module is required", async () => {
@@ -187,7 +173,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@medusajs/testService",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "@medusajs/testService",
           label: "TestService",
@@ -219,7 +204,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -251,7 +235,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",

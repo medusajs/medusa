@@ -1,375 +1,680 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 2.0.0
   title: Medusa Admin API
   license:
     name: MIT
-    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+    url: https://github.com/medusajs/medusa/blob/develop/LICENSE
 servers:
   - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
+  - url: https://api.medusajs.com
 tags:
-  - name: Apps Oauth
-    description: >
-      Some plugins may require to authenticate with third-party services and
-      store authentication details, such as the authentication token. To do
-      that, they can create an Oauth provider within the plugin that handles the
-      authentication.
-
-      The Apps Oauth API Routes allows admins to manage and generate token for
-      an app using its oauth provider.
   - name: Auth
+    description: |
+      Auth API routes allow you to manage an admin user's authentication.
+  - name: Api Keys
     description: >
-      Authentication API Routes allow admin users to manage their session, such
-      as login or log out.
+      API keys can be used for authentication or resource-scoping.
 
-      When an admin user is logged in, the cookie header is set indicating the
-      admin's login session.
+
+      A secret API key can be used to authenticate admin users.  A publishable
+      API key can be used to scope client requests to one or more sales
+      channels.
+
+
+      These API routes allow admin users to manage both publishable and secret
+      API keys.
     externalDocs:
-      description: How to implement user profiles
-      url: https://docs.medusajs.com/modules/users/admin/manage-profile
-  - name: Batch Jobs
+      description: Learn more about the API Key Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/api-key
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminApiKey.yaml
+  - name: Campaigns
     description: >
-      A batch job is a task that is performed by the Medusa backend
-      asynchronusly. For example, the Import Product feature is implemented
-      using batch jobs.
+      A campaign is a group of promotions that have the same conditions, such as
+      start and end dates.
 
-      Batch Job API Routes allow admins to manage the batch jobs and their
-      state.
+
+      These API routes allow admin users to manage campaigns, their conditions,
+      and promotions that belong to them.
     externalDocs:
-      description: How to import products
-      url: https://docs.medusajs.com/modules/products/admin/import-products
+      description: Learn more about campaigns.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/promotion/campaign
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCampaign.yaml
+  - name: Claims
+    description: >
+      An admin creates a claim for an order when a customer reports that an item
+      is defective or incorrect.
+
+
+      Using these API routes, admin users manage order claims, their items, and
+      more.
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminClaim.yaml
+    externalDocs:
+      description: Learn more about order claims.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/claim
+  - name: Collections
+    description: >
+      A product collection organizes products into a collection for marketing
+      purposes. For example, a summer collection.
+
+
+      These API routes allow admin users to manage collections and the products
+      in them.
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCollection.yaml
   - name: Currencies
     description: >
       A store can use unlimited currencies, and each region must be associated
       with at least one currency.
 
-      Currencies are defined within the Medusa backend. Currency API Routes
-      allow admins to list and update currencies.
+
+      Currencies are defined by the Currency Module. Currency API Routes allow
+      admins to list and update currencies.
     externalDocs:
-      description: How to manage currencies
-      url: >-
-        https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
+      description: Learn more about the Currency Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/currency
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCurrency.yaml
   - name: Customer Groups
     description: >
-      Customer Groups can be used to organize customers that share similar data
-      or attributes into dedicated groups.
+      Customers can be organized into groups. These groups are useful for
+      segregation and marketing purposes.
 
-      This can be useful for different purposes such as setting a different
-      price for a specific customer group.
+
+      For example, you can provide different prices for specific customers by
+      creating a price list conditioned to their group.
+
+
+      These API routes allow admin users to manage groups and the customers in
+      them.
     externalDocs:
-      description: How to manage customer groups
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
+      description: Learn more about the Customer Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/customer
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCustomerGroup.yaml
   - name: Customers
     description: >
       Customers can either be created when they register through the Store APIs,
       or created by the admin using the Admin APIs.
-    externalDocs:
-      description: How to manage customers
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
-  - name: Discounts
-    description: >
-      Admins can create discounts with conditions and rules, providing them with
-      advanced settings for variety of cases.
 
-      The Discount API Routes can be used to manage discounts, their conditions,
-      resources, and more.
+
+      These API routes allow admin users to manage customers in their store.
     externalDocs:
-      description: How to manage discounts
-      url: https://docs.medusajs.com/modules/discounts/admin/manage-discounts
+      description: Learn more about the Customer Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/customer
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCustomer.yaml
   - name: Draft Orders
     description: >
-      A draft order is an order created manually by the admin. It allows admins
-      to create orders without direct involvement from the customer.
-    externalDocs:
-      description: How to manage draft orders
-      url: https://docs.medusajs.com/modules/orders/admin/manage-draft-orders
-  - name: Gift Cards
-    description: >
-      Admins can create gift cards and send them directly to customers,
-      specifying options like their balance, region, and more.
+      A draft order is an order created by the admin user. This is useful for
+      orders created offline or from clients other than a storefront, such as a
+      third-party integration.
 
-      These gift cards are different than the saleable gift cards in a store,
-      which are created and managed through Product API Routes.
+
+      These API routes allow admin users to create and manage draft orders.
     externalDocs:
-      description: How to manage gift cards
-      url: >-
-        https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards
-  - name: Inventory Items
+      description: Learn more about the Order Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order
+  - name: Exchanges
     description: >
-      Inventory items, provided by the [Inventory
-      Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module),
-      can be used to manage the inventory of saleable items in your store.
+      An exchange is the replacement of an item that the customer ordered with
+      another.
+
+
+      These API routes allow admin users t create and manage exchanges.
     externalDocs:
-      description: How to manage inventory items
+      description: Learn more about the order exchanges.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/exchange
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminExchange.yaml
+  - name: Fulfillment Providers
+    description: >
+      A fulfillment provider is a third-party integration or custom logic used
+      to  fulfill an order's items.
+
+
+      Fulfillment providers are installed as module providers.
+    externalDocs:
+      description: Learn more about the fulfillment providers and how to create them.
       url: >-
-        https://docs.medusajs.com/modules/multiwarehouse/admin/manage-inventory-items
+        https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/fulfillment-provider
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminFulfillmentProvider.yaml
+  - name: Fulfillment Sets
+    description: >
+      A fulfillment set is a general form or way of fulfillment, such as
+      "shipping" or "pick up".
+
+
+      All fulfillment-related configurations in a store are related to a
+      fulfillment set.
+
+
+      These API routes allow admin users to manage fulfillment sets.
+    externalDocs:
+      description: Learn more about fulfillment sets.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminFulfillmentSet.yaml
+  - name: Fulfillments
+    description: >
+      A fulfillment is created for items in an order, return, exchanges, or
+      claims to deliver items to/from the customer.
+
+
+      These API routes allow admin users to manage fulfillments.
+    externalDocs:
+      description: Learn more about fulfillments.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/item-fulfillment
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminFulfillment.yaml
+  - name: Inventory Items
+    description: |
+      An inventory item is a stock-kept product whose inventory is managed.
+
+      These API routes allow admin users to manage inventory items.
+    externalDocs:
+      description: Learn more about inventory items.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/inventory/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminInventoryItem.yaml
   - name: Invites
     description: >
-      An admin can invite new users to manage their team. This would allow new
-      users to authenticate as admins and perform admin functionalities.
+      An admin can invite new users to manage their team. This allows new users
+      to authenticate as admins and perform admin functionalities.
+
+
+      These API routes allow admin users to manage invites.
     externalDocs:
-      description: How to manage invites
-      url: https://docs.medusajs.com/modules/users/admin/manage-invites
-  - name: Notes
-    description: >
-      Notes are created by admins and can be associated with any resource. For
-      example, an admin can add a note to an order for additional details or
-      remarks.
+      description: Learn more about the User Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/user
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminInvite.yaml
   - name: Notifications
     description: >
-      Notifications are sent to customers to inform them of new updates. For
-      example, a notification can be sent to the customer when their order is
-      place or its state is updated.
+      A notification informs an admin user of store changes or status changes of
+      background tasks.
 
-      The notification's type, such as an email or SMS, is determined by the
-      notification provider installed on the Medusa backend.
+
+      These API routes allow admin users to view and manage notifications.
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminNotification.yaml
   - name: Order Edits
     description: >
-      An admin can edit an order to remove, add, or update an item's quantity.
-      When an admin edits an order, they're stored as an `OrderEdit`.
-    externalDocs:
-      description: How to edit an order
-      url: https://docs.medusajs.com/modules/orders/admin/edit-order
-  - name: Orders
-    description: >
-      Orders are purchases made by customers, typically through a storefront
-      using the Store API. Draft orders created by the admin are also
-      transformed to an Order once the payment is captured.
+      An order edit is a change to an order's details, such as items, shipping
+      methods, and more.
 
-      Managing orders include managing fulfillment, payment, claims,
-      reservations, and more.
+
+      Changes made by an order edit are only applied on the order once they're
+      confirmed.
+
+
+      The order's previous version is retained due to versioning.
+
+
+      These API routes allow admin users to make edits to an order and manage
+      those edits.
     externalDocs:
-      description: How to manage orders
-      url: https://docs.medusajs.com/modules/orders/admin/manage-orders
+      description: Learn more about the Order Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order
+  - name: Orders
+    description: |
+      An order is a purchase made by a customer through a storefront.
+
+      Orders can also originally be created as draft orders.
+
+      These API routes allow admin users to view and manage orders.
+    externalDocs:
+      description: Learn more about the orders
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminOrder.yaml
   - name: Payment Collections
     description: >
-      A payment collection is useful for managing additional payments, such as
-      for Order Edits, or installment payments.
+      A payment collection is one or more payments of an order. They're also
+      used for outstanding payments due to order exchanges or claims.
+
+
+      Every purchase or request for payment starts with a payment collection.
+
+
+      A payment collection holds the payment sessions used to authorize the
+      payment amount, and the payments to be captured / refunded.
+
+
+      These API routes allow admin users to manage payment collections.
+    externalDocs:
+      description: Learn more about payment collections.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-collection
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPaymentCollection.yaml
   - name: Payments
     description: >
-      A payment can be related to an order, swap, return, or more. It can be
-      captured or refunded.
+      A payment is created when a payment amount is authorized. The payment can
+      then be captured or refunded.
+
+
+      A payment is created from the payment session that was authorized, and it
+      belongs to the payment session's collection.
+
+
+      These API routes allow admin users to manage payments.
+    externalDocs:
+      description: Learn more about payments.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPayment.yaml
   - name: Price Lists
     description: >
-      A price list are special prices applied to products based on a set of
-      conditions, such as customer group.
+      A price list is a group of prices applied if the specified conditions and
+      rules are satisfied.
+
+
+      Price lists are useful for sales or special prices for special conditions,
+      such as applying prices for a set of customers.
+
+
+      These API routes allow admin users to manage price lists.
     externalDocs:
-      description: How to manage price lists
-      url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
+      description: Learn more about price lists.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/pricing/concepts#price-list
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPriceList.yaml
+  - name: Price Preferences
+    description: >
+      A price preference is used to specify whether tax-inclusiveness is enabled
+      for a context, such as a region or currency code.
+
+
+      These API routes allow admin users to manage whether a region or currency
+      is tax inclusive.
+    externalDocs:
+      description: Learn more about tax-inclusiveness and the role of a price preference.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/pricing/tax-inclusive-pricing
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPricePreference.yaml
   - name: Product Categories
     description: >
-      Products can be categoriezed into categories. A product can be added into
-      more than one category.
+      Products can be categorized into categories.
+
+
+      Categories are nested and their heirarchy can be managed, giving admin
+      users flexibility in how they categorize their products.
+
+
+      These API routes allow admin users to manage categories and the products
+      in them.
     externalDocs:
-      description: How to manage product categories
-      url: https://docs.medusajs.com/modules/products/admin/manage-categories
-  - name: Product Collections
-    description: >
-      A product collection is used to organize products for different purposes
-      such as marketing or discount purposes. For example, you can create a
-      Summer Collection.
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductCategory.yaml
   - name: Product Tags
     description: >
-      Product tags are string values created when you create or update a product
-      with a new tag.
+      A tag is another way of organizing a product. Each tag has a name and a
+      value.
 
-      Products can have more than one tag, and products can share tags. This
-      allows admins to associate products to similar tags that can be used to
-      filter products.
+
+      Products are organized into the same tag if they have the same value.
+
+
+      These API routes allow admin users to manage product tags.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductTag.yaml
   - name: Product Types
-    description: >
-      Product types are string values created when you create or update a
-      product with a new type.
+    description: |
+      Products can be organized into types. Each type has a name and a value.
 
-      Products can have one type, and products can share types. This allows
-      admins to associate products with a type that can be used to filter
-      products.
+      Products are organized into the same type if they have the same value.
+
+      These API routes allow admin users to manage product types.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductType.yaml
   - name: Product Variants
     description: >
-      Product variants are the actual salable item in your store. Each variant
-      is a combination of the different option values available on the product.
+      A product variant is a saleable form of the product.
 
-      Product variants can be managed through the Products API Routes.
+
+      Each variant has different option values. For example, a "Shirt" product
+      may have a  "Blue" variant and a "Green" variant. Customers choose from
+      these variants when they buy the product.
+
+
+      These API routes allow admin users to manage product variants.
     externalDocs:
-      description: How to manage product variants
-      url: >-
-        https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductVariant.yaml
   - name: Products
     description: >
-      Products are saleable items in a store. This also includes [saleable gift
-      cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product)
-      in a store.
+      A product is a set of variants that the customer chooses from when making
+      a purchase.
+
+
+      A product can be organized into categories or collections.
+
+
+      A product can have many options, and variants for each of these options'
+      values.
+
+
+      These API routes allow admin users to manage products.
     externalDocs:
-      description: How to manage products
-      url: https://docs.medusajs.com/modules/products/admin/manage-products
-  - name: Publishable API Keys
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/product
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProduct.yaml
+  - name: Promotions
     description: >
-      Publishable API Keys can be used to scope Store API calls with an API key,
-      determining what resources are retrieved when querying the API.
+      A promotion discounts an amount or percentage off a cart's items, shipping
+      methods, or the entire order.
 
-      For example, a publishable API key can be associated with one or more
-      sales channels. When it is passed in the header of a request to the List
-      Product store API Route,
 
-      the sales channels are inferred from the key and only products associated
-      with those sales channels are retrieved.
+      Promotions have different types, such as a `standard` promotion that just
+      discounts an amount, or a `buyget` promotion to enforce a "buy X get Y"
+      promotion.
 
-      Admins can manage publishable API keys and their associated resources.
-      Currently, only Sales Channels are supported as a resource.
+
+      A promotion has rules to restrict how and when they're applied.
+
+
+      Promotions belong to a campaign, which sets conditions on the promotion
+      such as when it starts and ends.
+
+
+      These API routes allow admin users to manage promotions.
     externalDocs:
-      description: How to manage publishable API keys
+      description: Learn more about promotions.
       url: >-
-        https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys
+        https://docs.medusajs.com/v2/resources/commerce-modules/promotion/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPromotion.yaml
+  - name: Refund Reasons
+    description: >
+      A refund reason is a possible reason used when issuing a refund to the
+      customer, such as when returning an item and refunding the customer.
+
+
+      These API routes allow admin users to manage refund reasons.
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminRefundReason.yaml
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
       store serves customers in.
 
-      Admins can manage these regions, their providers, and more.
+
+      These API routes allow admin users to manage regions, their providers, and
+      more.
     externalDocs:
-      description: How to manage regions
-      url: >-
-        https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+      description: Learn more about the Region Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/region
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminRegion.yaml
   - name: Reservations
     description: >
-      Reservations, provided by the [Inventory
-      Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module),
-      are quantities of an item that are reserved, typically when an order is
-      placed but not yet fulfilled.
+      A reservation is unavailable quantity of an inventory item in a location.
 
-      Reservations can be associated with any resources, but commonly with line
-      items of an order.
+
+      A reservation is created automatically for variants in an order whose
+      `manage_inventory` is enabled. Admin users can also create reservations
+      manually.
+
+
+      These API routes allow admin users to manage reservations.
     externalDocs:
-      description: How to manage item allocations in orders
+      description: Learn more about reservations and other inventory concepts.
       url: >-
-        https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
+        https://docs.medusajs.com/v2/resources/commerce-modules/inventory/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminReservation.yaml
   - name: Return Reasons
     description: >
-      Return reasons are key-value pairs that are used to specify why an order
-      return is being created.
+      A return reason is a possible reason that an item is returned from the
+      customer, such as when returning an item.
 
-      Admins can manage available return reasons, and they can be used by both
-      admins and customers when creating a return.
-    externalDocs:
-      description: How to manage return reasons
-      url: >-
-        https://docs.medusajs.com/modules/orders/admin/manage-returns#manage-return-reasons
+
+      These API routes allow admin users to manage return reasons.
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminReturnReason.yaml
   - name: Returns
     description: >
-      A return can be created by a customer or an admin to return items in an
-      order.
+      Admin users create a return when a customer returns an item to them.
 
-      Admins can manage these returns and change their state.
+
+      Returns can also be created by customers through the storefront, and
+      admins will be able to manage them and make refunds, if necessary. Refunds
+      are made through the [Payment API Routes](#payment)
+
+
+      These API routes allow admin users to manage returns.
     externalDocs:
-      description: How to manage returns
-      url: https://docs.medusajs.com/modules/orders/admin/manage-returns
+      description: Learn more about order returns.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/order/return
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminReturn.yaml
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
       example, a webshop or a mobile app.
 
-      Admins can manage sales channels and the products available in them.
+
+      These API routes allow admins to manage sales channels and the products
+      available in them.
     externalDocs:
-      description: How to manage sales channels
-      url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+      description: Learn more about the Sales Channel Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/sales-channel
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminSalesChannel.yaml
   - name: Shipping Options
     description: >
-      A shipping option is used to define the available shipping methods during
-      checkout or when creating a return.
+      A shipping option is a way of shipping an item to or from the customer.
 
-      Admins can create an unlimited number of shipping options, each associated
-      with a shipping profile and fulfillment provider, among other resources.
+
+      Shipping options are associated with the fulfillment provider used to
+      handle their fulfillment.
+
+
+      Shipping options can be restricted geographically by service zones, and by
+      custom rules, such as an item's weight or the customer's group.
+
+
+      These API routes allow admins to manage shipping options.
     externalDocs:
-      description: Shipping Option architecture
+      description: Learn more about shipping options.
       url: >-
-        https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
+        https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminShippingOption.yaml
   - name: Shipping Profiles
     description: >
-      A shipping profile is used to group products that can be shipped in the
-      same manner.
+      A shipping profile defines a type of items that are shipping in a similar
+      manner. For example,  digital products may have a `digital` shipping
+      profile.
 
-      They are created by the admin and they're not associated with a
-      fulfillment provider.
+
+      These API routes allow admin users to manage shipping profiles.
     externalDocs:
-      description: Shipping Profile architecture
+      description: Learn more about shipping profiles and other fulfillment concepts.
       url: >-
-        https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
+        https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/concepts#shipping-profile
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminShippingProfile.yaml
   - name: Stock Locations
     description: >
-      A stock location, provided by the [Stock Location
-      module](https://docs.medusajs.com/modules/multiwarehouse/stock-location-module),
-      indicates a physical address that stock-kept items, such as physical
-      products, can be stored in.
+      A stock location is where stock-kept items (products) are kept.
 
-      An admin can create and manage available stock locations.
+
+      Stock locations are linked to fulfillment providers used to fulfill items
+      from this location.
+
+
+      A stock location is also link to a fulfillment set, indicating where an
+      item is fulfilled from  when an order is placed.
+
+
+      These API routes allow admin users to manage stock locations and their
+      linked data.
     externalDocs:
-      description: How to manage stock locations.
+      description: Learn more about stock locations.
       url: >-
-        https://docs.medusajs.com/modules/multiwarehouse/admin/manage-stock-locations
-  - name: Store
+        https://docs.medusajs.com/v2/resources/commerce-modules/stock-location/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminStockLocation.yaml
+  - name: Stores
     description: >
-      A store indicates the general configurations and details about the
-      commerce store. By default, there's only one store in the Medusa backend.
+      A store holds the main configuration and information of your commerce
+      store, such as supported currencies or default sales channel.
 
-      Admins can manage the store and its details or configurations.
-  - name: Swaps
-    description: >
-      A swap is created by a customer or an admin to exchange an item with a new
-      one.
 
-      Creating a swap implicitely includes creating a return for the item being
-      exchanged.
+      By default, the Medusa application has one default store. There are no API
+      routes to create more stores. Instead, you'd have  to handle that
+      customization manually.
+
+
+      These API routes allow admin users to manage their store.
     externalDocs:
-      description: How to manage swaps
-      url: https://docs.medusajs.com/modules/orders/admin/manage-swaps
+      description: Learn more about the Store Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/store
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminStore.yaml
   - name: Tax Rates
     description: >
-      Each region has at least a default tax rate. Admins can create and manage
-      additional tax rates that can be applied for certain conditions, such as
-      for specific product types.
+      A tax rate is a percentage amount used to calculate the tax amount of each
+      taxable item's price, such as line items or shipping methods.
+
+
+      Each tax region has a default tax rate. You can create tax rates that
+      override the default using tax rules.
+
+
+      These API routes allow admin users to manage tax rates and their rules.
     externalDocs:
-      description: How to manage tax rates
-      url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
+      description: Learn more about tax rates and rules.
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminTaxRate.yaml
+  - name: Tax Regions
+    description: >
+      A tax region is a region's tax settings. It has tax rates and rules. So,
+      after you create a region, you must create a tax region for it.
+
+
+      A tax region can extend settings from a parent tax region.
+
+
+      These API routes allow admin users to manage tax regions. 
+    externalDocs:
+      description: Learn more about tax regions.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-region
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminTaxRegion.yaml
   - name: Uploads
     description: >
-      The upload API Routes are used to upload any type of resources. For
-      example, they can be used to upload CSV files that are used to import
-      products into the store.
+      Use these API routes to upload files to your Medusa application using the
+      installed file module provider.
+
+
+      You can upload public files, such as product images, or private files,
+      such as CSV files used to import products.
     externalDocs:
-      description: How to upload CSV file when importing a product.
-      url: >-
-        https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file
+      description: Check out available file module providers.
+      url: https://docs.medusajs.com/v2/resources/architectural-modules/file
   - name: Users
     description: >
-      A store can have more than one user, each having the same privileges.
-      Admins can manage users, their passwords, and more.
+      A user is an admin user that can authenticate and perform functionalities
+      as an admin user.
+
+
+      An admin user can invite other users to join their team. Once they accept
+      the invite, they'll become admin users as well.
+
+
+      These API routes allow admin users to manage their team.
     externalDocs:
-      description: How to manage users
-      url: https://docs.medusajs.com/modules/users/admin/manage-users
+      description: Learn more about the User Module.
+      url: https://docs.medusajs.com/v2/resources/commerce-modules/user
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminUser.yaml
+  - name: Workflows Executions
+    description: >
+      These API routes allow you to track workflow executions in your Medusa
+      application.
+
+
+      Depending on the workflow engine you use, executions may only be retained
+      for a short while, or only until the Medusa application is restarted.
+    externalDocs:
+      description: Check out available Workflow Engine Modules
+      url: >-
+        https://docs.medusajs.com/v2/resources/architectural-modules/workflow-engine
 paths:
-  /admin/apps:
-    $ref: paths/admin_apps.yaml
-  /admin/apps/authorizations:
-    $ref: paths/admin_apps_authorizations.yaml
-  /admin/auth:
-    $ref: paths/admin_auth.yaml
-  /admin/auth/token:
-    $ref: paths/admin_auth_token.yaml
-  /admin/batch-jobs:
-    $ref: paths/admin_batch-jobs.yaml
-  /admin/batch-jobs/{id}:
-    $ref: paths/admin_batch-jobs_{id}.yaml
-  /admin/batch-jobs/{id}/cancel:
-    $ref: paths/admin_batch-jobs_{id}_cancel.yaml
-  /admin/batch-jobs/{id}/confirm:
-    $ref: paths/admin_batch-jobs_{id}_confirm.yaml
+  /admin/api-keys:
+    $ref: paths/admin_api-keys.yaml
+  /admin/api-keys/{id}:
+    $ref: paths/admin_api-keys_{id}.yaml
+  /admin/api-keys/{id}/revoke:
+    $ref: paths/admin_api-keys_{id}_revoke.yaml
+  /admin/api-keys/{id}/sales-channels:
+    $ref: paths/admin_api-keys_{id}_sales-channels.yaml
+  /admin/campaigns:
+    $ref: paths/admin_campaigns.yaml
+  /admin/campaigns/{id}:
+    $ref: paths/admin_campaigns_{id}.yaml
+  /admin/campaigns/{id}/promotions:
+    $ref: paths/admin_campaigns_{id}_promotions.yaml
+  /admin/claims:
+    $ref: paths/admin_claims.yaml
+  /admin/claims/{id}:
+    $ref: paths/admin_claims_{id}.yaml
+  /admin/claims/{id}/cancel:
+    $ref: paths/admin_claims_{id}_cancel.yaml
+  /admin/claims/{id}/claim-items:
+    $ref: paths/admin_claims_{id}_claim-items.yaml
+  /admin/claims/{id}/claim-items/{action_id}:
+    $ref: paths/admin_claims_{id}_claim-items_{action_id}.yaml
+  /admin/claims/{id}/inbound/items:
+    $ref: paths/admin_claims_{id}_inbound_items.yaml
+  /admin/claims/{id}/inbound/items/{action_id}:
+    $ref: paths/admin_claims_{id}_inbound_items_{action_id}.yaml
+  /admin/claims/{id}/inbound/shipping-method:
+    $ref: paths/admin_claims_{id}_inbound_shipping-method.yaml
+  /admin/claims/{id}/inbound/shipping-method/{action_id}:
+    $ref: paths/admin_claims_{id}_inbound_shipping-method_{action_id}.yaml
+  /admin/claims/{id}/outbound/items:
+    $ref: paths/admin_claims_{id}_outbound_items.yaml
+  /admin/claims/{id}/outbound/items/{action_id}:
+    $ref: paths/admin_claims_{id}_outbound_items_{action_id}.yaml
+  /admin/claims/{id}/outbound/shipping-method:
+    $ref: paths/admin_claims_{id}_outbound_shipping-method.yaml
+  /admin/claims/{id}/outbound/shipping-method/{action_id}:
+    $ref: paths/admin_claims_{id}_outbound_shipping-method_{action_id}.yaml
+  /admin/claims/{id}/request:
+    $ref: paths/admin_claims_{id}_request.yaml
   /admin/collections:
     $ref: paths/admin_collections.yaml
   /admin/collections/{id}:
     $ref: paths/admin_collections_{id}.yaml
-  /admin/collections/{id}/products/batch:
-    $ref: paths/admin_collections_{id}_products_batch.yaml
+  /admin/collections/{id}/products:
+    $ref: paths/admin_collections_{id}_products.yaml
   /admin/currencies:
     $ref: paths/admin_currencies.yaml
   /admin/currencies/{code}:
@@ -380,84 +685,96 @@ paths:
     $ref: paths/admin_customer-groups_{id}.yaml
   /admin/customer-groups/{id}/customers:
     $ref: paths/admin_customer-groups_{id}_customers.yaml
-  /admin/customer-groups/{id}/customers/batch:
-    $ref: paths/admin_customer-groups_{id}_customers_batch.yaml
   /admin/customers:
     $ref: paths/admin_customers.yaml
   /admin/customers/{id}:
     $ref: paths/admin_customers_{id}.yaml
-  /admin/discounts:
-    $ref: paths/admin_discounts.yaml
-  /admin/discounts/code/{code}:
-    $ref: paths/admin_discounts_code_{code}.yaml
-  /admin/discounts/{discount_id}/conditions:
-    $ref: paths/admin_discounts_{discount_id}_conditions.yaml
-  /admin/discounts/{discount_id}/conditions/{condition_id}:
-    $ref: paths/admin_discounts_{discount_id}_conditions_{condition_id}.yaml
-  /admin/discounts/{discount_id}/conditions/{condition_id}/batch:
-    $ref: paths/admin_discounts_{discount_id}_conditions_{condition_id}_batch.yaml
-  /admin/discounts/{id}:
-    $ref: paths/admin_discounts_{id}.yaml
-  /admin/discounts/{id}/dynamic-codes:
-    $ref: paths/admin_discounts_{id}_dynamic-codes.yaml
-  /admin/discounts/{id}/dynamic-codes/{code}:
-    $ref: paths/admin_discounts_{id}_dynamic-codes_{code}.yaml
-  /admin/discounts/{id}/regions/{region_id}:
-    $ref: paths/admin_discounts_{id}_regions_{region_id}.yaml
+  /admin/customers/{id}/addresses:
+    $ref: paths/admin_customers_{id}_addresses.yaml
+  /admin/customers/{id}/addresses/{address_id}:
+    $ref: paths/admin_customers_{id}_addresses_{address_id}.yaml
   /admin/draft-orders:
     $ref: paths/admin_draft-orders.yaml
   /admin/draft-orders/{id}:
     $ref: paths/admin_draft-orders_{id}.yaml
-  /admin/draft-orders/{id}/line-items:
-    $ref: paths/admin_draft-orders_{id}_line-items.yaml
-  /admin/draft-orders/{id}/line-items/{line_id}:
-    $ref: paths/admin_draft-orders_{id}_line-items_{line_id}.yaml
-  /admin/draft-orders/{id}/pay:
-    $ref: paths/admin_draft-orders_{id}_pay.yaml
-  /admin/gift-cards:
-    $ref: paths/admin_gift-cards.yaml
-  /admin/gift-cards/{id}:
-    $ref: paths/admin_gift-cards_{id}.yaml
+  /admin/exchanges:
+    $ref: paths/admin_exchanges.yaml
+  /admin/exchanges/{id}:
+    $ref: paths/admin_exchanges_{id}.yaml
+  /admin/exchanges/{id}/cancel:
+    $ref: paths/admin_exchanges_{id}_cancel.yaml
+  /admin/exchanges/{id}/inbound/items:
+    $ref: paths/admin_exchanges_{id}_inbound_items.yaml
+  /admin/exchanges/{id}/inbound/items/{action_id}:
+    $ref: paths/admin_exchanges_{id}_inbound_items_{action_id}.yaml
+  /admin/exchanges/{id}/inbound/shipping-method:
+    $ref: paths/admin_exchanges_{id}_inbound_shipping-method.yaml
+  /admin/exchanges/{id}/inbound/shipping-method/{action_id}:
+    $ref: paths/admin_exchanges_{id}_inbound_shipping-method_{action_id}.yaml
+  /admin/exchanges/{id}/outbound/items:
+    $ref: paths/admin_exchanges_{id}_outbound_items.yaml
+  /admin/exchanges/{id}/outbound/items/{action_id}:
+    $ref: paths/admin_exchanges_{id}_outbound_items_{action_id}.yaml
+  /admin/exchanges/{id}/outbound/shipping-method:
+    $ref: paths/admin_exchanges_{id}_outbound_shipping-method.yaml
+  /admin/exchanges/{id}/outbound/shipping-method/{action_id}:
+    $ref: paths/admin_exchanges_{id}_outbound_shipping-method_{action_id}.yaml
+  /admin/exchanges/{id}/request:
+    $ref: paths/admin_exchanges_{id}_request.yaml
+  /admin/fulfillment-providers:
+    $ref: paths/admin_fulfillment-providers.yaml
+  /admin/fulfillment-sets/{id}:
+    $ref: paths/admin_fulfillment-sets_{id}.yaml
+  /admin/fulfillment-sets/{id}/service-zones:
+    $ref: paths/admin_fulfillment-sets_{id}_service-zones.yaml
+  /admin/fulfillment-sets/{id}/service-zones/{zone_id}:
+    $ref: paths/admin_fulfillment-sets_{id}_service-zones_{zone_id}.yaml
+  /admin/fulfillments:
+    $ref: paths/admin_fulfillments.yaml
+  /admin/fulfillments/{id}/cancel:
+    $ref: paths/admin_fulfillments_{id}_cancel.yaml
+  /admin/fulfillments/{id}/shipment:
+    $ref: paths/admin_fulfillments_{id}_shipment.yaml
   /admin/inventory-items:
     $ref: paths/admin_inventory-items.yaml
   /admin/inventory-items/{id}:
     $ref: paths/admin_inventory-items_{id}.yaml
   /admin/inventory-items/{id}/location-levels:
     $ref: paths/admin_inventory-items_{id}_location-levels.yaml
+  /admin/inventory-items/{id}/location-levels/batch:
+    $ref: paths/admin_inventory-items_{id}_location-levels_batch.yaml
   /admin/inventory-items/{id}/location-levels/{location_id}:
     $ref: paths/admin_inventory-items_{id}_location-levels_{location_id}.yaml
   /admin/invites:
     $ref: paths/admin_invites.yaml
   /admin/invites/accept:
     $ref: paths/admin_invites_accept.yaml
-  /admin/invites/{invite_id}:
-    $ref: paths/admin_invites_{invite_id}.yaml
-  /admin/invites/{invite_id}/resend:
-    $ref: paths/admin_invites_{invite_id}_resend.yaml
-  /admin/notes:
-    $ref: paths/admin_notes.yaml
-  /admin/notes/{id}:
-    $ref: paths/admin_notes_{id}.yaml
+  /admin/invites/{id}:
+    $ref: paths/admin_invites_{id}.yaml
+  /admin/invites/{id}/resend:
+    $ref: paths/admin_invites_{id}_resend.yaml
   /admin/notifications:
     $ref: paths/admin_notifications.yaml
-  /admin/notifications/{id}/resend:
-    $ref: paths/admin_notifications_{id}_resend.yaml
+  /admin/notifications/{id}:
+    $ref: paths/admin_notifications_{id}.yaml
   /admin/order-edits:
     $ref: paths/admin_order-edits.yaml
   /admin/order-edits/{id}:
     $ref: paths/admin_order-edits_{id}.yaml
-  /admin/order-edits/{id}/cancel:
-    $ref: paths/admin_order-edits_{id}_cancel.yaml
-  /admin/order-edits/{id}/changes/{change_id}:
-    $ref: paths/admin_order-edits_{id}_changes_{change_id}.yaml
   /admin/order-edits/{id}/confirm:
     $ref: paths/admin_order-edits_{id}_confirm.yaml
   /admin/order-edits/{id}/items:
     $ref: paths/admin_order-edits_{id}_items.yaml
-  /admin/order-edits/{id}/items/{item_id}:
-    $ref: paths/admin_order-edits_{id}_items_{item_id}.yaml
+  /admin/order-edits/{id}/items/item/{item_id}:
+    $ref: paths/admin_order-edits_{id}_items_item_{item_id}.yaml
+  /admin/order-edits/{id}/items/{action_id}:
+    $ref: paths/admin_order-edits_{id}_items_{action_id}.yaml
   /admin/order-edits/{id}/request:
     $ref: paths/admin_order-edits_{id}_request.yaml
+  /admin/order-edits/{id}/shipping-method:
+    $ref: paths/admin_order-edits_{id}_shipping-method.yaml
+  /admin/order-edits/{id}/shipping-method/{action_id}:
+    $ref: paths/admin_order-edits_{id}_shipping-method_{action_id}.yaml
   /admin/orders:
     $ref: paths/admin_orders.yaml
   /admin/orders/{id}:
@@ -466,56 +783,31 @@ paths:
     $ref: paths/admin_orders_{id}_archive.yaml
   /admin/orders/{id}/cancel:
     $ref: paths/admin_orders_{id}_cancel.yaml
-  /admin/orders/{id}/capture:
-    $ref: paths/admin_orders_{id}_capture.yaml
-  /admin/orders/{id}/claims:
-    $ref: paths/admin_orders_{id}_claims.yaml
-  /admin/orders/{id}/claims/{claim_id}:
-    $ref: paths/admin_orders_{id}_claims_{claim_id}.yaml
-  /admin/orders/{id}/claims/{claim_id}/cancel:
-    $ref: paths/admin_orders_{id}_claims_{claim_id}_cancel.yaml
-  /admin/orders/{id}/claims/{claim_id}/fulfillments:
-    $ref: paths/admin_orders_{id}_claims_{claim_id}_fulfillments.yaml
-  /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel:
-    $ref: >-
-      paths/admin_orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel.yaml
-  /admin/orders/{id}/claims/{claim_id}/shipments:
-    $ref: paths/admin_orders_{id}_claims_{claim_id}_shipments.yaml
+  /admin/orders/{id}/changes:
+    $ref: paths/admin_orders_{id}_changes.yaml
   /admin/orders/{id}/complete:
     $ref: paths/admin_orders_{id}_complete.yaml
-  /admin/orders/{id}/fulfillment:
-    $ref: paths/admin_orders_{id}_fulfillment.yaml
+  /admin/orders/{id}/fulfillments:
+    $ref: paths/admin_orders_{id}_fulfillments.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_cancel.yaml
-  /admin/orders/{id}/line-items/{line_item_id}/reserve:
-    $ref: paths/admin_orders_{id}_line-items_{line_item_id}_reserve.yaml
-  /admin/orders/{id}/refund:
-    $ref: paths/admin_orders_{id}_refund.yaml
-  /admin/orders/{id}/reservations:
-    $ref: paths/admin_orders_{id}_reservations.yaml
-  /admin/orders/{id}/return:
-    $ref: paths/admin_orders_{id}_return.yaml
-  /admin/orders/{id}/shipment:
-    $ref: paths/admin_orders_{id}_shipment.yaml
-  /admin/orders/{id}/shipping-methods:
-    $ref: paths/admin_orders_{id}_shipping-methods.yaml
-  /admin/orders/{id}/swaps:
-    $ref: paths/admin_orders_{id}_swaps.yaml
-  /admin/orders/{id}/swaps/{swap_id}/cancel:
-    $ref: paths/admin_orders_{id}_swaps_{swap_id}_cancel.yaml
-  /admin/orders/{id}/swaps/{swap_id}/fulfillments:
-    $ref: paths/admin_orders_{id}_swaps_{swap_id}_fulfillments.yaml
-  /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel:
+  /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
     $ref: >-
-      paths/admin_orders_{id}_swaps_{swap_id}_fulfillments_{fulfillment_id}_cancel.yaml
-  /admin/orders/{id}/swaps/{swap_id}/process-payment:
-    $ref: paths/admin_orders_{id}_swaps_{swap_id}_process-payment.yaml
-  /admin/orders/{id}/swaps/{swap_id}/shipments:
-    $ref: paths/admin_orders_{id}_swaps_{swap_id}_shipments.yaml
+      paths/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered.yaml
+  /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
+    $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
+  /admin/orders/{id}/preview:
+    $ref: paths/admin_orders_{id}_preview.yaml
+  /admin/payment-collections:
+    $ref: paths/admin_payment-collections.yaml
   /admin/payment-collections/{id}:
     $ref: paths/admin_payment-collections_{id}.yaml
-  /admin/payment-collections/{id}/authorize:
-    $ref: paths/admin_payment-collections_{id}_authorize.yaml
+  /admin/payment-collections/{id}/mark-as-paid:
+    $ref: paths/admin_payment-collections_{id}_mark-as-paid.yaml
+  /admin/payments:
+    $ref: paths/admin_payments.yaml
+  /admin/payments/payment-providers:
+    $ref: paths/admin_payments_payment-providers.yaml
   /admin/payments/{id}:
     $ref: paths/admin_payments_{id}.yaml
   /admin/payments/{id}/capture:
@@ -530,68 +822,80 @@ paths:
     $ref: paths/admin_price-lists_{id}_prices_batch.yaml
   /admin/price-lists/{id}/products:
     $ref: paths/admin_price-lists_{id}_products.yaml
-  /admin/price-lists/{id}/products/prices/batch:
-    $ref: paths/admin_price-lists_{id}_products_prices_batch.yaml
-  /admin/price-lists/{id}/products/{product_id}/prices:
-    $ref: paths/admin_price-lists_{id}_products_{product_id}_prices.yaml
-  /admin/price-lists/{id}/variants/{variant_id}/prices:
-    $ref: paths/admin_price-lists_{id}_variants_{variant_id}_prices.yaml
+  /admin/price-preferences:
+    $ref: paths/admin_price-preferences.yaml
+  /admin/price-preferences/{id}:
+    $ref: paths/admin_price-preferences_{id}.yaml
   /admin/product-categories:
     $ref: paths/admin_product-categories.yaml
   /admin/product-categories/{id}:
     $ref: paths/admin_product-categories_{id}.yaml
-  /admin/product-categories/{id}/products/batch:
-    $ref: paths/admin_product-categories_{id}_products_batch.yaml
+  /admin/product-categories/{id}/products:
+    $ref: paths/admin_product-categories_{id}_products.yaml
   /admin/product-tags:
     $ref: paths/admin_product-tags.yaml
+  /admin/product-tags/{id}:
+    $ref: paths/admin_product-tags_{id}.yaml
   /admin/product-types:
     $ref: paths/admin_product-types.yaml
+  /admin/product-types/{id}:
+    $ref: paths/admin_product-types_{id}.yaml
+  /admin/product-variants:
+    $ref: paths/admin_product-variants.yaml
   /admin/products:
     $ref: paths/admin_products.yaml
-  /admin/products/tag-usage:
-    $ref: paths/admin_products_tag-usage.yaml
-  /admin/products/types:
-    $ref: paths/admin_products_types.yaml
+  /admin/products/batch:
+    $ref: paths/admin_products_batch.yaml
+  /admin/products/export:
+    $ref: paths/admin_products_export.yaml
+  /admin/products/import:
+    $ref: paths/admin_products_import.yaml
+  /admin/products/import/{transaction_id}/confirm:
+    $ref: paths/admin_products_import_{transaction_id}_confirm.yaml
   /admin/products/{id}:
     $ref: paths/admin_products_{id}.yaml
-  /admin/products/{id}/metadata:
-    $ref: paths/admin_products_{id}_metadata.yaml
   /admin/products/{id}/options:
     $ref: paths/admin_products_{id}_options.yaml
   /admin/products/{id}/options/{option_id}:
     $ref: paths/admin_products_{id}_options_{option_id}.yaml
   /admin/products/{id}/variants:
     $ref: paths/admin_products_{id}_variants.yaml
+  /admin/products/{id}/variants/batch:
+    $ref: paths/admin_products_{id}_variants_batch.yaml
+  /admin/products/{id}/variants/inventory-items/batch:
+    $ref: paths/admin_products_{id}_variants_inventory-items_batch.yaml
   /admin/products/{id}/variants/{variant_id}:
     $ref: paths/admin_products_{id}_variants_{variant_id}.yaml
-  /admin/publishable-api-keys:
-    $ref: paths/admin_publishable-api-keys.yaml
-  /admin/publishable-api-keys/{id}:
-    $ref: paths/admin_publishable-api-keys_{id}.yaml
-  /admin/publishable-api-keys/{id}/revoke:
-    $ref: paths/admin_publishable-api-keys_{id}_revoke.yaml
-  /admin/publishable-api-keys/{id}/sales-channels:
-    $ref: paths/admin_publishable-api-keys_{id}_sales-channels.yaml
-  /admin/publishable-api-keys/{id}/sales-channels/batch:
-    $ref: paths/admin_publishable-api-keys_{id}_sales-channels_batch.yaml
+  /admin/products/{id}/variants/{variant_id}/inventory-items:
+    $ref: paths/admin_products_{id}_variants_{variant_id}_inventory-items.yaml
+  /admin/products/{id}/variants/{variant_id}/inventory-items/{inventory_item_id}:
+    $ref: >-
+      paths/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}.yaml
+  /admin/promotions:
+    $ref: paths/admin_promotions.yaml
+  /admin/promotions/rule-attribute-options/{rule_type}:
+    $ref: paths/admin_promotions_rule-attribute-options_{rule_type}.yaml
+  /admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}:
+    $ref: >-
+      paths/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}.yaml
+  /admin/promotions/{id}:
+    $ref: paths/admin_promotions_{id}.yaml
+  /admin/promotions/{id}/buy-rules/batch:
+    $ref: paths/admin_promotions_{id}_buy-rules_batch.yaml
+  /admin/promotions/{id}/rules/batch:
+    $ref: paths/admin_promotions_{id}_rules_batch.yaml
+  /admin/promotions/{id}/target-rules/batch:
+    $ref: paths/admin_promotions_{id}_target-rules_batch.yaml
+  /admin/promotions/{id}/{rule_type}:
+    $ref: paths/admin_promotions_{id}_{rule_type}.yaml
+  /admin/refund-reasons:
+    $ref: paths/admin_refund-reasons.yaml
+  /admin/refund-reasons/{id}:
+    $ref: paths/admin_refund-reasons_{id}.yaml
   /admin/regions:
     $ref: paths/admin_regions.yaml
   /admin/regions/{id}:
     $ref: paths/admin_regions_{id}.yaml
-  /admin/regions/{id}/countries:
-    $ref: paths/admin_regions_{id}_countries.yaml
-  /admin/regions/{id}/countries/{country_code}:
-    $ref: paths/admin_regions_{id}_countries_{country_code}.yaml
-  /admin/regions/{id}/fulfillment-options:
-    $ref: paths/admin_regions_{id}_fulfillment-options.yaml
-  /admin/regions/{id}/fulfillment-providers:
-    $ref: paths/admin_regions_{id}_fulfillment-providers.yaml
-  /admin/regions/{id}/fulfillment-providers/{provider_id}:
-    $ref: paths/admin_regions_{id}_fulfillment-providers_{provider_id}.yaml
-  /admin/regions/{id}/payment-providers:
-    $ref: paths/admin_regions_{id}_payment-providers.yaml
-  /admin/regions/{id}/payment-providers/{provider_id}:
-    $ref: paths/admin_regions_{id}_payment-providers_{provider_id}.yaml
   /admin/reservations:
     $ref: paths/admin_reservations.yaml
   /admin/reservations/{id}:
@@ -602,22 +906,44 @@ paths:
     $ref: paths/admin_return-reasons_{id}.yaml
   /admin/returns:
     $ref: paths/admin_returns.yaml
+  /admin/returns/{id}:
+    $ref: paths/admin_returns_{id}.yaml
   /admin/returns/{id}/cancel:
     $ref: paths/admin_returns_{id}_cancel.yaml
+  /admin/returns/{id}/dismiss-items:
+    $ref: paths/admin_returns_{id}_dismiss-items.yaml
+  /admin/returns/{id}/dismiss-items/{action_id}:
+    $ref: paths/admin_returns_{id}_dismiss-items_{action_id}.yaml
   /admin/returns/{id}/receive:
     $ref: paths/admin_returns_{id}_receive.yaml
+  /admin/returns/{id}/receive-items:
+    $ref: paths/admin_returns_{id}_receive-items.yaml
+  /admin/returns/{id}/receive-items/{action_id}:
+    $ref: paths/admin_returns_{id}_receive-items_{action_id}.yaml
+  /admin/returns/{id}/receive/confirm:
+    $ref: paths/admin_returns_{id}_receive_confirm.yaml
+  /admin/returns/{id}/request:
+    $ref: paths/admin_returns_{id}_request.yaml
+  /admin/returns/{id}/request-items:
+    $ref: paths/admin_returns_{id}_request-items.yaml
+  /admin/returns/{id}/request-items/{action_id}:
+    $ref: paths/admin_returns_{id}_request-items_{action_id}.yaml
+  /admin/returns/{id}/shipping-method:
+    $ref: paths/admin_returns_{id}_shipping-method.yaml
+  /admin/returns/{id}/shipping-method/{action_id}:
+    $ref: paths/admin_returns_{id}_shipping-method_{action_id}.yaml
   /admin/sales-channels:
     $ref: paths/admin_sales-channels.yaml
   /admin/sales-channels/{id}:
     $ref: paths/admin_sales-channels_{id}.yaml
-  /admin/sales-channels/{id}/products/batch:
-    $ref: paths/admin_sales-channels_{id}_products_batch.yaml
-  /admin/sales-channels/{id}/stock-locations:
-    $ref: paths/admin_sales-channels_{id}_stock-locations.yaml
+  /admin/sales-channels/{id}/products:
+    $ref: paths/admin_sales-channels_{id}_products.yaml
   /admin/shipping-options:
     $ref: paths/admin_shipping-options.yaml
   /admin/shipping-options/{id}:
     $ref: paths/admin_shipping-options_{id}.yaml
+  /admin/shipping-options/{id}/rules/batch:
+    $ref: paths/admin_shipping-options_{id}_rules_batch.yaml
   /admin/shipping-profiles:
     $ref: paths/admin_shipping-profiles.yaml
   /admin/shipping-profiles/{id}:
@@ -626,48 +952,69 @@ paths:
     $ref: paths/admin_stock-locations.yaml
   /admin/stock-locations/{id}:
     $ref: paths/admin_stock-locations_{id}.yaml
-  /admin/store:
-    $ref: paths/admin_store.yaml
-  /admin/store/currencies/{code}:
-    $ref: paths/admin_store_currencies_{code}.yaml
-  /admin/store/payment-providers:
-    $ref: paths/admin_store_payment-providers.yaml
-  /admin/store/tax-providers:
-    $ref: paths/admin_store_tax-providers.yaml
-  /admin/swaps:
-    $ref: paths/admin_swaps.yaml
-  /admin/swaps/{id}:
-    $ref: paths/admin_swaps_{id}.yaml
+  /admin/stock-locations/{id}/fulfillment-providers:
+    $ref: paths/admin_stock-locations_{id}_fulfillment-providers.yaml
+  /admin/stock-locations/{id}/fulfillment-sets:
+    $ref: paths/admin_stock-locations_{id}_fulfillment-sets.yaml
+  /admin/stock-locations/{id}/sales-channels:
+    $ref: paths/admin_stock-locations_{id}_sales-channels.yaml
+  /admin/stores:
+    $ref: paths/admin_stores.yaml
+  /admin/stores/{id}:
+    $ref: paths/admin_stores_{id}.yaml
   /admin/tax-rates:
     $ref: paths/admin_tax-rates.yaml
   /admin/tax-rates/{id}:
     $ref: paths/admin_tax-rates_{id}.yaml
-  /admin/tax-rates/{id}/product-types/batch:
-    $ref: paths/admin_tax-rates_{id}_product-types_batch.yaml
-  /admin/tax-rates/{id}/products/batch:
-    $ref: paths/admin_tax-rates_{id}_products_batch.yaml
-  /admin/tax-rates/{id}/shipping-options/batch:
-    $ref: paths/admin_tax-rates_{id}_shipping-options_batch.yaml
+  /admin/tax-rates/{id}/rules:
+    $ref: paths/admin_tax-rates_{id}_rules.yaml
+  /admin/tax-rates/{id}/rules/{rule_id}:
+    $ref: paths/admin_tax-rates_{id}_rules_{rule_id}.yaml
+  /admin/tax-regions:
+    $ref: paths/admin_tax-regions.yaml
+  /admin/tax-regions/{id}:
+    $ref: paths/admin_tax-regions_{id}.yaml
   /admin/uploads:
     $ref: paths/admin_uploads.yaml
-  /admin/uploads/download-url:
-    $ref: paths/admin_uploads_download-url.yaml
-  /admin/uploads/protected:
-    $ref: paths/admin_uploads_protected.yaml
+  /admin/uploads/{id}:
+    $ref: paths/admin_uploads_{id}.yaml
   /admin/users:
     $ref: paths/admin_users.yaml
-  /admin/users/password-token:
-    $ref: paths/admin_users_password-token.yaml
-  /admin/users/reset-password:
-    $ref: paths/admin_users_reset-password.yaml
+  /admin/users/me:
+    $ref: paths/admin_users_me.yaml
   /admin/users/{id}:
     $ref: paths/admin_users_{id}.yaml
-  /admin/variants:
-    $ref: paths/admin_variants.yaml
-  /admin/variants/{id}:
-    $ref: paths/admin_variants_{id}.yaml
-  /admin/variants/{id}/inventory:
-    $ref: paths/admin_variants_{id}_inventory.yaml
+  /admin/workflows-executions:
+    $ref: paths/admin_workflows-executions.yaml
+  /admin/workflows-executions/{id}:
+    $ref: paths/admin_workflows-executions_{id}.yaml
+  /admin/workflows-executions/{workflow_id}/run:
+    $ref: paths/admin_workflows-executions_{workflow_id}_run.yaml
+  /admin/workflows-executions/{workflow_id}/steps/failure:
+    $ref: paths/admin_workflows-executions_{workflow_id}_steps_failure.yaml
+  /admin/workflows-executions/{workflow_id}/steps/success:
+    $ref: paths/admin_workflows-executions_{workflow_id}_steps_success.yaml
+  /admin/workflows-executions/{workflow_id}/subscribe:
+    $ref: paths/admin_workflows-executions_{workflow_id}_subscribe.yaml
+  /admin/workflows-executions/{workflow_id}/{transaction_id}:
+    $ref: paths/admin_workflows-executions_{workflow_id}_{transaction_id}.yaml
+  /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe:
+    $ref: >-
+      paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
+  /auth/session:
+    $ref: paths/auth_session.yaml
+  /auth/token/refresh:
+    $ref: paths/auth_token_refresh.yaml
+  /auth/user/{auth_provider}:
+    $ref: paths/auth_user_{auth_provider}.yaml
+  /auth/user/{auth_provider}/callback:
+    $ref: paths/auth_user_{auth_provider}_callback.yaml
+  /auth/user/{auth_provider}/register:
+    $ref: paths/auth_user_{auth_provider}_register.yaml
+  /auth/user/{auth_provider}/reset-password:
+    $ref: paths/auth_user_{auth_provider}_reset-password.yaml
+  /auth/user/{auth_provider}/update:
+    $ref: paths/auth_user_{auth_provider}_update.yaml
 components:
   securitySchemes:
     api_token:

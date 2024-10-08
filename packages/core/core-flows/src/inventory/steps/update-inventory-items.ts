@@ -1,27 +1,32 @@
-import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
 import {
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 export const updateInventoryItemsStepId = "update-inventory-items-step"
+/**
+ * This step updates one or more inventory items.
+ */
 export const updateInventoryItemsStep = createStep(
   updateInventoryItemsStepId,
-  async (input: InventoryNext.UpdateInventoryItemInput[], { container }) => {
-    const inventoryService = container.resolve<IInventoryServiceNext>(
-      ModuleRegistrationName.INVENTORY
+  async (input: InventoryTypes.UpdateInventoryItemInput[], { container }) => {
+    const inventoryService = container.resolve<IInventoryService>(
+      Modules.INVENTORY
     )
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
 
-    const dataBeforeUpdate = await inventoryService.list(
+    const dataBeforeUpdate = await inventoryService.listInventoryItems(
       { id: input.map(({ id }) => id) },
       {}
     )
 
-    const updatedInventoryItems = await inventoryService.update(input)
+    const updatedInventoryItems = await inventoryService.updateInventoryItems(
+      input
+    )
 
     return new StepResponse(updatedInventoryItems, {
       dataBeforeUpdate,
@@ -36,11 +41,11 @@ export const updateInventoryItemsStep = createStep(
 
     const { dataBeforeUpdate, selects, relations } = revertInput
 
-    const inventoryService = container.resolve<IInventoryServiceNext>(
-      ModuleRegistrationName.INVENTORY
+    const inventoryService = container.resolve<IInventoryService>(
+      Modules.INVENTORY
     )
 
-    await inventoryService.update(
+    await inventoryService.updateInventoryItems(
       dataBeforeUpdate.map((data) =>
         convertItemResponseToUpdateRequest(data, selects, relations)
       )

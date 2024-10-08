@@ -1,7 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -19,7 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.REGION)
+        service = appContainer.resolve(Modules.REGION)
       })
 
       beforeEach(async () => {
@@ -87,9 +87,12 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
-        const deletedRegion = await service.retrieve(updated.data.region.id, {
-          withDeleted: true,
-        })
+        const deletedRegion = await service.retrieveRegion(
+          updated.data.region.id,
+          {
+            withDeleted: true,
+          }
+        )
 
         // @ts-ignore
         expect(deletedRegion.deleted_at).toBeTruthy()
@@ -294,7 +297,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw on unknown properties in update", async () => {
-        const created = await service.create({
+        const created = await service.createRegions({
           name: "Test Region",
           currency_code: "usd",
         })
@@ -318,7 +321,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all regions and count", async () => {
-        await service.create([
+        await service.createRegions([
           {
             name: "Test",
             currency_code: "usd",
@@ -344,7 +347,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching of regions", async () => {
-        await service.create([
+        await service.createRegions([
           {
             name: "APAC",
             currency_code: "usd",
@@ -369,7 +372,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get a region", async () => {
-        const [region] = await service.create([
+        const [region] = await service.createRegions([
           {
             name: "Test",
             currency_code: "usd",

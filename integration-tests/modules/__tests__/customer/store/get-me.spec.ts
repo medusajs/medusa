@@ -1,7 +1,9 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
 
@@ -12,13 +14,16 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("GET /store/customers", () => {
       let appContainer
-      let customerModuleService: ICustomerModuleService
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+      })
+
+      beforeEach(async () => {
+        appContainer = getContainer()
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       it("should retrieve auth user's customer", async () => {
@@ -27,7 +32,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.get(`/store/customers/me`, {
-          headers: { authorization: `Bearer ${jwt}` },
+          headers: { authorization: `Bearer ${jwt}`, ...storeHeaders.headers },
         })
 
         expect(response.status).toEqual(200)

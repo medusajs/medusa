@@ -1,20 +1,20 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ICustomerModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-type DeleteCustomerAddressStepInput = string[]
 export const deleteCustomerAddressesStepId = "delete-customer-addresses"
+/**
+ * This step deletes one or more customer addresses.
+ */
 export const deleteCustomerAddressesStep = createStep(
   deleteCustomerAddressesStepId,
-  async (ids: DeleteCustomerAddressStepInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+  async (ids: string[], { container }) => {
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    const existing = await service.listAddresses({
+    const existing = await service.listCustomerAddresses({
       id: ids,
     })
-    await service.deleteAddresses(ids)
+    await service.deleteCustomerAddresses(ids)
 
     return new StepResponse(void 0, existing)
   },
@@ -23,10 +23,8 @@ export const deleteCustomerAddressesStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    await service.addAddresses(prevAddresses)
+    await service.createCustomerAddresses(prevAddresses)
   }
 )

@@ -3,15 +3,15 @@ import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   BigNumberRawValue,
-  DAL,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   PromotionUtils,
+  createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,
@@ -22,34 +22,35 @@ import {
   ManyToMany,
   OnInit,
   OneToOne,
-  OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields =
-  | "value"
-  | "max_quantity"
-  | "apply_to_quantity"
-  | "buy_rules_min_quantity"
-  | "allocation"
-  | DAL.SoftDeletableEntityDateColumns
+const tableName = "promotion_application_method"
+const CurrencyCodeIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
+})
 
-@Entity({ tableName: "promotion_application_method" })
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ApplicationMethod {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @MikroOrmBigNumberProperty({ nullable: true })
-  value: BigNumber | number | null = null
+  @MikroOrmBigNumberProperty()
+  value: BigNumber | number | null
 
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_value: BigNumberRawValue | null = null
+  @Property({ columnType: "jsonb" })
+  raw_value: BigNumberRawValue | null
+
+  @Property({ columnType: "text", nullable: true })
+  @CurrencyCodeIndex.MikroORMIndex()
+  currency_code: string | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
   max_quantity?: number | null = null
@@ -79,21 +80,21 @@ export default class ApplicationMethod {
     entity: () => Promotion,
     onDelete: "cascade",
   })
-  promotion: Promotion
+  promotion: Rel<Promotion>
 
   @ManyToMany(() => PromotionRule, "method_target_rules", {
     owner: true,
     pivotTable: "application_method_target_rules",
     cascade: ["soft-remove"] as any,
   })
-  target_rules = new Collection<PromotionRule>(this)
+  target_rules = new Collection<Rel<PromotionRule>>(this)
 
   @ManyToMany(() => PromotionRule, "method_buy_rules", {
     owner: true,
     pivotTable: "application_method_buy_rules",
     cascade: ["soft-remove"] as any,
   })
-  buy_rules = new Collection<PromotionRule>(this)
+  buy_rules = new Collection<Rel<PromotionRule>>(this)
 
   @Property({
     onCreate: () => new Date(),

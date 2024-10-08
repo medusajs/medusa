@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
-  DALUtils,
-  Searchable,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -13,19 +13,22 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import TaxProvider from "./tax-provider"
 import TaxRate from "./tax-rate"
 
-type OptionalTaxRegionProps = DAL.SoftDeletableEntityDateColumns
+type OptionalTaxRegionProps = DAL.SoftDeletableModelDateColumns
 
 const TABLE_NAME = "tax_region"
 
+export const countryCodeNullProvinceIndexName =
+  "IDX_tax_region_unique_country_nullable_province"
 export const countryCodeProvinceIndexName =
   "IDX_tax_region_unique_country_province"
 const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
@@ -33,7 +36,22 @@ const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   tableName: TABLE_NAME,
   columns: ["country_code", "province_code"],
   unique: true,
+  where: "deleted_at IS NULL",
 })
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  tableName: TABLE_NAME,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const countryCodeNullableProvinceIndexStatement =
+  createPsqlIndexStatementHelper({
+    name: countryCodeNullProvinceIndexName,
+    tableName: TABLE_NAME,
+    columns: ["country_code"],
+    unique: true,
+    where: "province_code IS NULL AND deleted_at IS NULL",
+  })
 
 export const taxRegionProviderTopLevelCheckName =
   "CK_tax_region_provider_top_level"
@@ -48,6 +66,7 @@ export const taxRegionCountryTopLevelCheckName =
   name: taxRegionCountryTopLevelCheckName,
   expression: `parent_id IS NULL OR province_code IS NOT NULL`,
 })
+@countryCodeNullableProvinceIndexStatement.MikroORMIndex()
 @countryCodeProvinceIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -65,7 +84,7 @@ export default class TaxRegion {
   provider_id: string | null = null
 
   @ManyToOne(() => TaxProvider, { persist: false })
-  provider: TaxProvider
+  provider: Rel<TaxProvider>
 
   @Searchable()
   @Property({ columnType: "text" })
@@ -85,7 +104,7 @@ export default class TaxRegion {
   parent_id: string | null = null
 
   @ManyToOne(() => TaxRegion, { persist: false })
-  parent: TaxRegion
+  parent: Rel<TaxRegion>
 
   @OneToMany(() => TaxRate, (label) => label.tax_region, {
     cascade: ["soft-remove" as Cascade],
@@ -95,7 +114,7 @@ export default class TaxRegion {
   @OneToMany(() => TaxRegion, (label) => label.parent, {
     cascade: ["soft-remove" as Cascade],
   })
-  children = new Collection<TaxRegion>(this)
+  children = new Collection<Rel<TaxRegion>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -118,11 +137,7 @@ export default class TaxRegion {
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: TABLE_NAME,
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @deletedAtIndexStatement.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

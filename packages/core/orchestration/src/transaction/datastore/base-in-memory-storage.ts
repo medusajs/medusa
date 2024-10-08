@@ -1,5 +1,6 @@
 import { TransactionState } from "@medusajs/utils"
 import { TransactionCheckpoint } from "../distributed-transaction"
+import { TransactionOptions } from "../types"
 import { DistributedTransactionStorage } from "./abstract-storage"
 
 // eslint-disable-next-line max-len
@@ -11,7 +12,10 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     this.storage = new Map()
   }
 
-  async get(key: string): Promise<TransactionCheckpoint | undefined> {
+  async get(
+    key: string,
+    options?: TransactionOptions
+  ): Promise<TransactionCheckpoint | undefined> {
     return this.storage.get(key)
   }
 
@@ -22,7 +26,8 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
   async save(
     key: string,
     data: TransactionCheckpoint,
-    ttl?: number
+    ttl?: number,
+    options?: TransactionOptions
   ): Promise<void> {
     const hasFinished = [
       TransactionState.DONE,

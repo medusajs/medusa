@@ -1,16 +1,17 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteProductOptionsStepId = "delete-product-options"
+/**
+ * This step deletes one or more product options.
+ */
 export const deleteProductOptionsStep = createStep(
   deleteProductOptionsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.softDeleteOptions(ids)
+    await service.softDeleteProductOptions(ids)
     return new StepResponse(void 0, ids)
   },
   async (prevIds, { container }) => {
@@ -18,10 +19,8 @@ export const deleteProductOptionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.restoreOptions(prevIds)
+    await service.restoreProductOptions(prevIds)
   }
 )

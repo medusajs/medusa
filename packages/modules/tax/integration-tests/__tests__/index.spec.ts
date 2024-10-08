@@ -1,31 +1,294 @@
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { ITaxModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
+import { ITaxModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
+import { TaxModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ITaxModuleService>({
   moduleName: Modules.TAX,
-  testSuite: ({ service }: SuiteOptions<ITaxModuleService>) => {
+  testSuite: ({ service }) => {
     describe("TaxModuleService", function () {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.TAX, {
+          service: TaxModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "taxRate",
+          "taxRegion",
+          "taxRateRule",
+          "taxProvider",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          taxRate: {
+            id: {
+              linkable: "tax_rate_id",
+              entity: "TaxRate",
+              primaryKey: "id",
+              serviceName: "Tax",
+              field: "taxRate",
+            },
+          },
+          taxRegion: {
+            id: {
+              linkable: "tax_region_id",
+              entity: "TaxRegion",
+              primaryKey: "id",
+              serviceName: "Tax",
+              field: "taxRegion",
+            },
+          },
+          taxRateRule: {
+            id: {
+              linkable: "tax_rate_rule_id",
+              entity: "TaxRateRule",
+              primaryKey: "id",
+              serviceName: "Tax",
+              field: "taxRateRule",
+            },
+          },
+          taxProvider: {
+            id: {
+              linkable: "tax_provider_id",
+              entity: "TaxProvider",
+              primaryKey: "id",
+              serviceName: "Tax",
+              field: "taxProvider",
+            },
+          },
+        })
+      })
+
+      it("should create tax region", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        expect(region).toEqual(
+          expect.objectContaining({
+            id: region.id,
+            country_code: "us",
+          })
+        )
+      })
+
+      it("should create two tax regions with the same country code but different province", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          province_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: "ca",
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+      })
+
+      it("should create two tax regions in a child-parent-like relationship", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: null,
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+      })
+
+      it("should create three tax regions in a child-parent-like relationship", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const regionThree = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NE",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: null,
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+
+        expect(regionThree).toEqual(
+          expect.objectContaining({
+            id: regionThree.id,
+            country_code: "us",
+            province_code: "ne",
+          })
+        )
+      })
+
+      it("should throw when creating a tax region with a country code of an existing region", async () => {
+        await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const error = await service
+          .createTaxRegions({
+            country_code: "US",
+            default_tax_rate: {
+              name: "Test Rate",
+              rate: 0.2,
+              code: "TEST",
+            },
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual(
+          "Tax region with country_code: us, already exists."
+        )
+      })
+
+      it("should throw when creating a tax region with a country code and province code of an existing region", async () => {
+        await service.createTaxRegions({
+          country_code: "US",
+          province_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+            code: "TEST",
+          },
+        })
+
+        const error = await service
+          .createTaxRegions({
+            country_code: "US",
+            province_code: "CA",
+            default_tax_rate: {
+              name: "Test Rate",
+              rate: 0.2,
+              code: "TEST",
+            },
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual(
+          "Tax region with country_code: us, province_code: ca, already exists."
+        )
+      })
+
       it("should create tax rates and update them", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           code: "test",
           rate: 8.23,
         })
 
-        const updatedRate = await service.update(rate.id, {
+        const updatedRate = await service.updateTaxRates(rate.id, {
           name: "Updated Rate",
           code: "TEST",
           rate: 8.25,
@@ -41,7 +304,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        const updatedDefaultRate = await service.update(
+        const updatedDefaultRate = await service.updateTaxRates(
           { tax_region_id: region.id, is_default: true },
           { rate: 2 }
         )
@@ -51,18 +314,19 @@ moduleIntegrationTestRunner({
             tax_region_id: region.id,
             rate: 2,
             name: "Test Rate",
-            code: null,
+            code: "TEST-CODE",
             is_default: true,
           }),
         ])
 
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         expect(rates).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               tax_region_id: region.id,
               rate: 2,
               name: "Test Rate",
+              code: "TEST-CODE",
               is_default: true,
             }),
             expect.objectContaining({
@@ -82,17 +346,18 @@ moduleIntegrationTestRunner({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           code: "test",
           rate: 8.23,
         })
 
-        await service.update(rate.id, {
+        await service.updateTaxRates(rate.id, {
           name: "Updated Rate",
           code: "TEST",
           rate: 8.25,
@@ -117,7 +382,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        await service.update(rate.id, {
+        await service.updateTaxRates(rate.id, {
           rules: [
             { reference: "product", reference_id: "product_id_1" },
             { reference: "product", reference_id: "product_id_2" },
@@ -163,6 +428,7 @@ moduleIntegrationTestRunner({
         const region = await service.createTaxRegions({
           country_code: "US",
           default_tax_rate: {
+            code: "TEST",
             name: "Test Rate",
             rate: 0.2,
           },
@@ -174,6 +440,7 @@ moduleIntegrationTestRunner({
             province_code: "CA",
             parent_id: region.id,
             default_tax_rate: {
+              code: "TEST",
               name: "CA Rate",
               rate: 8.25,
             },
@@ -198,7 +465,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         expect(rates).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -222,16 +489,18 @@ moduleIntegrationTestRunner({
           {
             country_code: "US",
             default_tax_rate: {
+              code: "TEST",
               name: "Test Rate",
               rate: 0.2,
             },
           },
         ])
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           rate: 8.23,
+          code: "TEST-CODE",
         })
 
         await service.createTaxRateRules([
@@ -453,16 +722,16 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const taxRate = await service.create({
+        const taxRate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
           name: "test",
         })
 
-        await service.delete(taxRate.id)
+        await service.deleteTaxRates(taxRate.id)
 
-        const rates = await service.list({ tax_region_id: region.id })
+        const rates = await service.listTaxRates({ tax_region_id: region.id })
 
         expect(rates).toEqual([])
       })
@@ -472,16 +741,16 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const taxRate = await service.create({
+        const taxRate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
           name: "test",
         })
 
-        await service.softDelete([taxRate.id])
+        await service.softDeleteTaxRates([taxRate.id])
 
-        const rates = await service.list(
+        const rates = await service.listTaxRates(
           { tax_region_id: region.id },
           { withDeleted: true }
         )
@@ -504,7 +773,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -514,7 +783,7 @@ moduleIntegrationTestRunner({
         await service.deleteTaxRegions(region.id)
 
         const taxRegions = await service.listTaxRegions()
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
 
         expect(taxRegions).toEqual([])
         expect(rates).toEqual([])
@@ -530,7 +799,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -543,7 +812,7 @@ moduleIntegrationTestRunner({
           {},
           { withDeleted: true }
         )
-        const rates = await service.list({}, { withDeleted: true })
+        const rates = await service.listTaxRates({}, { withDeleted: true })
 
         expect(taxRegions).toEqual([
           expect.objectContaining({
@@ -567,7 +836,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -578,10 +847,10 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.delete(rate.id)
+        await service.deleteTaxRates(rate.id)
 
         const taxRegions = await service.listTaxRegions()
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         const rules = await service.listTaxRateRules()
 
         expect(taxRegions).toEqual([expect.objectContaining({ id: region.id })])
@@ -594,7 +863,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -605,13 +874,13 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.softDelete(rate.id)
+        await service.softDeleteTaxRates(rate.id)
 
         const taxRegions = await service.listTaxRegions(
           {},
           { withDeleted: true }
         )
-        const rates = await service.list({}, { withDeleted: true })
+        const rates = await service.listTaxRates({}, { withDeleted: true })
         const rules = await service.listTaxRateRules({}, { withDeleted: true })
 
         expect(taxRegions).toEqual([
@@ -640,7 +909,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -676,7 +945,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        const rateWithRules = await service.retrieve(rate.id, {
+        const rateWithRules = await service.retrieveTaxRate(rate.id, {
           relations: ["rules"],
         })
         expect(rateWithRules.rules.length).toBe(1)
@@ -688,7 +957,7 @@ moduleIntegrationTestRunner({
           reference_id: ruleOne.reference_id,
         })
 
-        const rateWithRulesAfterReAdd = await service.retrieve(rate.id, {
+        const rateWithRulesAfterReAdd = await service.retrieveTaxRate(rate.id, {
           relations: ["rules"],
         })
         expect(rateWithRulesAfterReAdd.rules.length).toBe(2)
@@ -700,7 +969,7 @@ moduleIntegrationTestRunner({
         })
 
         await expect(
-          service.create({
+          service.createTaxRates({
             tax_region_id: region.id,
             value: 10,
             code: "test",
@@ -711,10 +980,10 @@ moduleIntegrationTestRunner({
             ],
           })
         ).rejects.toThrowError(
-          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1 already exists./
+          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -729,7 +998,7 @@ moduleIntegrationTestRunner({
             reference_id: "product_id_1",
           })
         ).rejects.toThrowError(
-          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1 already exists./
+          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
       })
 
@@ -764,7 +1033,7 @@ moduleIntegrationTestRunner({
             province_code: "QC",
           })
         ).rejects.toThrowError(
-          "Tax region with country_code: ca, province_code: qc already exists."
+          "Tax region with country_code: ca, province_code: qc, already exists."
         )
       })
 
@@ -786,18 +1055,20 @@ moduleIntegrationTestRunner({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
         await expect(
-          service.create({
+          service.createTaxRates({
             tax_region_id: rate.id,
             name: "Shipping Rate",
             rate: 8.23,
             is_default: true,
+            code: "TEST-CODE-2",
           })
         ).rejects.toThrowError(
-          /Tax rate with tax_region_id: .*? already exists./
+          /Tax rate with tax_region_id: .*?, already exists./
         )
       })
 

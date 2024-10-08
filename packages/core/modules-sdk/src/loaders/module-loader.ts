@@ -1,12 +1,7 @@
-import {
-  Logger,
-  MedusaContainer,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
-
+import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
 import { asValue } from "awilix"
 import { EOL } from "os"
+import { MODULE_SCOPE } from "../types"
 import { loadInternalModule } from "./utils"
 
 export const moduleLoader = async ({
@@ -33,16 +28,10 @@ export const moduleLoader = async ({
 
     if (registrationResult?.error) {
       const { error } = registrationResult
-      if (resolution.definition.isRequired) {
-        logger?.error(
-          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-        )
-        throw error
-      }
-
-      logger?.warn(
+      logger?.error(
         `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
       )
+      throw error
     }
   }
 }
@@ -55,8 +44,12 @@ async function loadModule(
   loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const modDefinition = resolution.definition
-  const registrationName = modDefinition.registrationName
 
+  if (!modDefinition.key) {
+    throw new Error(`Module definition is missing property "key"`)
+  }
+
+  const keyName = modDefinition.key
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
   const canSkip =
@@ -76,7 +69,7 @@ async function loadModule(
       message = `The module ${resolution.definition.label} is missing its resources config`
     }
 
-    container.register(registrationName, asValue(undefined))
+    container.register(keyName, asValue(undefined))
 
     return {
       error: new Error(message),
@@ -84,7 +77,7 @@ async function loadModule(
   }
 
   if (resolution.resolutionPath === false) {
-    container.register(registrationName, asValue(undefined))
+    container.register(keyName, asValue(undefined))
 
     return
   }

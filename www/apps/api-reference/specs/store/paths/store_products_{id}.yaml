@@ -1,85 +1,105 @@
 get:
-  operationId: GetProductsProduct
+  operationId: GetProductsId
   summary: Get a Product
-  description: >
-    Retrieve a Product's details. For accurate and correct pricing of the
-    product based on the customer's context, it's highly recommended to pass
-    fields such as
-
-    `region_id`, `currency_code`, and `cart_id` when available.
-
-
-    Passing `sales_channel_id` ensures retrieving only products available in the
-    current sales channel.
-
-    You can alternatively use a publishable API key in the request header
-    instead of passing a `sales_channel_id`.
+  description: >-
+    Retrieve a product by its ID. You can expand the product's relations or
+    select the fields that should be returned.
+  x-authenticated: false
   externalDocs:
-    description: How to pass product pricing parameters
     url: >-
-      https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters
+      https://docs.medusajs.com/v2/resources/storefront-development/products/price
+    description: 'Storefront guide: How to retrieve a product variants'' prices.'
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-    - in: query
-      name: sales_channel_id
-      description: The ID of the sales channel the customer is viewing the product from.
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
       schema:
         type: string
-    - in: query
-      name: cart_id
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        The ID of the cart. This is useful for accurate pricing based on the
-        cart's context.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: region_id
-      description: >-
-        The ID of the region. This is useful for accurate pricing based on the
-        selected region.
-      schema:
-        type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        product.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned product.
-      schema:
-        type: string
-    - in: query
-      name: currency_code
-      style: form
-      explode: false
-      description: >-
-        A 3 character ISO currency code. This is useful for accurate pricing
-        based on the selected currency.
-      schema:
-        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
         externalDocs:
-          url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
-          description: See a list of codes.
-  x-codegen:
-    method: retrieve
-    queryParams: StoreGetProductsProductParams
+          url: '#select-fields-and-relations'
+    - name: region_id
+      in: query
+      description: >-
+        The ID of the region the product is being viewed from. This is required
+        if you're retrieving product variant prices with taxes.
+      required: false
+      schema:
+        type: string
+        title: region_id
+        description: >-
+          The ID of the region the product is being viewed from. This is
+          required if you're retrieving product variant prices with taxes.
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
+          description: 'Storefront guide: How to show product variants'' prices with taxes.'
+    - name: country_code
+      in: query
+      description: >-
+        The country code the product is being viewed from. This is required if
+        you're retrieving product variant prices with taxes.
+      required: false
+      schema:
+        type: string
+        title: country_code
+        description: >-
+          The country code the product is being viewed from. This is required if
+          you're retrieving product variant prices with taxes.
+    - name: province
+      in: query
+      description: >-
+        The province the product is being viewed from. This is useful to narrow
+        down the tax context when calculating product variant prices with taxes.
+      required: false
+      schema:
+        type: string
+        title: province
+        description: >-
+          The province the product is being viewed from. This is useful to
+          narrow down the tax context when calculating product variant prices
+          with taxes.
+    - name: cart_id
+      in: query
+      description: >-
+        The ID of the customer's cart. If set, the cart's region and shipping
+        address's country code and province are used instead of the `region_id`,
+        `country_code`, and `province` properties.
+      required: false
+      schema:
+        type: string
+        title: cart_id
+        description: >-
+          The ID of the customer's cart. If set, the cart's region and shipping
+          address's country code and province are used instead of the
+          `region_id`, `country_code`, and `province` properties.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_products_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_products_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -92,9 +112,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/StoreProductsRes.yaml
+            $ref: ../components/schemas/StoreProductResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':

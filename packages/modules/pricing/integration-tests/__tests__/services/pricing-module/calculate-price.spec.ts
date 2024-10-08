@@ -1,12 +1,15 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
   IPricingModuleService,
   PricingTypes,
-} from "@medusajs/types"
-import { PriceListType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
@@ -41,6 +44,7 @@ const createPriceLists = async (
       title: "Test Price List",
       description: "test description",
       type: PriceListType.SALE,
+      status: PriceListStatus.ACTIVE,
       rules,
       prices,
       ...priceListOverride,
@@ -48,18 +52,16 @@ const createPriceLists = async (
   ])
 }
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("PricingModule Service - Calculate Price", () => {
       describe("calculatePrices", () => {
         beforeEach(async () => {
           const priceSetsData = [
             { id: "price-set-EUR" },
             { id: "price-set-PLN" },
+            { id: "price-set-ETH" },
           ] as unknown as CreatePriceSetDTO[]
 
           const pricesData = [
@@ -69,6 +71,18 @@ moduleIntegrationTestRunner({
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 1000,
+              min_quantity: 1,
+              max_quantity: 10,
+              rules_count: 0,
+            },
+            {
+              id: "price-ETH",
+              title: "price ETH",
+              price_set_id: "price-set-ETH",
+              currency_code: "ETH",
+              amount: {
+                value: "12345678988754.00000010000000085",
+              },
               min_quantity: 1,
               max_quantity: 10,
               rules_count: 0,
@@ -157,32 +171,11 @@ moduleIntegrationTestRunner({
             },
           ]
 
-          const ruleTypesData = [
-            {
-              id: "rule-type-company_id",
-              name: "rule type company id",
-              rule_attribute: "company_id",
-              default_priority: 2,
-            },
-            {
-              id: "rule-type-region_id",
-              name: "rule type region id",
-              rule_attribute: "region_id",
-              default_priority: 1,
-            },
-            {
-              id: "rule-type-customer_group_id",
-              name: "rule type customer group id",
-              rule_attribute: "customer_group_id",
-              default_priority: 3,
-            },
-          ]
-
           const priceRuleData = [
             {
               id: "price-rule-company_id-EUR",
               price_set_id: "price-set-EUR",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "EUR",
               price_list_id: "test",
               price_id: "price-company_id-EUR",
@@ -190,7 +183,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-company_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-company_id-PLN",
@@ -198,7 +191,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id-PLN",
@@ -206,7 +199,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id+company_id-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id+company_id-PLN",
@@ -214,7 +207,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id+company_id-medusa-company-id",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id+company_id-PLN",
@@ -222,7 +215,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-PLN-5-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id-PLN-5-qty",
@@ -230,7 +223,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-company_id-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR",
@@ -238,7 +231,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-company_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR",
@@ -246,7 +239,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-company_id-PL-4-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-4-qty",
@@ -254,7 +247,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-company_id-PLN-4-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-4-qty",
@@ -262,7 +255,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-currency_customer_group_code-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -270,7 +263,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-currency_customer_group_code-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -278,7 +271,7 @@ moduleIntegrationTestRunner({
             {
               id: "price-rule-region_id-currency_customer_group_code-test_customer_group",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-customer_group_id",
+              attribute: "customer_group_id",
               value: "test-customer-group",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -289,7 +282,6 @@ moduleIntegrationTestRunner({
             priceSetsData,
             pricesData,
             priceRuleData,
-            ruleTypesData,
           })
         })
 
@@ -299,7 +291,7 @@ moduleIntegrationTestRunner({
             {}
           )
 
-          expect(result).rejects.toThrow(
+          await expect(result).rejects.toThrow(
             "Method calculatePrices requires currency_code in the pricing context"
           )
 
@@ -308,9 +300,28 @@ moduleIntegrationTestRunner({
             { context: { region_id: "DE" } }
           )
 
-          expect(result).rejects.toThrow(
+          await expect(result).rejects.toThrow(
             "Method calculatePrices requires currency_code in the pricing context"
           )
+        })
+
+        it("calculating prices when listing price sets should return null when there are no prices", async () => {
+          const [newSet] = await service.createPriceSets([{}])
+          const calculatePricesResult = await service.calculatePrices(
+            { id: [newSet.id] },
+            { context: { currency_code: "PLN" } }
+          )
+
+          const priceSetsResult = await service.listPriceSets(
+            {
+              id: [newSet.id],
+              context: { currency_code: "PLN" },
+            },
+            { relations: ["calculated_price"] }
+          )
+
+          expect(calculatePricesResult).toEqual([])
+          expect(priceSetsResult[0].calculated_price).toEqual(null)
         })
 
         it("should return filled prices when 1 context is present and price is setup for PLN", async () => {
@@ -323,33 +334,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -369,6 +368,50 @@ moduleIntegrationTestRunner({
           ])
         })
 
+        it("should return filled prices when 1 context is present and price is setup for ETH", async () => {
+          const priceSetsResult = await service.calculatePrices(
+            { id: ["price-set-ETH"] },
+            {
+              context: { currency_code: "ETH" },
+            }
+          )
+
+          expect(priceSetsResult).toEqual([
+            {
+              id: "price-set-ETH",
+              is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
+              calculated_amount: 12345678988754.000000100000001,
+              raw_calculated_amount: {
+                value: "12345678988754.00000010000000085",
+                precision: 20,
+              },
+              is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
+              original_amount: 12345678988754.000000100000001,
+              raw_original_amount: {
+                value: "12345678988754.00000010000000085",
+                precision: 20,
+              },
+              currency_code: "ETH",
+              calculated_price: {
+                id: "price-ETH",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 1,
+                max_quantity: 10,
+              },
+              original_price: {
+                id: "price-ETH",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 1,
+                max_quantity: 10,
+              },
+            },
+          ])
+        })
+
         it("should return filled prices when 1 context is present and price is setup for PLN region_id", async () => {
           const priceSetsResult = await service.calculatePrices(
             { id: ["price-set-EUR", "price-set-PLN"] },
@@ -379,33 +422,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -435,33 +466,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -489,52 +508,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
-              id: "price-set-PLN",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-          ])
+          expect(priceSetsResult).toEqual([])
         })
 
         it("should return filled prices when 2 contexts are present and price is setup", async () => {
@@ -547,33 +521,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -603,33 +565,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -661,9 +611,19 @@ moduleIntegrationTestRunner({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 250,
+              raw_calculated_amount: {
+                value: "250",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 250,
+              raw_original_amount: {
+                value: "250",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN-5-qty",
@@ -698,33 +658,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -758,35 +706,23 @@ moduleIntegrationTestRunner({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // Currency Code + Region value + customer group id
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 100,
+              raw_calculated_amount: {
+                value: "100",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 100,
+              raw_original_amount: {
+                value: "100",
+                precision: 20,
+              },
               currency_code: "EUR",
               calculated_price: {
                 id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -820,35 +756,23 @@ moduleIntegrationTestRunner({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // PLN price set is not setup for EUR currency_code so it will default to a null set
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -882,35 +806,23 @@ moduleIntegrationTestRunner({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // PLN price set is not setup for EUR currency_code so it will default to a null set
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -938,52 +850,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
-              id: "price-set-PLN",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-          ])
+          expect(priceSetsResult).toEqual([])
         })
 
         it("should return filled prices when 2 context is present and prices are setup, but only for one of the contexts", async () => {
@@ -1000,33 +867,21 @@ moduleIntegrationTestRunner({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -1041,6 +896,61 @@ moduleIntegrationTestRunner({
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
+              },
+            },
+          ])
+        })
+
+        it("should return a price of 0", async () => {
+          const priceSet = await service.createPriceSets({
+            prices: [
+              {
+                amount: 0,
+                currency_code: "USD",
+              },
+            ],
+          })
+
+          const priceSetsResult = await service.calculatePrices(
+            { id: [priceSet.id] },
+            {
+              context: {
+                currency_code: "USD",
+              },
+            }
+          )
+
+          expect(priceSetsResult).toEqual([
+            {
+              id: priceSet.id,
+              is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
+              calculated_amount: 0,
+              raw_calculated_amount: {
+                value: "0",
+                precision: 20,
+              },
+              is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
+              original_amount: 0,
+              raw_original_amount: {
+                value: "0",
+                precision: 20,
+              },
+              currency_code: "USD",
+              calculated_price: {
+                id: expect.any(String),
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: null,
+                max_quantity: null,
+              },
+              original_price: {
+                id: expect.any(String),
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: null,
+                max_quantity: null,
               },
             },
           ])
@@ -1064,33 +974,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1135,33 +1033,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
-                calculated_amount: 116,
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1198,33 +1084,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1258,33 +1132,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 1000,
+                raw_original_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1321,33 +1183,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: true,
+                is_original_price_tax_inclusive: false,
                 original_amount: 232,
+                raw_original_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1383,33 +1233,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-region_id-PLN",
@@ -1445,33 +1283,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1520,33 +1346,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1596,33 +1410,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
+                raw_calculated_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-company_id-PLN",
@@ -1671,33 +1473,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
+                raw_calculated_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-company_id-PLN",
@@ -1717,7 +1507,7 @@ moduleIntegrationTestRunner({
             ])
           })
 
-          it("should return price list prices for price list with customer groupst", async () => {
+          it("should return price list prices for price list with customer groups", async () => {
             const [{ id }] = await createPriceLists(
               service,
               {},
@@ -1750,9 +1540,16 @@ moduleIntegrationTestRunner({
               {
                 id: "price-set-EUR",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 200,
+                raw_calculated_amount: {
+                  value: "200",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: null,
+                raw_original_amount: null,
                 currency_code: "EUR",
                 calculated_price: {
                   id: expect.any(String),
@@ -1799,33 +1596,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 111,
+                raw_calculated_amount: {
+                  value: "111",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1872,33 +1657,21 @@ moduleIntegrationTestRunner({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1915,6 +1688,171 @@ moduleIntegrationTestRunner({
                   max_quantity: 5,
                 },
               },
+            ])
+          })
+        })
+
+        describe("Tax inclusivity", () => {
+          it("should return the currency tax inclusivity for the selected price when it is not region-based", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 1000,
+                raw_calculated_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
+                is_original_price_tax_inclusive: true,
+                original_amount: 1000,
+                raw_original_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
+          it("should return the region tax inclusivity for the selected price when it is region-based", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN", region_id: "PL" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
+          it("should return the region tax inclusivity for the selected price when there are multiple region preferences", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "region_id",
+                value: "DE",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN", region_id: "PL" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
+          it("should return the appropriate tax inclusive setting for each calculated and original price", async () => {
+            await createPriceLists(service, {}, {})
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "PLN",
+                  region_id: "PL",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                currency_code: "PLN",
+              }),
             ])
           })
         })

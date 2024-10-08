@@ -1,0 +1,1 @@
+curl -X POST '{backend_url}/admin/invites/{id}/resend'

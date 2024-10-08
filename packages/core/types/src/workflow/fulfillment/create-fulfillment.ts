@@ -132,6 +132,11 @@ export type CreateFulfillmentWorkflowInput = {
   shipped_at?: Date | null
 
   /**
+   * The id of the user that creates the fulfillment
+   */
+  created_by?: string | null
+
+  /**
    * The date the fulfillment was delivered.
    */
   delivered_at?: Date | null
@@ -174,10 +179,10 @@ export type CreateFulfillmentWorkflowInput = {
   /**
    * The labels associated with the fulfillment.
    */
-  labels: CreateFulfillmentLabelWorkflowDTO[]
+  labels?: CreateFulfillmentLabelWorkflowDTO[]
 
   /**
-   * The associated fulfillment order.
+   * The associated fulfillment order to be sent to the provider.
    */
-  order: CreateFulfillmentOrderWorkflowDTO
+  order?: CreateFulfillmentOrderWorkflowDTO
 }

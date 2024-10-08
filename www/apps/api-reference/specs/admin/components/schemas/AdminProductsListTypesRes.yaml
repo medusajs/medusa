@@ -1,9 +1,0 @@
-type: object
-required:
-  - types
-properties:
-  types:
-    type: array
-    description: An array of product types details.
-    items:
-      $ref: ./ProductType.yaml

@@ -1,9 +1,9 @@
 /**
  * @oas [delete] /admin/tax-rates/{id}/rules/{rule_id}
  * operationId: DeleteTaxRatesIdRulesRule_id
- * summary: Remove Rules from Tax Rate
- * description: Remove a list of rules from a tax rate. This doesn't delete the
- *   Rule, only the association between the Rule and the tax rate.
+ * summary: Remove Rule of Tax Rate
+ * x-sidebar-summary: Remove Rule
+ * description: Remove a tax rate's rule.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +14,7 @@
  *       type: string
  *   - name: rule_id
  *     in: path
- *     description: The tax rate's rule id.
+ *     description: The tax rate rule's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -28,36 +28,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -67,10 +47,41 @@
  *     label: cURL
  *     source: |-
  *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}/rules/{rule_id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Tax Rates
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: The deletion's details.
+ *               required:
+ *                 - id
+ *                 - object
+ *                 - deleted
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   title: id
+ *                   description: The tax rate's ID.
+ *                 object:
+ *                   type: string
+ *                   title: object
+ *                   description: The name of the deleted object.
+ *                 deleted:
+ *                   type: boolean
+ *                   title: deleted
+ *                   description: Whether the Tax Rate was deleted.
+ *             - type: object
+ *               description: The deletion's details.
+ *               properties:
+ *                 parent:
+ *                   $ref: "#/components/schemas/AdminTaxRate"
+ *           description: The deletion's details.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -83,10 +94,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
+ * x-workflow: deleteTaxRateRulesWorkflow
  * 
 */
 

@@ -1,4 +1,7 @@
-import { FilterableShippingProfileProps } from "../../fulfillment"
+import {
+  FilterableShippingProfileProps,
+  ShippingProfileDTO,
+} from "../../fulfillment"
 
 interface CreateShippingProfile {
   name: string
@@ -8,6 +11,8 @@ interface CreateShippingProfile {
 export interface CreateShippingProfilesWorkflowInput {
   data: CreateShippingProfile[]
 }
+
+export type CreateShippingProfilesWorkflowOutput = ShippingProfileDTO[]
 
 interface UpdateShippingProfile {
   name?: string

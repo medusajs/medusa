@@ -1,11 +1,8 @@
-import {
-  moduleDefinition,
-  revertMigration,
-  runMigrations,
-} from "./module-definition"
+import { AuthModuleService } from "@services"
+import loadProviders from "./loaders/providers"
+import { Module, Modules } from "@medusajs/framework/utils"
 
-export default moduleDefinition
-export { revertMigration, runMigrations }
-
-export * from "./initialize"
-export * from "./loaders"
+export default Module(Modules.AUTH, {
+  service: AuthModuleService,
+  loaders: [loadProviders],
+})

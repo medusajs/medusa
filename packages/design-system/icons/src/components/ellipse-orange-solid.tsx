@@ -5,23 +5,26 @@ const EllipseOrangeSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <g filter="url(#a)">
-          <rect width={10} height={10} x={5} y={5} fill="#fff" rx={5} />
-          <circle cx={10} cy={10} r={3} fill="#D97706" />
+        <g clipPath="url(#a)" filter="url(#b)">
+          <rect width={10} height={10} x={2.5} y={2.5} fill="#fff" rx={5} />
+          <circle cx={7.5} cy={7.5} r={3} fill="#F97316" />
         </g>
         <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
           <filter
-            id="a"
+            id="b"
             width={14}
             height={14}
-            x={3}
-            y={4}
+            x={0.5}
+            y={1.5}
             colorInterpolationFilters="sRGB"
             filterUnits="userSpaceOnUse"
           >
@@ -39,7 +42,7 @@ const EllipseOrangeSolid = React.forwardRef<SVGSVGElement, IconProps>(
             />
             <feOffset />
             <feComposite in2="hardAlpha" operator="out" />
-            <feColorMatrix values="0 0 0 0 0.0117647 0 0 0 0 0.027451 0 0 0 0 0.0705882 0 0 0 0.08 0" />
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0" />
             <feBlend
               in2="BackgroundImageFix"
               result="effect1_dropShadow_2733_2027"
@@ -52,7 +55,7 @@ const EllipseOrangeSolid = React.forwardRef<SVGSVGElement, IconProps>(
             <feOffset dy={1} />
             <feGaussianBlur stdDeviation={1} />
             <feComposite in2="hardAlpha" operator="out" />
-            <feColorMatrix values="0 0 0 0 0.0117647 0 0 0 0 0.027451 0 0 0 0 0.0705882 0 0 0 0.12 0" />
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
             <feBlend
               in2="effect1_dropShadow_2733_2027"
               result="effect2_dropShadow_2733_2027"

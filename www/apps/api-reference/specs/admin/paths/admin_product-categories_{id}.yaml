@@ -1,50 +1,78 @@
 get:
-  operationId: GetProductCategoriesCategory
+  operationId: GetProductCategoriesId
   summary: Get a Product Category
-  description: Retrieve a Product Category's details.
+  description: >-
+    Retrieve a product category by its ID. You can expand the product category's
+    relations or select the fields that should be returned.
   x-authenticated: true
-  x-featureFlag: product_categories
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product category's ID.
       required: true
-      description: The ID of the Product Category
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        product category.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+    - name: include_ancestors_tree
+      in: query
       description: >-
-        Comma-separated fields that should be included in the returned product
-        category.
+        Whether to retrieve the category's parent. When enabled, the parent
+        category is set in the `parent_category` property.
+      required: false
       schema:
-        type: string
-  x-codegen:
-    method: retrieve
-    queryParams: AdminGetProductCategoryParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_product-categories_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_product-categories_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_product-categories_{id}/get.sh
+        type: boolean
+        title: include_ancestors_tree
+        description: >-
+          Whether to retrieve the category's parent. When enabled, the parent
+          category is set in the `parent_category` property.
+    - name: include_descendants_tree
+      in: query
+      description: >-
+        Whether to retrieve a list of child categories. When enabled, the parent
+        categories are added to the `category_children` property.
+      required: false
+      schema:
+        type: boolean
+        title: include_descendants_tree
+        description: >-
+          Whether to retrieve a list of child categories. When enabled, the
+          parent categories are added to the `category_children` property.
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_product-categories_{id}/get.sh
   tags:
     - Product Categories
   responses:
@@ -53,7 +81,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductCategoriesCategoryRes.yaml
+            $ref: ../components/schemas/AdminProductCategoryResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -67,57 +95,96 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostProductCategoriesCategory
+  operationId: PostProductCategoriesId
   summary: Update a Product Category
-  description: Updates a Product Category.
+  description: Update a product category's details.
   x-authenticated: true
-  x-featureFlag: product_categories
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product category's ID.
       required: true
-      description: The ID of the Product Category.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        (Comma separated) Which fields should be expanded in each product
-        category.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        (Comma separated) Which fields should be retrieved in each product
-        category.
-      schema:
-        type: string
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostProductCategoriesCategoryReq.yaml
-  x-codegen:
-    method: update
-    queryParams: AdminPostProductCategoriesCategoryParams
+          type: object
+          description: The properties to update in the product category.
+          properties:
+            name:
+              type: string
+              title: name
+              description: The product category's name.
+            description:
+              type: string
+              title: description
+              description: The product category's description.
+            handle:
+              type: string
+              title: handle
+              description: The product category's handle. Must be a unique value.
+            is_internal:
+              type: boolean
+              title: is_internal
+              description: >-
+                Whether the product category is only used for internal purposes
+                and shouldn't be shown the customer.
+            is_active:
+              type: boolean
+              title: is_active
+              description: Whether the product category is active.
+            parent_category_id:
+              type: string
+              title: parent_category_id
+              description: The ID of a parent category.
+            metadata:
+              type: object
+              description: >-
+                The product category's metadata. Can hold custom key-value
+                pairs.
+            rank:
+              type: number
+              title: rank
+              description: The product category's rank among other categories.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_product-categories_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_product-categories_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_product-categories_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Product Categories
   responses:
@@ -126,7 +193,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductCategoriesCategoryRes.yaml
+            $ref: ../components/schemas/AdminProductCategoryResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -139,38 +206,28 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateProductCategoriesWorkflow
 delete:
-  operationId: DeleteProductCategoriesCategory
+  operationId: DeleteProductCategoriesId
   summary: Delete a Product Category
-  description: Delete a Product Category. This does not delete associated products.
+  description: Delete a product category. This doesn't deleted products in that category.
   x-authenticated: true
-  x-featureFlag: product_categories
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product category's ID.
       required: true
-      description: The ID of the Product Category
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_product-categories_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_product-categories_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_product-categories_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Product Categories
   responses:
@@ -179,7 +236,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminProductCategoriesCategoryDeleteRes.yaml
+            $ref: ../components/schemas/AdminProductCategoryDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -192,3 +249,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteProductCategoriesWorkflow

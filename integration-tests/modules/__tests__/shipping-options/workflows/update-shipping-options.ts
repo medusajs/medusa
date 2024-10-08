@@ -2,7 +2,6 @@ import {
   createShippingOptionsWorkflow,
   updateShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentSetDTO,
   FulfillmentWorkflow,
@@ -14,10 +13,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       container = getContainer()
-      service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+      service = container.resolve(Modules.FULFILLMENT)
     })
 
     describe("Fulfillment workflows", () => {
@@ -46,7 +46,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })
@@ -61,14 +61,43 @@ medusaIntegrationTestRunner({
             },
           ],
         })
+
+        const stockLocationModule = container.resolve(Modules.STOCK_LOCATION)
+
+        const location = await stockLocationModule.createStockLocations({
+          name: "Europe",
+        })
+
+        const remoteLink = container.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        await remoteLink.create([
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
+            },
+          },
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_provider_id: "manual_test-provider",
+            },
+          },
+        ])
       })
 
       it("should update shipping options", async () => {
         const regionService = container.resolve(
-          ModuleRegistrationName.REGION
+          Modules.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",
@@ -228,12 +257,139 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should revert the shipping options", async () => {
+      it("should fail on non-existent region update shipping options", async () => {
         const regionService = container.resolve(
-          ModuleRegistrationName.REGION
+          Modules.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
+          {
+            name: "Test region",
+            currency_code: "eur",
+            countries: ["fr"],
+          },
+        ])
+
+        const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
+          {
+            name: "Test shipping option",
+            price_type: "flat",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id,
+            type: {
+              code: "manual-type",
+              label: "Manual Type",
+              description: "Manual Type Description",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 10,
+              },
+              {
+                region_id: region.id,
+                amount: 100,
+              },
+              {
+                currency_code: "dkk",
+                amount: 1000,
+              },
+            ],
+            rules: [
+              {
+                attribute: "total",
+                operator: RuleOperator.EQ,
+                value: "100",
+              },
+            ],
+          }
+
+        const { result } = await createShippingOptionsWorkflow(container).run({
+          input: [shippingOptionData],
+        })
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+
+        let remoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "shipping_option",
+          variables: {
+            id: result[0].id,
+          },
+          fields: [
+            "id",
+            "name",
+            "price_type",
+            "service_zone_id",
+            "shipping_profile_id",
+            "provider_id",
+            "data",
+            "metadata",
+            "type.*",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+            "shipping_option_type_id",
+            "prices.*",
+          ],
+        })
+
+        const [createdShippingOption] = await remoteQuery(remoteQueryObject)
+
+        const usdPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "usd"
+        })
+
+        const dkkPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "dkk"
+        })
+
+        const updateData: UpdateShippingOptionsWorkflowInput = {
+          id: createdShippingOption.id,
+          name: "Test shipping option",
+          price_type: "flat",
+          type: {
+            code: "manual-type",
+            label: "Manual Type",
+            description: "Manual Type Description",
+          },
+          prices: [
+            // We keep the usd price as is
+            // update the dkk price to 100
+            // delete the third price eur
+            // create a new eur one instead
+            usdPrice,
+            {
+              ...dkkPrice,
+              amount: 100,
+            },
+            {
+              region_id: region.id,
+              amount: 1000,
+            },
+          ],
+        }
+
+        await regionService.softDeleteRegions([region.id])
+
+        const { errors } = await updateShippingOptionsWorkflow(container).run({
+          input: [updateData],
+          throwOnError: false,
+        })
+
+        expect(errors[0].error.message).toEqual(
+          `Cannot create prices for non-existent regions. Region with ids [${region.id}] were not found.`
+        )
+      })
+
+      it("should revert the shipping options", async () => {
+        const regionService = container.resolve(
+          Modules.REGION
+        ) as IRegionModuleService
+
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",

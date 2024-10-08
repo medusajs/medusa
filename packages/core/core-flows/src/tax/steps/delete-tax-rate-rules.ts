@@ -1,8 +1,11 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ITaxModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ITaxModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteTaxRateRulesStepId = "delete-tax-rate-rules"
+/**
+ * This step deletes one or more tax rate rules.
+ */
 export const deleteTaxRateRulesStep = createStep(
   deleteTaxRateRulesStepId,
   async (ids: string[], { container }) => {
@@ -10,9 +13,7 @@ export const deleteTaxRateRulesStep = createStep(
       return new StepResponse(void 0, [])
     }
 
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     await service.softDeleteTaxRateRules(ids)
 
@@ -23,9 +24,7 @@ export const deleteTaxRateRulesStep = createStep(
       return
     }
 
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     await service.restoreTaxRateRules(prevIds)
   }

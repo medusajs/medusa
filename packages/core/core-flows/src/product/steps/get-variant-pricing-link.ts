@@ -1,20 +1,22 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  arrayDifference,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+  Modules,
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-type StepInput = {
+export type GetVariantPricingLinkStepInput = {
   ids: string[]
 }
 
 export const getVariantPricingLinkStepId = "get-variant-pricing-link"
+/**
+ * This step retrieves links between a product variant and its linked price sets.
+ */
 export const getVariantPricingLinkStep = createStep(
   getVariantPricingLinkStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetVariantPricingLinkStepInput, { container }) => {
     if (!data.ids.length) {
       return new StepResponse([])
     }
@@ -26,12 +28,15 @@ export const getVariantPricingLinkStep = createStep(
       "variant_id",
       Modules.PRICING,
       "price_set_id"
-    )
+    )!
 
-    const existingItems = await linkService.list(
+    const existingItems = (await linkService.list(
       { variant_id: data.ids },
       { select: ["variant_id", "price_set_id"] }
-    )
+    )) as {
+      variant_id: string
+      price_set_id: string
+    }[]
 
     if (existingItems.length !== data.ids.length) {
       const missing = arrayDifference(

@@ -1,13 +1,13 @@
 /**
  * @schema AdminFulfillmentSetResponse
  * type: object
- * description: SUMMARY
+ * description: The fulfillment set's details.
  * x-schemaName: AdminFulfillmentSetResponse
  * required:
  *   - fulfillment_set
  * properties:
  *   fulfillment_set:
- *     $ref: "#/components/schemas/FulfillmentSetResponse"
+ *     $ref: "#/components/schemas/AdminFulfillmentSet"
  * 
 */
 

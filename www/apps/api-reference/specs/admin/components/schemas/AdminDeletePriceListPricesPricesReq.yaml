@@ -1,8 +1,0 @@
-type: object
-description: The details of the prices to delete.
-properties:
-  price_ids:
-    description: The IDs of the prices to delete.
-    type: array
-    items:
-      type: string

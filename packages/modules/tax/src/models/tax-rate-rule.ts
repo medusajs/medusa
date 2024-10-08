@@ -1,25 +1,25 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
-  Cascade,
+  BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
+  OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
-  Filter,
-  OptionalProps,
-  BeforeCreate,
-  OnInit,
+  Rel,
 } from "@mikro-orm/core"
 import TaxRate from "./tax-rate"
 
 const TABLE_NAME = "tax_rate_rule"
 
-type OptionalRuleProps = DAL.SoftDeletableEntityDateColumns
+type OptionalRuleProps = DAL.SoftDeletableModelDateColumns
 
 const taxRateIdIndexName = "IDX_tax_rate_rule_tax_rate_id"
 const taxRateIdIndexStatement = createPsqlIndexStatementHelper({
@@ -27,6 +27,11 @@ const taxRateIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: TABLE_NAME,
   columns: "tax_rate_id",
   where: "deleted_at IS NULL",
+})
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  tableName: TABLE_NAME,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 const referenceIdIndexName = "IDX_tax_rate_rule_reference_id"
@@ -73,7 +78,7 @@ export default class TaxRateRule {
   reference: string
 
   @ManyToOne(() => TaxRate, { persist: false })
-  tax_rate: TaxRate
+  tax_rate: Rel<TaxRate>
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -96,11 +101,7 @@ export default class TaxRateRule {
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: TABLE_NAME,
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @deletedAtIndexStatement.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

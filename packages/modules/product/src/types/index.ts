@@ -1,9 +1,15 @@
-import { IEventBusModuleService, Logger, ProductTypes } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  Logger,
+  ProductTypes,
+} from "@medusajs/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  eventBusModuleService?: IEventBusModuleService
+  EventBus?: IEventBusModuleService
 }
+
+// TODO: remove and cleanup bellow code
 
 export type ProductCategoryEventData = {
   id: string
@@ -54,6 +60,14 @@ export type UpdateCollectionInput = ProductTypes.UpdateProductCollectionDTO & {
 }
 
 export type UpdateTypeInput = ProductTypes.UpdateProductTypeDTO & {
+  id: string
+}
+
+export type UpdateCategoryInput = ProductTypes.UpdateProductCategoryDTO & {
+  id: string
+}
+
+export type UpdateTagInput = ProductTypes.UpdateProductTagDTO & {
   id: string
 }
 

@@ -10,7 +10,13 @@ import React, {
 } from "react"
 import { BadgeProps, Modal, Search, SearchProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
-import algoliasearch, { SearchClient } from "algoliasearch/lite"
+import {
+  liteClient as algoliasearch,
+  LiteClient as SearchClient,
+  type SearchResponses,
+  type SearchHits,
+  SearchResponse,
+} from "algoliasearch/lite"
 import clsx from "clsx"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 
@@ -72,8 +78,41 @@ export const SearchProvider = ({
     const algoliaClient = algoliasearch(algolia.appId, algolia.apiKey)
     return {
       ...algoliaClient,
-      async search(requests) {
-        if (requests.every(({ params }) => !params?.query)) {
+      async search(searchParams) {
+        const requests =
+          "requests" in searchParams ? searchParams.requests : searchParams
+        // always send this request, which is the main request with no filters
+        const mainRequest = requests[0]
+
+        // retrieve only requests that have filters
+        // this is to ensure that we show no result if no filter is selected
+        const requestsWithFilters = requests.filter((item) => {
+          if (
+            !item.params ||
+            typeof item.params !== "object" ||
+            !("tagFilters" in item.params)
+          ) {
+            return false
+          }
+
+          const tagFilters = item.params.tagFilters as string[]
+
+          // if no tag filters are specified, there's still one item,
+          // which is an empty array
+          return tagFilters.length >= 1 && tagFilters[0].length > 0
+        })
+
+        // check whether a query is entered in the search box
+        const noQueries = requestsWithFilters.every(
+          (item) =>
+            !item.facetQuery &&
+            (!item.params ||
+              typeof item.params !== "object" ||
+              !("query" in item.params) ||
+              !item.params.query)
+        )
+
+        if (noQueries) {
           return Promise.resolve({
             results: requests.map(() => ({
               hits: [],
@@ -89,7 +128,73 @@ export const SearchProvider = ({
           })
         }
 
-        return algoliaClient.search(requests)
+        // split requests per tags
+        const newRequests: typeof requestsWithFilters = [mainRequest]
+        for (const request of requestsWithFilters) {
+          const params = request.params as Record<string, unknown>
+          const tagFilters = (params.tagFilters as string[][])[0]
+
+          // if only one tag is selected, keep the request as-is
+          if (tagFilters.length === 1) {
+            newRequests.push(request)
+
+            continue
+          }
+
+          // if multiple tags are selected, split the tags
+          // to retrieve a small subset of results per each tag.
+          newRequests.push(
+            ...tagFilters.map((tag) => ({
+              ...request,
+              params: {
+                ...params,
+                tagFilters: [tag],
+              },
+              hitsPerPage: 4,
+            }))
+          )
+        }
+
+        return algoliaClient
+          .search<SearchHits>(newRequests)
+          .then((response) => {
+            // combine results of the same index and return the results
+            const resultsByIndex: {
+              [indexName: string]: SearchResponse<SearchHits>
+            } = {}
+            // extract the response of the main request
+            const mainResult = response.results[0]
+
+            response.results.forEach((result, indexNum) => {
+              if (indexNum === 0) {
+                // ignore the main request's result
+                return
+              }
+              const resultIndex = "index" in result ? result.index : undefined
+              const resultHits = "hits" in result ? result.hits : []
+
+              if (!resultIndex) {
+                return
+              }
+
+              resultsByIndex[resultIndex] = {
+                ...result,
+                ...(resultsByIndex[resultIndex] || {}),
+                hits: [
+                  ...(resultsByIndex[resultIndex]?.hits || []),
+                  ...resultHits,
+                ],
+                nbHits:
+                  (resultsByIndex[resultIndex]?.nbHits || 0) +
+                  resultHits.length,
+              }
+            })
+
+            return {
+              // append the results with the main request's results
+              results: [mainResult, ...Object.values(resultsByIndex)],
+            } as SearchResponses<any>
+          })
       },
     }
   }, [algolia.appId, algolia.apiKey])
@@ -121,14 +226,9 @@ export const SearchProvider = ({
       <Modal
         contentClassName={clsx(
           "!p-0 overflow-hidden relative h-full",
-          "rounded-none md:rounded-docs_lg flex flex-col justify-between"
+          "flex flex-col justify-between"
         )}
-        modalContainerClassName={clsx(
-          "!rounded-none md:!rounded-docs_lg",
-          "md:!h-[480px] h-screen",
-          "md:!w-[640px] w-screen",
-          "bg-medusa-bg-base"
-        )}
+        modalContainerClassName="sm:h-[480px] sm:max-h-[480px]"
         open={isOpen}
         onClose={() => setIsOpen(false)}
         passedRef={modalRef}
@@ -146,7 +246,7 @@ export const SearchProvider = ({
                   ? "animate-fadeOutLeft animate-fast"
                   : "animate-fadeOutRight animate-fast",
             }}
-            timeout={300}
+            timeout={250}
             key={command?.name || "search"}
           >
             <>

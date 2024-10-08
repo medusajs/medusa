@@ -1,0 +1,16 @@
+type: object
+description: >-
+  The details of the claim, its return, and a preview of the order when the
+  claim is applied.
+x-schemaName: AdminClaimRequestResponse
+required:
+  - return
+  - order_preview
+  - claim
+properties:
+  return:
+    $ref: ./AdminReturn.yaml
+  order_preview:
+    $ref: ./AdminOrderPreview.yaml
+  claim:
+    $ref: ./AdminClaim.yaml

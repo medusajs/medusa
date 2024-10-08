@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ITaxModuleService,
   ItemTaxLineDTO,
@@ -6,25 +5,29 @@ import {
   OrderShippingMethodDTO,
   OrderWorkflowDTO,
   ShippingTaxLineDTO,
-  TaxCalculationContext,
   TaxableItemDTO,
   TaxableShippingDTO,
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+  TaxCalculationContext,
+} from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-interface StepInput {
+export interface GetOrderItemTaxLinesStepInput {
   order: OrderWorkflowDTO
   items: OrderLineItemDTO[]
   shipping_methods: OrderShippingMethodDTO[]
   force_tax_calculation?: boolean
+  is_return?: boolean
+  shipping_address?: OrderWorkflowDTO["shipping_address"]
 }
 
 function normalizeTaxModuleContext(
   order: OrderWorkflowDTO,
-  forceTaxCalculation: boolean
+  forceTaxCalculation: boolean,
+  isReturn?: boolean,
+  shippingAddress?: OrderWorkflowDTO["shipping_address"]
 ): TaxCalculationContext | null {
-  const address = order.shipping_address
+  const address = shippingAddress ?? order.shipping_address
   const shouldCalculateTax =
     forceTaxCalculation || order.region?.automatic_taxes
 
@@ -59,7 +62,7 @@ function normalizeTaxModuleContext(
       postal_code: address.postal_code,
     },
     customer,
-    is_return: false,
+    is_return: isReturn ?? false,
   }
 }
 
@@ -99,20 +102,28 @@ function normalizeLineItemsForShipping(
 }
 
 export const getOrderItemTaxLinesStepId = "get-order-item-tax-lines"
+/**
+ * This step retrieves the tax lines for an order's line items and shipping methods.
+ */
 export const getOrderItemTaxLinesStep = createStep(
   getOrderItemTaxLinesStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetOrderItemTaxLinesStepInput, { container }) => {
     const {
       order,
-      items,
-      shipping_methods: shippingMethods,
+      items = [],
+      shipping_methods: shippingMethods = [],
       force_tax_calculation: forceTaxCalculation = false,
+      is_return: isReturn = false,
+      shipping_address: shippingAddress,
     } = data
-    const taxService = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const taxService = container.resolve<ITaxModuleService>(Modules.TAX)
 
-    const taxContext = normalizeTaxModuleContext(order, forceTaxCalculation)
+    const taxContext = normalizeTaxModuleContext(
+      order,
+      forceTaxCalculation,
+      isReturn,
+      shippingAddress
+    )
 
     const stepResponseData = {
       lineItemTaxLines: [] as ItemTaxLineDTO[],
@@ -123,15 +134,19 @@ export const getOrderItemTaxLinesStep = createStep(
       return new StepResponse(stepResponseData)
     }
 
-    stepResponseData.lineItemTaxLines = (await taxService.getTaxLines(
-      normalizeLineItemsForTax(order, items),
-      taxContext
-    )) as ItemTaxLineDTO[]
+    if (items.length) {
+      stepResponseData.lineItemTaxLines = (await taxService.getTaxLines(
+        normalizeLineItemsForTax(order, items),
+        taxContext
+      )) as ItemTaxLineDTO[]
+    }
 
-    stepResponseData.shippingMethodsTaxLines = (await taxService.getTaxLines(
-      normalizeLineItemsForShipping(order, shippingMethods),
-      taxContext
-    )) as ShippingTaxLineDTO[]
+    if (shippingMethods.length) {
+      stepResponseData.shippingMethodsTaxLines = (await taxService.getTaxLines(
+        normalizeLineItemsForShipping(order, shippingMethods),
+        taxContext
+      )) as ShippingTaxLineDTO[]
+    }
 
     return new StepResponse(stepResponseData)
   }

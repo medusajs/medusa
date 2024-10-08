@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Redis Cache Module`,
@@ -10,39 +10,45 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 ---
 
-## Install the Redis Cache Module
+## Register the Redis Cache Module
 
-<Note type="check">
+<Prerequisites items={[
+  {
+    text: "Redis installed and Redis server running",
+    link: "https://redis.io/docs/getting-started/installation/"
+  }
+]} />
 
-- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
-
-</Note>
-
-To install Redis Cache Module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/cache-redis
-```
-
-Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
-  ["8", "redisUrl", "The Redis connection URL."]
+  ["11", "redisUrl", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
-module.exports = {
+const { Modules } = require("@medusajs/framework/utils")
+
+// ...
+
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
-    cacheService: {
-      resolve: "@medusajs/cache-redis",
+    [Modules.CACHE]: {
+      resolve: "@medusajs/medusa/cache-redis",
       options: { 
         redisUrl: process.env.CACHE_REDIS_URL,
       },
     },
   },
-}
+})
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+CACHE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 ### Redis Cache Module Options
@@ -147,14 +153,6 @@ module.exports = {
     </Table.Row>
   </Table.Body>
 </Table>
-
-### Environment Variables
-
-Make sure to add the following environment variables:
-
-```bash
-CACHE_REDIS_URL=<YOUR_REDIS_URL>
-```
 
 ---
 

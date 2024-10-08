@@ -1,22 +1,25 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   UpdatePriceListDTO,
   UpdatePriceListWorkflowInputDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
+  Modules,
   buildPriceListRules,
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updatePriceListsStepId = "update-price-lists"
+/**
+ * This step updates one or more price lists.
+ */
 export const updatePriceListsStep = createStep(
   updatePriceListsStepId,
   async (data: UpdatePriceListDTO[], { container }) => {
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const { dataBeforeUpdate, selects, relations } = await getDataBeforeUpdate(
@@ -39,12 +42,12 @@ export const updatePriceListsStep = createStep(
 
     const { dataBeforeUpdate, selects, relations } = revertInput
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     await pricingModule.updatePriceLists(
       dataBeforeUpdate.map((data) => {
-        const { price_list_rules: priceListRules = [], rules, ...rest } = data
+        const { price_list_rules: priceListRules = [], ...rest } = data
 
         const updateData: UpdatePriceListDTO = {
           ...rest,
@@ -82,14 +85,8 @@ async function getDataBeforeUpdate(
       selectsClone.splice(index, 1)
     }
 
-    selectsClone.push(
-      "price_list_rules.price_list_rule_values.value",
-      "price_list_rules.rule_type.rule_attribute"
-    )
-    relationsClone.push(
-      "price_list_rules.price_list_rule_values",
-      "price_list_rules.rule_type"
-    )
+    selectsClone.push("price_list_rules.value", "price_list_rules.attribute")
+    relationsClone.push("price_list_rules")
   }
 
   const dataBeforeUpdate = await pricingModule.listPriceLists(

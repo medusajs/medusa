@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/deletePaymentSessionsWorkflow
+sidebar_label: deletePaymentSessionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deletePaymentSessionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deletePaymentSessionsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more payment sessions.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deletePaymentSessionsWorkflow","steps":[{"type":"step","name":"deletePaymentSessionsStep","description":"This step deletes one or more payment sessions.\n\nNote: This step should not be used alone as it doesn't consider a revert\nUse deletePaymentSessionsWorkflow instead that uses this step","link":"../../../../core_flows.Steps_Payment_Collection/page.mdx#deletepaymentsessionsstep","depth":1},{"type":"step","name":"validateDeletedPaymentSessionsStep","description":"This step validates that the specified payment session IDs were deleted.","link":"../../../../core_flows.Steps_Payment_Collection/page.mdx#validatedeletedpaymentsessionsstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeletePaymentSessionsWorkflowInput","type":"[DeletePaymentSessionsWorkflowInput](../../../../interfaces/core_flows.DeletePaymentSessionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentSessionsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentSessionsWorkflow"/>

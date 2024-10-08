@@ -9,6 +9,8 @@ jobs:
   team-labeler:
     runs-on: ubuntu-latest
     steps:
+    - id: label-the-PR
+      uses: actions/labeler@v5
     - uses: JulienKode/team-labeler-action@v1.1.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"

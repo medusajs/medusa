@@ -1,0 +1,178 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Product Variant's Inventory in Storefront`,
+}
+
+# {metadata.title}
+
+To retrieve variants' inventory quantity using either the [List Products](!api!/store#products_getproducts) or [Retrieve Products](!api!/store#products_getproductsid) API routes:
+
+1. Pass the publishable API key in the header of the request. The retrieved inventory quantity is in the locations associated with the key's sales channels.
+2. Pass in the `fields` query parameter the value `+variants.inventory_quantity`.
+
+For example:
+
+export const fetchHighlights = [
+  ["2", "fields", "Pass `+variants.inventory_quantity` in the fields to retrieve."],
+  ["8", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
+  ["14", "isInStock", "Consider the variant in stock either if its `manage_inventory` property is disabled, or the `inventory_quantity` is greater than `0`."]
+]
+
+```ts highlights={fetchHighlights}
+const queryParams = new URLSearchParams({
+  fields: `*variants.calculated_price,+variants.inventory_quantity`,
+})
+
+fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+  },
+})
+.then((res) => res.json())
+.then(({ product }) => {
+  product.variants?.forEach((variant) => {
+    const isInStock = variant.manage_inventory === false || 
+      variant.inventory_quantity > 0
+
+    // ...
+  })
+})
+```
+
+<Note type="warning" title="Important">
+
+If you're also passing `*variants.calculated_price` in `fields` to get the product variants' prices, make sure to include it in the beginning of the list of fields. For example, `?fields=*variants.calculated_price,+variants.inventory_quantity`.
+
+</Note>
+
+### When is a Variant in Stock?
+
+A variant is in stock if:
+
+1. Its `manage_inventory`'s value is `false`, meaning that Medusa doesn't keep track of its inventory.
+2. If its `inventory_quantity`'s value is greater than `0`. This property is only available on variants whose `manage_inventory` is `false`.
+
+---
+
+## Full React Example
+
+export const reactHighlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["25", "fields", "Pass `+variants.inventory_quantity` in the fields to retrieve."],
+  ["31", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
+  ["55", "isInStock", "Consider the selected variant in stock either if its `manage_inventory` property is disabled, or the `inventory_quantity` is greater than `0`."],
+  ["96", "isInStock", "Show whether the selected variant is in stock."]
+]
+
+```tsx title="React Storefront" highlights={reactHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+export default function Product({ params: { id } }: Params) {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<
+    HttpTypes.StoreProduct | undefined
+  >()
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const queryParams = new URLSearchParams({
+      fields: `+variants.inventory_quantity`,
+    })
+
+    fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
+    })
+    .then((res) => res.json())
+    .then(({ product: dataProduct }) => {
+      setProduct(dataProduct)
+      setLoading(false)
+    })
+  }, [loading])
+
+  const selectedVariant = useMemo(() => {
+    if (
+      !product?.variants ||
+      !product.options || 
+      Object.keys(selectedOptions).length !== product.options?.length
+    ) {
+      return
+    }
+
+    return product.variants.find((variant) => variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    ))
+  }, [selectedOptions, product])
+
+  const isInStock = useMemo(() => {
+    if (!selectedVariant) {
+      return undefined
+    }
+
+    return selectedVariant.manage_inventory === false || selectedVariant.inventory_quantity > 0
+  }, [selectedVariant])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {product && (
+        <>
+          <h1>{product.title}</h1>
+          {(product.options?.length || 0) > 0 && (
+            <ul>
+              {product.options!.map((option) => (
+                <li key={option.id}>
+                  {option.title}
+                  {option.values?.map((optionValue) => (
+                    <button 
+                      key={optionValue.id}
+                      onClick={() => {
+                        setSelectedOptions((prev) => {
+                          return {
+                            ...prev,
+                            [option.id!]: optionValue.value!,
+                          }
+                        })
+                      }}
+                    >
+                      {optionValue.value}
+                    </button>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedVariant && (
+            <span>Selected Variant: {selectedVariant.id}</span>
+          )}
+          {isInStock !== undefined && (
+            <span>
+              {isInStock && "In Stock"}
+              {!isInStock && "Out of Stock"}
+            </span>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+```
+
+In this example, you show whether the selected variant is in or out of stock.

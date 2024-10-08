@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Redis Workflow Engine Module`,
@@ -10,45 +10,47 @@ The Redis Workflow Engine Module uses Redis to track workflow executions and han
 
 ---
 
-## Install the Redis Workflow Engine Module
+## Register the Redis Workflow Engine Module
 
-<Note type="check">
+<Prerequisites items={[
+  {
+    text: "Redis installed and Redis server running",
+    link: "https://redis.io/docs/getting-started/installation/"
+  }
+]} />
 
-- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
-
-</Note>
-
-To install Redis Workflow Engine Module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/workflow-engine-redis
-```
-
-Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
-  ["8", "redisUrl", "The Redis connection URL."]
+  ["12", "url", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
-const { Modules } = require("@medusajs/modules-sdk")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
-module.exports = {
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.WORKFLOW_ENGINE]: {
       resolve: "@medusajs/workflow-engine-redis",
       options: {
         redis: {
-          url: process.emv.WE_REDIS_URL,
+          url: process.env.WE_REDIS_URL,
         },
       },
     },
   },
-}
+})
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+WE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 ### Redis Workflow Engine Module Options
@@ -156,16 +158,6 @@ module.exports = {
     </Table.Row>
   </Table.Body>
 </Table>
-
-### Environment Variables
-
-Make sure to add the following environment variables:
-
-```bash
-WE_REDIS_URL=<YOUR_REDIS_URL>
-```
-
----
 
 ## Test the Module
 

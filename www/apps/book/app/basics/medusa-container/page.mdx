@@ -4,40 +4,43 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you’ll learn about Medusa’s Medusa container and how to use it.
+In this chapter, you’ll learn about the Medusa container and how to use it.
 
 ## What is the Medusa container?
 
-The Medusa container holds all registered resources in the Medusa application. You use it to resolve resources, such as services.
+The Medusa container holds all resources registered in the Medusa application, such as services.
+
+In your customizations, you use the Medusa container to resolve these resources and use their functionalities.
 
 For example, in a custom API route you can resolve any service registered in the Medusa application using the `scope.resolve` method of the `MedusaRequest` parameter:
 
 export const highlights = [
-  ["13", "resolve", "Resolve the `IProductModuleService`"],
-  ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["9", "resolve", "Resolve the Product Module's main service."],
+  [
+    "10",
+    "Modules.PRODUCT",
+    "The resource registration name imported from `@medusajs/framework/utils`.",
+  ],
 ]
 
 ```ts highlights={highlights}
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const productModuleService: IProductModuleService =
-    req.scope.resolve(ModuleRegistrationName.PRODUCT)
+  const productModuleService: IProductModuleService = req.scope.resolve(
+    Modules.PRODUCT
+  )
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,
   })
 }
 ```
-
-This route handler function resolves the `IProductModuleService` and uses it to return the full count of products in the Medusa application.

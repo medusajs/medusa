@@ -1,7 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types"
 
 export type Area = "admin" | "store"
-export type Version = "1" | "2"
 
 export type Code = {
   lang: string
@@ -19,6 +18,8 @@ export type Operation = OpenAPIV3.OperationObject<{
   responses: ResponsesObject
   parameters: Parameter[]
   "x-featureFlag"?: string
+  "x-workflow"?: string
+  "x-sidebar-summary"?: string
 }>
 
 export type RequestObject = OpenAPIV3.RequestBodyObject & {
@@ -71,9 +72,15 @@ export type ArraySchemaObject = Omit<
 
 export type NonArraySchemaObject = Omit<
   OpenAPIV3.NonArraySchemaObject,
-  "properties" | "anyOf" | "allOf" | "oneOf" | "examples"
+  | "properties"
+  | "anyOf"
+  | "allOf"
+  | "oneOf"
+  | "examples"
+  | "additionalProperties"
 > & {
   properties: PropertiesObject
+  additionalProperties?: SchemaObject
   anyOf?: SchemaObject[]
   allOf?: SchemaObject[]
   oneOf?: SchemaObject[]
@@ -88,6 +95,8 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   isRequired?: boolean
   "x-featureFlag"?: string
   "x-expandable"?: string
+  "x-schemaName"?: string
+  additionalProperties?: SchemaObject
 }
 
 export type PropertiesObject = {
@@ -113,4 +122,12 @@ export type ExpandedDocument = Document & {
   expandedTags?: {
     [k: string]: PathsObject
   }
+}
+
+export type TagObject = OpenAPIV3.TagObject & {
+  "x-associatedSchema"?: OpenAPIV3.ReferenceObject
+}
+
+export type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
+  operationPath?: string
 }

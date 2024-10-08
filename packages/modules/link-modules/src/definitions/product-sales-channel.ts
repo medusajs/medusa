@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const ProductSalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.ProductSalesChannel,
@@ -21,23 +20,33 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.PRODUCT,
+      entity: "Product",
       primaryKey: "id",
       foreignKey: "product_id",
       alias: "product",
+      args: {
+        methodSuffix: "Products",
+      },
     },
     {
       serviceName: Modules.SALES_CHANNEL,
-      isInternalService: true,
+      entity: "SalesChannel",
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
+      args: {
+        methodSuffix: "SalesChannels",
+      },
     },
   ],
   extends: [
     {
       serviceName: Modules.PRODUCT,
       fieldAlias: {
-        sales_channels: "sales_channels_link.sales_channel",
+        sales_channels: {
+          path: "sales_channels_link.sales_channel",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.ProductSalesChannel,
@@ -51,7 +60,6 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       serviceName: Modules.SALES_CHANNEL,
       relationship: {
         serviceName: LINKS.ProductSalesChannel,
-        isInternalService: true,
         primaryKey: "sales_channel_id",
         foreignKey: "id",
         alias: "products_link",

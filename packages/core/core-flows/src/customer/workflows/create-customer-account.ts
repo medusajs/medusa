@@ -1,19 +1,38 @@
-import { CreateCustomerDTO, CustomerDTO } from "@medusajs/types"
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
+import { CreateCustomerDTO, CustomerDTO } from "@medusajs/framework/types"
+import {
+  createWorkflow,
+  transform,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { setAuthAppMetadataStep } from "../../auth"
 import { createCustomersStep } from "../steps"
-import { setAuthAppMetadataStep } from "../../auth/steps"
-import { transform } from "@medusajs/workflows-sdk"
+import { validateCustomerAccountCreation } from "../steps/validate-customer-account-creation"
 
-type WorkflowInput = {
-  authUserId: string
-  customersData: CreateCustomerDTO
+export type CreateCustomerAccountWorkflowInput = {
+  authIdentityId: string
+  customerData: CreateCustomerDTO
 }
 
 export const createCustomerAccountWorkflowId = "create-customer-account"
+/**
+ * This workflow creates an authentication account for a customer.
+ */
 export const createCustomerAccountWorkflow = createWorkflow(
   createCustomerAccountWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerDTO> => {
-    const customers = createCustomersStep([input.customersData])
+  (
+    input: WorkflowData<CreateCustomerAccountWorkflowInput>
+  ): WorkflowResponse<CustomerDTO> => {
+    validateCustomerAccountCreation(input)
+
+    const customerData = transform({ input }, (data) => {
+      return {
+        ...data.input.customerData,
+        has_account: !!data.input.authIdentityId,
+      }
+    })
+
+    const customers = createCustomersStep([customerData])
 
     const customer = transform(
       customers,
@@ -21,11 +40,11 @@ export const createCustomerAccountWorkflow = createWorkflow(
     )
 
     setAuthAppMetadataStep({
-      authUserId: input.authUserId,
-      key: "customer_id",
+      authIdentityId: input.authIdentityId,
+      actorType: "customer",
       value: customer.id,
     })
 
-    return customer
+    return new WorkflowResponse(customer)
   }
 )

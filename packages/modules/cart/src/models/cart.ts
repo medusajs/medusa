@@ -1,9 +1,9 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,11 +11,12 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Address from "./address"
 import LineItem from "./line-item"
@@ -24,7 +25,7 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const RegionIdIndex = createPsqlIndexStatementHelper({
   name: "IDX_cart_region_id",
@@ -115,7 +116,7 @@ export default class Cart {
     cascade: [Cascade.PERSIST],
     nullable: true,
   })
-  shipping_address: Address | null
+  shipping_address: Rel<Address> | null
 
   @BillingAddressIdIndex()
   @ManyToOne({
@@ -131,7 +132,7 @@ export default class Cart {
     cascade: [Cascade.PERSIST],
     nullable: true,
   })
-  billing_address: Address | null
+  billing_address: Rel<Address> | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -139,12 +140,15 @@ export default class Cart {
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  items = new Collection<LineItem>(this)
+  items = new Collection<Rel<LineItem>>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  shipping_methods = new Collection<ShippingMethod>(this)
+  shipping_methods = new Collection<Rel<ShippingMethod>>(this)
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  completed_at: Date | null = null
 
   @Property({
     onCreate: () => new Date(),

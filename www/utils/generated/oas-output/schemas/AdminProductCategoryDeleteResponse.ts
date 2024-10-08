@@ -1,0 +1,26 @@
+/**
+ * @schema AdminProductCategoryDeleteResponse
+ * type: object
+ * description: The details of deleting the category.
+ * x-schemaName: AdminProductCategoryDeleteResponse
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The product category's ID.
+ *   object:
+ *     type: string
+ *     title: object
+ *     description: The name of the deleted object.
+ *     default: product_category
+ *   deleted:
+ *     type: boolean
+ *     title: deleted
+ *     description: Whether the product category was deleted.
+ * 
+*/
+

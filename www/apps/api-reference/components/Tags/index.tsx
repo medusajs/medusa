@@ -7,12 +7,13 @@ import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
-import { swrFetcher, useSidebar, getLinkWithBasePath } from "docs-ui"
+import { swrFetcher, useSidebar } from "docs-ui"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
-import { SidebarItemSections } from "types"
-import { useVersion } from "../../providers/version"
+import { SidebarItem, SidebarItemSections } from "types"
+import basePathUrl from "../../utils/base-path-url"
+import { useRouter } from "next/navigation"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -31,16 +32,13 @@ const Tags = () => {
   const [loadData, setLoadData] = useState<boolean>(false)
   const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
-  const { addItems } = useSidebar()
-  const { area } = useArea()
-  const { version } = useVersion()
+  const { activePath, addItems, setActivePath } = useSidebar()
+  const { area, prevArea } = useArea()
+  const router = useRouter()
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
-      ? getLinkWithBasePath(
-          `/base-specs?area=${area}&expand=${expand}&version=${version}`,
-          process.env.NEXT_PUBLIC_BASE_PATH
-        )
+      ? basePathUrl(`/api/base-specs?area=${area}&expand=${expand}`)
       : null,
     swrFetcher,
     {
@@ -67,27 +65,51 @@ const Tags = () => {
 
   useEffect(() => {
     if (baseSpecs) {
-      addItems(
-        baseSpecs.tags?.map((tag) => {
+      if (prevArea !== area) {
+        setBaseSpecs(null)
+        setLoadData(true)
+        return
+      }
+
+      const itemsToAdd: SidebarItem[] = [
+        {
+          type: "separator",
+        },
+      ]
+
+      if (baseSpecs.tags) {
+        baseSpecs.tags.forEach((tag) => {
           const tagPathName = getSectionId([tag.name.toLowerCase()])
           const childItems =
             baseSpecs.expandedTags &&
             Object.hasOwn(baseSpecs.expandedTags, tagPathName)
               ? getTagChildSidebarItems(baseSpecs.expandedTags[tagPathName])
               : []
-          return {
-            path: tagPathName,
+          itemsToAdd.push({
+            type: "category",
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
-          }
-        }) || [],
-        {
-          section: SidebarItemSections.BOTTOM,
-        }
-      )
+            showLoadingIfEmpty: true,
+            onOpen: () => {
+              if (location.hash !== tagPathName) {
+                router.push(`#${tagPathName}`, {
+                  scroll: false,
+                })
+              }
+              if (activePath !== tagPathName) {
+                setActivePath(tagPathName)
+              }
+            },
+          })
+        })
+      }
+
+      addItems(itemsToAdd, {
+        section: SidebarItemSections.DEFAULT,
+      })
     }
-  }, [baseSpecs, addItems])
+  }, [baseSpecs, prevArea, area])
 
   return (
     <>

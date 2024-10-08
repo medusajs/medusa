@@ -5,8 +5,8 @@ const Folder = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,14 @@ const Folder = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M2.492 10.578V10a1.733 1.733 0 0 1 1.733-1.733h11.55A1.733 1.733 0 0 1 17.508 10v.578m-6.692-4.96L9.184 3.987a1.155 1.155 0 0 0-.817-.339H4.225A1.733 1.733 0 0 0 2.492 5.38v9.24a1.733 1.733 0 0 0 1.733 1.733h11.55a1.733 1.733 0 0 0 1.733-1.733V7.69a1.733 1.733 0 0 0-1.733-1.733h-4.142c-.306 0-.6-.122-.817-.338Z"
+          d="M1.875 7.292V3.958c0-.92.746-1.666 1.667-1.666h1.626c.505 0 .983.229 1.3.623l.502.627h4.488c.921 0 1.667.746 1.667 1.666v2.37"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M3.542 5.625h7.916c.921 0 1.667.746 1.667 1.667v3.75c0 .92-.746 1.666-1.667 1.666H3.542c-.921 0-1.667-.745-1.667-1.666v-3.75c0-.921.746-1.667 1.667-1.667"
         />
       </svg>
     )

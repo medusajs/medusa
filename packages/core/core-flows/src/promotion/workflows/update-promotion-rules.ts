@@ -1,16 +1,23 @@
 import {
   UpdatePromotionRulesWorkflowDTO,
   PromotionRuleDTO,
-} from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import { updatePromotionRulesStep } from "../steps"
 
 export const updatePromotionRulesWorkflowId = "update-promotion-rules-workflow"
+/**
+ * This workflow updates one or more promotion rules.
+ */
 export const updatePromotionRulesWorkflow = createWorkflow(
   updatePromotionRulesWorkflowId,
   (
     input: WorkflowData<UpdatePromotionRulesWorkflowDTO>
-  ): WorkflowData<PromotionRuleDTO[]> => {
-    return updatePromotionRulesStep(input)
+  ): WorkflowResponse<PromotionRuleDTO[]> => {
+    return new WorkflowResponse(updatePromotionRulesStep(input))
   }
 )

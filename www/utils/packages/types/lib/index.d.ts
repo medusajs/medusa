@@ -29,6 +29,7 @@ export type SectionKey =
   | "member_sources_definedIn"
   | "members_group_categories"
   | "members_categories"
+  | "member_returns"
   | "title_reflectionPath"
   | "reflection_comment"
   | "reflection_typeParameters"
@@ -53,6 +54,9 @@ export type FormattingOptionType = {
   reflectionGroups?: {
     [k: string]: boolean
   }
+  reflectionGroupRename?: {
+    [k: string]: string
+  }
   reflectionCategories?: {
     [k: string]: boolean
   }
@@ -75,7 +79,11 @@ export type FormattingOptionType = {
   mdxImports?: string[]
   maxLevel?: number
   fileNameSeparator?: string
+  startSections?: string[]
   endSections?: string[]
+  shouldIncrementAfterStartSections?: boolean
+  hideTocHeaders?: boolean
+  workflowDiagramComponent?: string
 }
 
 export declare module "typedoc" {
@@ -118,11 +126,13 @@ export declare module "typedoc" {
      */
     hideBreadcrumbs: boolean
     /**
-     * [Markdown Plugin] Specifies the base path that all links to be served from. If omitted all urls will be relative.
+     * [Markdown Plugin] Specifies the base path that all links to be served from.
+     * If omitted all urls will be relative.
      */
     publicPath: string
     /**
-     * [Markdown Plugin] Use HTML named anchors as fragment identifiers for engines that do not automatically assign header ids. Should be set for Bitbucket Server docs.
+     * [Markdown Plugin] Use HTML named anchors as fragment identifiers for engines
+     * that do not automatically assign header ids. Should be set for Bitbucket Server docs.
      * @defaultValue false
      */
     namedAnchors: boolean
@@ -189,19 +199,6 @@ export declare module "typedoc" {
      */
     outputModules: boolean
     /**
-     * Whether to enable category to namespace conversion.
-     * @defaultValue false
-     */
-    generateNamespaces: boolean
-    /**
-     * Optionally specify a parent namespace to place all generated namespaces in.
-     */
-    parentNamespace: string
-    /**
-     * Optionally specify a name prefix for all generated namespaces.
-     */
-    namePrefix: string
-    /**
      * Whether to enable the React Query manipulator.
      * @defaultValue false
      */
@@ -228,5 +225,83 @@ export declare module "typedoc" {
      * The file to add the mermaid diagram to. The diagram is added as a package comment.
      */
     diagramAddToFile: string
+    /**
+     * Whether to generate a Mermaid.js class diagram for data models in the reference.
+     * (Used for DML)
+     */
+    generateDMLsDiagram: boolean
+    /**
+     * The file to add the mermaid diagram to. The diagram is added as a package comment.
+     * (Used for DML)
+     */
+    diagramDMLAddToFile: string
+    /**
+     * Whether to enable resolving DML relations.
+     * @defaultValue false
+     */
+    resolveDmlRelations: boolean
+    /**
+     * Whether to normalize DML types.
+     * @defaultValue false
+     */
+    normalizeDmlTypes: boolean
+    /**
+     * Whether to enable the workflows plugin.
+     * @defaultValue false
+     */
+    enableWorkflowsPlugins: boolean
+    /**
+     * Whether to enable the namespace generator plugin for paths.
+     * @defaultValue false
+     */
+    enablePathNamespaceGenerator: boolean
+    /**
+     * The namespaces to generate for paths.
+     */
+    generatePathNamespaces: NamespaceGenerateDetails[]
+    /**
+     * Whether to enable the namespace generator plugin for `@customNamespaces` usage.
+     * @defaultValue false
+     */
+    generateCustomNamespaces: boolean
+    /**
+     * Optionally specify a parent namespace to place all generated custom namespaces in.
+     */
+    customParentNamespace: string
+    /**
+     * Optionally specify a name prefix for all custom namespaces.
+     */
+    customNamespaceNamePrefix: string
   }
+}
+
+export declare type DmlObject = Record<string, string>
+
+export declare type DmlFile = {
+  [k: string]: {
+    filePath: string
+    properties: DmlObject
+  }
+}
+
+export declare type NamespaceGenerateDetails = {
+  /**
+   * The namespace's names.
+   */
+  name: string
+  /**
+   * The namespace's description. Will be attached
+   * as a summary comment.
+   */
+  description?: string
+  /**
+   * A path pattern to pass to minimatch that
+   * checks if a file / its reflections belong to the
+   * namespace
+   */
+  pathPattern: string
+  /**
+   * The namespace's children
+   */
+  children?: NamespaceGenerateDetails[]
 }

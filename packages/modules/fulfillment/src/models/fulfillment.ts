@@ -2,9 +2,9 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Cascade,
@@ -18,14 +18,15 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import FulfillmentAddress from "./address"
 import FulfillmentItem from "./fulfillment-item"
 import FulfillmentLabel from "./fulfillment-label"
 import FulfillmentProvider from "./fulfillment-provider"
 import ShippingOption from "./shipping-option"
 
-type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
@@ -75,6 +76,12 @@ export default class Fulfillment {
   })
   shipped_at: Date | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  marked_shipped_by: string | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  created_by: string | null = null
+
   @Property({
     columnType: "timestamptz",
     nullable: true,
@@ -117,28 +124,31 @@ export default class Fulfillment {
   shipping_option: ShippingOption | null
 
   @ManyToOne(() => FulfillmentProvider, { persist: false })
-  provider: FulfillmentProvider
+  provider: Rel<FulfillmentProvider>
 
   @OneToOne({
-    entity: () => Address,
+    entity: () => FulfillmentAddress,
     owner: true,
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     nullable: true,
     onDelete: "cascade",
   })
-  delivery_address!: Address
+  delivery_address!: Rel<FulfillmentAddress>
+
+  @Property({ columnType: "boolean", default: true })
+  requires_shipping: boolean = true
 
   @OneToMany(() => FulfillmentItem, (item) => item.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  items = new Collection<FulfillmentItem>(this)
+  items = new Collection<Rel<FulfillmentItem>>(this)
 
   @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  labels = new Collection<FulfillmentLabel>(this)
+  labels = new Collection<Rel<FulfillmentLabel>>(this)
 
   @Property({
     onCreate: () => new Date(),

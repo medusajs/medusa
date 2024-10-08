@@ -1,28 +1,31 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductCategoryWorkflow } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IProductModuleService,
+  ProductCategoryWorkflow,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const batchLinkProductsToCategoryStepId =
   "batch-link-products-to-category"
+/**
+ * This step creates links between product and category records.
+ */
 export const batchLinkProductsToCategoryStep = createStep(
   batchLinkProductsToCategoryStepId,
   async (
     data: ProductCategoryWorkflow.BatchUpdateProductsOnCategoryWorkflowInput,
     { container }
   ) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if (!data.add?.length && !data.remove?.length) {
       return new StepResponse(void 0, null)
     }
 
     const toRemoveSet = new Set(data.remove?.map((id) => id))
-    const dbProducts = await service.list(
+    const dbProducts = await service.listProducts(
       { id: [...(data.add ?? []), ...(data.remove ?? [])] },
       {
-        take: null,
         select: ["id", "categories"],
       }
     )
@@ -43,7 +46,7 @@ export const batchLinkProductsToCategoryStep = createStep(
       }
     })
 
-    await service.upsert(productsWithUpdatedCategories)
+    await service.upsertProducts(productsWithUpdatedCategories)
 
     return new StepResponse(void 0, {
       id: data.id,
@@ -57,14 +60,11 @@ export const batchLinkProductsToCategoryStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    const dbProducts = await service.list(
+    const dbProducts = await service.listProducts(
       { id: prevData.productIds },
       {
-        take: null,
         select: ["id", "categories"],
       }
     )
@@ -86,6 +86,6 @@ export const batchLinkProductsToCategoryStep = createStep(
       }
     })
 
-    await service.upsert(productsWithRevertedCategories)
+    await service.upsertProducts(productsWithRevertedCategories)
   }
 )

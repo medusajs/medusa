@@ -9,8 +9,7 @@ export type ProviderFileResultDTO = {
    */
   url: string
   /**
-   * The file's key. This key is used in other operations,
-   * such as deleting a file.
+   * The file's key.
    */
   key: string
 }
@@ -25,10 +24,6 @@ export type ProviderGetFileDTO = {
    * The file's key.
    */
   fileKey: string
-  /**
-   * Whether the file is private.
-   */
-  isPrivate?: boolean
   [x: string]: unknown
 }
 
@@ -66,14 +61,13 @@ export type ProviderUploadFileDTO = {
    * The file content as a binary-encoded string
    */
   content: string
+
+  /**
+   * The access level of the file. Defaults to private if not passed
+   */
+  access?: "public" | "private"
 }
 
-/**
- * ## Overview
- *
- * File provider interface for the file module.
- *
- */
 export interface IFileProvider {
   /**
    * This method is used to upload a file
@@ -92,6 +86,7 @@ export interface IFileProvider {
    *
    */
   delete(fileData: ProviderDeleteFileDTO): Promise<void>
+
   /**
    * This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.
    *

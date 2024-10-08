@@ -1,11 +1,17 @@
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { createDefaultSalesChannelStep } from "../../sales-channel"
 import { createDefaultStoreStep } from "../steps/create-default-store"
 
 export const createDefaultsWorkflowID = "create-defaults"
+/**
+ * This workflow creates default data for a Medusa application.
+ */
 export const createDefaultsWorkflow = createWorkflow(
   createDefaultsWorkflowID,
-  (input) => {
+  () => {
     const salesChannel = createDefaultSalesChannelStep({
       data: {
         name: "Default Sales Channel",
@@ -18,6 +24,6 @@ export const createDefaultsWorkflow = createWorkflow(
       },
     })
 
-    return store
+    return new WorkflowResponse(store)
   }
 )

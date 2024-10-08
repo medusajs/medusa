@@ -1,11 +1,14 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import {
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -28,13 +31,14 @@ medusaIntegrationTestRunner({
       let fulfillmentSet
       let cart
       let shippingOption
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        fulfillmentModule = appContainer.resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
-        regionService = appContainer.resolve(ModuleRegistrationName.REGION)
+        fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+        regionService = appContainer.resolve(Modules.REGION)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       beforeEach(async () => {
@@ -43,7 +47,7 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_LINK
         )
 
-        region = await regionService.create({
+        region = await regionService.createRegions({
           name: "Test region",
           countries: ["US"],
           currency_code: "usd",
@@ -62,7 +66,6 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test fixture",
-              tags: [{ value: "123" }, { value: "456" }],
               options: [
                 { title: "size", values: ["large", "small"] },
                 { title: "color", values: ["green"] },
@@ -70,7 +73,7 @@ medusaIntegrationTestRunner({
               variants: [
                 {
                   title: "Test variant",
-                  inventory_quantity: 10,
+                  manage_inventory: false,
                   prices: [
                     {
                       currency_code: "usd",
@@ -103,7 +106,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await fulfillmentModule.create({
+        fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test",
           type: "test-type",
           service_zones: [
@@ -123,9 +126,6 @@ medusaIntegrationTestRunner({
               stock_location_id: stockLocation.id,
             },
           },
-        ])
-
-        await remoteLinkService.create([
           {
             [Modules.STOCK_LOCATION]: {
               stock_location_id: stockLocation.id,
@@ -135,6 +135,12 @@ medusaIntegrationTestRunner({
             },
           },
         ])
+
+        await api.post(
+          `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
 
         shippingOption = (
           await api.post(
@@ -167,27 +173,34 @@ medusaIntegrationTestRunner({
         ).data.shipping_option
 
         cart = (
-          await api.post(`/store/carts`, {
-            region_id: region.id,
-            sales_channel_id: salesChannel.id,
-            currency_code: "usd",
-            email: "test@admin.com",
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-            ],
-          })
+          await api.post(
+            `/store/carts`,
+            {
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              currency_code: "usd",
+              email: "test@admin.com",
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            storeHeaders
+          )
         ).data.cart
       })
 
-      describe("GET /admin/shipping-options/:cart_id", () => {
-        // TODO: Enable it when product workflows manage inventory items
-        it.skip("should get all shipping options for a cart successfully", async () => {
-          const resp = await api.get(`/store/shipping-options/${cart.id}`)
+      describe("GET /admin/shipping-options?cart_id=", () => {
+        it("should get all shipping options for a cart successfully", async () => {
+          const resp = await api.get(
+            `/store/shipping-options?cart_id=${cart.id}`,
+            storeHeaders
+          )
 
           const shippingOptions = resp.data.shipping_options
+
           expect(shippingOptions).toHaveLength(1)
           expect(shippingOptions[0]).toEqual(
             expect.objectContaining({

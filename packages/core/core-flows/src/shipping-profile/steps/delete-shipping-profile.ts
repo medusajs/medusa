@@ -1,13 +1,16 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IFulfillmentModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteShippingProfilesStepId = "delete-shipping-profile"
+/**
+ * This step deletes one or more shipping profiles.
+ */
 export const deleteShippingProfilesStep = createStep(
   deleteShippingProfilesStepId,
   async (ids: string[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.softDeleteShippingProfiles(ids)
@@ -20,7 +23,7 @@ export const deleteShippingProfilesStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.restoreShippingProfiles(prevIds)

@@ -1,0 +1,94 @@
+---
+sidebar_label: "Get Product Variant Prices"
+---
+
+export const metadata = {
+  title: `Get Product Variant Prices using Query`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to retrieve product variant prices in the Medusa application using the [Query](!docs!/advanced-development/module-links/query).
+
+<Note title="Why use Query?">
+
+The Product Module doesn't provide pricing functionalities. The Medusa application links the Product Module's `ProductVariant` data model to the Pricing Module's `PriceSet` data model.
+
+So, to retrieve data across the linked records of the two modules, you use Query.
+
+</Note>
+
+## Retrieve All Product Variant Prices
+
+To retrieve all product variant prices, retrieve the product using Query and include among its fields `variants.prices.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.prices.*",
+  ],
+  filters: {
+    id: [
+      "prod_123",
+    ],
+  },
+})
+```
+
+Each variant in the retrieved products has a `prices` array property with all the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](/references/pricing/models/Price).
+
+---
+
+## Retrieve Calculated Price for a Context
+
+The Pricing Module can calculate prices of a variant based on a [context](../../../pricing/price-calculation/page.mdx#calculation-context), such as the region ID or the currency code.
+
+<Note title="Tip">
+
+Learn more about prices calculation in [this Pricing Module documentation](../../../pricing/price-calculation/page.mdx).
+
+</Note>
+
+To retrieve calculated prices of variants based on a context, retrieve the products using Query and:
+
+- Pass `variants.calculated_price.*` in the `fields` property.
+- Pass a `context` property in the object parameter. Its value is an object of objects to sets the context for the retrieved fields.
+
+For example:
+
+```ts highlights={[["6"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"]]}
+import { QueryContext } from "@medusajs/framework/utils"
+
+// ...
+
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*",
+  ],
+  filters: {
+    id: "prod_123",
+  },
+  context: {
+    variants: {
+      calculated_price: QueryContext({
+        region_id: "reg_01J3MRPDNXXXDSCC76Y6YCZARS",
+        currency_code: "eur",
+      }),
+    },
+  },
+})
+```
+
+For the context of the product variant's calculated price, you pass an object to `context` with the property `variants`, whose value is another object with the property `calculated_price`.
+
+`calculated_price`'s value is created using the `QueryContext` utility function, passing it a [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
+
+Each variant in the retrieved products has a `calculated_price` object. Learn more about its properties in [this Pricing Module guide](../../../pricing/price-calculation/page.mdx#returned-price-object).

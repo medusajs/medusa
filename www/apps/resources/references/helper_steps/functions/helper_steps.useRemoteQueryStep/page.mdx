@@ -1,0 +1,101 @@
+---
+slug: /references/helper-steps/useRemoteQueryStep
+sidebar_label: useRemoteQueryStep
+---
+
+import { TypeList } from "docs-ui"
+
+# useRemoteQueryStep - Helper Steps API Reference
+
+This documentation provides a reference to the `useRemoteQueryStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Example
+
+To retrieve a list of records of a data model:
+
+```ts
+import {
+  createWorkflow
+} from "@medusajs/framework/workflows-sdk"
+import {
+  useRemoteQueryStep
+} from "@medusajs/medusa/core-flows"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    const products = useRemoteQueryStep({
+      entry_point: "product",
+      fields: [
+        "*",
+        "variants.*"
+      ]
+    })
+  }
+)
+```
+
+To retrieve a single item instead of a an array:
+
+```ts
+import {
+  createWorkflow
+} from "@medusajs/framework/workflows-sdk"
+import {
+  useRemoteQueryStep
+} from "@medusajs/core-flows"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    const product = useRemoteQueryStep({
+      entry_point: "product",
+      fields: [
+        "*",
+        "variants.*"
+      ],
+      variables: {
+        filters: {
+          id: "123"
+        }
+      },
+      list: false
+    })
+  }
+)
+```
+
+To throw an error if a record isn't found matching the specified ID:
+
+```ts
+import {
+  createWorkflow
+} from "@medusajs/framework/workflows-sdk"
+import {
+  useRemoteQueryStep
+} from "@medusajs/core-flows"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    const product = useRemoteQueryStep({
+      entry_point: "product",
+      fields: [
+        "*",
+        "variants.*"
+      ],
+      variables: {
+        filters: {
+          id: "123"
+        }
+      },
+      list: false,
+      throw_if_key_not_found: true
+    })
+  }
+)
+```
+
+## Input
+
+<TypeList types={[{"name":"EntryStepInput \\| ServiceStepInput","type":"[EntryStepInput](../../interfaces/helper_steps.EntryStepInput/page.mdx) \\| [ServiceStepInput](../../interfaces/helper_steps.ServiceStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"EntryStepInput \\| ServiceStepInput","type":"[EntryStepInput](../../interfaces/helper_steps.EntryStepInput/page.mdx) \\| [ServiceStepInput](../../interfaces/helper_steps.ServiceStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="useRemoteQueryStep"/>

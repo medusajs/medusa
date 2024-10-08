@@ -1,39 +1,124 @@
 post:
-  operationId: PostPriceListsPriceListPricesBatch
-  summary: Add or Update Prices
-  description: Add or update a list of prices in a Price List.
+  operationId: PostPriceListsIdPricesBatch
+  summary: Manage Prices in Price List
+  x-sidebar-summary: Manage Prices
+  description: Manage the prices of a price list to create, update, or delete them.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The price list's ID.
       required: true
-      description: The ID of the Price List.
       schema:
         type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminPostPriceListPricesPricesReq.yaml
-  x-codegen:
-    method: addPrices
+          type: object
+          description: The prices to create, update, or delete.
+          properties:
+            create:
+              type: array
+              description: The prices to create.
+              items:
+                type: object
+                description: A price's details.
+                required:
+                  - currency_code
+                  - variant_id
+                  - amount
+                properties:
+                  currency_code:
+                    type: string
+                    title: currency_code
+                    description: The price's currency code.
+                  amount:
+                    type: number
+                    title: amount
+                    description: The price's amount.
+                  variant_id:
+                    type: string
+                    title: variant_id
+                    description: The ID of the variant this price is for.
+                  min_quantity:
+                    type: number
+                    title: min_quantity
+                    description: >-
+                      The minimum quantity that must be available of the
+                      associated variant in the cart for this price to apply.
+                  max_quantity:
+                    type: number
+                    title: max_quantity
+                    description: >-
+                      The maximum quantity that must be available of the
+                      associated variant in the cart for this price list to
+                      apply.
+                  rules:
+                    type: object
+                    description: Key-value pair rules to apply on the price.
+                    example:
+                      region_id: 123
+            update:
+              type: array
+              description: The prices to update.
+              items:
+                type: object
+                description: The properties to update in a price.
+                required:
+                  - id
+                  - variant_id
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The price's ID.
+                  currency_code:
+                    type: string
+                    title: currency_code
+                    description: The price's currency code.
+                  amount:
+                    type: number
+                    title: amount
+                    description: The price's amount.
+                  variant_id:
+                    type: string
+                    title: variant_id
+                    description: The ID of the variant this price is for.
+                  min_quantity:
+                    type: number
+                    title: min_quantity
+                    description: >-
+                      The minimum quantity that must be available of the
+                      associated variant in the cart for this price to apply.
+                  max_quantity:
+                    type: number
+                    title: max_quantity
+                    description: >-
+                      The maximum quantity that must be available of the
+                      associated variant in the cart for this price list to
+                      apply.
+                  rules:
+                    type: object
+                    description: Key-value pair rules to apply on the price.
+                    example:
+                      region_id: 123
+            delete:
+              type: array
+              description: The prices to delete.
+              items:
+                type: string
+                title: delete
+                description: A price's ID.
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_price-lists_{id}_prices_batch/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_price-lists_{id}_prices_batch/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Price Lists
   responses:
@@ -42,7 +127,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminPriceListRes.yaml
+            $ref: ../components/schemas/AdminPriceListBatchResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -55,61 +140,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-delete:
-  operationId: DeletePriceListsPriceListPricesBatch
-  summary: Delete Prices
-  description: Delete a list of prices in a Price List
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Price List
-      schema:
-        type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminDeletePriceListPricesPricesReq.yaml
-  x-codegen:
-    method: deletePrices
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_price-lists_{id}_prices_batch/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/delete.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_price-lists_{id}_prices_batch/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
-  tags:
-    - Price Lists
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminPriceListDeleteBatchRes.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
+  x-workflow: batchPriceListPricesWorkflow

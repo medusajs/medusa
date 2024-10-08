@@ -57,7 +57,7 @@
   "peerDependencies": {
     "react": "^16.x || ^17.x || ^18.x"
   },
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@3.2.1",
   "publishConfig": {
     "access": "public"
   }

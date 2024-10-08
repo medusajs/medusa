@@ -11,6 +11,7 @@ export type TooltipProps = {
   tooltipClassName?: string
   html?: string
   tooltipChildren?: React.ReactNode
+  innerClassName?: string
 } & React.HTMLAttributes<HTMLSpanElement> &
   ITooltip
 
@@ -21,18 +22,19 @@ export const Tooltip = ({
   html = "",
   tooltipChildren,
   className,
+  innerClassName,
   ...tooltipProps
 }: TooltipProps) => {
   const elementId = useId()
 
   return (
-    <>
+    <span className={clsx(className, "notranslate")} translate="no">
       <span
         id={elementId}
         data-tooltip-content={text}
         data-tooltip-html={html}
         data-tooltip-id={elementId}
-        className={className}
+        className={innerClassName}
       >
         {children}
       </span>
@@ -40,20 +42,20 @@ export const Tooltip = ({
         anchorId={elementId}
         // anchorSelect={elementId ? `#${elementId}` : undefined}
         className={clsx(
-          "!border-medusa-border-base !border !border-solid",
-          "!text-compact-x-small-plus !shadow-tooltip dark:!shadow-tooltip-dark !rounded-docs_DEFAULT",
-          "!py-docs_0.4 !z-[399] hidden !px-docs_1 lg:block",
-          "!bg-medusa-bg-base",
-          "!text-medusa-fg-subtle",
+          "!text-compact-x-small !shadow-elevation-tooltip dark:!shadow-elevation-tooltip-dark !rounded-docs_DEFAULT",
+          "!py-docs_0.25 !z-[399] hidden !px-docs_0.5 lg:block",
+          "!bg-medusa-bg-component",
+          "!text-medusa-fg-base text-center",
           tooltipClassName
         )}
         wrapper="span"
         noArrow={true}
         positionStrategy={"fixed"}
+        opacity={1}
         {...tooltipProps}
       >
         {tooltipChildren}
       </ReactTooltip>
-    </>
+    </span>
   )
 }

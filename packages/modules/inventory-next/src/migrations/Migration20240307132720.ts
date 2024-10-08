@@ -24,9 +24,6 @@ export class Migration20240307132720 extends Migration {
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_inventory_level_location_id" ON "inventory_level" (location_id);'
     )
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_inventory_level_location_id" ON "inventory_level" (location_id);'
-    )
 
     this.addSql(
       'create table if not exists "reservation_item" ("id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "line_item_id" text null, "location_id" text not null, "quantity" integer not null, "external_id" text null, "description" text null, "created_by" text null, "metadata" jsonb null, "inventory_item_id" text not null, constraint "reservation_item_pkey" primary key ("id"));'

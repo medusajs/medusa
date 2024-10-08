@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/steps/getPromotionCodesToApply
+sidebar_label: getPromotionCodesToApply
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# getPromotionCodesToApply - Medusa Workflows API Reference
+
+This documentation provides a reference to the `getPromotionCodesToApply`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step retrieves the promotion codes to apply on a cart.
+
+## Input
+
+<TypeList types={[{"name":"GetPromotionCodesToApplyStepInput","type":"[GetPromotionCodesToApplyStepInput](../../../../interfaces/core_flows.GetPromotionCodesToApplyStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"cart","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"adjustments","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"adjustments","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"promo_codes","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"[ADD](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#add) \\| [REMOVE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#remove) \\| [REPLACE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#replace)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPromotionCodesToApply"/>
+
+## Output
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPromotionCodesToApply"/>

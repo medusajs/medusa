@@ -1,6 +1,6 @@
 import { generateCreateShippingOptionsData } from "./shipping-options"
 import { generateCreateFulfillmentData } from "./fulfillment"
-import { IFulfillmentModuleService } from "@medusajs/types"
+import { IFulfillmentModuleService } from "@medusajs/framework/types"
 
 export * from "./shipping-options"
 export * from "./fulfillment"
@@ -21,7 +21,7 @@ export async function createFullDataStructure(
     name: "test_" + randomString,
     type: "default",
   })
-  const fulfillmentSet = await service.create({
+  const fulfillmentSet = await service.createFulfillmentSets({
     name: "test_" + randomString,
     type: "test-type",
   })

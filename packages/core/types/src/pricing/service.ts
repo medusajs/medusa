@@ -5,19 +5,15 @@ import { Context } from "../shared-context"
 import {
   AddPriceListPricesDTO,
   AddPricesDTO,
-  AddRulesDTO,
   CalculatedPriceSet,
   CreatePriceListDTO,
-  CreatePriceListRuleDTO,
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
-  CreateRuleTypeDTO,
   FilterablePriceListProps,
   FilterablePriceListRuleProps,
   FilterablePriceProps,
   FilterablePriceRuleProps,
   FilterablePriceSetProps,
-  FilterableRuleTypeProps,
   PriceDTO,
   PriceListDTO,
   PriceListRuleDTO,
@@ -26,17 +22,20 @@ import {
   PricingContext,
   PricingFilters,
   RemovePriceListRulesDTO,
-  RemovePriceSetRulesDTO,
-  RuleTypeDTO,
   SetPriceListRulesDTO,
   UpdatePriceListDTO,
   UpdatePriceListPricesDTO,
-  UpdatePriceListRuleDTO,
   UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
-  UpdateRuleTypeDTO,
   UpsertPriceSetDTO,
 } from "./common"
+import {
+  CreatePricePreferenceDTO,
+  FilterablePricePreferenceProps,
+  PricePreferenceDTO,
+  UpdatePricePreferenceDTO,
+  UpsertPricePreferenceDTO,
+} from "./common/price-preference"
 
 /**
  * The main service interface for the Pricing Module.
@@ -121,13 +120,13 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const priceSet =
-   *   await pricingModuleService.retrieve("pset_123")
+   *   await pricingModuleService.retrievePriceSet("pset_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.retrieve(
+   * const priceSet = await pricingModuleService.retrievePriceSet(
    *   "pset_123",
    *   {
    *     relations: ["prices"],
@@ -135,7 +134,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrievePriceSet(
     id: string,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -156,7 +155,7 @@ export interface IPricingModuleService extends IModuleService {
    * To retrieve a list of price sets using their IDs:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list({
+   * const priceSets = await pricingModuleService.listPriceSets({
    *   id: ["pset_123", "pset_321"],
    * })
    * ```
@@ -164,7 +163,7 @@ export interface IPricingModuleService extends IModuleService {
    * To specify relations that should be retrieved within the price sets:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list(
+   * const priceSets = await pricingModuleService.listPriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
@@ -177,7 +176,7 @@ export interface IPricingModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list(
+   * const priceSets = await pricingModuleService.listPriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
@@ -189,7 +188,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listPriceSets(
     filters?: FilterablePriceSetProps,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -211,7 +210,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount({
+   *   await pricingModuleService.listAndCountPriceSets({
    *     id: ["pset_123", "pset_321"],
    *   })
    * ```
@@ -220,7 +219,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount(
+   *   await pricingModuleService.listAndCountPriceSets(
    *     {
    *       id: ["pset_123", "pset_321"],
    *     },
@@ -234,7 +233,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount(
+   *   await pricingModuleService.listAndCountPriceSets(
    *     {
    *       id: ["pset_123", "pset_321"],
    *     },
@@ -246,7 +245,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountPriceSets(
     filters?: FilterablePriceSetProps,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -263,7 +262,7 @@ export interface IPricingModuleService extends IModuleService {
    * To create a default price set, don't pass any rules. For example:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.create({
+   * const priceSet = await pricingModuleService.createPriceSets({
    *   rules: [],
    *   prices: [
    *     {
@@ -287,11 +286,7 @@ export interface IPricingModuleService extends IModuleService {
    * To create a price set and associate it with rule types:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.create({
-   *   rules: [
-   *     { rule_attribute: "region_id" },
-   *     { rule_attribute: "city" },
-   *   ],
+   * const priceSet = await pricingModuleService.createPriceSets({
    *   prices: [
    *     {
    *       amount: 300,
@@ -319,7 +314,10 @@ export interface IPricingModuleService extends IModuleService {
    * })
    * ```
    */
-  create(data: CreatePriceSetDTO, sharedContext?: Context): Promise<PriceSetDTO>
+  createPriceSets(
+    data: CreatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
 
   /**
    * This method is used to create multiple price sets.
@@ -329,7 +327,7 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The list of created price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.create([
+   * const priceSets = await pricingModuleService.createPriceSets([
    *   // default price set
    *   {
    *     rules: [],
@@ -352,10 +350,6 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    *   // price set with rules
    *   {
-   *     rules: [
-   *       { rule_attribute: "region_id" },
-   *       { rule_attribute: "city" },
-   *     ],
    *     prices: [
    *       {
    *         amount: 300,
@@ -383,7 +377,7 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createPriceSets(
     data: CreatePriceSetDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
@@ -396,7 +390,7 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The updated and created price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.upsert([
+   * const priceSets = await pricingModuleService.upsertPriceSets([
    *   {
    *     prices: [
    *       {
@@ -405,13 +399,9 @@ export interface IPricingModuleService extends IModuleService {
    *       },
    *     ],
    *   },
-   *   {
-   *     id: "pset_123",
-   *     rules: [{ rule_attribute: "region_id" }],
-   *   },
    * ])
    */
-  upsert(
+  upsertPriceSets(
     data: UpsertPriceSetDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
@@ -424,12 +414,15 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO>} The updated or created price set.
    *
    * @example
-   * const priceSet = await pricingModuleService.upsert({
+   * const priceSet = await pricingModuleService.upsertPriceSets({
    *   id: "pset_123",
-   *   rules: [{ rule_attribute: "region_id" }],
+   *   prices: [{ amount: 100, currency_code: "USD" }],
    * })
    */
-  upsert(data: UpsertPriceSetDTO, sharedContext?: Context): Promise<PriceSetDTO>
+  upsertPriceSets(
+    data: UpsertPriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
 
   /**
    * This method is used to update a price set.
@@ -440,14 +433,14 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO>} The updated price set.
    *
    * @example
-   * const priceSet = await pricingModuleService.update(
+   * const priceSet = await pricingModuleService.updatePriceSets(
    *   "pset_123",
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *      prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
-  update(
+  updatePriceSets(
     id: string,
     data: UpdatePriceSetDTO,
     sharedContext?: Context
@@ -462,40 +455,20 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The updated price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.update(
+   * const priceSets = await pricingModuleService.updatePriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *     prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
-  update(
+  updatePriceSets(
     selector: FilterablePriceSetProps,
     data: UpdatePriceSetDTO,
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
-
-  /**
-   * This method remove rules from a price set.
-   *
-   * @param {RemovePriceSetRulesDTO[]} data - The rules to remove per price set.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when rules are successfully removed.
-   *
-   * @example
-   * await pricingModuleService.removeRules([
-   *   {
-   *     id: "pset_123",
-   *     rules: ["region_id"],
-   *   },
-   * ])
-   */
-  removeRules(
-    data: RemovePriceSetRulesDTO[],
-    sharedContext?: Context
-  ): Promise<void>
 
   /**
    * This method deletes price sets by their IDs.
@@ -505,9 +478,9 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the price sets are successfully deleted.
    *
    * @example
-   * await pricingModuleService.delete(["pset_123", "pset_321"])
+   * await pricingModuleService.deletePriceSets(["pset_123", "pset_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deletePriceSets(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method adds prices to a price set.
@@ -610,263 +583,6 @@ export interface IPricingModuleService extends IModuleService {
     data: AddPricesDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
-
-  /**
-   * This method adds rules to a price set.
-   *
-   * @param {AddRulesDTO} data - The data defining the price set to add the rules to, along with the rules to add.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} The price set that the rules were added to.
-   *
-   * @example
-   * const priceSet = await pricingModuleService.addRules({
-   *   priceSetId: "pset_123",
-   *   rules: [
-   *     {
-   *       attribute: "region_id",
-   *     },
-   *   ],
-   * })
-   */
-  addRules(data: AddRulesDTO, sharedContext?: Context): Promise<PriceSetDTO>
-
-  /**
-   * This method adds rules to multiple price sets.
-   *
-   * @param {AddRulesDTO[]} data - The data defining the rules to add per price set.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} The list of the price sets that the rules were added to.
-   *
-   * @example
-   * const priceSets = await pricingModuleService.addRules([
-   *   {
-   *     priceSetId: "pset_123",
-   *     rules: [
-   *       {
-   *         attribute: "region_id",
-   *       },
-   *     ],
-   *   },
-   *   {
-   *     priceSetId: "pset_321",
-   *     rules: [
-   *       {
-   *         attribute: "customer_group_id",
-   *       },
-   *     ],
-   *   },
-   * ])
-   */
-  addRules(data: AddRulesDTO[], sharedContext?: Context): Promise<PriceSetDTO[]>
-
-  /**
-   * This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
-   *
-   * @param {string} id - The ID of the rule type to retrieve.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO>} The retrieved rule type.
-   *
-   * @example
-   * A simple example that retrieves a rule type by its code:
-   *
-   * ```ts
-   * const ruleType =
-   *   await pricingModuleService.retrieveRuleType("rul-typ_123")
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * const ruleType = await pricingModuleService.retrieveRuleType(
-   *   "rul-typ_123",
-   *   {
-   *     relations: ["price_sets"],
-   *   }
-   * )
-   * ```
-   */
-  retrieveRuleType(
-    id: string,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO>
-
-  /**
-   * This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
-   *
-   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of rule types.
-   *
-   * @example
-   *
-   * To retrieve a list of rule types using their IDs:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes({
-   *   id: ["rul-typ_123", "rul-typ_321"],
-   * })
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes(
-   *   {
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   },
-   *   {
-   *     relations: ["price_sets"],
-   *   }
-   * )
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes(
-   *   {
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   },
-   *   {
-   *     relations: ["price_sets"],
-   *     take: 20,
-   *     skip: 2,
-   *   }
-   * )
-   * ```
-   */
-  listRuleTypes(
-    filters?: FilterableRuleTypeProps,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
-   *
-   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[RuleTypeDTO[], number]>} The list of rule types along with their total count.
-   *
-   * @example
-   *
-   * To retrieve a list of rule types using their IDs:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes({
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   })
-   * ```
-   *
-   * To specify attributes that should be retrieved within the rule types:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes(
-   *     {
-   *       id: ["rul-typ_123", "rul-typ_321"],
-   *     },
-   *     {
-   *       relations: ["price_sets"],
-   *     }
-   *   )
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes(
-   *     {
-   *       id: ["rul-typ_123", "rul-typ_321"],
-   *     },
-   *     {
-   *       relations: ["price_sets"],
-   *       take: 20,
-   *       skip: 2,
-   *     }
-   *   )
-   * ```
-   */
-  listAndCountRuleTypes(
-    filters?: FilterableRuleTypeProps,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<[RuleTypeDTO[], number]>
-
-  /**
-   * This method is used to create new rule types.
-   *
-   * @param {CreateRuleTypeDTO[]} data - The rule types to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of created rule types.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.createRuleTypes([
-   *   {
-   *     name: "Region",
-   *     rule_attribute: "region_id",
-   *   },
-   *   {
-   *     name: "Customer Group",
-   *     rule_attribute: "customer_group_id",
-   *   },
-   * ])
-   */
-  createRuleTypes(
-    data: CreateRuleTypeDTO[],
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to update existing rule types with the provided data.
-   *
-   * @param {UpdateRuleTypeDTO[]} data - The rule types to update, each having the attributes that should be updated in a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of updated rule types.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.updateRuleTypes([
-   *   {
-   *     id: "rul-typ_123",
-   *     name: "Region",
-   *   },
-   *   {
-   *     id: "rul-typ_321",
-   *     name: "Customer Group",
-   *   },
-   * ])
-   */
-  updateRuleTypes(
-    data: UpdateRuleTypeDTO[],
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to delete rule types based on the provided IDs.
-   *
-   * @param {string[]} ruleTypeIds - The IDs of the rule types to delete.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves once the rule types are deleted.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.deleteRuleTypes([
-   *   "rul-typ_123",
-   *   "rul-typ_321",
-   * ])
-   */
-  deleteRuleTypes(ruleTypeIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method is used to retrieve a paginated list of prices based on optional filters and configuration.
@@ -1185,7 +901,7 @@ export interface IPricingModuleService extends IModuleService {
    *   await pricingModuleService.createPriceRules([
    *     {
    *       value: "VIP",
-   *       rule_type_id: "rul-typ_123",
+   *       attribute: "customer_group",
    *       price_set_id: "pset_123",
    *     },
    *   ])
@@ -1650,48 +1366,6 @@ export interface IPricingModuleService extends IModuleService {
   ): Promise<[PriceListRuleDTO[], number]>
 
   /**
-   * This method is used to create price list rules.
-   *
-   * @param {CreatePriceListRuleDTO[]} data - The price list rules to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListRuleDTO[]>} The created price list rules.
-   *
-   * @example
-   * const priceListRules =
-   *   await pricingModuleService.createPriceListRules([
-   *     {
-   *       rule_type_id: "rul-typ_123",
-   *       price_list_id: "plist_123",
-   *     },
-   *   ])
-   */
-  createPriceListRules(
-    data: CreatePriceListRuleDTO[],
-    sharedContext?: Context
-  ): Promise<PriceListRuleDTO[]>
-
-  /**
-   * This method is used to update price list rules.
-   *
-   * @param {UpdatePriceListRuleDTO[]} data - The attributes to update for each price list rule. The price list rule is identified by the `id` property.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListRuleDTO[]>} The updated price list rules.
-   *
-   * @example
-   * const priceListRules =
-   *   await pricingModuleService.updatePriceListRules([
-   *     {
-   *       id: "plrule_123",
-   *       rule_type_id: "rul-typ_123",
-   *     },
-   *   ])
-   */
-  updatePriceListRules(
-    data: UpdatePriceListRuleDTO[],
-    sharedContext?: Context
-  ): Promise<PriceListRuleDTO[]>
-
-  /**
    * This method is used to delete price list rules.
    *
    * @param {string[]} priceListRuleIds - The IDs of the price list rules to delete.
@@ -1821,4 +1495,261 @@ export interface IPricingModuleService extends IModuleService {
    * ])
    */
   removePrices(ids: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method is used to retrieve a price preference by its ID.
+   *
+   * @param {string} id - The ID of the price preference to retrieve.
+   * @param {FindConfig<PricePreferenceDTO>} config -
+   * The configurations determining how the price preference is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO>} The retrieved price preference.
+   *
+   * @example
+   * A simple example that retrieves a price preference by its ID:
+   *
+   * ```ts
+   * const pricePreference =
+   *   await pricingModuleService.retrievePricePreference("prpref_123")
+   * ```
+   */
+  retrievePricePreference(
+    id: string,
+    config?: FindConfig<PricePreferenceDTO>,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  /**
+   * This method is used to retrieve a paginated list of price preferences based on optional filters and configuration.
+   *
+   * @param {FilterablePricePreferenceProps} filters - The filters to apply on the retrieved price lists.
+   * @param {FindConfig<PricePreferenceDTO>} config -
+   * The configurations determining how the price preferences are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO[]>} The list of price preferences.
+   *
+   * @example
+   *
+   * To retrieve a list of price preferences using their IDs:
+   *
+   * ```ts
+   * const pricePreferences = await pricingModuleService.listPricePreferences({
+   *   id: ["prpref_123", "prpref_321"],
+   * })
+   * ```
+   *
+   * To specify relations that should be retrieved within the price preferences:
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const pricePreferences = await pricingModuleService.listPricePreferences(
+   *   {
+   *     id: ["prpref_123", "prpref_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   */
+  listPricePreferences(
+    filters?: FilterablePricePreferenceProps,
+    config?: FindConfig<PricePreferenceDTO>,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  /**
+   * This method is used to create a new price preference.
+   *
+   * @param {CreatePricePreferenceDTO} data - The attributes of the price preference to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO>} The created price preference.
+   *
+   * @example
+   * To create a price preference with rule:
+   *
+   * ```ts
+   * const pricePreference = await pricingModuleService.createPricePreferences({
+   *    attribute: 'region_id',
+   *    value: 'DE',
+   *    is_tax_inclusive: true
+   * })
+   * ```
+   */
+  createPricePreferences(
+    data: CreatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  /**
+   * This method is used to create multiple price preferences.
+   *
+   * @param {CreatePricePreferenceDTO[]} data - The price preferences to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO[]>} The list of created price preferences.
+   *
+   * @example
+   * const pricePreferences = await pricingModuleService.createPricePreferences([{
+   *    attribute: 'region_id',
+   *    value: 'DE',
+   *    is_tax_inclusive: true
+   * }])
+   */
+  createPricePreferences(
+    data: CreatePricePreferenceDTO[],
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  /**
+   * This method updates existing price preferences, or creates new ones if they don't exist.
+   *
+   * @param {UpsertPricePreferenceDTO[]} data - The attributes to update or create for each price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO[]>} The updated and created price preferences.
+   *
+   * @example
+   * const pricePreferences = await pricingModuleService.upsertPricePreferences([
+   *   {
+   *      id: "prpref_123",
+   *      attribute: 'region_id',
+   *      value: 'DE',
+   *      is_tax_inclusive: true
+   *   },
+   * ])
+   */
+  upsertPricePreferences(
+    data: UpsertPricePreferenceDTO[],
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  /**
+   * This method updates the price preference if it exists, or creates a new ones if it doesn't.
+   *
+   * @param {UpsertPricePreferenceDTO} data - The attributes to update or create for the new price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO>} The updated or created price preference.
+   *
+   * @example
+   * const pricePreference = await pricingModuleService.upsertPricePreferences(
+   *   {
+   *      id: "prpref_123",
+   *      attribute: 'region_id',
+   *      value: 'DE',
+   *      is_tax_inclusive: true
+   *   }
+   * )
+   */
+  upsertPricePreferences(
+    data: UpsertPricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  /**
+   * This method is used to update a price preference.
+   *
+   * @param {string} id - The ID of the price preference to be updated.
+   * @param {UpdatePricePreferenceDTO} data - The attributes of the price preference to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO>} The updated price preference.
+   *
+   * @example
+   * const pricePreference = await pricingModuleService.updatePricePreferences(
+   *   "prpref_123",
+   *   {
+   *      is_tax_inclusive: false
+   *   }
+   * )
+   */
+  updatePricePreferences(
+    id: string,
+    data: UpdatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  /**
+   * This method is used to update a list of price preferences determined by the selector filters.
+   *
+   * @param {FilterablePricePreferenceProps} selector - The filters that will determine which price preferences will be updated.
+   * @param {UpdatePricePreferenceDTO} data - The attributes to be updated on the selected price preferences
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO[]>} The updated price preferences.
+   *
+   * @example
+   * const pricePreferences = await pricingModuleService.updatePricePreferences(
+   *   {
+   *     id: ["prpref_123", "prpref_321"],
+   *   },
+   *   {
+   *     is_tax_inclusive: false
+   *   }
+   * )
+   */
+  updatePricePreferences(
+    selector: FilterablePricePreferenceProps,
+    data: UpdatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  /**
+   * This method soft deletes price preferences by their IDs.
+   *
+   * @param {string[]} pricePreferenceIds - The IDs of the price preferences.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted.
+   * The object's keys are the ID attribute names of the price preference entity's relations, and its value is an array of strings, each being the ID of a record associated.
+   *
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await pricingModuleService.softDeletePricePreferences([
+   *   "prpref_123",
+   *   "prpref_321",
+   * ])
+   */
+  softDeletePricePreferences<TReturnableLinkableKeys extends string = string>(
+    pricePreferenceIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores soft deleted price preferences by their IDs.
+   *
+   * @param {string[]} pricePreferenceIds - The IDs of the price preferences.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the price preferences.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored.
+   * The object's keys are the ID attribute names of the price preferences entity's relations,
+   * and its value is an array of strings, each being the ID of the record associated with the price preferences through this relation.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await pricingModuleService.restorePricePreferences([
+   *   "prpref_123",
+   *   "prpref_321",
+   * ])
+   */
+  restorePricePreferences<TReturnableLinkableKeys extends string = string>(
+    pricePreferenceIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method deletes price preferences by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the price preferences to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the price preferences are successfully deleted.
+   *
+   * @example
+   * await pricingModuleService.deletePricePreferences(["prpref_123", "prpref_321"])
+   */
+  deletePricePreferences(ids: string[], sharedContext?: Context): Promise<void>
 }

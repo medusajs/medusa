@@ -1,4 +1,4 @@
-import { ShippingOptionPriceType } from "../../fulfillment"
+import { ShippingOptionDTO, ShippingOptionPriceType } from "../../fulfillment"
 import { RuleOperatorType } from "../../common"
 
 export interface CreateShippingOptionsWorkflowInput {
@@ -30,6 +30,4 @@ export interface CreateShippingOptionsWorkflowInput {
   }[]
 }
 
-export type CreateShippingOptionsWorkflowOutput = {
-  id: string
-}[]
+export type CreateShippingOptionsWorkflowOutput = ShippingOptionDTO[]

@@ -5,20 +5,20 @@ const Klaviyo = React.forwardRef<SVGSVGElement, Omit<IconProps, "color">>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path fill="url(#a)" d="M19 16H1V4h18l-3.778 6L19 16Z" />
+        <path fill="url(#a)" d="M14.25 12H.75V3h13.5l-2.834 4.5z" />
         <defs>
           <linearGradient
             id="a"
-            x1={20.2}
-            x2={-1.7}
-            y1={4.835}
-            y2={18.335}
+            x1={15.15}
+            x2={-1.275}
+            y1={3.626}
+            y2={13.751}
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="#ED7598" />

@@ -63,6 +63,17 @@ import getDeclarationChildrenHelper from "./resources/helpers/get-declaration-ch
 import ifShowSeparatorForTitleLevelHelper from "./resources/helpers/if-show-separator-for-title-level"
 import shouldExpandPropertiesHelper from "./resources/helpers/should-expand-properties"
 import shouldExpandDeclarationChildrenHelper from "./resources/helpers/should-expand-declaration-children"
+import startSectionsHelper from "./resources/helpers/start-sections"
+import ifDmlEntityHelper from "./resources/helpers/if-dml-entity"
+import dmlPropertiesHelper from "./resources/helpers/dml-properties"
+import ifWorkflowStepHelper from "./resources/helpers/if-workflow-step"
+import stepInputHelper from "./resources/helpers/step-input"
+import stepOutputHelper from "./resources/helpers/step-output"
+import ifWorkflowHelper from "./resources/helpers/if-workflow"
+import workflowInputHelper from "./resources/helpers/workflow-input"
+import workflowOutputHelper from "./resources/helpers/workflow-output"
+import workflowDiagramHelper from "./resources/helpers/workflow-diagram"
+import workflowHooksHelper from "./resources/helpers/workflow-hooks"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -93,7 +104,7 @@ export function registerPartials() {
 
 export function registerHelpers(theme: MarkdownTheme) {
   breadcrumbsHelper(theme)
-  commentHelper(theme)
+  commentHelper()
   commentsHelper()
   declarationTitleHelper(theme)
   escapeHelper()
@@ -154,4 +165,15 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifShowSeparatorForTitleLevelHelper(theme)
   shouldExpandPropertiesHelper(theme)
   shouldExpandDeclarationChildrenHelper(theme)
+  startSectionsHelper(theme)
+  ifDmlEntityHelper()
+  dmlPropertiesHelper()
+  ifWorkflowStepHelper()
+  stepInputHelper(theme)
+  stepOutputHelper(theme)
+  ifWorkflowHelper()
+  workflowInputHelper(theme)
+  workflowOutputHelper(theme)
+  workflowDiagramHelper(theme)
+  workflowHooksHelper(theme)
 }

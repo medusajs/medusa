@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/deleteStoresWorkflow
+sidebar_label: deleteStoresWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteStoresWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteStoresWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more stores.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteStoresWorkflow","steps":[{"type":"step","name":"deleteStoresStep","description":"This step deletes one or more stores.","link":"../../../../core_flows.Steps_Store/page.mdx#deletestoresstep","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteStoresWorkflowInput","type":"[DeleteStoresWorkflowInput](../../../../types/core_flows.DeleteStoresWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteStoresWorkflow"/>

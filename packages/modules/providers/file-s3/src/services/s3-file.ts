@@ -6,8 +6,15 @@ import {
   S3ClientConfigType,
 } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { FileTypes, Logger, S3FileServiceOptions } from "@medusajs/types"
-import { AbstractFileProviderService, MedusaError } from "@medusajs/utils"
+import {
+  FileTypes,
+  Logger,
+  S3FileServiceOptions,
+} from "@medusajs/framework/types"
+import {
+  AbstractFileProviderService,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import path from "path"
 import { ulid } from "ulid"
 
@@ -92,13 +99,12 @@ export class S3FileService extends AbstractFileProviderService {
 
     const content = Buffer.from(file.content, "binary")
     const command = new PutObjectCommand({
-      // TODO: Add support for private files
       // We probably also want to support a separate bucket altogether for private files
       // protected private_bucket_: string
       // protected private_access_key_id_: string
       // protected private_secret_access_key_: string
 
-      // ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
+      ACL: file.access === "public" ? "public-read" : "private",
       Bucket: this.config_.bucket,
       Body: content,
       Key: fileKey,

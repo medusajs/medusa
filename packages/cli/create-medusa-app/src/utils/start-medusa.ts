@@ -6,13 +6,11 @@ type StartOptions = {
 }
 
 export default ({ directory, abortController }: StartOptions) => {
-  const childProcess = exec(`npx @medusajs/medusa-cli@latest develop`, {
+  const childProcess = exec(`npm run dev`, {
     cwd: directory,
     signal: abortController?.signal,
     env: {
       ...process.env,
-      OPEN_BROWSER: "false",
-      npm_config_yes: "yes",
     },
   })
 

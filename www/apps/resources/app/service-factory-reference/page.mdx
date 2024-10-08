@@ -1,0 +1,41 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This section of the documentation provides a reference of the methods generated for services extending the service factory (`MedusaService`), and how to use them.
+
+<Note title="Tip">
+
+Learn more about the service factory in [this documentation](!docs!/advanced-development/modules/service-factory).
+
+</Note>
+
+## Method Names
+
+Generated method names are of the format `{operationName}_{dataModelName}`, where:
+
+- `{operationName}` is the name of the operation. For example, `create`.
+- `{dataModelName}` is the pascal-case version of the data model's key that's passed in the object parameter of `MedusaService`. The name is pluralized for all operations except for the `retrieve` operation.
+
+Some examples of method names:
+
+- `createPosts`
+- `createMyPosts`
+- `retrievePost`
+- `listPosts`
+
+---
+
+## Methods Reference
+
+<Note>
+
+The reference uses only the operation name to refer to the method.
+
+</Note>
+
+<ChildDocs showItems={["Methods"]} hideTitle />

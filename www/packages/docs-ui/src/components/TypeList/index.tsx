@@ -5,7 +5,6 @@ import { Loading } from "@/components"
 export type CommonProps = {
   expandUrl?: string
   sectionTitle?: string
-  siteUrl?: string
 }
 
 export type Type = {
@@ -30,7 +29,6 @@ const TypeListItems = lazy(async () => import("./Items"))
 export const TypeList = ({
   types,
   className,
-  siteUrl,
   sectionTitle,
   expandUrl,
   ...props
@@ -38,7 +36,8 @@ export const TypeList = ({
   return (
     <div
       className={clsx(
-        "bg-docs-bg-surface shadow-card-rest rounded my-docs_1",
+        "bg-medusa-bg-subtle rounded my-docs_1",
+        "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
         className
       )}
       {...props}
@@ -48,7 +47,6 @@ export const TypeList = ({
           types={types}
           expandUrl={expandUrl}
           sectionTitle={sectionTitle}
-          siteUrl={siteUrl}
         />
       </Suspense>
     </div>

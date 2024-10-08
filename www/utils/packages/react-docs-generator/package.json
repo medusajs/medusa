@@ -6,8 +6,7 @@
     "start": "node dist/index.js",
     "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/src/specs --clean",
     "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+    "watch": "tsc --watch"
   },
   "publishConfig": {
     "access": "public"
@@ -23,15 +22,15 @@
     "react-docgen": "^7.0.1",
     "resolve": "^1.22.8",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.25.12",
+    "typedoc": "^0.26.7",
     "typedoc-plugin-custom": "*",
-    "typescript": "5.2",
+    "typescript": "^5.6.2",
     "utils": "*"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4"
+    "@types/node": "^20.12.10"
   },
   "peerDependencies": {
-    "typedoc": "0.25.x"
+    "typedoc": "0.26.x"
   }
 }

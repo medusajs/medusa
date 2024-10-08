@@ -1,46 +1,54 @@
 get:
-  operationId: GetCustomersCustomer
+  operationId: GetCustomersId
   summary: Get a Customer
-  description: Retrieve the details of a customer.
+  description: >-
+    Retrieve a customer by its ID. You can expand the customer's relations or
+    select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer's ID.
       required: true
-      description: The ID of the Customer.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        customer.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned customer.
-      schema:
-        type: string
-  x-codegen:
-    method: retrieve
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customers_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customers_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_customers_{id}/get.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers_{id}/get.sh
   tags:
     - Customers
   responses:
@@ -49,7 +57,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminCustomersRes.yaml
+            $ref: ../components/schemas/AdminCustomerResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -63,55 +71,103 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
 post:
-  operationId: PostCustomersCustomer
+  operationId: PostCustomersId
   summary: Update a Customer
-  description: Update a Customer's details.
+  description: Update a customer's details.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer's ID.
       required: true
-      description: The ID of the Customer.
       schema:
         type: string
-    - in: query
-      name: expand
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
       description: >-
-        Comma-separated relations that should be expanded in the returned
-        customer.
+        Comma-separated fields that should be included in the returned data. if
+        a field is prefixed with `+` it will be added to the default fields,
+        using `-` will remove it from the default fields. without prefix it will
+        replace the entire default fields.
+      required: false
       schema:
         type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be retrieved in the returned
-        customer.
-      schema:
-        type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostCustomersCustomerReq.yaml
-  x-codegen:
-    method: update
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customers_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customers_{id}/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_customers_{id}/post.sh
+        title: fields
+        description: >-
+          Comma-separated fields that should be included in the returned data.
+          if a field is prefixed with `+` it will be added to the default
+          fields, using `-` will remove it from the default fields. without
+          prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          allOf:
+            - type: object
+              description: The customer's details.
+              required:
+                - email
+                - company_name
+                - first_name
+                - last_name
+                - phone
+                - metadata
+              properties:
+                email:
+                  type: string
+                  title: email
+                  description: The customer's email.
+                  format: email
+                company_name:
+                  type: string
+                  title: company_name
+                  description: The customer's company name.
+                first_name:
+                  type: string
+                  title: first_name
+                  description: The customer's first name.
+                last_name:
+                  type: string
+                  title: last_name
+                  description: The customer's last name.
+                phone:
+                  type: string
+                  title: phone
+                  description: The customer's phone.
+                metadata:
+                  type: object
+                  description: The customer's metadata.
+            - type: object
+              description: The customer's details.
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
+          description: The customer's details.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers_{id}/post.sh
   tags:
     - Customers
   responses:
@@ -120,7 +176,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminCustomersRes.yaml
+            $ref: ../components/schemas/AdminCustomerResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -133,3 +189,65 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateCustomersWorkflow
+delete:
+  operationId: DeleteCustomersId
+  summary: Delete a Customer
+  description: Delete a customer.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers_{id}/delete.sh
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The deletion's details.
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The customer's ID.
+              object:
+                type: string
+                title: object
+                description: The customer's object.
+              deleted:
+                type: boolean
+                title: deleted
+                description: The customer's deleted.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: removeCustomerAccountWorkflow

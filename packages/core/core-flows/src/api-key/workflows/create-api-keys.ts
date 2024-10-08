@@ -1,13 +1,22 @@
-import { ApiKeyDTO, CreateApiKeyDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { ApiKeyDTO, CreateApiKeyDTO } from "@medusajs/framework/types"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import { createApiKeysStep } from "../steps"
 
-type WorkflowInput = { api_keys: CreateApiKeyDTO[] }
+export type CreateApiKeysWorkflowInput = { api_keys: CreateApiKeyDTO[] }
 
 export const createApiKeysWorkflowId = "create-api-keys"
+/**
+ * This workflow creates one or more API keys.
+ */
 export const createApiKeysWorkflow = createWorkflow(
   createApiKeysWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<ApiKeyDTO[]> => {
-    return createApiKeysStep(input)
+  (
+    input: WorkflowData<CreateApiKeysWorkflowInput>
+  ): WorkflowResponse<ApiKeyDTO[]> => {
+    return new WorkflowResponse(createApiKeysStep(input))
   }
 )

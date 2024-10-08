@@ -1,16 +1,17 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createCollectionsStepId = "create-collections"
+/**
+ * This step creates one or more collection.
+ */
 export const createCollectionsStep = createStep(
   createCollectionsStepId,
   async (data: ProductTypes.CreateProductCollectionDTO[], { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    const created = await service.createCollections(data)
+    const created = await service.createProductCollections(data)
     return new StepResponse(
       created,
       created.map((collection) => collection.id)
@@ -21,10 +22,8 @@ export const createCollectionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.deleteCollections(createdIds)
+    await service.deleteProductCollections(createdIds)
   }
 )

@@ -53,3 +53,5 @@ export type ToastAction = {
    */
   variant?: ToastActionVariant
 }
+
+export type Granularity = "day" | "hour" | "minute" | "second"

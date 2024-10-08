@@ -14,6 +14,11 @@ import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 export type PromotionTypeValues = "standard" | "buyget"
 
 /**
+ * The promotion's possible rule types.
+ */
+export type RuleTypeValues = "rules" | "buy-rules" | "target-rules"
+
+/**
  * The promotion details.
  */
 export interface PromotionDTO {
@@ -54,6 +59,11 @@ export interface PromotionDTO {
   /**
    * The associated campaign.
    */
+  campaign_id?: string | null
+
+  /**
+   * The associated campaign.
+   */
   campaign?: CampaignDTO
 }
 
@@ -83,7 +93,7 @@ export interface CreatePromotionDTO {
   /**
    * The associated application method.
    */
-  application_method?: CreateApplicationMethodDTO
+  application_method: CreateApplicationMethodDTO
 
   /**
    * The rules of the promotion.
@@ -128,12 +138,12 @@ export interface UpdatePromotionDTO {
   /**
    * The associated application method.
    */
-  application_method?: UpdateApplicationMethodDTO
+  application_method?: Omit<UpdateApplicationMethodDTO, "id">
 
   /**
    * The associated campaign's ID.
    */
-  campaign_id?: string
+  campaign_id?: string | null
 }
 
 /**

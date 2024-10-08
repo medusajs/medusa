@@ -25,6 +25,7 @@ export interface GetShippingMethodTotalOutput {
   original_total: BigNumber
 
   discount_total: BigNumber
+  discount_subtotal: BigNumber
   discount_tax_total: BigNumber
 
   tax_total: BigNumber
@@ -34,18 +35,14 @@ export interface GetShippingMethodTotalOutput {
 export function getShippingMethodsTotals(
   shippingMethods: GetShippingMethodTotalInput[],
   context: GetShippingMethodsTotalsContext
-) {
-  const { includeTax } = context
-
+): Record<string, GetShippingMethodTotalOutput> {
   const shippingMethodsTotals = {}
 
   let index = 0
   for (const shippingMethod of shippingMethods) {
     shippingMethodsTotals[shippingMethod.id ?? index] = getShippingMethodTotals(
       shippingMethod,
-      {
-        includeTax: includeTax || shippingMethod.is_tax_inclusive,
-      }
+      context
     )
     index++
   }
@@ -57,75 +54,61 @@ export function getShippingMethodTotals(
   shippingMethod: GetShippingMethodTotalInput,
   context: GetShippingMethodsTotalsContext
 ) {
-  const amount = MathBN.convert(shippingMethod.amount)
-  const subtotal = MathBN.convert(shippingMethod.amount)
+  const isTaxInclusive = shippingMethod.is_tax_inclusive ?? context.includeTax
 
-  const sumTaxRate = MathBN.sum(
+  const shippingMethodAmount = MathBN.convert(shippingMethod.amount)
+  const sumTax = MathBN.sum(
     ...(shippingMethod.tax_lines?.map((taxLine) => taxLine.rate) ?? [])
   )
+  const sumTaxRate = MathBN.div(sumTax, 100)
 
-  const discountTotal = calculateAdjustmentTotal({
+  const subtotal = isTaxInclusive
+    ? MathBN.div(shippingMethodAmount, MathBN.add(1, sumTaxRate))
+    : shippingMethodAmount
+
+  const {
+    adjustmentsTotal: discountsTotal,
+    adjustmentsSubtotal: discountsSubtotal,
+    adjustmentsTaxTotal: discountsTaxTotal,
+  } = calculateAdjustmentTotal({
     adjustments: shippingMethod.adjustments || [],
-    includesTax: context.includeTax,
+    includesTax: isTaxInclusive,
     taxRate: sumTaxRate,
   })
-  const discountTaxTotal = MathBN.mult(
-    discountTotal,
-    MathBN.div(sumTaxRate, 100)
-  )
-
-  const total = MathBN.sub(amount, discountTotal)
-
-  const totals: GetShippingMethodTotalOutput = {
-    amount: new BigNumber(amount),
-
-    subtotal: new BigNumber(subtotal),
-
-    total: new BigNumber(total),
-    original_total: new BigNumber(amount),
-
-    discount_total: new BigNumber(discountTotal),
-    discount_tax_total: new BigNumber(discountTaxTotal),
-
-    tax_total: new BigNumber(0),
-    original_tax_total: new BigNumber(0),
-  }
 
   const taxLines = shippingMethod.tax_lines || []
 
-  const taxableAmountWithDiscount = MathBN.sub(subtotal, discountTotal)
-  const taxableAmount = subtotal
-
   const taxTotal = calculateTaxTotal({
     taxLines,
-    includesTax: context.includeTax,
-    taxableAmount: taxableAmountWithDiscount,
+    taxableAmount: MathBN.sub(subtotal, discountsSubtotal),
     setTotalField: "total",
   })
-  totals.tax_total = new BigNumber(taxTotal)
 
   const originalTaxTotal = calculateTaxTotal({
     taxLines,
-    includesTax: context.includeTax,
-    taxableAmount,
+    taxableAmount: subtotal,
     setTotalField: "subtotal",
   })
-  totals.original_tax_total = new BigNumber(originalTaxTotal)
 
-  const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
+  const totals: GetShippingMethodTotalOutput = {
+    amount: new BigNumber(shippingMethodAmount),
 
-  if (isTaxInclusive) {
-    const subtotal = MathBN.add(shippingMethod.amount, taxTotal)
-    totals.subtotal = new BigNumber(subtotal)
-  } else {
-    const originalTotal = MathBN.add(
-      shippingMethod.amount,
-      totals.original_tax_total
-    )
-    const total = MathBN.add(totals.total, totals.tax_total)
+    subtotal: new BigNumber(subtotal),
+    total: new BigNumber(
+      MathBN.sum(MathBN.sub(subtotal, discountsSubtotal), taxTotal)
+    ),
+    original_total: new BigNumber(
+      isTaxInclusive
+        ? shippingMethodAmount
+        : MathBN.add(subtotal, originalTaxTotal)
+    ),
 
-    totals.total = new BigNumber(total)
-    totals.original_total = new BigNumber(originalTotal)
+    discount_total: new BigNumber(discountsTotal),
+    discount_subtotal: new BigNumber(discountsSubtotal),
+    discount_tax_total: new BigNumber(discountsTaxTotal),
+
+    tax_total: new BigNumber(taxTotal),
+    original_tax_total: new BigNumber(originalTaxTotal),
   }
 
   return totals

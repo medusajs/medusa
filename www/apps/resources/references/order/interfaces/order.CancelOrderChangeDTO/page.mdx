@@ -6,4 +6,6 @@ import { TypeList } from "docs-ui"
 
 # CancelOrderChangeDTO
 
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CancelOrderChangeDTO"/>
+The details of the order change cancelation.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order change.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"The user or customer that canceled the order change.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="CancelOrderChangeDTO"/>

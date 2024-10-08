@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # transform - Workflows API Reference
 
-This documentation provides a reference to the `transform` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `transform` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function transforms the output of other utility functions.
 
@@ -23,43 +23,38 @@ If you're also retrieving the output of a hook and want to check if its value is
 ```ts
 import {
   createWorkflow,
-  transform
-} from "@medusajs/workflows-sdk"
+  transform,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
 import { step1, step2 } from "./steps"
 
 type WorkflowInput = {
   name: string
 }
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-    WorkflowInput,
-    WorkflowOutput
-  >
-  ("hello-world", (input) => {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  (input: WorkflowInput) => {
     const str1 = step1(input)
     const str2 = step2(input)
 
-    return transform({
+    const message = transform({
       str1,
       str2
-    }, (input) => ({
-      message: `${input.str1}${input.str2}`
-    }))
+    }, (input) => `${input.str1}${input.str2}`)
+
+    return new WorkflowResponse(message)
 })
 ```
 
 ## Type Parameters
 
-<TypeList types={[{"name":"T","type":"`object` \\| [WorkflowData](../../types/workflows.WorkflowData/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"RFinal","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transform"/>
+<TypeList types={[{"name":"T","type":"`object` \\| [WorkflowData](../../types/workflows.WorkflowData/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"RFinal","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="transform"/>
 
 ## Parameters
 
-<TypeList types={[{"name":"values","type":"T","description":"The output(s) of other step functions.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"func","type":"[Func1&#60;T, RFinal&#62;]","description":"The transform function used to perform action on the runtime values of the provided `values`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transform"/>
+<TypeList types={[{"name":"values","type":"T","description":"The output(s) of other step functions.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"func","type":"[Func1&#60;T, RFinal&#62;]","description":"The transform function used to perform action on the runtime values of the provided `values`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="transform"/>
 
 ## Returns
 
-<TypeList types={[{"name":"WorkflowData","type":"[WorkflowData](../../types/workflows.WorkflowData/page.mdx)&#60;RFinal&#62;","optional":false,"defaultValue":"","description":"There's no expected value to be returned by the `transform` function.","expandable":false,"children":[]}]}  sectionTitle="transform"/>
+<TypeList types={[{"name":"WorkflowData","type":"[WorkflowData](../../types/workflows.WorkflowData/page.mdx)&#60;RFinal&#62;","optional":false,"defaultValue":"","description":"There's no expected value to be returned by the `transform` function.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="transform"/>

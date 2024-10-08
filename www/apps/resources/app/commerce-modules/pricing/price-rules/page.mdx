@@ -1,0 +1,31 @@
+export const metadata = {
+  title: `Price Rules`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about price rules for price sets and price lists.
+
+## Price Rule
+
+Prices can be restricted by rules. Each rule of a price is represented by the [PriceRule data model](/references/pricing/models/PriceRule).
+
+The `Price` data model has a `rules_count` property, which indicates how many rules, represented by `PriceRule`, are applied to the price.
+
+![A diagram showcasing the relation between the PriceRule and Price](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648772/Medusa%20Resources/price-rule-1_vy8bn9.jpg)
+
+For exmaple, you create a price restricted to `10557` zip codes.
+
+A price can have multiple price rules. For example:
+
+![A diagram showcasing the relation between the PriceRule and Price with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649296/Medusa%20Resources/price-rule-3_pwpocz.jpg)
+
+For example, a price can be restricted by a region and a zip code.
+
+---
+
+## Price List Rules
+
+Rules that can be applied to a price list are represented by the [PriceListRule data model](/references/pricing/models/PriceListRule). The `rules_count` property of a `PriceList` indicates how many rules are applied to it.
+
+![A diagram showcasing the relation between the PriceSet, PriceList, Price, RuleType, and PriceListRuleValue](https://res.cloudinary.com/dza7lstvk/image/upload/v1709641999/Medusa%20Resources/price-list_zd10yd.jpg)

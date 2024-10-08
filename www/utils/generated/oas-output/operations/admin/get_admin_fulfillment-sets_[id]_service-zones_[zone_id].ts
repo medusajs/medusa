@@ -1,10 +1,9 @@
 /**
  * @oas [get] /admin/fulfillment-sets/{id}/service-zones/{zone_id}
  * operationId: GetFulfillmentSetsIdServiceZonesZone_id
- * summary: List Service Zones
- * description: Retrieve a list of service zones in a fulfillment set. The service
- *   zones can be filtered by fields like FILTER FIELDS. The service zones can also
- *   be paginated.
+ * summary: Get a Service Zone in a Fulfillment Set
+ * x-sidebar-summary: Get a Service Zone
+ * description: Retrieve a service zone that belongs to a fulfillment set. be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,7 +14,7 @@
  *       type: string
  *   - name: zone_id
  *     in: path
- *     description: The fulfillment set's zone id.
+ *     description: The service zone's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -29,36 +28,16 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -68,7 +47,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Fulfillment Sets
  * responses:
@@ -90,10 +69,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

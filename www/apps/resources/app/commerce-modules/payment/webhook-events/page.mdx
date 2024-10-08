@@ -14,31 +14,12 @@ A webhook event is sent from a third-party payment provider to your application.
 
 ## processEvent Method
 
-The Payment Module’s main service (`IPaymentModuleService`) provides a `processEvent` method used to handle incoming webhook events from third-party providers. The method delegates the handling to the associated payment provider, which returns the event's details.
+The Payment Module’s main service (`IPaymentModuleService`) provides a [processEvent method](/references/payment/processEvent) used to handle incoming webhook events from third-party payment services. The method delegates the handling to the associated payment provider, which returns the event's details.
 
-If the event's details indicate that the payment should be authorized, then the `authorizePaymentSession` of the main service is executed on the specified payment session.
-
-If the event's details indicate that the payment should be captured, then the `capturePayment` of the main service is executed on the payment of the specified payment session.
+Medusa implements a webhook listener at the `/hooks/payment/[provider]` API route, where `[provider]` is the ID of the provider (for example, `stripe`). You can use that webhook listener in your third-party payment provider's configurations.
 
 ![A diagram showcasing the steps of how the processEvent method words](https://res.cloudinary.com/dza7lstvk/image/upload/v1711567415/Medusa%20Resources/payment-webhook_seaocg.jpg)
 
-You can use this method in your webhook listener API routes or endpoints.
+If the event's details indicate that the payment should be authorized, then the [authorizePaymentSession method of the main service](/references/payment/authorizePaymentSession) is executed on the specified payment session.
 
-<Note>
-
-Medusa V2 implements a webhook listener at the `/hooks/payment/[provider]` API route, where `[provider]` is the ID of the provider (for example, `stripe`). You can use that webhook listener in your third-party payment provider's configurations.
-
-</Note>
-
-For example:
-
-```ts
-await paymentModuleService.processEvent({
-  provider: "stripe",
-  payload: {
-    // webhook event data
-  },
-})
-```
-
-Learn more about the method’s parameters and return types in [this reference](/references/payment/processEvent).
+If the event's details indicate that the payment should be captured, then the [capturePayment method of the main service](/references/payment/capturePayment) is executed on the payment of the specified payment session.

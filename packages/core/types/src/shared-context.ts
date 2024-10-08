@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import { EventBusTypes } from "./bundles"
 import { Message } from "./event-bus"
 
@@ -12,16 +11,21 @@ export type SharedContext = {
   /**
    * An instance of a transaction manager.
    */
-  transactionManager?: EntityManager
+  transactionManager?: any
   /**
    * An instance of an entity manager.
    */
-  manager?: EntityManager
+  manager?: any
 }
 
 export interface MessageAggregatorFormat {
   groupBy?: string[]
   sortBy?: { [key: string]: string[] | string | number }
+  /**
+   * @internal
+   * will prevent the info log to be displayed about those events
+   */
+  internal?: boolean
 }
 
 export interface IMessageAggregator {
@@ -30,8 +34,8 @@ export interface IMessageAggregator {
   clearMessages(): void
   saveRawMessageData<T>(
     messageData:
-      | EventBusTypes.MessageFormat<T>
-      | EventBusTypes.MessageFormat<T>[],
+      | EventBusTypes.RawMessageFormat<T>
+      | EventBusTypes.RawMessageFormat<T>[],
     options?: Record<string, unknown>
   ): void
 }
@@ -81,4 +85,9 @@ export type Context<TManager = unknown> = {
    * A string indicating the idempotencyKey of the current workflow execution.
    */
   idempotencyKey?: string
+
+  /**
+   * A string indicating the idempotencyKey of the parent workflow execution.
+   */
+  parentStepIdempotencyKey?: string
 }
