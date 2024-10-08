@@ -39,8 +39,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/api-key/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/api-key/links-to-other-modules",
+                title: "Link to Modules",
               },
             ],
           },
@@ -224,6 +224,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/cart/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -244,8 +249,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/cart/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/cart/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -2157,8 +2162,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 type: "link",
                 path: "/troubleshooting/dist-imports",
-                title: "Importing from /dist"
-              }
+                title: "Importing from /dist",
+              },
             ],
           },
           {

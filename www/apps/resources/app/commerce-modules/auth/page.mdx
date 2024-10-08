@@ -6,15 +6,31 @@ export const metadata = {
 
 # {metadata.title}
 
-The Auth Module is the `@medusajs/medusa/auth` NPM package that provides authentication-related features in your Medusa and Node.js applications.
+The Auth Module provides authentication-related features in your Medusa and Node.js applications.
 
 ## How to Use Auth Module's Service
 
-You can use the Auth Module's main service by resolving from the Medusa container the resource `Modules.AUTH` imported from `@medusajs/framework/utils`.
+Use the Auth Module's main service by resolving from the Medusa container the resource `Modules.AUTH` imported from `@medusajs/framework/utils`.
 
 For example:
 
 <CodeTabs groupId="resource-type">
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const authModuleService: IAuthModuleService = container.resolve(
+    Modules.AUTH
+  )
+  const authIdentitys = await authModuleService.listAuthIdentities()
+})
+```
+
+  </CodeTab>
   <CodeTab label="API Route" value="api-route">
 
 ```ts title="src/api/store/custom/route.ts"
@@ -54,22 +70,6 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
 ```
 
   </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-```ts title="src/workflows/hello-world/step1.ts"
-import { createStep } from "@medusajs/framework/workflows-sdk"
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
-
-const step1 = createStep("step-1", async (_, { container }) => {
-  const authModuleService: IAuthModuleService = container.resolve(
-    Modules.AUTH
-  )
-  const authIdentitys = await authModuleService.listAuthIdentities()
-})
-```
-
-  </CodeTab>
 </CodeTabs>
 
 ---
@@ -78,7 +78,7 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
 ### Basic User Authentication
 
-With the Auth Module, authenticate users using their email and password credentials.
+Authenticate users using their email and password credentials.
 
 ```ts
 const { success, authIdentity, error } = await authModuleService.authenticate(
