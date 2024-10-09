@@ -18,7 +18,7 @@ For example:
   <CodeTab label="API Route" value="api-route">
 
   ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
   import { ISalesChannelModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
@@ -39,7 +39,7 @@ export async function GET(
   <CodeTab label="Subscriber" value="subscribers">
 
   ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
+  import { SubscriberArgs } from "@medusajs/framework"
   import { ISalesChannelModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 

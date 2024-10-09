@@ -283,6 +283,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/commerce-modules/auth/reset-password",
+                "title": "Handle Password Reset Event",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/references/auth/provider",
                 "title": "Create Auth Provider Module",
                 "children": []
@@ -8469,6 +8477,14 @@ export const generatedSidebar = [
             "type": "link",
             "path": "/storefront-development/customers/third-party-login",
             "title": "Third-Party (Social) Login",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/customers/reset-password",
+            "title": "Reset Password",
             "children": []
           },
           {

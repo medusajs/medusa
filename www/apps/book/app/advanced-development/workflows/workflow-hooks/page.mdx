@@ -130,7 +130,7 @@ Learn how to pass `additional_data` in requests to API routes in [this chapter](
 You can also pass that additional data when executing the workflow. Pass it as a parameter to the `.run` method of the workflow:
 
 ```ts title="src/workflows/hooks/product-created.ts" highlights={[["10", "additional_data"]]}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {

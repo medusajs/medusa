@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
 import "../__fixtures__/index-service-entry-points"
-import { OperatorMap } from "../operator-map"
+import { IndexOperatorMap as OperatorMap } from "../index-operator-map"
 import { IndexQueryConfig, OrderBy } from "../query-config"
 
 describe("IndexQueryConfig", () => {
