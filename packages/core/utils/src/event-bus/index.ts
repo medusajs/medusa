@@ -1,9 +1,15 @@
-import { EventBusTypes } from "@medusajs/types"
+import {
+  EventBusTypes,
+  InternalModuleDeclaration,
+  MedusaContainer,
+} from "@medusajs/types"
 import { ulid } from "ulid"
 
 export abstract class AbstractEventBusModuleService
   implements EventBusTypes.IEventBusModuleService
 {
+  protected isWorkerMode: boolean = true
+
   protected eventToSubscribersMap_: Map<
     string | symbol,
     EventBusTypes.SubscriberDescriptor[]
@@ -14,6 +20,14 @@ export abstract class AbstractEventBusModuleService
     EventBusTypes.SubscriberDescriptor[]
   > {
     return this.eventToSubscribersMap_
+  }
+
+  protected constructor(
+    container: MedusaContainer,
+    moduleOptions = {},
+    moduleDeclaration: InternalModuleDeclaration
+  ) {
+    this.isWorkerMode = moduleDeclaration.worker_mode !== "server"
   }
 
   abstract emit<T>(
@@ -63,6 +77,10 @@ export abstract class AbstractEventBusModuleService
     subscriber: EventBusTypes.Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
+    if (!this.isWorkerMode) {
+      return this
+    }
+
     if (typeof subscriber !== `function`) {
       throw new Error("Subscriber must be a function")
     }
@@ -88,6 +106,10 @@ export abstract class AbstractEventBusModuleService
     subscriber: EventBusTypes.Subscriber,
     context: EventBusTypes.SubscriberContext
   ): this {
+    if (!this.isWorkerMode) {
+      return this
+    }
+
     if (typeof subscriber !== `function`) {
       throw new Error("Subscriber must be a function")
     }

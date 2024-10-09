@@ -1,6 +1,5 @@
 import {
   Event,
-  EventBusTypes,
   InternalModuleDeclaration,
   Logger,
   Message,
@@ -31,7 +30,6 @@ type IORedisEventType<T = unknown> = {
  */
 // eslint-disable-next-line max-len
 export default class RedisEventBusService extends AbstractEventBusModuleService {
-  #isWorkerMode: boolean = true
   protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
@@ -54,7 +52,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     this.moduleOptions_ = moduleOptions
     this.logger_ = logger
-    this.#isWorkerMode = moduleDeclaration.worker_mode !== "server"
 
     this.queue_ = new Queue(moduleOptions.queueName ?? `events-queue`, {
       prefix: `${this.constructor.name}`,
@@ -63,7 +60,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    if (this.#isWorkerMode) {
+    if (this.isWorkerMode) {
       this.bullWorker_ = new Worker(
         moduleOptions.queueName ?? "events-queue",
         this.worker_,
@@ -85,30 +82,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     onApplicationPrepareShutdown: async () => {
       await this.bullWorker_?.close()
     },
-  }
-
-  public override subscribe(
-    eventName: string | symbol,
-    subscriber: EventBusTypes.Subscriber,
-    context?: EventBusTypes.SubscriberContext
-  ) {
-    if (!this.#isWorkerMode) {
-      return this
-    }
-
-    return super.subscribe(eventName, subscriber, context)
-  }
-
-  public override unsubscribe(
-    eventName: string | symbol,
-    subscriber: EventBusTypes.Subscriber,
-    context: EventBusTypes.SubscriberContext
-  ) {
-    if (!this.#isWorkerMode) {
-      return this
-    }
-
-    return super.unsubscribe(eventName, subscriber, context)
   }
 
   private buildEvents<T>(
@@ -142,7 +115,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           // options for a particular event
           ...eventData.options,
         },
-      }
+      } as any
     })
   }
 

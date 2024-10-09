@@ -22,7 +22,6 @@ eventEmitter.setMaxListeners(Infinity)
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  #isWorkerMode: boolean = true
   protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
   protected groupedEventsMap_: StagingQueueType
@@ -39,7 +38,6 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.logger_ = logger
     this.eventEmitter_ = eventEmitter
     this.groupedEventsMap_ = new Map()
-    this.#isWorkerMode = moduleDeclaration.worker_mode !== "server"
   }
 
   /**
@@ -121,7 +119,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
-    if (!this.#isWorkerMode) {
+    if (!this.isWorkerMode) {
       return this
     }
 
@@ -144,7 +142,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     subscriber: Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
-    if (!this.#isWorkerMode) {
+    if (!this.isWorkerMode) {
       return this
     }
 
