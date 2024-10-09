@@ -25,7 +25,6 @@ export const confirmOrderChanges = createStep(
         }
 
         currentChanges.push({
-          ...update,
           status: action.status,
         })
 

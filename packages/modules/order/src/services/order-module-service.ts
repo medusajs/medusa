@@ -2335,6 +2335,7 @@ export default class OrderModuleService<
   ): Promise<void> {
     const currentVersion = order.version
 
+    const updatePromises: Promise<any>[] = []
     // Order Changes
     const orderChanges = await this.orderChangeService_.list(
       {
@@ -2353,7 +2354,9 @@ export default class OrderModuleService<
       }
     })
 
-    await this.orderChangeService_.update(orderChangesIds, sharedContext)
+    updatePromises.push(
+      this.orderChangeService_.update(orderChangesIds, sharedContext)
+    )
 
     // Order Changes Actions
     const orderChangesActions = await this.orderChangeActionService_.list(
@@ -2371,9 +2374,11 @@ export default class OrderModuleService<
       }
     })
 
-    await this.orderChangeActionService_.update(
-      orderChangeActionsIds,
-      sharedContext
+    updatePromises.push(
+      this.orderChangeActionService_.update(
+        orderChangeActionsIds,
+        sharedContext
+      )
     )
 
     // Order Summary
@@ -2387,7 +2392,9 @@ export default class OrderModuleService<
     )
     const orderSummaryIds = orderSummary.map((summary) => summary.id)
 
-    await this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    updatePromises.push(
+      this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    )
 
     // Order Items
     const orderItems = await this.orderItemService_.list(
@@ -2400,7 +2407,9 @@ export default class OrderModuleService<
     )
     const orderItemIds = orderItems.map((summary) => summary.id)
 
-    await this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    updatePromises.push(
+      this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    )
 
     // Order Shipping
     const orderShippings = await this.orderShippingService_.list(
@@ -2413,20 +2422,26 @@ export default class OrderModuleService<
     )
     const orderShippingIds = orderShippings.map((sh) => sh.id)
 
-    await this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    updatePromises.push(
+      this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    )
 
     // Order
-    await this.orderService_.update(
-      {
-        selector: {
-          id: order.id,
+    updatePromises.push(
+      this.orderService_.update(
+        {
+          selector: {
+            id: order.id,
+          },
+          data: {
+            version: order.version - 1,
+          },
         },
-        data: {
-          version: order.version - 1,
-        },
-      },
-      sharedContext
+        sharedContext
+      )
     )
+
+    await promiseAll(updatePromises)
   }
 
   @InjectTransactionManager()
@@ -2436,6 +2451,7 @@ export default class OrderModuleService<
   ): Promise<void> {
     const currentVersion = order.version
 
+    const updatePromises: Promise<any>[] = []
     // Order Changes
     const orderChanges = await this.orderChangeService_.list(
       {
@@ -2447,7 +2463,9 @@ export default class OrderModuleService<
     )
     const orderChangesIds = orderChanges.map((change) => change.id)
 
-    await this.orderChangeService_.softDelete(orderChangesIds, sharedContext)
+    updatePromises.push(
+      this.orderChangeService_.softDelete(orderChangesIds, sharedContext)
+    )
 
     // Order Changes Actions
     const orderChangesActions = await this.orderChangeActionService_.list(
@@ -2460,9 +2478,11 @@ export default class OrderModuleService<
     )
     const orderChangeActionsIds = orderChangesActions.map((action) => action.id)
 
-    await this.orderChangeActionService_.softDelete(
-      orderChangeActionsIds,
-      sharedContext
+    updatePromises.push(
+      this.orderChangeActionService_.softDelete(
+        orderChangeActionsIds,
+        sharedContext
+      )
     )
 
     // Order Summary
@@ -2476,7 +2496,9 @@ export default class OrderModuleService<
     )
     const orderSummaryIds = orderSummary.map((summary) => summary.id)
 
-    await this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    updatePromises.push(
+      this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    )
 
     // Order Items
     const orderItems = await this.orderItemService_.list(
@@ -2489,7 +2511,9 @@ export default class OrderModuleService<
     )
     const orderItemIds = orderItems.map((summary) => summary.id)
 
-    await this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    updatePromises.push(
+      this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    )
 
     // Order Shipping
     const orderShippings = await this.orderShippingService_.list(
@@ -2502,29 +2526,37 @@ export default class OrderModuleService<
     )
     const orderShippingIds = orderShippings.map((sh) => sh.id)
 
-    await this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    updatePromises.push(
+      this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    )
 
     // Order
-    await this.orderService_.update(
-      {
-        selector: {
-          id: order.id,
+    updatePromises.push(
+      this.orderService_.update(
+        {
+          selector: {
+            id: order.id,
+          },
+          data: {
+            version: order.version - 1,
+          },
         },
-        data: {
-          version: order.version - 1,
-        },
-      },
-      sharedContext
+        sharedContext
+      )
     )
 
     // Returns
-    await this.returnService_.delete(
-      {
-        order_id: order.id,
-        order_version: currentVersion,
-      },
-      sharedContext
+    updatePromises.push(
+      this.returnService_.delete(
+        {
+          order_id: order.id,
+          order_version: currentVersion,
+        },
+        sharedContext
+      )
     )
+
+    await promiseAll(updatePromises)
   }
 
   private async getActiveOrderChange_(
