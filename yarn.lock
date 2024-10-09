@@ -5678,7 +5678,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
+"@medusajs/locking-postgres@^0.0.1, @medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres"
   dependencies:
@@ -5693,7 +5693,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking@workspace:packages/modules/locking":
+"@medusajs/locking@^0.0.1, @medusajs/locking@workspace:packages/modules/locking":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking@workspace:packages/modules/locking"
   dependencies:
@@ -5827,6 +5827,8 @@ __metadata:
     "@medusajs/index": ^0.0.1
     "@medusajs/inventory-next": ^0.0.3
     "@medusajs/link-modules": ^0.2.11
+    "@medusajs/locking": ^0.0.1
+    "@medusajs/locking-postgres": ^0.0.1
     "@medusajs/notification": ^0.1.2
     "@medusajs/notification-local": ^0.0.1
     "@medusajs/notification-sendgrid": ^0.0.1

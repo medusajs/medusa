@@ -1,21 +1,16 @@
-import { Constructor, DAL, ILockingProvider } from "@medusajs/framework/types"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/framework/utils"
-import { LockingProvider } from "@models"
+import { Constructor, ILockingProvider } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { LockingProviderRegistrationPrefix } from "../types"
 
 type InjectedDependencies = {
-  lockingProviderRepository: DAL.RepositoryService
   [key: `lp_${string}`]: ILockingProvider
 }
 
-export default class LockingProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
-  LockingProvider
-) {
-  protected readonly lockingProviderRepository_: DAL.RepositoryService
+export default class LockingProviderService {
+  protected __container__: InjectedDependencies
 
   constructor(container: InjectedDependencies) {
-    super(container)
-    this.lockingProviderRepository_ = container.lockingProviderRepository
+    this.__container__ = container
   }
 
   static getRegistrationIdentifier(
@@ -31,7 +26,7 @@ export default class LockingProviderService extends ModulesSdkUtils.MedusaIntern
     return `${(providerClass as any).identifier}_${optionName}`
   }
 
-  protected retrieveProviderRegistration(providerId: string): ILockingProvider {
+  public retrieveProviderRegistration(providerId: string): ILockingProvider {
     try {
       return this.__container__[
         `${LockingProviderRegistrationPrefix}${providerId}`

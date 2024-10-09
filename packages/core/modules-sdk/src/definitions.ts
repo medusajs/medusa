@@ -32,6 +32,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.FILE]: "@medusajs/medusa/file",
   [Modules.NOTIFICATION]: "@medusajs/medusa/notification",
   [Modules.INDEX]: "@medusajs/medusa/index-module",
+  [Modules.LOCKING]: "@medusajs/medusa/locking",
 }
 
 export const ModulesDefinition: {

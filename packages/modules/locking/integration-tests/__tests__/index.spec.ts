@@ -1,13 +1,13 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ILockingModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { setTimeout } from "timers/promises"
+import { ILockingModule } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { setTimeout } from "node:timers/promises"
 
-jest.setTimeout(30000)
+jest.setTimeout(10000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ILockingModule>({
   moduleName: Modules.LOCKING,
-  testSuite: ({ service }: SuiteOptions<ILockingModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Locking Module Service", () => {
       let stock = 5
       function replenishStock() {
@@ -50,25 +50,37 @@ moduleIntegrationTestRunner({
       })
 
       it("should acquire lock and release it", async () => {
-        await service.acquire("key_name", "user_id_123")
+        await service.acquire("key_name", {
+          ownerId: "user_id_123",
+        })
 
-        const userReleased = await service.release("key_name", "user_id_456")
-        const anotherUserLock = service.acquire("key_name", "user_id_456")
+        const userReleased = await service.release("key_name", {
+          ownerId: "user_id_456",
+        })
+        const anotherUserLock = service.acquire("key_name", {
+          ownerId: "user_id_456",
+        })
 
         expect(userReleased).toBe(false)
         await expect(anotherUserLock).rejects.toThrowError(
           `"key_name" is already locked.`
         )
 
-        const releasing = await service.release("key_name", "user_id_123")
+        const releasing = await service.release("key_name", {
+          ownerId: "user_id_123",
+        })
 
         expect(releasing).toBe(true)
       })
 
       it("should acquire lock and release it during parallel calls", async () => {
         const keyToLock = "mySpecialKey"
-        const user_1 = "user_id_456"
-        const user_2 = "user_id_000"
+        const user_1 = {
+          ownerId: "user_id_456",
+        }
+        const user_2 = {
+          ownerId: "user_id_000",
+        }
 
         expect(service.acquire(keyToLock, user_1)).resolves.toBeUndefined()
 
@@ -84,7 +96,9 @@ moduleIntegrationTestRunner({
 
         await service.acquire(keyToLock, user_1)
 
-        const releaseNotLocked = await service.release(keyToLock, "user_id_000")
+        const releaseNotLocked = await service.release(keyToLock, {
+          ownerId: "user_id_000",
+        })
         expect(releaseNotLocked).toBe(false)
 
         const release = await service.release(keyToLock, user_1)

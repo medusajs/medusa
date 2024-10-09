@@ -1,5 +1,5 @@
 import { ILockingProvider } from "@medusajs/framework/types"
-import { isDefined } from "@medusajs/utils"
+import { isDefined } from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
 
 type InjectedDependencies = {
@@ -8,7 +8,6 @@ type InjectedDependencies = {
 
 export class PostgresAdvisoryLockProvider implements ILockingProvider {
   static identifier = "postgres-advisory-lock"
-  static PROVIDER = "postgres-advisory-lock"
 
   protected manager: EntityManager
 
@@ -127,8 +126,12 @@ export class PostgresAdvisoryLockProvider implements ILockingProvider {
 
   async release(
     keys: string | string[],
-    ownerId: string | null = null
+    args?: {
+      ownerId?: string | null
+    }
   ): Promise<boolean> {
+    const { ownerId } = args ?? {}
+
     keys = Array.isArray(keys) ? keys : [keys]
 
     let success = true
@@ -147,7 +150,9 @@ export class PostgresAdvisoryLockProvider implements ILockingProvider {
     return success
   }
 
-  async releaseAll(ownerId: string | null = null): Promise<void> {
+  async releaseAll(args?: { ownerId?: string | null }): Promise<void> {
+    const { ownerId } = args ?? {}
+
     if (!isDefined(ownerId)) {
       await this.getManager().execute(`TRUNCATE TABLE locking`)
     } else {

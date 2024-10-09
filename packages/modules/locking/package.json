@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Locking Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -16,15 +16,15 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
-    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
+    "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
+    "build": "rimraf dist && tsc --build && npm run resolve:aliases",
+    "test": "jest --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
     "test:integration": "jest --runInBand --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
-    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
-    "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial -n InitialSetupMigration",
-    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
-    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:up",
-    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
+    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:generate",
+    "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create --initial -n InitialSetupMigration",
+    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create",
+    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:up",
+    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
     "@medusajs/framework": "^0.0.1",

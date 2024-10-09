@@ -1,9 +1,15 @@
-import { ILockingProvider, MedusaContainer } from "@medusajs/types"
+import { ILockingProvider } from "@medusajs/framework/types"
+import { isDefined } from "@medusajs/framework/utils"
 
 type LockInfo = {
   ownerId: string | null
   expiration: number | null
-  acquiredAt: number
+  currentPromise?: ResolvablePromise
+}
+
+type ResolvablePromise = {
+  promise: Promise<any>
+  resolve: () => void
 }
 
 export class InMemoryLockingProvider implements ILockingProvider {
@@ -11,123 +17,160 @@ export class InMemoryLockingProvider implements ILockingProvider {
 
   private locks: Map<string, LockInfo> = new Map()
 
-  constructor(container: MedusaContainer, options?: { [key: string]: any }) {}
+  constructor() {}
+
+  private getPromise(): ResolvablePromise {
+    let resolve: any
+    const pro = new Promise((ok) => {
+      resolve = ok
+    })
+
+    return {
+      promise: pro,
+      resolve,
+    }
+  }
 
   async execute<T>(
     keys: string | string[],
     job: () => Promise<T>,
-    args?: { timeout?: number }
+    args?: {
+      timeout?: number
+    }
   ): Promise<T> {
-    const keyArray = Array.isArray(keys) ? keys : [keys]
-    const timeout = (args?.timeout ?? 5) * 1000
-    const startTime = Date.now()
+    keys = Array.isArray(keys) ? keys : [keys]
 
-    await this.acquireLocksWithTimeout(keyArray, timeout, startTime)
+    const timeoutSeconds = args?.timeout ?? 5
+
+    const promises: Promise<any>[] = []
+    if (timeoutSeconds > 0) {
+      promises.push(this.getTimeout(timeoutSeconds))
+    }
+
+    promises.push(
+      this.acquire(keys, {
+        awaitQueue: true,
+      })
+    )
+
+    await Promise.race(promises).catch(async (err) => {
+      await this.release(keys)
+    })
 
     try {
       return await job()
     } finally {
-      await this.release(keyArray)
+      await this.release(keys)
     }
   }
 
   async acquire(
     keys: string | string[],
-    args?: { ownerId?: string | null; expire?: number }
+    args?: {
+      ownerId?: string | null
+      expire?: number
+      awaitQueue?: boolean
+    }
   ): Promise<void> {
-    const keyArray = Array.isArray(keys) ? keys : [keys]
-    const ownerId = args?.ownerId ?? null
-    const expire = args?.expire ?? null
+    keys = Array.isArray(keys) ? keys : [keys]
+    const { ownerId, expire } = args ?? {}
 
-    const success = this.tryAcquireLocksWithOwner(keyArray, ownerId, expire)
-    if (!success) {
-      throw new Error(`"${keyArray}" is already locked.`)
+    for (const key of keys) {
+      const lock = this.locks.get(key)
+      const now = Date.now()
+
+      if (!lock) {
+        this.locks.set(key, {
+          ownerId: ownerId ?? null,
+          expiration: expire ? now + expire * 1000 : null,
+          currentPromise: this.getPromise(),
+        })
+
+        continue
+      }
+
+      if (lock.expiration && lock.expiration <= now) {
+        lock.currentPromise?.resolve?.()
+        this.locks.set(key, {
+          ownerId: ownerId ?? null,
+          expiration: expire ? now + expire * 1000 : null,
+          currentPromise: this.getPromise(),
+        })
+
+        continue
+      }
+
+      if (lock.ownerId === ownerId) {
+        if (expire) {
+          lock.expiration = now + expire * 1000
+          this.locks.set(key, lock)
+        }
+
+        continue
+      }
+
+      if (lock.currentPromise && args?.awaitQueue) {
+        await lock.currentPromise.promise
+        return this.acquire(keys, args)
+      }
+
+      throw new Error(`"${key}" is already locked.`)
     }
   }
 
   async release(
     keys: string | string[],
-    ownerId?: string | null
+    args?: {
+      ownerId?: string | null
+    }
   ): Promise<boolean> {
-    const keyArray = Array.isArray(keys) ? keys : [keys]
+    const { ownerId } = args ?? {}
+    keys = Array.isArray(keys) ? keys : [keys]
+
     let success = true
 
-    for (const key of keyArray) {
+    for (const key of keys) {
       const lock = this.locks.get(key)
-      if (!lock || (ownerId && lock.ownerId !== ownerId)) {
+      if (!lock) {
         success = false
-      } else {
-        this.locks.delete(key)
+        continue
       }
+
+      if (isDefined(ownerId) && lock.ownerId !== ownerId) {
+        success = false
+        continue
+      }
+
+      lock.currentPromise?.resolve?.()
+      this.locks.delete(key)
     }
 
     return success
   }
 
-  async releaseAll(ownerId?: string | null): Promise<void> {
-    if (ownerId == null) {
-      this.locks.clear()
+  async releaseAll(args?: { ownerId?: string | null }): Promise<void> {
+    const { ownerId } = args ?? {}
+
+    if (!isDefined(ownerId)) {
+      for (const [key, lock] of this.locks.entries()) {
+        lock.currentPromise?.resolve?.()
+        this.locks.delete(key)
+      }
     } else {
       for (const [key, lock] of this.locks.entries()) {
         if (lock.ownerId === ownerId) {
+          lock.currentPromise?.resolve?.()
           this.locks.delete(key)
         }
       }
     }
   }
 
-  private async acquireLocksWithTimeout(
-    keys: string[],
-    timeout: number,
-    startTime: number
-  ): Promise<void> {
-    if (this.tryAcquireLocksWithOwner(keys, null, null)) {
-      return
-    }
-
-    const elapsedTime = Date.now() - startTime
-    if (elapsedTime >= timeout) {
-      throw new Error("Timed-out acquiring lock.")
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 100))
-    return this.acquireLocksWithTimeout(keys, timeout, startTime)
-  }
-
-  private tryAcquireLocksWithOwner(
-    keys: string[],
-    ownerId: string | null,
-    expire: number | null
-  ): boolean {
-    const now = Date.now()
-    const expirationTime = expire ? now + expire * 1000 : null
-
-    for (const key of keys) {
-      const lock = this.locks.get(key)
-      if (
-        lock &&
-        !(
-          lock.ownerId === ownerId ||
-          (lock.expiration && lock.expiration <= now)
-        )
-      ) {
-        return false
-      }
-    }
-
-    for (const key of keys) {
-      const lock = this.locks.get(key)
-      if (lock && lock.ownerId === ownerId && expire) {
-        lock.expiration = expirationTime
-      } else {
-        this.locks.set(key, {
-          ownerId,
-          expiration: expirationTime,
-          acquiredAt: now,
-        })
-      }
-    }
-
-    return true
+  private async getTimeout(seconds: number): Promise<void> {
+    return new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error("Timed-out acquiring lock."))
+      }, seconds * 1000)
+    })
   }
 }

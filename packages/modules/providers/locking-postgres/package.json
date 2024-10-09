@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-postgres",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Postgres Advisory Locks for Medusa",
   "main": "dist/index.js",
   "repository": {

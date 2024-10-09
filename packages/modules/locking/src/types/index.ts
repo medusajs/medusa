@@ -10,6 +10,7 @@ export type InitializeModuleInjectableDependencies = {
   EventBus?: IEventBusModuleService
 }
 
+export const LockingDefaultProvider = "default_provider"
 export const LockingIdentifiersRegistrationName = "locking_providers_identifier"
 
 export const LockingProviderRegistrationPrefix = "lp_"
