@@ -3395,13 +3395,18 @@ export interface IOrderModuleService extends IModuleService {
    * This method reverts an order to its last change and set the order change as Pending.
    *
    * @param {string} orderId - The order's ID.
+   * @param {Partial<OrderChangeDTO>} lastOrderChange - The last order change status to revert to.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the order is undone.
    *
    * @example
    * await orderModuleService.revertLastChange("123")
    */
-  undoLastChange(orderId: string, sharedContext?: Context): Promise<void>
+  undoLastChange(
+    orderId: string,
+    lastOrderChange?: Partial<OrderChangeDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method retrieves a paginated list of transactions based on optional filters and configuration.

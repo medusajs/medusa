@@ -8,6 +8,7 @@ import {
   IOrderModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  OrderChangeDTO,
   OrderDTO,
   OrderReturnReasonDTO,
   OrderShippingMethodDTO,
@@ -2305,6 +2306,7 @@ export default class OrderModuleService<
   @InjectManager()
   async undoLastChange(
     orderId: string,
+    lastOrderChange?: Partial<OrderChangeDTO>,
     @MedusaContext() sharedContext?: Context
   ) {
     const order = await super.retrieveOrder(
@@ -2322,12 +2324,13 @@ export default class OrderModuleService<
       )
     }
 
-    return await this.undoLastChange_(order, sharedContext)
+    return await this.undoLastChange_(order, lastOrderChange, sharedContext)
   }
 
   @InjectTransactionManager()
   protected async undoLastChange_(
     order: OrderDTO,
+    lastOrderChange?: Partial<OrderChangeDTO>,
     sharedContext?: Context
   ): Promise<void> {
     const currentVersion = order.version
@@ -2345,15 +2348,8 @@ export default class OrderModuleService<
     const orderChangesIds = orderChanges.map((change) => {
       return {
         id: change.id,
-        status: OrderChangeStatus.PENDING,
+        status: lastOrderChange?.status ?? OrderChangeStatus.PENDING,
         confirmed_at: null,
-        declined_at: null,
-        canceled_at: null,
-        requested_at: null,
-        confirmed_by: null,
-        declined_by: null,
-        canceled_by: null,
-        requested_by: null,
       }
     })
 

@@ -191,6 +191,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.action",
         "actions.details",
