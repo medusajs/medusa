@@ -42,6 +42,7 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
       <RouteModalProvider prev={prev}>
         <StackedModalProvider onOpenChange={onStackedModalOpen}>
           <Drawer.Content
+            aria-describedby={undefined}
             className={clx({
               "!bg-ui-bg-disabled !inset-y-5 !right-5": stackedModalOpen,
             })}

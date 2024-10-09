@@ -104,7 +104,7 @@ export const useCancelOrderEdit = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.changes(id),
+        queryKey: ordersQueryKeys.changes(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },

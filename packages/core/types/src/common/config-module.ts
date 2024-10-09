@@ -48,7 +48,7 @@ export interface AdminOptions {
    * })
    * ```
    */
-  path?: `/${string}`
+  path: `/${string}`
   /**
    * The directory where the admin build is outputted when you run the `build` command.
    * The default value is `./build`.
@@ -63,7 +63,7 @@ export interface AdminOptions {
    * })
    * ```
    */
-  outDir?: string
+  outDir: string
   /**
    * The URL of your Medusa application. This is useful to set when you deploy the Medusa application.
    *
@@ -828,7 +828,7 @@ export type ConfigModule = {
    * })
    * ```
    */
-  admin?: AdminOptions
+  admin: AdminOptions
 
   /**
    * On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services.
