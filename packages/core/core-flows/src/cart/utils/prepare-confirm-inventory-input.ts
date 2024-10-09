@@ -28,7 +28,7 @@ interface ConfirmInventoryItem {
   inventory_item_id: string
   required_quantity: number
   allow_backorder: boolean
-  quantity: number
+  quantity: BigNumberInput
   location_ids: string[]
 }
 
@@ -160,7 +160,7 @@ const formatInventoryInput = ({
         inventory_item_id: variantInventoryItem.inventory_item_id,
         required_quantity: variantInventoryItem.required_quantity,
         allow_backorder: !!variant.allow_backorder,
-        quantity: item.quantity as number, // TODO: update type to BigNumberInput
+        quantity: item.quantity,
         location_ids: location_ids,
       })
     )
