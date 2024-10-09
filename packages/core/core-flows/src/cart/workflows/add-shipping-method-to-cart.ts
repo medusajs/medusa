@@ -103,27 +103,26 @@ export const addShippingMethodToWorkflow = createWorkflow(
       return cart.shipping_methods.map((sm) => sm.id)
     })
 
-    removeShippingMethodFromCartStep({
-      shipping_method_ids: currentShippingMethods,
-    })
-
-    const shippingMethodsToAdd = addShippingMethodToCartStep({
-      shipping_methods: shippingMethodInput,
-    })
-
-    parallelize(
-      updateTaxLinesWorkflow.runAsStep({
-        input: {
-          cart_id: input.cart_id,
-          shipping_methods: shippingMethodsToAdd,
-        },
+    const [, shippingMethodsToAdd] = parallelize(
+      removeShippingMethodFromCartStep({
+        shipping_method_ids: currentShippingMethods,
       }),
-
-      updateCartPromotionsWorkflow.runAsStep({
-        input: {
-          cart_id: input.cart_id,
-        },
+      addShippingMethodToCartStep({
+        shipping_methods: shippingMethodInput,
       })
     )
+
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart_id,
+        shipping_methods: shippingMethodsToAdd,
+      },
+    })
+
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart_id,
+      },
+    })
   }
 )

@@ -20,7 +20,7 @@ import {
   ProductStatus,
   PromotionRuleOperator,
   PromotionType,
-  RuleOperator
+  RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {

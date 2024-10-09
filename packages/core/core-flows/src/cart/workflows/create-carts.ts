@@ -160,20 +160,18 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    parallelize(
-      updateTaxLinesWorkflow.runAsStep({
-        input: {
-          cart_id: cart.id,
-        },
-      }),
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_id: cart.id,
+      },
+    })
 
-      updateCartPromotionsWorkflow.runAsStep({
-        input: {
-          cart_id: cart.id,
-          promo_codes: input.promo_codes,
-        },
-      })
-    )
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: cart.id,
+        promo_codes: input.promo_codes,
+      },
+    })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: {
