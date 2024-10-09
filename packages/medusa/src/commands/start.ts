@@ -83,7 +83,7 @@ async function start({ port, directory, types }) {
       })
 
       if (gqlSchema && types) {
-        const outputDirGeneratedTypes = path.join(directory, ".medusa")
+        const outputDirGeneratedTypes = path.join(directory, ".medusa/types")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",

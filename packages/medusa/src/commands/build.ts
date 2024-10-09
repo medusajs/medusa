@@ -6,6 +6,7 @@ import { ConfigModule } from "@medusajs/framework/types"
 import { getConfigFile } from "@medusajs/framework/utils"
 
 const ADMIN_FOLDER = "src/admin"
+const ADMIN_OUTPUT_DIR = ".medusa/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
 
 /**
@@ -111,7 +112,7 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
     return false
   }
 
-  const distFolder = tsConfig.options.outDir ?? "build"
+  const distFolder = tsConfig.options.outDir ?? ".medusa/server"
   const dist = path.isAbsolute(distFolder)
     ? distFolder
     : path.join(projectRoot, distFolder)
@@ -210,7 +211,7 @@ async function buildFrontend(projectRoot: string): Promise<boolean> {
   const adminOptions = {
     disable: false,
     path: "/app" as const,
-    outDir: "./dist",
+    outDir: ADMIN_OUTPUT_DIR,
     sources: [adminSource],
     ...configFile.configModule.admin,
   }
