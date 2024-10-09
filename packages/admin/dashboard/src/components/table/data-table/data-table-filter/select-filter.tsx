@@ -1,13 +1,14 @@
 import { CheckMini, EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
-import { Text, clx } from "@medusajs/ui"
+import { clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import { Command } from "cmdk"
-import { MouseEvent, useState } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
 import { IFilter } from "./types"
+import FilterChip from "./filter-chip"
 
 interface SelectFilterProps extends IFilter {
   options: { label: string; value: unknown }[]
@@ -83,13 +84,17 @@ export const SelectFilter = ({
     }
   }
 
+  const normalizedValues = labelValues ? (Array.isArray(labelValues) ? labelValues : [labelValues]) : null
+  const normalizedPrev = previousValue ? (Array.isArray(previousValue) ? previousValue : [previousValue]) : null
+
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <SelectDisplay
-        previousValue={previousValue}
+      <FilterChip
+        hasOperator
+        hadPreviousValue={!!normalizedPrev?.length}
         readonly={readonly}
         label={label}
-        value={labelValues}
+        value={normalizedValues?.join(", ")}
         onRemove={handleRemove}
       />
       {!readonly && (
@@ -182,91 +187,5 @@ export const SelectFilter = ({
         </Popover.Portal>
       )}
     </Popover.Root>
-  )
-}
-
-type SelectDisplayProps = {
-  label: string
-  readonly?: boolean
-  value?: string | string[]
-  previousValue?: string | string[]
-  onRemove: () => void
-}
-
-export const SelectDisplay = ({
-  label,
-  value,
-  previousValue,
-  onRemove,
-  readonly,
-}: SelectDisplayProps) => {
-  const { t } = useTranslation()
-  const v = value ? (Array.isArray(value) ? value : [value]) : null
-  const pv = previousValue ? (Array.isArray(previousValue) ? previousValue : [previousValue]) : null
-  const count = v?.length || 0
-  const previousCount = pv?.length || 0
-
-  const handleRemove = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onRemove()
-  }
-
-  return (
-    <div
-      className="bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle cursor-default flex select-none items-stretch overflow-hidden rounded-md"
-    >
-      {!previousCount && (
-        <Popover.Anchor />
-      )}
-      <div
-        className={clx(
-          "text-ui-fg-muted flex items-center justify-center whitespace-nowrap px-2 py-1",
-          {
-            "border-r": count + previousCount > 0,
-          }
-        )}
-      >
-        <Text size="small" weight="plus" leading="compact">
-          {label}
-        </Text>
-      </div>
-      <div className="flex w-full items-center overflow-hidden">
-        {(count + previousCount > 0) && (
-          <div className="border-r p-1 px-2">
-            <Text
-              size="small"
-              weight="plus"
-              leading="compact"
-              className="text-ui-fg-muted"
-            >
-              {t("general.is")}
-            </Text>
-          </div>
-        )}
-        {(count + previousCount > 0) && (
-          <Popover.Trigger asChild className={clx("flex-1 overflow-hidden border-r p-1 px-2 cursor-pointer", {
-            "hover:bg-ui-bg-field-hover": !readonly,
-            "data-[state=open]:bg-ui-bg-field-hover": !readonly,
-          })}>
-            <Text
-              size="small"
-              leading="compact"
-              weight="plus"
-              className="truncate text-nowrap"
-            >
-              {v?.join(", ") || "\u00A0"}
-            </Text>
-          </Popover.Trigger>
-        )}
-      </div>
-      {!readonly && count + previousCount > 0 && (
-        <button
-          onClick={handleRemove}
-          className="p-1 active:bg-ui-bg-subtle-pressed active:text-ui-fg-base hover:bg-ui-bg-field-hover h-100"
-        >
-          <XMarkMini />
-        </button>
-      )}
-    </div>
   )
 }
