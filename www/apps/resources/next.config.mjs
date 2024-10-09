@@ -54,6 +54,16 @@ const nextConfig = {
         destination: "/commerce-modules/cart/links-to-other-modules",
         permanent: true,
       },
+      {
+        source: "/commerce-modules/fulfillment/relations-to-other-modules",
+        destination: "/commerce-modules/fulfillment/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/inventory/relations-to-other-modules",
+        destination: "/commerce-modules/inventory/links-to-other-modules",
+        permanent: true,
+      },
     ]
   },
   // Redirects shouldn't be necessary anymore since we have remark / rehype
