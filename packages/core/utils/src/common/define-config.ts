@@ -16,7 +16,13 @@ const DEFAULT_ADMIN_CORS =
  * make an application work seamlessly, but still provide you the ability
  * to override configuration as needed.
  */
-export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
+export function defineConfig(
+  config: Partial<
+    Omit<ConfigModule, "admin"> & {
+      admin: Partial<ConfigModule["admin"]>
+    }
+  > = {}
+): ConfigModule {
   const { http, ...restOfProjectConfig } = config.projectConfig || {}
 
   /**
