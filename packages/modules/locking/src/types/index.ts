@@ -24,6 +24,10 @@ export type LockingModuleOptions = Partial<ModuleServiceInitializeOptions> & {
      */
     resolve: string | ModuleProviderExports
     /**
+     * If the provider is the default
+     */
+    is_default?: boolean
+    /**
      * The id of the provider
      */
     id: string

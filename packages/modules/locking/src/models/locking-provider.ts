@@ -16,6 +16,9 @@ export default class LockingProvider {
   @Property({ columnType: "boolean", defaultRaw: "true" })
   is_enabled: boolean = true
 
+  @Property({ columnType: "boolean", defaultRaw: "false" })
+  is_default: boolean = false
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "lkpro")
