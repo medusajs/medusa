@@ -76,7 +76,7 @@ const Chip = ({ index, className, children }: ChipProps) => {
   return (
     <li
       className={clx(
-        "bg-ui-bg-component shadow-borders-base flex items-center divide-x overflow-hidden rounded-md",
+        "bg-ui-bg-component shadow-borders-base flex items-stretch divide-x overflow-hidden rounded-md",
         {
           "bg-ui-bg-component": variant === "component",
           "bg-ui-bg-base-": variant === "base",

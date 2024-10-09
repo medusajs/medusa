@@ -1,11 +1,10 @@
-import { EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
-import { Input, Label, Text, clx } from "@medusajs/ui"
+import { EllipseMiniSolid } from "@medusajs/icons"
+import { Input, Label, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import * as RadioGroup from "@radix-ui/react-radio-group"
 import { debounce } from "lodash"
 import {
   ChangeEvent,
-  MouseEvent,
   useCallback,
   useEffect,
   useState,
@@ -15,6 +14,8 @@ import { useTranslation } from "react-i18next"
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
 import { IFilter } from "./types"
+import { TFunction } from "i18next"
+import FilterChip from "./filter-chip"
 
 type NumberFilterProps = IFilter
 
@@ -40,6 +41,9 @@ export const NumberFilter = ({
   })
 
   const currentValue = selectedParams.get()
+  const [previousValue, setPreviousValue] = useState<string[] | undefined>(
+    currentValue
+  )
 
   const [operator, setOperator] = useState<Comparison | undefined>(
     getOperator(currentValue)
@@ -99,6 +103,7 @@ export const NumberFilter = ({
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+    setPreviousValue(currentValue)
 
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -131,11 +136,16 @@ export const NumberFilter = ({
   const LT_KEY = `${key}-lt`
   const EQ_KEY = key
 
+  const displayValue = parseDisplayValue(currentValue, t)
+  const previousDisplayValue = parseDisplayValue(previousValue, t)
+
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <NumberDisplay
+      <FilterChip
+        hasOperator
+        hadPreviousValue={!!previousDisplayValue}
         label={label}
-        value={currentValue}
+        value={displayValue}
         onRemove={handleRemove}
         readonly={readonly}
       />
@@ -242,23 +252,7 @@ export const NumberFilter = ({
   )
 }
 
-const NumberDisplay = ({
-  label,
-  value,
-  readonly,
-  onRemove,
-}: {
-  label: string
-  value?: string[]
-  readonly?: boolean
-  onRemove: () => void
-}) => {
-  const { t } = useTranslation()
-  const handleRemove = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onRemove()
-  }
-
+const parseDisplayValue = (value: string[] | null | undefined, t: TFunction) => {
   const parsed = JSON.parse(value?.join(",") || "{}")
   let displayValue = ""
 
@@ -283,65 +277,7 @@ const NumberDisplay = ({
     displayValue = parsed.toString()
   }
 
-  return (
-    <Popover.Trigger
-      asChild
-      className={clx(
-        "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center rounded-md",
-        {
-          "hover:bg-ui-bg-field-hover": !readonly,
-          "data-[state=open]:bg-ui-bg-field-hover": !readonly,
-        }
-      )}
-    >
-      <div>
-        <div
-          className={clx("flex items-center justify-center px-2 py-1", {
-            "border-r": !!value,
-          })}
-        >
-          <Text size="small" weight="plus" leading="compact">
-            {label}
-          </Text>
-        </div>
-        {!!value && (
-          <div className="border-r p-1 px-2">
-            <Text
-              size="small"
-              weight="plus"
-              leading="compact"
-              className="text-ui-fg-muted"
-            >
-              {t("general.is")}
-            </Text>
-          </div>
-        )}
-        {value && (
-          <div className="flex items-center">
-            <div className="border-r p-1 px-2">
-              <Text size="small" weight="plus" leading="compact">
-                {displayValue}
-              </Text>
-            </div>
-          </div>
-        )}
-        {!readonly && value && (
-          <div>
-            <button
-              onClick={handleRemove}
-              className={clx(
-                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
-                "hover:bg-ui-bg-subtle-hover",
-                "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
-              )}
-            >
-              <XMarkMini />
-            </button>
-          </div>
-        )}
-      </div>
-    </Popover.Trigger>
-  )
+  return displayValue
 }
 
 const parseValue = (value: string[] | null | undefined) => {
