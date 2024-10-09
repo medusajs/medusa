@@ -5,7 +5,10 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
 
@@ -89,7 +92,7 @@ const VariantActions = ({
                   icon: <Component />,
                 }
               : false,
-          ].filter(Boolean),
+          ].filter(Boolean) as Action[],
         },
       ]}
     />
@@ -104,10 +107,11 @@ export const useProductVariantTableColumns = (
   const { t } = useTranslation()
 
   const optionColumns = useMemo(() => {
-    if (!product) {
+    if (!product?.options) {
       return []
     }
-    return product.options?.map((option) => {
+
+    return product.options.map((option) => {
       return columnHelper.display({
         id: option.id,
         header: () => (
@@ -116,8 +120,8 @@ export const useProductVariantTableColumns = (
           </div>
         ),
         cell: ({ row }) => {
-          const variantOpt: any = row.original.options.find(
-            (opt: any) => opt.option_id === option.id
+          const variantOpt = row.original.options?.find(
+            (opt) => opt.option_id === option.id
           )
           if (!variantOpt) {
             return <PlaceholderCell />

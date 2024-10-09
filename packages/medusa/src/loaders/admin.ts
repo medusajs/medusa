@@ -1,3 +1,4 @@
+import { logger } from "@medusajs/framework/logger"
 import { AdminOptions, ConfigModule } from "@medusajs/framework/types"
 import { Express } from "express"
 import fs from "fs"
@@ -15,6 +16,8 @@ type IntializedOptions = Required<
   AdminOptions & {
     sources?: string[]
   }
+
+const NOT_ALLOWED_PATHS = ["/auth", "/store", "/admin"]
 
 export default async function adminLoader({
   app,
@@ -40,6 +43,14 @@ export default async function adminLoader({
 
   if (adminOptions?.disable) {
     return app
+  }
+
+  if (NOT_ALLOWED_PATHS.includes(adminOptions.path)) {
+    logger.error(
+      `The 'admin.path' in 'medusa-config.js' is set to a value that is not allowed. This can prevent your server from working correctly. Please set 'admin.path' to a value that is not one of the following: ${NOT_ALLOWED_PATHS.join(
+        ", "
+      )}.`
+    )
   }
 
   if (process.env.NODE_ENV === "development") {

@@ -1,26 +1,20 @@
 import { OrderListTable } from "./components/order-list-table"
 
-import after from "virtual:medusa/widgets/order/list/after"
-import before from "virtual:medusa/widgets/order/list/before"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 
 export const OrderList = () => {
+  const { getWidgets } = useDashboardExtension()
+
   return (
-    <div className="flex w-full flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("order.list.after"),
+        before: getWidgets("order.list.before"),
+      }}
+      hasOutlet={false}
+    >
       <OrderListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-    </div>
+    </SingleColumnPage>
   )
 }

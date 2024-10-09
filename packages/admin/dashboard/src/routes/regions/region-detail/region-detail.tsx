@@ -1,16 +1,14 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useRegion } from "../../../hooks/api/regions"
 import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/region/details/after"
-import before from "virtual:medusa/widgets/region/details/before"
-import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { UserGeneralSection } from "../../users/user-detail/components/user-general-section"
+import { useDashboardExtension } from "../../../extensions"
+import { usePricePreferences } from "../../../hooks/api/price-preferences"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -44,9 +42,10 @@ export const RegionDetail = () => {
     { enabled: !!region }
   )
 
-  // TODO: Move to loading.tsx and set as Suspense fallback for the route
+  const { getWidgets } = useDashboardExtension()
+
   if (isLoading || isLoadingPreferences || !region) {
-    return <div>Loading...</div>
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   if (isRegionError) {
@@ -60,33 +59,18 @@ export const RegionDetail = () => {
   return (
     <SingleColumnPage
       widgets={{
-        before,
-        after,
+        before: getWidgets("region.details.before"),
+        after: getWidgets("region.details.after"),
       }}
       data={region}
-      hasOutlet
       showMetadata
       showJSON
     >
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={region} />
-          </div>
-        )
-      })}
       <RegionGeneralSection
         region={region}
         pricePreferences={pricePreferences ?? []}
       />
       <RegionCountrySection region={region} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={region} />
-          </div>
-        )
-      })}
     </SingleColumnPage>
   )
 }
