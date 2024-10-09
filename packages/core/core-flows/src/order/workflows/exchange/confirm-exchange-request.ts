@@ -234,6 +234,7 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.exchange_id",
         "actions.return_id",
@@ -272,7 +273,11 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       returnItems: createdReturnItems,
     })
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    confirmOrderChanges({
+      changes: [orderChange],
+      orderId: order.id,
+      confirmed_by: input.confirmed_by,
+    })
 
     const returnId = transform(
       { createdReturnItems },
