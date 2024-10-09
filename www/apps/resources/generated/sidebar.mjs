@@ -8827,6 +8827,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/admin-components/components/forms",
+                "title": "Forms",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/admin-components/components/header",
                 "title": "Header",
                 "children": []

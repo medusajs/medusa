@@ -8,6 +8,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/container"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/forms/page.mdx",
+    "pathname": "/admin-components/components/forms"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/header/page.mdx",
     "pathname": "/admin-components/components/header"
   },
