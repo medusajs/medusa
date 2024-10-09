@@ -1,40 +1,30 @@
-import { Outlet, json } from "react-router-dom"
-
 import { useMe } from "../../../hooks/api/users"
 import { ProfileGeneralSection } from "./components/profile-general-section"
 
-import after from "virtual:medusa/widgets/profile/details/after"
-import before from "virtual:medusa/widgets/profile/details/before"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 
 export const ProfileDetail = () => {
   const { user, isPending: isLoading, isError, error } = useMe()
+  const { getWidgets } = useDashboardExtension()
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  if (isLoading || !user) {
+    return <SingleColumnPageSkeleton sections={1} />
   }
 
-  if (isError || !user) {
-    if (error) {
-      throw error
-    }
-
-    throw json("An unknown error has occurred", 500)
+  if (isError) {
+    throw error
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => (
-        <div key={i}>
-          <w.Component data={user} />
-        </div>
-      ))}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("profile.details.after"),
+        before: getWidgets("profile.details.before"),
+      }}
+    >
       <ProfileGeneralSection user={user} />
-      {after.widgets.map((w, i) => (
-        <div key={i}>
-          <w.Component data={user} />
-        </div>
-      ))}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

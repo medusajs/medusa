@@ -1,13 +1,12 @@
-import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useCollection } from "../../../hooks/api/collections"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/product_collection/details/after"
-import before from "virtual:medusa/widgets/product_collection/details/before"
 
 export const CollectionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -19,38 +18,28 @@ export const CollectionDetail = () => {
     initialData,
   })
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  const { getWidgets } = useDashboardExtension()
+
+  if (isLoading || !collection) {
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
-  if (isError || !collection) {
-    if (error) {
-      throw error
-    }
-
-    throw json("An unknown error occurred", 500)
+  if (isError) {
+    throw error
   }
 
   return (
-    <div className="flex flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={collection} />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("product_collection.details.after"),
+        before: getWidgets("product_collection.details.before"),
+      }}
+      showJSON
+      showMetadata
+      data={collection}
+    >
       <CollectionGeneralSection collection={collection} />
       <CollectionProductSection collection={collection} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={collection} />
-          </div>
-        )
-      })}
-      <JsonViewSection data={collection} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }
