@@ -42,6 +42,20 @@ const nextConfig = {
   transpilePackages: ["docs-ui"],
 
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/resources",
+  async redirects() {
+    return [
+      {
+        source: "/commerce-modules/order/relations-to-other-modules",
+        destination: "/commerce-modules/order/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/payment/relations-to-other-modules",
+        destination: "/commerce-modules/payment/links-to-other-modules",
+        permanent: true,
+      },
+    ]
+  },
   // Redirects shouldn't be necessary anymore since we have remark / rehype
   // plugins that fix links. But leaving this here in case we need it again.
   // async redirects() {

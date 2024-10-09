@@ -2786,8 +2786,24 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/order/relations-to-other-modules",
-                "title": "Relations to Other Modules",
+                "path": "/commerce-modules/order/edit",
+                "title": "Order Edit",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/order/order-change",
+                "title": "Order Change",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/order/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -4118,16 +4134,7 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/payment/payment-provider",
                 "title": "Payment Provider Module",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/payment/payment-provider/stripe",
-                    "title": "Stripe",
-                    "children": []
-                  }
-                ]
+                "children": []
               },
               {
                 "loaded": true,
@@ -4141,8 +4148,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/payment/relations-to-other-modules",
-                "title": "Relations to Other Modules",
+                "path": "/commerce-modules/payment/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -4167,6 +4174,22 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/references/payment/provider",
                 "title": "Create Payment Provider",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "Payment Providers",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/payment/payment-provider/stripe",
+                "title": "Stripe",
                 "children": []
               }
             ]
