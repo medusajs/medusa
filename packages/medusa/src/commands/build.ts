@@ -133,6 +133,8 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
   const program = ts.createProgram(filesToCompile, {
     ...tsConfig.options,
     ...{
+      outDir: dist,
+
       /**
        * Disable inline source maps when the user has enabled
        * source maps within the config file
