@@ -60,7 +60,7 @@ Create the directory `src/modules/digital-product`.
 Create the file `src/modules/digital-product/models/digital-product.ts` with the following content:
 
 ```ts title="src/modules/digital-product/models/digital-product.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import DigitalProductMedia from "./digital-product-media"
 import DigitalProductOrder from "./digital-product-order"
 
@@ -90,7 +90,7 @@ export const dpmModelHighlights = [
 ]
 
 ```ts title="src/modules/digital-product/models/digital-product-media.ts" highlights={dpmModelHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { MediaType } from "../types"
 import DigitalProduct from "./digital-product"
 
@@ -123,7 +123,7 @@ This enum indicates that a digital product media can either be used to preview t
 Next, create the file `src/modules/digital-product/models/digital-product-order.ts` with the following content:
 
 ```ts title="src/modules/digital-product/models/digital-product-order.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { OrderStatus } from "../types"
 import DigitalProduct from "./digital-product"
 
@@ -154,7 +154,7 @@ export enum OrderStatus {
 Next, create the main service of the module at `src/modules/digital-product/service.ts` with the following content:
 
 ```ts title="src/modules/digital-product/service.ts"
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import DigitalProduct from "./models/digital-product"
 import DigitalProductOrder from "./models/digital-product-order"
 import DigitalProductMedia from "./models/digital-product-media"
@@ -170,7 +170,7 @@ class DigitalProductModuleService extends MedusaService({
 export default DigitalProductModuleService
 ```
 
-The service extends the [service factory](https://docs.medusajs.com/v2/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Module Definition
 
@@ -178,7 +178,7 @@ After that, create the module definition at `src/modules/digital-product/index.t
 
 ```ts title="src/modules/digital-product/index.ts"
 import DigitalProductModuleService from "./service"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 
 export const DIGITAL_PRODUCT_MODULE = "digitalProductModuleService"
 
@@ -204,8 +204,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules-and-services)
-- [How to Create a Data Model](!docs!/basics/data-models)
+- [How to Create a Module](!docs!/basics/modules)
+- [How to Create a Data Model](!docs!/basics/modules#1-create-data-model)
 
 ---
 
@@ -217,8 +217,8 @@ Start by creating the file `src/links/digital-product-variant.ts` with the follo
 
 ```ts title="src/links/digital-product-variant.ts"
 import DigitalProductModule from "../modules/digital-product"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   DigitalProductModule.linkable.digitalProduct,
@@ -236,8 +236,8 @@ export const orderLinkHighlights = [
 
 ```ts title="src/links/digital-product-order.ts"
 import DigitalProductModule from "../modules/digital-product"
-import OrderModule from "@medusajs/order"
-import { defineLink } from "@medusajs/utils"
+import OrderModule from "@medusajs/medusa/order"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   {
@@ -255,7 +255,7 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -287,8 +287,8 @@ Create the file `src/api/admin/digital-products/route.ts` with the following con
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -362,7 +362,7 @@ Make sure to replace `{token}` with the JWT token you retrieved.
 ### Further Reads
 
 - [How to Create an API Route](!docs!/basics/api-routes)
-- [Learn more about Query](!docs!/advanced-development/modules/query)
+- [Learn more about Query](!docs!/advanced-development/module-links/query)
 
 ---
 
@@ -379,10 +379,10 @@ graph TD
   createDigitalProductMediasStep --> createRemoteLinkStep["createRemoteLinkStep (Medusa)"]
 ```
 
-1. `createProductsWorkflow`: Create the Medusa product that the digital product is associated with its variant. Medusa provides this workflow through the `@medusajs/core-flows` package, which you can use as a step.
+1. `createProductsWorkflow`: Create the Medusa product that the digital product is associated with its variant. Medusa provides this workflow through the `@medusajs/medusa/core-flows` package, which you can use as a step.
 2. `createDigitalProductStep`: Create the digital product.
 3. `createDigitalProductMediasStep`: Create the medias associated with the digital product.
-4. `createRemoteLinkStep`: Create the link between the digital product and the product variant. Medusa provides this step through the `@medusajs/core-flows` package.
+4. `createRemoteLinkStep`: Create the link between the digital product and the product variant. Medusa provides this step through the `@medusajs/medusa/core-flows` package.
 
 You’ll implement the second and third steps.
 
@@ -400,7 +400,7 @@ export const createDpHighlights = [
 import {
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
 
@@ -454,7 +454,7 @@ export const createDigitalProductMediaHighlights = [
 import {
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
 import { MediaType } from "../../../modules/digital-product/types"
@@ -520,17 +520,17 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   CreateProductWorkflowInputDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { 
   createProductsWorkflow,
   createRemoteLinkStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import { 
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import createDigitalProductStep, { 
   CreateDigitalProductStepInput,
 } from "./steps/create-digital-product"
@@ -611,7 +611,7 @@ You’ll test out the workflow in the next section.
 
 - [How to Create a Workflow](!docs!/basics/workflows)
 - [What is the Compensation Function](!docs!/advanced-development/workflows/compensation-function)
-- [Learn more about the remote link function](!docs!/advanced-development/modules/remote-link)
+- [Learn more about the remote link function](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -667,7 +667,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 ```ts title="src/api/validation-schemas.ts"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 import { z } from "zod"
 import { MediaType } from "../modules/digital-product/types"
 
@@ -690,7 +690,7 @@ Finally, create the file `src/api/middlewares.ts` with the following content:
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/framework/utils"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
 export default defineMiddlewares({
@@ -743,9 +743,9 @@ export const uploadHighlights = [
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
-import { uploadFilesWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { uploadFilesWorkflow } from "@medusajs/medusa/core-flows"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -779,7 +779,7 @@ export const POST = async (
 
 This adds a `POST` API route at `/admin/digital-products/upload/[type]` where `[type]` is either `preview` or `main`.
 
-In the route handler, you use the `uploadFilesWorkflow` imported from `@medusajs/core-flows` to upload the file. If the file type is `main`, it’s uploaded with private access, as only customers who purchased it can download it. Otherwise, it’s uploaded with `public` access.
+In the route handler, you use the `uploadFilesWorkflow` imported from `@medusajs/medusa/core-flows` to upload the file. If the file type is `main`, it’s uploaded with private access, as only customers who purchased it can download it. Otherwise, it’s uploaded with `public` access.
 
 Next, add to the file `src/api/middlewares.ts` the `multer` middleware on this API route:
 
@@ -814,7 +814,7 @@ In this step, you’ll add a UI route to the Medusa Admin that displays a list o
 Before you create the UI route, create the file `src/admin/types/index.ts` that holds the following types:
 
 ```ts title="src/admin/types/index.ts"
-import { ProductVariantDTO } from "@medusajs/types"
+import { ProductVariantDTO } from "@medusajs/framework/types"
 
 export enum MediaType {
   MAIN = "main",
@@ -1435,7 +1435,7 @@ Start by creating the `src/modules/digital-product-fulfillment` directory.
 Then, create the file `src/modules/digital-product-fulfillment/service.ts` with the following content:
 
 ```ts title="src/modules/digital-product-fulfillment/service.ts"
-import { AbstractFulfillmentProviderService } from "@medusajs/utils"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 
 class DigitalProductFulfillmentService extends AbstractFulfillmentProviderService {
   static identifier = "digital"
@@ -1444,7 +1444,7 @@ class DigitalProductFulfillmentService extends AbstractFulfillmentProviderServic
     super()
   }
 
-  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
+  async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
     return [
       {
         id: "digital-fulfillment",
@@ -1488,7 +1488,7 @@ The fulfillment provider registers one fulfillment option, and doesn't perform a
 Then, create the module provider's definition in the file `src/modules/digital-product-fulfillment/index.ts`:
 
 ```ts title="src/modules/digital-product-fulfillment/index.ts"
-import { ModuleProviderExports } from "@medusajs/types"
+import { ModuleProviderExports } from "@medusajs/framework/types"
 import DigitalProductFulfillmentService from "./service"
 
 const services = [DigitalProductFulfillmentService]
@@ -1506,17 +1506,17 @@ Finally, register the module provider in `medusa-config.js`:
 
 ```js title="medusa-config.js"
 // other imports...
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 module.exports = defineConfig({
   modules: {
     // ...
     [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
-            resolve: "@medusajs/fulfillment-manual",
+            resolve: "@medusajs/medusa/fulfillment-manual",
             id: "manual",
           },
           {
@@ -1560,13 +1560,13 @@ graph TD
 
 The workflow has the following steps:
 
-1. `completeCartWorkflow` to create a Medusa order from the cart. Medusa provides this workflow through the `@medusajs/core-flows` package and you can use it as a step.
-2. `useRemoteQueryStep` to retrieve the order’s items with the digital products associated with the purchased product variants. Medusa provides this step through the `@medusajs/core-flows` package.
+1. `completeCartWorkflow` to create a Medusa order from the cart. Medusa provides this workflow through the `@medusajs/medusa/core-flows` package and you can use it as a step.
+2. `useRemoteQueryStep` to retrieve the order’s items with the digital products associated with the purchased product variants. Medusa provides this step through the `@medusajs/medusa/core-flows` package.
 3. If the order has digital products, you:
     1. create the digital product order.
-    2. link the digital product order with the Medusa order. Medusa provides a `createRemoteLinkStep` in the `@medusajs/core-flows` package that can be used here.
-    3. Create a fulfillment for the digital products in the order. Medusa provides a `createOrderFulfillmentWorkflow` in the `@medusajs/core-flows` package that you can use as a step here.
-    4. Emit the `digital_product_order.created` custom event to handle it later in a subscriber and send the customer an email. Medusa provides a `emitEventStep` in the `@medusajs/core-flows` that you can use as a step here.
+    2. link the digital product order with the Medusa order. Medusa provides a `createRemoteLinkStep` in the `@medusajs/medusa/core-flows` package that can be used here.
+    3. Create a fulfillment for the digital products in the order. Medusa provides a `createOrderFulfillmentWorkflow` in the `@medusajs/medusa/core-flows` package that you can use as a step here.
+    4. Emit the `digital_product_order.created` custom event to handle it later in a subscriber and send the customer an email. Medusa provides a `emitEventStep` in the `@medusajs/medusa/core-flows` that you can use as a step here.
 
 You’ll only implement the `3.a` step of the workflow.
 
@@ -1585,12 +1585,12 @@ export const createDpoHighlights = [
 import {
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   OrderLineItemDTO,
   ProductVariantDTO,
   InferTypeOf,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { OrderStatus } from "../../../modules/digital-product/types"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
@@ -1662,15 +1662,15 @@ import {
   transform,
   when,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   completeCartWorkflow,
   useRemoteQueryStep,
   createRemoteLinkStep,
   createOrderFulfillmentWorkflow,
   emitEventStep,
-} from "@medusajs/core-flows"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
 import createDigitalProductOrderStep from "./steps/create-digital-product-order"
 import { DIGITAL_PRODUCT_MODULE } from "../../modules/digital-product"
 
@@ -1780,7 +1780,7 @@ The workflow returns the Medusa order and the digital product order, if created.
 Next, create the file `src/api/store/carts/[id]/complete/route.ts` with the following content:
 
 ```ts title="src/api/store/carts/[id]/complete/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import createDigitalProductOrderWorkflow from "../../../../../workflows/create-digital-product-order"
 
 export const POST = async (
@@ -1823,7 +1823,7 @@ In this step, you'll create a workflow that fulfills a digital order by sending 
 
 The workflow has the following steps:
 
-1. Retrieve the digital product order's details. For this, you'll use the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
+1. Retrieve the digital product order's details. For this, you'll use the `useRemoteQueryStep` imported from `@medusajs/medusa/core-flows`.
 2. Send a notification to the customer with the digital products to download.
 
 So, you only need to implement the second step.
@@ -1833,7 +1833,7 @@ So, you only need to implement the second step.
 Before creating the step, add to `src/modules/digital-product/types/index.ts` the following:
 
 ```ts
-import { OrderDTO, InferTypeOf } from "@medusajs/types"
+import { OrderDTO, InferTypeOf } from "@medusajs/framework/types"
 import DigitalProductOrder from "../models/digital-product-order"
 
 // ...
@@ -1856,12 +1856,12 @@ To create the step, create the file `src/workflows/fulfill-digital-order/steps/s
 import {
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   INotificationModuleService,
   IFileModuleService,
-} from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { ModuleRegistrationName } from "@medusajs/framework/utils"
 import { DigitalProductOrder, MediaType } from "../../../modules/digital-product/types"
 
 type SendDigitalOrderNotificationStepInput = {
@@ -1948,10 +1948,10 @@ export const fulfillWorkflowHighlights = [
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   useRemoteQueryStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import { sendDigitalOrderNotificationStep } from "./steps/send-digital-order-notification"
 
 type FulfillDigitalOrderWorkflowInput = {
@@ -1991,7 +1991,7 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
 
 In the workflow, you:
 
-1. Retrieve the digital product order's details using the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
+1. Retrieve the digital product order's details using the `useRemoteQueryStep` imported from `@medusajs/medusa/core-flows`.
 2. Send a notification to the customer with the digital product download links using the `sendDigitalOrderNotificationStep`.
 
 ### Configure Notification Module Provider
@@ -2008,11 +2008,11 @@ module.exports = defineConfig({
   modules: {
     // ...
     [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "@medusajs/notification-local",
+            resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
               name: "Local Notification Provider",
@@ -2039,7 +2039,7 @@ Create the file `src/subscribers/handle-digital-order.ts` with the following con
 import type {
   SubscriberArgs,
   SubscriberConfig,
-} from "@medusajs/medusa"
+} from "@medusajs/framework"
 import { 
   fulfillDigitalOrderWorkflow,
 } from "../workflows/fulfill-digital-order"
@@ -2091,10 +2091,10 @@ export const previewRouteHighlights = [
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { 
   DIGITAL_PRODUCT_MODULE,
 } from "../../../../../modules/digital-product"
@@ -2157,10 +2157,10 @@ export const purchasedDpHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -2213,12 +2213,12 @@ export const downloadUrlHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   Modules,
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -2312,7 +2312,7 @@ In this section, you’ll customize the [Next.js Starter storefront](../../../..
 In `src/types/global.ts`, add the following types that you’ll use in your customizations:
 
 ```ts title="src/types/global.ts"
-import { BaseProductVariant } from "@medusajs/types/dist/http/product/common"
+import { BaseProductVariant } from "@medusajs/framework/types/http/product/common"
 
 // ...
 

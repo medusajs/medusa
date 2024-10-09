@@ -45,7 +45,7 @@ export const RegionDetail = () => {
   const { getWidgets } = useDashboardExtension()
 
   if (isLoading || isLoadingPreferences || !region) {
-    return <SingleColumnPageSkeleton sections={2} showJSON />
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   if (isRegionError) {
@@ -63,6 +63,7 @@ export const RegionDetail = () => {
         after: getWidgets("region.details.after"),
       }}
       data={region}
+      showMetadata
       showJSON
     >
       <RegionGeneralSection

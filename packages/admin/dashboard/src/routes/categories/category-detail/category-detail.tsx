@@ -28,7 +28,12 @@ export const CategoryDetail = () => {
 
   if (isLoading || !product_category) {
     return (
-      <TwoColumnPageSkeleton mainSections={2} sidebarSections={1} showJSON />
+      <TwoColumnPageSkeleton
+        mainSections={2}
+        sidebarSections={1}
+        showJSON
+        showMetadata
+      />
     )
   }
 
@@ -45,6 +50,7 @@ export const CategoryDetail = () => {
         sideBefore: getWidgets("product_category.details.side.before"),
       }}
       showJSON
+      showMetadata
       data={product_category}
     >
       <TwoColumnPage.Main>

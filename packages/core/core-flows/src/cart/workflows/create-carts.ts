@@ -27,9 +27,6 @@ import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-colle
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
 
-// TODO: The createCartWorkflow are missing the following steps:
-// - Refresh/delete shipping methods (fulfillment module)
-
 export const createCartWorkflowId = "create-cart"
 /**
  * This workflow creates a cart.
@@ -119,6 +116,13 @@ export const createCartWorkflow = createWorkflow(
           data_.sales_channel_id = data.salesChannel.id
         }
 
+        // If there is only one country in the region, we prepare a shipping address with that country's code.
+        if (!data.input.shipping_address && data.region.countries.length === 1) {
+          data_.shipping_address = {
+            country_code: data.region.countries[0].iso_2,
+          }
+        }
+
         return data_
       }
     )
@@ -155,7 +159,7 @@ export const createCartWorkflow = createWorkflow(
 
     updateTaxLinesWorkflow.runAsStep({
       input: {
-        cart_or_cart_id: cart.id,
+        cart_id: cart.id,
       },
     })
 

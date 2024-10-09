@@ -195,24 +195,17 @@ export type WebhookActionData = {
  *
  * The actions that the payment provider informs the Payment Module to perform.
  */
-export type WebhookActionResult =
-  | {
-      /**
-       * Received an event that is not processable.
-       */
-      action: "not_supported"
-    }
-  | {
-      /**
-       * Normalized events from payment provider to internal payment module events.
-       */
-      action: PaymentActions
+export type WebhookActionResult = {
+  /**
+   * Normalized events from payment provider to internal payment module events.
+   */
+  action: PaymentActions
 
-      /**
-       * The webhook action's details.
-       */
-      data: WebhookActionData
-    }
+  /**
+   * The webhook action's details.
+   */
+  data?: WebhookActionData
+}
 
 export interface IPaymentProvider {
   /**

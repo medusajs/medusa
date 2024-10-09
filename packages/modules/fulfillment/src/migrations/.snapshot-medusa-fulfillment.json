@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -152,9 +150,7 @@
       "indexes": [
         {
           "keyName": "IDX_fulfillment_address_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -162,9 +158,7 @@
         },
         {
           "keyName": "fulfillment_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -200,9 +194,7 @@
       "indexes": [
         {
           "keyName": "fulfillment_provider_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -287,9 +279,7 @@
       "indexes": [
         {
           "keyName": "IDX_fulfillment_set_name_unique",
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -297,9 +287,7 @@
         },
         {
           "keyName": "IDX_fulfillment_set_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -307,9 +295,7 @@
         },
         {
           "keyName": "fulfillment_set_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -394,9 +380,7 @@
       "indexes": [
         {
           "keyName": "IDX_service_zone_name_unique",
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -404,9 +388,7 @@
         },
         {
           "keyName": "IDX_service_zone_fulfillment_set_id",
-          "columnNames": [
-            "fulfillment_set_id"
-          ],
+          "columnNames": ["fulfillment_set_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -414,9 +396,7 @@
         },
         {
           "keyName": "IDX_service_zone_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -424,9 +404,7 @@
         },
         {
           "keyName": "service_zone_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -436,13 +414,9 @@
       "foreignKeys": {
         "service_zone_fulfillment_set_id_foreign": {
           "constraintName": "service_zone_fulfillment_set_id_foreign",
-          "columnNames": [
-            "fulfillment_set_id"
-          ],
+          "columnNames": ["fulfillment_set_id"],
           "localTableName": "public.service_zone",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment_set",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -468,12 +442,7 @@
           "primary": false,
           "nullable": false,
           "default": "'country'",
-          "enumItems": [
-            "country",
-            "province",
-            "city",
-            "zip"
-          ],
+          "enumItems": ["country", "province", "city", "zip"],
           "mappedType": "enum"
         },
         "country_code": {
@@ -568,9 +537,7 @@
       "indexes": [
         {
           "keyName": "IDX_geo_zone_country_code",
-          "columnNames": [
-            "country_code"
-          ],
+          "columnNames": ["country_code"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -578,9 +545,7 @@
         },
         {
           "keyName": "IDX_geo_zone_province_code",
-          "columnNames": [
-            "province_code"
-          ],
+          "columnNames": ["province_code"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -588,9 +553,7 @@
         },
         {
           "keyName": "IDX_geo_zone_city",
-          "columnNames": [
-            "city"
-          ],
+          "columnNames": ["city"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -598,9 +561,7 @@
         },
         {
           "keyName": "IDX_geo_zone_service_zone_id",
-          "columnNames": [
-            "service_zone_id"
-          ],
+          "columnNames": ["service_zone_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -608,9 +569,7 @@
         },
         {
           "keyName": "IDX_geo_zone_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -618,9 +577,7 @@
         },
         {
           "keyName": "geo_zone_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -630,13 +587,9 @@
       "foreignKeys": {
         "geo_zone_service_zone_id_foreign": {
           "constraintName": "geo_zone_service_zone_id_foreign",
-          "columnNames": [
-            "service_zone_id"
-          ],
+          "columnNames": ["service_zone_id"],
           "localTableName": "public.geo_zone",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.service_zone",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -719,9 +672,7 @@
       "indexes": [
         {
           "keyName": "IDX_shipping_option_type_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -729,9 +680,7 @@
         },
         {
           "keyName": "shipping_option_type_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -816,9 +765,7 @@
       "indexes": [
         {
           "keyName": "IDX_shipping_profile_name_unique",
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -826,9 +773,7 @@
         },
         {
           "keyName": "IDX_shipping_profile_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -836,9 +781,7 @@
         },
         {
           "keyName": "shipping_profile_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -875,10 +818,7 @@
           "primary": false,
           "nullable": false,
           "default": "'flat'",
-          "enumItems": [
-            "calculated",
-            "flat"
-          ],
+          "enumItems": ["calculated", "flat"],
           "mappedType": "enum"
         },
         "service_zone_id": {
@@ -972,9 +912,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "shipping_option_type_id"
-          ],
+          "columnNames": ["shipping_option_type_id"],
           "composite": false,
           "keyName": "shipping_option_shipping_option_type_id_unique",
           "primary": false,
@@ -982,9 +920,7 @@
         },
         {
           "keyName": "IDX_shipping_option_service_zone_id",
-          "columnNames": [
-            "service_zone_id"
-          ],
+          "columnNames": ["service_zone_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -992,9 +928,7 @@
         },
         {
           "keyName": "IDX_shipping_option_shipping_profile_id",
-          "columnNames": [
-            "shipping_profile_id"
-          ],
+          "columnNames": ["shipping_profile_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1002,9 +936,7 @@
         },
         {
           "keyName": "IDX_shipping_option_provider_id",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1012,9 +944,7 @@
         },
         {
           "keyName": "IDX_shipping_option_shipping_option_type_id",
-          "columnNames": [
-            "shipping_option_type_id"
-          ],
+          "columnNames": ["shipping_option_type_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1022,9 +952,7 @@
         },
         {
           "keyName": "IDX_shipping_option_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1032,9 +960,7 @@
         },
         {
           "keyName": "shipping_option_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1044,52 +970,36 @@
       "foreignKeys": {
         "shipping_option_service_zone_id_foreign": {
           "constraintName": "shipping_option_service_zone_id_foreign",
-          "columnNames": [
-            "service_zone_id"
-          ],
+          "columnNames": ["service_zone_id"],
           "localTableName": "public.shipping_option",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.service_zone",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "shipping_option_shipping_profile_id_foreign": {
           "constraintName": "shipping_option_shipping_profile_id_foreign",
-          "columnNames": [
-            "shipping_profile_id"
-          ],
+          "columnNames": ["shipping_profile_id"],
           "localTableName": "public.shipping_option",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.shipping_profile",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_provider_id_foreign": {
           "constraintName": "shipping_option_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "localTableName": "public.shipping_option",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment_provider",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_shipping_option_type_id_foreign": {
           "constraintName": "shipping_option_shipping_option_type_id_foreign",
-          "columnNames": [
-            "shipping_option_type_id"
-          ],
+          "columnNames": ["shipping_option_type_id"],
           "localTableName": "public.shipping_option",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.shipping_option_type",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1123,16 +1033,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "in",
-            "eq",
-            "ne",
-            "gt",
-            "gte",
-            "lt",
-            "lte",
-            "nin"
-          ],
+          "enumItems": ["in", "eq", "ne", "gt", "gte", "lt", "lte", "nin"],
           "mappedType": "enum"
         },
         "value": {
@@ -1191,9 +1092,7 @@
       "indexes": [
         {
           "keyName": "IDX_shipping_option_rule_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1201,9 +1100,7 @@
         },
         {
           "keyName": "IDX_shipping_option_rule_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1211,9 +1108,7 @@
         },
         {
           "keyName": "shipping_option_rule_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1223,13 +1118,9 @@
       "foreignKeys": {
         "shipping_option_rule_shipping_option_id_foreign": {
           "constraintName": "shipping_option_rule_shipping_option_id_foreign",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "localTableName": "public.shipping_option_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.shipping_option",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1406,9 +1297,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "delivery_address_id"
-          ],
+          "columnNames": ["delivery_address_id"],
           "composite": false,
           "keyName": "fulfillment_delivery_address_id_unique",
           "primary": false,
@@ -1416,9 +1305,7 @@
         },
         {
           "keyName": "IDX_fulfillment_location_id",
-          "columnNames": [
-            "location_id"
-          ],
+          "columnNames": ["location_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1426,9 +1313,7 @@
         },
         {
           "keyName": "IDX_fulfillment_provider_id",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1436,9 +1321,7 @@
         },
         {
           "keyName": "IDX_fulfillment_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1446,9 +1329,7 @@
         },
         {
           "keyName": "IDX_fulfillment_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1456,9 +1337,7 @@
         },
         {
           "keyName": "fulfillment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1468,39 +1347,27 @@
       "foreignKeys": {
         "fulfillment_provider_id_foreign": {
           "constraintName": "fulfillment_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment_provider",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "fulfillment_shipping_option_id_foreign": {
           "constraintName": "fulfillment_shipping_option_id_foreign",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.shipping_option",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "fulfillment_delivery_address_id_foreign": {
           "constraintName": "fulfillment_delivery_address_id_foreign",
-          "columnNames": [
-            "delivery_address_id"
-          ],
+          "columnNames": ["delivery_address_id"],
           "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment_address",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1592,9 +1459,7 @@
       "indexes": [
         {
           "keyName": "IDX_fulfillment_label_fulfillment_id",
-          "columnNames": [
-            "fulfillment_id"
-          ],
+          "columnNames": ["fulfillment_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1602,9 +1467,7 @@
         },
         {
           "keyName": "IDX_fulfillment_label_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1612,9 +1475,7 @@
         },
         {
           "keyName": "fulfillment_label_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1624,13 +1485,9 @@
       "foreignKeys": {
         "fulfillment_label_fulfillment_id_foreign": {
           "constraintName": "fulfillment_label_fulfillment_id_foreign",
-          "columnNames": [
-            "fulfillment_id"
-          ],
+          "columnNames": ["fulfillment_id"],
           "localTableName": "public.fulfillment_label",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1758,9 +1615,7 @@
       "indexes": [
         {
           "keyName": "IDX_fulfillment_item_line_item_id",
-          "columnNames": [
-            "line_item_id"
-          ],
+          "columnNames": ["line_item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1768,9 +1623,7 @@
         },
         {
           "keyName": "IDX_fulfillment_item_inventory_item_id",
-          "columnNames": [
-            "inventory_item_id"
-          ],
+          "columnNames": ["inventory_item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1778,9 +1631,7 @@
         },
         {
           "keyName": "IDX_fulfillment_item_fulfillment_id",
-          "columnNames": [
-            "fulfillment_id"
-          ],
+          "columnNames": ["fulfillment_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1788,9 +1639,7 @@
         },
         {
           "keyName": "IDX_fulfillment_item_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1798,9 +1647,7 @@
         },
         {
           "keyName": "fulfillment_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1810,13 +1657,9 @@
       "foreignKeys": {
         "fulfillment_item_fulfillment_id_foreign": {
           "constraintName": "fulfillment_item_fulfillment_id_foreign",
-          "columnNames": [
-            "fulfillment_id"
-          ],
+          "columnNames": ["fulfillment_id"],
           "localTableName": "public.fulfillment_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.fulfillment",
           "deleteRule": "cascade",
           "updateRule": "cascade"

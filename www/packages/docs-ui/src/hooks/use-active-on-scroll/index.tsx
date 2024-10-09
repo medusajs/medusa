@@ -14,17 +14,19 @@ export type UseActiveOnScrollProps = {
   rootElm?: Document | HTMLElement
   enable?: boolean
   useDefaultIfNoActive?: boolean
+  maxLevel?: number
 }
 
 export const useActiveOnScroll = ({
   rootElm,
   enable = true,
   useDefaultIfNoActive = true,
+  maxLevel = 3,
 }: UseActiveOnScrollProps) => {
   const [items, setItems] = useState<ActiveOnScrollItem[]>([])
   const [activeItemId, setActiveItemId] = useState("")
   const { scrollableElement } = useScrollController()
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const root = useMemo(() => {
     if (!enable) {
@@ -40,12 +42,23 @@ export const useActiveOnScroll = ({
 
     return document
   }, [rootElm, isBrowser, enable])
+  const querySelector = useMemo(() => {
+    let selector = ""
+    for (let i = 2; i <= maxLevel; i++) {
+      if (i > 2) {
+        selector += `,`
+      }
+      selector += `h${i}`
+    }
+
+    return selector
+  }, [maxLevel])
   const getHeadingsInElm = useCallback(() => {
     if (!isBrowser || !enable) {
       return []
     }
 
-    return root?.querySelectorAll("h2,h3")
+    return root?.querySelectorAll(querySelector)
   }, [isBrowser, pathname, root, enable])
   const setHeadingItems = useCallback(() => {
     if (!enable) {
@@ -86,6 +99,8 @@ export const useActiveOnScroll = ({
       return
     }
     const headings = getHeadingsInElm()
+    let selectedHeadingByHash: HTMLHeadingElement | undefined = undefined
+    const hash = location.hash.replace("#", "")
     let closestPositiveHeading: HTMLHeadingElement | undefined = undefined
     let closestNegativeHeading: HTMLHeadingElement | undefined = undefined
     let closestPositiveDistance = Infinity
@@ -97,6 +112,9 @@ export const useActiveOnScroll = ({
       : 0
 
     headings?.forEach((heading) => {
+      if (heading.id === hash) {
+        selectedHeadingByHash = heading as HTMLHeadingElement
+      }
       const headingDistance = heading.getBoundingClientRect().top
 
       if (headingDistance > 0 && headingDistance < closestPositiveDistance) {
@@ -126,6 +144,8 @@ export const useActiveOnScroll = ({
     setActiveItemId(
       chosenClosest
         ? (chosenClosest as HTMLHeadingElement).id
+        : selectedHeadingByHash
+        ? (selectedHeadingByHash as HTMLHeadingElement).id
         : items.length
         ? useDefaultIfNoActive
           ? items[0].heading.id

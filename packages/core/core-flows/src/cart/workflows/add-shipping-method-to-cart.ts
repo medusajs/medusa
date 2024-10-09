@@ -1,3 +1,4 @@
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -74,6 +75,13 @@ export const addShippingMethodToWorkflow = createWorkflow(
             (so) => so.id === option.id
           )!
 
+          if (!shippingOption?.calculated_price) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Shipping option with ID ${shippingOption.id} do not have a price`
+            )
+          }
+
           return {
             shipping_option_id: shippingOption.id,
             amount: shippingOption.calculated_price.calculated_amount,
@@ -104,7 +112,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
 
     updateTaxLinesWorkflow.runAsStep({
       input: {
-        cart_or_cart_id: input.cart_id,
+        cart_id: input.cart_id,
         shipping_methods: shippingMethodsToAdd,
       },
     })

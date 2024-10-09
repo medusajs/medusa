@@ -24,7 +24,7 @@ export const UserDetail = () => {
   const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !user) {
-    return <SingleColumnPageSkeleton sections={1} showJSON />
+    return <SingleColumnPageSkeleton sections={1} showJSON showMetadata />
   }
 
   if (isError) {
@@ -35,6 +35,7 @@ export const UserDetail = () => {
     <SingleColumnPage
       data={user}
       showJSON
+      showMetadata
       widgets={{
         after: getWidgets("user.details.after"),
         before: getWidgets("user.details.before"),

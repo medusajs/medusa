@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/modules/inventory-next/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/inventory-next/src"],
+  "exclude": [
+    "../../../../packages/modules/inventory-next/dist", 
+    "../../../../packages/modules/inventory-next/node_modules"
   ]
 }

@@ -104,6 +104,7 @@ export const updateOrderEditAddItemWorkflow = createWorkflow(
           id: input.action_id,
           details: {
             quantity: data.quantity ?? originalAction.details?.quantity,
+            unit_price: data.unit_price ?? originalAction.details?.unit_price,
           },
           internal_note: data.internal_note,
         }

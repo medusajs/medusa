@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -100,9 +98,7 @@
       "indexes": [
         {
           "keyName": "IDX_invite_email",
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -110,9 +106,7 @@
         },
         {
           "keyName": "IDX_invite_token",
-          "columnNames": [
-            "token"
-          ],
+          "columnNames": ["token"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -120,9 +114,7 @@
         },
         {
           "keyName": "IDX_invite_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -130,9 +122,7 @@
         },
         {
           "keyName": "invite_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -235,9 +225,7 @@
       "indexes": [
         {
           "keyName": "IDX_user_email",
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -245,9 +233,7 @@
         },
         {
           "keyName": "IDX_user_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -255,9 +241,7 @@
         },
         {
           "keyName": "user_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true

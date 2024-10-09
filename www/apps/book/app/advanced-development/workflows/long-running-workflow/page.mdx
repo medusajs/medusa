@@ -35,7 +35,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep("step-1", async () => {
   return new StepResponse({})
@@ -114,11 +114,11 @@ export const successStatusHighlights = [
 import {
   Modules,
   TransactionHandlerType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { 
   StepResponse, 
   createStep,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 type SetStepSuccessStepInput = {
   transactionId: string
@@ -232,11 +232,11 @@ export const failureStatusHighlights = [
 import {
   Modules,
   TransactionHandlerType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { 
   StepResponse, 
   createStep,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 type SetStepFailureStepInput = {
   transactionId: string
@@ -284,12 +284,12 @@ export const highlights = [
 ]
 
 ```ts title="src/api/workflows/route.ts" highlights={highlights} collapsibleLines="1-11" expandButtonLabel="Show Imports"
-import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import myWorkflow from "../../../workflows/hello-world"
 import { 
   IWorkflowEngineService,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { transaction, result } = await myWorkflow(req.scope).run()

@@ -27,7 +27,12 @@ export const ReservationDetail = () => {
 
   if (isLoading || !reservation) {
     return (
-      <TwoColumnPageSkeleton mainSections={1} sidebarSections={1} showJSON />
+      <TwoColumnPageSkeleton
+        mainSections={1}
+        sidebarSections={1}
+        showJSON
+        showMetadata
+      />
     )
   }
 
@@ -45,6 +50,7 @@ export const ReservationDetail = () => {
       }}
       data={reservation}
       showJSON
+      showMetadata
     >
       <TwoColumnPage.Main>
         <ReservationGeneralSection reservation={reservation} />

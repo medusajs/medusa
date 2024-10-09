@@ -48,7 +48,7 @@ const getStackedModalId = (type: TaxRateRuleReferenceType) =>
 
 const TaxRegionTaxRateEditSchema = z.object({
   name: z.string().min(1),
-  code: z.string().optional(),
+  code: z.string().min(1),
   rate: z.object({
     float: z.number().optional(),
     value: z.string().optional(),
@@ -80,7 +80,7 @@ export const TaxRegionTaxOverrideEditForm = ({
   const form = useForm<z.infer<typeof TaxRegionTaxRateEditSchema>>({
     defaultValues: {
       name: taxRate.name,
-      code: taxRate.code || "",
+      code: taxRate.code,
       rate: {
         value: taxRate.rate?.toString() || "",
       },

@@ -5,7 +5,11 @@ import { ProductDTO } from "../product"
 import { RegionDTO } from "../region"
 import { BigNumberInput } from "../totals"
 import { CartDTO, CartLineItemDTO } from "./common"
-import { UpdateLineItemDTO } from "./mutations"
+import {
+  CreateAddressDTO,
+  UpdateAddressDTO,
+  UpdateLineItemDTO,
+} from "./mutations"
 
 export interface CreateCartCreateLineItemDTO {
   quantity: BigNumberInput
@@ -89,6 +93,8 @@ export interface UpdateCartWorkflowInputDTO {
   email?: string | null
   currency_code?: string
   metadata?: Record<string, unknown> | null
+  shipping_address?: CreateAddressDTO | UpdateAddressDTO | null
+  billing_address?: CreateAddressDTO | UpdateAddressDTO | null
 }
 
 export interface CreatePaymentCollectionForCartWorkflowInputDTO {
@@ -104,6 +110,7 @@ export interface CartWorkflowDTO extends CartDTO {
 
 export interface ListShippingOptionsForCartWorkflowInputDTO {
   cart_id: string
+  is_return: boolean
   sales_channel_id?: string
   currency_code: string
   shipping_address: {

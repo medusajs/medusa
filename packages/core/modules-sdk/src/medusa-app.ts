@@ -1,11 +1,9 @@
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
-  ConfigModule,
   ExternalModuleDeclaration,
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
-  Logger,
   MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
@@ -26,7 +24,6 @@ import {
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
-import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
@@ -40,17 +37,6 @@ import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
-
-declare module "@medusajs/types" {
-  export interface ModuleImplementations {
-    [ContainerRegistrationKeys.REMOTE_LINK]: RemoteLink
-    [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
-    [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
-    [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
-    [ContainerRegistrationKeys.QUERY]: Omit<RemoteQueryFunction, symbol>
-    [ContainerRegistrationKeys.LOGGER]: Logger
-  }
-}
 
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
@@ -206,8 +192,16 @@ async function initializeLinks({
   moduleExports,
 }) {
   try {
-    const { initialize, getMigrationPlanner } =
-      moduleExports ?? (await dynamicImport(LinkModulePackage))
+    let resources = moduleExports
+    if (!resources) {
+      const module = await dynamicImport(LinkModulePackage)
+      if ("discoveryPath" in module) {
+        const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
+        resources = reExportedLoadedModule.default ?? reExportedLoadedModule
+      }
+    }
+
+    const { initialize, getMigrationPlanner } = resources
 
     const linkResolution = await initialize(
       config,

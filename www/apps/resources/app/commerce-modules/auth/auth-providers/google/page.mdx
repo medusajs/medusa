@@ -18,7 +18,7 @@ Learn about the authentication flow in [this guide](../../authentication-route/p
 
 ---
 
-## Install the Google Auth Module Provider
+## Register the Google Auth Module Provider
 
 <Prerequisites
   items={[
@@ -33,28 +33,22 @@ Learn about the authentication flow in [this guide](../../authentication-route/p
   ]}
 />
 
-To install the Google auth module provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/auth-google@preview
-```
-
-Next, add the module to the array of providers passed to the Auth Module:
+Add the module to the array of providers passed to the Auth Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
 const modules = {
   // ...
   [Modules.AUTH]: {
-    resolve: "@medusajs/auth",
+    resolve: "@medusajs/medusa/auth",
     options: {
       providers: [
         // other providers...
         {
-          resolve: "@medusajs/auth-google",
+          resolve: "@medusajs/medusa/auth-google",
           id: "google",
           options: {
             clientId: process.env.GOOGLE_CLIENT_ID,

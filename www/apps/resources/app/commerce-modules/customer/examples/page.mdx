@@ -14,9 +14,9 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
@@ -41,7 +41,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCustomerModule } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/medusa/customer"
 
 export async function POST(request: Request) {
   const customerModuleService = await initializeCustomerModule()
@@ -69,9 +69,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
@@ -94,7 +94,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCustomerModule } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/medusa/customer"
 
 export async function POST(request: Request) {
   const customerModuleService = await initializeCustomerModule()
@@ -120,9 +120,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
@@ -144,7 +144,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCustomerModule } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/medusa/customer"
 
 export async function POST(request: Request) {
   const customerModuleService = await initializeCustomerModule()
@@ -169,9 +169,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
@@ -194,7 +194,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 import { NextResponse } from "next/server"
 
 // eslint-disable-next-line prettier/prettier
-import { initialize as initializeCustomerModule } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/medusa/customer"
 
 export async function POST(request: Request) {
   const customerModuleService = await initializeCustomerModule()

@@ -22,10 +22,7 @@ import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
-import {
-  getNodeVersion,
-  MIN_SUPPORTED_NODE_VERSION,
-} from "@medusajs/utils"
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(

@@ -134,6 +134,105 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("GET /admin/shipping-options/:id", () => {
+        it("should filters options by stock_location_id", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [{ currency_code: "usd", amount: 1000 }],
+          }
+
+          const {
+            data: { shipping_option: shippingOption },
+          } = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          const shippingOptionRes = await api.get(
+            `/admin/shipping-options/${shippingOption.id}`,
+            adminHeaders
+          )
+
+          expect(shippingOptionRes.data.shipping_option).toEqual({
+            id: expect.any(String),
+            name: "Test shipping option",
+            price_type: "flat",
+            prices: [
+              {
+                id: expect.any(String),
+                amount: 1000,
+                currency_code: "usd",
+                max_quantity: null,
+                min_quantity: null,
+                price_list: null,
+                price_set_id: expect.any(String),
+                raw_amount: {
+                  precision: 20,
+                  value: "1000",
+                },
+                rules_count: 0,
+                title: null,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                deleted_at: null,
+              },
+            ],
+            provider_id: "manual_test-provider",
+            provider: {
+              id: "manual_test-provider",
+              is_enabled: true,
+            },
+            rules: [],
+            service_zone_id: expect.any(String),
+            service_zone: {
+              id: expect.any(String),
+              name: "Test",
+              fulfillment_set: {
+                id: expect.any(String),
+              },
+              fulfillment_set_id: expect.any(String),
+              metadata: null,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+            },
+            shipping_profile_id: expect.any(String),
+            shipping_profile: {
+              id: expect.any(String),
+              metadata: null,
+              name: "Test",
+              type: "default",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+            },
+            type: {
+              code: "test-code",
+              description: "Test description",
+              id: expect.any(String),
+              label: "Test type",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+            },
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            data: null,
+            metadata: null,
+          })
+        })
+      })
+
       describe("POST /admin/shipping-options", () => {
         it("should throw error when required params are missing", async () => {
           const shippingOptionPayload = {

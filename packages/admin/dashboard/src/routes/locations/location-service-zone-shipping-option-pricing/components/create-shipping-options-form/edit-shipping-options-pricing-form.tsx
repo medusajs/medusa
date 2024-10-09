@@ -129,6 +129,11 @@ export function EditShippingOptionsPricingForm({
           return undefined
         }
 
+        const currencyExists = currencies.some(currencyCode => currencyCode.toLowerCase() == code.toLowerCase())
+        if (!currencyExists) {
+          return undefined
+        }
+
         const amount = castNumber(value)
 
         const priceRecord: PriceRecord = {
@@ -152,6 +157,14 @@ export function EditShippingOptionsPricingForm({
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
         if (value === "" || value === undefined) {
+          return undefined
+        }
+
+        // Check if the region_id exists in the regions array to avoid
+        // sending updates of region prices where the region has been
+        // deleted 
+        const regionExists = regions?.some(region => region.id === region_id)
+        if (!regionExists) {
           return undefined
         }
 

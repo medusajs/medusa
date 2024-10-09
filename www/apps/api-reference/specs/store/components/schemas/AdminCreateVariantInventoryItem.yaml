@@ -2,8 +2,8 @@ type: object
 description: The details of the variant-inventory item association.
 x-schemaName: AdminCreateVariantInventoryItem
 required:
-  - required_quantity
   - inventory_item_id
+  - required_quantity
 properties:
   required_quantity:
     type: number

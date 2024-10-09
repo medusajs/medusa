@@ -13,7 +13,7 @@ export type Bannerv2Props = {
 
 export const Bannerv2 = ({ className }: Bannerv2Props) => {
   const [show, setShow] = useState(false)
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
 
   useEffect(() => {
     if (!isBrowser) {

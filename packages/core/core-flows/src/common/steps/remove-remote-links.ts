@@ -17,7 +17,7 @@ export const removeRemoteLinkStepId = "remove-remote-links"
  * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   removeRemoteLinkStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  * import {
  *   Modules
  * } from "@medusajs/framework/utils"

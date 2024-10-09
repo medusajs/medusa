@@ -18,10 +18,10 @@ Start by creating a new directory for your module. For example, `src/modules/my-
 
 ## 2. Create the Auth Provider Service
 
-Create the file `src/modules/my-auth/service.ts` that holds the module's main service. It must extend the `AbstractAuthModuleProvider` class imported from `@medusajs/utils`:
+Create the file `src/modules/my-auth/service.ts` that holds the module's main service. It must extend the `AbstractAuthModuleProvider` class imported from `@medusajs/framework/utils`:
 
 ```ts title="src/modules/my-auth/service.ts"
-import { AbstractAuthModuleProvider } from "@medusajs/utils"
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
   // TODO implement methods
@@ -47,8 +47,8 @@ In the constructor, you must pass to the parent constructor two parameters:
 #### Example
 
 ```ts
-import { AbstractAuthModuleProvider } from "@medusajs/utils"
-import { Logger } from "@medusajs/types"
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -119,7 +119,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -162,7 +162,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -220,8 +220,8 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -234,7 +234,7 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
       await authIdentityService.retrieve({
         entity_id: data.body.email, // email or some ID
       })
-    
+
       return {
         success: false,
         error: "Identity with email already exists",
@@ -248,13 +248,13 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
             // can include password or any other relevant information
           }
         })
-    
+
         return {
           success: true,
           authIdentity: createdAuthIdentity,
         }
       }
-    
+
       return { success: false, error: error.message }
     }
   }
@@ -282,8 +282,8 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -299,7 +299,7 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
           user: data.user // example
         }
       )
-    
+
       return { success: true, authIdentity }
     } catch (error) {
       return { success: false, error: error.message }
@@ -329,7 +329,7 @@ That route uses this method to verify the callback's code.
 
 If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
 
-In the auth identity, yuse the following properties to store additional data:
+In the auth identity, use the following properties to store additional data:
 
 - `provider_metadata`: Store metadata useful for the provider, such as a password hash.
 - `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
@@ -344,7 +344,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -428,7 +428,7 @@ This exports the module's definition, indicating that the `MyAuthProviderService
 To use your Auth Module Provider, add it to the `providers` array of the Auth Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -436,7 +436,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.AUTH]: {
-      resolve: "@medusajs/auth",
+      resolve: "@medusajs/framework/auth",
       options: {
         providers: [
           {
@@ -452,3 +452,23 @@ module.exports = defineConfig({
   }
 })
 ```
+
+---
+
+## 5. Test it Out
+
+To test out your authentication provider, use any of the [Authentication Routes](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route), using your provider's ID as a path parameter.
+
+For example, to get a registration token for an admin user, send a `POST` request to `/auth/user/my-auth/register` replacing `my-auth` with your authentication provider's ID:
+
+```bash
+curl -X POST http://localhost:9000/auth/user/my-auth/register
+-H 'Content-Type: application/json' --data-raw '{
+  "email": "Whitney_Schultz@gmail.com",
+  "password": "supersecret"
+}'
+```
+
+Change the request body to pass the data required for your authentication provider to register the user.
+
+If registration is successful, the response will have a `token` property.

@@ -4,8 +4,8 @@ import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
-  createPaymentSessions,
   createPayments,
+  createPaymentSessions,
 } from "../../../__fixtures__"
 
 jest.setTimeout(30000)
@@ -519,9 +519,6 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
-                  payment_collection: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   payment_collection_id: expect.any(String),
                 }),
               })
@@ -639,21 +636,28 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
-          it("should fail to capture already captured payment", async () => {
+          it("should return payment if payment is already captured", async () => {
             await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
             })
 
-            const error = await service
-              .capturePayment({
-                amount: 100,
-                payment_id: "pay-id-1",
-              })
-              .catch((e) => e)
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
 
-            expect(error.message).toEqual(
-              "You cannot capture more than the authorized amount substracted by what is already captured."
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
             )
           })
 

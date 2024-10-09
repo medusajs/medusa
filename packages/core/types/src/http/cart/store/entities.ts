@@ -6,6 +6,10 @@ import {
   BaseCartAddress,
   BaseCartLineItem,
   BaseCartShippingMethod,
+  BaseLineItemAdjustment,
+  BaseLineItemTaxLine,
+  BaseShippingMethodAdjustment,
+  BaseShippingMethodTaxLine,
 } from "../common"
 
 export interface StoreCart extends Omit<BaseCart, "items"> {
@@ -16,10 +20,24 @@ export interface StoreCart extends Omit<BaseCart, "items"> {
   payment_collection?: StorePaymentCollection
   region?: StoreRegion
 }
-export interface StoreCartLineItem extends Omit<BaseCartLineItem, "product" | "variant" | "cart"> {
+export interface StoreCartLineItem
+  extends Omit<BaseCartLineItem, "product" | "variant" | "cart"> {
   product?: StoreProduct
   variant?: StoreProductVariant
   cart: StoreCart
+  tax_lines?: (BaseLineItemTaxLine & {
+    item: StoreCartLineItem
+  })[]
+  adjustments?: (BaseLineItemAdjustment & {
+    item: StoreCartLineItem
+  })[]
 }
 export interface StoreCartAddress extends BaseCartAddress {}
-export interface StoreCartShippingMethod extends BaseCartShippingMethod {}
+export interface StoreCartShippingMethod extends BaseCartShippingMethod {
+  tax_lines?: (BaseShippingMethodTaxLine & {
+    shipping_method: StoreCartShippingMethod
+  })[]
+  adjustments?: (BaseShippingMethodAdjustment & {
+    shipping_method: StoreCartShippingMethod
+  })[]
+}

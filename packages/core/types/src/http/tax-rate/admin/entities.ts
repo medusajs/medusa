@@ -8,7 +8,7 @@ export interface AdminTaxRateRule {
 export interface AdminTaxRate {
   id: string
   rate: number | null
-  code: string | null
+  code: string
   name: string
   metadata: Record<string, unknown> | null
   tax_region_id: string

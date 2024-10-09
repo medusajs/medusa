@@ -515,6 +515,11 @@ export default class PricingModuleService
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
     const normalizedData = await this.normalizeUpdateData(data)
 
+    const priceListPrices = await this.priceService_.list({
+      price_set_id: normalizedData.map(({ id }) => id),
+      price_list_id: { $ne: null },
+    })
+
     const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
     const { entities: upsertedPrices } =
       await this.priceService_.upsertWithReplace(
@@ -527,13 +532,23 @@ export default class PricingModuleService
       const { prices, ...rest } = priceSet
       return {
         ...rest,
-        prices: upsertedPrices
-          .filter((p) => p.price_set_id === priceSet.id)
-          .map((price) => {
-            // @ts-ignore
-            delete price.price_rules
-            return price
-          }),
+        prices: [
+          ...upsertedPrices
+            .filter((p) => p.price_set_id === priceSet.id)
+            .map((price) => {
+              // @ts-ignore
+              delete price.price_rules
+              return price
+            }),
+          ...priceListPrices
+            .filter((p) => p.price_set_id === priceSet.id)
+            .map((price) => ({
+              id: price.id,
+              amount: price.amount,
+              price_set_id: price.price_set_id,
+              price_list_id: price.price_list_id,
+            })),
+        ],
       }
     })
 
@@ -544,7 +559,13 @@ export default class PricingModuleService
         sharedContext
       )
 
-    return priceSets
+    return priceSets.map((ps) => {
+      if (ps.prices) {
+        ps.prices = (ps.prices as any).filter((p) => !p.price_list_id)
+      }
+
+      return ps
+    })
   }
 
   private async normalizeUpdateData(data: ServiceTypes.UpdatePriceSetInput[]) {

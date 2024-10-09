@@ -39,9 +39,7 @@ function buildLocalCommands(cli, isLocalProject) {
     }
 
     try {
-      const cmdPath = resolveCwd.silent(
-        `@medusajs/medusa/dist/commands/${command}`
-      )!
+      const cmdPath = resolveCwd.silent(`@medusajs/medusa/commands/${command}`)!
       return require(cmdPath).default
     } catch (err) {
       console.error(err)
@@ -209,6 +207,7 @@ function buildLocalCommands(cli, isLocalProject) {
       desc: "Rollback last batch of executed migrations for a given module",
       builder: {
         modules: {
+          type: "array",
           description: "Modules for which to rollback migrations",
           demand: true,
         },
@@ -225,6 +224,7 @@ function buildLocalCommands(cli, isLocalProject) {
       desc: "Generate migrations for a given module",
       builder: {
         modules: {
+          type: "array",
           description: "Modules for which to generate migration files",
           demand: true,
         },
@@ -376,7 +376,7 @@ function buildLocalCommands(cli, isLocalProject) {
     })
     .command({
       command: `start`,
-      desc: `Start development server.`,
+      desc: `Start production server.`,
       builder: (_) =>
         _.option("types", {
           type: "boolean",

@@ -21,7 +21,7 @@ export const SalesChannelDetail = () => {
   const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !sales_channel) {
-    return <SingleColumnPageSkeleton sections={2} showJSON />
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   return (
@@ -31,6 +31,7 @@ export const SalesChannelDetail = () => {
         after: getWidgets("sales_channel.details.after"),
       }}
       showJSON
+      showMetadata
       data={sales_channel}
     >
       <SalesChannelGeneralSection salesChannel={sales_channel} />

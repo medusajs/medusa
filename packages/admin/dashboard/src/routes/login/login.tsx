@@ -8,7 +8,7 @@ import * as z from "zod"
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
 import { useDashboardExtension } from "../../extensions"
-import { useSignInWithEmailPassword } from "../../hooks/api/auth"
+import { useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
 
 const LoginSchema = z.object({
@@ -32,7 +32,7 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isPending } = useSignInWithEmailPassword()
+  const { mutateAsync, isPending } = useSignInWithEmailPass()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     await mutateAsync(

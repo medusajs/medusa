@@ -1,7 +1,8 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
-import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import { createBatchBody } from "../../utils/validators"
 import {
   listTransformQueryConfig,
@@ -33,6 +34,16 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "stock_location_id",
         filterByField: "service_zone.fulfillment_set_id",
       }),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/shipping-options/:id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
+        retrieveTransformQueryConfig
+      ),
     ],
   },
   {

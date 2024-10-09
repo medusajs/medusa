@@ -24,7 +24,7 @@ export const sidebar = numberSidebarItems(
         {
           type: "link",
           path: "/basics/project-directories-files",
-          title: "Project Directories and Files",
+          title: "Project Conventions",
         },
         {
           type: "link",
@@ -33,13 +33,13 @@ export const sidebar = numberSidebarItems(
         },
         {
           type: "link",
-          path: "/basics/api-routes",
-          title: "API Routes",
+          path: "/basics/modules",
+          title: "Modules",
         },
         {
           type: "link",
-          path: "/basics/modules-and-services",
-          title: "Modules and Services",
+          path: "/basics/api-routes",
+          title: "API Routes",
         },
         {
           type: "link",
@@ -50,11 +50,6 @@ export const sidebar = numberSidebarItems(
           type: "link",
           path: "/basics/modules-directory-structure",
           title: "Modules Directory Structure",
-        },
-        {
-          type: "link",
-          path: "/basics/data-models",
-          title: "Data Models",
         },
         {
           type: "link",
@@ -255,13 +250,24 @@ export const sidebar = numberSidebarItems(
           ],
         },
         {
-          type: "sub-category",
+          type: "link",
+          path: "/advanced-development/modules",
           title: "Modules",
           children: [
             {
               type: "link",
+              path: "/advanced-development/modules/isolation",
+              title: "Module Isolation",
+            },
+            {
+              type: "link",
               path: "/advanced-development/modules/container",
               title: "Module's Container",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/modules/options",
+              title: "Module Options",
             },
             {
               type: "link",
@@ -275,33 +281,40 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              path: "/advanced-development/modules/isolation",
-              title: "Module Isolation",
+              path: "/advanced-development/modules/db-operations",
+              title: "Database Operations",
             },
             {
               type: "link",
-              path: "/advanced-development/modules/module-links",
-              title: "Module Links",
+              path: "/advanced-development/modules/multiple-services",
+              title: "Multiple Services",
             },
+          ],
+        },
+        {
+          type: "link",
+          path: "/advanced-development/module-links",
+          title: "Module Links",
+          children: [
             {
               type: "link",
-              path: "/advanced-development/modules/module-link-directions",
+              path: "/advanced-development/module-links/directions",
               title: "Module Link Direction",
             },
             {
               type: "link",
-              path: "/advanced-development/modules/remote-link",
+              path: "/advanced-development/module-links/remote-link",
               title: "Remote Link",
             },
             {
               type: "link",
-              path: "/advanced-development/modules/query",
+              path: "/advanced-development/module-links/query",
               title: "Query",
             },
             {
               type: "link",
-              path: "/advanced-development/modules/options",
-              title: "Module Options",
+              path: "/advanced-development/module-links/custom-columns",
+              title: "Custom Columns",
             },
           ],
         },

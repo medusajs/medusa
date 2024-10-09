@@ -57,8 +57,8 @@ export const normalizeVariants = (
       variant.custom_title || Object.values(variant.options || {}).join(" / "),
     options: variant.options,
     sku: variant.sku || undefined,
-    manage_inventory: variant.manage_inventory || undefined,
-    allow_backorder: variant.allow_backorder || undefined,
+    manage_inventory: !!variant.manage_inventory,
+    allow_backorder: !!variant.allow_backorder,
     inventory_items: variant
       .inventory!.map((i) => {
         const quantity = castNumber(i.required_quantity)
@@ -75,6 +75,10 @@ export const normalizeVariants = (
       .filter(Boolean),
     prices: Object.entries(variant.prices || {})
       .map(([key, value]: any) => {
+        if (value === "" || value === undefined) {
+          return undefined
+        }
+
         if (key.startsWith("reg_")) {
           return {
             currency_code: regionsCurrencyMap[key],

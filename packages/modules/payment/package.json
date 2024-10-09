@@ -30,11 +30,11 @@
     "build": "rimraf dist && tsc --build && npm run resolve:aliases",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
-    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
-    "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
-    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
-    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:up",
-    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
+    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:generate",
+    "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create --initial",
+    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create",
+    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm migration:up",
+    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
     "@medusajs/framework": "^0.0.1",
@@ -44,7 +44,6 @@
     "@mikro-orm/postgresql": "5.9.7",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
-    "bignumber.js": "^9.1.2",
     "jest": "^29.7.0",
     "medusa-test-utils": "^1.1.44",
     "rimraf": "^3.0.2",

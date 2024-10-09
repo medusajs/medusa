@@ -24,7 +24,7 @@ Your workflow isn't reusable by other applications. Use a step that performs wha
 
 ## How to Expose a Hook in a Workflow?
 
-To expose a hook in your workflow, use the `createHook` function imported from `@medusajs/workflows-sdk`.
+To expose a hook in your workflow, use the `createHook` function imported from `@medusajs/framework/workflows-sdk`.
 
 For example:
 
@@ -41,7 +41,7 @@ import {
   createHook,
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createProductStep } from "./steps/create-product"
 
 export const myWorkflow = createWorkflow(
