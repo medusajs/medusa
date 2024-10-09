@@ -4,7 +4,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 /**
  * If a publishable key (PK) is passed in the header of the request, we attach

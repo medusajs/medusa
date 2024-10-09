@@ -22,7 +22,7 @@ export function getModuleService(
     )
   }
 
-  return class LinkService extends LinkModuleService<unknown> {
+  return class LinkService extends LinkModuleService {
     override __joinerConfig(): ModuleJoinerConfig {
       return joinerConfig_ as ModuleJoinerConfig
     }

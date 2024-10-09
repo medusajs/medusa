@@ -1,12 +1,12 @@
 {
-	"id": 34415,
+	"id": 36,
 	"name": "file",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 34416,
+			"id": 37,
 			"name": "AbstractFileProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -19,13 +19,13 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts\nimport { Logger } from \"@medusajs/types\"\nimport { AbstractFileProviderService } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyFileProviderService extends AbstractFileProviderService {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MyFileProviderService\n```"
+						"text": "```ts\nimport { Logger } from \"@medusajs/framework/types\"\nimport { AbstractFileProviderService } from \"@medusajs/framework/utils\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyFileProviderService extends AbstractFileProviderService {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MyFileProviderService\n```"
 					}
 				]
 			},
 			"children": [
 				{
-					"id": 34418,
+					"id": 39,
 					"name": "validateOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -34,7 +34,7 @@
 					},
 					"signatures": [
 						{
-							"id": 34419,
+							"id": 40,
 							"name": "validateOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -49,7 +49,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34420,
+									"id": 41,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -83,21 +83,21 @@
 					]
 				},
 				{
-					"id": 34421,
+					"id": 42,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34422,
+							"id": 43,
 							"name": "new AbstractFileProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 34416,
+								"target": 37,
 								"name": "AbstractFileProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -105,14 +105,14 @@
 					]
 				},
 				{
-					"id": 34425,
+					"id": 46,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34426,
+							"id": 47,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
@@ -147,7 +147,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34427,
+									"id": 48,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -205,14 +205,14 @@
 					}
 				},
 				{
-					"id": 34428,
+					"id": 49,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34429,
+							"id": 50,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -247,7 +247,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34430,
+									"id": 51,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -300,14 +300,14 @@
 					}
 				},
 				{
-					"id": 34431,
+					"id": 52,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34432,
+							"id": 53,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
@@ -342,7 +342,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34433,
+									"id": 54,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -399,16 +399,16 @@
 				{
 					"title": "Constructors",
 					"children": [
-						34421
+						42
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						34418,
-						34425,
-						34428,
-						34431
+						39,
+						46,
+						49,
+						52
 					]
 				}
 			],
@@ -429,65 +429,65 @@
 		{
 			"title": "Classes",
 			"children": [
-				34416
+				37
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"34415": {
+		"36": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": ""
 		},
-		"34416": {
+		"37": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService"
 		},
-		"34418": {
+		"39": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.validateOptions"
 		},
-		"34419": {
+		"40": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.validateOptions"
 		},
-		"34420": {
+		"41": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "options"
 		},
-		"34425": {
+		"46": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"34426": {
+		"47": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"34427": {
+		"48": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"34428": {
+		"49": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"34429": {
+		"50": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"34430": {
+		"51": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"34431": {
+		"52": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"34432": {
+		"53": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"34433": {
+		"54": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "fileData"
 		}
@@ -497,7 +497,7 @@
 			"1": "../../../../packages/core/utils/src/file/abstract-file-provider.ts"
 		},
 		"reflections": {
-			"1": 34415
+			"1": 36
 		}
 	}
 }

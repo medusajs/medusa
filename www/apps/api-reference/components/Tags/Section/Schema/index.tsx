@@ -72,7 +72,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   useEffect(() => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
-      if (!checkElementInViewport(elm, 40)) {
+      if (!checkElementInViewport(elm, 0)) {
         scrollToElement(elm)
       }
     }
@@ -85,7 +85,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     const section = entry.target
 
     if (
-      (inView || checkElementInViewport(section, 40)) &&
+      (inView || checkElementInViewport(section, 10)) &&
       activePath !== schemaSlug
     ) {
       // can't use next router as it doesn't support

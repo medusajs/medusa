@@ -283,6 +283,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/commerce-modules/auth/reset-password",
+                "title": "Handle Password Reset Event",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/references/auth/provider",
                 "title": "Create Auth Provider Module",
                 "children": []
@@ -1111,22 +1119,6 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "sub-category",
-            "title": "Concepts",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/currency/relations-to-other-modules",
-                "title": "Relation to Modules",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "sub-category",
             "title": "References",
             "children": [
               {
@@ -1231,6 +1223,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/customer/extend",
+            "title": "Extend Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "type": "sub-category",
             "title": "Concepts",
             "children": [
@@ -1240,14 +1240,6 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/customer/customer-accounts",
                 "title": "Customer Accounts",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/customer/relations-to-other-modules",
-                "title": "Relations to Other Modules",
                 "children": []
               }
             ]
@@ -1591,8 +1583,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/fulfillment/relations-to-other-modules",
-                "title": "Relations to Other Modules",
+                "path": "/commerce-modules/fulfillment/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -2329,8 +2321,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/inventory/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/inventory/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
@@ -8475,6 +8467,14 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/storefront-development/customers/reset-password",
+            "title": "Reset Password",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/retrieve",
             "title": "Retrieve Customer",
             "children": []
@@ -8635,14 +8635,6 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/troubleshooting/pnpm-errors",
-                "title": "pnpm Errors",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
                 "path": "/troubleshooting/general-errors",
                 "title": "General Errors",
                 "children": []
@@ -8669,6 +8661,14 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/troubleshooting/database-errors",
                 "title": "Database Errors",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/troubleshooting/dist-imports",
+                "title": "Importing from /dist",
                 "children": []
               }
             ]
@@ -9684,14 +9684,6 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/retrieveCartStep",
                     "title": "retrieveCartStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/references/medusa-workflows/steps/retrieveCartWithLinksStep",
-                    "title": "retrieveCartWithLinksStep",
                     "children": []
                   },
                   {

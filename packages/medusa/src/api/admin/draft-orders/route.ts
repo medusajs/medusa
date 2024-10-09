@@ -8,7 +8,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminCreateDraftOrderType } from "./validators"
 import { refetchOrder } from "./helpers"
 import {

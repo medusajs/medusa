@@ -3,7 +3,7 @@ import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchVariant } from "../../../../../helpers"
 import { AdminUpdateVariantInventoryItemType } from "../../../../../validators"
 import { HttpTypes } from "@medusajs/framework/types"

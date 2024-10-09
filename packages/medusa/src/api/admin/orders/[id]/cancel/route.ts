@@ -7,7 +7,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,

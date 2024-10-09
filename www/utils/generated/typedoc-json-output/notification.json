@@ -1,12 +1,12 @@
 {
-	"id": 35403,
+	"id": 112,
 	"name": "notification",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 35404,
+			"id": 113,
 			"name": "AbstractNotificationProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -19,13 +19,13 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts\nimport { AbstractNotificationProviderService } from \"@medusajs/utils\"\nimport { Logger } from \"@medusajs/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyNotificationProviderService extends AbstractNotificationProviderService {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MyNotificationProviderService\n```"
+						"text": "```ts\nimport { AbstractNotificationProviderService } from \"@medusajs/framework/utils\"\nimport { Logger } from \"@medusajs/framework/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyNotificationProviderService extends AbstractNotificationProviderService {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MyNotificationProviderService\n```"
 					}
 				]
 			},
 			"children": [
 				{
-					"id": 35405,
+					"id": 114,
 					"name": "validateOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -34,7 +34,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35406,
+							"id": 115,
 							"name": "validateOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -49,7 +49,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35407,
+									"id": 116,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -83,21 +83,21 @@
 					]
 				},
 				{
-					"id": 35408,
+					"id": 117,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 35409,
+							"id": 118,
 							"name": "new AbstractNotificationProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 35404,
+								"target": 113,
 								"name": "AbstractNotificationProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -105,14 +105,14 @@
 					]
 				},
 				{
-					"id": 35410,
+					"id": 119,
 					"name": "send",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 35411,
+							"id": 120,
 							"name": "send",
 							"variant": "signature",
 							"kind": 4096,
@@ -139,7 +139,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n// other imports...\nimport {\n  ProviderSendNotificationDTO,\n  ProviderSendNotificationResultsDTO\n} from \"@medusajs/types\"\n\nclass MyNotificationProviderService extends AbstractNotificationProviderService {\n  // ...\n  async send(\n    notification: ProviderSendNotificationDTO\n  ): Promise<ProviderSendNotificationResultsDTO> {\n    // TODO send the notification using a third-party\n    // provider or custom logic.\n    // for example:\n    return this.client.send({\n      email: notification.to,\n      template: notification.template,\n      template_data: notification.data\n    })\n  }\n}\n```"
+												"text": "```ts\n// other imports...\nimport {\n  ProviderSendNotificationDTO,\n  ProviderSendNotificationResultsDTO\n} from \"@medusajs/framework/types\"\n\nclass MyNotificationProviderService extends AbstractNotificationProviderService {\n  // ...\n  async send(\n    notification: ProviderSendNotificationDTO\n  ): Promise<ProviderSendNotificationResultsDTO> {\n    // TODO send the notification using a third-party\n    // provider or custom logic.\n    // for example:\n    return this.client.send({\n      email: notification.to,\n      template: notification.template,\n      template_data: notification.data\n    })\n  }\n}\n```"
 											}
 										]
 									}
@@ -147,7 +147,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35412,
+									"id": 121,
 									"name": "notification",
 									"variant": "param",
 									"kind": 32768,
@@ -209,14 +209,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						35408
+						117
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						35405,
-						35410
+						114,
+						119
 					]
 				}
 			],
@@ -237,41 +237,41 @@
 		{
 			"title": "Classes",
 			"children": [
-				35404
+				113
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"35403": {
+		"112": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": ""
 		},
-		"35404": {
+		"113": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService"
 		},
-		"35405": {
+		"114": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.validateOptions"
 		},
-		"35406": {
+		"115": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.validateOptions"
 		},
-		"35407": {
+		"116": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "options"
 		},
-		"35410": {
+		"119": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.send"
 		},
-		"35411": {
+		"120": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.send"
 		},
-		"35412": {
+		"121": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "notification"
 		}
@@ -281,7 +281,7 @@
 			"1": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts"
 		},
 		"reflections": {
-			"1": 35403
+			"1": 112
 		}
 	}
 }

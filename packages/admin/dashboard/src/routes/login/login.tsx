@@ -6,13 +6,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
-
-import { useSignInWithEmailPassword } from "../../hooks/api/auth"
-
-import after from "virtual:medusa/widgets/login/after"
-import before from "virtual:medusa/widgets/login/before"
-import { isFetchError } from "../../lib/is-fetch-error"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
+import { useDashboardExtension } from "../../extensions"
+import { useSignInWithEmailPass } from "../../hooks/api"
+import { isFetchError } from "../../lib/is-fetch-error"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -23,6 +20,7 @@ export const Login = () => {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
+  const { getWidgets } = useDashboardExtension()
 
   const from = location.state?.from?.pathname || "/orders"
 
@@ -34,37 +32,37 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isPending } = useSignInWithEmailPassword()
+  const { mutateAsync, isPending } = useSignInWithEmailPass()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         email,
         password,
-      })
+      },
+      {
+        onError: (error) => {
+          if (isFetchError(error)) {
+            if (error.status === 401) {
+              form.setError("email", {
+                type: "manual",
+                message: error.message,
+              })
 
-      navigate(from, { replace: true })
-    } catch (error) {
-      if (isFetchError(error)) {
-        if (error.status === 401) {
-          form.setError("email", {
+              return
+            }
+          }
+
+          form.setError("root.serverError", {
             type: "manual",
+            message: error.message,
           })
-
-          form.setError("password", {
-            type: "manual",
-            message: t("errors.invalidCredentials"),
-          })
-
-          return
-        }
+        },
+        onSuccess: () => {
+          navigate(from, { replace: true })
+        },
       }
-
-      form.setError("root.serverError", {
-        type: "manual",
-        message: t("errors.serverError"),
-      })
-    }
+    )
   })
 
   const serverError = form.formState.errors?.root?.serverError?.message
@@ -83,12 +81,8 @@ export const Login = () => {
           </Text>
         </div>
         <div className="flex w-full flex-col gap-y-3">
-          {before.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
+          {getWidgets("login.before").map((Component, i) => {
+            return <Component key={i} />
           })}
           <Form {...form}>
             <form
@@ -144,7 +138,7 @@ export const Login = () => {
               )}
               {serverError && (
                 <Alert
-                  className="p-2 bg-ui-bg-base items-center"
+                  className="bg-ui-bg-base items-center p-2"
                   dismissible
                   variant="error"
                 >
@@ -156,12 +150,8 @@ export const Login = () => {
               </Button>
             </form>
           </Form>
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
+          {getWidgets("login.after").map((Component, i) => {
+            return <Component key={i} />
           })}
         </div>
         <span className="text-ui-fg-muted txt-small my-6">

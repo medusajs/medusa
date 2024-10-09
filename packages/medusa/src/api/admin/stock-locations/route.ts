@@ -5,7 +5,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { createStockLocationsWorkflow } from "@medusajs/core-flows"
 import { refetchStockLocation } from "./helpers"

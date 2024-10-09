@@ -18,6 +18,7 @@ import {
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { useRemoteQueryStep } from "../../../common"
+import { deleteReservationsByLineItemsStep } from "../../../reservation"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -79,6 +80,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.order_id",
         "actions.return_id",
@@ -132,6 +134,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
+    const lineItemIds = transform({ orderItems }, (data) =>
+      data.orderItems.items.map(({ id }) => id)
+    )
+
+    deleteReservationsByLineItemsStep(lineItemIds)
+
     const { variants, items } = transform(
       { orderItems, orderPreview },
       ({ orderItems, orderPreview }) => {
@@ -152,23 +160,34 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
-          let quantity: BigNumberInput =
-            itemAction.raw_quantity ?? itemAction.quantity
+          const unitPrice: BigNumberInput =
+            itemAction.raw_unit_price ?? itemAction.unit_price
 
           const updateAction = itemAction.actions!.find(
             (a) => a.action === ChangeActionType.ITEM_UPDATE
           )
-          if (updateAction) {
-            quantity = MathBN.sub(quantity, ordItem.raw_quantity)
-            if (MathBN.lte(quantity, 0)) {
-              return
-            }
+
+          const quantity: BigNumberInput =
+            itemAction.raw_quantity ?? itemAction.quantity
+
+          const newQuantity = updateAction
+            ? MathBN.sub(quantity, ordItem.raw_quantity)
+            : quantity
+
+          if (MathBN.lte(newQuantity, 0)) {
+            return
           }
+
+          const reservationQuantity = MathBN.sub(
+            newQuantity,
+            ordItem.raw_fulfilled_quantity
+          )
 
           allItems.push({
             id: ordItem.id,
             variant_id: ordItem.variant_id,
-            quantity,
+            quantity: reservationQuantity,
+            unit_price: unitPrice,
           })
           allVariants.push(ordItem.variant)
         })

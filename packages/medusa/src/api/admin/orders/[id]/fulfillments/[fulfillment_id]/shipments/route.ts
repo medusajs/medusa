@@ -6,7 +6,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminOrderCreateShipmentType } from "../../../../validators"
 import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 

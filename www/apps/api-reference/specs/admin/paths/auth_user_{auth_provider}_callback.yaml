@@ -33,10 +33,10 @@ post:
       label: Google Provider
       source:
         $ref: ../code_samples/Shell/auth_user_{auth_provider}_callback/post.sh
-    - lang: Shell
+    - lang: Bash
       label: GitHub Provider
       source:
-        $ref: ../code_samples/Shell/auth_user_{auth_provider}_callback/post.sh
+        $ref: ../code_samples/Bash/auth_user_{auth_provider}_callback/post.sh
   tags:
     - Auth
   responses:

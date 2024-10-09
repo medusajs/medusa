@@ -6,6 +6,6 @@ required:
   - return
 properties:
   order_preview:
-    $ref: ./OrderPreview.yaml
+    $ref: ./AdminOrderPreview.yaml
   return:
     $ref: ./AdminReturn.yaml

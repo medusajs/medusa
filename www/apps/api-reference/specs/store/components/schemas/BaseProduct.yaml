@@ -123,7 +123,7 @@ properties:
     type: array
     description: The product's variants.
     items:
-      $ref: ./BaseProductVariant.yaml
+      type: object
   options:
     type: array
     description: The product's options.

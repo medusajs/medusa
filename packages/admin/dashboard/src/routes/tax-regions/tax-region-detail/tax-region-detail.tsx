@@ -6,8 +6,8 @@ import { TaxRegionDetailSection } from "./components/tax-region-detail-section"
 import { TaxRegionProvinceSection } from "./components/tax-region-province-section"
 
 import { useState } from "react"
-import after from "virtual:medusa/widgets/tax/details/after"
-import before from "virtual:medusa/widgets/tax/details/before"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { useDashboardExtension } from "../../../extensions"
 import { TaxRegionOverrideSection } from "./components/tax-region-override-section"
 import { TaxRegionSublevelAlert } from "./components/tax-region-sublevel-alert"
 import { taxRegionLoader } from "./loader"
@@ -27,8 +27,10 @@ export const TaxRegionDetail = () => {
     error,
   } = useTaxRegion(id!, undefined, { initialData })
 
+  const { getWidgets } = useDashboardExtension()
+
   if (isLoading || !taxRegion) {
-    return <div>Loading...</div>
+    return <SingleColumnPageSkeleton sections={4} showJSON />
   }
 
   if (isError) {
@@ -39,10 +41,10 @@ export const TaxRegionDetail = () => {
     <SingleColumnPage
       data={taxRegion}
       showJSON
-      hasOutlet
+      // showMetadata // TOOD -> enable when tax region update is added to the API
       widgets={{
-        after,
-        before,
+        after: getWidgets("tax.details.after"),
+        before: getWidgets("tax.details.before"),
       }}
     >
       <TaxRegionSublevelAlert

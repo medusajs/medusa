@@ -1,29 +1,19 @@
-import { Outlet } from "react-router-dom"
-
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { CampaignListTable } from "./components/campaign-list-table"
 
-import after from "virtual:medusa/widgets/campaign/list/after"
-import before from "virtual:medusa/widgets/campaign/list/before"
-
 export const CampaignList = () => {
+  const { getWidgets } = useDashboardExtension()
+
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("campaign.list.after"),
+        before: getWidgets("campaign.list.before"),
+      }}
+      hasOutlet
+    >
       <CampaignListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

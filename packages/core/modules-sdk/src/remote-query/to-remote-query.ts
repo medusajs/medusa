@@ -2,6 +2,7 @@ import {
   RemoteQueryEntryPoints,
   RemoteQueryFilters,
   RemoteQueryGraph,
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
 import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
@@ -33,10 +34,7 @@ export function toRemoteQuery<const TEntity extends string>(
     entity: TEntity | keyof RemoteQueryEntryPoints
     fields: RemoteQueryObjectConfig<TEntity>["fields"]
     filters?: RemoteQueryFilters<TEntity>
-    pagination?: {
-      skip?: number
-      take?: number
-    }
+    pagination?: Partial<RemoteQueryInput<TEntity>["pagination"]>
     context?: Record<string, any>
   },
   entitiesMap: Map<string, any>
