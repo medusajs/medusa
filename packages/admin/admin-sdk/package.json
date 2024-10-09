@@ -21,10 +21,14 @@
   "devDependencies": {
     "@types/react": "^18.3.2",
     "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "zod": "^3.22"
   },
   "dependencies": {
     "@medusajs/admin-shared": "^0.0.1"
+  },
+  "peerDependencies": {
+    "zod": "^3.22"
   },
   "packageManager": "yarn@3.2.1"
 }

@@ -1,15 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+  FormExtensionZone,
+  useDashboardExtension,
+  useExtendableForm,
+} from "../../../../../extensions"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 
 type ProductAttributesFormProps = {
@@ -42,8 +42,12 @@ export const ProductAttributesForm = ({
 }: ProductAttributesFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { getFormConfigs, getFormFields } = useDashboardExtension()
 
-  const form = useForm<zod.infer<typeof ProductAttributesSchema>>({
+  const configs = getFormConfigs("product", "attributes")
+  const fields = getFormFields("product", "attributes")
+
+  const form = useExtendableForm({
     defaultValues: {
       height: product.height ? product.height : null,
       width: product.width ? product.width : null,
@@ -53,10 +57,12 @@ export const ProductAttributesForm = ({
       hs_code: product.hs_code || "",
       origin_country: product.origin_country || "",
     },
-    resolver: zodResolver(ProductAttributesSchema),
+    schema: ProductAttributesSchema,
+    configs: configs,
+    data: product,
   })
 
-  const { mutateAsync, isLoading } = useUpdateProduct(product.id)
+  const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -244,6 +250,7 @@ export const ProductAttributesForm = ({
                   )
                 }}
               />
+              <FormExtensionZone fields={fields} form={form} />
             </div>
           </div>
         </RouteDrawer.Body>
@@ -254,7 +261,7 @@ export const ProductAttributesForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

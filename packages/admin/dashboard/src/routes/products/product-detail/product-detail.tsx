@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
@@ -12,11 +13,7 @@ import { ProductVariantSection } from "./components/product-variant-section"
 import { PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/product/details/after"
-import before from "virtual:medusa/widgets/product/details/before"
-import sideAfter from "virtual:medusa/widgets/product/details/side/after"
-import sideBefore from "virtual:medusa/widgets/product/details/side/before"
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
+import { useDashboardExtension } from "../../../extensions"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -31,6 +28,13 @@ export const ProductDetail = () => {
       initialData: initialData,
     }
   )
+
+  const { getWidgets } = useDashboardExtension()
+
+  const after = getWidgets("product.details.after")
+  const before = getWidgets("product.details.before")
+  const sideAfter = getWidgets("product.details.side.after")
+  const sideBefore = getWidgets("product.details.side.before")
 
   if (isLoading || !product) {
     return (
