@@ -1,0 +1,43 @@
+export const metadata = {
+  title: `Links between Fulfillment Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Fulfillment Module and other commerce modules.
+
+## Order Module
+
+The Order Module provides order-management functionalities.
+
+Medusa defines a link between the `Fulfillment` and `Order` data models. A fulfillment is created for an orders' items.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716549903/Medusa%20Resources/order-fulfillment_h0vlps.jpg)
+
+A fulfillment is also created for a return's items. So, Medusa defines a link between the `Fulfillment` and `Return` data models.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399052/Medusa%20Resources/Social_Media_Graphics_2024_Order_Return_vetimk.jpg)
+
+---
+
+## Pricing Module
+
+The Pricing Module provides features to store, manage, and retrieve the best prices in a specified context.
+
+Medusa defines a link between the `PriceSet` and `ShippingOption` data models. A shipping option's price is stored as a price set.
+
+![A diagram showcasing an example of how data models from the Pricing and Fulfillment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716561747/Medusa%20Resources/pricing-fulfillment_spywwa.jpg)
+
+---
+
+## Stock Location Module
+
+The Stock Location Module provides features to manage stock locations in a store.
+
+Medusa defines a link between the `FulfillmentSet` and `StockLocation` data models. A fulfillment set can be conditioned to a specific stock location.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712567101/Medusa%20Resources/fulfillment-stock-location_nlkf7e.jpg)
+
+Medusa also defines a link between the `FulfillmentProvider` and `StockLocation` data models to indicate the providers that can be used in a location.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399492/Medusa%20Resources/fulfillment-provider-stock-location_b0mulo.jpg)
