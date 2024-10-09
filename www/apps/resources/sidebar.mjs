@@ -140,6 +140,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
+                path: "/commerce-modules/auth/reset-password",
+                title: "Handle Password Reset Event",
+              },
+              {
+                type: "link",
                 path: "/references/auth/provider",
                 title: "Create Auth Provider Module",
               },
@@ -298,17 +303,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "Concepts",
-            children: [
-              {
-                type: "link",
-                path: "/commerce-modules/currency/relations-to-other-modules",
-                title: "Relation to Modules",
-              },
-            ],
-          },
-          {
-            type: "sub-category",
             title: "References",
             children: [
               {
@@ -360,6 +354,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/customer/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -367,11 +366,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/customer/customer-accounts",
                 title: "Customer Accounts",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/customer/relations-to-other-modules",
-                title: "Relations to Other Modules",
               },
             ],
           },
@@ -453,8 +447,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/fulfillment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/fulfillment/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -539,8 +533,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/inventory/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/inventory/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -2033,6 +2027,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/storefront-development/customers/third-party-login",
             title: "Third-Party (Social) Login",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/reset-password",
+            title: "Reset Password",
           },
           {
             type: "link",

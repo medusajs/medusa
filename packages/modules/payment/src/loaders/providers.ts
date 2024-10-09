@@ -6,7 +6,7 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
 import { Lifetime, asFunction, asValue } from "awilix"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 import { PaymentProviderService } from "@services"
 import * as providers from "../providers"

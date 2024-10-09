@@ -195,6 +195,10 @@ paths:
     $ref: paths/auth_customer_{auth_provider}_callback.yaml
   /auth/customer/{auth_provider}/register:
     $ref: paths/auth_customer_{auth_provider}_register.yaml
+  /auth/customer/{auth_provider}/reset-password:
+    $ref: paths/auth_customer_{auth_provider}_reset-password.yaml
+  /auth/customer/{auth_provider}/update:
+    $ref: paths/auth_customer_{auth_provider}_update.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:

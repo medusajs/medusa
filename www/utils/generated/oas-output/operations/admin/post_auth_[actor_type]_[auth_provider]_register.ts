@@ -22,6 +22,9 @@
  *         type: object
  *         title: input
  *         description: The input data necessary for authentication. For example, for email-pass authentication, pass `email` and `password` properties.
+ *         example:
+ *           email: "admin@medusa-test.com"
+ *           password: "supersecret"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

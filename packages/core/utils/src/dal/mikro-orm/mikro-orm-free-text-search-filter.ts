@@ -1,11 +1,11 @@
-import { EntityMetadata, EntitySchema, ReferenceType } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import type {
-  FindOptions,
   EntityClass,
   EntityProperty,
   FindOneOptions,
+  FindOptions,
 } from "@mikro-orm/core"
+import { EntityMetadata, EntitySchema, ReferenceType } from "@mikro-orm/core"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export const FreeTextSearchFilterKey = "freeTextSearch"
 
@@ -57,8 +57,13 @@ function retrieveRelationsConstraints(
       continue
     }
 
+    const isText = propertyConfiguration?.columnTypes?.includes("text")
+    const columnName = isText
+      ? propertyConfiguration.name
+      : `${propertyConfiguration.name}::text`
+
     relationFreeTextSearchWhere.push({
-      [propertyConfiguration.name]: {
+      [columnName]: {
         $ilike: `%${searchValue}%`,
       },
     })
