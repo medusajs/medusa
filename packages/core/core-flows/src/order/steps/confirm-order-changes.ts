@@ -25,6 +25,8 @@ export const confirmOrderChanges = createStep(
         }
 
         currentChanges.push({
+          ...update,
+          order_id: input.orderId,
           status: action.status,
         })
 
@@ -41,7 +43,7 @@ export const confirmOrderChanges = createStep(
 
     const orderModuleService = container.resolve(Modules.ORDER)
     await orderModuleService.undoLastChange(
-      currentChanges[0].id!,
+      currentChanges[0].order_id!,
       currentChanges[0]
     )
   }
