@@ -48,6 +48,8 @@ export const Login = () => {
                 type: "manual",
                 message: error.message,
               })
+
+              return
             }
           }
 

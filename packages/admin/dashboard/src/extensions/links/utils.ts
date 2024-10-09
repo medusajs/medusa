@@ -3,7 +3,7 @@ import linkModule from "virtual:medusa/links"
 
 function appendLinkableFields(
   fields: string = "",
-  linkable: (string | string[])[]
+  linkable: (string | string[])[] = []
 ) {
   const linkableFields = linkable.flatMap((link) => {
     return typeof link === "string"

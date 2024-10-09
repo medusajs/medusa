@@ -38,7 +38,12 @@ export const InventoryDetail = () => {
 
   if (isLoading || !inventory_item) {
     return (
-      <TwoColumnPageSkeleton showJSON mainSections={3} sidebarSections={2} />
+      <TwoColumnPageSkeleton
+        showJSON
+        mainSections={3}
+        sidebarSections={2}
+        showMetadata
+      />
     )
   }
 
@@ -56,6 +61,7 @@ export const InventoryDetail = () => {
       }}
       data={inventory_item}
       showJSON
+      showMetadata
     >
       <TwoColumnPage.Main>
         <InventoryItemGeneralSection inventoryItem={inventory_item} />
