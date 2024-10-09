@@ -3392,7 +3392,7 @@ export interface IOrderModuleService extends IModuleService {
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
 
   /**
-   * This method reverts an order to its last change and set the order change as Pending.
+   * This method reverts an order to its last change and keep the order changes and actions not applied.
    *
    * @param {string} orderId - The order's ID.
    * @param {Partial<OrderChangeDTO>} lastOrderChange - The last order change status to revert to.
