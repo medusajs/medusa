@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-manual",
-  "version": "1.1.40",
+  "version": "1.1.41",
   "description": "A manual fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.9"
+    "medusa-interfaces": "^1.3.10"
   },
   "scripts": {
     "test": "jest --passWithNoTests src",
@@ -32,14 +32,14 @@
     "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.9"
+    "medusa-interfaces": "1.3.10"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.2.1"
+    "medusa-core-utils": "^1.2.3"
   },
   "gitHead": "7770046479c361f375842a8605b15e5d7bc24624",
   "keywords": [

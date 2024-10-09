@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-mailchimp",
-  "version": "1.1.50",
+  "version": "1.1.51",
   "description": "Mailchimp newsletter subscriptions",
   "main": "index.js",
   "repository": {
@@ -14,7 +14,7 @@
   "author": "Oliver Juhl, Tomek Pur",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.12.1",
+    "@medusajs/medusa": "^1.20.8",
     "@types/express": "^4.17.17",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
@@ -36,8 +36,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mailchimp-api-v3": "^1.14.0",
-    "medusa-core-utils": "^1.2.0",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-core-utils": "^1.2.3",
+    "medusa-test-utils": "^1.1.45"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
   "keywords": [

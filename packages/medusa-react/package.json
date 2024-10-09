@@ -1,5 +1,5 @@
 {
-  "version": "9.0.17",
+  "version": "9.0.18",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -35,7 +35,7 @@
   "author": "Zakaria S. El Asri",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@medusajs/medusa": "^1.20.5",
+    "@medusajs/medusa": "^1.20.8",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",

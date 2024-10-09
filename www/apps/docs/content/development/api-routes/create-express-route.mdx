@@ -794,7 +794,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
           )
 
           res.json({
-            post: await authorService.retrieve(req.params.id),
+            author: await authorService.retrieve(req.params.id),
           })
       }))
 

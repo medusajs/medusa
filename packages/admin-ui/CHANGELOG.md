@@ -1,5 +1,29 @@
 # @medusajs/admin-ui
 
+## 2.1.18
+
+### Patch Changes
+
+- [#9355](https://github.com/medusajs/medusa/pull/9355) [`0edc59e2d0`](https://github.com/medusajs/medusa/commit/0edc59e2d05db9db5bb33da2cd8fd418ed7313f7) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Resolves an issue in the MarkAsAShipped modal that could cause the application to crash in development
+
+## 2.1.17
+
+### Patch Changes
+
+- [`9e00325ae6`](https://github.com/medusajs/medusa/commit/9e00325ae646efdc6680a451bfd4685a48ab9ca5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for @medusajs/admin-ui
+
+## 2.1.16
+
+### Patch Changes
+
+- [`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- Updated dependencies [[`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30)]:
+  - @medusajs/ui@3.0.1
+  - @medusajs/icons@1.2.2
+  - @medusajs/ui-preset@1.1.4
+  - medusa-react@9.0.18
+
 ## 2.1.15
 
 ### Patch Changes

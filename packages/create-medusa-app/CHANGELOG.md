@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.2.9
+
+### Patch Changes
+
+- [`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- [#7806](https://github.com/medusajs/medusa/pull/7806) [`c1c61b1ff3`](https://github.com/medusajs/medusa/commit/c1c61b1ff3a930c00c42dd3d2240f8275f8182ba) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): ensure the latest create-next-app version is used
+
+- Updated dependencies [[`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30)]:
+  - medusa-telemetry@0.0.18
+
 ## 1.2.8
 
 ### Patch Changes

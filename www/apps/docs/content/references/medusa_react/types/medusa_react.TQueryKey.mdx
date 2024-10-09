@@ -1,0 +1,17 @@
+---
+displayed_sidebar: medusaReactSidebar
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# TQueryKey
+
+ **TQueryKey**: `Object`
+
+## Type Parameters
+
+<TypeList types={[{"name":"TKey","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TListQuery","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TDetailQuery","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="TQueryKey"/>
+
+## Properties
+
+<TypeList types={[{"name":"all","type":"[TKey]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lists","type":"() => [...TQueryKey&#60;TKey&#62;[\"all\"], `\"list\"`]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"list","type":"(`query?`: TListQuery) => [...ReturnType&#60;TQueryKey&#60;TKey&#62;[\"lists\"]&#62;, ``{ query: TListQuery \\| undefined  }``]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"details","type":"() => [...TQueryKey&#60;TKey&#62;[\"all\"], `\"detail\"`]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"detail","type":"(`id`: TDetailQuery) => [...ReturnType&#60;TQueryKey&#60;TKey&#62;[\"details\"]&#62;, TDetailQuery]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="TQueryKey"/>

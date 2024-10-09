@@ -32,6 +32,7 @@ properties:
     description: The details of the products that belong to this product collection.
     type: array
     x-expandable: products
+    x-ignore: true
     items:
       type: object
   created_at:

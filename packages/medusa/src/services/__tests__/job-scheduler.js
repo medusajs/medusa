@@ -32,7 +32,7 @@ describe("JobSchedulerService", () => {
 
     it("creates bull queue", () => {
       expect(Queue).toHaveBeenCalledTimes(1)
-      expect(Queue).toHaveBeenCalledWith("scheduled-jobs:queue", {
+      expect(Queue).toHaveBeenCalledWith("scheduled-jobs-queue", {
         connection: expect.any(Object),
         prefix: "JobSchedulerService",
       })
@@ -74,6 +74,13 @@ describe("JobSchedulerService", () => {
         },
         {
           repeat: { pattern: "* * * * *" },
+          removeOnComplete: {
+            age: 86400,
+          },
+          removeOnFail: {
+            age: 604800,
+            count: 5000,
+          },
         }
       )
     })

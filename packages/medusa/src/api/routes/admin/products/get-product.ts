@@ -9,6 +9,7 @@ import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { FindParams } from "../../../../types/common"
 import { retrieveProduct } from "../../../../utils"
 import { defaultAdminProductRemoteQueryObject } from "./index"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -125,7 +126,10 @@ export default async (req, res) => {
   const shouldSetAvailability =
     req.retrieveConfig.relations?.includes("variants")
 
-  if (shouldSetAvailability) {
+  if (
+    shouldSetAvailability &&
+    featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+  ) {
     let salesChannels
 
     if (isMedusaV2FlagOn) {

@@ -1,7 +1,7 @@
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-  summary: Update a Location Level
-  description: Update a Location Level's details for a given Inventory Item.
+  summary: Update a Inventory Level
+  description: Update an inventory level's details for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
@@ -13,20 +13,20 @@ post:
     - in: path
       name: location_id
       required: true
-      description: The ID of the Location to update.
+      description: The ID of the inventory level to update.
       schema:
         type: string
     - in: query
       name: expand
       description: >-
         Comma-separated relations that should be expanded in the returned
-        location level.
+        inventory level.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        Comma-separated fields that should be included in the returned location
+        Comma-separated fields that should be included in the returned inventory
         level.
       schema:
         type: string
@@ -82,8 +82,8 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-  summary: Delete a Location Level
-  description: Delete a location level of an Inventory Item.
+  summary: Delete a Inventory Level
+  description: Delete a inventory level of an Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
@@ -95,7 +95,7 @@ delete:
     - in: path
       name: location_id
       required: true
-      description: The ID of the location.
+      description: The ID of the inventory level.
       schema:
         type: string
   x-codegen:

@@ -1,5 +1,23 @@
 # @medusajs/promotion
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`74885620a8`](https://github.com/medusajs/medusa/commit/74885620a8e2fdb255053d5dc3c05ab139074b31)]:
+  - @medusajs/utils@1.11.11
+
+## 0.0.5
+
+### Patch Changes
+
+- [`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- Updated dependencies [[`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30)]:
+  - @medusajs/utils@1.11.10
+  - @medusajs/modules-sdk@1.12.12
+  - @medusajs/types@1.11.17
+
 ## 0.0.4
 
 ### Patch Changes
