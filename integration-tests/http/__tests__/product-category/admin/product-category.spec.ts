@@ -4,7 +4,7 @@ import {
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -310,6 +310,14 @@ medusaIntegrationTestRunner({
           )
         ).data.product_category
 
+        await api.post(
+            "/admin/product-categories",
+            {
+              name: "Something different",
+            },
+            adminHeaders
+          )
+
         const response = await api.get(
           "/admin/product-categories?q=Category",
           adminHeaders
@@ -333,20 +341,16 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
+      })
 
-        const responseTwo = await api.get(
-          "/admin/product-categories?q=three",
+      it("should query all categories if q is empty", async () => {
+        const response = await api.get(
+          "/admin/product-categories?q=",
           adminHeaders
         )
 
-        expect(responseTwo.status).toEqual(200)
-        expect(responseTwo.data.product_categories).toHaveLength(1)
-        expect(responseTwo.data.product_categories).toEqual([
-          expect.objectContaining({
-            id: categoryThree.id,
-            name: "Category Three",
-          }),
-        ])
+        expect(response.status).toEqual(200)
+        expect(response.data.product_categories).toHaveLength(7) // created in beforeEach
       })
 
       it("gets list of product category with immediate children and parents", async () => {

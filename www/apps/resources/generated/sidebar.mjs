@@ -1119,22 +1119,6 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "sub-category",
-            "title": "Concepts",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/currency/relations-to-other-modules",
-                "title": "Relation to Modules",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "sub-category",
             "title": "References",
             "children": [
               {
@@ -1239,6 +1223,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/customer/extend",
+            "title": "Extend Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "type": "sub-category",
             "title": "Concepts",
             "children": [
@@ -1248,14 +1240,6 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/customer/customer-accounts",
                 "title": "Customer Accounts",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/customer/relations-to-other-modules",
-                "title": "Relations to Other Modules",
                 "children": []
               }
             ]
@@ -1599,8 +1583,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/fulfillment/relations-to-other-modules",
-                "title": "Relations to Other Modules",
+                "path": "/commerce-modules/fulfillment/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -2337,8 +2321,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/inventory/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/inventory/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
