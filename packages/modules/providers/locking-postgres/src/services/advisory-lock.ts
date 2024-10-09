@@ -1,18 +1,24 @@
 import { ILockingProvider } from "@medusajs/framework/types"
-import { isDefined } from "@medusajs/framework/utils"
+import { isDefined, MedusaService } from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
+import { Locking } from "@models"
 
 type InjectedDependencies = {
   manager: EntityManager
 }
 
-export class PostgresAdvisoryLockProvider implements ILockingProvider {
-  static identifier = "postgres-advisory-lock"
+export class PostgresAdvisoryLockProvider
+  extends MedusaService({ Locking })
+  implements ILockingProvider
+{
+  static identifier = "locking-postgres"
 
   protected manager: EntityManager
 
-  constructor({ manager }: InjectedDependencies) {
-    this.manager = manager
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
+    this.manager = container.manager
   }
 
   private getManager(): any {

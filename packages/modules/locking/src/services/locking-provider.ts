@@ -14,8 +14,7 @@ export default class LockingProviderService {
   }
 
   static getRegistrationIdentifier(
-    providerClass: Constructor<ILockingProvider>,
-    optionName?: string
+    providerClass: Constructor<ILockingProvider>
   ) {
     if (!(providerClass as any).identifier) {
       throw new MedusaError(
@@ -23,7 +22,7 @@ export default class LockingProviderService {
         `Trying to register a locking provider without an identifier.`
       )
     }
-    return `${(providerClass as any).identifier}_${optionName}`
+    return `${(providerClass as any).identifier}`
   }
 
   public retrieveProviderRegistration(providerId: string): ILockingProvider {

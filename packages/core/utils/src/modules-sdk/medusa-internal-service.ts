@@ -45,13 +45,6 @@ export function MedusaInternalService<
     TContainer
   >
 } {
-  if (Object.keys(rawModel ?? {}).length === 0) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `A Model must be defined to extends MedusaInternalService`
-    )
-  }
-
   const model = DmlEntity.isDmlEntity(rawModel)
     ? toMikroORMEntity(rawModel)
     : rawModel

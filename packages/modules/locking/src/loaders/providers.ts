@@ -4,6 +4,7 @@ import {
   ModuleProvider,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { LockingProviderService } from "@services"
 import {
   LockingDefaultProvider,
@@ -14,10 +15,7 @@ import { Lifetime, asFunction, asValue } from "awilix"
 import { InMemoryLockingProvider } from "../providers/in-memory"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  const key = LockingProviderService.getRegistrationIdentifier(
-    klass,
-    pluginOptions.id
-  )
+  const key = LockingProviderService.getRegistrationIdentifier(klass)
 
   container.register({
     [LockingProviderRegistrationPrefix + key]: asFunction(
@@ -40,6 +38,7 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   container.registerAdd(LockingIdentifiersRegistrationName, asValue(undefined))
 
   // InMemoryLockingProvider - default provider
@@ -65,9 +64,22 @@ export default async ({
     registerServiceFn: registrationFn,
   })
 
+  const isSingleProvider = options?.providers?.length === 1
+  let hasDefaultProvider = false
   for (const provider of options?.providers || []) {
-    if (provider.is_default) {
+    if (provider.is_default || isSingleProvider) {
+      if (provider.is_default) {
+        hasDefaultProvider = true
+      }
       container.register(LockingDefaultProvider, asValue(provider.id))
     }
+  }
+
+  if (!hasDefaultProvider) {
+    logger.warn(
+      `No default Locking provider explicit defined, using "${container.resolve(
+        LockingDefaultProvider
+      )}" as default.`
+    )
   }
 }
