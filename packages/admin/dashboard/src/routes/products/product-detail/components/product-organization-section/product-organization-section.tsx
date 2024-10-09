@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
+import { useDashboardExtension } from "../../../../../extensions"
 
 type ProductOrganizationSectionProps = {
   product: HttpTypes.AdminProduct
@@ -14,6 +15,7 @@ export const ProductOrganizationSection = ({
   product,
 }: ProductOrganizationSectionProps) => {
   const { t } = useTranslation()
+  const { getDisplays } = useDashboardExtension()
 
   return (
     <Container className="divide-y p-0">
@@ -84,6 +86,10 @@ export const ProductOrganizationSection = ({
             : undefined
         }
       />
+
+      {getDisplays("product", "organize").map((Component, i) => {
+        return <Component key={i} data={product} />
+      })}
     </Container>
   )
 }

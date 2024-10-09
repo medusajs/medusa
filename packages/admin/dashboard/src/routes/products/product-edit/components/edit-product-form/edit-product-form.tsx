@@ -1,18 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
+
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+} from "../../../../../extensions"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct
@@ -32,7 +33,11 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<zod.infer<typeof EditProductSchema>>({
+  const { getFormFields, getFormConfigs } = useDashboardExtension()
+  const fields = getFormFields("product", "edit")
+  const configs = getFormConfigs("product", "edit")
+
+  const form = useExtendableForm({
     defaultValues: {
       status: product.status,
       title: product.title,
@@ -42,7 +47,9 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
       description: product.description || "",
       discountable: product.discountable,
     },
-    resolver: zodResolver(EditProductSchema),
+    schema: EditProductSchema,
+    configs: configs,
+    data: product,
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
@@ -208,6 +215,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
               label={t("fields.discountable")}
               description={t("products.discountableHint")}
             />
+            <FormExtensionZone fields={fields} form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

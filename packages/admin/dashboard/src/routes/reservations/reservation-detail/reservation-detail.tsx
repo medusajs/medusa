@@ -1,15 +1,12 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
+import { TwoColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useReservationItem } from "../../../hooks/api/reservations"
+import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/reservation/details/after"
-import before from "virtual:medusa/widgets/reservation/details/before"
-import sideAfter from "virtual:medusa/widgets/reservation/details/side/after"
-import sideBefore from "virtual:medusa/widgets/reservation/details/side/before"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 
 export const ReservationDetail = () => {
   const { id } = useParams()
@@ -20,14 +17,23 @@ export const ReservationDetail = () => {
 
   const { reservation, isLoading, isError, error } = useReservationItem(
     id!,
-    {},
+    undefined,
     {
       initialData,
     }
   )
 
+  const { getWidgets } = useDashboardExtension()
+
   if (isLoading || !reservation) {
-    return <div>Loading...</div>
+    return (
+      <TwoColumnPageSkeleton
+        mainSections={1}
+        sidebarSections={1}
+        showJSON
+        showMetadata
+      />
+    )
   }
 
   if (isError) {
@@ -37,36 +43,21 @@ export const ReservationDetail = () => {
   return (
     <TwoColumnPage
       widgets={{
-        after,
-        before,
-        sideAfter,
-        sideBefore,
+        before: getWidgets("reservation.details.before"),
+        after: getWidgets("reservation.details.after"),
+        sideBefore: getWidgets("reservation.details.side.before"),
+        sideAfter: getWidgets("reservation.details.side.after"),
       }}
       data={reservation}
       showJSON
       showMetadata
-      hasOutlet
     >
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={reservation} />
-          </div>
-        )
-      })}
       <TwoColumnPage.Main>
         <ReservationGeneralSection reservation={reservation} />
-        {after.widgets.map((w, i) => {
-          return (
-            <div key={i}>
-              <w.Component data={reservation} />
-            </div>
-          )
-        })}
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <InventoryItemGeneralSection
-          inventoryItem={reservation.inventory_item!}
+          inventoryItem={reservation.inventory_item}
         />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
