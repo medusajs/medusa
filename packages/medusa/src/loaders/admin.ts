@@ -34,8 +34,6 @@ export default async function adminLoader({
 
   const adminOptions: IntializedOptions = {
     disable: false,
-    path: "/app",
-    outDir: "./build",
     sources,
     ...admin,
   }

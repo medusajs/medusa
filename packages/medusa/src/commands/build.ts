@@ -6,7 +6,6 @@ import { ConfigModule } from "@medusajs/framework/types"
 import { getConfigFile } from "@medusajs/framework/utils"
 
 const ADMIN_FOLDER = "src/admin"
-const ADMIN_OUTPUT_DIR = ".medusa/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
 
 /**
@@ -210,8 +209,6 @@ async function buildFrontend(projectRoot: string): Promise<boolean> {
   const adminSource = path.join(projectRoot, ADMIN_FOLDER)
   const adminOptions = {
     disable: false,
-    path: "/app" as const,
-    outDir: ADMIN_OUTPUT_DIR,
     sources: [adminSource],
     ...configFile.configModule.admin,
   }
