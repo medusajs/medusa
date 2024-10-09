@@ -25,6 +25,7 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
+import { deleteReservationsByLineItemsStep } from "../../../reservation"
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
@@ -132,6 +133,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
+    const lineItemIds = transform({ orderItems }, (data) =>
+      data.orderItems.items.map(({ id }) => id)
+    )
+
+    deleteReservationsByLineItemsStep(lineItemIds)
+
     const { variants, items } = transform(
       { orderItems, orderPreview },
       ({ orderItems, orderPreview }) => {
@@ -152,27 +159,35 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
-          let quantity: BigNumberInput =
-            itemAction.raw_quantity ?? itemAction.quantity
-
-          let unit_price: BigNumberInput =
+          const unitPrice: BigNumberInput =
             itemAction.raw_unit_price ?? itemAction.unit_price
+
 
           const updateAction = itemAction.actions!.find(
             (a) => a.action === ChangeActionType.ITEM_UPDATE
           )
-          if (updateAction) {
-            quantity = MathBN.sub(quantity, ordItem.raw_quantity)
-            if (MathBN.lte(quantity, 0)) {
-              return
-            }
+
+          const quantity: BigNumberInput =
+            itemAction.raw_quantity ?? itemAction.quantity
+
+          const newQuantity = updateAction
+            ? MathBN.sub(quantity, ordItem.raw_quantity)
+            : quantity
+
+          if (MathBN.lte(newQuantity, 0)) {
+            return
           }
+
+          const reservationQuantity = MathBN.sub(
+            newQuantity,
+            ordItem.raw_fulfilled_quantity
+          )
 
           allItems.push({
             id: ordItem.id,
             variant_id: ordItem.variant_id,
-            quantity,
-            unit_price,
+            quantity: reservationQuantity,
+            unit_price: unitPrice
           })
           allVariants.push(ordItem.variant)
         })
