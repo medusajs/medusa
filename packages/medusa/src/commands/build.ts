@@ -180,10 +180,6 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
     path.join(dist, "package-lock.json")
   )
 
-  /**
-   * Copying .env file
-   */
-  await copy(path.join(projectRoot, ".env"), path.join(dist, ".env"))
   const duration = process.hrtime(startTime)
   const seconds = (duration[0] + duration[1] / 1e9).toFixed(2)
 
