@@ -137,7 +137,9 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       { orderItems, previousOrderItems: order.items },
 
       (data) => {
-        const previousItemIds = data.previousOrderItems!.map(({ id }) => id) // items that have been removed with the change
+        const previousItemIds = (data.previousOrderItems || []).map(
+          ({ id }) => id
+        ) // items that have been removed with the change
         const newItemIds = data.orderItems.items.map(({ id }) => id)
         return [...new Set([...previousItemIds, newItemIds])]
       }
