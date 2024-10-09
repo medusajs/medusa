@@ -96,6 +96,8 @@ export const DateFilter = ({
 
   const displayValue = getDisplayValueFromPresets() || getCustomDisplayValue()
 
+  const [previousValue, setPreviousValue] = useState<string | string[] | undefined>(displayValue)
+
   const handleRemove = () => {
     selectedParams.delete()
     removeFilter(key)
@@ -105,6 +107,7 @@ export const DateFilter = ({
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+    setPreviousValue(displayValue)
 
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -120,6 +123,7 @@ export const DateFilter = ({
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
       <DateDisplay
+        previousValue={previousValue}
         label={label}
         value={displayValue}
         onRemove={handleRemove}
@@ -239,11 +243,13 @@ export const DateFilter = ({
 type DateDisplayProps = {
   label: string
   value?: string
+  previousValue?: string
   readonly?: boolean
   onRemove: () => void
 }
 
 const DateDisplay = ({
+  previousValue,
   label,
   value,
   readonly,
@@ -255,51 +261,51 @@ const DateDisplay = ({
   }
 
   return (
-    <Popover.Trigger
-      asChild
-      className={clx(
-        "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center rounded-md",
-        {
-          "hover:bg-ui-bg-field-hover": !readonly,
-          "data-[state=open]:bg-ui-bg-field-hover": !readonly,
-        }
+    <div className="bg-ui-bg-field transition-fg shadow-borders-base cursor-default text-ui-fg-subtle flex select-none items-stretch rounded-md">
+      {!previousValue && (
+        <Popover.Anchor />
       )}
-    >
-      <div>
-        <div
-          className={clx("flex items-center justify-center px-2 py-1", {
-            "border-r": !!value,
-          })}
+      <div
+        className={clx("text-ui-fg-muted flex items-center justify-center px-2 py-1", {
+          "border-r": !!(value || previousValue),
+        })}
+      >
+        <Text size="small" weight="plus" leading="compact">
+          {label}
+        </Text>
+      </div>
+      {(value || previousValue) && (
+        <Popover.Trigger
+          asChild
         >
-          <Text size="small" weight="plus" leading="compact">
-            {label}
-          </Text>
-        </div>
-        {value && (
-          <div className="flex items-center">
+          <div className={clx("cursor-pointer",
+            {
+              "hover:bg-ui-bg-field-hover": !readonly,
+              "data-[state=open]:bg-ui-bg-field-hover": !readonly,
+            }
+          )}
+          >
             <div key={value} className="border-r p-1 px-2">
               <Text size="small" weight="plus" leading="compact">
                 {value}
               </Text>
             </div>
           </div>
-        )}
-        {!readonly && value && (
-          <div>
-            <button
-              onClick={handleRemove}
-              className={clx(
-                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
-                "hover:bg-ui-bg-subtle-hover",
-                "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
-              )}
-            >
-              <XMarkMini />
-            </button>
-          </div>
-        )}
-      </div>
-    </Popover.Trigger>
+        </Popover.Trigger>
+      )}
+      {!readonly && (value || previousValue) && (
+        <button
+          onClick={handleRemove}
+          className={clx(
+            "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
+            "hover:bg-ui-bg-subtle-hover",
+            "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
+          )}
+        >
+          <XMarkMini />
+        </button>
+      )}
+    </div>
   )
 }
 

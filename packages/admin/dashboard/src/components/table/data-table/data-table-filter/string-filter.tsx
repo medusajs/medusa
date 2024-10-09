@@ -25,6 +25,8 @@ export const StringFilter = ({
 
   const query = selectedParams.get()
 
+  const [previousValue, setPreviousValue] = useState<string | undefined>(query?.[0])
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedOnChange = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -49,6 +51,7 @@ export const StringFilter = ({
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+    setPreviousValue(query?.[0])
 
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -69,6 +72,7 @@ export const StringFilter = ({
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
       <StringDisplay
+        previousValue={previousValue}
         label={label}
         value={query?.[0]}
         onRemove={handleRemove}
@@ -119,11 +123,13 @@ export const StringFilter = ({
 }
 
 const StringDisplay = ({
+  previousValue,
   label,
   value,
   readonly,
   onRemove,
 }: {
+  previousValue?: string
   label: string
   value?: string
   readonly?: boolean
@@ -132,69 +138,67 @@ const StringDisplay = ({
   const { t } = useTranslation()
 
   return (
-    <Popover.Trigger asChild>
+    <div
+      className="bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-default select-none items-stretch overflow-hidden rounded-md"
+    >
+      {!previousValue && (
+        <Popover.Anchor />
+      )}
       <div
         className={clx(
-          "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center overflow-hidden rounded-md",
+          "flex items-center justify-center whitespace-nowrap px-2 py-1",
           {
-            "hover:bg-ui-bg-field-hover": !readonly,
-            "data-[state=open]:bg-ui-bg-field-hover": !readonly,
+            "border-r": !!(value || previousValue),
           }
         )}
       >
-        <div
-          className={clx(
-            "flex items-center justify-center whitespace-nowrap px-2 py-1",
-            {
-              "border-r": !!value,
-            }
-          )}
-        >
-          <Text size="small" weight="plus" leading="compact">
-            {label}
-          </Text>
-        </div>
-        <div className="flex w-full items-center overflow-hidden">
-          {!!value && (
-            <div className="border-r p-1 px-2">
-              <Text
-                size="small"
-                weight="plus"
-                leading="compact"
-                className="text-ui-fg-muted"
-              >
-                {t("general.is")}
-              </Text>
-            </div>
-          )}
-          {!!value && (
-            <div className="flex-1 overflow-hidden border-r p-1 px-2">
-              <Text
-                size="small"
-                leading="compact"
-                weight="plus"
-                className="truncate text-nowrap"
-              >
-                {value}
-              </Text>
-            </div>
-          )}
-        </div>
-        {!readonly && !!value && (
-          <div>
-            <button
-              onClick={onRemove}
-              className={clx(
-                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
-                "hover:bg-ui-bg-subtle-hover",
-                "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
-              )}
+        <Text size="small" weight="plus" leading="compact">
+          {label}
+        </Text>
+      </div>
+      <div className="flex w-full items-center overflow-hidden">
+        {!!(value || previousValue) && (
+          <div className="border-r p-1 px-2">
+            <Text
+              size="small"
+              weight="plus"
+              leading="compact"
+              className="text-ui-fg-muted"
             >
-              <XMarkMini />
-            </button>
+              {t("general.is")}
+            </Text>
           </div>
         )}
+        {!!(value || previousValue) && (
+          <Popover.Trigger asChild className={clx("flex-1 cursor-pointer overflow-hidden border-r p-1 px-2",
+            {
+              "hover:bg-ui-bg-field-hover": !readonly,
+              "data-[state=open]:bg-ui-bg-field-hover": !readonly,
+            }
+          )}>
+            <Text
+              size="small"
+              leading="compact"
+              weight="plus"
+              className="truncate text-nowrap"
+            >
+              {value}
+            </Text>
+          </Popover.Trigger>
+        )}
       </div>
-    </Popover.Trigger>
+      {!readonly && !!(value || previousValue) && (
+        <button
+          onClick={onRemove}
+          className={clx(
+            "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
+            "hover:bg-ui-bg-subtle-hover",
+            "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
+          )}
+        >
+          <XMarkMini />
+        </button>
+      )}
+    </div>
   )
 }
