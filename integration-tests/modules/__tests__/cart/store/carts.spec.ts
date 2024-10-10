@@ -144,18 +144,18 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
-              Pricing: {
+              [Modules.PRICING]: {
                 price_set_id: priceSet.id,
               },
             },
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[1].id,
               },
-              Pricing: {
+              [Modules.PRICING]: {
                 price_set_id: priceSetTwo.id,
               },
             },
@@ -232,8 +232,8 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              Product: { variant_id: product.variants[0].id },
-              Pricing: { price_set_id: priceSet.id },
+              [Modules.PRODUCT]: { variant_id: product.variants[0].id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
             },
           ])
 
@@ -1080,10 +1080,10 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: productWithDefaultTax.variants[0].id,
               },
-              Pricing: { price_set_id: priceSetDefaultTax.id },
+              [Modules.PRICING]: { price_set_id: priceSetDefaultTax.id },
             },
           ])
 
@@ -1212,10 +1212,10 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: productWithDefaultTax.variants[0].id,
               },
-              Pricing: { price_set_id: priceSetDefaultTax.id },
+              [Modules.PRICING]: { price_set_id: priceSetDefaultTax.id },
             },
           ])
 
@@ -2104,16 +2104,16 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: productWithSpecialTax.variants[0].id,
               },
-              Pricing: { price_set_id: priceSet.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
             },
             {
-              Product: {
+              [Modules.PRODUCT]: {
                 variant_id: productWithDefaultTax.variants[0].id,
               },
-              Pricing: { price_set_id: priceSetDefaultTax.id },
+              [Modules.PRICING]: { price_set_id: priceSetDefaultTax.id },
             },
             {
               [Modules.CART]: { cart_id: cart.id },
