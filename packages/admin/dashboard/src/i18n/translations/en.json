@@ -868,6 +868,7 @@
       "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
+      "capture_short": "Capture",
       "refund": "Refund",
       "markAsPaid": "Mark as paid",
       "statusLabel": "Payment status",
