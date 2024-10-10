@@ -48,7 +48,6 @@ import {
   CancelOrderReturnDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
-  CreateOrderAdjustmentDTO,
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
