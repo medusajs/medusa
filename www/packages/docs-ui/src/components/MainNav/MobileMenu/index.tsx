@@ -24,7 +24,7 @@ export const MainNavMobileMenu = () => {
       <Button
         variant="transparent"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="text-medusa-fg-subtle"
+        className="text-medusa-fg-subtle !p-[6.5px]"
       >
         {!isOpen && <BarsThree />}
         {isOpen && <XMark />}

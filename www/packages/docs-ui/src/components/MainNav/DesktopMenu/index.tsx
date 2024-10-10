@@ -33,12 +33,16 @@ export const MainNavDesktopMenu = () => {
       className="relative hidden lg:flex justify-center items-center"
       ref={ref}
     >
-      <Button variant="transparent" onClick={() => setIsOpen((prev) => !prev)}>
+      <Button
+        variant="transparent"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="!p-[6.5px]"
+      >
         <BarsThree className="text-medusa-fg-subtle" />
       </Button>
       <Menu
         className={clsx(
-          "absolute top-[calc(100%+4px)] right-0 min-w-[200px]",
+          "absolute top-[calc(100%+8px)] right-0 min-w-[200px]",
           !isOpen && "hidden"
         )}
         items={[
