@@ -279,66 +279,6 @@ function buildLocalCommands(cli, isLocalProject) {
       }),
     })
     .command({
-      command: `seed`,
-      desc: `Migrates and populates the database with the provided file.`,
-      builder: (_) =>
-        _.option(`f`, {
-          alias: `seed-file`,
-          type: `string`,
-          describe: `Path to the file where the seed is defined.`,
-          required: true,
-        }).option(`m`, {
-          alias: `migrate`,
-          type: `boolean`,
-          default: true,
-          describe: `Flag to indicate if migrations should be run prior to seeding the database`,
-        }),
-      handler: handlerP(
-        getCommandHandler(`seed`, (args, cmd) => {
-          process.env.NODE_ENV ??= `development`
-          return cmd(args)
-        })
-      ),
-    })
-    .command({
-      command: `migrations [action] [modules...]`,
-      desc: `Manage migrations from the core and your own project`,
-      builder: {
-        action: {
-          demand: true,
-          description: "The action to perform on migrations",
-          choices: ["run", "revert", "show", "generate"],
-        },
-        modules: {
-          description: "Modules for which to run the action (revert, generate)",
-          demand: false,
-        },
-      },
-      handler: handlerP(
-        getCommandHandler(`migrate`, (args, cmd) => {
-          process.env.NODE_ENV = process.env.NODE_ENV || `development`
-          return cmd(args)
-        })
-      ),
-    })
-    .command({
-      command: `links [action]`,
-      desc: `Manage migrations for the links from the core, your project and packages`,
-      builder: {
-        action: {
-          demand: true,
-          description: "The action to perform on links",
-          choices: ["sync"],
-        },
-      },
-      handler: handlerP(
-        getCommandHandler(`links`, (args, cmd) => {
-          process.env.NODE_ENV = process.env.NODE_ENV || `development`
-          return cmd(args)
-        })
-      ),
-    })
-    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
@@ -418,42 +358,6 @@ function buildLocalCommands(cli, isLocalProject) {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
 
-          return new Promise((resolve) => {})
-        })
-      ),
-    })
-    .command({
-      command: `start-cluster`,
-      desc: `Start development server in cluster mode (beta).`,
-      builder: (_) =>
-        _.option(`H`, {
-          alias: `host`,
-          type: `string`,
-          default: defaultHost,
-          describe: `Set host. Defaults to ${defaultHost}`,
-        })
-          .option(`p`, {
-            alias: `port`,
-            type: `string`,
-            default: process.env.PORT || defaultPort,
-            describe: process.env.PORT
-              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-              : `Set port. Defaults to ${defaultPort}`,
-          })
-          .option(`c`, {
-            alias: `cpus`,
-            type: `number`,
-            default: process.env.CPUS,
-            describe:
-              "Set number of cpus to use. Defaults to max number of cpus available on the system (set by env.CPUS)",
-          }),
-      handler: handlerP(
-        getCommandHandler(`start-cluster`, (args, cmd) => {
-          process.env.NODE_ENV = process.env.NODE_ENV || `development`
-          cmd(args)
-          // Return an empty promise to prevent handlerP from exiting early.
-          // The development server shouldn't ever exit until the user directly
-          // kills it so this is fine.
           return new Promise((resolve) => {})
         })
       ),
