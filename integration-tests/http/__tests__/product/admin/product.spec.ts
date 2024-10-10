@@ -2379,7 +2379,7 @@ medusaIntegrationTestRunner({
           expect(variantPost).not.toBeTruthy()
         })
 
-        it("fails to deletes a product which has reservations", async () => {
+        it("deletes product and inventory items that are only associated with that product's variants", async () => {
           const stockLocation = (
             await api.post(
               `/admin/stock-locations`,
