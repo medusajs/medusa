@@ -37,7 +37,7 @@ export const MainNavItemDropdown = ({
         tabIndex={-1}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span>{item.title}</span>
+        <span className="text-compact-small-plus">{item.title}</span>
         <TriangleDownMini
           className={clsx("transition-transform", isOpen && "rotate-180")}
         />

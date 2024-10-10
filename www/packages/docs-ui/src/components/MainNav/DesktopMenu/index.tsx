@@ -62,7 +62,7 @@ export const MainNavDesktopMenu = () => {
             type: "link",
             icon: <QuestionMarkCircle />,
             title: "Troubleshooting",
-            link: "/v2/resources/troubleshooting",
+            link: "https://docs.medusajs.com/v2/resources/troubleshooting",
           },
           {
             type: "divider",

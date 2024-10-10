@@ -12,9 +12,20 @@ export const navDropdownItems: NavigationItem[] = [
     project: "book",
   },
   {
-    type: "link",
-    path: `/v2/resources/commerce-modules`,
-    title: "Commerce Modules",
+    type: "dropdown",
+    title: "Product",
+    children: [
+      {
+        type: "link",
+        title: "Commerce Modules",
+        link: "/v2/resources/commerce-modules",
+      },
+      {
+        type: "link",
+        title: "Architectural Modules",
+        link: "/v2/resources/architectural-modules",
+      },
+    ],
   },
   {
     type: "dropdown",
@@ -67,11 +78,6 @@ export const navDropdownItems: NavigationItem[] = [
         type: "link",
         title: "Integrations",
         link: "/v2/resources/integrations",
-      },
-      {
-        type: "link",
-        title: "Architectural Modules",
-        link: "/v2/resources/architectural-modules",
       },
     ],
   },
