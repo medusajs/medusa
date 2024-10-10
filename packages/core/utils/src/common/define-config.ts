@@ -3,11 +3,11 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
 } from "@medusajs/types"
-import { Modules } from "../modules-sdk"
 import {
   MODULE_PACKAGE_NAMES,
+  Modules,
   REVERSED_MODULE_PACKAGE_NAMES,
-} from "@medusajs/modules-sdk"
+} from "../modules-sdk"
 import { isString } from "./is-string"
 import { resolveExports } from "./resolve-exports"
 import { isObject } from "./is-object"
@@ -252,8 +252,8 @@ function resolveModules(
       acc[serviceName] = moduleConfig
     }
 
-    if ("disable" in moduleConfig) {
-      acc[moduleConfig.key] = moduleConfig
+    if ("disable" in moduleConfig && "key" in moduleConfig) {
+      acc[moduleConfig.key!] = moduleConfig
     }
 
     return acc

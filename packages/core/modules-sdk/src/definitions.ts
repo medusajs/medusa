@@ -6,6 +6,9 @@ import {
 } from "@medusajs/utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
+/**
+ * @deprecated instead use @medusajs/utils or @medusajs/framework/utils
+ */
 export const MODULE_PACKAGE_NAMES = {
   [Modules.AUTH]: "@medusajs/medusa/auth",
   [Modules.CACHE]: "@medusajs/medusa/cache-inmemory",
@@ -34,6 +37,9 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INDEX]: "@medusajs/medusa/index-module",
 }
 
+/**
+ * @deprecated instead use @medusajs/utils or @medusajs/framework/utils
+ */
 export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
   MODULE_PACKAGE_NAMES
 ).reduce((acc, [key, value]) => {
