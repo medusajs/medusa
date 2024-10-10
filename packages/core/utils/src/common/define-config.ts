@@ -232,6 +232,12 @@ function resolveModules(
   }
 
   const remappedModules = modules.reduce((acc, moduleConfig) => {
+    if (moduleConfig.scope === "external" && !moduleConfig.key) {
+      throw new Error(
+        "External modules configuration must have a 'key'. Please provide a key for the module."
+      )
+    }
+
     // TODO: handle external modules later
     if ("resolve" in moduleConfig) {
       let serviceName: string =
