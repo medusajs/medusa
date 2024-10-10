@@ -2512,6 +2512,87 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("fails to delete product that has a reservation", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "loc" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 8,
+            },
+            adminHeaders
+          )
+
+          const productWithInventoryItems = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Test product - 1",
+                handle: "test-1",
+                options: [{ title: "size", values: ["l"] }],
+                variants: [
+                  {
+                    title: "Custom inventory 1",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                    manage_inventory: true,
+                    options: { size: "l" },
+                    inventory_items: [
+                      {
+                        inventory_item_id: inventoryItem1.id,
+                        required_quantity: 4,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const reservation = (
+            await api.post(
+              `/admin/reservations`,
+              {
+                line_item_id: "line-item-id-1",
+                inventory_item_id: inventoryItem1.id,
+                location_id: stockLocation.id,
+                description: "test description",
+                quantity: 1,
+              },
+              adminHeaders
+            )
+          ).data.reservation
+
+          const response = await api
+            .delete(
+              `/admin/products/${productWithInventoryItems.id}`,
+              adminHeaders
+            )
+            .catch((err) => {
+              return err.response
+            })
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            `Cannot remove inventory item: ${inventoryItem1.id} which has reservations.`
+          )
+        })
+
         // TODO: Enable with http calls
         it.skip("successfully deletes a product variant and its associated prices", async () => {
           // // Validate that the price exists

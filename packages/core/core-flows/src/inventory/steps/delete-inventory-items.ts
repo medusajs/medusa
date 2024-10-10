@@ -16,7 +16,7 @@ export const validateInventoryDeleteStep = createStep(
       if (MathBN.gt(inventoryItem.reserved_quantity, 0)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Cannot remove inventory item: ${inventoryItem.id} which has reserved inventory quantity.`
+          `Cannot remove inventory item: ${inventoryItem.id} which has reservations.`
         )
       }
     }
