@@ -71,9 +71,9 @@ export const MainNavDesktopMenu = () => {
             type: "action",
             title: "Hide Sidebar",
             icon: <SidebarLeft />,
-            shortcut: `${getOsShortcut()}.`,
+            shortcut: `${getOsShortcut()}\\`,
             action: () => {
-              setDesktopSidebarOpen(false)
+              setDesktopSidebarOpen((prev) => !prev)
               setIsOpen(false)
             },
           },
