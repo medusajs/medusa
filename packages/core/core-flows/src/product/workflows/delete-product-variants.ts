@@ -52,11 +52,11 @@ export const deleteProductVariantsWorkflow = createWorkflow(
         const toDeleteIds: string[] = []
 
         for (const variant of data.variants) {
-          for (const inventoryItem of variant.inventory) {
-            if (!variant.manage_inventory) {
-              continue
-            }
+          if (!variant.manage_inventory) {
+            continue
+          }
 
+          for (const inventoryItem of variant.inventory) {
             if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
               toDeleteIds.push(inventoryItem.id)
             }

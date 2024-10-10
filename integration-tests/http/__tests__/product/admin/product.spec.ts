@@ -2379,6 +2379,139 @@ medusaIntegrationTestRunner({
           expect(variantPost).not.toBeTruthy()
         })
 
+        it("fails to deletes a product which has reservations", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "loc" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-2-reused-across-products" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 8,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 4,
+            },
+            adminHeaders
+          )
+
+          const productWithInventoryItems = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Test product - 1",
+                handle: "test-1",
+                options: [{ title: "size", values: ["l"] }],
+                variants: [
+                  {
+                    title: "Custom inventory 1",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                    manage_inventory: true,
+                    options: { size: "l" },
+                    inventory_items: [
+                      {
+                        inventory_item_id: inventoryItem1.id,
+                        required_quantity: 4,
+                      },
+                      {
+                        inventory_item_id: inventoryItem2.id,
+                        required_quantity: 2,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          // Another product that shares inventory item in the inventory kit
+          await api.post(
+            `/admin/products`,
+            {
+              title: "Test product - 2",
+              handle: "test-2",
+              options: [{ title: "size", values: ["l"] }],
+              variants: [
+                {
+                  title: "W/ shared inventory item",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  manage_inventory: true,
+                  options: { size: "l" },
+                  inventory_items: [
+                    {
+                      inventory_item_id: inventoryItem2.id,
+                      required_quantity: 2,
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const response = await api
+            .delete(
+              `/admin/products/${productWithInventoryItems.id}`,
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({ deleted: true })
+          )
+
+          const item1Response = await api
+            .get(`/admin/inventory-items/${inventoryItem1.id}`, adminHeaders)
+            .catch((err) => {
+              return err.response
+            })
+
+          const item2Response = await api
+            .get(`/admin/inventory-items/${inventoryItem2.id}`, adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          console.log(item1Response, item2Response.data)
+
+          expect(item1Response.status).toEqual(404) // deleted since it's used only by the deleted product
+          expect(item2Response.status).toEqual(200) // not deleted since it belongs to other products
+          expect(item2Response.data.inventory_item).toEqual(
+            expect.objectContaining({ id: inventoryItem2.id })
+          )
+        })
+
         // TODO: Enable with http calls
         it.skip("successfully deletes a product variant and its associated prices", async () => {
           // // Validate that the price exists
