@@ -1,4 +1,9 @@
-import { Modules, ProductWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  MathBN,
+  MedusaError,
+  Modules,
+  ProductWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,10 +11,42 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  createStep,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, removeRemoteLinkStep } from "../../common"
+import { BigNumberInput } from "@medusajs/types"
+import {
+  emitEventStep,
+  removeRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
+
+export interface ValidateVariantInventoryStepInput {
+  variants: {
+    id: string
+    inventory: { id: string; reserved_quantity: BigNumberInput }[]
+  }[]
+}
+
+export const validateVariantInventoryStepId = "validate-variant-inventory"
+export const validateVariantInventoryStep = createStep(
+  validateVariantInventoryStepId,
+  async (data: ValidateVariantInventoryStepInput) => {
+    for (const variant of data.variants) {
+      if (
+        variant.inventory.some((inventoryItem) =>
+          MathBN.gt(inventoryItem.reserved_quantity, 0)
+        )
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot remove variant which has reserved inventory quantity."
+        )
+      }
+    }
+  }
+)
 
 export type DeleteProductsWorkflowInput = { ids: string[] }
 
@@ -26,6 +63,22 @@ export const deleteProductsWorkflow = createWorkflow(
         .flatMap((product) => product.variants)
         .map((variant) => variant.id)
     })
+
+    const variantsWithInventory = useRemoteQueryStep({
+      entry_point: "variants",
+      fields: [
+        "id",
+        "inventory.id",
+        "inventory.reserved_quantity",
+        "inventory.variants.id",
+      ],
+      variables: {
+        id: variantsToBeDeleted,
+      },
+      list: true,
+    })
+
+    validateVariantInventoryStep({ variants: variantsWithInventory })
 
     const [, deletedProduct] = parallelize(
       removeRemoteLinkStep({
