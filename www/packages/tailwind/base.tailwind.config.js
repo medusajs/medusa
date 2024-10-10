@@ -326,7 +326,7 @@ module.exports = {
         h1: [
           "24px",
           {
-            lineHeight: "36px",
+            lineHeight: "125%",
             fontWeight: "500",
           },
         ],
