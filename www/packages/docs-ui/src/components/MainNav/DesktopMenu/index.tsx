@@ -6,9 +6,14 @@ import {
   SidebarLeft,
   TimelineVertical,
 } from "@medusajs/icons"
-import { Button } from "@medusajs/ui"
 import React, { useRef, useState } from "react"
-import { getOsShortcut, Menu, useClickOutside, useSidebar } from "../../.."
+import {
+  Button,
+  getOsShortcut,
+  Menu,
+  useClickOutside,
+  useSidebar,
+} from "../../.."
 import clsx from "clsx"
 import { HouseIcon } from "../../Icons/House"
 import { MainNavThemeMenu } from "./ThemeMenu"
