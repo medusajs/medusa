@@ -238,46 +238,44 @@ function resolveModules(
       )
     }
 
-    // TODO: handle external modules later
-    if ("resolve" in moduleConfig) {
-      let serviceName: string =
-        "key" in moduleConfig && moduleConfig.key ? moduleConfig.key : ""
-      delete moduleConfig.key
-
-      if (!serviceName) {
-        if (
-          isString(moduleConfig.resolve!) &&
-          REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-        ) {
-          serviceName = REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-          acc[serviceName] = moduleConfig
-          return acc
-        }
-
-        let resolution = isString(moduleConfig.resolve!)
-          ? normalizeImportPathWithSource(moduleConfig.resolve as string)
-          : moduleConfig.resolve
-
-        const moduleExport = isString(resolution)
-          ? require(resolution)
-          : resolution
-
-        const defaultExport = resolveExports(moduleExport).default
-
-        const joinerConfig =
-          typeof defaultExport.service.prototype.__joinerConfig === "function"
-            ? defaultExport.service.prototype.__joinerConfig()
-            : defaultExport.service.prototype.__joinerConfig
-
-        serviceName = joinerConfig.serviceName
-      }
-
-      acc[serviceName] = moduleConfig
-    }
-
     if ("disable" in moduleConfig && "key" in moduleConfig) {
       acc[moduleConfig.key!] = moduleConfig
     }
+
+    // TODO: handle external modules later
+    let serviceName: string =
+      "key" in moduleConfig && moduleConfig.key ? moduleConfig.key : ""
+    delete moduleConfig.key
+
+    if (!serviceName && "resolve" in moduleConfig) {
+      if (
+        isString(moduleConfig.resolve!) &&
+        REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+      ) {
+        serviceName = REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+        acc[serviceName] = moduleConfig
+        return acc
+      }
+
+      let resolution = isString(moduleConfig.resolve!)
+        ? normalizeImportPathWithSource(moduleConfig.resolve as string)
+        : moduleConfig.resolve
+
+      const moduleExport = isString(resolution)
+        ? require(resolution)
+        : resolution
+
+      const defaultExport = resolveExports(moduleExport).default
+
+      const joinerConfig =
+        typeof defaultExport.service.prototype.__joinerConfig === "function"
+          ? defaultExport.service.prototype.__joinerConfig()
+          : defaultExport.service.prototype.__joinerConfig
+
+      serviceName = joinerConfig.serviceName
+    }
+
+    acc[serviceName] = moduleConfig
 
     return acc
   }, {})
