@@ -8,6 +8,7 @@ import {
   IOrderModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  OrderChangeDTO,
   OrderDTO,
   OrderReturnReasonDTO,
   OrderShippingMethodDTO,
@@ -2302,13 +2303,39 @@ export default class OrderModuleService<
     return await this.revertLastChange_(order, sharedContext)
   }
 
+  @InjectManager()
+  async undoLastChange(
+    orderId: string,
+    lastOrderChange?: Partial<OrderChangeDTO>,
+    @MedusaContext() sharedContext?: Context
+  ) {
+    const order = await super.retrieveOrder(
+      orderId,
+      {
+        select: ["id", "version"],
+      },
+      sharedContext
+    )
+
+    if (order.version < 2) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order with id ${orderId} has no previous versions`
+      )
+    }
+
+    return await this.undoLastChange_(order, lastOrderChange, sharedContext)
+  }
+
   @InjectTransactionManager()
-  protected async revertLastChange_(
+  protected async undoLastChange_(
     order: OrderDTO,
+    lastOrderChange?: Partial<OrderChangeDTO>,
     sharedContext?: Context
   ): Promise<void> {
     const currentVersion = order.version
 
+    const updatePromises: Promise<any>[] = []
     // Order Changes
     const orderChanges = await this.orderChangeService_.list(
       {
@@ -2318,9 +2345,18 @@ export default class OrderModuleService<
       { select: ["id", "version"] },
       sharedContext
     )
-    const orderChangesIds = orderChanges.map((change) => change.id)
 
-    await this.orderChangeService_.softDelete(orderChangesIds, sharedContext)
+    const orderChangesIds = orderChanges.map((change) => {
+      return {
+        id: change.id,
+        status: lastOrderChange?.status ?? OrderChangeStatus.PENDING,
+        confirmed_at: null,
+      }
+    })
+
+    updatePromises.push(
+      this.orderChangeService_.update(orderChangesIds, sharedContext)
+    )
 
     // Order Changes Actions
     const orderChangesActions = await this.orderChangeActionService_.list(
@@ -2331,11 +2367,18 @@ export default class OrderModuleService<
       { select: ["id", "version"] },
       sharedContext
     )
-    const orderChangeActionsIds = orderChangesActions.map((action) => action.id)
+    const orderChangeActionsIds = orderChangesActions.map((action) => {
+      return {
+        id: action.id,
+        applied: false,
+      }
+    })
 
-    await this.orderChangeActionService_.softDelete(
-      orderChangeActionsIds,
-      sharedContext
+    updatePromises.push(
+      this.orderChangeActionService_.update(
+        orderChangeActionsIds,
+        sharedContext
+      )
     )
 
     // Order Summary
@@ -2349,7 +2392,9 @@ export default class OrderModuleService<
     )
     const orderSummaryIds = orderSummary.map((summary) => summary.id)
 
-    await this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    updatePromises.push(
+      this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    )
 
     // Order Items
     const orderItems = await this.orderItemService_.list(
@@ -2362,7 +2407,9 @@ export default class OrderModuleService<
     )
     const orderItemIds = orderItems.map((summary) => summary.id)
 
-    await this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    updatePromises.push(
+      this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    )
 
     // Order Shipping
     const orderShippings = await this.orderShippingService_.list(
@@ -2375,29 +2422,141 @@ export default class OrderModuleService<
     )
     const orderShippingIds = orderShippings.map((sh) => sh.id)
 
-    await this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    updatePromises.push(
+      this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    )
 
     // Order
-    await this.orderService_.update(
+    updatePromises.push(
+      this.orderService_.update(
+        {
+          selector: {
+            id: order.id,
+          },
+          data: {
+            version: order.version - 1,
+          },
+        },
+        sharedContext
+      )
+    )
+
+    await promiseAll(updatePromises)
+  }
+
+  @InjectTransactionManager()
+  protected async revertLastChange_(
+    order: OrderDTO,
+    sharedContext?: Context
+  ): Promise<void> {
+    const currentVersion = order.version
+
+    const updatePromises: Promise<any>[] = []
+    // Order Changes
+    const orderChanges = await this.orderChangeService_.list(
       {
-        selector: {
-          id: order.id,
-        },
-        data: {
-          version: order.version - 1,
-        },
+        order_id: order.id,
+        version: currentVersion,
       },
+      { select: ["id", "version"] },
       sharedContext
+    )
+    const orderChangesIds = orderChanges.map((change) => change.id)
+
+    updatePromises.push(
+      this.orderChangeService_.softDelete(orderChangesIds, sharedContext)
+    )
+
+    // Order Changes Actions
+    const orderChangesActions = await this.orderChangeActionService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderChangeActionsIds = orderChangesActions.map((action) => action.id)
+
+    updatePromises.push(
+      this.orderChangeActionService_.softDelete(
+        orderChangeActionsIds,
+        sharedContext
+      )
+    )
+
+    // Order Summary
+    const orderSummary = await this.orderSummaryService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderSummaryIds = orderSummary.map((summary) => summary.id)
+
+    updatePromises.push(
+      this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+    )
+
+    // Order Items
+    const orderItems = await this.orderItemService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderItemIds = orderItems.map((summary) => summary.id)
+
+    updatePromises.push(
+      this.orderItemService_.softDelete(orderItemIds, sharedContext)
+    )
+
+    // Order Shipping
+    const orderShippings = await this.orderShippingService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderShippingIds = orderShippings.map((sh) => sh.id)
+
+    updatePromises.push(
+      this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+    )
+
+    // Order
+    updatePromises.push(
+      this.orderService_.update(
+        {
+          selector: {
+            id: order.id,
+          },
+          data: {
+            version: order.version - 1,
+          },
+        },
+        sharedContext
+      )
     )
 
     // Returns
-    await this.returnService_.delete(
-      {
-        order_id: order.id,
-        order_version: currentVersion,
-      },
-      sharedContext
+    updatePromises.push(
+      this.returnService_.delete(
+        {
+          order_id: order.id,
+          order_version: currentVersion,
+        },
+        sharedContext
+      )
     )
+
+    await promiseAll(updatePromises)
   }
 
   private async getActiveOrderChange_(

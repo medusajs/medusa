@@ -3197,6 +3197,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-hook/resize-observer@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@react-hook/resize-observer@npm:2.0.2"
+  dependencies:
+    "@react-hook/latest": ^1.0.2
+    "@react-hook/passive-layout-effect": ^1.2.0
+  peerDependencies:
+    react: ">=18"
+  checksum: a88f088bd5b87fea80daca391bdea9823dc38651bd112f0c607b057d9c8381f37395cf5a01a79ba7ab24369c4b48acf912cfef0244e6610d72ea3074415e9c32
+  languageName: node
+  linkType: hard
+
 "@react-stately/datepicker@npm:^3.5.0, @react-stately/datepicker@npm:^3.9.2":
   version: 3.9.2
   resolution: "@react-stately/datepicker@npm:3.9.2"
@@ -5553,6 +5565,7 @@ __metadata:
     "@medusajs/ui": ^3.0.0
     "@next/bundle-analyzer": ^14.2.14
     "@next/mdx": 14.2.14
+    "@react-hook/resize-observer": ^2.0.2
     "@readme/openapi-parser": ^2.5.0
     "@types/jsdom": ^21.1.1
     "@types/mapbox__rehype-prism": ^0.8.0

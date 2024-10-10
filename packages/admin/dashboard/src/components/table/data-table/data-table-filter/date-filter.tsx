@@ -1,8 +1,8 @@
-import { EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
+import { EllipseMiniSolid } from "@medusajs/icons"
 import { DatePicker, Text, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import isEqual from "lodash/isEqual"
-import { MouseEvent, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 
 import { t } from "i18next"
 import { useTranslation } from "react-i18next"
@@ -10,6 +10,7 @@ import { useDate } from "../../../../hooks/use-date"
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
 import { IFilter } from "./types"
+import FilterChip from "./filter-chip"
 
 type DateFilterProps = IFilter
 
@@ -96,6 +97,8 @@ export const DateFilter = ({
 
   const displayValue = getDisplayValueFromPresets() || getCustomDisplayValue()
 
+  const [previousValue, setPreviousValue] = useState<string | undefined>(displayValue)
+
   const handleRemove = () => {
     selectedParams.delete()
     removeFilter(key)
@@ -105,6 +108,7 @@ export const DateFilter = ({
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+    setPreviousValue(displayValue)
 
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -119,7 +123,8 @@ export const DateFilter = ({
 
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <DateDisplay
+      <FilterChip
+        hadPreviousValue={!!previousValue}
         label={label}
         value={displayValue}
         onRemove={handleRemove}
@@ -233,73 +238,6 @@ export const DateFilter = ({
         </Popover.Portal>
       )}
     </Popover.Root>
-  )
-}
-
-type DateDisplayProps = {
-  label: string
-  value?: string
-  readonly?: boolean
-  onRemove: () => void
-}
-
-const DateDisplay = ({
-  label,
-  value,
-  readonly,
-  onRemove,
-}: DateDisplayProps) => {
-  const handleRemove = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onRemove()
-  }
-
-  return (
-    <Popover.Trigger
-      asChild
-      className={clx(
-        "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center rounded-md",
-        {
-          "hover:bg-ui-bg-field-hover": !readonly,
-          "data-[state=open]:bg-ui-bg-field-hover": !readonly,
-        }
-      )}
-    >
-      <div>
-        <div
-          className={clx("flex items-center justify-center px-2 py-1", {
-            "border-r": !!value,
-          })}
-        >
-          <Text size="small" weight="plus" leading="compact">
-            {label}
-          </Text>
-        </div>
-        {value && (
-          <div className="flex items-center">
-            <div key={value} className="border-r p-1 px-2">
-              <Text size="small" weight="plus" leading="compact">
-                {value}
-              </Text>
-            </div>
-          </div>
-        )}
-        {!readonly && value && (
-          <div>
-            <button
-              onClick={handleRemove}
-              className={clx(
-                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
-                "hover:bg-ui-bg-subtle-hover",
-                "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
-              )}
-            >
-              <XMarkMini />
-            </button>
-          </div>
-        )}
-      </div>
-    </Popover.Trigger>
   )
 }
 

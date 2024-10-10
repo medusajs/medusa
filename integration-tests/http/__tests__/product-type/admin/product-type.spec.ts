@@ -44,12 +44,20 @@ medusaIntegrationTestRunner({
         expect(res.status).toEqual(200)
         expect(res.data.product_types).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({
+            {
+              id: expect.stringMatching(/ptyp_.{24}/),
               value: "test1",
-            }),
-            expect.objectContaining({
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              metadata: null,
+            },
+            {
+              id: expect.stringMatching(/ptyp_.{24}/),
               value: "test2",
-            }),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              metadata: null,
+            },
           ])
         )
       })
@@ -61,13 +69,35 @@ medusaIntegrationTestRunner({
 
         // The value of the type should match the search param
         expect(res.data.product_types).toEqual([
-          expect.objectContaining({
+          {
+            id: expect.stringMatching(/ptyp_.{24}/),
             value: "test1",
-          }),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            metadata: null,
+          },
         ])
       })
 
       // BREAKING: Removed a test around filtering based on discount condition id, which is no longer supported
+    })
+
+    describe("/admin/product-types/:id", () => {
+      it("returns a product type", async () => {
+        const res = await api.get(
+          `/admin/product-types/${type1.id}`,
+          adminHeaders
+        )
+
+        expect(res.status).toEqual(200)
+        expect(res.data.product_type).toEqual({
+          id: expect.stringMatching(/ptyp_.{24}/),
+          value: "test1",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          metadata: null,
+        })
+      })
     })
   },
 })

@@ -22,7 +22,9 @@ export const ProductOrganization = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("products.organization.edit.header")}</Heading>
+        <RouteDrawer.Title asChild>
+          <Heading>{t("products.organization.edit.header")}</Heading>
+        </RouteDrawer.Title>
       </RouteDrawer.Header>
       {!isLoading && product && <ProductOrganizationForm product={product} />}
     </RouteDrawer>
