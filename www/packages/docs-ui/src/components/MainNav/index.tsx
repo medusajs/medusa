@@ -32,7 +32,7 @@ export const MainNav = () => {
       <div className="flex items-center gap-docs_1">
         <div className="flex items-center gap-[10px]">
           <Button
-            className="lg:hidden my-docs_0.75"
+            className="lg:hidden my-docs_0.75 !p-[6.5px]"
             variant="transparent-clear"
             onClick={() => setMobileSidebarOpen(true)}
           >
