@@ -70,6 +70,7 @@ export function defineConfig(
     [Modules.CACHE]: true,
     [Modules.EVENT_BUS]: true,
     [Modules.WORKFLOW_ENGINE]: true,
+    [Modules.LOCKING]: true,
     [Modules.STOCK_LOCATION]: true,
     [Modules.INVENTORY]: true,
     [Modules.PRODUCT]: true,

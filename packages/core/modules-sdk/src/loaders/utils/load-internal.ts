@@ -90,13 +90,23 @@ export async function resolveModuleExports({
   }
 }
 
-export async function loadInternalModule(
-  container: MedusaContainer,
-  resolution: ModuleResolution,
-  logger: Logger,
-  migrationOnly?: boolean,
+export async function loadInternalModule(args: {
+  container: MedusaContainer
+  resolution: ModuleResolution
+  logger: Logger
+  migrationOnly?: boolean
   loaderOnly?: boolean
-): Promise<{ error?: Error } | void> {
+  loadingProviders?: boolean
+}): Promise<{ error?: Error } | void> {
+  const {
+    container,
+    resolution,
+    logger,
+    migrationOnly,
+    loaderOnly,
+    loadingProviders,
+  } = args
+
   const keyName = !loaderOnly
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
@@ -121,7 +131,11 @@ export async function loadInternalModule(
     })
   }
 
-  if (!loadedModule?.service && !moduleResources.moduleService) {
+  if (
+    !loadingProviders &&
+    !loadedModule?.service &&
+    !moduleResources.moduleService
+  ) {
     container.register({
       [keyName]: asValue(undefined),
     })
@@ -131,20 +145,6 @@ export async function loadInternalModule(
         `No service found in module ${resolution?.definition?.label}. Make sure your module exports a service.`
       ),
     }
-  }
-
-  if (migrationOnly) {
-    const moduleService_ = moduleResources.moduleService ?? loadedModule.service
-
-    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
-    const moduleService = {
-      __joinerConfig: moduleService_.prototype.__joinerConfig,
-    }
-
-    container.register({
-      [keyName]: asValue(moduleService),
-    })
-    return
   }
 
   const localContainer = createMedusaContainer()
@@ -175,6 +175,45 @@ export async function loadInternalModule(
         return container
       })
     )
+  }
+  // if module has providers, load them
+  if (!loadingProviders) {
+    const providers = (resolution?.options?.providers as any[]) ?? []
+    for (const provider of providers) {
+      await loadInternalModule({
+        container,
+        resolution: {
+          ...resolution,
+          definition: {
+            ...resolution.definition,
+            key: provider.id,
+          },
+          resolutionPath: provider.resolve,
+        },
+        logger,
+        migrationOnly,
+        loadingProviders: true,
+      })
+    }
+  }
+
+  if (loadingProviders) {
+    container.registerAdd("__providers", asValue(moduleResources))
+  }
+
+  if (migrationOnly && !loadingProviders) {
+    const moduleService_ = moduleResources.moduleService ?? loadedModule.service
+
+    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
+    const moduleService = {
+      __joinerConfig: moduleService_.prototype.__joinerConfig,
+    }
+
+    container.register({
+      [keyName]: asValue(moduleService),
+    })
+
+    return
   }
 
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
@@ -210,6 +249,9 @@ export async function loadInternalModule(
     await service.__hooks?.onApplicationPrepareShutdown?.()
     await service.__hooks?.onApplicationShutdown?.()
   }
+
+  console.log(Object.keys(container.cradle), "---------------")
+  console.log(container.resolve("__providers"), "---------------")
 }
 
 export async function loadModuleMigrations(
@@ -365,11 +407,14 @@ export async function loadResources({
       migrationPath: normalizedPath + "/migrations",
     })
 
-    generateJoinerConfigIfNecessary({
-      moduleResolution,
-      service: moduleService,
-      models: potentialModels,
-    })
+    // if a module service is provided, we generate a joiner config
+    if (moduleService) {
+      generateJoinerConfigIfNecessary({
+        moduleResolution,
+        service: moduleService,
+        models: potentialModels,
+      })
+    }
 
     return {
       services: potentialServices,
