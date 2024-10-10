@@ -782,7 +782,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("DELETE /admin/inventory-items/:id", () => {
-        it("should remove associated levels and reservations when deleting an inventory item", async () => {
+        it("fails to remove inventory item with reservations", async () => {
           await api.post(
             `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
             {
@@ -821,30 +821,16 @@ medusaIntegrationTestRunner({
           ).data
           expect(levelsResponse.count).toEqual(1)
 
-          const res = await api.delete(
-            `/admin/inventory-items/${inventoryItem1.id}`,
-            adminHeaders
+          const res = await api
+            .delete(`/admin/inventory-items/${inventoryItem1.id}`, adminHeaders)
+            .catch((err) => {
+              return err.response
+            })
+
+          expect(res.status).toEqual(400)
+          expect(res.data.message).toEqual(
+            `Cannot remove inventory item: ${inventoryItem1.id} which has reservations.`
           )
-
-          expect(res.status).toEqual(200)
-
-          const reservationsResponseAfterDelete = (
-            await api.get(
-              `/admin/reservations?location_id[]=${stockLocation1.id}`,
-              adminHeaders
-            )
-          ).data
-
-          expect(reservationsResponseAfterDelete.count).toEqual(0)
-
-          const levelsResponseAfterDelete = (
-            await api.get(
-              `/admin/inventory-items/${inventoryItem1.id}/location-levels?location_id[]=${stockLocation1.id}`,
-              adminHeaders
-            )
-          ).data
-
-          expect(levelsResponseAfterDelete.count).toEqual(0)
         })
 
         it("should remove the product variant associations when deleting an inventory item", async () => {
