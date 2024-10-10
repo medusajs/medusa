@@ -20,7 +20,7 @@ import {
   ProductStatus,
   PromotionRuleOperator,
   PromotionType,
-  RuleOperator
+  RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -2131,6 +2131,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
+
           expect(response.data.cart).toEqual(
             expect.objectContaining({
               id: cart.id,
