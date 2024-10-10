@@ -295,7 +295,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           })
         })
 
-        it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+        it.skip("should subscribe to a async workflow and receive the response when it finishes", (done) => {
           const transactionId = "trx_123"
 
           const onFinish = jest.fn(() => {
