@@ -1,28 +1,19 @@
-import { Outlet } from "react-router-dom"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { CategoryListTable } from "./components/category-list-table"
 
-import after from "virtual:medusa/widgets/product_category/list/after"
-import before from "virtual:medusa/widgets/product_category/list/before"
-
 export const CategoryList = () => {
+  const { getWidgets } = useDashboardExtension()
+
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("product_category.list.after"),
+        before: getWidgets("product_category.list.before"),
+      }}
+      hasOutlet
+    >
       <CategoryListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

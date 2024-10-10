@@ -18,6 +18,7 @@ import {
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { useRemoteQueryStep } from "../../../common"
+import { deleteReservationsByLineItemsStep } from "../../../reservation"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -25,7 +26,6 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
-import { deleteReservationsByLineItemsStep } from "../../../reservation"
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
@@ -80,6 +80,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.order_id",
         "actions.return_id",
@@ -133,8 +134,16 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
-    const lineItemIds = transform({ orderItems }, (data) =>
-      data.orderItems.items.map(({ id }) => id)
+    const lineItemIds = transform(
+      { orderItems, previousOrderItems: order.items },
+
+      (data) => {
+        const previousItemIds = (data.previousOrderItems || []).map(
+          ({ id }) => id
+        ) // items that have been removed with the change
+        const newItemIds = data.orderItems.items.map(({ id }) => id)
+        return [...new Set([...previousItemIds, newItemIds])]
+      }
     )
 
     deleteReservationsByLineItemsStep(lineItemIds)
@@ -162,7 +171,6 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
           const unitPrice: BigNumberInput =
             itemAction.raw_unit_price ?? itemAction.unit_price
 
-
           const updateAction = itemAction.actions!.find(
             (a) => a.action === ChangeActionType.ITEM_UPDATE
           )
@@ -187,7 +195,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             id: ordItem.id,
             variant_id: ordItem.variant_id,
             quantity: reservationQuantity,
-            unit_price: unitPrice
+            unit_price: unitPrice,
           })
           allVariants.push(ordItem.variant)
         })

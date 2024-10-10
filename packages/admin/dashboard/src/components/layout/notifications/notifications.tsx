@@ -126,17 +126,17 @@ const Notification = ({
 
   return (
     <>
-      <div className="flex items-start justify-center gap-3 border-b p-6 relative">
+      <div className="relative flex items-start justify-center gap-3 border-b p-6">
         <div className="text-ui-fg-muted flex size-5 items-center justify-center">
           <InformationCircleSolid />
         </div>
         <div className="flex w-full flex-col gap-y-3">
           <div className="flex flex-col">
-            <div className="items-center flex justify-between">
+            <div className="flex items-center justify-between">
               <Text size="small" leading="compact" weight="plus">
                 {data.title}
               </Text>
-              <div className="items-center flex justify-center align-center gap-2">
+              <div className="align-center flex items-center justify-center gap-2">
                 <Text
                   as={"span"}
                   className={clx("text-ui-fg-subtle", {
@@ -152,7 +152,7 @@ const Notification = ({
                 </Text>
                 {unread && (
                   <div
-                    className="h-2 w-2 rounded bg-ui-bg-interactive"
+                    className="bg-ui-bg-interactive h-2 w-2 rounded"
                     role="status"
                   />
                 )}
@@ -201,7 +201,7 @@ const useUnreadNotifications = () => {
   const [hasUnread, setHasUnread] = useState(false)
   const { notifications } = useNotifications(
     { limit: 1, offset: 0, fields: "created_at" },
-    { refetchInterval: 3000 }
+    { refetchInterval: 60_000 }
   )
   const lastNotification = notifications?.[0]
 

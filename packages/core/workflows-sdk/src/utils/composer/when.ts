@@ -52,9 +52,9 @@ export function when(input, condition) {
       if (ret?.__type !== OrchestrationUtils.SymbolWorkflowStep) {
         const retStep = createStep(
           "when-then-" + ulid(),
-          () => new StepResponse(ret)
+          ({ input }: { input: any }) => new StepResponse(input)
         )
-        returnStep = retStep()
+        returnStep = retStep({ input: ret })
       }
 
       for (const step of applyCondition) {
