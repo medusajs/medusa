@@ -38,7 +38,6 @@ export const deleteProductsWorkflow = createWorkflow(
         "id",
         "inventory.id",
         "manage_inventory",
-        "inventory.reserved_quantity",
         "inventory.variants.id",
       ],
       variables: {
