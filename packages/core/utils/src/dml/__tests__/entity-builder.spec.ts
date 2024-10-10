@@ -4296,6 +4296,7 @@ describe("Entity builder", () => {
             user: model.belongsTo(() => user),
           })
           .cascades({
+            // @ts-expect-error "User cannot be mentioned in cascades"
             delete: ["user"],
           })
 
