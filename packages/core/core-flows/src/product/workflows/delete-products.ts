@@ -1,9 +1,4 @@
-import {
-  MathBN,
-  MedusaError,
-  Modules,
-  ProductWorkflowEvents,
-} from "@medusajs/framework/utils"
+import { Modules, ProductWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -11,7 +6,6 @@ import {
   createWorkflow,
   parallelize,
   transform,
-  createStep,
 } from "@medusajs/framework/workflows-sdk"
 import {
   emitEventStep,
@@ -20,10 +14,7 @@ import {
 } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
-import {
-  deleteInventoryItemStep,
-  deleteInventoryItemWorkflow,
-} from "../../inventory"
+import { deleteInventoryItemWorkflow } from "../../inventory"
 
 export type DeleteProductsWorkflowInput = { ids: string[] }
 
