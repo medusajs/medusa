@@ -25,11 +25,15 @@ describe("manyToOne - belongTo", () => {
   beforeEach(async () => {
     MetadataStorage.clear()
 
-    const team = model.define("team", {
-      id: model.id().primaryKey(),
-      name: model.text(),
-      user: model.belongsTo(() => user, { mappedBy: "teams" }),
-    })
+    const team = model
+      .define("team", {
+        id: model.id().primaryKey(),
+        name: model.text(),
+        user: model.belongsTo(() => user, { mappedBy: "teams" }),
+      })
+      .cascades({
+        delete: ["user"],
+      })
 
     const user = model.define("user", {
       id: model.id().primaryKey(),
@@ -148,4 +152,6 @@ describe("manyToOne - belongTo", () => {
       ],
     })
   })
+
+  /*it(`should handle soft deletion and cascade correctly`, async () => {})*/
 })

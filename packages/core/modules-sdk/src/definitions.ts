@@ -34,6 +34,13 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INDEX]: "@medusajs/medusa/index-module",
 }
 
+export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
+  MODULE_PACKAGE_NAMES
+).reduce((acc, [key, value]) => {
+  acc[value] = key
+  return acc
+}, {})
+
 export const ModulesDefinition: {
   [key: string]: ModuleDefinition
 } = {
