@@ -265,8 +265,9 @@ function resolveModules(
         const defaultExport = resolveExports(moduleExport).default
 
         const joinerConfig =
-          defaultExport.service.prototype.__joinerConfig?.() ??
-          defaultExport.service.prototype.__joinerConfig
+          typeof defaultExport.service.prototype.__joinerConfig === "function"
+            ? defaultExport.service.prototype.__joinerConfig()
+            : defaultExport.service.prototype.__joinerConfig
 
         serviceName = joinerConfig.serviceName
       }
