@@ -13,7 +13,6 @@ import {
   transform,
   createStep,
 } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput } from "@medusajs/types"
 import {
   emitEventStep,
   removeRemoteLinkStep,
@@ -21,32 +20,10 @@ import {
 } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
-
-export interface ValidateVariantInventoryStepInput {
-  variants: {
-    id: string
-    inventory: { id: string; reserved_quantity: BigNumberInput }[]
-  }[]
-}
-
-export const validateVariantInventoryStepId = "validate-variant-inventory"
-export const validateVariantInventoryStep = createStep(
-  validateVariantInventoryStepId,
-  async (data: ValidateVariantInventoryStepInput) => {
-    for (const variant of data.variants) {
-      if (
-        variant.inventory.some((inventoryItem) =>
-          MathBN.gt(inventoryItem.reserved_quantity, 0)
-        )
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot remove variant which has reserved inventory quantity."
-        )
-      }
-    }
-  }
-)
+import {
+  deleteInventoryItemStep,
+  deleteInventoryItemWorkflow,
+} from "../../inventory"
 
 export type DeleteProductsWorkflowInput = { ids: string[] }
 
@@ -69,6 +46,7 @@ export const deleteProductsWorkflow = createWorkflow(
       fields: [
         "id",
         "inventory.id",
+        "manage_inventory",
         "inventory.reserved_quantity",
         "inventory.variants.id",
       ],
@@ -78,7 +56,32 @@ export const deleteProductsWorkflow = createWorkflow(
       list: true,
     })
 
-    validateVariantInventoryStep({ variants: variantsWithInventory })
+    const toDeleteInventoryItemIds = transform(
+      { variants: variantsWithInventory },
+      (data) => {
+        const variantsMap = new Map(data.variants.map((v) => [v.id, true]))
+
+        const toDeleteIds: string[] = []
+
+        for (const variant of data.variants) {
+          for (const inventoryItem of variant.inventory) {
+            if (!variant.manage_inventory) {
+              continue
+            }
+
+            if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
+              toDeleteIds.push(inventoryItem.id)
+            }
+          }
+        }
+
+        return Array.from(new Set(toDeleteIds))
+      }
+    )
+
+    deleteInventoryItemWorkflow.runAsStep({
+      input: toDeleteInventoryItemIds,
+    })
 
     const [, deletedProduct] = parallelize(
       removeRemoteLinkStep({
