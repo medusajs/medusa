@@ -44,7 +44,7 @@ export const MainNavItemDropdown = ({
       </div>
       <Menu
         className={clsx(
-          "absolute top-[calc(100%+4px)] min-w-[190px]",
+          "absolute top-[calc(100%+4px)] -left-docs_0.75 min-w-[190px]",
           !isOpen && "hidden"
         )}
         items={item.children}
