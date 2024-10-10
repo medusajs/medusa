@@ -21,7 +21,7 @@ export const POST = async (
 
   await addToCartWorkflow(req.scope).run({
     input: workflowInput,
-  })
+  } as any)
 
   const updatedCart = await refetchCart(
     req.params.id,
