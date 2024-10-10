@@ -2,11 +2,9 @@ import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
 import Providers from "@/providers"
 import "./globals.css"
-import { TightLayout } from "docs-ui"
 import { config } from "@/config"
 import clsx from "clsx"
-import Feedback from "@/components/Feedback"
-import EditButton from "@/components/EditButton"
+import { BareboneLayout } from "docs-ui"
 
 export const metadata: Metadata = {
   title: {
@@ -36,17 +34,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <TightLayout
+    <BareboneLayout
       ProvidersComponent={Providers}
-      sidebarProps={{
-        expandItems: true,
-      }}
-      showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
-      feedbackComponent={<Feedback className="my-2" />}
-      editComponent={<EditButton />}
     >
       {children}
-    </TightLayout>
+    </BareboneLayout>
   )
 }

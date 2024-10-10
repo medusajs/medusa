@@ -7,7 +7,7 @@ export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/ne
 export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
-    path: `/v2`,
+    path: `/v2/learn`,
     title: "Get Started",
     project: "book",
   },

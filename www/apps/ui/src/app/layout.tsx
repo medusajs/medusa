@@ -4,7 +4,7 @@ import { Providers } from "@/providers"
 
 import { siteConfig } from "@/config/site"
 import "../styles/globals.css"
-import { TightLayout } from "docs-ui"
+import { BareboneLayout, TightLayout } from "docs-ui"
 import { Inter, Roboto_Mono } from "next/font/google"
 import clsx from "clsx"
 
@@ -33,15 +33,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <TightLayout
+    <BareboneLayout
       ProvidersComponent={Providers}
-      sidebarProps={{
-        expandItems: true,
-      }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
-      showBanner={false}
     >
-      {children}
-    </TightLayout>
+      <TightLayout
+        sidebarProps={{
+          expandItems: true,
+        }}
+        showBanner={false}
+      >
+        {children}
+      </TightLayout>
+    </BareboneLayout>
   )
 }

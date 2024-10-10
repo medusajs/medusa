@@ -50,7 +50,7 @@ export const MainNavDesktopMenu = () => {
             type: "link",
             icon: <HouseIcon />,
             title: "Homepage",
-            link: "https://medusajs.com",
+            link: "https://docs.medusajs.com/v2",
           },
           {
             type: "link",
