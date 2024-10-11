@@ -10,7 +10,7 @@ export interface AdminCustomerResponse {
 }
 
 export type AdminCustomerListResponse = PaginatedResponse<{
-  customers: AdminCustomer
+  customers: AdminCustomer[]
 }>
 
 export interface AdminCustomerAddressResponse {
