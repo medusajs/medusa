@@ -26,10 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <BareboneLayout
-      ProvidersComponent={Providers}
-      bodyClassName={clsx(inter.variable, robotoMono.variable)}
-    >
+    <BareboneLayout htmlClassName={clsx(inter.variable, robotoMono.variable)}>
       <WideLayout
         sidebarProps={{
           expandItems: false,
@@ -37,6 +34,7 @@ export default function RootLayout({
         showToc={false}
         showBanner={false}
         showBreadcrumbs={false}
+        ProvidersComponent={Providers}
       >
         {children}
       </WideLayout>

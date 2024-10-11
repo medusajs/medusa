@@ -36,14 +36,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <BareboneLayout
-      ProvidersComponent={Providers}
-      bodyClassName={clsx(inter.variable, robotoMono.variable)}
-    >
+    <BareboneLayout htmlClassName={clsx(inter.variable, robotoMono.variable)}>
       <TightLayout
         sidebarProps={{
           expandItems: true,
         }}
+        ProvidersComponent={Providers}
       >
         {children}
         <Feedback className="my-2" />

@@ -340,7 +340,7 @@ module.exports = {
         h3: [
           "16px",
           {
-            lineHeight: "24px",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],

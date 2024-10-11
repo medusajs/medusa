@@ -17,7 +17,12 @@ import { MainNavDesktopMenu } from "./DesktopMenu"
 import { SidebarLeftIcon } from "../Icons/SidebarLeft"
 import { MainNavMobileMenu } from "./MobileMenu"
 
-export const MainNav = () => {
+type MainNavProps = {
+  className?: string
+  itemsClassName?: string
+}
+
+export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
   const { reportIssueLink, editDate } = useMainNav()
   const { setMobileSidebarOpen } = useSidebar()
 
@@ -26,7 +31,8 @@ export const MainNav = () => {
       className={clsx(
         "flex justify-between items-center",
         "px-docs_1 w-full z-20",
-        "sticky top-0 bg-medusa-bg-base"
+        "sticky top-0 bg-medusa-bg-base",
+        className
       )}
     >
       <div className="flex items-center gap-docs_1">
@@ -43,7 +49,7 @@ export const MainNav = () => {
             iconWrapperClassName="my-[14px]"
           />
         </div>
-        <MainNavItems />
+        <MainNavItems className={itemsClassName} />
       </div>
       <div className="flex items-center gap-docs_0.75 my-docs_0.75">
         <div className="lg:flex items-center gap-docs_0.5 text-medusa-fg-subtle hidden">

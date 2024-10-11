@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
-import { Inter, Roboto_Mono } from "next/font/google"
-import Providers from "@/providers"
 import "./globals.css"
 import { config } from "@/config"
-import clsx from "clsx"
 import { BareboneLayout } from "docs-ui"
+import { inter, robotoMono } from "./fonts"
+import clsx from "clsx"
 
 export const metadata: Metadata = {
   title: {
@@ -17,27 +16,13 @@ export const metadata: Metadata = {
   ),
 }
 
-export const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500"],
-})
-
-export const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  variable: "--font-roboto-mono",
-})
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <BareboneLayout
-      ProvidersComponent={Providers}
-      bodyClassName={clsx(inter.variable, robotoMono.variable)}
-    >
+    <BareboneLayout htmlClassName={clsx(inter.variable, robotoMono.variable)}>
       {children}
     </BareboneLayout>
   )
