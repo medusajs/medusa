@@ -2,13 +2,14 @@
 
 import clsx from "clsx"
 import React from "react"
-import { MenuItemAction } from "types"
+import { MenuItem, MenuItemAction } from "types"
 
 export type MenuActionProps = {
   item: MenuItemAction
+  onClick?: (item: MenuItem) => void
 }
 
-export const MenuAction = ({ item }: MenuActionProps) => {
+export const MenuAction = ({ item, onClick }: MenuActionProps) => {
   return (
     <div className="px-docs_0.25">
       <span
@@ -19,7 +20,10 @@ export const MenuAction = ({ item }: MenuActionProps) => {
           "text-medusa-fg-base cursor-pointer"
         )}
         tabIndex={-1}
-        onClick={item.action}
+        onClick={() => {
+          item.action()
+          onClick?.(item)
+        }}
       >
         <span className="text-medusa-fg-subtle mt-[2.5px] block">
           {item.icon}
