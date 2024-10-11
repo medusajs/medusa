@@ -60,6 +60,7 @@
 "@medusajs/admin-vite-plugin": patch
 "@medusajs/framework": patch
 "@medusajs/index": patch
+"@medusajs/locking": patch
 ---
 
 chore: Preview release changeset

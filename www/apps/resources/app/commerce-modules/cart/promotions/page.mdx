@@ -14,7 +14,7 @@ In this document, you’ll learn how a promotion is applied to a cart’s line i
 
 An adjustment line indicates a change to an item or a shipping method’s amount. It’s used to apply promotions or discounts on a cart.
 
-The `LineItemAdjustment` data model represents changes on a line item, and the `ShippingMethodAdjustment` data model represents changes on a shipping method.
+The [LineItemAdjustment](/references/cart/models/LineItemAdjustment) data model represents changes on a line item, and the [ShippingMethodAdjustment](/references/cart/models/ShippingMethodAdjustment) data model represents changes on a shipping method.
 
 ![A diagram showcasing the relations between other data models and adjustment line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534248/Medusa%20Resources/cart-adjustments_k4sttb.jpg)
 
@@ -24,7 +24,7 @@ The `amount` property of the adjustment line indicates the amount to be discount
 
 ## Discountable Option
 
-The `LineItem` data model has an `is_discountable` property that indicates whether promotions can be applied to the line item. It’s enabled by default.
+The [LineItem](/references/cart/models/LineItem) data model has an `is_discountable` property that indicates whether promotions can be applied to the line item. It’s enabled by default.
 
 When disabled, a promotion can’t be applied to a line item. In the context of the Promotion Module, the promotion isn’t applied to the line item even if it matches its rules.
 
@@ -33,13 +33,15 @@ When disabled, a promotion can’t be applied to a line item. In the context of 
 
 ## Promotion Actions
 
-When using the Cart and Promotion modules together, use the [computeActions method of the Promotion Module’s main service](/references/promotion/computeActions). It retrieves the actions of line items and shipping methods.
+When using the Cart and Promotion modules together, such as in the Medusa application, use the [computeActions method of the Promotion Module’s main service](/references/promotion/computeActions). It retrieves the actions of line items and shipping methods.
 
 <Note>
 
 Learn more about actions in the [Promotion Module’s documentation](../../promotion/actions/page.mdx).
 
 </Note>
+
+For example:
 
 ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
@@ -101,7 +103,7 @@ The `computeActions` method accepts the existing adjustments of line items and s
 
 Then, use the returned `addItemAdjustment` and `addShippingMethodAdjustment` actions to set the cart’s line item and the shipping method’s adjustments.
 
-```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
+```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
   AddItemAdjustmentAction,
   AddShippingMethodAdjustment,
