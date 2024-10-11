@@ -7,6 +7,7 @@ import {
   MedusaContainer,
   ModuleExports,
   ModuleLoaderFunction,
+  ModuleProvider,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -90,6 +91,36 @@ export async function resolveModuleExports({
   }
 }
 
+async function loadInternalProvider(
+  args: {
+    container: MedusaContainer
+    resolution: ModuleResolution
+    logger: Logger
+    migrationOnly?: boolean
+    loaderOnly?: boolean
+  },
+  providers: ModuleProvider[]
+) {
+  const { container, resolution, logger, migrationOnly } = args
+
+  for (const provider of providers) {
+    await loadInternalModule({
+      container,
+      resolution: {
+        ...resolution,
+        definition: {
+          ...resolution.definition,
+          key: provider.id,
+        },
+        resolutionPath: provider.resolve as string,
+      },
+      logger,
+      migrationOnly,
+      loadingProviders: true,
+    })
+  }
+}
+
 export async function loadInternalModule(args: {
   container: MedusaContainer
   resolution: ModuleResolution
@@ -110,6 +141,8 @@ export async function loadInternalModule(args: {
   const keyName = !loaderOnly
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
+
+  console.log("LOADING --------------------------", keyName)
 
   const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
@@ -176,29 +209,25 @@ export async function loadInternalModule(args: {
       })
     )
   }
+
   // if module has providers, load them
   if (!loadingProviders) {
     const providers = (resolution?.options?.providers as any[]) ?? []
-    for (const provider of providers) {
-      await loadInternalModule({
-        container,
-        resolution: {
-          ...resolution,
-          definition: {
-            ...resolution.definition,
-            key: provider.id,
-          },
-          resolutionPath: provider.resolve,
-        },
-        logger,
-        migrationOnly,
-        loadingProviders: true,
-      })
-    }
+    await loadInternalProvider(
+      {
+        ...args,
+        container: localContainer,
+      },
+      providers
+    )
   }
 
   if (loadingProviders) {
-    container.registerAdd("__providers", asValue(moduleResources))
+    const providers =
+      container.resolve("__providers", { allowUnregistered: true }) ?? {}
+
+    providers[keyName] = moduleResources
+    container.register("__providers", asValue(providers))
   }
 
   if (migrationOnly && !loadingProviders) {
@@ -249,9 +278,6 @@ export async function loadInternalModule(args: {
     await service.__hooks?.onApplicationPrepareShutdown?.()
     await service.__hooks?.onApplicationShutdown?.()
   }
-
-  console.log(Object.keys(container.cradle), "---------------")
-  console.log(container.resolve("__providers"), "---------------")
 }
 
 export async function loadModuleMigrations(
@@ -271,37 +297,76 @@ export async function loadModuleMigrations(
   }
 
   try {
-    let runMigrations = loadedModule.runMigrations
-    let revertMigration = loadedModule.revertMigration
-    let generateMigration = loadedModule.generateMigration
+    let runMigrationsCustom = loadedModule.runMigrations
+    let revertMigrationCustom = loadedModule.revertMigration
+    let generateMigrationCustom = loadedModule.generateMigration
 
-    if (!runMigrations || !revertMigration) {
+    const runMigrationsFn: ((...args) => Promise<any>)[] = [
+      runMigrationsCustom!,
+    ]
+    const revertMigrationFn: ((...args) => Promise<any>)[] = [
+      revertMigrationCustom!,
+    ]
+    const generateMigrationFn: ((...args) => Promise<any>)[] = [
+      generateMigrationCustom!,
+    ]
+
+    if (!runMigrationsCustom || !revertMigrationCustom) {
       const moduleResources = await loadResources({
         moduleResolution: resolution,
         discoveryPath: loadedModule.discoveryPath,
         loadedModuleLoaders: loadedModule?.loaders,
       })
 
-      const migrationScriptOptions = {
-        moduleName: resolution.definition.key,
-        models: moduleResources.models,
-        pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
+      const migrationScripts = [
+        {
+          moduleName: resolution.definition.key,
+          models: moduleResources.models,
+          pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
+        },
+      ]
+
+      console.log("+++++++++++++++++++++-------- loadedModule", loadedModule)
+
+      for (const migrationScriptOptions of migrationScripts) {
+        const migrationUp =
+          runMigrationsCustom ??
+          ModulesSdkUtils.buildMigrationScript(migrationScriptOptions)
+        runMigrationsFn.push(migrationUp)
+
+        const migrationDown =
+          revertMigrationCustom ??
+          ModulesSdkUtils.buildRevertMigrationScript(migrationScriptOptions)
+        revertMigrationFn.push(migrationDown)
+
+        const genMigration =
+          generateMigrationCustom ??
+          ModulesSdkUtils.buildGenerateMigrationScript(migrationScriptOptions)
+        generateMigrationFn.push(genMigration)
       }
-
-      runMigrations ??= ModulesSdkUtils.buildMigrationScript(
-        migrationScriptOptions
-      )
-
-      revertMigration ??= ModulesSdkUtils.buildRevertMigrationScript(
-        migrationScriptOptions
-      )
-
-      generateMigration ??= ModulesSdkUtils.buildGenerateMigrationScript(
-        migrationScriptOptions
-      )
     }
 
-    return { runMigrations, revertMigration, generateMigration }
+    const runMigrations = async (...args) => {
+      for (const migration of runMigrationsFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+    const revertMigration = async (...args) => {
+      for (const migration of revertMigrationFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+    const generateMigration = async (...args) => {
+      for (const migration of generateMigrationFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+
+    return {
+      runMigrations,
+      revertMigration,
+      generateMigration,
+    }
   } catch {
     return {}
   }
