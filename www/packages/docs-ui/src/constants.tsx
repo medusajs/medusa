@@ -108,14 +108,6 @@ export const navDropdownItems: NavigationItem[] = [
         title: "Data Model API",
         link: "/v2/resources/references/data-model",
       },
-      {
-        type: "divider",
-      },
-      {
-        type: "link",
-        title: "Medusa CLI",
-        link: "/v2/resources/medusa-cli",
-      },
     ],
   },
 ]
