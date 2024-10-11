@@ -466,7 +466,7 @@ describe("defineConfig", function () {
             },
             "resolve": "${require.resolve(
               "../__fixtures__/define-config/github"
-            )}"
+            )}",
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",

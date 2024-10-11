@@ -272,13 +272,13 @@ function resolveModules(
           ? defaultExport.service.prototype.__joinerConfig() ?? {}
           : defaultExport.service.prototype.__joinerConfig ?? {}
 
+      serviceName = joinerConfig.serviceName
+
       if (!serviceName) {
         throw new Error(
           `Module ${moduleConfig.resolve} doesn't have a serviceName. Please provide a 'key' for the module or check the service joiner config.`
         )
       }
-
-      serviceName = joinerConfig.serviceName
     }
 
     acc[serviceName] = moduleConfig
