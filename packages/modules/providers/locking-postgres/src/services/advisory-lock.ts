@@ -32,31 +32,60 @@ export class PostgresAdvisoryLockProvider
       timeout?: number
     }
   ): Promise<T> {
-    keys = Array.isArray(keys) ? keys : [keys]
+    const timeout = Math.max(args?.timeout ?? 5, 1)
+    const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
+    if (timeoutSeconds <= 0) {
+      throw new Error("Locking.execute timeout must be greater than 0.")
+    }
 
-    const timeoutSeconds = args?.timeout ?? 5
-
-    return await this.getManager().transactional(async (manager) => {
-      const ops: Promise<unknown>[] = []
-      if (timeoutSeconds > 0) {
-        ops.push(this.getTimeout(timeoutSeconds))
-      }
-
-      const fnName = "pg_advisory_xact_lock"
-
-      const numKeys = keys.map(this.hashStringToInt)
-      const lockPromises = numKeys.map((numKey) =>
+    const release = async (manager, numKeys) => {
+      const fnName = "pg_advisory_unlock"
+      const unlockPromises = numKeys.map((numKey) =>
         manager.execute(`SELECT ${fnName}(?)`, [numKey])
       )
+      return Promise.all(unlockPromises)
+    }
 
-      const lock = Promise.all(lockPromises)
+    const manager = this.getManager()
 
-      ops.push(lock)
+    const ops: Promise<unknown>[] = []
+    if (timeoutSeconds > 0) {
+      ops.push(this.getTimeout(timeoutSeconds))
+    }
 
-      await Promise.race(ops)
+    const fnName = "pg_advisory_lock"
 
+    keys = Array.isArray(keys) ? keys : [keys]
+
+    const numKeys = keys.map(this.hashStringToInt)
+    const lockPromises = numKeys.map((numKey) =>
+      manager.execute(
+        `
+          SET lock_timeout = ?;
+          SELECT ${fnName}(?);
+        `,
+        [timeoutSeconds + "s", numKey]
+      )
+    )
+    const lock = Promise.all(lockPromises)
+
+    ops.push(lock)
+
+    const err = await Promise.race(ops).catch((err) => err)
+
+    if (err instanceof Error) {
+      await release(manager, numKeys)
+      throw err
+    }
+
+    try {
+      console.log("pass")
       return await job()
-    })
+    } catch (e) {
+      throw e
+    } finally {
+      await release(manager, numKeys)
+    }
   }
 
   private async loadLock(key: string): Promise<{
@@ -177,8 +206,8 @@ export class PostgresAdvisoryLockProvider
     return hash >>> 0
   }
 
-  private async getTimeout(seconds: number): Promise<void> {
-    return new Promise((_, reject) => {
+  private async getTimeout(seconds: number): Promise<Error> {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(new Error("Timed-out acquiring lock."))
       }, seconds * 1000)

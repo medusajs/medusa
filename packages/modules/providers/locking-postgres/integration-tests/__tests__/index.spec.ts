@@ -1,5 +1,5 @@
 import { ILockingModule } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, promiseAll } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout } from "node:timers/promises"
 
@@ -27,7 +27,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         return stock > 0
       }
       async function reduceStock() {
-        await setTimeout(10)
+        await setTimeout(1000)
         stock--
       }
       async function buy() {
@@ -38,7 +38,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         return false
       }
 
-      it("should execute functions respecting the key locked", async () => {
+      it.only("should execute functions respecting the key locked", async () => {
         // 10 parallel calls to buy should oversell the stock
         const prom: any[] = []
         for (let i = 0; i < 10; i++) {
@@ -125,8 +125,51 @@ moduleIntegrationTestRunner<ILockingModule>({
       await service.execute("lock_key", fn_1).catch(() => {})
       await service.execute("lock_key", fn_2).catch(() => {})
 
-      expect(fn_1).toBeCalledTimes(1)
-      expect(fn_2).toBeCalledTimes(1)
+      expect(fn_1).toHaveBeenCalledTimes(1)
+      expect(fn_2).toHaveBeenCalledTimes(1)
+    })
+
+    it("should release lock in case of timeout failure", async () => {
+      const fn_1 = jest.fn(async () => {
+        await setTimeout(1010)
+        return "fn_1"
+      })
+
+      const fn_2 = jest.fn(async () => {
+        return "fn_2"
+      })
+
+      const fn_3 = jest.fn(async () => {
+        return "fn_3"
+      })
+
+      const ops = [
+        service
+          .execute("lock_key", fn_1, {
+            timeout: 1,
+          })
+          .catch((e) => e),
+
+        service
+          .execute("lock_key", fn_2, {
+            timeout: 1,
+          })
+          .catch((e) => e),
+
+        service
+          .execute("lock_key", fn_3, {
+            timeout: 2,
+          })
+          .catch((e) => e),
+      ]
+
+      const res = await promiseAll(ops)
+
+      expect(res).toEqual(["fn_1", expect.any(Error), "fn_3"])
+
+      expect(fn_1).toHaveBeenCalledTimes(1)
+      expect(fn_2).toHaveBeenCalledTimes(0)
+      expect(fn_3).toHaveBeenCalledTimes(1)
     })
   },
 })
