@@ -142,7 +142,7 @@ export async function loadInternalModule(args: {
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
 
-  console.log("LOADING --------------------------", keyName)
+  console.log("LOADING ---------------------------", keyName)
 
   const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
@@ -325,8 +325,6 @@ export async function loadModuleMigrations(
           pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
         },
       ]
-
-      console.log("+++++++++++++++++++++-------- loadedModule", loadedModule)
 
       for (const migrationScriptOptions of migrationScripts) {
         const migrationUp =
