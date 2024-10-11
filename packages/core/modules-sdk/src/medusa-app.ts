@@ -20,12 +20,12 @@ import {
   isObject,
   isString,
   MedusaError,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
   MigrationOptions,

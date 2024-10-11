@@ -110,7 +110,7 @@ function createContextualWorkflowRunner<
       events,
       flowMetadata,
     ]
-    const transaction = await method.apply(method, args)
+    const transaction = await method.apply(method, args) as DistributedTransactionType
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 

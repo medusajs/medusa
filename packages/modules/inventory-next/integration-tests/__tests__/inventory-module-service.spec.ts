@@ -31,7 +31,7 @@ moduleIntegrationTestRunner<IInventoryService>({
               entity: "InventoryItem",
               linkable: "inventory_item_id",
               primaryKey: "id",
-              serviceName: "Inventory",
+              serviceName: "inventory",
             },
           },
           inventoryLevel: {
@@ -40,7 +40,7 @@ moduleIntegrationTestRunner<IInventoryService>({
               entity: "InventoryLevel",
               linkable: "inventory_level_id",
               primaryKey: "id",
-              serviceName: "Inventory",
+              serviceName: "inventory",
             },
           },
           reservationItem: {
@@ -49,7 +49,7 @@ moduleIntegrationTestRunner<IInventoryService>({
               entity: "ReservationItem",
               linkable: "reservation_item_id",
               primaryKey: "id",
-              serviceName: "Inventory",
+              serviceName: "inventory",
             },
           },
         })

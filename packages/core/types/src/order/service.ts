@@ -48,7 +48,6 @@ import {
   CancelOrderReturnDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
-  CreateOrderAdjustmentDTO,
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
@@ -56,6 +55,7 @@ import {
   CreateOrderDTO,
   CreateOrderExchangeDTO,
   CreateOrderExchangeItemDTO,
+  CreateOrderLineItemAdjustmentDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
@@ -1539,7 +1539,7 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method creates line item adjustments.
    *
-   * @param {CreateOrderAdjustmentDTO[]} data - The line item adjustments to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO[]} data - The line item adjustments to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
@@ -1548,14 +1548,14 @@ export interface IOrderModuleService extends IModuleService {
    * }])
    */
   createOrderLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO[],
+    data: CreateOrderLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
   /**
    * This method creates a line item adjustment.
    *
-   * @param {CreateOrderAdjustmentDTO} data - The line-item adjustment to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO} data - The line-item adjustment to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line-item adjustment.
    *
    * @example
@@ -1564,7 +1564,7 @@ export interface IOrderModuleService extends IModuleService {
    * })
    */
   createOrderLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO,
+    data: CreateOrderLineItemAdjustmentDTO,
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
@@ -1572,7 +1572,7 @@ export interface IOrderModuleService extends IModuleService {
    * This method creates line item adjustments for an order.
    *
    * @param {string} orderId - The order's ID.
-   * @param {CreateOrderAdjustmentDTO[]} data - The line-item adjustments to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO[]} data - The line-item adjustments to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
@@ -1585,7 +1585,7 @@ export interface IOrderModuleService extends IModuleService {
    */
   createOrderLineItemAdjustments(
     orderId: string,
-    data: CreateOrderAdjustmentDTO[],
+    data: CreateOrderLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
