@@ -2503,8 +2503,6 @@ medusaIntegrationTestRunner({
               console.log(err)
             })
 
-          console.log(item1Response, item2Response.data)
-
           expect(item1Response.status).toEqual(404) // deleted since it's used only by the deleted product
           expect(item2Response.status).toEqual(200) // not deleted since it belongs to other products
           expect(item2Response.data.inventory_item).toEqual(
