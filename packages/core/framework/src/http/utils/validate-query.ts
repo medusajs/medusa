@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { omit } from "lodash"
 import { NextFunction } from "express"
-import { removeUndefinedProperties, MedusaError } from "@medusajs/utils"
+import { MedusaError, removeUndefinedProperties } from "@medusajs/utils"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
 
 import { zodValidator } from "../../zod/zod-helpers"
@@ -85,7 +85,6 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
 
       next()
     } catch (e) {
-      console.log({ e })
       next(e)
     }
   }
