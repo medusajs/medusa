@@ -71,7 +71,7 @@ export default async ({
 
   if (!hasDefaultProvider) {
     logger.warn(
-      `No default Locking provider explicit defined, using "${container.resolve(
+      `No default locking provider explicit defined. Using "${container.resolve(
         LockingDefaultProvider
       )}" as default.`
     )

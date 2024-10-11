@@ -1,14 +1,7 @@
 import {
-  IEventBusModuleService,
-  Logger,
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
 } from "@medusajs/framework/types"
-
-export type InitializeModuleInjectableDependencies = {
-  logger?: Logger
-  EventBus?: IEventBusModuleService
-}
 
 export const LockingDefaultProvider = "default_provider"
 export const LockingIdentifiersRegistrationName = "locking_providers_identifier"
