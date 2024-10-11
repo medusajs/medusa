@@ -4,7 +4,6 @@ import {
   isDefined,
   isPresent,
   MedusaError,
-  getSetDifference,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
 
@@ -121,29 +120,8 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
     Array.from(allFields)
   )
 
-  let allRelations = new Set([
-    ...relations,
-    ...defaults,
-    ...Array.from(starFields),
-  ])
+  let allRelations = new Set([...relations, ...Array.from(starFields)])
 
-  if (allowed.length) {
-    const allAllowedRelations = new Set([...allowed])
-
-    const notAllowedRelations = getSetDifference(
-      allRelations,
-      allAllowedRelations
-    )
-
-    if (allRelations.size && notAllowedRelations.size) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Requested fields [${Array.from(notAllowedRelations).join(
-          ", "
-        )}] are not valid`
-      )
-    }
-  }
   // End of expand compatibility
 
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined = {}

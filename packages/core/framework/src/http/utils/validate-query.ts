@@ -85,6 +85,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
 
       next()
     } catch (e) {
+      console.log({ e })
       next(e)
     }
   }

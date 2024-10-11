@@ -124,7 +124,7 @@ describe("validateAndTransformQuery", () => {
     }
 
     let queryConfig: any = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "updated_at",
@@ -133,8 +133,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-      ],
-      defaultRelations: [
         "metadata",
         "metadata.parent",
         "metadata.children",
@@ -216,7 +214,7 @@ describe("validateAndTransformQuery", () => {
     const nextFunction: MedusaNextFunction = jest.fn()
 
     let queryConfig: any = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "updated_at",
@@ -225,8 +223,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-      ],
-      defaultRelations: [
         "metadata",
         "metadata.parent",
         "metadata.children",
