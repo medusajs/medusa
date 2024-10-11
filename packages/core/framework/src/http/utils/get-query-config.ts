@@ -29,27 +29,15 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
   queryConfig: QueryConfig<TEntity> = {}
 ) {
   // TODO: this function will be simplified a lot once we drop support for the old api
-  const { order, fields, limit = 50, expand, offset = 0 } = validated
-  let {
-    allowed = [],
-    defaults = [],
-    defaultFields = [],
-    defaultLimit,
-    allowedFields = [],
-    allowedRelations = [],
-    defaultRelations = [],
-    isList,
-  } = queryConfig
-
-  allowedFields = allowed.length ? allowed : allowedFields
-  defaultFields = defaults.length ? defaults : defaultFields
+  const { order, fields, limit = 50, offset = 0 } = validated
+  let { allowed = [], defaults = [], defaultLimit, isList } = queryConfig
 
   // e.g *product.variants meaning that we want all fields from the product.variants
   // in that case it wont be part of the select but it will be part of the relations.
   // For the remote query we will have to add the fields to the fields array as product.variants.*
   const starFields: Set<string> = new Set()
 
-  let allFields = new Set(defaultFields) as Set<string>
+  let allFields = new Set(defaults) as Set<string>
 
   if (isDefined(fields)) {
     const customFields = fields.split(",").filter(Boolean)
@@ -90,9 +78,9 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
   const notAllowedFields: string[] = []
 
-  if (allowedFields.length) {
+  if (allowed.length) {
     ;[...allFields, ...Array.from(starFields)].forEach((field) => {
-      const hasAllowedField = allowedFields.includes(field)
+      const hasAllowedField = allowed.includes(field)
 
       if (hasAllowedField) {
         return
@@ -108,7 +96,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
         return
       }
 
-      const fieldStartsWithAllowedField = allowedFields.some((allowedField) =>
+      const fieldStartsWithAllowedField = allowed.some((allowedField) =>
         field.startsWith(allowedField)
       )
 
@@ -135,16 +123,12 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
   let allRelations = new Set([
     ...relations,
-    ...defaultRelations,
+    ...defaults,
     ...Array.from(starFields),
   ])
 
-  if (isDefined(expand)) {
-    allRelations = new Set(expand.split(",").filter(Boolean))
-  }
-
-  if (allowedRelations.length && expand) {
-    const allAllowedRelations = new Set([...allowedRelations])
+  if (allowed.length) {
+    const allAllowedRelations = new Set([...allowed])
 
     const notAllowedRelations = getSetDifference(
       allRelations,
@@ -174,8 +158,8 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
     }
 
     if (
-      queryConfig?.allowedFields?.length &&
-      !queryConfig?.allowedFields.includes(orderField)
+      queryConfig?.allowed?.length &&
+      !queryConfig?.allowed.includes(orderField)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

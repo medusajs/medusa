@@ -464,7 +464,7 @@ export function MedusaService<
     }: {
       action: string
       object: string
-      eventName?: string
+      eventName: string
       source?: string
       data: { id: any } | { id: any }[]
       context: Context

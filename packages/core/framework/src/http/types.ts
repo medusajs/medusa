@@ -123,12 +123,7 @@ export interface MedusaRequest<Body = unknown>
    */
   filterableFields: Record<string, unknown>
   includes?: Record<string, boolean>
-  /**
-   * An array of fields and relations that are allowed to be queried, this can be set by the
-   * consumer as part of a middleware and it will take precedence over the defaultAllowedFields
-   * @deprecated use `allowed` instead
-   */
-  allowedFields?: string[]
+
   /**
    * An array of fields and relations that are allowed to be queried, this can be set by the
    * consumer as part of a middleware and it will take precedence over the defaultAllowedFields set

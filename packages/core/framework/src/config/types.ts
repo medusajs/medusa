@@ -257,15 +257,6 @@ export type ProjectConfigOptions = {
   databaseLogging?: boolean
 
   /**
-   * @ignore
-   * @deprecated
-   *
-   * @privateRemarks
-   * only postgres is supported, so this config has no effect
-   */
-  databaseType?: string
-
-  /**
    * This configuration is used to pass additional options to the database connection. You can pass any configuration. For example, pass the
    * `ssl` property that enables support for TLS/SSL connections.
    *
@@ -390,19 +381,6 @@ export type ProjectConfigOptions = {
    * ```
    */
   sessionOptions?: SessionOptions
-
-  /**
-   * This property configures the HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
-   * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
-   *
-   * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
-   *
-   * @ignore
-   *
-   * @deprecated use {@link http }'s `compression` property instead.
-   *
-   */
-  httpCompression?: HttpCompressionOptions
 
   /**
    * Configure the number of staged jobs that are polled from the database. Default is `1000`.
