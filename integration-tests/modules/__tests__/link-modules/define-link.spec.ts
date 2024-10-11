@@ -337,7 +337,7 @@ medusaIntegrationTestRunner({
           primaryKeys: ["id", "currency_code", "region_id"],
           relationships: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
@@ -348,7 +348,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "Region",
+              serviceName: "region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -361,7 +361,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               fieldAlias: {
                 regions: {
                   path: "region_link.region",
@@ -379,7 +379,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "Region",
+              serviceName: "region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",

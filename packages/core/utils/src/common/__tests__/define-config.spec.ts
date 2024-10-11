@@ -464,7 +464,9 @@ describe("defineConfig", function () {
             "options": {
               "apiKey": "test",
             },
-            "resolve": "/Users/adriendeperetti/Documents/02-personnel/01-projects/medusa/packages/core/utils/src/common/__fixtures__/define-config/github/index.ts",
+            "resolve": "${require.resolve(
+              "../__fixtures__/define-config/github"
+            )}"
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",
