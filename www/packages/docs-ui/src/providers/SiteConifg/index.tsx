@@ -26,6 +26,13 @@ export const SiteConfigProvider = ({
         default: [],
         mobile: [],
       },
+      project: {
+        title: "",
+        key: "",
+      },
+      breadcrumbOptions: {
+        showCategories: true,
+      },
     }
   )
 

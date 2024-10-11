@@ -1,29 +1,55 @@
 "use client"
 
 import React, { useMemo } from "react"
-import { CurrentItemsState, useSidebar } from "@/providers"
-import { TriangleRightMini } from "@medusajs/icons"
-import Link from "next/link"
 import clsx from "clsx"
-
-type BreadcrumbItem = Map<string, string>
+import Link from "next/link"
+import { SidebarItemLink } from "types"
+import { CurrentItemsState, useSidebar, useSiteConfig } from "../../providers"
+import { Button } from "../Button"
+import { TriangleRightMini } from "@medusajs/icons"
 
 export const Breadcrumbs = () => {
-  const { currentItems } = useSidebar()
+  const { currentItems, activeItem: sidebarActiveItem } = useSidebar()
+  const {
+    config: { breadcrumbOptions, project, baseUrl, basePath },
+  } = useSiteConfig()
 
-  const getBreadcrumbsOfItem = (item: CurrentItemsState): BreadcrumbItem => {
-    let tempBreadcrumbItems: BreadcrumbItem = new Map()
+  const getLinkPath = (item?: SidebarItemLink): string | undefined => {
+    if (!item) {
+      return
+    }
+    return item.isPathHref ? item.path : `#${item.path}`
+  }
+
+  const getBreadcrumbsOfItem = (
+    item: CurrentItemsState
+  ): Map<string, string> => {
+    let tempBreadcrumbItems: Map<string, string> = new Map()
     if (item.previousSidebar) {
       tempBreadcrumbItems = getBreadcrumbsOfItem(item.previousSidebar)
     }
 
     const parentPath =
-      item.parentItem?.type === "link" ? item.parentItem.path : undefined
+      item.parentItem?.type === "link"
+        ? getLinkPath(item.parentItem)
+        : (item.parentItem?.type === "category" &&
+            breadcrumbOptions?.showCategories) ||
+          item.parentItem?.type === "sub-category"
+        ? "#"
+        : undefined
     const firstItemPath =
-      item.default[0].type === "link" ? item.default[0].path : undefined
+      item.default[0].type === "link"
+        ? getLinkPath(item.default[0])
+        : (item.default[0].type === "category" &&
+            breadcrumbOptions?.showCategories) ||
+          item.default[0].type === "sub-category"
+        ? "#"
+        : undefined
+
+    const breadcrumbPath = parentPath || firstItemPath || "/"
 
     tempBreadcrumbItems.set(
-      parentPath || firstItemPath || "/",
+      breadcrumbPath,
       item.parentItem?.childSidebarTitle || item.parentItem?.title || ""
     )
 
@@ -31,51 +57,65 @@ export const Breadcrumbs = () => {
   }
 
   const breadcrumbItems = useMemo(() => {
-    const tempBreadcrumbItems: BreadcrumbItem = new Map()
-    if (!currentItems) {
-      return tempBreadcrumbItems
+    const tempBreadcrumbItems: Map<string, string> = new Map()
+    tempBreadcrumbItems.set(`${baseUrl}${basePath}`, project.title)
+
+    if (currentItems) {
+      getBreadcrumbsOfItem(currentItems).forEach((value, key) =>
+        tempBreadcrumbItems.set(key, value)
+      )
     }
 
-    tempBreadcrumbItems.set("/", "Home")
-
-    getBreadcrumbsOfItem(currentItems).forEach((value, key) =>
-      tempBreadcrumbItems.set(key, value)
-    )
+    if (sidebarActiveItem) {
+      if (
+        sidebarActiveItem.parentItem &&
+        (sidebarActiveItem.parentItem.type !== "category" ||
+          breadcrumbOptions?.showCategories)
+      ) {
+        tempBreadcrumbItems.set(
+          sidebarActiveItem.parentItem.type === "link"
+            ? getLinkPath(sidebarActiveItem.parentItem) || "#"
+            : "#",
+          sidebarActiveItem.parentItem.title || ""
+        )
+      }
+      tempBreadcrumbItems.set(
+        getLinkPath(sidebarActiveItem) || "/",
+        sidebarActiveItem.title || ""
+      )
+    }
 
     return tempBreadcrumbItems
-  }, [currentItems])
-
-  const getBreadcrumbItemElms = (): React.ReactNode[] => {
-    const elms: React.ReactNode[] = []
-    breadcrumbItems.forEach((title, path) => {
-      elms.push(
-        <React.Fragment key={path}>
-          {elms.length !== 0 && (
-            <TriangleRightMini className={clsx("text-medusa-fg-muted")} />
-          )}
-          <Link
-            href={path}
-            className={clsx(
-              "text-compact-x-small-plus text-medusa-fg-muted",
-              "hover:text-medusa-fg-subtle transition-colors"
-            )}
-          >
-            {title}
-          </Link>
-        </React.Fragment>
-      )
-    })
-
-    return elms
-  }
+  }, [currentItems, sidebarActiveItem, breadcrumbOptions])
 
   return (
-    <>
-      {breadcrumbItems.size > 0 && (
-        <div className="flex gap-docs_0.25 items-center mb-docs_1">
-          {...getBreadcrumbItemElms()}
-        </div>
+    <div
+      className={clsx(
+        "flex items-center gap-docs_0.25",
+        "text-medusa-fg-muted text-compact-small",
+        "mb-docs_1"
       )}
-    </>
+    >
+      {Array.from(breadcrumbItems).map(([link, title], index) => (
+        <React.Fragment key={link}>
+          {index > 0 && <TriangleRightMini />}
+          <Button
+            variant="transparent-clear"
+            className={clsx(
+              "px-docs_0.5 py-docs_0.25",
+              link === "#" && "hover:cursor-default",
+              "!p-0 hover:!bg-transparent hover:!text-medusa-fg-subtle"
+            )}
+          >
+            <Link
+              href={link}
+              className={clsx(link === "#" && "hover:cursor-default")}
+            >
+              {title}
+            </Link>
+          </Button>
+        </React.Fragment>
+      ))}
+    </div>
   )
 }
