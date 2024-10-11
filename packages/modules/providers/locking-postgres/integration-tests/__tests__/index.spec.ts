@@ -13,6 +13,7 @@ moduleIntegrationTestRunner<ILockingModule>({
       {
         id: providerId,
         resolve: require.resolve("../../src"),
+        is_default: true,
       },
     ],
   },
@@ -37,7 +38,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         return false
       }
 
-      it.only("should execute functions respecting the key locked", async () => {
+      it("should execute functions respecting the key locked", async () => {
         // 10 parallel calls to buy should oversell the stock
         const prom: any[] = []
         for (let i = 0; i < 10; i++) {

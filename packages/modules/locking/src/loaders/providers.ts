@@ -11,19 +11,13 @@ import {
   LockingIdentifiersRegistrationName,
   LockingProviderRegistrationPrefix,
 } from "@types"
-import { Lifetime, asFunction, asValue } from "awilix"
+import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
 import { InMemoryLockingProvider } from "../providers/in-memory"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = LockingProviderService.getRegistrationIdentifier(klass)
-
   container.register({
-    [LockingProviderRegistrationPrefix + key]: asFunction(
-      (cradle) => new klass(cradle, pluginOptions.options),
-      {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }
-    ),
+    [LockingProviderRegistrationPrefix + key]: aliasTo("__providers__" + key),
   })
 
   container.registerAdd(LockingIdentifiersRegistrationName, asValue(key))

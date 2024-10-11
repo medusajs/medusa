@@ -1,10 +1,8 @@
-import { ModuleProviderExports } from "@medusajs/framework/types"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import { PostgresAdvisoryLockProvider } from "./services/advisory-lock"
 
 const services = [PostgresAdvisoryLockProvider]
 
-const providerExport: ModuleProviderExports = {
+export default ModuleProvider(Modules.LOCKING, {
   services,
-}
-
-export default providerExport
+})

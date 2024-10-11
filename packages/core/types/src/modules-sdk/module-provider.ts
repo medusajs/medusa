@@ -7,19 +7,20 @@ export type ProviderLoaderOptions<TOptions = Record<string, unknown>> = {
   logger?: Logger
 }
 
-export type ModuleProviderExports = {
-  services: Constructor<any>[]
+export type ModuleProviderExports<Service = any> = {
+  module?: string
+  services: Constructor<Service>[]
   loaders?: ModuleProviderLoaderFunction[]
   runMigrations?(
-    options: ProviderLoaderOptions<any>,
+    options: ProviderLoaderOptions<Service>,
     moduleDeclaration?: any
   ): Promise<void>
   revertMigration?(
-    options: ProviderLoaderOptions<any>,
+    options: ProviderLoaderOptions<Service>,
     moduleDeclaration?: any
   ): Promise<void>
   generateMigration?(
-    options: ProviderLoaderOptions<any>,
+    options: ProviderLoaderOptions<Service>,
     moduleDeclaration?: any
   ): Promise<void>
   /**
@@ -35,7 +36,7 @@ export type ModuleProviderLoaderFunction = (
 ) => Promise<void>
 
 export type ModuleProvider = {
-  resolve: string | ModuleProviderExports
+  resolve: string | ModuleProviderExports<any>
   id: string
   options?: Record<string, unknown>
   is_default?: boolean

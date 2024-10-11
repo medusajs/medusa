@@ -8,6 +8,7 @@ import {
   ModuleExports,
   ModuleLoaderFunction,
   ModuleProvider,
+  ModuleProviderExports,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -40,16 +41,19 @@ type MigrationFunction = (
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
+type ResolvedModule = ModuleExports & {
+  discoveryPath: string
+}
+
+type ResolvedModuleProvider = ModuleProviderExports & {
+  discoveryPath: string
+}
+
 export async function resolveModuleExports({
   resolution,
 }: {
   resolution: ModuleResolution
-}): Promise<
-  | (ModuleExports & {
-      discoveryPath: string
-    })
-  | { error: any }
-> {
+}): Promise<ResolvedModule | ResolvedModuleProvider | { error: any }> {
   let resolvedModuleExports: ModuleExports
   try {
     if (resolution.moduleExports) {
@@ -142,8 +146,6 @@ export async function loadInternalModule(args: {
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
 
-  console.log("LOADING ---------------------------", keyName)
-
   const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
@@ -164,9 +166,10 @@ export async function loadInternalModule(args: {
     })
   }
 
+  const loadedModule_ = loadedModule as ModuleExports
   if (
     !loadingProviders &&
-    !loadedModule?.service &&
+    !loadedModule_?.service &&
     !moduleResources.moduleService
   ) {
     container.register({
@@ -222,16 +225,9 @@ export async function loadInternalModule(args: {
     )
   }
 
-  if (loadingProviders) {
-    const providers =
-      container.resolve("__providers", { allowUnregistered: true }) ?? {}
-
-    providers[keyName] = moduleResources
-    container.register("__providers", asValue(providers))
-  }
-
   if (migrationOnly && !loadingProviders) {
-    const moduleService_ = moduleResources.moduleService ?? loadedModule.service
+    const moduleService_ =
+      moduleResources.moduleService ?? loadedModule_.service
 
     // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
     const moduleService = {
@@ -259,18 +255,37 @@ export async function loadInternalModule(args: {
     return error
   }
 
-  const moduleService = moduleResources.moduleService ?? loadedModule.service
+  if (loadingProviders) {
+    const loadedProvider_ = loadedModule as ModuleProviderExports
+    const moduleServices = moduleResources.moduleService
+      ? [moduleResources.moduleService]
+      : loadedProvider_.services
 
-  container.register({
-    [keyName]: asFunction((cradle) => {
-      ;(moduleService as any).__type = MedusaModuleType
-      return new moduleService(
-        localContainer.cradle,
-        resolution.options,
-        resolution.moduleDeclaration
-      )
-    }).singleton(),
-  })
+    for (const moduleService of moduleServices) {
+      container.register({
+        ["__providers__" + keyName]: asFunction((cradle) => {
+          ;(moduleService as any).__type = MedusaModuleType
+          return new moduleService(
+            localContainer.cradle,
+            resolution.options,
+            resolution.moduleDeclaration
+          )
+        }).singleton(),
+      })
+    }
+  } else {
+    const moduleService = moduleResources.moduleService ?? loadedModule_.service
+    container.register({
+      [keyName]: asFunction((cradle) => {
+        ;(moduleService as any).__type = MedusaModuleType
+        return new moduleService(
+          localContainer.cradle,
+          resolution.options,
+          resolution.moduleDeclaration
+        )
+      }).singleton(),
+    })
+  }
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
