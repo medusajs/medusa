@@ -303,43 +303,64 @@ export async function loadModuleMigrations(
   revertMigration?: MigrationFunction
   generateMigration?: MigrationFunction
 }> {
-  const loadedModule = await resolveModuleExports({
+  const mainLoadedModule = await resolveModuleExports({
     resolution: { ...resolution, moduleExports },
   })
 
-  if ("error" in loadedModule) {
-    throw loadedModule.error
+  const loadedServices = [mainLoadedModule] as (
+    | ResolvedModule
+    | ResolvedModuleProvider
+  )[]
+
+  if (Array.isArray(resolution?.options?.providers)) {
+    for (const provider of (resolution.options as any).providers) {
+      const loadedProvider = await resolveModuleExports({
+        resolution: {
+          ...resolution,
+          definition: {
+            ...resolution.definition,
+            key: provider.id,
+          },
+          resolutionPath: provider.resolve as string,
+        },
+      })
+      loadedServices.push(loadedProvider as ResolvedModuleProvider)
+    }
   }
 
+  if ("error" in mainLoadedModule) {
+    throw mainLoadedModule.error
+  }
+
+  const runMigrationsFn: ((...args) => Promise<any>)[] = []
+  const revertMigrationFn: ((...args) => Promise<any>)[] = []
+  const generateMigrationFn: ((...args) => Promise<any>)[] = []
+
   try {
-    let runMigrationsCustom = loadedModule.runMigrations
-    let revertMigrationCustom = loadedModule.revertMigration
-    let generateMigrationCustom = loadedModule.generateMigration
+    const migrationScripts: any[] = []
+    for (const loadedModule of loadedServices) {
+      let runMigrationsCustom = loadedModule.runMigrations
+      let revertMigrationCustom = loadedModule.revertMigration
+      let generateMigrationCustom = loadedModule.generateMigration
 
-    const runMigrationsFn: ((...args) => Promise<any>)[] = [
-      runMigrationsCustom!,
-    ]
-    const revertMigrationFn: ((...args) => Promise<any>)[] = [
-      revertMigrationCustom!,
-    ]
-    const generateMigrationFn: ((...args) => Promise<any>)[] = [
-      generateMigrationCustom!,
-    ]
+      runMigrationsCustom && runMigrationsFn.push(runMigrationsCustom)
+      revertMigrationCustom && revertMigrationFn.push(revertMigrationCustom)
+      generateMigrationCustom &&
+        generateMigrationFn.push(generateMigrationCustom)
 
-    if (!runMigrationsCustom || !revertMigrationCustom) {
-      const moduleResources = await loadResources({
-        moduleResolution: resolution,
-        discoveryPath: loadedModule.discoveryPath,
-        loadedModuleLoaders: loadedModule?.loaders,
-      })
+      if (!runMigrationsCustom || !revertMigrationCustom) {
+        const moduleResources = await loadResources({
+          moduleResolution: resolution,
+          discoveryPath: loadedModule.discoveryPath,
+          loadedModuleLoaders: loadedModule?.loaders,
+        })
 
-      const migrationScripts = [
-        {
+        migrationScripts.push({
           moduleName: resolution.definition.key,
           models: moduleResources.models,
           pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
-        },
-      ]
+        })
+      }
 
       for (const migrationScriptOptions of migrationScripts) {
         const migrationUp =
