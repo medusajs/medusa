@@ -79,17 +79,16 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data).toEqual(
-          expect.objectContaining({
-            collection: expect.objectContaining({
-              id: expect.stringMatching(/^pcol_*/),
-              title: "New collection",
-              handle: "test-new-collection",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            }),
-          })
-        )
+        expect(response.data).toEqual({
+          collection: {
+            id: expect.stringMatching(/^pcol_*/),
+            title: "New collection",
+            handle: "test-new-collection",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            metadata: null,
+          },
+        })
       })
 
       it("lists collections", async () => {
@@ -98,22 +97,33 @@ medusaIntegrationTestRunner({
         expect(response.data).toEqual(
           expect.objectContaining({
             count: 3,
+            limit: 10,
+            offset: 0,
             collections: expect.arrayContaining([
-              expect.objectContaining({
-                id: baseCollection2.id,
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              }),
-              expect.objectContaining({
-                id: baseCollection1.id,
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              }),
-              expect.objectContaining({
+              {
                 id: baseCollection.id,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
-              }),
+                handle: "test-collection",
+                metadata: null,
+                title: "test-collection",
+              },
+              {
+                id: baseCollection1.id,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                handle: "test-collection1",
+                metadata: null,
+                title: "test-collection1",
+              },
+              {
+                id: baseCollection2.id,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                handle: "test-collection2",
+                metadata: null,
+                title: "test-collection2",
+              },
             ]),
           })
         )
@@ -129,11 +139,14 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             count: 1,
             collections: expect.arrayContaining([
-              expect.objectContaining({
+              {
                 id: baseCollection.id,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
-              }),
+                handle: "test-collection",
+                metadata: null,
+                title: "test-collection",
+              },
             ]),
           })
         )
@@ -156,13 +169,14 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data).toEqual(
           expect.objectContaining({
-            collection: expect.objectContaining({
+            collection: {
               id: expect.stringMatching(/^pcol_*/),
               title: "test collection creation",
               handle: "test-handle-creation",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            }),
+              metadata: null,
+            },
           })
         )
       })

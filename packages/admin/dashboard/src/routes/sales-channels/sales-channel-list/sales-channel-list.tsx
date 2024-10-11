@@ -1,15 +1,16 @@
 import { SalesChannelListTable } from "./components/sales-channel-list-table"
 
-import after from "virtual:medusa/widgets/sales_channel/list/after"
-import before from "virtual:medusa/widgets/sales_channel/list/before"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 
 export const SalesChannelList = () => {
+  const { getWidgets } = useDashboardExtension()
+
   return (
     <SingleColumnPage
       widgets={{
-        before,
-        after,
+        before: getWidgets("sales_channel.list.before"),
+        after: getWidgets("sales_channel.list.after"),
       }}
       hasOutlet
     >

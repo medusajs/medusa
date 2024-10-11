@@ -1,26 +1,18 @@
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { ProductListTable } from "./components/product-list-table"
 
-import after from "virtual:medusa/widgets/product/list/after"
-import before from "virtual:medusa/widgets/product/list/before"
-
 export const ProductList = () => {
+  const { getWidgets } = useDashboardExtension()
+
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("product.list.after"),
+        before: getWidgets("product.list.before"),
+      }}
+    >
       <ProductListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-    </div>
+    </SingleColumnPage>
   )
 }

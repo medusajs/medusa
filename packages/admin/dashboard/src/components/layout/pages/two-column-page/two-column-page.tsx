@@ -1,13 +1,13 @@
 import { clx } from "@medusajs/ui"
-import { Children, ComponentPropsWithoutRef } from "react"
+import { Children, ComponentPropsWithoutRef, ComponentType } from "react"
 import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
 import { MetadataSection } from "../../../common/metadata-section"
-import { PageProps, WidgetImport, WidgetProps } from "../types"
+import { PageProps, WidgetProps } from "../types"
 
 interface TwoColumnWidgetProps extends WidgetProps {
-  sideBefore: WidgetImport
-  sideAfter: WidgetImport
+  sideBefore: ComponentType<any>[]
+  sideAfter: ComponentType<any>[]
 }
 
 interface TwoColumnPageProps<TData> extends PageProps<TData> {
@@ -71,14 +71,14 @@ const Root = <TData,>({
 
   return (
     <div className="flex flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return <w.Component {...widgetProps} key={i} />
+      {before.map((Component, i) => {
+        return <Component {...widgetProps} key={i} />
       })}
       <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
           {main}
-          {after.widgets.map((w, i) => {
-            return <w.Component {...widgetProps} key={i} />
+          {after.map((Component, i) => {
+            return <Component {...widgetProps} key={i} />
           })}
           {showExtraData && (
             <div className="hidden flex-col gap-y-3 xl:flex">
@@ -88,12 +88,12 @@ const Root = <TData,>({
           )}
         </div>
         <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]">
-          {sideBefore.widgets.map((w, i) => {
-            return <w.Component {...widgetProps} key={i} />
+          {sideBefore.map((Component, i) => {
+            return <Component {...widgetProps} key={i} />
           })}
           {sidebar}
-          {sideAfter.widgets.map((w, i) => {
-            return <w.Component {...widgetProps} key={i} />
+          {sideAfter.map((Component, i) => {
+            return <Component {...widgetProps} key={i} />
           })}
           {showExtraData && (
             <div className="flex flex-col gap-y-3 xl:hidden">

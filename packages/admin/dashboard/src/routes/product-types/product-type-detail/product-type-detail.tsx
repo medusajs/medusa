@@ -1,13 +1,12 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useProductType } from "../../../hooks/api/product-types"
 import { ProductTypeGeneralSection } from "./components/product-type-general-section"
 import { ProductTypeProductSection } from "./components/product-type-product-section"
 import { productTypeLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/product_type/details/after"
-import before from "virtual:medusa/widgets/product_type/details/before"
 
 export const ProductTypeDetail = () => {
   const { id } = useParams()
@@ -23,8 +22,10 @@ export const ProductTypeDetail = () => {
     }
   )
 
+  const { getWidgets } = useDashboardExtension()
+
   if (isPending || !product_type) {
-    return null
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   if (isError) {
@@ -32,25 +33,17 @@ export const ProductTypeDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={product_type} />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("product_type.details.after"),
+        before: getWidgets("product_type.details.before"),
+      }}
+      showJSON
+      showMetadata
+      data={product_type}
+    >
       <ProductTypeGeneralSection productType={product_type} />
       <ProductTypeProductSection productType={product_type} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={product_type} />
-          </div>
-        )
-      })}
-      <JsonViewSection data={product_type} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

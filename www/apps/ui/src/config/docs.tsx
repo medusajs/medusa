@@ -1,6 +1,4 @@
-import { getMobileSidebarItems } from "docs-ui"
 import { SidebarSectionItems } from "types"
-import { siteConfig } from "./site"
 
 type DocsConfig = {
   sidebar: SidebarSectionItems
@@ -359,9 +357,6 @@ export const docsConfig: DocsConfig = {
         ],
       },
     ],
-    mobile: getMobileSidebarItems({
-      baseUrl: siteConfig.baseUrl,
-      version: "v1",
-    }),
+    mobile: [],
   },
 }

@@ -21,7 +21,7 @@ const TagOperationParametersDefault = ({
   return (
     <div
       className={clsx(
-        "my-0.5 inline-flex justify-between",
+        "my-0.5 inline-flex flex-col justify-between gap-0.25",
         expandable && "w-[calc(100%-16px)]",
         !expandable && "w-full pl-1",
         className

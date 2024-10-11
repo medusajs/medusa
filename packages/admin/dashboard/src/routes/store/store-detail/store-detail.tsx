@@ -5,10 +5,9 @@ import { StoreCurrencySection } from "./components/store-currency-section/store-
 import { StoreGeneralSection } from "./components/store-general-section/index.ts"
 import { storeLoader } from "./loader.ts"
 
-import after from "virtual:medusa/widgets/store/details/after"
-import before from "virtual:medusa/widgets/store/details/before"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton/skeleton.tsx"
 import { SingleColumnPage } from "../../../components/layout/pages/index.ts"
+import { useDashboardExtension } from "../../../extensions/index.ts"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
@@ -16,6 +15,8 @@ export const StoreDetail = () => {
   const { store, isPending, isError, error } = useStore(undefined, {
     initialData,
   })
+
+  const { getWidgets } = useDashboardExtension()
 
   if (isPending || !store) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
@@ -28,8 +29,8 @@ export const StoreDetail = () => {
   return (
     <SingleColumnPage
       widgets={{
-        before,
-        after,
+        before: getWidgets("store.details.before"),
+        after: getWidgets("store.details.after"),
       }}
       data={store}
       hasOutlet

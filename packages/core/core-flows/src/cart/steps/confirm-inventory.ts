@@ -1,4 +1,4 @@
-import { IInventoryService } from "@medusajs/framework/types"
+import { BigNumberInput, IInventoryService } from "@medusajs/framework/types"
 import {
   MathBN,
   MedusaError,
@@ -12,7 +12,7 @@ export interface ConfirmVariantInventoryStepInput {
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
-    quantity: number
+    quantity: BigNumberInput
     location_ids: string[]
   }[]
 }
