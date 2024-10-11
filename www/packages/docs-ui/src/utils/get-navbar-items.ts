@@ -1,27 +1,31 @@
-import { NavigationDropdownItem } from "types"
-import { navDropdownItemsV1, navDropdownItemsV2 } from ".."
+import { NavigationItem } from "types"
+import { navDropdownItems } from ".."
 
 type Options = {
   basePath: string
-  activePath: string
-  version?: "v1" | "v2"
 }
 
-export function getNavDropdownItems({
-  basePath,
-  activePath,
-  version = "v1",
-}: Options): NavigationDropdownItem[] {
-  const items = version === "v2" ? navDropdownItemsV2 : navDropdownItemsV1
-  return items.map((item) => {
-    if (item.type === "divider") {
-      return item
+export function getNavDropdownItems({ basePath }: Options): NavigationItem[] {
+  return navDropdownItems.map((item) => {
+    const newItem = {
+      ...item,
     }
 
-    return {
-      ...item,
-      isActive: activePath === item.path,
-      path: `${basePath}${item.path}`,
+    if (newItem.type === "link") {
+      newItem.path = `${basePath}${newItem.path}`
+    } else {
+      newItem.children = newItem.children.map((childItem) => {
+        if (childItem.type !== "link") {
+          return childItem
+        }
+
+        return {
+          ...childItem,
+          link: `${basePath}${childItem.link}`,
+        }
+      })
     }
+
+    return newItem
   })
 }

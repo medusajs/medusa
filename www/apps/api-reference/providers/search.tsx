@@ -3,7 +3,7 @@
 import {
   usePageLoading,
   SearchProvider as UiSearchProvider,
-  searchFiltersV2,
+  searchFilters,
   AiAssistantIcon,
   AiAssistantProvider,
 } from "docs-ui"
@@ -51,7 +51,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         checkInternalPattern: new RegExp(
           `^${config.baseUrl}${basePathUrl(`/(admin|store)`)}`
         ),
-        filterOptions: searchFiltersV2,
+        filterOptions: searchFilters,
       }}
       commands={[
         {

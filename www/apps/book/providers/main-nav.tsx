@@ -8,7 +8,6 @@ import {
 } from "docs-ui"
 import { useMemo } from "react"
 import { config } from "../config"
-import { basePathUrl } from "../utils/base-path-url"
 import { usePathname } from "next/navigation"
 import { generatedEditDates } from "../generated/edit-dates.mjs"
 
@@ -23,8 +22,6 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
     () =>
       getNavDropdownItems({
         basePath: config.baseUrl,
-        activePath: basePathUrl(),
-        version: "v2",
       }),
     []
   )
@@ -51,9 +48,6 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
       navItems={navigationDropdownItems}
       reportIssueLink={reportLink}
       editDate={editDate}
-      breadcrumbOptions={{
-        showCategories: false,
-      }}
     >
       {children}
     </UiMainNavProvider>
