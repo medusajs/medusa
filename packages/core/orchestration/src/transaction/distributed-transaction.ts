@@ -83,6 +83,14 @@ class DistributedTransaction extends EventEmitter {
   private readonly context: TransactionContext = new TransactionContext()
   private static keyValueStore: IDistributedTransactionStorage
 
+  /**
+   * Store data during the life cycle of the current transaction execution.
+   * Store non persistent data such as transformers results, temporary data, etc.
+   *
+   * @private
+   */
+  #temporaryStorage = new Map<string, unknown>()
+
   public static setStorage(storage: IDistributedTransactionStorage) {
     this.keyValueStore = storage
   }
@@ -297,6 +305,18 @@ class DistributedTransaction extends EventEmitter {
     }
 
     await DistributedTransaction.keyValueStore.clearStepTimeout(this, step)
+  }
+
+  public setTemporaryData(key: string, value: unknown) {
+    this.#temporaryStorage.set(key, value)
+  }
+
+  public getTemporaryData(key: string) {
+    return this.#temporaryStorage.get(key)
+  }
+
+  public hasTemporaryData(key: string) {
+    return this.#temporaryStorage.has(key)
   }
 }
 

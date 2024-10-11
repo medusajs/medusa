@@ -1170,6 +1170,7 @@ medusaIntegrationTestRunner({
 
           await deleteLineItemsWorkflow(appContainer).run({
             input: {
+              cart_id: cart.id,
               ids: items.map((i) => i.id),
             },
             throwOnError: false,
@@ -1211,6 +1212,7 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
+                cart_id: cart.id,
                 ids: items.map((i) => i.id),
               },
               throwOnError: false,

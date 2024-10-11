@@ -30,17 +30,14 @@ export function configLoader(
   entryDirectory: string,
   configFileName: string
 ): ConfigModule {
-  const { configModule, error } = getConfigFile<ConfigModule>(
-    entryDirectory,
-    configFileName
-  )
+  const config = getConfigFile<ConfigModule>(entryDirectory, configFileName)
 
-  if (error) {
-    handleConfigError(error)
+  if (config.error) {
+    handleConfigError(config.error)
   }
 
   return configManager.loadConfig({
-    projectConfig: configModule,
+    projectConfig: config.configModule!,
     baseDir: entryDirectory,
   })
 }

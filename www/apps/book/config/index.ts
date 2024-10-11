@@ -7,5 +7,12 @@ export const config: DocsConfig = {
   titleSuffix: "Medusa v2 Docs",
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  sidebar: sidebarConfig(baseUrl),
+  sidebar: sidebarConfig,
+  project: {
+    title: "Documentation",
+    key: "book",
+  },
+  breadcrumbOptions: {
+    showCategories: false,
+  },
 }

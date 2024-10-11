@@ -9,22 +9,27 @@ import { join } from "path"
 export function getConfigFile<TConfig = unknown>(
   rootDir: string,
   configName: string
-): { configModule: TConfig; configFilePath: string; error?: any } {
+):
+  | { configModule: null; configFilePath: string; error: Error }
+  | { configModule: TConfig; configFilePath: string; error: null } {
   const configPath = join(rootDir, configName)
-  let configFilePath = ``
-  let configModule
-  let err
 
   try {
-    configFilePath = require.resolve(configPath)
-    configModule = require(configFilePath)
+    const configFilePath = require.resolve(configPath)
+    const configExports = require(configFilePath)
+    return {
+      configModule:
+        configExports && "default" in configExports
+          ? configExports.default
+          : configExports,
+      configFilePath,
+      error: null,
+    }
   } catch (e) {
-    err = e
+    return {
+      configModule: null,
+      configFilePath: "",
+      error: e,
+    }
   }
-
-  if (configModule && typeof configModule.default === "object") {
-    configModule = configModule.default
-  }
-
-  return { configModule, configFilePath, error: err }
 }

@@ -71,9 +71,14 @@ export const useOrderPreview = (
 }
 
 export const useOrders = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminOrderFilters,
   options?: Omit<
-    UseQueryOptions<any, FetchError, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminOrderListResponse,
+      FetchError,
+      HttpTypes.AdminOrderListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {

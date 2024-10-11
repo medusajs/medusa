@@ -3,13 +3,14 @@
 import clsx from "clsx"
 import Link from "next/link"
 import React from "react"
-import { MenuItemLink } from "types"
+import { MenuItem as MenuItemType, MenuItemLink } from "types"
 
 export type MenuItemProps = {
   item: MenuItemLink
+  onClick?: (item: MenuItemType) => void
 }
 
-export const MenuItem = ({ item }: MenuItemProps) => {
+export const MenuItem = ({ item, onClick }: MenuItemProps) => {
   return (
     <div className="px-docs_0.25">
       <Link
@@ -20,10 +21,13 @@ export const MenuItem = ({ item }: MenuItemProps) => {
           "text-medusa-fg-base"
         )}
         href={item.link}
+        onClick={() => onClick?.(item)}
       >
-        <span className="text-medusa-fg-subtle mt-[2.5px] block">
-          {item.icon}
-        </span>
+        {item.icon && (
+          <span className="text-medusa-fg-subtle mt-[2.5px] block">
+            {item.icon}
+          </span>
+        )}
         <span className="text-compact-small">{item.title}</span>
       </Link>
     </div>

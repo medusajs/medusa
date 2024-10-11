@@ -3,13 +3,15 @@ import { ModulesDefinition } from "../../definitions"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 import { registerMedusaModule } from "../register-modules"
 
-const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
-jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
+const testServiceResolved = require.resolve(
+  "../__fixtures__/test-service-resolved"
+)
+const defaultTestService = require.resolve("../__fixtures__/test-service")
 
 describe("module definitions loader", () => {
   const defaultDefinition: ModuleDefinition = {
     key: "testService",
-    defaultPackage: "@medusajs/test-service",
+    defaultPackage: defaultTestService,
     label: "TestService",
     isRequired: false,
     defaultModuleDeclaration: {
@@ -51,6 +53,7 @@ describe("module definitions loader", () => {
 
   it("Resolves a custom module without pre-defined definition", () => {
     const res = registerMedusaModule("customModulesABC", {
+      resolve: testServiceResolved,
       options: {
         test: 123,
       },
@@ -58,7 +61,7 @@ describe("module definitions loader", () => {
 
     expect(res).toEqual({
       customModulesABC: expect.objectContaining({
-        resolutionPath: "@medusajs/test-service-resolved",
+        resolutionPath: testServiceResolved,
         definition: expect.objectContaining({
           key: "customModulesABC",
           label: "Custom: customModulesABC",
@@ -146,7 +149,7 @@ describe("module definitions loader", () => {
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
-          resolutionPath: RESOLVED_PACKAGE,
+          resolutionPath: defaultTestService,
           definition: defaultDefinition,
           options: {},
           moduleDeclaration: {
@@ -172,7 +175,7 @@ describe("module definitions loader", () => {
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
-          resolutionPath: RESOLVED_PACKAGE,
+          resolutionPath: defaultTestService,
           definition: defaultDefinition,
           options: {},
           moduleDeclaration: {
@@ -221,7 +224,7 @@ describe("module definitions loader", () => {
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
-          resolutionPath: RESOLVED_PACKAGE,
+          resolutionPath: defaultTestService,
           definition: defaultDefinition,
           options: { test: 123 },
           moduleDeclaration: {

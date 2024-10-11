@@ -1,12 +1,12 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
+  createMedusaContainer,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaContextType,
   MedusaError,
   MedusaModuleType,
-  createMedusaContainer,
-  isDefined,
-  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -107,9 +107,17 @@ export class LocalWorkflow {
         return resolved
       }
 
+      const wrappableMethods = Object.getOwnPropertyNames(resolved).filter(
+        (key) => key !== "constructor"
+      )
+
       return new Proxy(resolved, {
         get: function (target, prop) {
-          if (typeof target[prop] !== "function") {
+          const shouldWrap =
+            wrappableMethods.includes(prop as string) &&
+            typeof target[prop] === "function"
+
+          if (!shouldWrap) {
             return target[prop]
           }
 
@@ -131,6 +139,7 @@ export class LocalWorkflow {
         },
       })
     }
+
     return container
   }
 
@@ -369,9 +378,11 @@ export class LocalWorkflow {
 
     await orchestrator.resume(transaction)
 
-    cleanUpEventListeners()
-
-    return transaction
+    try {
+      return transaction
+    } finally {
+      cleanUpEventListeners()
+    }
   }
 
   async getRunningTransaction(uniqueTransactionId: string, context?: Context) {
@@ -406,9 +417,11 @@ export class LocalWorkflow {
 
     await orchestrator.cancelTransaction(transaction)
 
-    cleanUpEventListeners()
-
-    return transaction
+    try {
+      return transaction
+    } finally {
+      cleanUpEventListeners()
+    }
   }
 
   async registerStepSuccess(
@@ -433,9 +446,11 @@ export class LocalWorkflow {
       response
     )
 
-    cleanUpEventListeners()
-
-    return transaction
+    try {
+      return transaction
+    } finally {
+      cleanUpEventListeners()
+    }
   }
 
   async registerStepFailure(
@@ -459,9 +474,11 @@ export class LocalWorkflow {
       handler(this.container_, context)
     )
 
-    cleanUpEventListeners()
-
-    return transaction
+    try {
+      return transaction
+    } finally {
+      cleanUpEventListeners()
+    }
   }
 
   setOptions(options: Partial<TransactionModelOptions>) {

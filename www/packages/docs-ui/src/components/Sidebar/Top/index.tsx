@@ -4,7 +4,6 @@ import React from "react"
 import { SidebarChild } from "../Child"
 import { InteractiveSidebarItem } from "types"
 import { SidebarTopMobileClose } from "./MobileClose"
-import { SidebarTopMedusaMenu } from "./MedusaMenu"
 import { DottedSeparator } from "../../.."
 
 export type SidebarTopProps = {
@@ -17,14 +16,12 @@ export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
       <div className="pt-docs_0.25">
         <SidebarTopMobileClose />
         <div ref={ref}>
-          <SidebarTopMedusaMenu />
           {parentItem && (
             <>
-              <DottedSeparator />
               <SidebarChild item={parentItem} />
+              <DottedSeparator wrapperClassName="!my-0" />
             </>
           )}
-          <DottedSeparator wrapperClassName="!my-0" />
         </div>
       </div>
     )
