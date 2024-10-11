@@ -1,6 +1,6 @@
 export type MenuItemLink = {
   type: "link"
-  icon: React.ReactNode
+  icon?: React.ReactNode
   title: string
   link: string
 }
@@ -17,4 +17,13 @@ export type MenuItemAction = {
   action: () => void
 }
 
-export type MenuItem = MenuItemLink | MenuItemDivider | MenuItemAction
+export type MenuItemCustom = {
+  type: "custom"
+  content: React.ReactNode
+}
+
+export type MenuItem =
+  | MenuItemLink
+  | MenuItemDivider
+  | MenuItemAction
+  | MenuItemCustom
