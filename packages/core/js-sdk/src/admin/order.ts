@@ -4,7 +4,7 @@ import {
   PaginatedResponse,
   SelectParams,
 } from "@medusajs/types"
-import { AdminOrderChangesResponse } from "@medusajs/types/src/http/order/admin/responses"
+import { AdminOrderChangesResponse } from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"

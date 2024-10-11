@@ -14,7 +14,7 @@ import {
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { asValue } from "awilix"
-import { TestDatabaseUtils, initDb } from "medusa-test-utils"
+import { initDb, TestDatabaseUtils } from "medusa-test-utils"
 import path from "path"
 import { EventBusServiceMock } from "../__fixtures__"
 import { dbName } from "../__fixtures__/medusa-config"
@@ -33,7 +33,7 @@ let medusaAppLoader!: MedusaAppLoader
 
 const beforeAll_ = async () => {
   try {
-    configLoader(path.join(__dirname, "./../__fixtures__"), "medusa-config.js")
+    configLoader(path.join(__dirname, "./../__fixtures__"), "medusa-config")
 
     console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)

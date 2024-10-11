@@ -60,8 +60,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
-    if (shouldStartWorker) {
+    if (this.isWorkerMode) {
       this.bullWorker_ = new Worker(
         moduleOptions.queueName ?? "events-queue",
         this.worker_,
@@ -116,7 +115,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           // options for a particular event
           ...eventData.options,
         },
-      }
+      } as any
     })
   }
 

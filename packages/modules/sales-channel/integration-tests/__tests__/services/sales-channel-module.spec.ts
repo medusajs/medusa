@@ -51,7 +51,7 @@ moduleIntegrationTestRunner<ISalesChannelModuleService>({
               linkable: "sales_channel_id",
               entity: "SalesChannel",
               primaryKey: "id",
-              serviceName: "SalesChannel",
+              serviceName: "sales_channel",
               field: "salesChannel",
             },
           },

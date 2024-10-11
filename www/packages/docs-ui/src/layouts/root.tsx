@@ -1,7 +1,6 @@
 import React from "react"
 import clsx from "clsx"
 import { RootProviders, Sidebar, SidebarProps } from "@/components"
-import { MobileNavigation } from "../components/MobileNavigation"
 import { Toc } from "../components/Toc"
 import { MainContentLayout, MainContentLayoutProps } from "./main-content"
 
@@ -14,6 +13,7 @@ export type RootLayoutProps = {
   showPagination?: boolean
   feedbackComponent?: React.ReactNode
   editComponent?: React.ReactNode
+  showBreadcrumbs?: boolean
 } & MainContentLayoutProps
 
 export const RootLayout = ({
@@ -38,7 +38,6 @@ export const RootLayout = ({
       >
         <RootProviders>
           <ProvidersComponent>
-            <MobileNavigation />
             <Sidebar {...sidebarProps} />
             <div className={clsx("relative", "h-screen", "flex")}>
               <MainContentLayout {...mainProps} />

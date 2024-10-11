@@ -1,5 +1,5 @@
 const { Modules } = require("@medusajs/utils")
-const { FulfillmentModuleOptions } = require("@medusajs/fulfillment")
+
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -78,7 +78,6 @@ module.exports = {
     [Modules.SALES_CHANNEL]: true,
     [Modules.CART]: true,
     [Modules.WORKFLOW_ENGINE]: true,
-    [Modules.REGION]: true,
     [Modules.API_KEY]: true,
     [Modules.STORE]: true,
     [Modules.TAX]: true,
