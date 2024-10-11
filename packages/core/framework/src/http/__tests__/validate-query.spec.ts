@@ -1,7 +1,7 @@
 import z from "zod"
 import { MedusaError } from "@medusajs/utils"
 import { validateAndTransformQuery } from "../utils/validate-query"
-import { MedusaRequest, MedusaResponse, MedusaNextFunction } from "../types"
+import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "../types"
 
 export const createSelectParams = () => {
   return z.object({
@@ -133,10 +133,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
       ],
       isList: true,
     }
@@ -223,10 +219,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
       ],
       isList: true,
     }
@@ -248,7 +240,7 @@ describe("validateAndTransformQuery", () => {
     } as unknown as MedusaRequest
 
     queryConfig = {
-      defaultFields: [
+      defaults: [
         "id",
         "prop-test-something",
         "created_at",
@@ -258,12 +250,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-      ],
-      defaultRelations: [
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
       ],
       isList: true,
     }
