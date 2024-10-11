@@ -13,14 +13,14 @@ describe("configLoader", () => {
 
     expect(configModule).toBeUndefined()
 
-    configLoader(entryDirectory, "medusa-config.js")
+    configLoader(entryDirectory, "medusa-config")
 
     configModule = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
 
     expect(configModule).toBeDefined()
     expect(configModule.projectConfig.databaseName).toBeUndefined()
 
-    configLoader(entryDirectory, "medusa-config-2.js")
+    configLoader(entryDirectory, "medusa-config-2")
 
     configModule = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
 
@@ -30,7 +30,7 @@ describe("configLoader", () => {
 
     process.env.MEDUSA_WORKER_MODE = "worker"
 
-    configLoader(entryDirectory, "medusa-config-2.js")
+    configLoader(entryDirectory, "medusa-config-2")
 
     configModule = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
 

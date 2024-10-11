@@ -18,7 +18,7 @@ export const MainNavEditDate = ({ date }: MainNavEditDateProps) => {
 
   return (
     <>
-      <span className="text-compact-small">
+      <span className="text-compact-small-plus">
         Edited {dateMatch.groups.month} {dateObj.getDate()}
         {dateObj.getFullYear() !== today.getFullYear()
           ? `, ${dateObj.getFullYear()}`

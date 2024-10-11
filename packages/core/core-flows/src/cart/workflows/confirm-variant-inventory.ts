@@ -5,6 +5,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { BigNumberInput } from "@medusajs/types"
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 
@@ -14,7 +15,7 @@ export interface ConfirmVariantInventoryWorkflowOutput {
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
-    quantity: number
+    quantity: BigNumberInput
     location_ids: string[]
   }[]
 }

@@ -1,27 +1,24 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import React, { createContext, useContext, useMemo } from "react"
-import {
-  BreadcrumbOptions,
-  NavigationDropdownItem,
-  NavigationDropdownItemLink,
-} from "types"
+import { NavigationItem } from "types"
+import { useSiteConfig } from "../SiteConifg"
 
 export type MainNavContext = {
-  navItems: NavigationDropdownItem[]
-  activeItem?: NavigationDropdownItemLink
+  navItems: NavigationItem[]
+  activeItemIndex?: number
+  activeItem?: NavigationItem
   reportIssueLink: string
   editDate?: string
-  breadcrumbOptions: BreadcrumbOptions
 }
 
 const MainNavContext = createContext<MainNavContext | null>(null)
 
 export type MainNavProviderProps = {
-  navItems: NavigationDropdownItem[]
+  navItems: NavigationItem[]
   reportIssueLink: string
   editDate?: string
-  breadcrumbOptions?: BreadcrumbOptions
   children?: React.ReactNode
 }
 
@@ -30,26 +27,72 @@ export const MainNavProvider = ({
   reportIssueLink,
   children,
   editDate,
-  breadcrumbOptions = {
-    showCategories: true,
-  },
 }: MainNavProviderProps) => {
-  const activeItem = useMemo(
-    () =>
-      navItems.find(
-        (item) => item.type === "link" && item.isActive
-      ) as NavigationDropdownItemLink,
-    [navItems]
-  )
+  const pathname = usePathname()
+  const { config } = useSiteConfig()
+
+  const baseUrl = `${config.baseUrl}${config.basePath}`
+
+  const activeItemIndex = useMemo(() => {
+    const currentUrl = `${baseUrl}${pathname}`.replace(/\/$/, "")
+
+    let fallbackIndex: number | undefined
+
+    const index = navItems.findIndex((item, index) => {
+      if (item.type === "dropdown") {
+        return item.children.some((childItem) => {
+          if (childItem.type !== "link") {
+            return
+          }
+
+          const isItemActive = currentUrl.startsWith(childItem.link)
+
+          if (
+            isItemActive &&
+            childItem.useAsFallback &&
+            fallbackIndex === undefined
+          ) {
+            fallbackIndex = index
+            return false
+          }
+
+          return isItemActive
+        })
+      }
+
+      if (item.project && item.project !== config.project.key) {
+        return false
+      }
+
+      const isItemActive = currentUrl.startsWith(item.path)
+
+      if (isItemActive && item.useAsFallback && fallbackIndex === undefined) {
+        fallbackIndex = index
+        return false
+      }
+
+      return isItemActive
+    })
+
+    return index !== -1 ? index : fallbackIndex
+  }, [navItems, pathname, baseUrl, config])
+
+  const activeItem = useMemo(() => {
+    if (activeItemIndex === undefined) {
+      return
+    }
+
+    return navItems[activeItemIndex]
+  }, [navItems, activeItemIndex])
 
   return (
     <MainNavContext.Provider
       value={{
         navItems,
-        activeItem,
+        activeItemIndex,
         reportIssueLink,
         editDate,
-        breadcrumbOptions,
+        activeItem,
       }}
     >
       {children}

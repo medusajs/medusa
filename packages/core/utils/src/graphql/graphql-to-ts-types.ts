@@ -54,7 +54,7 @@ async function generateTypes({
 }) {
   const fileSystem = new FileSystem(outputDir)
 
-  let output = 'import "@medusajs/framework/types\n'
+  let output = 'import "@medusajs/framework/types"\n'
   output += await codegen(config)
   const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
 

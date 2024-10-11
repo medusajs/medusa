@@ -49,7 +49,6 @@ export const completeCartWorkflow = createWorkflow(
     name: completeCartWorkflowId,
     store: true,
     idempotent: true,
-    // 3 days of retention time
     retentionTime: THREE_DAYS,
   },
   (
