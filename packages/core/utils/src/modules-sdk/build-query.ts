@@ -73,8 +73,7 @@ function buildWhere(
     }
 
     if (Array.isArray(value)) {
-      value = deduplicate(value)
-      where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }
+      where[prop] = deduplicate(value)
       continue
     }
 
