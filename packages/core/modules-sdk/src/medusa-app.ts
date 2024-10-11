@@ -84,7 +84,7 @@ export async function loadModules(args: {
     sharedResourcesConfig,
     migrationOnly = false,
     loaderOnly = false,
-    workerMode = "server" as ModuleBootstrapOptions["workerMode"],
+    workerMode = "shared" as ModuleBootstrapOptions["workerMode"],
   } = args
 
   const allModules = {} as any
@@ -307,7 +307,7 @@ async function MedusaApp_({
   injectedDependencies = {},
   migrationOnly = false,
   loaderOnly = false,
-  workerMode = "server",
+  workerMode = "shared",
 }: MedusaAppOptions & {
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
