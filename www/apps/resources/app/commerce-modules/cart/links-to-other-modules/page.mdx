@@ -1,0 +1,35 @@
+export const metadata = {
+  title: `Links between Cart Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Cart Module and other commerce modules.
+
+## Payment Module
+
+The Payment Module handles payment processing and management.
+
+Medusa defines a link between the `Cart` and `PaymentCollection` data models. A cart has a payment collection which holds all the authorized payment sessions and payments made related to the cart.
+
+![A diagram showcasing an example of how data models from the Cart and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537849/Medusa%20Resources/cart-payment_ixziqm.jpg)
+
+---
+
+## Promotion Module
+
+The Promotion Module provides discount features.
+
+Medusa defines a link between the `Cart` and `Promotion` data models. This indicates the promotions applied on a cart.
+
+![A diagram showcasing an example of how data models from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+
+---
+
+## Order Module
+
+The Order Module provides order-management features.
+
+Medusa defines a link between the `Cart` and `Order` data models. The cart is linked to the order created once the cart is completed.
+
+![A diagram showcasing an example of how data models from the Cart and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728375735/Medusa%20Resources/cart-order_ijwmfs.jpg)

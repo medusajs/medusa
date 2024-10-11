@@ -18,6 +18,12 @@ The `providers` option is an array of auth module providers.
 
 When the Medusa application starts, these providers are registered and can be used to handle authentication.
 
+<Note title="Tip">
+
+By default, the `emailpass` provider is registered to authenticate customers and admin users.
+
+</Note>
+
 For example:
 
 ```js title="medusa-config.js"
@@ -46,7 +52,7 @@ module.exports = defineConfig({
 
 The `providers` option is an array of objects that accept the following properties:
 
-- `resolve`: A string indicating the package name of the module provider or the path to it.
+- `resolve`: A string indicating the package name of the module provider or the path to it relative to the `src` directory.
 - `id`: A string indicating the provider's unique name or ID.
 - `options`: An optional object of the module provider's options.
 
@@ -54,9 +60,11 @@ The `providers` option is an array of objects that accept the following properti
 
 ## Auth CORS
 
-The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration. So, before using these routes, make sure to set that configuration.
+The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration.
 
-Refer to [Medusa's configuration guide](/references/medusa-config#authCors) for more details.
+By default, the Medusa application you created will have an `AUTH_CORS` environment variable, which is used as the value of `authCors`.
+
+Refer to [Medusa's configuration guide](/references/medusa-config#authCors) to learn more about the `authCors` configuration.
 
 ---
 
