@@ -67,7 +67,7 @@ describe("buildQuery", () => {
     const filters = { deleted_at: "some-value" }
     const result = buildQuery(filters)
     expect(result.options.filters).toHaveProperty(SoftDeletableFilterKey)
-    expect(result.options.filters[SoftDeletableFilterKey]).toEqual({
+    expect(result.options.filters?.[SoftDeletableFilterKey]).toEqual({
       withDeleted: true,
     })
   })
@@ -80,7 +80,9 @@ describe("buildQuery", () => {
     }
     const result = buildQuery({}, config)
     expect(result.options.filters).toHaveProperty("customFilter")
-    expect(result.options.filters.customFilter).toEqual({ someOption: true })
+    expect(result.options.filters?.["customFilter"]).toEqual({
+      someOption: true,
+    })
   })
 
   test("should merge options from config", () => {

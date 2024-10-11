@@ -13,7 +13,7 @@ type FilterFlags = {
 export function buildQuery<T = any, TDto = any>(
   filters: Record<string, any> = {},
   config: FindConfig<TDto> & { primaryKeyFields?: string | string[] } = {}
-): DAL.FindOptions<T> {
+): Required<DAL.FindOptions<T>> {
   const where: DAL.FilterQuery<T> = {}
   const filterFlags: FilterFlags = {}
   buildWhere(filters, where, filterFlags)
