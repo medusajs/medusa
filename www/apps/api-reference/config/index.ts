@@ -1,5 +1,4 @@
 import { DocsConfig } from "types"
-import { getMobileSidebarItems } from "docs-ui"
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
@@ -16,9 +15,10 @@ export const config: DocsConfig = {
         loaded: true,
       },
     ],
-    mobile: getMobileSidebarItems({
-      baseUrl,
-      version: "v2",
-    }),
+    mobile: [],
+  },
+  project: {
+    title: "API Reference",
+    key: "api-reference",
   },
 }

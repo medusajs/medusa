@@ -16,7 +16,7 @@ module.exports = function defineJestConfig(config) {
             },
             target: "ES2021",
           },
-          sourceMaps: true,
+          sourceMaps: "inline",
         },
       ],
     },
