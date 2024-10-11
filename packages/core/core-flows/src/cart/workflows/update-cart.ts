@@ -68,7 +68,11 @@ export const updateCartWorkflow = createWorkflow(
     const cartInput = transform(
       { input, region, customerData, salesChannel, cartToUpdate },
       (data) => {
-        const { promo_codes, ...updateCartData } = data.input
+        const {
+          promo_codes,
+          additional_data: _,
+          ...updateCartData
+        } = data.input
 
         const data_ = {
           ...updateCartData,
