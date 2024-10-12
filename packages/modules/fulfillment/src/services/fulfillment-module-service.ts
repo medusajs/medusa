@@ -1927,6 +1927,20 @@ export default class FulfillmentModuleService
     )
   }
 
+  async validateFulfillmentData(
+    providerId: string,
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<boolean> {
+    return await this.fulfillmentProviderService_.validateFulfillmentData(
+      providerId,
+      optionData,
+      data,
+      context
+    )
+  }
+
   async validateFulfillmentOption(
     providerId: string,
     data: Record<string, unknown>
