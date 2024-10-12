@@ -1,10 +1,15 @@
 import { Logger } from "../logger"
-import { Constructor, MedusaContainer } from "./index"
+import {
+  Constructor,
+  InternalModuleDeclaration,
+  MedusaContainer,
+} from "./index"
 
 export type ProviderLoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
   options?: TOptions
   logger?: Logger
+  moduleOptions: Record<string, unknown>
 }
 
 export type ModuleProviderExports<Service = any> = {
@@ -31,8 +36,8 @@ export type ModuleProviderExports<Service = any> = {
 }
 
 export type ModuleProviderLoaderFunction = (
-  options: Record<string, any>,
-  providerConfig?: any
+  options: ProviderLoaderOptions,
+  moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
 export type ModuleProvider = {

@@ -14,7 +14,7 @@ import {
 import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
 import { InMemoryLockingProvider } from "../providers/in-memory"
 
-const registrationFn = async (klass, container, pluginOptions) => {
+const registrationFn = async (klass, container) => {
   const key = LockingProviderService.getRegistrationIdentifier(klass)
   container.register({
     [LockingProviderRegistrationPrefix + key]: aliasTo("__providers__" + key),

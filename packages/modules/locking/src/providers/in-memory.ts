@@ -38,24 +38,27 @@ export class InMemoryLockingProvider implements ILockingProvider {
       timeout?: number
     }
   ): Promise<T> {
-    keys = Array.isArray(keys) ? keys : [keys]
+    const timeout = Math.max(args?.timeout ?? 5, 1)
+    const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
-    const timeoutSeconds = args?.timeout ?? 5
-
+    const cancellationToken = { cancelled: false }
     const promises: Promise<any>[] = []
     if (timeoutSeconds > 0) {
-      promises.push(this.getTimeout(timeoutSeconds))
+      promises.push(this.getTimeout(timeoutSeconds, cancellationToken))
     }
 
     promises.push(
-      this.acquire(keys, {
-        awaitQueue: true,
-      })
+      this.acquire_(
+        keys,
+        {
+          expire: timeoutSeconds,
+          awaitQueue: true,
+        },
+        cancellationToken
+      )
     )
 
-    await Promise.race(promises).catch(async (err) => {
-      await this.release(keys)
-    })
+    await Promise.race(promises)
 
     try {
       return await job()
@@ -71,6 +74,18 @@ export class InMemoryLockingProvider implements ILockingProvider {
       expire?: number
       awaitQueue?: boolean
     }
+  ): Promise<void> {
+    return this.acquire_(keys, args)
+  }
+
+  async acquire_(
+    keys: string | string[],
+    args?: {
+      ownerId?: string | null
+      expire?: number
+      awaitQueue?: boolean
+    },
+    cancellationToken?: { cancelled: boolean }
   ): Promise<void> {
     keys = Array.isArray(keys) ? keys : [keys]
     const { ownerId, expire } = args ?? {}
@@ -111,10 +126,14 @@ export class InMemoryLockingProvider implements ILockingProvider {
 
       if (lock.currentPromise && args?.awaitQueue) {
         await lock.currentPromise.promise
+        if (cancellationToken?.cancelled) {
+          return
+        }
+
         return this.acquire(keys, args)
       }
 
-      throw new Error(`"${key}" is already locked.`)
+      throw new Error(`Failed to acquire lock for key "${key}"`)
     }
   }
 
@@ -166,9 +185,13 @@ export class InMemoryLockingProvider implements ILockingProvider {
     }
   }
 
-  private async getTimeout(seconds: number): Promise<void> {
+  private async getTimeout(
+    seconds: number,
+    cancellationToken: { cancelled: boolean }
+  ): Promise<void> {
     return new Promise((_, reject) => {
       setTimeout(() => {
+        cancellationToken.cancelled = true
         reject(new Error("Timed-out acquiring lock."))
       }, seconds * 1000)
     })

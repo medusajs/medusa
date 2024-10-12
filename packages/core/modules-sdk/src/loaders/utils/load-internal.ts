@@ -9,6 +9,7 @@ import {
   ModuleLoaderFunction,
   ModuleProvider,
   ModuleProviderExports,
+  ModuleProviderLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -31,7 +32,7 @@ type ModuleResource = {
   services: Function[]
   models: Function[]
   repositories: Function[]
-  loaders: ModuleLoaderFunction[]
+  loaders: ModuleLoaderFunction[] | ModuleProviderLoaderFunction[]
   moduleService: Constructor<any>
   normalizedPath: string
 }
@@ -104,11 +105,11 @@ async function loadInternalProvider(
     loaderOnly?: boolean
   },
   providers: ModuleProvider[]
-) {
+): Promise<{ error?: Error } | void> {
   const { container, resolution, logger, migrationOnly } = args
 
   for (const provider of providers) {
-    await loadInternalModule({
+    const error = await loadInternalModule({
       container,
       resolution: {
         ...resolution,
@@ -122,7 +123,11 @@ async function loadInternalProvider(
       migrationOnly,
       loadingProviders: true,
     })
+
+    return error
   }
+
+  return
 }
 
 export async function loadInternalModule(args: {
@@ -214,15 +219,24 @@ export async function loadInternalModule(args: {
   }
 
   // if module has providers, load them
+  let providerOptions: any = undefined
   if (!loadingProviders) {
     const providers = (resolution?.options?.providers as any[]) ?? []
-    await loadInternalProvider(
+    const err = await loadInternalProvider(
       {
         ...args,
         container: localContainer,
       },
       providers
     )
+
+    if (err?.error) {
+      return err
+    }
+  } else {
+    providerOptions = (resolution?.options?.providers as any[]).find(
+      (p) => p.id === resolution.definition.key
+    )?.options
   }
 
   if (migrationOnly && !loadingProviders) {
@@ -249,6 +263,7 @@ export async function loadInternalModule(args: {
     resolution,
     loaderOnly,
     keyName,
+    providerOptions,
   })
 
   if (error) {
@@ -449,7 +464,7 @@ export async function loadResources({
   moduleResolution: ModuleResolution
   discoveryPath: string
   logger?: Logger
-  loadedModuleLoaders?: ModuleLoaderFunction[]
+  loadedModuleLoaders?: ModuleLoaderFunction[] | ModuleProviderLoaderFunction[]
 }): Promise<ModuleResource> {
   logger ??= console as unknown as Logger
   loadedModuleLoaders ??= []
@@ -534,7 +549,15 @@ export async function loadResources({
 
 async function runLoaders(
   loaders: Function[] = [],
-  { localContainer, container, logger, resolution, loaderOnly, keyName }
+  {
+    localContainer,
+    container,
+    logger,
+    resolution,
+    loaderOnly,
+    keyName,
+    providerOptions,
+  }
 ): Promise<void | { error: Error }> {
   try {
     for (const loader of loaders) {
@@ -542,8 +565,9 @@ async function runLoaders(
         {
           container: localContainer,
           logger,
-          options: resolution.options,
+          options: providerOptions ?? resolution.options,
           dataLoaderOnly: loaderOnly,
+          moduleOptions: providerOptions ? resolution.options : undefined,
         },
         resolution.moduleDeclaration as InternalModuleDeclaration
       )
@@ -562,14 +586,17 @@ async function runLoaders(
 }
 
 function prepareLoaders({
-  loadedModuleLoaders = [] as ModuleLoaderFunction[],
+  loadedModuleLoaders = [] as
+    | ModuleLoaderFunction[]
+    | ModuleProviderLoaderFunction[],
   models,
   repositories,
   services,
   moduleResolution,
   migrationPath,
 }) {
-  const finalLoaders: ModuleLoaderFunction[] = []
+  const finalLoaders: (ModuleLoaderFunction | ModuleProviderLoaderFunction)[] =
+    []
 
   const toObjectReducer = (acc, curr) => {
     acc[curr.name] = curr

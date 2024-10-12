@@ -31,6 +31,7 @@ export default class LockingProviderService {
         `${LockingProviderRegistrationPrefix}${providerId}`
       ]
     } catch (err) {
+      console.error(err)
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Could not find a locking provider with id: ${providerId}`
