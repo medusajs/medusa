@@ -1932,7 +1932,7 @@ export default class FulfillmentModuleService
     optionData: Record<string, unknown>,
     data: Record<string, unknown>,
     context: Record<string, unknown>
-  ): Promise<boolean> {
+  ): Promise<Record<string, unknown>> {
     return await this.fulfillmentProviderService_.validateFulfillmentData(
       providerId,
       optionData,
