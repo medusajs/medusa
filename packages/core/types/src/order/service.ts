@@ -48,7 +48,6 @@ import {
   CancelOrderReturnDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
-  CreateOrderAdjustmentDTO,
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
@@ -56,6 +55,7 @@ import {
   CreateOrderDTO,
   CreateOrderExchangeDTO,
   CreateOrderExchangeItemDTO,
+  CreateOrderLineItemAdjustmentDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
@@ -1539,7 +1539,7 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method creates line item adjustments.
    *
-   * @param {CreateOrderAdjustmentDTO[]} data - The line item adjustments to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO[]} data - The line item adjustments to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
@@ -1548,14 +1548,14 @@ export interface IOrderModuleService extends IModuleService {
    * }])
    */
   createOrderLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO[],
+    data: CreateOrderLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
   /**
    * This method creates a line item adjustment.
    *
-   * @param {CreateOrderAdjustmentDTO} data - The line-item adjustment to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO} data - The line-item adjustment to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line-item adjustment.
    *
    * @example
@@ -1564,7 +1564,7 @@ export interface IOrderModuleService extends IModuleService {
    * })
    */
   createOrderLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO,
+    data: CreateOrderLineItemAdjustmentDTO,
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
@@ -1572,7 +1572,7 @@ export interface IOrderModuleService extends IModuleService {
    * This method creates line item adjustments for an order.
    *
    * @param {string} orderId - The order's ID.
-   * @param {CreateOrderAdjustmentDTO[]} data - The line-item adjustments to be created.
+   * @param {CreateOrderLineItemAdjustmentDTO[]} data - The line-item adjustments to be created.
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
@@ -1585,7 +1585,7 @@ export interface IOrderModuleService extends IModuleService {
    */
   createOrderLineItemAdjustments(
     orderId: string,
-    data: CreateOrderAdjustmentDTO[],
+    data: CreateOrderLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
@@ -3380,7 +3380,7 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 
   /**
-   * This method reverts an order to its last version.
+   * This method reverts an order to its last version and cleanup data related to the changes.
    *
    * @param {string} orderId - The order's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -3390,6 +3390,23 @@ export interface IOrderModuleService extends IModuleService {
    * await orderModuleService.revertLastVersion("123")
    */
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method reverts an order to its last change and keep the order changes and actions not applied.
+   *
+   * @param {string} orderId - The order's ID.
+   * @param {Partial<OrderChangeDTO>} lastOrderChange - The last order change status to revert to.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the order is undone.
+   *
+   * @example
+   * await orderModuleService.revertLastChange("123")
+   */
+  undoLastChange(
+    orderId: string,
+    lastOrderChange?: Partial<OrderChangeDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method retrieves a paginated list of transactions based on optional filters and configuration.

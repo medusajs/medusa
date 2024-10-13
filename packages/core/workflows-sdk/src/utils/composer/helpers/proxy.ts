@@ -10,7 +10,7 @@ export function proxify<T>(obj: WorkflowData<any>): T {
         return target[prop]
       }
 
-      return transform(target[prop], async function (input, context) {
+      return transform({}, async function (_, context) {
         const { invoke } = context as WorkflowTransactionContext
         let output =
           target.__type === OrchestrationUtils.SymbolInputReference ||
@@ -19,9 +19,8 @@ export function proxify<T>(obj: WorkflowData<any>): T {
             : invoke?.[obj.__step__]?.output
 
         output = await resolveValue(output, context)
-        output = output?.[prop]
 
-        return output && JSON.parse(JSON.stringify(output))
+        return output?.[prop]
       })
     },
   }) as unknown as T

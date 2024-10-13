@@ -88,12 +88,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/api-key/examples"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/page.mdx",
-    "pathname": "/commerce-modules/api-key"
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/api-key/links-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/api-key/relations-to-other-modules"
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/page.mdx",
+    "pathname": "/commerce-modules/api-key"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-flows/page.mdx",
@@ -152,16 +152,20 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/examples"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/extend/page.mdx",
+    "pathname": "/commerce-modules/cart/extend"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/cart/links-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/page.mdx",
     "pathname": "/commerce-modules/cart"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/promotions/page.mdx",
     "pathname": "/commerce-modules/cart/promotions"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/cart/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/cart/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",
@@ -176,10 +180,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/currency"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/currency/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/currency/relations-to-other-modules"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/customer-accounts/page.mdx",
     "pathname": "/commerce-modules/customer/customer-accounts"
   },
@@ -188,12 +188,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/customer/examples"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/page.mdx",
-    "pathname": "/commerce-modules/customer"
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/extend/page.mdx",
+    "pathname": "/commerce-modules/customer/extend"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/customer/relations-to-other-modules"
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/page.mdx",
+    "pathname": "/commerce-modules/customer"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/concepts/page.mdx",
@@ -208,16 +208,16 @@ export const filesMap = [
     "pathname": "/commerce-modules/fulfillment/item-fulfillment"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/fulfillment/links-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/module-options/page.mdx",
     "pathname": "/commerce-modules/fulfillment/module-options"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/page.mdx",
     "pathname": "/commerce-modules/fulfillment"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/fulfillment/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/shipping-option/page.mdx",
@@ -236,12 +236,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory/inventory-in-flows"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/inventory/page.mdx",
-    "pathname": "/commerce-modules/inventory"
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/inventory/links-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/inventory/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/inventory/relations-to-other-modules"
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/page.mdx",
+    "pathname": "/commerce-modules/inventory"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/claim/page.mdx",

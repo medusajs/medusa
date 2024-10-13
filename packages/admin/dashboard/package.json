@@ -21,7 +21,9 @@
     "./css": {
       "import": "./dist/app.css",
       "require": "./dist/app.css"
-    }
+    },
+    "./root": "./",
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
@@ -29,8 +31,10 @@
     "directory": "packages/admin/dashboard"
   },
   "files": [
-    "dist",
-    "package.json"
+    "package.json",
+    "src",
+    "index.html",
+    "dist"
   ],
   "dependencies": {
     "@ariakit/react": "^0.4.1",
@@ -38,6 +42,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.4.2",
+    "@medusajs/admin-shared": "0.0.1",
     "@medusajs/icons": "1.2.1",
     "@medusajs/js-sdk": "0.0.1",
     "@medusajs/ui": "3.0.0",
@@ -81,7 +86,8 @@
     "tailwindcss": "^3.4.1",
     "tsup": "^8.0.2",
     "typescript": "5.2.2",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "vite-plugin-inspect": "^0.8.7"
   },
   "packageManager": "yarn@3.2.1"
 }

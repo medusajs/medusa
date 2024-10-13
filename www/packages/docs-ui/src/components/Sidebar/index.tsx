@@ -118,8 +118,8 @@ export const Sidebar = ({
                 }}
                 id="sidebar"
               >
-                {/* MOBILE SIDEBAR */}
-                <div className={clsx("lg:hidden")}>
+                {/* MOBILE SIDEBAR - keeping this in case we need it in the future */}
+                {/* <div className={clsx("lg:hidden")}>
                   {!sidebarItems.mobile.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}
@@ -131,8 +131,8 @@ export const Sidebar = ({
                       hasNextItems={index !== sidebarItems.default.length - 1}
                     />
                   ))}
-                  <DottedSeparator />
-                </div>
+                  {sidebarItems.mobile.length > 0 && <DottedSeparator />}
+                </div> */}
                 {/* DESKTOP SIDEBAR */}
                 <div className="mt-docs_0.75 lg:mt-0">
                   {!sidebarItems.default.length && !staticSidebarItems && (

@@ -20,12 +20,12 @@ import {
   isObject,
   isString,
   MedusaError,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
   MigrationOptions,
@@ -84,7 +84,7 @@ export async function loadModules(args: {
     sharedResourcesConfig,
     migrationOnly = false,
     loaderOnly = false,
-    workerMode = "server" as ModuleBootstrapOptions["workerMode"],
+    workerMode = "shared" as ModuleBootstrapOptions["workerMode"],
   } = args
 
   const allModules = {} as any
@@ -307,7 +307,7 @@ async function MedusaApp_({
   injectedDependencies = {},
   migrationOnly = false,
   loaderOnly = false,
-  workerMode = "server",
+  workerMode = "shared",
 }: MedusaAppOptions & {
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
@@ -510,7 +510,7 @@ async function MedusaApp_({
         modulePath: moduleResolution.resolutionPath as string,
         container: sharedContainer,
         options: moduleResolution.options,
-        moduleExports: moduleResolution.moduleExports,
+        moduleExports: moduleResolution.moduleExports as ModuleExports,
       }
 
       if (action === "revert") {

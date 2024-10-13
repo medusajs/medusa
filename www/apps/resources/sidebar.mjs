@@ -39,8 +39,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/api-key/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/api-key/links-to-other-modules",
+                title: "Link to Modules",
               },
             ],
           },
@@ -224,6 +224,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/cart/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -244,8 +249,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/cart/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/cart/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -303,17 +308,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "Concepts",
-            children: [
-              {
-                type: "link",
-                path: "/commerce-modules/currency/relations-to-other-modules",
-                title: "Relation to Modules",
-              },
-            ],
-          },
-          {
-            type: "sub-category",
             title: "References",
             children: [
               {
@@ -365,6 +359,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/customer/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -372,11 +371,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/customer/customer-accounts",
                 title: "Customer Accounts",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/customer/relations-to-other-modules",
-                title: "Relations to Other Modules",
               },
             ],
           },
@@ -458,8 +452,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/fulfillment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/fulfillment/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -544,8 +538,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/inventory/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/inventory/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -2157,8 +2151,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 type: "link",
                 path: "/troubleshooting/dist-imports",
-                title: "Importing from /dist"
-              }
+                title: "Importing from /dist",
+              },
             ],
           },
           {

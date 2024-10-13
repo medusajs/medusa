@@ -1,0 +1,30 @@
+export const SEARCH_AREAS = [
+  "all",
+  "order",
+  "product",
+  "productVariant",
+  "collection",
+  "category",
+  "inventory",
+  "customer",
+  "customerGroup",
+  "promotion",
+  "campaign",
+  "priceList",
+  "user",
+  "region",
+  "taxRegion",
+  "returnReason",
+  "salesChannel",
+  "productType",
+  "productTag",
+  "location",
+  "shippingProfile",
+  "publishableApiKey",
+  "secretApiKey",
+  "command",
+  "navigation",
+] as const
+
+export const DEFAULT_SEARCH_LIMIT = 3
+export const SEARCH_LIMIT_INCREMENT = 20

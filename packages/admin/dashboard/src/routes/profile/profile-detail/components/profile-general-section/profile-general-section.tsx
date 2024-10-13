@@ -1,12 +1,12 @@
 import { PencilSquare } from "@medusajs/icons"
-import { UserDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { languages } from "../../../../../i18n/languages"
 
 type ProfileGeneralSectionProps = {
-  user: UserDTO
+  user: HttpTypes.AdminUser
 }
 
 export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
