@@ -27,7 +27,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         return stock > 0
       }
       async function reduceStock() {
-        await setTimeout(1000)
+        await setTimeout(10)
         stock--
       }
       async function buy() {
