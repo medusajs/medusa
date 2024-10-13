@@ -70,10 +70,12 @@ export async function resolveModuleExports({
       if ("discoveryPath" in module) {
         const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
         const discoveryPath = module.discoveryPath
-        resolvedModuleExports = reExportedLoadedModule.default
+        resolvedModuleExports =
+          reExportedLoadedModule.default ?? reExportedLoadedModule
         resolvedModuleExports.discoveryPath = discoveryPath as string
       } else {
-        resolvedModuleExports = (module as { default: ModuleExports }).default
+        resolvedModuleExports =
+          (module as { default: ModuleExports }).default ?? module
         resolvedModuleExports.discoveryPath =
           resolution.resolutionPath as string
       }
@@ -512,7 +514,8 @@ export async function loadResources({
 
     const [moduleService, services, models, repositories] = await Promise.all([
       dynamicImport(modulePath).then((moduleExports) => {
-        return moduleExports.default.service
+        const mod = moduleExports.default ?? moduleExports
+        return mod.service
       }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
