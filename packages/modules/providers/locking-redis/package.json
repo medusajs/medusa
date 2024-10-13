@@ -38,7 +38,7 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
     "build": "rimraf dist && tsc --build && npm run resolve:aliases",
-    "test": "jest --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
+    "test": "jest --passWithNoTests src",
     "test:integration": "jest --runInBand --forceExit -- integration-tests/**/__tests__/**/*.spec.ts"
   },
   "keywords": [
