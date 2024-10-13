@@ -18,6 +18,8 @@ import {
   defineJoinerConfig,
   DmlEntity,
   dynamicImport,
+  isString,
+  MedusaModuleProviderType,
   MedusaModuleType,
   ModulesSdkUtils,
   toMikroOrmEntities,
@@ -60,7 +62,7 @@ export async function resolveModuleExports({
     if (resolution.moduleExports) {
       // TODO:
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
-      resolvedModuleExports = resolution.moduleExports
+      resolvedModuleExports = resolution.moduleExports as ModuleExports
       resolvedModuleExports.discoveryPath = resolution.resolutionPath as string
     } else {
       const module = await dynamicImport(resolution.resolutionPath as string)
@@ -109,15 +111,25 @@ async function loadInternalProvider(
   const { container, resolution, logger, migrationOnly } = args
 
   for (const provider of providers) {
+    const providerRes = provider.resolve as ModuleProviderExports
+
+    const canLoadProvider =
+      providerRes && (isString(providerRes) || !providerRes?.services)
+
+    if (!canLoadProvider) {
+      continue
+    }
+
     const error = await loadInternalModule({
       container,
       resolution: {
         ...resolution,
+        moduleExports: !isString(providerRes) ? providerRes : undefined,
         definition: {
           ...resolution.definition,
           key: provider.id,
         },
-        resolutionPath: provider.resolve as string,
+        resolutionPath: isString(provider.resolve) ? provider.resolve : false,
       },
       logger,
       migrationOnly,
@@ -222,6 +234,7 @@ export async function loadInternalModule(args: {
   let providerOptions: any = undefined
   if (!loadingProviders) {
     const providers = (resolution?.options?.providers as any[]) ?? []
+
     const err = await loadInternalProvider(
       {
         ...args,
@@ -272,11 +285,20 @@ export async function loadInternalModule(args: {
 
   if (loadingProviders) {
     const loadedProvider_ = loadedModule as ModuleProviderExports
-    const moduleServices = moduleResources.moduleService
-      ? [moduleResources.moduleService]
-      : loadedProvider_.services
 
-    for (const moduleService of moduleServices) {
+    let moduleProviderServices = moduleResources.moduleService
+      ? [moduleResources.moduleService]
+      : loadedProvider_.services ?? loadedProvider_
+
+    if (!moduleProviderServices) {
+      return
+    }
+
+    for (const moduleService of moduleProviderServices) {
+      const modProvider_ = moduleService as any
+
+      modProvider_.identifier ??= keyName
+      modProvider_.__type = MedusaModuleProviderType
       container.register({
         ["__providers__" + keyName]: asFunction((cradle) => {
           ;(moduleService as any).__type = MedusaModuleType
@@ -329,14 +351,24 @@ export async function loadModuleMigrations(
 
   if (Array.isArray(resolution?.options?.providers)) {
     for (const provider of (resolution.options as any).providers) {
+      const providerRes = provider.resolve as ModuleProviderExports
+
+      const canLoadProvider =
+        providerRes && (isString(providerRes) || !providerRes?.services)
+
+      if (!canLoadProvider) {
+        continue
+      }
+
       const loadedProvider = await resolveModuleExports({
         resolution: {
           ...resolution,
+          moduleExports: !isString(providerRes) ? providerRes : undefined,
           definition: {
             ...resolution.definition,
             key: provider.id,
           },
-          resolutionPath: provider.resolve as string,
+          resolutionPath: isString(provider.resolve) ? provider.resolve : false,
         },
       })
       loadedServices.push(loadedProvider as ResolvedModuleProvider)
