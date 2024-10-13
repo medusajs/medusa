@@ -36,10 +36,9 @@ export class PostgresAdvisoryLockProvider
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
     return await this.getManager().transactional(async (manager) => {
-      const cancellationToken = { cancelled: false }
       const ops: Promise<unknown>[] = []
       if (timeoutSeconds > 0) {
-        ops.push(this.getTimeout(timeoutSeconds, cancellationToken))
+        ops.push(this.getTimeout(timeoutSeconds))
       }
 
       const fnName = "pg_advisory_xact_lock"
@@ -186,13 +185,9 @@ export class PostgresAdvisoryLockProvider
     return hash >>> 0
   }
 
-  private async getTimeout(
-    seconds: number,
-    cancellationToken: { cancelled: boolean }
-  ): Promise<void> {
+  private async getTimeout(seconds: number): Promise<void> {
     return new Promise((_, reject) => {
       setTimeout(() => {
-        cancellationToken.cancelled = true
         reject(new Error("Timed-out acquiring lock."))
       }, seconds * 1000)
     })
