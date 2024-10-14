@@ -660,9 +660,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateVariantPricesStep/page.mdx"
   },
   {
-    "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToWorkflow",
-    "newSlug": "/references/medusa-workflows/addShippingMethodToWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToWorkflow/page.mdx"
+    "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToCartWorkflow",
+    "newSlug": "/references/medusa-workflows/addShippingMethodToCartWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToCartWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addToCartWorkflow",
@@ -3758,6 +3758,11 @@ export const slugChanges = [
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles",
     "newSlug": "/references/fulfillment/upsertShippingProfiles",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentData",
+    "newSlug": "/references/fulfillment/validateFulfillmentData",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentData/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentOption",

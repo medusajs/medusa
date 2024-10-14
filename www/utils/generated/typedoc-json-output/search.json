@@ -1,12 +1,12 @@
 {
-	"id": 35104,
+	"id": 35107,
 	"name": "search",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 35105,
+			"id": 35108,
 			"name": "AbstractSearchService",
 			"variant": "declaration",
 			"kind": 128,
@@ -111,7 +111,7 @@
 			},
 			"children": [
 				{
-					"id": 35114,
+					"id": 35117,
 					"name": "isDefault",
 					"variant": "declaration",
 					"kind": 1024,
@@ -149,7 +149,7 @@
 					}
 				},
 				{
-					"id": 35115,
+					"id": 35118,
 					"name": "options_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -186,7 +186,7 @@
 					}
 				},
 				{
-					"id": 35110,
+					"id": 35113,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -195,7 +195,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35111,
+							"id": 35114,
 							"name": "new AbstractSearchService",
 							"variant": "signature",
 							"kind": 16384,
@@ -237,7 +237,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35112,
+									"id": 35115,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -264,7 +264,7 @@
 									}
 								},
 								{
-									"id": 35113,
+									"id": 35116,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -285,7 +285,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 35105,
+								"target": 35108,
 								"name": "AbstractSearchService",
 								"package": "@medusajs/utils"
 							}
@@ -293,7 +293,7 @@
 					]
 				},
 				{
-					"id": 35118,
+					"id": 35121,
 					"name": "createIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -302,7 +302,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35119,
+							"id": 35122,
 							"name": "createIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -365,7 +365,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35120,
+									"id": 35123,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -384,7 +384,7 @@
 									}
 								},
 								{
-									"id": 35121,
+									"id": 35124,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -421,7 +421,7 @@
 					}
 				},
 				{
-					"id": 35122,
+					"id": 35125,
 					"name": "getIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -430,7 +430,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35123,
+							"id": 35126,
 							"name": "getIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -465,7 +465,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35124,
+									"id": 35127,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -502,7 +502,7 @@
 					}
 				},
 				{
-					"id": 35125,
+					"id": 35128,
 					"name": "addDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -511,7 +511,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35126,
+							"id": 35129,
 							"name": "addDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -546,7 +546,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35127,
+									"id": 35130,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -565,7 +565,7 @@
 									}
 								},
 								{
-									"id": 35128,
+									"id": 35131,
 									"name": "documents",
 									"variant": "param",
 									"kind": 32768,
@@ -593,7 +593,7 @@
 									}
 								},
 								{
-									"id": 35129,
+									"id": 35132,
 									"name": "type",
 									"variant": "param",
 									"kind": 32768,
@@ -638,7 +638,7 @@
 					}
 				},
 				{
-					"id": 35130,
+					"id": 35133,
 					"name": "replaceDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -647,7 +647,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35131,
+							"id": 35134,
 							"name": "replaceDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -682,7 +682,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35132,
+									"id": 35135,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -701,7 +701,7 @@
 									}
 								},
 								{
-									"id": 35133,
+									"id": 35136,
 									"name": "documents",
 									"variant": "param",
 									"kind": 32768,
@@ -729,7 +729,7 @@
 									}
 								},
 								{
-									"id": 35134,
+									"id": 35137,
 									"name": "type",
 									"variant": "param",
 									"kind": 32768,
@@ -774,7 +774,7 @@
 					}
 				},
 				{
-					"id": 35135,
+					"id": 35138,
 					"name": "deleteDocument",
 					"variant": "declaration",
 					"kind": 2048,
@@ -783,7 +783,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35136,
+							"id": 35139,
 							"name": "deleteDocument",
 							"variant": "signature",
 							"kind": 4096,
@@ -818,7 +818,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35137,
+									"id": 35140,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -837,7 +837,7 @@
 									}
 								},
 								{
-									"id": 35138,
+									"id": 35141,
 									"name": "document_id",
 									"variant": "param",
 									"kind": 32768,
@@ -883,7 +883,7 @@
 					}
 				},
 				{
-					"id": 35139,
+					"id": 35142,
 					"name": "deleteAllDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -892,7 +892,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35140,
+							"id": 35143,
 							"name": "deleteAllDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -927,7 +927,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35141,
+									"id": 35144,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -964,7 +964,7 @@
 					}
 				},
 				{
-					"id": 35142,
+					"id": 35145,
 					"name": "search",
 					"variant": "declaration",
 					"kind": 2048,
@@ -973,7 +973,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35143,
+							"id": 35146,
 							"name": "search",
 							"variant": "signature",
 							"kind": 4096,
@@ -1008,7 +1008,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35144,
+									"id": 35147,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -1035,7 +1035,7 @@
 									}
 								},
 								{
-									"id": 35145,
+									"id": 35148,
 									"name": "query",
 									"variant": "param",
 									"kind": 32768,
@@ -1063,7 +1063,7 @@
 									}
 								},
 								{
-									"id": 35146,
+									"id": 35149,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -1140,7 +1140,7 @@
 					}
 				},
 				{
-					"id": 35147,
+					"id": 35150,
 					"name": "updateSettings",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1149,7 +1149,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35148,
+							"id": 35151,
 							"name": "updateSettings",
 							"variant": "signature",
 							"kind": 4096,
@@ -1184,7 +1184,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35149,
+									"id": 35152,
 									"name": "indexName",
 									"variant": "param",
 									"kind": 32768,
@@ -1203,7 +1203,7 @@
 									}
 								},
 								{
-									"id": 35150,
+									"id": 35153,
 									"name": "settings",
 									"variant": "param",
 									"kind": 32768,
@@ -1244,27 +1244,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						35110
+						35113
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						35114,
-						35115
+						35117,
+						35118
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						35118,
-						35122,
+						35121,
 						35125,
-						35130,
-						35135,
-						35139,
+						35128,
+						35133,
+						35138,
 						35142,
-						35147
+						35145,
+						35150
 					]
 				}
 			],
@@ -1285,79 +1285,67 @@
 		{
 			"title": "Classes",
 			"children": [
-				35105
+				35108
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"35104": {
+		"35107": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
 			"qualifiedName": ""
 		},
-		"35105": {
+		"35108": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
 			"qualifiedName": "AbstractSearchService"
-		},
-		"35110": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.__constructor"
-		},
-		"35111": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService"
-		},
-		"35112": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "container"
 		},
 		"35113": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "AbstractSearchService.__constructor"
 		},
 		"35114": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.isDefault"
+			"qualifiedName": "AbstractSearchService"
 		},
 		"35115": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.options_"
+			"qualifiedName": "container"
 		},
-		"35118": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.createIndex"
-		},
-		"35119": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.createIndex"
-		},
-		"35120": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
-		},
-		"35121": {
+		"35116": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
 			"qualifiedName": "options"
 		},
+		"35117": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.isDefault"
+		},
+		"35118": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.options_"
+		},
+		"35121": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.createIndex"
+		},
 		"35122": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.getIndex"
+			"qualifiedName": "AbstractSearchService.createIndex"
 		},
 		"35123": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.getIndex"
+			"qualifiedName": "indexName"
 		},
 		"35124": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
+			"qualifiedName": "options"
 		},
 		"35125": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.addDocuments"
+			"qualifiedName": "AbstractSearchService.getIndex"
 		},
 		"35126": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.addDocuments"
+			"qualifiedName": "AbstractSearchService.getIndex"
 		},
 		"35127": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
@@ -1365,67 +1353,67 @@
 		},
 		"35128": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "documents"
+			"qualifiedName": "AbstractSearchService.addDocuments"
 		},
 		"35129": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "type"
+			"qualifiedName": "AbstractSearchService.addDocuments"
 		},
 		"35130": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.replaceDocuments"
+			"qualifiedName": "indexName"
 		},
 		"35131": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.replaceDocuments"
+			"qualifiedName": "documents"
 		},
 		"35132": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
+			"qualifiedName": "type"
 		},
 		"35133": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "documents"
+			"qualifiedName": "AbstractSearchService.replaceDocuments"
 		},
 		"35134": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "type"
+			"qualifiedName": "AbstractSearchService.replaceDocuments"
 		},
 		"35135": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.deleteDocument"
+			"qualifiedName": "indexName"
 		},
 		"35136": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.deleteDocument"
+			"qualifiedName": "documents"
 		},
 		"35137": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
+			"qualifiedName": "type"
 		},
 		"35138": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "document_id"
+			"qualifiedName": "AbstractSearchService.deleteDocument"
 		},
 		"35139": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
+			"qualifiedName": "AbstractSearchService.deleteDocument"
 		},
 		"35140": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
+			"qualifiedName": "indexName"
 		},
 		"35141": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
+			"qualifiedName": "document_id"
 		},
 		"35142": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.search"
+			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
 		},
 		"35143": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.search"
+			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
 		},
 		"35144": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
@@ -1433,25 +1421,37 @@
 		},
 		"35145": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "query"
+			"qualifiedName": "AbstractSearchService.search"
 		},
 		"35146": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "AbstractSearchService.search"
 		},
 		"35147": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.updateSettings"
+			"qualifiedName": "indexName"
 		},
 		"35148": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "AbstractSearchService.updateSettings"
+			"qualifiedName": "query"
 		},
 		"35149": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
-			"qualifiedName": "indexName"
+			"qualifiedName": "options"
 		},
 		"35150": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.updateSettings"
+		},
+		"35151": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.updateSettings"
+		},
+		"35152": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"35153": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-service.ts",
 			"qualifiedName": "settings"
 		}
@@ -1461,7 +1461,7 @@
 			"1": "../../../../packages/core/utils/src/search/abstract-service.ts"
 		},
 		"reflections": {
-			"1": 35104
+			"1": 35107
 		}
 	}
 }

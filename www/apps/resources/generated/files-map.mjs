@@ -2324,8 +2324,8 @@ export const filesMap = [
     "pathname": "/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateVariantPricesStepId"
   },
   {
-    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToWorkflow"
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToCartWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addShippingMethodToCartWorkflow"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.addToCartWorkflow/page.mdx",
@@ -8190,6 +8190,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentData/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentData"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentOption/page.mdx",
@@ -16426,10 +16430,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.SessionOptions/page.mdx",
     "pathname": "/references/types/interfaces/types.SessionOptions"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.SharedContext/page.mdx",
-    "pathname": "/references/types/interfaces/types.SharedContext"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.UpdateCartWorkflowInputDTO/page.mdx",
