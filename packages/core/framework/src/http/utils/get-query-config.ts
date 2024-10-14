@@ -27,7 +27,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> = {}
 ) {
-  let { allowed = [], defaults = [], defaultLimit, isList } = queryConfig
+  let { allowed = [], defaults = [], defaultLimit = 50, isList } = queryConfig
   const { order, fields, limit = defaultLimit, offset = 0 } = validated
 
   // e.g *product.variants meaning that we want all fields from the product.variants
