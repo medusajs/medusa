@@ -31,9 +31,9 @@ export default defineLink(
       extraColumns: {
         metadata: {
           type: "json",
-        }
-      }
-    }
+        },
+      },
+    },
   }
 )
 ```
@@ -94,16 +94,16 @@ Learn more about the remote link, how to resolve it, and its methods in [this ch
 ```ts
 await remoteLink.create({
   [Modules.PRODUCT]: {
-    product_id: "123"
+    product_id: "123",
   },
   HELLO_MODULE: {
-    my_custom_id: "321"
+    my_custom_id: "321",
   },
   data: {
     metadata: {
-      test: true
-    }
-  }
+      test: true,
+    },
+  },
 })
 ```
 
@@ -138,8 +138,8 @@ const { data } = await query.graph({
   entity: productHelloLink.entryPoint,
   fields: ["metadata", "product.*", "my_custom.*"],
   filters: {
-    product_id: "prod_123"
-  }
+    product_id: "prod_123",
+  },
 })
 ```
 
@@ -160,15 +160,15 @@ For example:
 ```ts
 await remoteLink.create({
   [Modules.PRODUCT]: {
-    product_id: "123"
+    product_id: "123",
   },
   HELLO_MODULE: {
-    my_custom_id: "321"
+    my_custom_id: "321",
   },
   data: {
     metadata: {
-      test: false
-    }
-  }
+      test: false,
+    },
+  },
 })
 ```
