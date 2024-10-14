@@ -1,4 +1,4 @@
-import { MedusaService } from "@medusajs/framework/utils"
+import { MedusaService, promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
 import { Redis } from "ioredis"
 import { setTimeout } from "node:timers/promises"
