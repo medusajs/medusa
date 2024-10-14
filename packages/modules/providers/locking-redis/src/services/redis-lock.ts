@@ -50,22 +50,36 @@ export class RedisLockingProvider
         local ttl = tonumber(ARGV[2])
         local awaitQueue = ARGV[3] == 'true'
 
-        local setResult = redis.call('SET', key, ownerId, 'EX', ttl, 'NX')
+        local setArgs = {key, ownerId, 'NX'}
+        if ttl > 0 then
+            table.insert(setArgs, 'EX')
+            table.insert(setArgs, ttl)
+        end
+
+        local setResult = redis.call('SET', unpack(setArgs))
 
         if setResult then
-          return 1
-        elseif not awaitQueue then
-          -- Key already exists; retrieve the current ownerId
-          local currentOwnerId = redis.call('GET', key)
-          if currentOwnerId == ownerId then
-            redis.call('SET', key, ownerId, 'EX', ttl, 'XX')
             return 1
-          else
-            return 0
-          end
+        elseif not awaitQueue then
+            -- Key already exists; retrieve the current ownerId
+            local currentOwnerId = redis.call('GET', key)
+            if currentOwnerId == '*' then
+              return 0
+            elseif currentOwnerId == ownerId then
+                setArgs = {key, ownerId, 'XX'}
+                if ttl > 0 then
+                    table.insert(setArgs, 'EX')
+                    table.insert(setArgs, ttl)
+                end
+                redis.call('SET', unpack(setArgs))
+                return 1
+            else
+                return 0
+            end
         else
-          return 0
+            return 0
         end
+
       `,
     })
 
@@ -110,6 +124,7 @@ export class RedisLockingProvider
         keys,
         {
           awaitQueue: true,
+          expire: args?.timeout ? timeoutSeconds : 0,
         },
         cancellationToken
       )
@@ -166,7 +181,7 @@ export class RedisLockingProvider
           const result = await this.redisClient.acquireLock(
             keyName,
             ownerId,
-            timeoutSeconds,
+            args?.expire ? timeoutSeconds : 0,
             awaitQueue
           )
 
