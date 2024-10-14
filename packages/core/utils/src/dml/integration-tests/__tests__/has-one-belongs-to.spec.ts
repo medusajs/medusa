@@ -92,7 +92,7 @@ describe("hasOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
+    expect(await mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
       id: user1.id,
       username: "User 1",
       created_at: expect.any(Date),
@@ -137,7 +137,7 @@ describe("hasOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
+    expect(await mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
       id: user1.id,
       username: "User 1",
       created_at: expect.any(Date),

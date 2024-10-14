@@ -37,7 +37,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 // step imports...
 
 const workflow = createWorkflow(
@@ -70,7 +70,7 @@ In this code snippet, you execute the `isActiveStep` only if the `input.is_activ
 
 ### When Parameters
 
-`when` utility is a function imported from `@medusajs/workflows-sdk`. It accepts the following parameters:
+`when` utility is a function imported from `@medusajs/framework/workflows-sdk`. It accepts the following parameters:
 
 1. The first parameter is either an object or the workflow's input. This data is passed as a parameter to the function in `when`'s second parameter.
 2. The second parameter is a function that returns a boolean indicating whether to execute the action in `then`.

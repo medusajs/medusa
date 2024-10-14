@@ -28,8 +28,8 @@ export async function getViteConfig(
       outDir: path.resolve(process.cwd(), options.outDir),
     },
     optimizeDeps: {
-      include: ["@medusajs/dashboard", "react-dom/client"],
-      exclude: VIRTUAL_MODULES,
+      include: ["react-dom/client", "@medusajs/ui", "@medusajs/dashboard"],
+      exclude: [...VIRTUAL_MODULES],
     },
     define: {
       __BASE__: JSON.stringify(options.path),
@@ -43,7 +43,6 @@ export async function getViteConfig(
       hmr: {
         port: hmrPort,
       },
-      middlewareMode: true,
     },
     css: {
       postcss: {
@@ -64,7 +63,6 @@ export async function getViteConfig(
 
   if (options.vite) {
     const customConfig = options.vite(baseConfig)
-
     return mergeConfig(baseConfig, customConfig)
   }
 

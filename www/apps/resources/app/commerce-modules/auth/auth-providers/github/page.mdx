@@ -8,7 +8,7 @@ export const metadata = {
 
 In this document, you’ll learn about the GitHub Auth Module Provider and how to install and use it in the Auth Module.
 
-The Github Auth Module Provider handles authenticating users with their GitHub account.
+The Github Auth Module Provider authenticates users with their GitHub account.
 
 <Note title="Tip">
 
@@ -18,7 +18,7 @@ Learn about the authentication flow in [this guide](../../authentication-route/p
 
 ---
 
-## Install the Github Auth Module Provider
+## Register the Github Auth Module Provider
 
 <Prerequisites
   items={[
@@ -33,28 +33,22 @@ Learn about the authentication flow in [this guide](../../authentication-route/p
   ]}
 />
 
-To install the GitHub auth module provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/auth-github@preview
-```
-
-Next, add the module to the array of providers passed to the Auth Module:
+Add the module to the array of providers passed to the Auth Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
 const modules = {
   // ...
   [Modules.AUTH]: {
-    resolve: "@medusajs/auth",
+    resolve: "@medusajs/medusa/auth",
     options: {
       providers: [
         // other providers...
         {
-          resolve: "@medusajs/auth-github",
+          resolve: "@medusajs/medusa/auth-github",
           id: "github",
           options: {
             clientId: process.env.GITHUB_CLIENT_ID,

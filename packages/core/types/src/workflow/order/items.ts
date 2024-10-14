@@ -12,6 +12,7 @@ interface NewItem {
 interface ExistingItem {
   id: string
   quantity: BigNumberInput
+  unit_price?: BigNumberInput
   internal_note?: string | null
 }
 
@@ -59,6 +60,7 @@ export interface UpdateOrderEditAddNewItemWorkflowInput {
   action_id: string
   data: {
     quantity?: BigNumberInput
+    unit_price?: BigNumberInput
     internal_note?: string | null
   }
 }

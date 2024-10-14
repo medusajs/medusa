@@ -14,9 +14,9 @@ In this document, you’ll find common examples of how you can use the Promotion
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -47,7 +47,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePromotionModule } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
 export async function POST(request: Request) {
   const promotionModuleService = await initializePromotionModule()
@@ -79,9 +79,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -108,7 +108,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePromotionModule } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
 export async function POST(request: Request) {
   const promotionModuleService = await initializePromotionModule()
@@ -136,9 +136,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -176,7 +176,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePromotionModule } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
 export async function POST(request: Request) {
   const promotionModuleService = await initializePromotionModule()
@@ -214,9 +214,9 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPromotionModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+  import { IPromotionModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
@@ -238,7 +238,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePromotionModule } from "@medusajs/promotion"
+import { initialize as initializePromotionModule } from "@medusajs/medusa/promotion"
 
 export async function GET(request: Request) {
   const promotionModuleService = await initializePromotionModule()

@@ -134,6 +134,33 @@ describe("Workflow composer", () => {
       expect(res2).toEqual({ result: "default response" })
     })
 
+    it("should not return value if when condition is false", async function () {
+      const workflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: { ret: boolean }) {
+          const value = when({ input }, ({ input }) => {
+            return input.ret
+          }).then(() => {
+            return { hasValue: true }
+          })
+
+          return new WorkflowResponse(value)
+        }
+      )
+
+      const { result } = await workflow.run({
+        input: { ret: false },
+      })
+
+      expect(result).toEqual(undefined)
+
+      const { result: res2 } = await workflow.run({
+        input: { ret: true },
+      })
+
+      expect(res2).toEqual({ hasValue: true })
+    })
+
     it("should revert the workflow and sub workflow on failure", async function () {
       const step1Mock = jest.fn()
       const step1 = createStep(
@@ -242,9 +269,7 @@ describe("Workflow composer", () => {
       expect(result).toEqual({ result: "hi from outside" })
 
       expect(parentContext.transactionId).toEqual(expect.any(String))
-      expect(parentContext.transactionId).not.toEqual(
-        childContext.transactionId
-      )
+      expect(parentContext.transactionId).toEqual(childContext.transactionId)
 
       expect(parentContext.eventGroupId).toEqual("eventGroupId")
       expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)
@@ -290,9 +315,7 @@ describe("Workflow composer", () => {
       expect(result).toEqual({ result: "hi from outside" })
 
       expect(parentContext.transactionId).toBeTruthy()
-      expect(parentContext.transactionId).not.toEqual(
-        childContext.transactionId
-      )
+      expect(parentContext.transactionId).toEqual(childContext.transactionId)
 
       expect(parentContext.eventGroupId).toBeTruthy()
       expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)

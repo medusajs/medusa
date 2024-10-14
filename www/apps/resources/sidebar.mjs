@@ -39,8 +39,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/api-key/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/api-key/links-to-other-modules",
+                title: "Link to Modules",
               },
             ],
           },
@@ -138,6 +138,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/auth/create-actor-type",
                 title: "Create an Actor Type",
               },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/reset-password",
+                title: "Handle Password Reset Event",
+              },
+              {
+                type: "link",
+                path: "/references/auth/provider",
+                title: "Create Auth Provider Module",
+              },
             ],
           },
           {
@@ -165,11 +175,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "sub-category",
             title: "References",
             children: [
-              {
-                type: "link",
-                path: "/references/auth/provider",
-                title: "Create Auth Provider Module",
-              },
               {
                 type: "link",
                 path: "/references/auth",
@@ -219,6 +224,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/cart/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -239,8 +249,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/cart/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/cart/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -298,17 +308,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "Concepts",
-            children: [
-              {
-                type: "link",
-                path: "/commerce-modules/currency/relations-to-other-modules",
-                title: "Relation to Modules",
-              },
-            ],
-          },
-          {
-            type: "sub-category",
             title: "References",
             children: [
               {
@@ -360,6 +359,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/customer/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -367,11 +371,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/customer/customer-accounts",
                 title: "Customer Accounts",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/customer/relations-to-other-modules",
-                title: "Relations to Other Modules",
               },
             ],
           },
@@ -453,8 +452,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/fulfillment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/fulfillment/links-to-other-modules",
+                title: "Links to Other Modules",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Guides",
+            children: [
+              {
+                type: "link",
+                path: "/references/fulfillment/provider",
+                title: "Create Fulfillment Provider Module",
               },
             ],
           },
@@ -462,11 +472,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "sub-category",
             title: "References",
             children: [
-              {
-                type: "link",
-                path: "/references/fulfillment/provider",
-                title: "Create Fulfillment Provider Module",
-              },
               {
                 type: "link",
                 path: "/references/fulfillment",
@@ -533,8 +538,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/inventory/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/inventory/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -747,17 +752,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/payment/payment-flow",
                 title: "Accept Payment Flow",
               },
+              {
+                type: "link",
+                path: "/references/payment/provider",
+                title: "Create Payment Provider",
+              },
             ],
           },
           {
             type: "sub-category",
             title: "References",
             children: [
-              {
-                type: "link",
-                path: "/references/payment/provider",
-                title: "Payment Provider Reference",
-              },
               {
                 type: "link",
                 path: "/references/payment",
@@ -1339,13 +1344,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "References",
+            title: "Guides",
             children: [
               {
                 type: "link",
                 path: "/references/tax/provider",
                 title: "Tax Provider Reference",
               },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "References",
+            children: [
               {
                 type: "link",
                 path: "/references/tax",
@@ -2024,6 +2035,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "link",
+            path: "/storefront-development/customers/reset-password",
+            title: "Reset Password",
+          },
+          {
+            type: "link",
             path: "/storefront-development/customers/retrieve",
             title: "Retrieve Customer",
           },
@@ -2113,11 +2129,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/troubleshooting/pnpm-errors",
-                title: "pnpm Errors",
-              },
-              {
-                type: "link",
                 path: "/troubleshooting/general-errors",
                 title: "General Errors",
               },
@@ -2136,6 +2147,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
+              },
+              {
+                type: "link",
+                path: "/troubleshooting/dist-imports",
+                title: "Importing from /dist",
               },
             ],
           },
@@ -2200,7 +2216,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "link",
         path: "/medusa-container-resources",
-        title: "Medusa Container Resources",
+        title: "Container Dependencies",
       },
       {
         type: "link",

@@ -10,6 +10,8 @@ import {
   useTabs,
 } from "../.."
 import clsx from "clsx"
+import { CodeBlockActions, CodeBlockActionsProps } from "../CodeBlock/Actions"
+import { CodeBlockHeaderWrapper } from "../CodeBlock/Header/Wrapper"
 
 type CodeTab = BaseTabType & {
   codeProps: CodeBlockProps
@@ -132,6 +134,23 @@ export const CodeTabs = ({
     }
   }, [codeTabSelectorRef, tabRefs, changeTabSelectorCoordinates, selectedTab])
 
+  const actionsProps: CodeBlockActionsProps | undefined = useMemo(() => {
+    if (!selectedTab) {
+      return
+    }
+
+    return {
+      source: selectedTab?.codeProps.source,
+      blockStyle,
+      noReport: selectedTab?.codeProps.noReport,
+      noCopy: selectedTab?.codeProps.noCopy,
+      inInnerCode: true,
+      showGradientBg: false,
+      inHeader: true,
+      isCollapsed: false,
+    }
+  }, [selectedTab])
+
   return (
     <div
       className={clsx(
@@ -142,16 +161,7 @@ export const CodeTabs = ({
         className
       )}
     >
-      <div
-        className={clsx(
-          "flex gap-docs_0.75 relative",
-          "pt-[10px] px-docs_1 pb-px",
-          blockStyle === "loud" &&
-            selectedTab?.codeProps.title &&
-            "border border-solid border-b border-medusa-contrast-border-bot"
-        )}
-        ref={codeTabsWrapperRef}
-      >
+      <CodeBlockHeaderWrapper blockStyle={blockStyle} ref={codeTabsWrapperRef}>
         <span
           className={clsx(
             "xs:absolute xs:transition-all xs:duration-200 xs:ease-ease xs:bottom-0",
@@ -198,7 +208,8 @@ export const CodeTabs = ({
             {selectedTab.codeProps.badgeLabel}
           </Badge>
         )}
-      </div>
+        {actionsProps && <CodeBlockActions {...actionsProps} />}
+      </CodeBlockHeaderWrapper>
       {selectedTab?.codeBlock}
     </div>
   )

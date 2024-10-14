@@ -9,7 +9,7 @@ import {
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
-import http, { IncomingMessage, ServerResponse } from "http"
+import http from "http"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
@@ -17,7 +17,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
-const INSTRUMENTATION_FILE = "instrumentation.js"
+const INSTRUMENTATION_FILE = "instrumentation"
 
 /**
  * Imports the "instrumentation.js" file from the root of the
@@ -27,7 +27,9 @@ const INSTRUMENTATION_FILE = "instrumentation.js"
  */
 export async function registerInstrumentation(directory: string) {
   const fileSystem = new FileSystem(directory)
-  const exists = await fileSystem.exists(INSTRUMENTATION_FILE)
+  const exists =
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.ts`)) ||
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.js`))
   if (!exists) {
     return
   }
@@ -45,6 +47,13 @@ export async function registerInstrumentation(directory: string) {
   }
 }
 
+/**
+ * Wrap request handler inside custom implementation to enabled
+ * instrumentation.
+ */
+// eslint-disable-next-line no-var
+export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
+
 async function start({ port, directory, types }) {
   async function internalStart() {
     track("CLI_START")
@@ -53,16 +62,20 @@ async function start({ port, directory, types }) {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      await start.traceRequestHandler(
-        async () => {
-          return new Promise((resolve) => {
-            res.on("finish", resolve)
-            app(req, res)
-          })
-        },
-        req,
-        res
-      )
+      await new Promise((resolve) => {
+        res.on("finish", resolve)
+        if (traceRequestHandler) {
+          void traceRequestHandler(
+            async () => {
+              app(req, res)
+            },
+            req,
+            res
+          )
+        } else {
+          app(req, res)
+        }
+      })
     })
 
     try {
@@ -72,7 +85,7 @@ async function start({ port, directory, types }) {
       })
 
       if (gqlSchema && types) {
-        const outputDirGeneratedTypes = path.join(directory, ".medusa")
+        const outputDirGeneratedTypes = path.join(directory, ".medusa/types")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",
@@ -121,18 +134,6 @@ async function start({ port, directory, types }) {
   }
 
   await internalStart()
-}
-
-/**
- * Wrap request handler inside custom implementation to enabled
- * instrumentation.
- */
-start.traceRequestHandler = async (
-  requestHandler: () => Promise<void>,
-  _: IncomingMessage,
-  __: ServerResponse
-) => {
-  return await requestHandler()
 }
 
 export default start

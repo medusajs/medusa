@@ -13,16 +13,15 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -42,7 +41,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function POST(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -68,16 +67,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -93,7 +91,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function GET(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -114,16 +112,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -141,7 +138,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 type ContextType = {
   params: {
@@ -170,16 +167,15 @@ export async function GET(request: Request, { params }: ContextType) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -199,7 +195,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function POST(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -225,16 +221,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -254,7 +249,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function POST(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -280,16 +275,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -309,7 +303,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function POST(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -335,16 +329,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -364,7 +357,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 export async function POST(request: Request) {
   const inventoryModuleService = await initializeInventoryModule({})
@@ -392,16 +385,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -434,7 +426,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 type ContextType = {
   params: {
@@ -479,16 +471,15 @@ export async function POST(request: Request, { params }: ContextType) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService: IInventoryService = request.scope.resolve(
+  const inventoryModuleService = request.scope.resolve(
     Modules.INVENTORY
   )
 
@@ -504,7 +495,7 @@ export async function DELETE(
   <CodeTab label="Next.js App Router" value="nextjs">
 
 ```ts
-import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/medusa/inventory-next"
 
 type ContextType = {
   params: {

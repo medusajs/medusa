@@ -5,8 +5,8 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  promiseAll,
   GraphQLSchema,
+  promiseAll,
 } from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -118,7 +118,7 @@ async function loadEntrypoints(
 export async function initializeContainer(
   rootDirectory: string
 ): Promise<MedusaContainer> {
-  configLoader(rootDirectory, "medusa-config.js")
+  configLoader(rootDirectory, "medusa-config")
   await featureFlagsLoader(join(__dirname, "feature-flags"))
 
   container.register({

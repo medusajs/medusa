@@ -9,8 +9,8 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
-import { refetchEntities } from "../../../utils/refetch-entity"
+  refetchEntities,
+} from "@medusajs/framework/http"
 import {
   AdminProductCategoryParamsType,
   AdminUpdateProductCategoryType,

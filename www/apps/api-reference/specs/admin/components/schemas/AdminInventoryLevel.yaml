@@ -1,5 +1,5 @@
 type: object
-description: The inventory level's details.
+description: The location level's location levels.
 x-schemaName: AdminInventoryLevel
 required:
   - id
@@ -9,67 +9,56 @@ required:
   - inventory_item_id
   - location_id
   - stocked_quantity
-  - raw_stocked_quantity
   - reserved_quantity
-  - raw_reserved_quantity
   - incoming_quantity
-  - raw_incoming_quantity
   - metadata
   - available_quantity
 properties:
   id:
     type: string
     title: id
-    description: The inventory level's ID.
+    description: The location level's ID.
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The location level's created at.
+  updated_at:
+    type: string
+    format: date-time
+    title: updated_at
+    description: The location level's updated at.
+  deleted_at:
+    type: string
+    format: date-time
+    title: deleted_at
+    description: The location level's deleted at.
   inventory_item_id:
     type: string
     title: inventory_item_id
-    description: The ID of the inventory item this level belongs to.
+    description: The location level's inventory item id.
   location_id:
     type: string
     title: location_id
-    description: The ID of the stock location this level belongs to.
+    description: The location level's location id.
   stocked_quantity:
     type: number
     title: stocked_quantity
-    description: >-
-      The quantity of the associated inventory item stocked in the associated
-      stock location.
+    description: The location level's stocked quantity.
   reserved_quantity:
     type: number
     title: reserved_quantity
-    description: >-
-      The reserved quantity of the associated inventory item stocked in the
-      associated stock location.
+    description: The location level's reserved quantity.
   incoming_quantity:
     type: number
     title: incoming_quantity
-    description: >-
-      The incoming quantity of the associated inventory item stocked in the
-      associated stock location.
+    description: The location level's incoming quantity.
   metadata:
     type: object
-    description: The location level's metadata, can hold custom key-value pairs.
+    description: The location level's metadata.
   inventory_item:
     type: object
   available_quantity:
     type: number
     title: available_quantity
-    description: >-
-      The quantity available for order of the associated inventory item in the
-      associated stock location.
-  created_at:
-    type: string
-    format: date-time
-    title: created_at
-    description: The date the inventory level was created.
-  updated_at:
-    type: string
-    format: date-time
-    title: updated_at
-    description: The date the inventory level was updated.
-  deleted_at:
-    type: string
-    format: date-time
-    title: deleted_at
-    description: The date the inventory level was deleted.
+    description: The location level's available quantity.

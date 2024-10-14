@@ -10,7 +10,7 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 ---
 
-## Install the Redis Cache Module
+## Register the Redis Cache Module
 
 <Prerequisites items={[
   {
@@ -19,26 +19,14 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
   }
 ]} />
 
-To install Redis Cache Module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/cache-redis@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
   ["11", "redisUrl", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -46,7 +34,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.CACHE]: {
-      resolve: "@medusajs/cache-redis",
+      resolve: "@medusajs/medusa/cache-redis",
       options: { 
         redisUrl: process.env.CACHE_REDIS_URL,
       },
@@ -165,6 +153,8 @@ CACHE_REDIS_URL=<YOUR_REDIS_URL>
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
 
 ## Test the Module
 

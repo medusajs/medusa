@@ -1,12 +1,11 @@
-import { XMarkMini } from "@medusajs/icons"
-import { Input, Label, Text, clx } from "@medusajs/ui"
+import { Input, Label, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import { debounce } from "lodash"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
 import { IFilter } from "./types"
+import FilterChip from "./filter-chip"
 
 type StringFilterProps = IFilter
 
@@ -24,6 +23,8 @@ export const StringFilter = ({
   const selectedParams = useSelectedParams({ param: key, prefix })
 
   const query = selectedParams.get()
+
+  const [previousValue, setPreviousValue] = useState<string | undefined>(query?.[0])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedOnChange = useCallback(
@@ -49,6 +50,7 @@ export const StringFilter = ({
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+    setPreviousValue(query?.[0])
 
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -68,7 +70,9 @@ export const StringFilter = ({
 
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <StringDisplay
+      <FilterChip
+        hasOperator
+        hadPreviousValue={!!previousValue}
         label={label}
         value={query?.[0]}
         onRemove={handleRemove}
@@ -115,86 +119,5 @@ export const StringFilter = ({
         </Popover.Portal>
       )}
     </Popover.Root>
-  )
-}
-
-const StringDisplay = ({
-  label,
-  value,
-  readonly,
-  onRemove,
-}: {
-  label: string
-  value?: string
-  readonly?: boolean
-  onRemove: () => void
-}) => {
-  const { t } = useTranslation()
-
-  return (
-    <Popover.Trigger asChild>
-      <div
-        className={clx(
-          "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center overflow-hidden rounded-md",
-          {
-            "hover:bg-ui-bg-field-hover": !readonly,
-            "data-[state=open]:bg-ui-bg-field-hover": !readonly,
-          }
-        )}
-      >
-        <div
-          className={clx(
-            "flex items-center justify-center whitespace-nowrap px-2 py-1",
-            {
-              "border-r": !!value,
-            }
-          )}
-        >
-          <Text size="small" weight="plus" leading="compact">
-            {label}
-          </Text>
-        </div>
-        <div className="flex w-full items-center overflow-hidden">
-          {!!value && (
-            <div className="border-r p-1 px-2">
-              <Text
-                size="small"
-                weight="plus"
-                leading="compact"
-                className="text-ui-fg-muted"
-              >
-                {t("general.is")}
-              </Text>
-            </div>
-          )}
-          {!!value && (
-            <div className="flex-1 overflow-hidden border-r p-1 px-2">
-              <Text
-                size="small"
-                leading="compact"
-                weight="plus"
-                className="truncate text-nowrap"
-              >
-                {value}
-              </Text>
-            </div>
-          )}
-        </div>
-        {!readonly && !!value && (
-          <div>
-            <button
-              onClick={onRemove}
-              className={clx(
-                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
-                "hover:bg-ui-bg-subtle-hover",
-                "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
-              )}
-            >
-              <XMarkMini />
-            </button>
-          </div>
-        )}
-      </div>
-    </Popover.Trigger>
   )
 }

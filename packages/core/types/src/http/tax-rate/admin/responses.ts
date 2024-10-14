@@ -1,4 +1,8 @@
-import { DeleteResponse, DeleteResponseWithParent, PaginatedResponse } from "../../common"
+import {
+  DeleteResponse,
+  DeleteResponseWithParent,
+  PaginatedResponse,
+} from "../../common"
 import { AdminTaxRate } from "./entities"
 
 export interface AdminTaxRateResponse {
@@ -12,4 +16,7 @@ export type AdminTaxRateListResponse = PaginatedResponse<{
 export interface AdminTaxRateDeleteResponse
   extends DeleteResponse<"tax_rate"> {}
 
-export type AdminTaxRateRuleDeleteResponse = DeleteResponseWithParent<"tax_rate_rule", AdminTaxRate>
+export type AdminTaxRateRuleDeleteResponse = DeleteResponseWithParent<
+  "tax_rate_rule",
+  AdminTaxRate
+>

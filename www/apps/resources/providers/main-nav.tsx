@@ -8,7 +8,6 @@ import {
 } from "docs-ui"
 import { useMemo } from "react"
 import { config } from "../config"
-import { basePathUrl } from "../utils/base-path-url"
 import { usePathname } from "next/navigation"
 import { generatedEditDates } from "../generated/edit-dates.mjs"
 
@@ -17,20 +16,14 @@ type MainNavProviderProps = {
 }
 
 export const MainNavProvider = ({ children }: MainNavProviderProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const navigationDropdownItems = useMemo(
     () =>
       getNavDropdownItems({
         basePath: config.baseUrl,
-        activePath: basePathUrl(
-          pathname.startsWith("/commerce-modules")
-            ? "/commerce-modules"
-            : undefined
-        ),
-        version: "v2",
       }),
-    [pathname]
+    []
   )
 
   const reportLink = useMemo(

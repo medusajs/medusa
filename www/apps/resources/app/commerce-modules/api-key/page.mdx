@@ -6,27 +6,42 @@ export const metadata = {
 
 # {metadata.title}
 
-The API Key Module is the `@medusajs/api-key` NPM package that provides API-key-related features in your Medusa and Node.js applications.
+The API Key Module provides API-key-related features in your Medusa and Node.js applications.
 
 ## How to Use API Key Module's Service
 
-You can use the API Key Module's main service by resolving from the Medusa container the resource `Modules.API_KEY` imported from `@medusajs/utils`.
+Use the API Key Module's main service by resolving from the Medusa container the resource `Modules.API_KEY` imported from `@medusajs/framework/utils`.
 
 For example:
 
 <CodeTabs groupId="resource-type">
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const apiKeyModuleService = container.resolve(
+    Modules.API_KEY
+  )
+
+  const apiKeys = await apiKeyModuleService.listApiKeys()
+})
+```
+
+  </CodeTab>
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IApiKeyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 
@@ -39,35 +54,17 @@ export async function GET(
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { IApiKeyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
-  const apiKeyModuleService: IApiKeyModuleService = container.resolve(
+  const apiKeyModuleService = container.resolve(
     Modules.API_KEY
   )
 
   const apiKeys = await apiKeyModuleService.listApiKeys()
 }
-```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { IApiKeyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
-
-const step1 = createStep("step-1", async (_, { container }) => {
-  const apiKeyModuleService: IApiKeyModuleService = container.resolve(
-    Modules.API_KEY
-  )
-
-  const apiKeys = await apiKeyModuleService.listApiKeys()
-})
 ```
 
   </CodeTab>
@@ -79,7 +76,7 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
 ### API Key Types and Management
 
-Store and manage API keys in your store. You can create both publishable and secret API keys for different use cases, such as:
+Manage API keys in your store. You can create both publishable and secret API keys for different use cases, such as:
 
 - Publishable API Key associated with resources like sales channels.
 - Authentication token for admin users to access Admin API Routes.

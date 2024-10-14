@@ -1,16 +1,12 @@
 import type { NextFunction, Request, Response } from "express"
 import { ZodObject } from "zod"
 
-import { MedusaPricingContext, RequestQueryFields } from "@medusajs/types"
+import {
+  FindConfig,
+  MedusaPricingContext,
+  RequestQueryFields,
+} from "@medusajs/types"
 import { MedusaContainer } from "../container"
-
-export interface FindConfig<Entity> {
-  select?: (keyof Entity)[]
-  skip?: number
-  take?: number
-  relations?: string[]
-  order?: { [K: string]: "ASC" | "DESC" }
-}
 
 /**
  * List of all the supported HTTP methods

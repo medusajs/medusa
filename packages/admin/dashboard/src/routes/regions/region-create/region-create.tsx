@@ -10,7 +10,9 @@ export const RegionCreate = () => {
   const storeCurrencies = (store?.supported_currencies ?? []).map(
     (c) => currencies[c.currency_code.toUpperCase()]
   )
-  const { payment_providers: paymentProviders = [] } = usePaymentProviders()
+  const { payment_providers: paymentProviders = [] } = usePaymentProviders({
+    is_enabled: true,
+  })
 
   if (isError) {
     throw error

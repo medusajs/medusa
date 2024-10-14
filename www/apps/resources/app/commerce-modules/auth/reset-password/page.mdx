@@ -1,0 +1,132 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `How to Handle Password Reset Token Event`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to handle the `auth.password_reset` event, which is emitted when a request is sent to the [Generate Reset Password Token API route](../authentication-route/page.mdx#generate-reset-password-token-route).
+
+You'll create a subscriber that listens to the event. When the event is emitted, the subscriber sends an email notification to the user.
+
+<Prerequisites
+  items={[
+    {
+      text: "A notification provider module, such as SendGrid",
+      link: "/architectural-modules/notification/sendgrid"
+    }
+  ]}
+/>
+
+## 1. Create Subscriber
+
+The first step is to create a subscriber that listens to the `auth.password_reset` and sends the user a notification with instructions to reset their password.
+
+Create the file `src/subscribers/handle-reset.ts` with the following content:
+
+export const highlights=[
+  ["8", "data", "The data payload of the event."],
+  ["9", "entity_id", "The user's identifier, which is the email when using the `emailpass` provider."],
+  ["10", "token", "The password reset token."],
+  ["11", "actor_type", "The user's actor type."],
+  ["19", "urlPrefix", "Set the page's URL based on the user's actor type."],
+  ["23", "createNotifications", "Send a notification to the user."],
+  ["25", `"email"`, "The channel to send the notification through."],
+  ["26", "template", "The template defined in the third-party provider."],
+  ["27", "data", "The data to pass to the template in the third-party provider."],
+  ["29", "url", "The frontend URL to redirect the user to reset their password."]
+]
+
+```ts title="src/subscribers/handle-reset.ts" highlights={highlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function resetPasswordTokenHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{ entity_id: string, token: string, actor_type: string }>) {
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+
+  const urlPrefix = actor_type === "customer" ? 
+    "https://storefront.com" : 
+    "https://admin.com"
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    channel: "email",
+    template: "reset-password-template",
+    data: {
+      // a URL to a frontend application
+      url: `${urlPrefix}/reset-password?token=${token}&email=${email}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.password_reset",
+}
+```
+
+You subscribe to the `auth.password_reset` event. The event has a data payload object with the following properties:
+
+- `entity_id`: The identifier of the user. When using the `emailpass` provider, it's the user's email.
+- `token`: The token to reset the user's password.
+- `actor_type`: The user's actor type. For example, if the user is a customer, the `actor_type` is `customer`. If it's an admin user, the `actor_type` is `user`.
+
+In the subscriber, you:
+
+- Decide the frontend URL based on whether the user is a customer or admin user by checking the value of `actor_type`.
+- Resolve the Notification Module and use its `createNotifications` method to send the notification.
+- You pass to the `createNotifications` method an object having the following properties:
+    - `to`: The identifier to send the notification to, which in this case is the email.
+    - `channel`: The channel to send the notification through, which in this case is email.
+    - `template`: The template ID in the third-party service.
+    - `data`: The data payload to pass to the template. You pass the URL to redirect the user to. You must pass the token and email in the URL so that the frontend can send them later to the Medusa application when reseting the password.
+
+---
+
+## 2. Test it Out: Generate Reset Password Token
+
+To test the subscriber out, send a request to the `/auth/{actor_type}/{auth_provider}/reset-password` API route, replacing `{actor_type}` and `{auth_provider}` with the user's actor type and provider used for authentication respectively.
+
+For example, to generate a reset password token for an admin user using the `emailpass` provider, send the following request:
+
+```bash
+curl --location 'http://localhost:9000/auth/user/emailpass/reset-password' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "identifier": "admin-test@gmail.com"
+}'
+```
+
+In the request body, you must pass an `identifier` parameter. Its value is the user's identifier, which is the email in this case.
+
+If the token is generated successfully, the request returns a response with `201` status code. In the terminal, you'll find the following message indicating that the `auth.password_reset` event was emitted and your subscriber ran:
+
+```plain
+info:    Processing auth.password_reset which has 1 subscribers
+```
+
+The notification is sent to the user with the frontend URL to enter a new password.
+
+---
+
+## Next Steps: Implementing Frontend
+
+In your frontend, you must have a page that accepts `token` and `email` query parameters.
+
+The page shows the user password fields to enter their new password, then submits the new password, token, and email to the [Reset Password Route](../authentication-route/page.mdx#reset-password-route).
+
+### Examples
+
+- [Storefront Guide: Reset Customer Password](../../../storefront-development/customers/reset-password/page.mdx)

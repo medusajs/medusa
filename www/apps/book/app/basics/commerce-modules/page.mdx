@@ -25,9 +25,9 @@ Similarly to your custom module, a commerce module's main service is registered 
 For example, you saw this code snippet in the [Medusa container chapter](../medusa-container/page.mdx):
 
 ```ts highlights={[["10"]]}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest, 
@@ -50,6 +50,6 @@ When you resolve the `Modules.PRODUCT` (or `productModuleService`) registration 
 
 <Note title="Tip">
 
-To resolve the main service of any commerce module, use the registration name defined in the `Modules` enum imported from `@medusajs/utils`.
+To resolve the main service of any commerce module, use the registration name defined in the `Modules` enum imported from `@medusajs/framework/utils`.
 
 </Note>

@@ -4,7 +4,6 @@
  * summary: Create Token
  * description: Create a token.
  * x-authenticated: false
- * parameters: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -12,8 +11,6 @@
  * tags:
  *   - Token
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

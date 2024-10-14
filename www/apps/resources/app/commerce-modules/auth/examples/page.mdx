@@ -19,21 +19,21 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import {
-    IAuthModuleService,
-    AuthenticationInput,
-  } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
-  import { MedusaError } from "@medusajs/utils"
-  import jwt from "jsonwebtoken"
+```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  IAuthModuleService,
+  AuthenticationInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+import jwt from "jsonwebtoken"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -69,7 +69,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -122,21 +122,21 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import {
-    IAuthModuleService,
-    AuthenticationInput,
-  } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
-  import { MedusaError } from "@medusajs/utils"
-  import jwt from "jsonwebtoken"
+```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  IAuthModuleService,
+  AuthenticationInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+import jwt from "jsonwebtoken"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -174,7 +174,7 @@ export async function POST(
 ```ts collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -224,16 +224,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -253,7 +252,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -280,16 +279,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -305,7 +303,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function GET(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -327,15 +325,14 @@ export async function GET(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -358,7 +355,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 type ContextType = {
   params: {
@@ -393,15 +390,14 @@ export async function POST(request: Request, { params }: ContextType) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -417,7 +413,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 type ContextType = {
   params: {

@@ -1,5 +1,5 @@
 type: object
-description: The tax rate's parent.
+description: The tax rate's details.
 x-schemaName: AdminTaxRate
 required:
   - id
@@ -20,57 +20,61 @@ properties:
   id:
     type: string
     title: id
-    description: The parent's ID.
+    description: The tax rate's ID.
   rate:
     type: number
     title: rate
-    description: The parent's rate.
+    description: The rate to charge.
+    example: 10
   code:
     type: string
     title: code
-    description: The parent's code.
+    description: The code the tax rate is identified by.
   name:
     type: string
     title: name
-    description: The parent's name.
+    description: The tax rate's name.
   metadata:
     type: object
-    description: The parent's metadata.
+    description: The tax rate's metadata, can hold custom key-value pairs.
   tax_region_id:
     type: string
     title: tax_region_id
-    description: The parent's tax region id.
+    description: The ID of the tax region this rate belongs to.
   is_combinable:
     type: boolean
     title: is_combinable
-    description: The parent's is combinable.
+    description: Whether the tax rate should be combined with parent rates.
+    externalDocs:
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates
   is_default:
     type: boolean
     title: is_default
-    description: The parent's is default.
+    description: Whether this tax rate is the default in the tax region.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The parent's created at.
+    description: The date the tax rate was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The parent's updated at.
+    description: The date the tax rate was updated.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The parent's deleted at.
+    description: The date the tax rate was deleted.
   created_by:
     type: string
     title: created_by
-    description: The parent's created by.
+    description: The ID of the user that created the tax rate.
   tax_region:
     $ref: ./AdminTaxRegion.yaml
   rules:
     type: array
-    description: The parent's rules.
+    description: The tax rate's rules.
     items:
       $ref: ./AdminTaxRateRule.yaml

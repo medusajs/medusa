@@ -1,5 +1,5 @@
-import { PaginatedResponse } from "../../common";
-import { StorePaymentCollection, StorePaymentProvider } from "./entities";
+import { PaginatedResponse } from "../../common"
+import { StorePaymentCollection, StorePaymentProvider } from "./entities"
 
 export interface StorePaymentCollectionResponse {
   payment_collection: StorePaymentCollection

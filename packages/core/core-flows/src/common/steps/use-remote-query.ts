@@ -62,7 +62,7 @@ export const useRemoteQueryStepId = "use-remote-query"
  * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   useRemoteQueryStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",

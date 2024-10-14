@@ -15,7 +15,7 @@ import { CompensateFn, InvokeFn } from "./create-step"
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
-type StepFunctionReturnConfig<TOutput> = {
+export type StepFunctionReturnConfig<TOutput> = {
   config(
     config: { name?: string } & Omit<
       TransactionStepsDefinition,

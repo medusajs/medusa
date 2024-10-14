@@ -1,10 +1,10 @@
 get:
   operationId: GetPromotionsRuleAttributeOptionsRule_type
   summary: List Rule Attribute Options of a Rule Type
-  x-sidebar-summary: List Rule Attribute Options
+  x-sidebar-summary: List Potential Rule Attributes
   description: >
-    Retrieve a list of attributes for the promotion and application method types
-    specified in the query parameters.
+    Retrieve a list of potential rule attributes for the promotion and
+    application method types specified in the query parameters.
 
     Only the attributes of the rule type specified in the path parameter are
     retrieved:
@@ -14,8 +14,11 @@ get:
 
 
     - If `rule_type` is `target-rules`, the target rules' attributes of the
-    application method's type are retrieved. - If `rule_type` is `buy-rules`,
-    the buy rules' attributes of the application method's type are retrieved.
+    application method's type are retrieved.
+
+
+    - If `rule_type` is `buy-rules`, the buy rules' attributes of the
+    application method's type are retrieved.
   x-authenticated: true
   parameters:
     - name: rule_type

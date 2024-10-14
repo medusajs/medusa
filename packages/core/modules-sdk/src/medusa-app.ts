@@ -1,11 +1,9 @@
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
-  ConfigModule,
   ExternalModuleDeclaration,
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
-  Logger,
   MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
@@ -22,13 +20,12 @@ import {
   isObject,
   isString,
   MedusaError,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
-import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
-import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
   MigrationOptions,
@@ -40,17 +37,6 @@ import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
-
-declare module "@medusajs/types" {
-  export interface ModuleImplementations {
-    [ContainerRegistrationKeys.REMOTE_LINK]: RemoteLink
-    [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
-    [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
-    [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
-    [ContainerRegistrationKeys.QUERY]: Omit<RemoteQueryFunction, symbol>
-    [ContainerRegistrationKeys.LOGGER]: Logger
-  }
-}
 
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
@@ -98,7 +84,7 @@ export async function loadModules(args: {
     sharedResourcesConfig,
     migrationOnly = false,
     loaderOnly = false,
-    workerMode = "server" as ModuleBootstrapOptions["workerMode"],
+    workerMode = "shared" as ModuleBootstrapOptions["workerMode"],
   } = args
 
   const allModules = {} as any
@@ -321,7 +307,7 @@ async function MedusaApp_({
   injectedDependencies = {},
   migrationOnly = false,
   loaderOnly = false,
-  workerMode = "server",
+  workerMode = "shared",
 }: MedusaAppOptions & {
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {

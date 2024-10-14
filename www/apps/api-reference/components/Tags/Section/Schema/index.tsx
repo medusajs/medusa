@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { SchemaObject } from "../../../../types/openapi"
 import TagOperationParameters from "../../Operation/Parameters"
 import {
@@ -16,6 +16,8 @@ import useSchemaExample from "../../../../hooks/use-schema-example"
 import { InView } from "react-intersection-observer"
 import checkElementInViewport from "../../../../utils/check-element-in-viewport"
 import { singular } from "pluralize"
+import useResizeObserver from "@react-hook/resize-observer"
+import clsx from "clsx"
 
 export type TagSectionSchemaProps = {
   schema: SchemaObject
@@ -23,6 +25,8 @@ export type TagSectionSchemaProps = {
 }
 
 const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
+  const paramsRef = useRef<HTMLDivElement>(null)
+  const [maxCodeHeight, setMaxCodeHeight] = useState(0)
   const { addItems, setActivePath, activePath } = useSidebar()
   const tagSlugName = useMemo(() => getSectionId([tagName]), [tagName])
   const formattedName = useMemo(
@@ -38,6 +42,9 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     options: {
       skipNonRequired: false,
     },
+  })
+  useResizeObserver(paramsRef, () => {
+    setMaxCodeHeight(paramsRef.current?.clientHeight || 0)
   })
 
   const { scrollableElement, scrollToElement } = useScrollController()
@@ -72,7 +79,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   useEffect(() => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
-      if (!checkElementInViewport(elm, 40)) {
+      if (!checkElementInViewport(elm, 0)) {
         scrollToElement(elm)
       }
     }
@@ -85,7 +92,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     const section = entry.target
 
     if (
-      (inView || checkElementInViewport(section, 40)) &&
+      (inView || checkElementInViewport(section, 10)) &&
       activePath !== schemaSlug
     ) {
       // can't use next router as it doesn't support
@@ -106,7 +113,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     >
       <DividedLayout
         mainContent={
-          <SectionContainer>
+          <SectionContainer ref={paramsRef}>
             <h2>{formattedName} Object</h2>
             <h4 className="border-medusa-border-base border-b py-1.5 mt-2">
               Fields
@@ -121,6 +128,11 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
                 source={examples[0].content}
                 lang="json"
                 title={`The ${formattedName} Object`}
+                className={clsx(maxCodeHeight && "overflow-auto")}
+                style={{
+                  // remove padding + extra space
+                  maxHeight: maxCodeHeight ? maxCodeHeight - 212 : "unset",
+                }}
               />
             )}
           </SectionContainer>

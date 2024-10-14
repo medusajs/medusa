@@ -1,3 +1,3 @@
-import { BaseCurrency } from "../common";
+import { BaseCurrency } from "../common"
 
 export interface StoreCurrency extends BaseCurrency {}

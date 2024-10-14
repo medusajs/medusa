@@ -84,7 +84,7 @@ For example:
 import type { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest, 
@@ -124,9 +124,9 @@ For example:
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { ICustomerModuleService } from "@medusajs/types"
+} from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { ICustomerModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -159,9 +159,9 @@ For example:
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { IUserModuleService } from "@medusajs/types"
+} from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { IUserModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

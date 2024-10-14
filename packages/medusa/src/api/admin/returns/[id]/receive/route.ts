@@ -12,7 +12,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminPostReceiveReturnsReqSchemaType } from "../../validators"
 
 export const POST = async (

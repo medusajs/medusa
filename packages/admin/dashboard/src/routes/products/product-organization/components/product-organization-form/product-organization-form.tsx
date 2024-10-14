@@ -1,12 +1,16 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+  useExtendableForm,
+} from "../../../../../extensions"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
@@ -17,8 +21,8 @@ type ProductOrganizationFormProps = {
 }
 
 const ProductOrganizationSchema = zod.object({
-  type_id: zod.string().optional(),
-  collection_id: zod.string().optional(),
+  type_id: zod.string().nullable(),
+  collection_id: zod.string().nullable(),
   category_ids: zod.array(zod.string()),
   tag_ids: zod.array(zod.string()),
 })
@@ -28,6 +32,10 @@ export const ProductOrganizationForm = ({
 }: ProductOrganizationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { getFormConfigs, getFormFields } = useDashboardExtension()
+
+  const configs = getFormConfigs("product", "organize")
+  const fields = getFormFields("product", "organize")
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
@@ -59,14 +67,16 @@ export const ProductOrganizationForm = ({
       })),
   })
 
-  const form = useForm<zod.infer<typeof ProductOrganizationSchema>>({
+  const form = useExtendableForm({
     defaultValues: {
-      type_id: product.type_id || "",
-      collection_id: product.collection_id || "",
+      type_id: product.type_id ?? "",
+      collection_id: product.collection_id ?? "",
       category_ids: product.categories?.map((c) => c.id) || [],
       tag_ids: product.tags?.map((t) => t.id) || [],
     },
-    resolver: zodResolver(ProductOrganizationSchema),
+    schema: ProductOrganizationSchema,
+    configs: configs,
+    data: product,
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
@@ -74,13 +84,10 @@ export const ProductOrganizationForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        type_id: data.type_id || undefined,
-        collection_id: data.collection_id || undefined,
-        categories: data.category_ids.map((id) => ({ id })) || undefined,
-        tags:
-          data.tag_ids?.map((t) => ({
-            id: t,
-          })) || undefined,
+        type_id: data.type_id || null,
+        collection_id: data.collection_id || null,
+        categories: data.category_ids.map((c) => ({ id: c })),
+        tags: data.tag_ids?.map((t) => ({ id: t })),
       },
       {
         onSuccess: ({ product }) => {
@@ -138,10 +145,10 @@ export const ProductOrganizationForm = ({
                     <Form.Control>
                       <Combobox
                         {...field}
+                        multiple={false}
                         options={collections.options}
-                        searchValue={collections.searchValue}
                         onSearchValueChange={collections.onSearchValueChange}
-                        fetchNextPage={collections.fetchNextPage}
+                        searchValue={collections.searchValue}
                       />
                     </Form.Control>
                     <Form.ErrorMessage />
@@ -180,9 +187,8 @@ export const ProductOrganizationForm = ({
                         {...field}
                         multiple
                         options={tags.options}
-                        searchValue={tags.searchValue}
                         onSearchValueChange={tags.onSearchValueChange}
-                        fetchNextPage={tags.fetchNextPage}
+                        searchValue={tags.searchValue}
                       />
                     </Form.Control>
                     <Form.ErrorMessage />
@@ -190,6 +196,7 @@ export const ProductOrganizationForm = ({
                 )
               }}
             />
+            <FormExtensionZone fields={fields} form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

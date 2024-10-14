@@ -76,10 +76,10 @@ Here’s an example of creating a custom API Route at `/store/pos/search-barcode
   import type { 
     MedusaRequest, 
     MedusaResponse, 
-  } from "@medusajs/medusa"
-  import { MedusaError } from "@medusajs/utils"
-  import { Modules } from "@medusajs/utils"
-  import { IProductModuleService } from "@medusajs/types"
+  } from "@medusajs/framework/http"
+  import { MedusaError } from "@medusajs/framework/utils"
+  import { Modules } from "@medusajs/framework/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const barcode = (req.query.barcode as string) || ""
@@ -167,7 +167,7 @@ You can also create custom modules to provide features for a better customer exp
       icon: AcademicCapSolid,
     },
     {
-      href: "!docs!/basics/modules-and-services",
+      href: "!docs!/basics/modules",
       title: "Create a Module",
       text: "Learn how to create a module.",
       icon: AcademicCapSolid,

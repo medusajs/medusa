@@ -2,7 +2,7 @@ import { createTaxRateRulesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminCreateTaxRateRuleType } from "../../validators"
 import { refetchTaxRate } from "../../helpers"
 import { HttpTypes } from "@medusajs/framework/types"

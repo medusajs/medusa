@@ -1,4 +1,8 @@
-import { DeleteResponse, DeleteResponseWithParent, PaginatedResponse } from "../../common"
+import {
+  DeleteResponse,
+  DeleteResponseWithParent,
+  PaginatedResponse,
+} from "../../common"
 import { AdminCustomer, AdminCustomerAddress } from "./entities"
 
 export interface AdminCustomerResponse {
@@ -6,7 +10,7 @@ export interface AdminCustomerResponse {
 }
 
 export type AdminCustomerListResponse = PaginatedResponse<{
-  customers: AdminCustomer
+  customers: AdminCustomer[]
 }>
 
 export interface AdminCustomerAddressResponse {

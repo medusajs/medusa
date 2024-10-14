@@ -4,14 +4,14 @@
  * description: The customer's details.
  * x-schemaName: StoreCustomer
  * required:
+ *   - addresses
  *   - id
  *   - email
- *   - default_billing_address_id
- *   - default_shipping_address_id
  *   - company_name
  *   - first_name
  *   - last_name
- *   - addresses
+ *   - default_billing_address_id
+ *   - default_shipping_address_id
  * properties:
  *   id:
  *     type: string
