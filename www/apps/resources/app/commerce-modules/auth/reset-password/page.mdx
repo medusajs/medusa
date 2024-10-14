@@ -6,7 +6,9 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to handle the `auth.password_reset` event, which is emitted when a request is sent to the [Generate Reset Password Token API route](../authentication-route/page.mdx#generate-reset-password-token-route), to send reset instructions to the user.
+In this guide, you'll learn how to handle the `auth.password_reset` event, which is emitted when a request is sent to the [Generate Reset Password Token API route](../authentication-route/page.mdx#generate-reset-password-token-route).
+
+You'll create a subscriber that listens to the event. When the event is emitted, the subscriber sends an email notification to the user.
 
 <Prerequisites
   items={[
@@ -29,14 +31,14 @@ export const highlights=[
   ["10", "token", "The password reset token."],
   ["11", "actor_type", "The user's actor type."],
   ["19", "urlPrefix", "Set the page's URL based on the user's actor type."],
-  ["21", "createNotifications", "Send a notification to the user."],
-  ["23", `"email"`, "The channel to send the notification through."],
-  ["24", "template", "The template defined in the third-party provider."],
-  ["25", "data", "The data to pass to the template in the third-party provider."],
-  ["27", "url", "The frontend URL to redirect the user to reset their password."]
+  ["23", "createNotifications", "Send a notification to the user."],
+  ["25", `"email"`, "The channel to send the notification through."],
+  ["26", "template", "The template defined in the third-party provider."],
+  ["27", "data", "The data to pass to the template in the third-party provider."],
+  ["29", "url", "The frontend URL to redirect the user to reset their password."]
 ]
 
-```ts title="src/subscribers/handle-reset.ts" collapsibleLines="1-6" expandMoreLabel="Show Imports"
+```ts title="src/subscribers/handle-reset.ts" highlights={highlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
 import {
   SubscriberArgs,
   type SubscriberConfig,
@@ -55,7 +57,9 @@ export default async function resetPasswordTokenHandler({
     Modules.NOTIFICATION
   )
 
-  const urlPrefix = actor_type === "customer" ? "https://storefront.com" : "https://admin.com"
+  const urlPrefix = actor_type === "customer" ? 
+    "https://storefront.com" : 
+    "https://admin.com"
 
   await notificationModuleService.createNotifications({
     to: email,
