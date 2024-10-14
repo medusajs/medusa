@@ -1,0 +1,245 @@
+---
+sidebar_label: "Table"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Table - Admin Components`,
+}
+
+# {metadata.title}
+
+The listing pages in the Admin show a table with pagination.
+
+![Example of a table in the product listing page](https://res.cloudinary.com/dza7lstvk/image/upload/v1728295658/Medusa%20Resources/list_ddt9zc.png)
+
+To create a component that shows a table with pagination, create the file `src/admin/components/table.tsx` with the following content:
+
+```tsx title="src/admin/components/table.tsx"
+import { useMemo } from "react"
+import { Table as UiTable } from "@medusajs/ui"
+
+export type TableProps = {
+  columns: {
+    key: string
+    label?: string
+    render?: (value: unknown) => React.ReactNode
+  }[]
+  data: Record<string, unknown>[]
+  pageSize: number
+  count: number
+  currentPage: number
+  setCurrentPage: (value: number) => void
+}
+
+export const Table = ({
+  columns,
+  data,
+  pageSize,
+  count,
+  currentPage,
+  setCurrentPage
+}: TableProps) => {
+  const pageCount = useMemo(() => {
+    return Math.ceil(data.length / pageSize)
+  }, [data, pageSize])
+
+  const canNextPage = useMemo(() => {
+    return currentPage < pageCount - 1
+  }, [currentPage, pageCount])
+  const canPreviousPage = useMemo(() => {
+    return currentPage - 1 >= 0
+  }, [currentPage])
+
+  const nextPage = () => {
+    if (canNextPage) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const previousPage = () => {
+    if (canPreviousPage) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  return (
+    <div className="flex h-full flex-col overflow-hidden !border-t-0">
+      <UiTable>
+        <UiTable.Header>
+          <UiTable.Row>
+            {columns.map((column, index) => (
+              <UiTable.HeaderCell key={index}>
+                {column.label || column.key}
+              </UiTable.HeaderCell>
+            ))}
+          </UiTable.Row>
+        </UiTable.Header>
+        <UiTable.Body>
+          {data.map((item, index) => {
+            const rowIndex = "id" in item ? item.id as string : index
+            return (
+              <UiTable.Row key={rowIndex}>
+                {columns.map((column, index) => (
+                  <UiTable.Cell key={`${rowIndex}-${index}`}>
+                    <>
+                      {column.render && column.render(item[column.key])}
+                      {!column.render && (
+                        <>{item[column.key] as string}</>
+                      )}
+                    </>
+                  </UiTable.Cell>
+                ))}
+              </UiTable.Row>
+            )
+          })}
+        </UiTable.Body>
+      </UiTable>
+      <UiTable.Pagination
+        count={count}
+        pageSize={pageSize}
+        pageIndex={currentPage}
+        pageCount={pageCount}
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
+    </div>
+  )
+}
+```
+
+The `Table` component uses the component from the [UI package](!ui!/components/table), with additional styling and rendering of data.
+
+It accepts the following props:
+
+<TypeList
+  types={[
+    {
+      name: "columns",
+      type: "`object[]`",
+      optional: false,
+      description: "The table's columns.",
+      children: [
+        {
+          name: "key",
+          type: "`string`",
+          optional: false,
+          description: "The column's key in the passed `data`"
+        },
+        {
+          name: "label",
+          type: "`string`",
+          optional: true,
+          description: "The column's label shown in the table. If not provided, the `key` is used."
+        },
+        {
+          name: "render",
+          type: "`(value: unknown) => React.ReactNode`",
+          optional: true,
+          description: "By default, the data is shown as-is in the table. You can use this function to change how the value is rendered. The function receives the value is a parameter and returns a React node."
+        }
+      ]
+    },
+    {
+      name: "data",
+      type: "`Record<string, unknown>[]`",
+      optional: false,
+      description: "The data to show in the table for the current page. The keys of each object should be in the `columns` array."
+    },
+    {
+      name: "pageSize",
+      type: "`number`",
+      optional: false,
+      description: "The number of items to show per page."
+    },
+    {
+      name: "count",
+      type: "`number`",
+      optional: false,
+      description: "The total number of items."
+    },
+    {
+      name: "currentPage",
+      type: "`number`",
+      optional: false,
+      description: "A zero-based index indicating the current page's number."
+    },
+    {
+      name: "setCurrentPage",
+      type: "`(value: number) => void`",
+      optional: false,
+      description: "A function used to change the current page."
+    }
+  ]}
+/>
+
+---
+
+## Example
+
+Use the `Table` component in any widget or UI route.
+
+For example, create the widget `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { StatusBadge } from "@medusajs/ui"
+import { Table } from "../components/table"
+import { useState } from "react"
+import { Container } from "../components/container"
+
+const ProductWidget = () => {
+  const [currentPage, setCurrentPage] = useState(0)
+
+  return (
+    <Container>
+      <Table
+        columns={[
+          {
+            key: "name",
+            label: "Name"
+          },
+          {
+            key: "is_enabled",
+            label: "Status",
+            render: (value: unknown) => {
+              const isEnabled = value as boolean
+
+              return (
+                <StatusBadge color={isEnabled ? "green" : "grey"}>
+                  {isEnabled ? "Enabled" : "Disabled"}
+                </StatusBadge>
+              )
+            }
+          }
+        ]}
+        data={[
+          {
+            name: "John",
+            is_enabled: true
+          },
+          {
+            name: "Jane",
+            is_enabled: false
+          }
+        ]}
+        pageSize={2}
+        count={2}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+This widget also uses the [Container](../container.mdx) custom component.
