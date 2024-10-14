@@ -1994,9 +1994,10 @@ export default class OrderModuleService<
       if (!isExistingItem) {
         addedItems[item.id] = {
           ...item,
-          unit_price: item.detail?.unit_price ?? item.unit_price,
+          quantity: item.detail?.quantity ?? item.quantity,
+          unit_price: item.detail?.unit_price || item.unit_price,
           compare_at_unit_price:
-            item.detail?.compare_at_unit_price ?? item.compare_at_unit_price,
+            item.detail?.compare_at_unit_price || item.compare_at_unit_price,
         }
       }
     }
@@ -2036,8 +2037,7 @@ export default class OrderModuleService<
           actions,
           quantity: newItem.quantity,
           unit_price: unitPrice,
-          raw_unit_price: new BigNumber(unitPrice),
-          raw_compare_at_unit_price: new BigNumber(compareAtUnitPrice),
+          compare_at_unit_price: compareAtUnitPrice,
           detail: {
             ...newItem,
             ...item,

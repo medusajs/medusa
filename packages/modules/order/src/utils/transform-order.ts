@@ -46,12 +46,12 @@ export function formatOrder<T = any>(
         ...orderItem.item,
         quantity: detail.quantity,
         raw_quantity: detail.raw_quantity,
-        unit_price: detail.unit_price ?? orderItem.item.unit_price,
-        raw_unit_price: detail.raw_unit_price ?? orderItem.item.raw_unit_price,
+        unit_price: detail.unit_price || orderItem.item.unit_price,
+        raw_unit_price: detail.raw_unit_price || orderItem.item.raw_unit_price,
         compare_at_unit_price:
-          detail.compare_at_unit_price ?? orderItem.item.compare_at_unit_price,
+          detail.compare_at_unit_price || orderItem.item.compare_at_unit_price,
         raw_compare_at_unit_price:
-          detail.raw_compare_at_unit_price ??
+          detail.raw_compare_at_unit_price ||
           orderItem.item.raw_compare_at_unit_price,
         detail,
       }

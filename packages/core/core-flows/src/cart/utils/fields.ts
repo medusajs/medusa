@@ -12,6 +12,7 @@ export const cartFieldsForRefreshSteps = [
   "items.product.collection_id",
   "items.product.categories.id",
   "items.product.tags.id",
+  "items.variant.calculated_price.*",
   "items.adjustments.*",
   "items.tax_lines.*",
   "shipping_address.*",
