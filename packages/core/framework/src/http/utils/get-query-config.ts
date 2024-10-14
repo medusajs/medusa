@@ -27,9 +27,8 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> = {}
 ) {
-  // TODO: this function will be simplified a lot once we drop support for the old api
-  const { order, fields, limit = 50, offset = 0 } = validated
   let { allowed = [], defaults = [], defaultLimit, isList } = queryConfig
+  const { order, fields, limit = defaultLimit, offset = 0 } = validated
 
   // e.g *product.variants meaning that we want all fields from the product.variants
   // in that case it wont be part of the select but it will be part of the relations.
@@ -135,10 +134,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
       orderBy = { [order]: "ASC" }
     }
 
-    if (
-      queryConfig?.allowed?.length &&
-      !queryConfig?.allowed.includes(orderField)
-    ) {
+    if (!allowed.includes(orderField)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Order field ${orderField} is not valid`
@@ -152,7 +148,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
       select: select.length ? select : undefined,
       relations: Array.from(allRelations),
       skip: offset,
-      take: limit ?? defaultLimit,
+      take: limit,
       order: finalOrder,
     },
     remoteQueryConfig: {
@@ -164,7 +160,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
       pagination: isList
         ? {
             skip: offset,
-            take: limit ?? defaultLimit,
+            take: limit,
             order: finalOrder,
           }
         : {},
