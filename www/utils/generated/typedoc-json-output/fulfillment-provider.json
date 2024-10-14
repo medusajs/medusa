@@ -1,12 +1,12 @@
 {
-	"id": 55,
+	"id": 34454,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 56,
+			"id": 34455,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,7 +25,7 @@
 			},
 			"children": [
 				{
-					"id": 57,
+					"id": 34456,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,21 +58,21 @@
 					}
 				},
 				{
-					"id": 65,
+					"id": 34464,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 66,
+							"id": 34465,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 56,
+								"target": 34455,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -80,14 +80,14 @@
 					]
 				},
 				{
-					"id": 69,
+					"id": 34468,
 					"name": "getFulfillmentOptions",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 70,
+							"id": 34469,
 							"name": "getFulfillmentOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -157,14 +157,14 @@
 					}
 				},
 				{
-					"id": 71,
+					"id": 34470,
 					"name": "validateFulfillmentData",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 72,
+							"id": 34471,
 							"name": "validateFulfillmentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -231,7 +231,7 @@
 							},
 							"parameters": [
 								{
-									"id": 73,
+									"id": 34472,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -258,7 +258,7 @@
 									}
 								},
 								{
-									"id": 74,
+									"id": 34473,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -285,7 +285,7 @@
 									}
 								},
 								{
-									"id": 75,
+									"id": 34474,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -333,14 +333,14 @@
 					}
 				},
 				{
-					"id": 76,
+					"id": 34475,
 					"name": "validateOption",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 77,
+							"id": 34476,
 							"name": "validateOption",
 							"variant": "signature",
 							"kind": 4096,
@@ -399,7 +399,7 @@
 							},
 							"parameters": [
 								{
-									"id": 78,
+									"id": 34477,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -447,14 +447,14 @@
 					}
 				},
 				{
-					"id": 79,
+					"id": 34478,
 					"name": "canCalculate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 80,
+							"id": 34479,
 							"name": "canCalculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -489,7 +489,7 @@
 							},
 							"parameters": [
 								{
-									"id": 81,
+									"id": 34480,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -545,14 +545,14 @@
 					}
 				},
 				{
-					"id": 82,
+					"id": 34481,
 					"name": "calculatePrice",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 83,
+							"id": 34482,
 							"name": "calculatePrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -567,7 +567,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "canCalculate",
-										"target": 79,
+										"target": 34478,
 										"tsLinkText": ""
 									},
 									{
@@ -606,7 +606,7 @@
 							},
 							"parameters": [
 								{
-									"id": 84,
+									"id": 34483,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -633,7 +633,7 @@
 									}
 								},
 								{
-									"id": 85,
+									"id": 34484,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -660,7 +660,7 @@
 									}
 								},
 								{
-									"id": 86,
+									"id": 34485,
 									"name": "cart",
 									"variant": "param",
 									"kind": 32768,
@@ -708,14 +708,14 @@
 					}
 				},
 				{
-					"id": 87,
+					"id": 34486,
 					"name": "createFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 88,
+							"id": 34487,
 							"name": "createFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -782,7 +782,7 @@
 							},
 							"parameters": [
 								{
-									"id": 89,
+									"id": 34488,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -809,7 +809,7 @@
 									}
 								},
 								{
-									"id": 90,
+									"id": 34489,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -828,7 +828,7 @@
 									}
 								},
 								{
-									"id": 91,
+									"id": 34490,
 									"name": "order",
 									"variant": "param",
 									"kind": 32768,
@@ -847,7 +847,7 @@
 									}
 								},
 								{
-									"id": 92,
+									"id": 34491,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -895,14 +895,14 @@
 					}
 				},
 				{
-					"id": 93,
+					"id": 34492,
 					"name": "cancelFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 94,
+							"id": 34493,
 							"name": "cancelFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -928,7 +928,7 @@
 							},
 							"parameters": [
 								{
-									"id": 95,
+									"id": 34494,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -976,14 +976,14 @@
 					}
 				},
 				{
-					"id": 96,
+					"id": 34495,
 					"name": "getFulfillmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 97,
+							"id": 34496,
 							"name": "getFulfillmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1018,7 +1018,7 @@
 							},
 							"parameters": [
 								{
-									"id": 98,
+									"id": 34497,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1077,14 +1077,14 @@
 					}
 				},
 				{
-					"id": 99,
+					"id": 34498,
 					"name": "createReturnFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 100,
+							"id": 34499,
 							"name": "createReturnFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1151,7 +1151,7 @@
 							},
 							"parameters": [
 								{
-									"id": 101,
+									"id": 34500,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -1199,14 +1199,14 @@
 					}
 				},
 				{
-					"id": 102,
+					"id": 34501,
 					"name": "getReturnDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 103,
+							"id": 34502,
 							"name": "getReturnDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1241,7 +1241,7 @@
 							},
 							"parameters": [
 								{
-									"id": 104,
+									"id": 34503,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1300,14 +1300,14 @@
 					}
 				},
 				{
-					"id": 105,
+					"id": 34504,
 					"name": "getShipmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 106,
+							"id": 34505,
 							"name": "getShipmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1342,7 +1342,7 @@
 							},
 							"parameters": [
 								{
-									"id": 107,
+									"id": 34506,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1401,14 +1401,14 @@
 					}
 				},
 				{
-					"id": 108,
+					"id": 34507,
 					"name": "retrieveDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 109,
+							"id": 34508,
 							"name": "retrieveDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1443,7 +1443,7 @@
 							},
 							"parameters": [
 								{
-									"id": 110,
+									"id": 34509,
 									"name": "fulfillmentData",
 									"variant": "param",
 									"kind": 32768,
@@ -1470,7 +1470,7 @@
 									}
 								},
 								{
-									"id": 111,
+									"id": 34510,
 									"name": "documentType",
 									"variant": "param",
 									"kind": 32768,
@@ -1530,30 +1530,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						65
+						34464
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						57
+						34456
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						69,
-						71,
-						76,
-						79,
-						82,
-						87,
-						93,
-						96,
-						99,
-						102,
-						105,
-						108
+						34468,
+						34470,
+						34475,
+						34478,
+						34481,
+						34486,
+						34492,
+						34495,
+						34498,
+						34501,
+						34504,
+						34507
 					]
 				}
 			],
@@ -1574,193 +1574,193 @@
 		{
 			"title": "Classes",
 			"children": [
-				56
+				34455
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"55": {
+		"34454": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"56": {
+		"34455": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"57": {
+		"34456": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"69": {
+		"34468": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"70": {
+		"34469": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"71": {
+		"34470": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"72": {
+		"34471": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"73": {
+		"34472": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"74": {
+		"34473": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"75": {
+		"34474": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "context"
 		},
-		"76": {
+		"34475": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"77": {
+		"34476": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"78": {
+		"34477": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"79": {
+		"34478": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"80": {
+		"34479": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"81": {
+		"34480": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"82": {
+		"34481": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"83": {
+		"34482": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"84": {
+		"34483": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"85": {
+		"34484": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"86": {
+		"34485": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "cart"
 		},
-		"87": {
+		"34486": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"88": {
+		"34487": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"89": {
+		"34488": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"90": {
+		"34489": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "items"
 		},
-		"91": {
+		"34490": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "order"
 		},
-		"92": {
+		"34491": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"93": {
+		"34492": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"94": {
+		"34493": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"95": {
+		"34494": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"96": {
+		"34495": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"97": {
+		"34496": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"98": {
+		"34497": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"99": {
+		"34498": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"100": {
+		"34499": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"101": {
+		"34500": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"102": {
+		"34501": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"103": {
+		"34502": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"104": {
+		"34503": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"105": {
+		"34504": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"106": {
+		"34505": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"107": {
+		"34506": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"108": {
+		"34507": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"109": {
+		"34508": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"110": {
+		"34509": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillmentData"
 		},
-		"111": {
+		"34510": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "documentType"
 		}
@@ -1770,7 +1770,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 55
+			"1": 34454
 		}
 	}
 }
