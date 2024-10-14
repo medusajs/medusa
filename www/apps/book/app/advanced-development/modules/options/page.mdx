@@ -16,21 +16,21 @@ For example, if you’re creating a module that integrates a third-party service
 
 ## How to Pass Options to a Module?
 
-To pass options to a module, add an `options` property to the module’s configuration in `medusa-config.js`.
+To pass options to a module, add an `options` property to the module’s configuration in `medusa-config.ts`.
 
 For example:
 
-```js title="medusa-config.js"
+```js title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    helloModuleService: {
+  modules: [
+    {
       resolve: "./modules/hello",
       options: {
         capitalize: true,
       },
     },
-  },
+  ]
 })
 ```
 

@@ -10,6 +10,6 @@ export const eventBuilders = {
     source: Modules.NOTIFICATION,
     action: CommonEvents.CREATED,
     object: "notification",
-    eventsEnum: NotificationEvents,
+    eventName: NotificationEvents.NOTIFICATION_CREATED,
   }),
 }

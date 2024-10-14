@@ -3,7 +3,14 @@ import {
   ProductCategoryDTO,
   ProductTagDTO,
 } from "@medusajs/framework/types"
-import { Modules, ProductStatus, kebabCase } from "@medusajs/framework/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  kebabCase,
+  Modules,
+  ProductEvents,
+  ProductStatus,
+} from "@medusajs/framework/utils"
 import {
   Product,
   ProductCategory,
@@ -396,10 +403,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
-                name: "product.updated",
+              composeMessage(ProductEvents.PRODUCT_UPDATED, {
                 data: { id: productOne.id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
             ],
             {
               internal: true,
@@ -779,10 +788,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
-                name: "product.created",
+              composeMessage(ProductEvents.PRODUCT_CREATED, {
                 data: { id: products[0].id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
             ],
             {
               internal: true,
@@ -872,12 +883,30 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           await service.softDeleteProducts([products[0].id])
 
-          expect(eventBusSpy).toHaveBeenCalledWith(
+          expect(eventBusSpy).toHaveBeenNthCalledWith(
+            1,
             [
-              {
-                name: "product.created",
+              composeMessage(ProductEvents.PRODUCT_CREATED, {
                 data: { id: products[0].id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
+
+          expect(eventBusSpy).toHaveBeenNthCalledWith(
+            2,
+            [
+              composeMessage(ProductEvents.PRODUCT_DELETED, {
+                data: { id: [products[0].id] },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.DELETED,
+              }),
             ],
             {
               internal: true,

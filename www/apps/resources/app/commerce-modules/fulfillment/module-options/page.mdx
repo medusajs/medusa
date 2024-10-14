@@ -20,20 +20,20 @@ When the Medusa application starts, these providers are registered and can be us
 
 For example:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/medusa/fulfillment",
+  modules: [
+    {
+      resolve: "@medusajs/fulfillment",
       options: {
         providers: [
           {
-            resolve: `@medusajs/medusa/fulfillment-manual`,
+            resolve: `@medusajs/fulfillment-manual`,
             id: "manual",
             options: {
               // provider options...
@@ -42,7 +42,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 

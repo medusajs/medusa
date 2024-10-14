@@ -98,7 +98,7 @@ const PathDisplay = ({
     return (
       <div className="grid grid-cols-[20px_1fr] items-start gap-x-2">
         <FolderIllustration />
-        <div className="flex items-center gap-x-0.5">
+        <div className="flex w-full items-center gap-x-0.5 overflow-hidden">
           <Tooltip content={t("categories.fields.path.tooltip")}>
             <button
               className="outline-none"
@@ -110,7 +110,9 @@ const PathDisplay = ({
               </Text>
             </button>
           </Tooltip>
-          <TriangleRightMini />
+          <div className="flex size-[15px] shrink-0 items-center justify-center">
+            <TriangleRightMini />
+          </div>
           <Text
             size="xsmall"
             leading="compact"
@@ -201,10 +203,12 @@ const ChildrenDisplay = ({
   }
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex w-full flex-wrap gap-1">
       {chips.map((chip) => (
-        <Badge key={chip.id} size="2xsmall" asChild>
-          <Link to={`/categories/${chip.id}`}>{chip.name}</Link>
+        <Badge key={chip.id} size="2xsmall" className="max-w-full" asChild>
+          <Link to={`/categories/${chip.id}`}>
+            <span className="truncate">{chip.name}</span>
+          </Link>
         </Badge>
       ))}
     </div>

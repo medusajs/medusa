@@ -39,10 +39,6 @@ import {
   toHandle,
 } from "@medusajs/framework/utils"
 import {
-  ProductCollectionEventData,
-  ProductCollectionEvents,
-  ProductEventData,
-  ProductEvents,
   UpdateCategoryInput,
   UpdateCollectionInput,
   UpdateProductInput,
@@ -888,6 +884,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCollectionDTO>
 
   @InjectManager()
+  @EmitEvents()
   async createProductCollections(
     data:
       | ProductTypes.CreateProductCollectionDTO[]
@@ -904,15 +901,10 @@ export default class ProductModuleService
       ProductTypes.ProductCollectionDTO[]
     >(collections)
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-      collections.map(({ id }) => ({
-        name: ProductCollectionEvents.COLLECTION_CREATED,
-        data: { id },
-      })),
-      {
-        internal: true,
-      }
-    )
+    eventBuilders.createdProductCollection({
+      data: collections,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? createdCollections : createdCollections[0]
   }
@@ -946,7 +938,9 @@ export default class ProductModuleService
     data: ProductTypes.UpsertProductCollectionDTO,
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO>
+
   @InjectTransactionManager()
+  @EmitEvents()
   async upsertProductCollections(
     data:
       | ProductTypes.UpsertProductCollectionDTO[]
@@ -980,27 +974,17 @@ export default class ProductModuleService
     >(result)
 
     if (created.length) {
-      await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-        created.map(({ id }) => ({
-          name: ProductCollectionEvents.COLLECTION_CREATED,
-          data: { id },
-        })),
-        {
-          internal: true,
-        }
-      )
+      eventBuilders.createdProductCollection({
+        data: created,
+        sharedContext,
+      })
     }
 
     if (updated.length) {
-      await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-        updated.map(({ id }) => ({
-          name: ProductCollectionEvents.COLLECTION_UPDATED,
-          data: { id },
-        })),
-        {
-          internal: true,
-        }
-      )
+      eventBuilders.updatedProductCollection({
+        data: updated,
+        sharedContext,
+      })
     }
 
     return Array.isArray(data) ? allCollections : allCollections[0]
@@ -1019,6 +1003,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCollectionDTO[]>
 
   @InjectManager()
+  @EmitEvents()
   async updateProductCollections(
     idOrSelector: string | ProductTypes.FilterableProductCollectionProps,
     data: ProductTypes.UpdateProductCollectionDTO,
@@ -1056,15 +1041,10 @@ export default class ProductModuleService
       ProductTypes.ProductCollectionDTO[]
     >(collections)
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-      updatedCollections.map(({ id }) => ({
-        name: ProductCollectionEvents.COLLECTION_UPDATED,
-        data: { id },
-      })),
-      {
-        internal: true,
-      }
-    )
+    eventBuilders.updatedProductCollection({
+      data: updatedCollections,
+      sharedContext,
+    })
 
     return isString(idOrSelector) ? updatedCollections[0] : updatedCollections
   }
@@ -1311,6 +1291,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO>
 
   @InjectManager()
+  @EmitEvents()
   async createProducts(
     data: ProductTypes.CreateProductDTO[] | ProductTypes.CreateProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1322,15 +1303,10 @@ export default class ProductModuleService
       ProductTypes.ProductDTO[]
     >(products)
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      createdProducts.map(({ id }) => ({
-        name: ProductEvents.PRODUCT_CREATED,
-        data: { id },
-      })),
-      {
-        internal: true,
-      }
-    )
+    eventBuilders.createdProduct({
+      data: createdProducts,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? createdProducts : createdProducts[0]
   }
@@ -1345,6 +1321,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO>
 
   @InjectTransactionManager()
+  @EmitEvents()
   async upsertProducts(
     data: ProductTypes.UpsertProductDTO[] | ProductTypes.UpsertProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1373,27 +1350,17 @@ export default class ProductModuleService
     >(result)
 
     if (created.length) {
-      await this.eventBusModuleService_?.emit<ProductEventData>(
-        created.map(({ id }) => ({
-          name: ProductEvents.PRODUCT_CREATED,
-          data: { id },
-        })),
-        {
-          internal: true,
-        }
-      )
+      eventBuilders.createdProduct({
+        data: created,
+        sharedContext,
+      })
     }
 
     if (updated.length) {
-      await this.eventBusModuleService_?.emit<ProductEventData>(
-        updated.map(({ id }) => ({
-          name: ProductEvents.PRODUCT_UPDATED,
-          data: { id },
-        })),
-        {
-          internal: true,
-        }
-      )
+      eventBuilders.updatedProduct({
+        data: updated,
+        sharedContext,
+      })
     }
 
     return Array.isArray(data) ? allProducts : allProducts[0]
@@ -1412,6 +1379,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO[]>
 
   @InjectManager()
+  @EmitEvents()
   async updateProducts(
     idOrSelector: string | ProductTypes.FilterableProductProps,
     data: ProductTypes.UpdateProductDTO,
@@ -1442,15 +1410,10 @@ export default class ProductModuleService
       ProductTypes.ProductDTO[]
     >(products)
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      updatedProducts.map(({ id }) => ({
-        name: ProductEvents.PRODUCT_UPDATED,
-        data: { id },
-      })),
-      {
-        internal: true,
-      }
-    )
+    eventBuilders.updatedProduct({
+      data: updatedProducts,
+      sharedContext,
+    })
 
     return isString(idOrSelector) ? updatedProducts[0] : updatedProducts
   }

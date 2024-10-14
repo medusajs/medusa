@@ -86,7 +86,7 @@ const textVariants = cva({
   ],
 })
 
-interface TextProps
+export interface TextProps
   extends React.ComponentPropsWithoutRef<"p">,
     VariantProps<typeof textVariants> {
   asChild?: boolean

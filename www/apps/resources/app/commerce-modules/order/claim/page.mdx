@@ -10,7 +10,7 @@ In this document, you’ll learn about order claims.
 
 When a customer receives a defective or incorrect item, the merchant can create a claim to refund or replace the item.
 
-The [Claim data model](/references/order/models/Claim) represents a claim.
+The [OrderClaim data model](/references/order/models/OrderClaim) represents a claim.
 
 ---
 
@@ -25,7 +25,7 @@ The `Claim` data model has a `type` property whose value indicates the type of t
 
 ## Old and Replacement Items
 
-When the claim is created, a return is also created to handle receiving the old items from the customer.
+When the claim is created, a return, represented by the [Return data model](/references/order/models/Return), is also created to handle receiving the old items from the customer.
 
 <Note>
 
@@ -33,15 +33,15 @@ Learn more about returns in [this guide](../return/page.mdx).
 
 </Note>
 
-If the claim’s type is `replace`, replacement items are represented by the [ClaimItem data model](/references/order/models/ClaimItem).
+If the claim’s type is `replace`, replacement items are represented by the [ClaimItem data model](/references/order/models/OrderClaimItem).
 
 ---
 
 ## Claim Shipping Methods
 
-An exchange uses shipping methods to send the replacement items to the customer. These methods are represented by the [OrderShippingMethod data model](/references/order/models/OrderShippingMethod).
+A claim uses shipping methods to send the replacement items to the customer. These methods are represented by the [OrderShippingMethod data model](/references/order/models/OrderShippingMethod).
 
-The items returned from the customer are handled by the associated return.
+The shipping methods for the returned items are associated with the claim's return, as explained in [this guide](../return/page.mdx#return-shipping-methods).
 
 ---
 
@@ -49,10 +49,10 @@ The items returned from the customer are handled by the associated return.
 
 If the claim’s type is `refund`, the amount to be refunded is stored in the `refund_amount` property.
 
-The [Transaction data model](/references/order/models/Transaction) represents the refunds made for the claim.
+The [Transaction data model](/references/order/models/OrderTransaction) represents the refunds made for the claim.
 
 ---
 
 ## How Claims Impact an Order’s Version
 
-When an exchange is created, the order’s version is incremented.
+When a claim is confirmed, the order’s version is incremented.

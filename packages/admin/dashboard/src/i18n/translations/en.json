@@ -1350,10 +1350,6 @@
       "shippingProfiles": {
         "label": "Shipping Profiles",
         "description": "Group products by shipping requirements"
-      },
-      "shippingOptionTypes": {
-        "label": "Shipping Option Types",
-        "description": "Group options based on characteristic"
       }
     },
     "salesChannels": {
@@ -1803,6 +1799,7 @@
         "title": "Status"
       },
       "method": {
+        "label": "Method",
         "code": {
           "title": "Promotion code",
           "description": "Customers must enter this code at checkout"
