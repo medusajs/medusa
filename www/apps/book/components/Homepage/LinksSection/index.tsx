@@ -12,7 +12,7 @@ const HomepageLinksSection = () => {
         },
         {
           href: "/learn/customization",
-          text: "Build a Brand Module",
+          text: "Build a Module",
         },
         {
           href: "https://docs.medusajs.com/v2/resources/integrations",
@@ -25,7 +25,7 @@ const HomepageLinksSection = () => {
       links: [
         {
           href: "/learn/basics/admin-customizations",
-          text: "Build a Widget",
+          text: "Build a UI Widget",
         },
         {
           href: "/learn/advanced-development/admin/ui-routes",

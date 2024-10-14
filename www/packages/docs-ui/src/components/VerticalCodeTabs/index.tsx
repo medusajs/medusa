@@ -4,11 +4,13 @@ import React from "react"
 import { CodeBlock, CodeBlockProps } from "../CodeBlock"
 import clsx from "clsx"
 
+export type VerticalCodeTab = {
+  title: string
+  code: CodeBlockProps
+} & Record<string, unknown>
+
 export type VerticalCodeTabsProps = {
-  tabs: {
-    title: string
-    code: CodeBlockProps
-  }[]
+  tabs: VerticalCodeTab[]
   className?: string
   selectedTabIndex: number
   setSelectedTabIndex: (value: number) => void

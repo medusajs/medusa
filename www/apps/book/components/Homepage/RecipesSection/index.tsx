@@ -54,12 +54,9 @@ const HomepageRecipesSection = () => {
       >
         <div className="flex flex-col gap-1 w-full lg:w-1/3 xl:max-w-[336px]">
           <div className="flex flex-col gap-0.5">
-            <IconHeadline
-              title="Build Commerce Use-Cases"
-              icon={<ScrollTextIcon />}
-            />
+            <IconHeadline title="Recipes" icon={<ScrollTextIcon />} />
             <h2 className="text-h1 text-medusa-fg-base">
-              Medusa’s framework is built to support business use case.
+              Medusa’s framework supports any business use case.
             </h2>
             <span className="text-medusa-fg-subtle text-small-plus">
               These recipes show how you to build a use case by customizing and

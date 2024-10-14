@@ -1,13 +1,23 @@
 "use client"
 
 import { TriangleRightMini } from "@medusajs/icons"
-import { Link, VerticalCodeTabs } from "docs-ui"
+import { Link, VerticalCodeTab, VerticalCodeTabs } from "docs-ui"
 import { useState } from "react"
+
+type Tab = VerticalCodeTab & {
+  textSection: {
+    content: string
+    link: {
+      title: string
+      link: string
+    }
+  }
+}
 
 const HomepageCodeTabs = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
 
-  const tabs = [
+  const tabs: Tab[] = [
     {
       title: "Create Routes",
       textSection: {
@@ -26,7 +36,7 @@ const HomepageCodeTabs = () => {
 ) {
   const query = req.scope.resolve("query")
 
-  const { data, metadata } = await query.graph({
+  const { data } = await query.graph({
     entity: "company",
     fields: ["id", "name"],
     filters: { name: "ACME" },
@@ -36,6 +46,16 @@ const HomepageCodeTabs = () => {
     companies: data
   })
 }`,
+        highlights: [
+          ["1", "GET", "Create a GET endpoint."],
+          [
+            "5",
+            "query",
+            "Query utility to retrieve data from a graph of\nall data models and their relations.",
+          ],
+          ["8", `"company"`, "Retrieve records of the `company` data model"],
+          ["13", "res.json", "Return a JSON response"],
+        ],
       },
     },
     {
@@ -50,30 +70,33 @@ const HomepageCodeTabs = () => {
       },
       code: {
         lang: "ts",
-        source: `export const handleDeliveryWorkflow = createWorkflow(
+        source: `const handleDeliveryWorkflow = createWorkflow(
   "handle-delivery",
   function (input: WorkflowInput) {
     notifyRestaurantStep(input.delivery_id);
 
-    awaitDriverClaimStep();
+    const order = createOrderStep(input.delivery_id);
 
-    const orderData = createOrderStep(input.delivery_id);
-
-    createRemoteLinkStep(orderData.linkDef)
-
-    awaitStartPreparationStep();
-
-    awaitPreparationStep();
-
-    createFulfillmentStep(orderData.order);
-
-    awaitPickUpStep();
+    createFulfillmentStep(order);
 
     awaitDeliveryStep();
 
     return new WorkflowResponse("Delivery completed");
   }
 )`,
+        highlights: [
+          [
+            "1",
+            "createWorkflow",
+            "Use the Workflows SDK to build a flow of a series of steps.",
+          ],
+          ["4", "notifyRestaurantStep", "Run steps in the worklfow"],
+          [
+            "10",
+            "awaitDeliveryStep",
+            "Wait for background actions to finish execution\nbefore performing some steps.",
+          ],
+        ],
       },
     },
     {
@@ -98,6 +121,18 @@ const HomepageCodeTabs = () => {
 .cascades({
   delete: ["medias"]
 })`,
+        highlights: [
+          [
+            "1",
+            "model",
+            "Use Medusa's Data Model Language to\nrepresent custom tables in the database.",
+          ],
+          [
+            "4",
+            "hasMany",
+            "Create relations between models of the same module.",
+          ],
+        ],
       },
     },
     {
@@ -115,10 +150,12 @@ const HomepageCodeTabs = () => {
         source: `class DigitalProductModuleService extends MedusaService({
   DigitalProduct,
 }) {
-
+  async authorizeLicense() {
+    console.log("License authorized!")
+  }
 }
 
-export async function GET(
+export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
@@ -126,18 +163,35 @@ export async function GET(
     "digitalProductModuleService"
   )
 
-  const digitalProducts = await digitalProductModuleService
-    .listDigitalProducts()
+  await digitalProductModuleService.authorizeLicense()
 
-  res.json({ digital_products: digitalProducts })
+  res.json({ success: true })
 }`,
+        highlights: [
+          [
+            "1",
+            "DigitalProductModuleService",
+            "Create a service that accesses\nthe database to manage data models.",
+          ],
+          [
+            "1",
+            "MedusaService",
+            "Generate data-management methods\nfor your data models automatically.",
+          ],
+          [
+            "13",
+            "digitalProductModuleService",
+            "Resolve the database from the Medusa container\nin routes and other resources.",
+          ],
+          ["17", "authorizeLicense", "Use the service's custom methods."],
+        ],
       },
     },
     {
-      title: "Extend Data Models",
+      title: "Link Data Models",
       textSection: {
         content:
-          "Add custom properties to Medusa's data models to build custom use cases.",
+          "Add custom properties to Medusa's data models using module links to build custom use cases.",
         link: {
           title: "Module Links",
           link: "/learn/advanced-development/module-links",
@@ -154,6 +208,13 @@ export default defineLink(
   DigitalProductModule.linkable.digitalProduct,
   ProductModule.linkable.productVariant
 )`,
+        highlights: [
+          [
+            "6",
+            "defineLink",
+            "Create a link between data models of different modules.",
+          ],
+        ],
       },
     },
     {
@@ -168,23 +229,15 @@ export default defineLink(
       },
       code: {
         lang: "ts",
-        source: `export default async function orderPlaced({
-  event: { data },
+        source: `async function orderPlaced({
   container,
-}: SubscriberArgs<{ id: string }>) {
+}: SubscriberArgs) {
   const notificaitonModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const orderModuleService = container.resolve(
-    Modules.ORDER
-  )
-
-  const order = await orderModuleService.retrieveOrder(
-    data.id
-  )
 
   await notificaitonModuleService.createNotifications({
-    to: order.email,
+    to: "customer@gmail.com",
     channel: "email",
     template: "order-placed"
   })
@@ -193,6 +246,24 @@ export default defineLink(
 export const config: SubscriberConfig = {
   event: "order.placed",
 }`,
+        highlights: [
+          [
+            "1",
+            "orderPlaced",
+            "Define a subscriber that's\nexecuted when an event is emitted.",
+          ],
+          [
+            "4",
+            "notificaitonModuleService",
+            "Resolve a module's main service\nto use its methods.",
+          ],
+          ["8", "createNotification", "Send an email to a customer."],
+          [
+            "16",
+            `"order.placed"`,
+            "Execute the subscriber when an order is placed.",
+          ],
+        ],
       },
     },
     {
@@ -223,6 +294,23 @@ export const config: SubscriberConfig = {
 export const config = defineWidgetConfig({
   zone: "product.details.before",
 })`,
+        highlights: [
+          [
+            "1",
+            "ProductBrandWidget",
+            "Create admin widgets as React components.",
+          ],
+          [
+            "7",
+            "Container",
+            "Use Medusa's UI components in your customizations.",
+          ],
+          [
+            "15",
+            `"product.details.before"`,
+            "Show the widget on the product details page.",
+          ],
+        ],
       },
     },
     {
@@ -240,21 +328,26 @@ export const config = defineWidgetConfig({
         source: `const syncBrandsFromSystemWorkflow = createWorkflow(
   "sync-brands-from-system",
   () => {
-    const { toCreate, toUpdate } = retrieveBrandsFromSystemStep()
+    const toCreate = retrieveBrandsFromSystemStep()
 
     const created = createBrandsInMedusaStep({ 
       brands: toCreate
     })
-    const updated = updateBrandsInMedusaStep({ 
-      brands: toUpdate
-    })
 
     return new WorkflowResponse({
       created,
-      updated,
     })
   }
 )`,
+        highlights: [
+          ["1", "createWorkflow", "Integrate systems using workflows."],
+          [
+            "4",
+            "retrieveBrandsFromSystemStep",
+            "Retrieve data from an external system.",
+          ],
+          ["6", "createBrandsInMedusaStep", "Sync data to Medusa."],
+        ],
       },
     },
   ]

@@ -153,9 +153,13 @@ const HomepageModulesSection = () => {
             icon={<PuzzleColoredIcon />}
           />
           <h2 className="text-medusa-fg-base text-h1">
-            All commerce features are provided as modules in Medusa, and they’re
-            completely extendable to fit your custom use case.
+            All commerce features are provided as extendable modules in Medusa.
           </h2>
+          <span className="text-medusa-fg-subtle text-small-plus">
+            Click on any of the commerce modules below to learn more about their
+            commerce features, and how to extend and use them for your custom
+            use-case.
+          </span>
         </div>
         {sections.map((section, index) => (
           <Section {...section} key={index} />
