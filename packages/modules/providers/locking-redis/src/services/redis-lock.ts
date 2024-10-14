@@ -19,7 +19,9 @@ export class RedisLockingProvider
     releaseLock: (key: string, ownerId: string) => Promise<number>
   }
   protected keyNamePrefix: string
-  protected defaultTimeout: number = 5
+  protected waitLockingTimeout: number = 5
+  protected defaultRetryInterval: number = 10
+  protected maximumRetryInterval: number = 300
 
   constructor({ redisClient, prefix }) {
     super(...arguments)
@@ -81,7 +83,7 @@ export class RedisLockingProvider
       timeout?: number
     }
   ): Promise<T> {
-    const timeout = Math.max(args?.timeout ?? this.defaultTimeout, 1)
+    const timeout = Math.max(args?.timeout ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
     const cancellationToken = { cancelled: false }
@@ -131,14 +133,15 @@ export class RedisLockingProvider
   ): Promise<void> {
     keys = Array.isArray(keys) ? keys : [keys]
 
-    const timeout = Math.max(args?.expire ?? this.defaultTimeout, 1)
+    const timeout = Math.max(args?.expire ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
+    let retryTimes = 0
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
-    const errMessage = `Failed to acquire lock for key "${key}"`
 
     const acquirePromises = keys.map(async (key) => {
+      const errMessage = `Failed to acquire lock for key "${key}"`
       const keyName = this.getKeyName(key)
 
       const acquireLock = async () => {
@@ -159,7 +162,14 @@ export class RedisLockingProvider
           } else {
             if (awaitQueue) {
               // Wait for a short period before retrying
-              await setTimeout(100)
+              await setTimeout(
+                Math.max(
+                  this.defaultRetryInterval +
+                    (retryTimes / 10) * this.defaultRetryInterval,
+                  this.maximumRetryInterval
+                )
+              )
+              retryTimes++
             } else {
               throw new Error(errMessage)
             }
