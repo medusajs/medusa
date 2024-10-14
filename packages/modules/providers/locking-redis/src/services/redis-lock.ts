@@ -1,5 +1,6 @@
 import { MedusaService, promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
+import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
 import { setTimeout } from "node:timers/promises"
 
@@ -20,13 +21,25 @@ export class RedisLockingProvider
   }
   protected keyNamePrefix: string
   protected waitLockingTimeout: number = 5
-  protected defaultRetryInterval: number = 10
-  protected maximumRetryInterval: number = 300
+  protected defaultRetryInterval: number = 5
+  protected maximumRetryInterval: number = 200
 
-  constructor({ redisClient, prefix }) {
+  constructor({ redisClient, prefix }, options: RedisCacheModuleOptions) {
     super(...arguments)
     this.redisClient = redisClient
     this.keyNamePrefix = prefix ?? "medusa_lock:"
+
+    if (!isNaN(+options?.waitLockingTimeout!)) {
+      this.waitLockingTimeout = +options.waitLockingTimeout!
+    }
+
+    if (!isNaN(+options?.defaultRetryInterval!)) {
+      this.defaultRetryInterval = +options.defaultRetryInterval!
+    }
+
+    if (!isNaN(+options?.maximumRetryInterval!)) {
+      this.maximumRetryInterval = +options.maximumRetryInterval!
+    }
 
     // Define the custom command for acquiring locks
     this.redisClient.defineCommand("acquireLock", {
@@ -163,7 +176,7 @@ export class RedisLockingProvider
             if (awaitQueue) {
               // Wait for a short period before retrying
               await setTimeout(
-                Math.max(
+                Math.min(
                   this.defaultRetryInterval +
                     (retryTimes / 10) * this.defaultRetryInterval,
                   this.maximumRetryInterval
