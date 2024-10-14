@@ -116,8 +116,9 @@ export class PostgresAdvisoryLockProvider
         continue
       }
 
-      if (row.owner_id !== ownerId) {
-        throw new Error(`"${key}" is already locked.`)
+      const errMessage = `Failed to acquire lock for key "${key}"`
+      if (row.owner_id === null || row.owner_id !== ownerId) {
+        throw new Error(errMessage)
       }
 
       if (!row.expiration && row.owner_id == ownerId) {
