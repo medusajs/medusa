@@ -115,7 +115,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
         continue
       }
 
-      if (lock.ownerId === ownerId) {
+      if (lock.ownerId !== null && lock.ownerId === ownerId) {
         if (expire) {
           lock.expiration = now + expire * 1000
           this.locks.set(key, lock)

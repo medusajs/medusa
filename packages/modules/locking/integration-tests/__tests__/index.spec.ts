@@ -82,15 +82,19 @@ moduleIntegrationTestRunner<ILockingModule>({
           ownerId: "user_id_000",
         }
 
-        expect(service.acquire(keyToLock, user_1)).resolves.toBeUndefined()
+        await expect(
+          service.acquire(keyToLock, user_1)
+        ).resolves.toBeUndefined()
 
-        expect(service.acquire(keyToLock, user_1)).resolves.toBeUndefined()
+        await expect(
+          service.acquire(keyToLock, user_1)
+        ).resolves.toBeUndefined()
 
-        expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
-        expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
@@ -102,6 +106,40 @@ moduleIntegrationTestRunner<ILockingModule>({
         expect(releaseNotLocked).toBe(false)
 
         const release = await service.release(keyToLock, user_1)
+        expect(release).toBe(true)
+      })
+
+      it("should fail to acquire the same key when no owner is provided", async () => {
+        const keyToLock = "mySpecialKey"
+
+        const user_2 = {
+          ownerId: "user_id_000",
+        }
+
+        await expect(service.acquire(keyToLock)).resolves.toBeUndefined()
+
+        await expect(service.acquire(keyToLock)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        const releaseNotLocked = await service.release(keyToLock, {
+          ownerId: "user_id_000",
+        })
+        expect(releaseNotLocked).toBe(false)
+
+        const release = await service.release(keyToLock)
         expect(release).toBe(true)
       })
     })
