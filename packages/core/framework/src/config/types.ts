@@ -875,21 +875,19 @@ export type ConfigModule = {
    *
    * :::
    *
-   * The keys of the `modules` configuration object refer to the module's registration name. Its value can be one of the following:
+   * `modules` is an array of objects, each holding a module's registration configurations. Each object has the following properties:
    *
-   * 1. A boolean value indicating whether the module type is enabled. This is only supported for Medusa's commerce and architectural modules;
-   * 2. Or an object having the following properties:
-   *     1. `resolve`: a string indicating the path to the module relative to `src`, or the module's NPM package name. For example, `./modules/my-module`.
-   *     2. `options`: (optional) an object indicating the options to pass to the module.
+   * 1. `resolve`: a string indicating the path to the module relative to `src`, or the module's NPM package name. For example, `./modules/my-module`.
+   * 2. `options`: (optional) an object indicating the options to pass to the module.
    *
    * @example
    * ```ts title="medusa-config.ts"
    * module.exports = defineConfig({
-   *   modules: {
-   *     helloModuleService: {
+   *   modules: [
+   *     {
    *       resolve: "./modules/hello"
    *     }
-   *   }
+   *   ]
    *   // ...
    * })
    * ```
