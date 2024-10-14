@@ -81,14 +81,6 @@ export class AbstractFulfillmentProviderService
 
   /**
    * @ignore
-   *
-   * @privateRemarks
-   * This method is ignored as {@link validateOption} is the one used by the Fulfillment Module.
-   */
-  static validateOptions(options: Record<any, any>): void | never {}
-
-  /**
-   * @ignore
    */
   getIdentifier() {
     return (this.constructor as any).identifier
@@ -154,7 +146,11 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async validateFulfillmentData(optionData, data, context): Promise<any> {
+  async validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<any> {
     throw Error("validateFulfillmentData must be overridden by the child class")
   }
 
@@ -175,7 +171,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async validateOption(data): Promise<boolean> {
+  async validateOption(data: Record<string, unknown>): Promise<boolean> {
     throw Error("validateOption must be overridden by the child class")
   }
 
@@ -194,7 +190,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async canCalculate(data): Promise<boolean> {
+  async canCalculate(data: Record<string, unknown>): Promise<boolean> {
     throw Error("canCalculate must be overridden by the child class")
   }
 
@@ -221,7 +217,11 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async calculatePrice(optionData, data, cart): Promise<number> {
+  async calculatePrice(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<number> {
     throw Error("calculatePrice must be overridden by the child class")
   }
 
@@ -265,7 +265,12 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async createFulfillment(data, items, order, fulfillment): Promise<any> {
+  async createFulfillment(
+    data: object,
+    items: object[],
+    order: object | undefined,
+    fulfillment: Record<string, unknown>
+  ): Promise<any> {
     throw Error("createFulfillment must be overridden by the child class")
   }
 
@@ -285,7 +290,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async cancelFulfillment(fulfillment): Promise<any> {
+  async cancelFulfillment(fulfillment: Record<string, unknown>): Promise<any> {
     throw Error("cancelFulfillment must be overridden by the child class")
   }
 
@@ -305,7 +310,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async getFulfillmentDocuments(data) {
+  async getFulfillmentDocuments(data: Record<string, unknown>) {
     return []
   }
 
@@ -340,7 +345,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async createReturnFulfillment(fulfillment): Promise<any> {
+  async createReturnFulfillment(fulfillment: Record<string, unknown>): Promise<any> {
     throw Error("createReturn must be overridden by the child class")
   }
 
@@ -360,7 +365,7 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async getReturnDocuments(data) {
+  async getReturnDocuments(data: Record<string, unknown>) {
     return []
   }
 
@@ -381,7 +386,7 @@ export class AbstractFulfillmentProviderService
    * }
    *
    */
-  async getShipmentDocuments(data) {
+  async getShipmentDocuments(data: Record<string, unknown>) {
     return []
   }
 
@@ -408,7 +413,10 @@ export class AbstractFulfillmentProviderService
    *   }
    * }
    */
-  async retrieveDocuments(fulfillmentData, documentType) {
+  async retrieveDocuments(
+    fulfillmentData: Record<string, unknown>,
+    documentType: string
+  ) {
     throw Error("retrieveDocuments must be overridden by the child class")
   }
 }

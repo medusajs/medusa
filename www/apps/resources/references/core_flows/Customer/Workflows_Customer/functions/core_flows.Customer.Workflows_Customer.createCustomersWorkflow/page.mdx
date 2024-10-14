@@ -30,7 +30,7 @@ This workflow creates one or more customers.
 #### Example
 
 ```ts
-import { createCustomersWorkflow } from "@medusajs/core-flows"
+import { createCustomersWorkflow } from "@medusajs/medusa/core-flows"
 
 createCustomersWorkflow.hooks.customersCreated(
 	(async ({ customers, additional_data }, { container }) => {

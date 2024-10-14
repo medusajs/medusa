@@ -135,16 +135,16 @@ export default Module(MARKETPLACE_MODULE, {
 
 ### Add Module to Medusa Configuration
 
-Finally, add the module to the list of modules in `medusa-config.js`:
+Finally, add the module to the list of modules in `medusa-config.ts`:
 
-```ts title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    marketplaceModuleService: {
+  modules: [
+    {
       resolve: "./modules/marketplace",
     },
-  },
+  ]
 })
 ```
 

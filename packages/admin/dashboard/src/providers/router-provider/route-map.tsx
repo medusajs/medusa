@@ -1347,6 +1347,20 @@ export const RouteMap: RouteObject[] = [
                             "../../routes/tax-regions/tax-region-tax-rate-edit"
                           ),
                       },
+                      {
+                        path: "overrides/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-override-create"
+                          ),
+                      },
+                      {
+                        path: "overrides/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-override-edit"
+                          ),
+                      },
                     ],
                   },
                 ],

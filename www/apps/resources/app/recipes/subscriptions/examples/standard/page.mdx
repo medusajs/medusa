@@ -153,16 +153,16 @@ This sets the module’s name to `subscriptionModuleService` and its main servic
 
 ### Register Module in Medusa’s Configuration
 
-Finally, add the module into `medusa-config.js`:
+Finally, add the module into `medusa-config.ts`:
 
-```ts title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    subscriptionModuleService: {
+  modules: [
+    {
       resolve: "./modules/subscription",
     },
-  },
+  ]
 })
 ```
 
