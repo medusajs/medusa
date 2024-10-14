@@ -1,6 +1,7 @@
 import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
+import { t } from "i18next"
 import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
@@ -33,7 +34,7 @@ export const RouteMap: RouteObject[] = [
             path: "/products",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Products",
+              crumb: () => t("products.domain"),
             },
             children: [
               {
@@ -171,7 +172,7 @@ export const RouteMap: RouteObject[] = [
             path: "/categories",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Categories",
+              crumb: () => t("categories.domain"),
             },
             children: [
               {
@@ -225,7 +226,7 @@ export const RouteMap: RouteObject[] = [
             path: "/orders",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Orders",
+              crumb: () => t("orders.domain"),
             },
             children: [
               {
@@ -288,7 +289,7 @@ export const RouteMap: RouteObject[] = [
             path: "/promotions",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Promotions",
+              crumb: () => t("promotions.domain"),
             },
             children: [
               {
@@ -329,7 +330,7 @@ export const RouteMap: RouteObject[] = [
           {
             path: "/campaigns",
             errorElement: <ErrorBoundary />,
-            handle: { crumb: () => "Campaigns" },
+            handle: { crumb: () => t("campaigns.domain") },
             children: [
               {
                 path: "",
@@ -372,7 +373,7 @@ export const RouteMap: RouteObject[] = [
             path: "/collections",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Collections",
+              crumb: () => t("collections.domain"),
             },
             children: [
               {
@@ -415,7 +416,7 @@ export const RouteMap: RouteObject[] = [
             path: "/price-lists",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Price Lists",
+              crumb: () => t("priceLists.domain"),
             },
             children: [
               {
@@ -468,7 +469,7 @@ export const RouteMap: RouteObject[] = [
             path: "/customers",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Customers",
+              crumb: () => t("customers.domain"),
             },
             children: [
               {
@@ -514,7 +515,7 @@ export const RouteMap: RouteObject[] = [
             path: "/customer-groups",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Customer Groups",
+              crumb: () => t("customerGroups.domain"),
             },
             children: [
               {
@@ -570,7 +571,7 @@ export const RouteMap: RouteObject[] = [
             path: "/reservations",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Reservations",
+              crumb: () => t("reservations.domain"),
             },
             children: [
               {
@@ -619,7 +620,7 @@ export const RouteMap: RouteObject[] = [
             path: "/inventory",
             errorElement: <ErrorBoundary />,
             handle: {
-              crumb: () => "Inventory",
+              crumb: () => t("inventory.domain"),
             },
             children: [
               {
@@ -690,7 +691,7 @@ export const RouteMap: RouteObject[] = [
       {
         path: "/settings",
         handle: {
-          crumb: () => "Settings",
+          crumb: () => t("app.nav.settings.header"),
         },
         element: <SettingsLayout />,
         children: [
@@ -704,7 +705,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/profile/profile-detail"),
             handle: {
-              crumb: () => "Profile",
+              crumb: () => t("profile.domain"),
             },
             children: [
               {
@@ -718,7 +719,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Regions",
+              crumb: () => t("regions.domain"),
             },
             children: [
               {
@@ -757,7 +758,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/store/store-detail"),
             handle: {
-              crumb: () => "Store",
+              crumb: () => t("store.domain"),
             },
             children: [
               {
@@ -779,7 +780,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Users",
+              crumb: () => t("users.domain"),
             },
             children: [
               {
@@ -816,7 +817,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Sales Channels",
+              crumb: () => t("salesChannels.domain"),
             },
             children: [
               {
@@ -870,7 +871,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Locations & Shipping",
+              crumb: () => t("locations.domain"),
             },
             children: [
               {
@@ -885,7 +886,7 @@ export const RouteMap: RouteObject[] = [
                 path: "shipping-profiles",
                 element: <Outlet />,
                 handle: {
-                  crumb: () => "Shipping Profiles",
+                  crumb: () => t("shippingProfile.domain"),
                 },
                 children: [
                   {
@@ -916,14 +917,6 @@ export const RouteMap: RouteObject[] = [
                       ),
                   },
                 ],
-              },
-              {
-                path: "shipping-option-types",
-                errorElement: <ErrorBoundary />,
-                element: <Outlet />,
-                handle: {
-                  crumb: () => "Shipping Option Types",
-                },
               },
               {
                 path: ":location_id",
@@ -1020,7 +1013,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Product Tags",
+              crumb: () => t("productTags.domain"),
             },
             children: [
               {
@@ -1058,7 +1051,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Workflows",
+              crumb: () => t("workflowExecutions.domain"),
             },
             children: [
               {
@@ -1091,7 +1084,7 @@ export const RouteMap: RouteObject[] = [
             errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
-              crumb: () => "Product Types",
+              crumb: () => t("productTypes.domain"),
             },
             children: [
               {
@@ -1128,7 +1121,7 @@ export const RouteMap: RouteObject[] = [
             path: "publishable-api-keys",
             element: <Outlet />,
             handle: {
-              crumb: () => "Publishable API Keys",
+              crumb: () => t("apiKeyManagement.domain.publishable"),
             },
             children: [
               {
@@ -1187,7 +1180,7 @@ export const RouteMap: RouteObject[] = [
             path: "secret-api-keys",
             element: <Outlet />,
             handle: {
-              crumb: () => "Secret API Keys",
+              crumb: () => t("apiKeyManagement.domain.secret"),
             },
             children: [
               {
@@ -1239,7 +1232,7 @@ export const RouteMap: RouteObject[] = [
             path: "tax-regions",
             element: <Outlet />,
             handle: {
-              crumb: () => "Tax Regions",
+              crumb: () => t("taxRegions.domain"),
             },
             children: [
               {
@@ -1371,7 +1364,7 @@ export const RouteMap: RouteObject[] = [
             path: "return-reasons",
             element: <Outlet />,
             handle: {
-              crumb: () => "Return Reasons",
+              crumb: () => t("returnReasons.domain"),
             },
             children: [
               {
