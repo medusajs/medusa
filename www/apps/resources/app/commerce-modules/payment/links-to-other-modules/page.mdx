@@ -1,0 +1,35 @@
+export const metadata = {
+  title: `Links between Payment Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Payment Module and other commerce modules.
+
+## Cart Module
+
+The Cart Module provides cart-related features, but not payment processing.
+
+Medusa defines a link between the `Cart` and `PaymentCollection` data models. A cart has a payment collection which holds all the authorized payment sessions and payments made related to the cart.
+
+Learn more about this relation in [this documentation](../payment-collection/page.mdx#usage-with-the-cart-module).
+
+---
+
+## Order Module
+
+An order's payment details are stored in a payment collection. This also applies for claims and exchanges.
+
+So, Medusa defines links between the `PaymentCollection` data model and the `Order`, `OrderClaim`, and `OrderExchange` data models.
+
+![A diagram showcasing an example of how data models from the Order and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716554726/Medusa%20Resources/order-payment_ubdwok.jpg)
+
+---
+
+## Region Module
+
+You can specify for each region which payment providers are available. The Medusa application defines a link between the `PaymentProvider` and the `Region` data models.
+
+![A diagram showcasing an example of how resources from the Payment and Region modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711569520/Medusa%20Resources/payment-region_jyo2dz.jpg)
+
+This increases the flexibility of your store. For example, you only show during checkout the payment providers associated with the cart's region.
