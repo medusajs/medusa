@@ -62,19 +62,19 @@ export const eventBuilders = {
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_profile",
-    eventName: FulfillmentEvents.SHIPPING_PROFILE_DELETED,
+    eventName: FulfillmentEvents.SHIPPING_PROFILE_CREATED,
   }),
   createdShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_option_type",
-    eventName: FulfillmentEvents.SHIPPING_OPTION_CREATED,
+    eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
   }),
   updatedShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "shipping_option_type",
-    eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
+    eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_UPDATED,
   }),
   deletedShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,

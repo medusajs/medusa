@@ -680,7 +680,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productCategoryTwo = categories[2]
         })
 
-        // TODO: Normalize delete events as well
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           eventBusSpy.mockClear()
