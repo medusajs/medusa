@@ -19,6 +19,7 @@ export class RedisLockingProvider
     releaseLock: (key: string, ownerId: string) => Promise<number>
   }
   protected keyNamePrefix: string
+  protected defaultTimeout: number = 5
 
   constructor({ redisClient, prefix }) {
     super(...arguments)
@@ -80,7 +81,7 @@ export class RedisLockingProvider
       timeout?: number
     }
   ): Promise<T> {
-    const timeout = Math.max(args?.timeout ?? 5, 1)
+    const timeout = Math.max(args?.timeout ?? this.defaultTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
     const cancellationToken = { cancelled: false }
@@ -130,11 +131,12 @@ export class RedisLockingProvider
   ): Promise<void> {
     keys = Array.isArray(keys) ? keys : [keys]
 
-    const timeout = Math.max(args?.expire ?? 5, 1)
+    const timeout = Math.max(args?.expire ?? this.defaultTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
+    const errMessage = `Failed to acquire lock for key "${key}"`
 
     const acquirePromises = keys.map(async (key) => {
       const keyName = this.getKeyName(key)
@@ -142,7 +144,7 @@ export class RedisLockingProvider
       const acquireLock = async () => {
         while (true) {
           if (cancellationToken?.cancelled) {
-            return
+            throw new Error(errMessage)
           }
 
           const result = await this.redisClient.acquireLock(
@@ -159,7 +161,7 @@ export class RedisLockingProvider
               // Wait for a short period before retrying
               await setTimeout(100)
             } else {
-              throw new Error(`Failed to acquire lock for key "${key}"`)
+              throw new Error(errMessage)
             }
           }
         }
@@ -168,7 +170,7 @@ export class RedisLockingProvider
       await acquireLock()
     })
 
-    await Promise.all(acquirePromises)
+    await promiseAll(acquirePromises)
   }
 
   async release(
@@ -186,7 +188,7 @@ export class RedisLockingProvider
       return result === 1
     })
 
-    const results = await Promise.all(releasePromises)
+    const results = await promiseAll(releasePromises)
 
     return results.every((released) => released)
   }
