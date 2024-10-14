@@ -472,6 +472,13 @@ export const sidebar = numberSidebarItems(
           type: "link",
           path: "/learn/advanced-development/custom-cli-scripts",
           title: "Custom CLI Scripts",
+          children: [
+            {
+              type: "link",
+              path: "/advanced-development/custom-cli-scripts/seed-data",
+              title: "Seed Data",
+            },
+          ],
         },
         {
           type: "link",
