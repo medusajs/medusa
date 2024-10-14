@@ -194,7 +194,6 @@ describe("Order Exchange - Actions", function () {
         id: "item_555",
         order_id: "1",
         unit_price: 50,
-        compare_at_unit_price: null,
         quantity: 1,
         actions: [
           {
@@ -202,7 +201,6 @@ describe("Order Exchange - Actions", function () {
             details: {
               reference_id: "item_555",
               unit_price: 50,
-              compare_at_unit_price: null,
               quantity: 1,
             },
             amount: "50",
