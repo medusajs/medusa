@@ -52,6 +52,11 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Admin Components",
+        link: "/v2/resources/admin-components",
+      },
+      {
+        type: "link",
         title: "Storefront Development",
         link: "/v2/resources/storefront-development",
       },
