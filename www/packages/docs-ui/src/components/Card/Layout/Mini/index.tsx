@@ -20,7 +20,7 @@ export const CardLayoutMini = ({
   return (
     <div
       className={clsx(
-        "relative rounded-docs_DEFAULT border-ui-fg-on-color border",
+        "relative rounded-docs_DEFAULT border-medusa-fg-on-color border",
         "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
         "hover:shadow-elevation-card-hover dark:hover:shadow-elevation-card-hover-dark",
         "bg-medusa-tag-neutral-bg hover:bg-medusa-tag-neutral-bg-hover",

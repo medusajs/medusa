@@ -28,7 +28,7 @@ To integrate an external system, such as an ERP, into your Medusa application, c
 Then, resolve the module's main service in other resources, such as API routes or workflows, to perform actions in the external system.
 
 <Card
-  href="!docs!/basics/modules"
+  href="!docs!/learn/basics/modules"
   title="Create a Module"
   text="Learn how to create a module in Medusa."
   icon={AcademicCapSolid}
@@ -101,7 +101,7 @@ export const serviceHighlights = [
 
   <Note title="Tip">
 
-  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/modules#1-create-data-model) in your module to store data related to the external system.
+  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/learn/basics/modules#1-create-data-model) in your module to store data related to the external system.
 
   </Note>
 
@@ -150,7 +150,7 @@ Workflows can be executed from anywhere. So, taking the workflow described above
 Workflows guarantee data consistency through their compensation feature. You can provide a compensation function to steps that roll back the actions of that step. Then, if an error occurs in any step, the actions of previous steps are rolled back using their compensation function.
 
 <Card
-  href="!docs!/basics/workflows"
+  href="!docs!/learn/basics/workflows"
   title="Workflows"
   text="Learn more about Workflows and how to create them."
   icon={AcademicCapSolid}
@@ -295,7 +295,7 @@ You can provide webhook listeners that your external systems call when their dat
 For example, suppose an administrator changes the product data in the ERP system. The system then sends a request to the webhook you define in your Medusa application, which updates the product data in the application.
 
 <Card
-  href="!docs!/basics/api-routes"
+  href="!docs!/learn/basics/api-routes"
   title="Create an API Route"
   text="Learn how to create an API Route in Medusa."
   icon={AcademicCapSolid}

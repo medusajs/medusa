@@ -30,7 +30,7 @@ const HomepageTopSection = () => {
       <div
         className={clsx(
           "w-fit mx-auto lg:grid lg:grid-cols-2 lg:grid-rows-2",
-          "xl:grid-cols-[336px_auto] 2xl:grid-cols-[336px_752px] lg:gap-x-4",
+          "xl:grid-cols-[336px_752px] lg:grid-cols-[25%_75%] lg:gap-x-4",
           "2xl:pl-[184px] lg:pb-4 2xl:pr-[176px] z-[2] relative",
           "xs:px-4 xs:pb-4 px-1 pb-8",
           "flex justify-center items-start"

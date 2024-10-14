@@ -6,7 +6,7 @@ import {
   SidebarLeft,
   TimelineVertical,
 } from "@medusajs/icons"
-import React, { useRef, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import {
   Button,
   getOsShortcut,
@@ -17,16 +17,70 @@ import {
 import clsx from "clsx"
 import { HouseIcon } from "../../Icons/House"
 import { MainNavThemeMenu } from "./ThemeMenu"
+import { MenuItem } from "types"
 
 export const MainNavDesktopMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { setDesktopSidebarOpen } = useSidebar()
+  const { setDesktopSidebarOpen, isSidebarShown } = useSidebar()
   const ref = useRef(null)
 
   useClickOutside({
     elmRef: ref,
     onClickOutside: () => setIsOpen(false),
   })
+
+  const items: MenuItem[] = useMemo(() => {
+    const items: MenuItem[] = [
+      {
+        type: "link",
+        icon: <HouseIcon />,
+        title: "Homepage",
+        link: "https://docs.medusajs.com/v2",
+      },
+      {
+        type: "link",
+        icon: <TimelineVertical />,
+        title: "Changelog",
+        link: "https://medusajs.com/changelog",
+      },
+      {
+        type: "link",
+        icon: <QuestionMarkCircle />,
+        title: "Troubleshooting",
+        link: "https://docs.medusajs.com/v2/resources/troubleshooting",
+      },
+    ]
+
+    if (isSidebarShown) {
+      items.push(
+        {
+          type: "divider",
+        },
+        {
+          type: "action",
+          title: "Hide Sidebar",
+          icon: <SidebarLeft />,
+          shortcut: `${getOsShortcut()}\\`,
+          action: () => {
+            setDesktopSidebarOpen((prev) => !prev)
+            setIsOpen(false)
+          },
+        }
+      )
+    }
+
+    items.push(
+      {
+        type: "divider",
+      },
+      {
+        type: "custom",
+        content: <MainNavThemeMenu />,
+      }
+    )
+
+    return items
+  }, [isSidebarShown])
 
   return (
     <div
@@ -45,46 +99,7 @@ export const MainNavDesktopMenu = () => {
           "absolute top-[calc(100%+8px)] right-0 min-w-[200px]",
           !isOpen && "hidden"
         )}
-        items={[
-          {
-            type: "link",
-            icon: <HouseIcon />,
-            title: "Homepage",
-            link: "https://docs.medusajs.com/v2",
-          },
-          {
-            type: "link",
-            icon: <TimelineVertical />,
-            title: "Changelog",
-            link: "https://medusajs.com/changelog",
-          },
-          {
-            type: "link",
-            icon: <QuestionMarkCircle />,
-            title: "Troubleshooting",
-            link: "https://docs.medusajs.com/v2/resources/troubleshooting",
-          },
-          {
-            type: "divider",
-          },
-          {
-            type: "action",
-            title: "Hide Sidebar",
-            icon: <SidebarLeft />,
-            shortcut: `${getOsShortcut()}\\`,
-            action: () => {
-              setDesktopSidebarOpen((prev) => !prev)
-              setIsOpen(false)
-            },
-          },
-          {
-            type: "divider",
-          },
-          {
-            type: "custom",
-            content: <MainNavThemeMenu />,
-          },
-        ]}
+        items={items}
       />
     </div>
   )

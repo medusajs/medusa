@@ -49,10 +49,10 @@ const HomepageRecipesSection = () => {
         className={clsx(
           "flex flex-col lg:flex-row",
           "gap-2 lg:gap-4",
-          "xl:mx-auto xl:max-w-[1136px] w-full px-4 xl:px-0"
+          "xl:mx-auto xl:max-w-[1136px] w-full px-1 sm:px-4 xl:px-0"
         )}
       >
-        <div className="flex flex-col gap-1 w-full lg:w-1/3">
+        <div className="flex flex-col gap-1 w-full lg:w-1/3 xl:max-w-[336px]">
           <div className="flex flex-col gap-0.5">
             <IconHeadline
               title="Build Commerce Use-Cases"

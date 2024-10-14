@@ -24,7 +24,7 @@ type MainNavProps = {
 
 export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
   const { reportIssueLink, editDate } = useMainNav()
-  const { setMobileSidebarOpen } = useSidebar()
+  const { setMobileSidebarOpen, isSidebarShown } = useSidebar()
 
   return (
     <div
@@ -37,13 +37,15 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
     >
       <div className="flex items-center gap-docs_1">
         <div className="flex items-center gap-[10px]">
-          <Button
-            className="lg:hidden my-docs_0.75 !p-[6.5px]"
-            variant="transparent-clear"
-            onClick={() => setMobileSidebarOpen(true)}
-          >
-            <SidebarLeftIcon />
-          </Button>
+          {isSidebarShown && (
+            <Button
+              className="lg:hidden my-docs_0.75 !p-[6.5px]"
+              variant="transparent-clear"
+              onClick={() => setMobileSidebarOpen(true)}
+            >
+              <SidebarLeftIcon />
+            </Button>
+          )}
           <BorderedIcon
             IconComponent={MedusaIcon}
             iconWrapperClassName="my-[14px]"

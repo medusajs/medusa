@@ -144,7 +144,7 @@ const HomepageModulesSection = () => {
         className={clsx(
           "flex flex-col",
           "gap-[40px] xs:gap-4",
-          "xl:mx-auto xl:max-w-[1136px] w-full px-4 xl:px-0"
+          "xl:mx-auto xl:max-w-[1136px] w-full px-1 sm:px-4 xl:px-0"
         )}
       >
         <div className="flex flex-col gap-0.5">
