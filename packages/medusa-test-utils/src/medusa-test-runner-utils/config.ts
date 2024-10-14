@@ -7,7 +7,7 @@ export async function configLoaderOverride(
   const { configManager } = await import("@medusajs/framework/config")
   const { configModule, error } = getConfigFile<
     ReturnType<typeof configManager.loadConfig>
-  >(entryDirectory, "medusa-config.js")
+  >(entryDirectory, "medusa-config")
 
   if (error) {
     throw new Error(error.message || "Error during config loading")

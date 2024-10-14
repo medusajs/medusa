@@ -1,7 +1,7 @@
 import { AdminApiKeyResponse } from "@medusajs/types"
-import { Badge, Copy, Text } from "@medusajs/ui"
+import { Badge } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { MouseEvent, useMemo } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
@@ -31,29 +31,9 @@ export const useApiKeyManagementTableColumns = () => {
       }),
       columnHelper.accessor("redacted", {
         header: "Token",
-        cell: ({ getValue, row }) => {
+        cell: ({ getValue }) => {
           const token = getValue()
-          const isSecret = row.original.type === "secret"
-
-          if (isSecret) {
-            return <Badge size="2xsmall">{prettifyRedactedToken(token)}</Badge>
-          }
-
-          const clickHandler = (e: MouseEvent) => e.stopPropagation()
-
-          return (
-            <Badge size="2xsmall" className="max-w-40" onClick={clickHandler}>
-              <Copy
-                content={row.original.token}
-                className="text-ui-fg-subtle"
-                asChild
-              >
-                <Text size="xsmall" leading="compact" className="truncate">
-                  {prettifyRedactedToken(token)}
-                </Text>
-              </Copy>
-            </Badge>
-          )
+          return <Badge size="2xsmall">{prettifyRedactedToken(token)}</Badge>
         },
       }),
       columnHelper.accessor("type", {

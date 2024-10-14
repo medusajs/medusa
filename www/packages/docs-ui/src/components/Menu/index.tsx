@@ -8,9 +8,10 @@ import { MenuAction } from "./Action"
 export type MenuProps = {
   items: MenuItemType[]
   className?: string
+  itemsOnClick?: (item: MenuItemType) => void
 }
 
-export const Menu = ({ items, className }: MenuProps) => {
+export const Menu = ({ items, className, itemsOnClick }: MenuProps) => {
   return (
     <div
       className={clsx(
@@ -21,9 +22,14 @@ export const Menu = ({ items, className }: MenuProps) => {
     >
       {items.map((item, index) => (
         <React.Fragment key={index}>
-          {item.type === "link" && <MenuItem item={item} />}
-          {item.type === "action" && <MenuAction item={item} />}
+          {item.type === "link" && (
+            <MenuItem item={item} onClick={itemsOnClick} />
+          )}
+          {item.type === "action" && (
+            <MenuAction item={item} onClick={itemsOnClick} />
+          )}
           {item.type === "divider" && <MenuDivider />}
+          {item.type === "custom" && item.content}
         </React.Fragment>
       ))}
     </div>

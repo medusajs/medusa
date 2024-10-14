@@ -8,9 +8,9 @@ In this document, you’ll learn about order returns.
 
 ## What is a Return?
 
-A return is the return of items delivered to the customer back to the merchant. It is represented by the [Return data model](/references/order/models/Return).
+A return is the return of items delivered from the customer back to the merchant. It is represented by the [Return data model](/references/order/models/Return).
 
-A return is requested either by the customer or the merchant, supporting an automated Return Merchandise Authorization (RMA) flow.
+A return is requested either by the customer from the storefront, or the merchant from the admin. Medusa supports an automated Return Merchandise Authorization (RMA) flow.
 
 ![Diagram showcasing the automated RMA flow.](https://res.cloudinary.com/dza7lstvk/image/upload/v1719578128/Medusa%20Resources/return-rma_pzprwq.jpg)
 
@@ -22,11 +22,18 @@ Once the merchant receives the returned items, they mark the return as received.
 
 The items to be returned are represented by the [ReturnItem data model](references/order/models/ReturnItem).
 
+The `ReturnItem` model has two properties storing the item's quantity:
+
+1. `received_quantity`: The quantity of the item that's received and can be added to the item's inventory quantity.
+2. `damaged_quantity`: The quantity of the item that's damaged, meaning it can't be sold again or added to the item's inventory quantity.
+
 ---
 
 ## Return Shipping Methods
 
 A return has shipping methods used to return the items to the merchant. The shipping methods are represented by the [OrderShippingMethod data model](references/order/models/OrderShippingMethod).
+
+In the Medusa application, the shipping method for a return is created only from a shipping option, provided by the Fulfillment Module, that has the rule `is_return` enabled.
 
 ---
 
@@ -34,7 +41,7 @@ A return has shipping methods used to return the items to the merchant. The ship
 
 The `refund_amount` property of the `Return` data model holds the amount a merchant must refund the customer.
 
-The [Transaction data model](references/order/models/Transaction) represents the refunds made for the return.
+The [OrderTransaction data model](references/order/models/OrderTransaction) represents the refunds made for the return.
 
 ---
 

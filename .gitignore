@@ -20,6 +20,7 @@ www/**/.yarn/*
 .idea
 .turbo
 build/**
+dist/**
 **/dist
 **/stats
 .favorites.json

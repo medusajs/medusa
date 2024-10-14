@@ -1,36 +1,37 @@
-import { Knex } from "@mikro-orm/knex"
 import { RemoteLink } from "@medusajs/modules-sdk"
-import { AwilixContainer, ResolveOptions } from "awilix"
-import { Modules, ContainerRegistrationKeys } from "@medusajs/utils"
 import {
-  Logger,
   ConfigModule,
-  ModuleImplementations,
-  RemoteQueryFunction,
+  IApiKeyModuleService,
   IAuthModuleService,
   ICacheService,
   ICartModuleService,
+  ICurrencyModuleService,
   ICustomerModuleService,
   IEventBusModuleService,
+  IFileModuleService,
+  IFulfillmentModuleService,
   IInventoryService,
+  ILockingModule,
+  INotificationModuleService,
+  IOrderModuleService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
+  IRegionModuleService,
   ISalesChannelModuleService,
-  ITaxModuleService,
-  IFulfillmentModuleService,
   IStockLocationService,
+  IStoreModuleService,
+  ITaxModuleService,
   IUserModuleService,
   IWorkflowEngineService,
-  IRegionModuleService,
-  IOrderModuleService,
-  IApiKeyModuleService,
-  IStoreModuleService,
-  ICurrencyModuleService,
-  IFileModuleService,
-  INotificationModuleService,
+  Logger,
+  ModuleImplementations,
+  RemoteQueryFunction,
 } from "@medusajs/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { Knex } from "@mikro-orm/knex"
+import { AwilixContainer, ResolveOptions } from "awilix"
 
 declare module "@medusajs/types" {
   export interface ModuleImplementations {
@@ -63,6 +64,7 @@ declare module "@medusajs/types" {
     [Modules.CURRENCY]: ICurrencyModuleService
     [Modules.FILE]: IFileModuleService
     [Modules.NOTIFICATION]: INotificationModuleService
+    [Modules.LOCKING]: ILockingModule
   }
 }
 

@@ -19,6 +19,7 @@ export const customerGroupsQueryKeys = queryKeysFactory(
 
 export const useCustomerGroup = (
   id: string,
+  query?: HttpTypes.AdminGetCustomerGroupParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminCustomerGroupResponse,
@@ -30,8 +31,8 @@ export const useCustomerGroup = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: customerGroupsQueryKeys.detail(id),
-    queryFn: async () => sdk.admin.customerGroup.retrieve(id),
+    queryKey: customerGroupsQueryKeys.detail(id, query),
+    queryFn: async () => sdk.admin.customerGroup.retrieve(id, query),
     ...options,
   })
 

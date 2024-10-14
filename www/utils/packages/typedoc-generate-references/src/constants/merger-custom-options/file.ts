@@ -48,7 +48,7 @@ export default {
 This exports the module's definition, indicating that the \`MyFileProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your File Module Provider, add it to the \`providers\` array of the File Module:
+To use your File Module Provider, add it to the \`providers\` array of the File Module in \`medusa-config.ts\`:
 
 <Note>
 
@@ -56,15 +56,15 @@ The File Module accepts one provider only.
 
 </Note>
 
-\`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+\`\`\`ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.FILE]: {
+  modules: [
+    {
       resolve: "@medusajs/framework/file",
       options: {
         providers: [
@@ -78,7 +78,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  ]
 })
 \`\`\`
 `,

@@ -680,7 +680,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productCategoryTwo = categories[2]
         })
 
-        // TODO: Normalize delete events as well
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           eventBusSpy.mockClear()
@@ -692,7 +691,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             [
               expect.objectContaining({
                 data: { id: productCategoryOne.id },
-                name: "Product.product-category.deleted",
+                name: "product.product-category.deleted",
                 metadata: {
                   action: CommonEvents.DELETED,
                   object: "product_category",

@@ -80,9 +80,7 @@ export interface FindConfig<Entity> {
    * An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`
    * to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
    */
-  order?: {
-    [K: string]: "ASC" | "DESC"
-  }
+  order?: Record<string, "ASC" | "DESC" | (string & {})>
 
   /**
    * A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the
@@ -121,12 +119,6 @@ export type TotalField =
  * Fields that can be passed in the query parameters of a request.
  */
 export type RequestQueryFields = {
-  /**
-   * Comma-separated relations that should be expanded in the returned data.
-   * @deprecated Use `fields` instead and the relations will be inferred
-   */
-  expand?: string
-
   /**
    * Comma-separated fields that should be included in the returned data.
    * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
@@ -312,25 +304,9 @@ export type QueryConfig<TEntity> = {
    */
   defaults?: (keyof TEntity | string)[]
   /**
-   * @deprecated Use `defaults` instead
-   */
-  defaultFields?: (keyof TEntity | string)[]
-  /**
-   * @deprecated Use `defaultFields` instead and the relations will be inferred
-   */
-  defaultRelations?: string[]
-  /**
    * Fields and relations that are allowed to be requested
    */
   allowed?: string[]
-  /**
-   * @deprecated Use `allowed` instead
-   */
-  allowedFields?: string[]
-  /**
-   * @deprecated Use `allowedFields` instead and the relations will be inferred
-   */
-  allowedRelations?: string[]
   defaultLimit?: number
   isList?: boolean
 }

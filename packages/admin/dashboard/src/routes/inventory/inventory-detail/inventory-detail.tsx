@@ -10,10 +10,7 @@ import { InventoryItemReservationsSection } from "./components/inventory-item-re
 import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section"
 import { inventoryItemLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/inventory_item/details/after"
-import before from "virtual:medusa/widgets/inventory_item/details/before"
-import sideAfter from "virtual:medusa/widgets/inventory_item/details/side/after"
-import sideBefore from "virtual:medusa/widgets/inventory_item/details/side/before"
+import { useDashboardExtension } from "../../../extensions"
 
 export const InventoryDetail = () => {
   const { id } = useParams()
@@ -37,13 +34,15 @@ export const InventoryDetail = () => {
     }
   )
 
+  const { getWidgets } = useDashboardExtension()
+
   if (isLoading || !inventory_item) {
     return (
       <TwoColumnPageSkeleton
         showJSON
-        showMetadata
         mainSections={3}
         sidebarSections={2}
+        showMetadata
       />
     )
   }
@@ -55,15 +54,14 @@ export const InventoryDetail = () => {
   return (
     <TwoColumnPage
       widgets={{
-        after,
-        before,
-        sideAfter,
-        sideBefore,
+        after: getWidgets("inventory_item.details.after"),
+        before: getWidgets("inventory_item.details.before"),
+        sideAfter: getWidgets("inventory_item.details.side.after"),
+        sideBefore: getWidgets("inventory_item.details.side.before"),
       }}
       data={inventory_item}
       showJSON
       showMetadata
-      hasOutlet
     >
       <TwoColumnPage.Main>
         <InventoryItemGeneralSection inventoryItem={inventory_item} />

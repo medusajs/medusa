@@ -82,7 +82,7 @@ export const defaultAdminRetrieveOrderChangesFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminRetrieveOrderFields,
+  defaults: defaultAdminRetrieveOrderFields,
   isList: false,
 }
 
@@ -93,6 +93,6 @@ export const listTransformQueryConfig = {
 }
 
 export const retrieveOrderChangesTransformQueryConfig = {
-  defaultFields: defaultAdminRetrieveOrderChangesFields,
+  defaults: defaultAdminRetrieveOrderChangesFields,
   isList: false,
 }

@@ -8,4 +8,5 @@ export type ModuleProvider = {
   resolve: string | ModuleProviderExports
   id: string
   options?: Record<string, unknown>
+  is_default?: boolean
 }

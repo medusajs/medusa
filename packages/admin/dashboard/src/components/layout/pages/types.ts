@@ -1,16 +1,8 @@
-import { ReactNode } from "react"
-
-export type Widget = {
-  Component: React.ComponentType<any>
-}
-
-export type WidgetImport = {
-  widgets: Widget[]
-}
+import { ComponentType, ReactNode } from "react"
 
 export interface WidgetProps {
-  before: WidgetImport
-  after: WidgetImport
+  before: ComponentType<any>[]
+  after: ComponentType<any>[]
 }
 
 export interface PageProps<TData> {

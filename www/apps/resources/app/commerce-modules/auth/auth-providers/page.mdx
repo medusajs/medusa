@@ -37,11 +37,11 @@ For example, the EmailPass Auth Module Provider authenticates a user using their
 
 ## Configure Allowed Auth Providers of Actor Types
 
-By default, users of all actor types can authenticate with all installed auth module providerss.
+By default, users of all actor types can authenticate with all installed auth module providers.
 
 To restrict the auth providers used for actor types, use the [authMethodsPerActor option](/references/medusa-config#http-authMethodsPerActor-1-3) in Medusa's configurations:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     http: {
