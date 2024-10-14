@@ -23,7 +23,7 @@ export const defaultAdminRetrieveReturnReasonFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminRetrieveReturnReasonFields,
+  defaults: defaultAdminRetrieveReturnReasonFields,
   isList: false,
 }
 
