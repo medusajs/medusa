@@ -25,22 +25,6 @@ export const BigNumberInput = z.union([
   }),
 ])
 
-const optionalBooleanMapper = new Map([
-  ["undefined", undefined],
-  ["null", null],
-  ["true", true],
-  ["false", false],
-])
-
-/**
- * @deprecated Use `booleanString` instead
- * It support the chainable API of zod. Please note it does not come with `.optional()` by default
- */
-export const OptionalBooleanValidator = z.preprocess(
-  (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-  z.boolean().optional()
-)
-
 /**
  * Validates that a value is a boolean when it is passed as a string.
  */

@@ -1,5 +1,6 @@
-import { MedusaService } from "@medusajs/framework/utils"
+import { MedusaService, promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
+import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
 import { setTimeout } from "node:timers/promises"
 
@@ -19,11 +20,26 @@ export class RedisLockingProvider
     releaseLock: (key: string, ownerId: string) => Promise<number>
   }
   protected keyNamePrefix: string
+  protected waitLockingTimeout: number = 5
+  protected defaultRetryInterval: number = 5
+  protected maximumRetryInterval: number = 200
 
-  constructor({ redisClient, prefix }) {
+  constructor({ redisClient, prefix }, options: RedisCacheModuleOptions) {
     super(...arguments)
     this.redisClient = redisClient
     this.keyNamePrefix = prefix ?? "medusa_lock:"
+
+    if (!isNaN(+options?.waitLockingTimeout!)) {
+      this.waitLockingTimeout = +options.waitLockingTimeout!
+    }
+
+    if (!isNaN(+options?.defaultRetryInterval!)) {
+      this.defaultRetryInterval = +options.defaultRetryInterval!
+    }
+
+    if (!isNaN(+options?.maximumRetryInterval!)) {
+      this.maximumRetryInterval = +options.maximumRetryInterval!
+    }
 
     // Define the custom command for acquiring locks
     this.redisClient.defineCommand("acquireLock", {
@@ -80,7 +96,7 @@ export class RedisLockingProvider
       timeout?: number
     }
   ): Promise<T> {
-    const timeout = Math.max(args?.timeout ?? 5, 1)
+    const timeout = Math.max(args?.timeout ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
 
     const cancellationToken = { cancelled: false }
@@ -130,19 +146,21 @@ export class RedisLockingProvider
   ): Promise<void> {
     keys = Array.isArray(keys) ? keys : [keys]
 
-    const timeout = Math.max(args?.expire ?? 5, 1)
+    const timeout = Math.max(args?.expire ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
+    let retryTimes = 0
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
 
     const acquirePromises = keys.map(async (key) => {
+      const errMessage = `Failed to acquire lock for key "${key}"`
       const keyName = this.getKeyName(key)
 
       const acquireLock = async () => {
         while (true) {
           if (cancellationToken?.cancelled) {
-            return
+            throw new Error(errMessage)
           }
 
           const result = await this.redisClient.acquireLock(
@@ -157,9 +175,16 @@ export class RedisLockingProvider
           } else {
             if (awaitQueue) {
               // Wait for a short period before retrying
-              await setTimeout(100)
+              await setTimeout(
+                Math.min(
+                  this.defaultRetryInterval +
+                    (retryTimes / 10) * this.defaultRetryInterval,
+                  this.maximumRetryInterval
+                )
+              )
+              retryTimes++
             } else {
-              throw new Error(`Failed to acquire lock for key "${key}"`)
+              throw new Error(errMessage)
             }
           }
         }
@@ -168,7 +193,7 @@ export class RedisLockingProvider
       await acquireLock()
     })
 
-    await Promise.all(acquirePromises)
+    await promiseAll(acquirePromises)
   }
 
   async release(
@@ -186,7 +211,7 @@ export class RedisLockingProvider
       return result === 1
     })
 
-    const results = await Promise.all(releasePromises)
+    const results = await promiseAll(releasePromises)
 
     return results.every((released) => released)
   }

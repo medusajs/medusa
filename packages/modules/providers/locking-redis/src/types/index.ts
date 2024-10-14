@@ -24,4 +24,22 @@ export type RedisCacheModuleOptions = {
    * @default `medusa_lock:`
    */
   namespace?: string
+
+  /**
+   * Time to wait for lock (in seconds)
+   * @default 5
+   */
+  waitLockingTimeout?: number
+
+  /**
+   * Default retry interval (in milliseconds)
+   * @default 5
+   */
+  defaultRetryInterval?: number
+
+  /**
+   * Maximum retry interval (in milliseconds)
+   * @default 200
+   */
+  maximumRetryInterval?: number
 }

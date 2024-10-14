@@ -82,7 +82,7 @@ export const EditPromotionDetailsForm = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>Method</Form.Label>
+                    <Form.Label>{t("promotions.form.method.label")}</Form.Label>
                     <Form.Control>
                       <RadioGroup
                         className="flex-col gap-y-3"

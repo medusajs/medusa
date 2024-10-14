@@ -30,7 +30,7 @@ This workflow creates a shipment for an order.
 #### Example
 
 ```ts
-import { createOrderShipmentWorkflow } from "@medusajs/core-flows"
+import { createOrderShipmentWorkflow } from "@medusajs/medusa/core-flows"
 
 createOrderShipmentWorkflow.hooks.shipmentCreated(
 	(async ({ shipment, additional_data }, { container }) => {

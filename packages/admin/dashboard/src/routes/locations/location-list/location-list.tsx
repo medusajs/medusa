@@ -1,4 +1,4 @@
-import { ArrowUpRightOnBox, ShoppingBag } from "@medusajs/icons"
+import { ShoppingBag, TriangleRightMini } from "@medusajs/icons"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link, useLoaderData } from "react-router-dom"
@@ -93,7 +93,7 @@ const SidebarLink = ({
               </Text>
             </div>
             <div className="flex size-7 items-center justify-center">
-              <ArrowUpRightOnBox className="text-ui-fg-muted" />
+              <TriangleRightMini className="text-ui-fg-muted" />
             </div>
           </div>
         </div>

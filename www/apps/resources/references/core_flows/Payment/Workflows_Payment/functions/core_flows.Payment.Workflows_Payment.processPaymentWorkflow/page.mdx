@@ -1,0 +1,18 @@
+---
+slug: /references/medusa-workflows/processPaymentWorkflow
+sidebar_label: processPaymentWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# processPaymentWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `processPaymentWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"processPaymentWorkflow","steps":[{"type":"when","condition":"{\n      return (\n        input.action === PaymentActions.SUCCESSFUL && !!paymentData.data.length\n      )\n    }","depth":"1","steps":[{"type":"workflow","name":"capturePaymentWorkflow","description":"This workflow captures a payment.","link":"../../../../core_flows.Workflows_Payment/page.mdx#capturepaymentworkflow","depth":1}]},{"type":"when","condition":"{\n      return (\n        input.action === PaymentActions.AUTHORIZED && !!input.data?.session_id\n      )\n    }","depth":"2","steps":[{"type":"step","name":"authorizePaymentSessionStep","description":"This step authorizes a payment session.","link":"../../../../core_flows.Steps_Payment/page.mdx#authorizepaymentsessionstep","depth":2}]}]}} />
+
+## Input
+
+<TypeList types={[{"name":"ProcessPaymentWorkflowInput","type":"`ProcessPaymentWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="processPaymentWorkflow"/>

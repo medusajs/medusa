@@ -25,7 +25,7 @@ This workflow creates one or more customer address.
 ##### Example
 
 ```ts
-import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import { createCustomerAddressesWorkflow } from "@medusajs/medusa/core-flows"
 
 createCustomerAddressesWorkflow.hooks.addressesCreated(
 	(async ({ addresses, additional_data }, { container }) => {
@@ -83,7 +83,7 @@ This workflow creates one or more customers.
 ##### Example
 
 ```ts
-import { createCustomersWorkflow } from "@medusajs/core-flows"
+import { createCustomersWorkflow } from "@medusajs/medusa/core-flows"
 
 createCustomersWorkflow.hooks.customersCreated(
 	(async ({ customers, additional_data }, { container }) => {
@@ -119,7 +119,7 @@ This workflow deletes one or more customer addresses.
 ##### Example
 
 ```ts
-import { deleteCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import { deleteCustomerAddressesWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
 	(async ({ ids }, { container }) => {
@@ -155,7 +155,7 @@ This workflow deletes one or more customers.
 ##### Example
 
 ```ts
-import { deleteCustomersWorkflow } from "@medusajs/core-flows"
+import { deleteCustomersWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCustomersWorkflow.hooks.customersDeleted(
 	(async ({ ids }, { container }) => {
@@ -213,7 +213,7 @@ This workflow updates one or more customer addresses.
 ##### Example
 
 ```ts
-import { updateCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import { updateCustomerAddressesWorkflow } from "@medusajs/medusa/core-flows"
 
 updateCustomerAddressesWorkflow.hooks.addressesUpdated(
 	(async ({ addresses, additional_data }, { container }) => {
@@ -253,7 +253,7 @@ This workflow updates one or more customers.
 ##### Example
 
 ```ts
-import { updateCustomersWorkflow } from "@medusajs/core-flows"
+import { updateCustomersWorkflow } from "@medusajs/medusa/core-flows"
 
 updateCustomersWorkflow.hooks.customersUpdated(
 	(async ({ customers, additional_data }, { container }) => {

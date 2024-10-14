@@ -13,7 +13,7 @@ export const defaultAdminDetailsOrderEditFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminDetailsOrderEditFields,
+  defaults: defaultAdminDetailsOrderEditFields,
   isList: false,
 }
 
