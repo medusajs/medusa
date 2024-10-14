@@ -13,7 +13,7 @@ type FilterFlags = {
 export function buildQuery<T = any, TDto = any>(
   filters: Record<string, any> = {},
   config: FindConfig<TDto> & { primaryKeyFields?: string | string[] } = {}
-): DAL.FindOptions<T> {
+): Required<DAL.FindOptions<T>> {
   const where: DAL.FilterQuery<T> = {}
   const filterFlags: FilterFlags = {}
   buildWhere(filters, where, filterFlags)
@@ -73,8 +73,7 @@ function buildWhere(
     }
 
     if (Array.isArray(value)) {
-      value = deduplicate(value)
-      where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }
+      where[prop] = deduplicate(value)
       continue
     }
 
