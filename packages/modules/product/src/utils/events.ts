@@ -114,4 +114,22 @@ export const eventBuilders = {
     object: "product_category",
     eventName: ProductEvents.PRODUCT_CATEGORY_DELETED,
   }),
+  createdProductCollection: moduleEventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.CREATED,
+    object: "product_collection",
+    eventName: ProductEvents.PRODUCT_COLLECTION_CREATED,
+  }),
+  updatedProductCollection: moduleEventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.UPDATED,
+    object: "product_collection",
+    eventName: ProductEvents.PRODUCT_COLLECTION_UPDATED,
+  }),
+  deletedProductCollection: moduleEventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.DELETED,
+    object: "product_collection",
+    eventName: ProductEvents.PRODUCT_COLLECTION_DELETED,
+  }),
 }
