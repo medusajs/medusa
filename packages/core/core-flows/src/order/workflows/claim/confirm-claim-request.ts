@@ -246,6 +246,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.claim_id",
         "actions.return_id",
@@ -291,7 +292,11 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       }
     )
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    confirmOrderChanges({
+      changes: [orderChange],
+      orderId: order.id,
+      confirmed_by: input.confirmed_by,
+    })
 
     when({ returnId }, ({ returnId }) => {
       return !!returnId

@@ -236,7 +236,6 @@ export class RedisDistributedTransactionStorage
     }
 
     const stringifiedData = JSON.stringify(data)
-    const parsedData = JSON.parse(stringifiedData)
 
     if (!hasFinished) {
       if (ttl) {
@@ -247,9 +246,9 @@ export class RedisDistributedTransactionStorage
     }
 
     if (hasFinished && !retentionTime && !idempotent) {
-      await this.deleteFromDb(parsedData)
+      await this.deleteFromDb(data)
     } else {
-      await this.saveToDb(parsedData)
+      await this.saveToDb(data)
     }
 
     if (hasFinished) {

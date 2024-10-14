@@ -19,21 +19,21 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import {
-    IAuthModuleService,
-    AuthenticationInput,
-  } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
-  import { MedusaError } from "@medusajs/framework/utils"
-  import jwt from "jsonwebtoken"
+```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  IAuthModuleService,
+  AuthenticationInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+import jwt from "jsonwebtoken"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -122,21 +122,21 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import {
-    IAuthModuleService,
-    AuthenticationInput,
-  } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
-  import { MedusaError } from "@medusajs/framework/utils"
-  import jwt from "jsonwebtoken"
+```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  IAuthModuleService,
+  AuthenticationInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+import jwt from "jsonwebtoken"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -224,16 +224,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IAuthModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -280,16 +279,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IAuthModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -327,15 +325,14 @@ export async function GET(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IAuthModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -393,15 +390,14 @@ export async function POST(request: Request, { params }: ContextType) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IAuthModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 

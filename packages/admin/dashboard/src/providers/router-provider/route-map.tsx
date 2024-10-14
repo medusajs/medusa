@@ -1,15 +1,11 @@
-import {
-  AdminProductCategoryResponse,
-  AdminTaxRegionResponse,
-  HttpTypes,
-} from "@medusajs/types"
+import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
 import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { MainLayout } from "../../components/layout/main-layout"
+import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-
 import { getCountryByIso2 } from "../../lib/data/countries"
 import {
   getProvinceByIso2,
@@ -23,31 +19,13 @@ import { SettingsExtensions } from "./settings-extensions"
 // TODO: Add translations for all breadcrumbs
 export const RouteMap: RouteObject[] = [
   {
-    path: "/login",
-    lazy: () => import("../../routes/login"),
-  },
-  {
-    path: "/reset-password",
-    lazy: () => import("../../routes/reset-password"),
-  },
-  {
-    path: "*",
-    lazy: () => import("../../routes/no-match"),
-  },
-  {
-    path: "/invite",
-    lazy: () => import("../../routes/invite"),
-  },
-  {
     element: <ProtectedRoute />,
-    errorElement: <ErrorBoundary />,
     children: [
       {
-        path: "/",
         element: <MainLayout />,
         children: [
           {
-            index: true,
+            path: "/",
             errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/home"),
           },
@@ -678,6 +656,11 @@ export const RouteMap: RouteObject[] = [
                       ),
                   },
                   {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/inventory/inventory-metadata"),
+                  },
+                  {
                     path: "locations",
                     lazy: () =>
                       import(
@@ -690,21 +673,6 @@ export const RouteMap: RouteObject[] = [
                       import(
                         "../../routes/inventory/inventory-detail/components/adjust-inventory"
                       ),
-                  },
-                  {
-                    path: "metadata/edit",
-                    lazy: () =>
-                      import("../../routes/inventory/inventory-metadata"),
-                  },
-                  {
-                    // TODO: create reservation
-                    path: "reservations",
-                    lazy: () => import("../../routes/customers/customer-edit"),
-                  },
-                  {
-                    // TODO: edit reservation
-                    path: "reservations/:reservation_id",
-                    lazy: () => import("../../routes/customers/customer-edit"),
                   },
                 ],
               },
@@ -779,10 +747,6 @@ export const RouteMap: RouteObject[] = [
                     path: "countries/add",
                     lazy: () =>
                       import("../../routes/regions/region-add-countries"),
-                  },
-                  {
-                    path: "metadata/edit",
-                    lazy: () => import("../../routes/regions/region-metadata"),
                   },
                 ],
               },
@@ -1160,10 +1124,8 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
-
           {
             path: "publishable-api-keys",
-            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Publishable API Keys",
@@ -1223,7 +1185,6 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "secret-api-keys",
-            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Secret API Keys",
@@ -1276,7 +1237,6 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "tax-regions",
-            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Tax Regions",
@@ -1298,7 +1258,7 @@ export const RouteMap: RouteObject[] = [
                 Component: Outlet,
                 loader: taxRegionLoader,
                 handle: {
-                  crumb: (data: AdminTaxRegionResponse) => {
+                  crumb: (data: HttpTypes.AdminTaxRegionResponse) => {
                     return (
                       getCountryByIso2(data.tax_region.country_code)
                         ?.display_name ||
@@ -1356,7 +1316,7 @@ export const RouteMap: RouteObject[] = [
                         "../../routes/tax-regions/tax-region-province-detail"
                       ),
                     handle: {
-                      crumb: (data: AdminTaxRegionResponse) => {
+                      crumb: (data: HttpTypes.AdminTaxRegionResponse) => {
                         const countryCode =
                           data.tax_region.country_code?.toUpperCase()
                         const provinceCode =
@@ -1395,7 +1355,6 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "return-reasons",
-            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Return Reasons",
@@ -1431,6 +1390,32 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           ...SettingsExtensions,
+        ],
+      },
+    ],
+  },
+  {
+    element: <PublicLayout />,
+    children: [
+      {
+        errorElement: <ErrorBoundary />,
+        children: [
+          {
+            path: "/login",
+            lazy: () => import("../../routes/login"),
+          },
+          {
+            path: "/reset-password",
+            lazy: () => import("../../routes/reset-password"),
+          },
+          {
+            path: "/invite",
+            lazy: () => import("../../routes/invite"),
+          },
+          {
+            path: "*",
+            lazy: () => import("../../routes/no-match"),
+          },
         ],
       },
     ],

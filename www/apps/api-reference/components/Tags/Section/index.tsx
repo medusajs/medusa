@@ -74,7 +74,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement])
   const { ref } = useInView({
-    threshold: 0.5,
+    threshold: 0.8,
     rootMargin: `112px 0px 112px 0px`,
     root,
     onChange: (inView) => {

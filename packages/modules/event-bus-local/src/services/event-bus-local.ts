@@ -1,6 +1,7 @@
 import {
   Event,
   EventBusTypes,
+  InternalModuleDeclaration,
   Logger,
   MedusaContainer,
   Message,
@@ -25,7 +26,11 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   protected readonly eventEmitter_: EventEmitter
   protected groupedEventsMap_: StagingQueueType
 
-  constructor({ logger }: MedusaContainer & InjectedDependencies) {
+  constructor(
+    { logger }: MedusaContainer & InjectedDependencies,
+    moduleOptions = {},
+    moduleDeclaration: InternalModuleDeclaration
+  ) {
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
@@ -54,14 +59,14 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         eventData.name
       )
 
+      if (eventListenersCount === 0) {
+        continue
+      }
+
       if (!options.internal && !eventData.options?.internal) {
         this.logger_?.info(
           `Processing ${eventData.name} which has ${eventListenersCount} subscribers`
         )
-      }
-
-      if (eventListenersCount === 0) {
-        continue
       }
 
       await this.groupOrEmitEvent(eventData)
@@ -114,6 +119,10 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
+    if (!this.isWorkerMode) {
+      return this
+    }
+
     const randId = ulid()
     this.storeSubscribers({ event, subscriberId: randId, subscriber })
     this.eventEmitter_.on(event, async (data: Event) => {
@@ -133,6 +142,10 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     subscriber: Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
+    if (!this.isWorkerMode) {
+      return this
+    }
+
     const existingSubscribers = this.eventToSubscribersMap_.get(event)
 
     if (existingSubscribers?.length) {

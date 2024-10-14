@@ -4,7 +4,7 @@ import {
   AiAssistantIcon,
   AiAssistantProvider,
   SearchProvider as UiSearchProvider,
-  searchFiltersV1,
+  searchFilters,
 } from "docs-ui"
 import { absoluteUrl } from "../lib/absolute-url"
 
@@ -34,7 +34,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(`^${absoluteUrl()}/ui`),
-        filterOptions: searchFiltersV1,
+        filterOptions: searchFilters,
       }}
       initialDefaultFilters={["ui"]}
       commands={[

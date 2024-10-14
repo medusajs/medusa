@@ -101,16 +101,20 @@ const TagOperationParametersObject = ({
     const content = (
       <>
         {sortedProperties.map((property, index) => (
-          <TagOperationParameters
-            schemaObject={{
-              ...properties[property],
-              parameterName: property,
-            }}
-            key={index}
-            isRequired={
-              properties[property].isRequired || checkRequired(schema, property)
-            }
-          />
+          <>
+            {index !== 0 && <hr className="bg-medusa-border-base my-0" />}
+            <TagOperationParameters
+              schemaObject={{
+                ...properties[property],
+                parameterName: property,
+              }}
+              key={index}
+              isRequired={
+                properties[property].isRequired ||
+                checkRequired(schema, property)
+              }
+            />
+          </>
         ))}
       </>
     )

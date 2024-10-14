@@ -128,12 +128,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/api-key/examples"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/page.mdx",
-    "pathname": "/commerce-modules/api-key"
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/api-key/links-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/api-key/relations-to-other-modules"
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/page.mdx",
+    "pathname": "/commerce-modules/api-key"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-flows/page.mdx",
@@ -192,16 +192,20 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/examples"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/extend/page.mdx",
+    "pathname": "/commerce-modules/cart/extend"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/cart/links-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/page.mdx",
     "pathname": "/commerce-modules/cart"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/promotions/page.mdx",
     "pathname": "/commerce-modules/cart/promotions"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/cart/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/cart/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",

@@ -8,7 +8,13 @@ In this document, learn how to create an actor type and authenticate its associa
 
 ## 0. Create Module with Data Model
 
-Before creating an actor type, you must define a data model the actor type belongs to. The data model is defined in a custom module.
+Before creating an actor type, you must have a module with a data model representing the actor type.
+
+<Note title="Tip">
+
+Learn how to create a module in [this guide](!docs!/basics/modules).
+
+</Note>
 
 The rest of this guide uses this `Manager` data model as an example:
 
@@ -31,7 +37,7 @@ export default Manager
 
 Start by creating a workflow that does two things:
 
-- Create a record of the `Manager` data model.
+- Creates a record of the `Manager` data model.
 - Sets the `app_metadata` property of the associated `AuthIdentity` record based on the new actor type.
 
 For example, create the file `src/workflows/create-manager.ts`. with the following content:

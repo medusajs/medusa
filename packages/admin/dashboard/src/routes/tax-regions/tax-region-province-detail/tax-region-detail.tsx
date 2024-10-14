@@ -4,8 +4,8 @@ import { SingleColumnPage } from "../../../components/layout/pages"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionProvinceDetailSection } from "./components/tax-region-province-detail-section"
 
-import after from "virtual:medusa/widgets/tax/details/after"
-import before from "virtual:medusa/widgets/tax/details/before"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { useDashboardExtension } from "../../../extensions"
 import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
 
@@ -23,8 +23,10 @@ export const TaxRegionDetail = () => {
     error,
   } = useTaxRegion(province_id!, undefined, { initialData })
 
+  const { getWidgets } = useDashboardExtension()
+
   if (isLoading || !taxRegion) {
-    return <div>Loading...</div>
+    return <SingleColumnPageSkeleton sections={2} showJSON />
   }
 
   if (isError) {
@@ -35,10 +37,9 @@ export const TaxRegionDetail = () => {
     <SingleColumnPage
       data={taxRegion}
       showJSON
-      hasOutlet
       widgets={{
-        after,
-        before,
+        after: getWidgets("tax.details.after"),
+        before: getWidgets("tax.details.before"),
       }}
     >
       <TaxRegionProvinceDetailSection taxRegion={taxRegion} />

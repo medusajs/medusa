@@ -6,6 +6,8 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
 import { FetchError } from "@medusajs/js-sdk"
+import { reservationItemsQueryKeys } from "./reservations"
+import { inventoryItemsQueryKeys } from "./inventory.tsx"
 
 export const useCreateOrderEdit = (
   orderId: string,
@@ -82,6 +84,19 @@ export const useConfirmOrderEdit = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.changes(id),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: reservationItemsQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.details(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -104,7 +119,7 @@ export const useCancelOrderEdit = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.changes(id),
+        queryKey: ordersQueryKeys.changes(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },
