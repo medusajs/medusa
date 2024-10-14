@@ -1803,6 +1803,7 @@
         "title": "Status"
       },
       "method": {
+        "label": "Method",
         "code": {
           "title": "Promotion code",
           "description": "Customers must enter this code at checkout"

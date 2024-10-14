@@ -750,6 +750,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Common/Steps_Common/functions/core_flows.Common.Steps_Common.updateRemoteLinksStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep",
+    "newSlug": "/references/medusa-workflows/steps/useQueryGraphStep",
+    "filePath": "/www/apps/resources/references/core_flows/Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Common/Steps_Common/functions/core_flows.Common.Steps_Common.useRemoteQueryStep",
     "newSlug": "/references/medusa-workflows/steps/useRemoteQueryStep",
     "filePath": "/www/apps/resources/references/core_flows/Common/Steps_Common/functions/core_flows.Common.Steps_Common.useRemoteQueryStep/page.mdx"
@@ -2173,6 +2178,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.capturePaymentWorkflow",
     "newSlug": "/references/medusa-workflows/capturePaymentWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.capturePaymentWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.onPaymentProcessedWorkflow",
+    "newSlug": "/references/medusa-workflows/onPaymentProcessedWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.onPaymentProcessedWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.processPaymentWorkflow",
+    "newSlug": "/references/medusa-workflows/processPaymentWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.processPaymentWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.refundPaymentWorkflow",
@@ -3850,6 +3865,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.updateRemoteLinksStep/page.mdx"
   },
   {
+    "origSlug": "/references/helper_steps/functions/helper_steps.useQueryGraphStep",
+    "newSlug": "/references/helper-steps/useQueryGraphStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useQueryGraphStep/page.mdx"
+  },
+  {
     "origSlug": "/references/helper_steps/functions/helper_steps.useRemoteQueryStep",
     "newSlug": "/references/helper-steps/useRemoteQueryStep",
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx"
@@ -4755,6 +4775,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturns/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.undoLastChange",
+    "newSlug": "/references/order/undoLastChange",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.undoLastChange/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderAddresses",
     "newSlug": "/references/order/updateOrderAddresses",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderAddresses/page.mdx"
@@ -4975,6 +5000,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deleteRefundReasons/page.mdx"
   },
   {
+    "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.getWebhookActionAndData",
+    "newSlug": "/references/payment/getWebhookActionAndData",
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.getWebhookActionAndData/page.mdx"
+  },
+  {
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listAndCountPaymentCollections",
     "newSlug": "/references/payment/listAndCountPaymentCollections",
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listAndCountPaymentCollections/page.mdx"
@@ -5018,11 +5048,6 @@ export const slugChanges = [
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefunds",
     "newSlug": "/references/payment/listRefunds",
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefunds/page.mdx"
-  },
-  {
-    "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.processEvent",
-    "newSlug": "/references/payment/processEvent",
-    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.processEvent/page.mdx"
   },
   {
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.refundPayment",

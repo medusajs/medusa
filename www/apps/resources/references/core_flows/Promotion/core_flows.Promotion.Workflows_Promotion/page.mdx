@@ -57,7 +57,7 @@ This workflow creates one or more campaigns.
 ##### Example
 
 ```ts
-import { createCampaignsWorkflow } from "@medusajs/core-flows"
+import { createCampaignsWorkflow } from "@medusajs/medusa/core-flows"
 
 createCampaignsWorkflow.hooks.campaignsCreated(
 	(async ({ campaigns, additional_data }, { container }) => {
@@ -115,7 +115,7 @@ This workflow creates one or more promotions.
 ##### Example
 
 ```ts
-import { createPromotionsWorkflow } from "@medusajs/core-flows"
+import { createPromotionsWorkflow } from "@medusajs/medusa/core-flows"
 
 createPromotionsWorkflow.hooks.promotionsCreated(
 	(async ({ promotions, additional_data }, { container }) => {
@@ -151,7 +151,7 @@ This workflow deletes one or more campaigns.
 ##### Example
 
 ```ts
-import { deleteCampaignsWorkflow } from "@medusajs/core-flows"
+import { deleteCampaignsWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCampaignsWorkflow.hooks.campaignsDeleted(
 	(async ({ ids }, { container }) => {
@@ -201,7 +201,7 @@ This workflow deletes one or more promotions.
 ##### Example
 
 ```ts
-import { deletePromotionsWorkflow } from "@medusajs/core-flows"
+import { deletePromotionsWorkflow } from "@medusajs/medusa/core-flows"
 
 deletePromotionsWorkflow.hooks.promotionsDeleted(
 	(async ({ ids }, { container }) => {
@@ -241,7 +241,7 @@ This workflow updates one or more campaigns.
 ##### Example
 
 ```ts
-import { updateCampaignsWorkflow } from "@medusajs/core-flows"
+import { updateCampaignsWorkflow } from "@medusajs/medusa/core-flows"
 
 updateCampaignsWorkflow.hooks.campaignsUpdated(
 	(async ({ campaigns, additional_data }, { container }) => {
@@ -299,7 +299,7 @@ This workflow updates one or more promotions.
 ##### Example
 
 ```ts
-import { updatePromotionsWorkflow } from "@medusajs/core-flows"
+import { updatePromotionsWorkflow } from "@medusajs/medusa/core-flows"
 
 updatePromotionsWorkflow.hooks.promotionsUpdated(
 	(async ({ promotions, additional_data }, { container }) => {
