@@ -292,8 +292,20 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/edit/page.mdx",
+    "pathname": "/commerce-modules/order/edit"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/exchange/page.mdx",
     "pathname": "/commerce-modules/order/exchange"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/order/links-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/order-change/page.mdx",
+    "pathname": "/commerce-modules/order/order-change"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-versioning/page.mdx",
@@ -306,10 +318,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/promotion-adjustments/page.mdx",
     "pathname": "/commerce-modules/order/promotion-adjustments"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/order/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/return/page.mdx",
@@ -330,6 +338,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/examples/page.mdx",
     "pathname": "/commerce-modules/payment/examples"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/payment/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/payment/links-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/module-options/page.mdx",
@@ -362,10 +374,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/payment-session/page.mdx",
     "pathname": "/commerce-modules/payment/payment-session"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/payment/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/payment/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/webhook-events/page.mdx",

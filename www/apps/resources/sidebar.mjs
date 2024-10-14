@@ -637,8 +637,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/order/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/order/edit",
+                title: "Order Edit",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/order-change",
+                title: "Order Change",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -723,13 +733,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/payment/payment-provider",
                 title: "Payment Provider Module",
-                children: [
-                  {
-                    type: "link",
-                    path: "/commerce-modules/payment/payment-provider/stripe",
-                    title: "Stripe",
-                  },
-                ],
               },
               {
                 type: "link",
@@ -738,8 +741,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/payment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/payment/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -756,6 +759,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/references/payment/provider",
                 title: "Create Payment Provider",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Payment Providers",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/payment/payment-provider/stripe",
+                title: "Stripe",
               },
             ],
           },
