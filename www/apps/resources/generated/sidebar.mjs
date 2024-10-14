@@ -2143,6 +2143,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/fulfillment/validateFulfillmentData",
+                        "title": "validateFulfillmentData",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/fulfillment/validateFulfillmentOption",
                         "title": "validateFulfillmentOption",
                         "children": []
@@ -9561,8 +9569,8 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
-                    "path": "/references/medusa-workflows/addShippingMethodToWorkflow",
-                    "title": "addShippingMethodToWorkflow",
+                    "path": "/references/medusa-workflows/addShippingMethodToCartWorkflow",
+                    "title": "addShippingMethodToCartWorkflow",
                     "children": []
                   },
                   {
