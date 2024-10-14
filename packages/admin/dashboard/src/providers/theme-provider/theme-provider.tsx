@@ -64,6 +64,8 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
 
       html.classList.remove(value === "light" ? "dark" : "light")
       html.classList.add(value)
+      // Ensures that native elements respect the theme, e.g. the scrollbar.
+      html.style.colorScheme = value
 
       /**
        * Re-enable transitions after the theme has been set,

@@ -112,21 +112,21 @@ The File Module accepts one provider only.
 
 </Note>
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = {
   // ...
-  modules: {
+  modules: [
     // ...
-    [Modules.FILE]: {
-      resolve: "@medusajs/medusa/file",
+    {
+      resolve: "@medusajs/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/file-s3",
+            resolve: "@medusajs/file-s3",
             id: "s3",
             options: {
               file_url: process.env.S3_FILE_URL,
@@ -141,7 +141,7 @@ module.exports = {
         ],
       },
     },
-  },
+  ]
 }
 ```
 
@@ -349,16 +349,16 @@ If you're using MinIO or Supabase, set `forcePathStyle` to `true` in the `additi
 
 For example:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.FILE]: {
-      resolve: "@medusajs/medusa/file",
+  modules: [
+    {
+      resolve: "@medusajs/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/file-s3",
+            resolve: "@medusajs/file-s3",
             id: "s3",
             options: {
               // ...
@@ -370,7 +370,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 ---

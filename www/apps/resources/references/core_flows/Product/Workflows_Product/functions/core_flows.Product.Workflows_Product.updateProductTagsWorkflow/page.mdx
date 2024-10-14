@@ -30,7 +30,7 @@ This workflow updates product tags matching the specified filters.
 #### Example
 
 ```ts
-import { updateProductTagsWorkflow } from "@medusajs/core-flows"
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
 
 updateProductTagsWorkflow.hooks.productTagsUpdated(
 	(async ({ product_tags, additional_data }, { container }) => {
