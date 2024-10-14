@@ -134,7 +134,7 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
       orderBy = { [order]: "ASC" }
     }
 
-    if (!allowed.includes(orderField)) {
+    if (allowed.length && !allowed.includes(orderField)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Order field ${orderField} is not valid`
