@@ -855,6 +855,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCollectionDTO>
 
   @InjectManager()
+  @EmitEvents()
   async createProductCollections(
     data:
       | ProductTypes.CreateProductCollectionDTO[]
@@ -908,7 +909,9 @@ export default class ProductModuleService
     data: ProductTypes.UpsertProductCollectionDTO,
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO>
+
   @InjectTransactionManager()
+  @EmitEvents()
   async upsertProductCollections(
     data:
       | ProductTypes.UpsertProductCollectionDTO[]
@@ -971,6 +974,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCollectionDTO[]>
 
   @InjectManager()
+  @EmitEvents()
   async updateProductCollections(
     idOrSelector: string | ProductTypes.FilterableProductCollectionProps,
     data: ProductTypes.UpdateProductCollectionDTO,
@@ -1258,6 +1262,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO>
 
   @InjectManager()
+  @EmitEvents()
   async createProducts(
     data: ProductTypes.CreateProductDTO[] | ProductTypes.CreateProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1287,6 +1292,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO>
 
   @InjectTransactionManager()
+  @EmitEvents()
   async upsertProducts(
     data: ProductTypes.UpsertProductDTO[] | ProductTypes.UpsertProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1344,6 +1350,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO[]>
 
   @InjectManager()
+  @EmitEvents()
   async updateProducts(
     idOrSelector: string | ProductTypes.FilterableProductProps,
     data: ProductTypes.UpdateProductDTO,
