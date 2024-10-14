@@ -21,10 +21,16 @@ A UI route is created in a file named `page.tsx` under the `src/admin/routes` di
 For example, create the file `src/admin/routes/custom/page.tsx` with the following content:
 
 ```tsx title="src/admin/routes/custom/page.tsx"
-import { Container } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 
 const CustomPage = () => {
-  return <Container>This is my custom route</Container>
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">This is my custom route</Heading>
+      </div>
+    </Container>
+  )
 }
 
 export default CustomPage
@@ -59,17 +65,23 @@ A UI route file can export a configuration object that indicates a new item must
 For example:
 
 export const highlights = [
-  ["14", "label", "The label of the UI route's sidebar item."],
-  ["15", "icon", "The icon of the UI route's sidebar item."]
+  ["16", "label", "The label of the UI route's sidebar item."],
+  ["17", "icon", "The icon of the UI route's sidebar item."]
 ]
 
-```tsx title="src/admin/routes/custom/page.tsx" highlights={[["21"], ["22"], ["23"], ["24"], ["25"], ["26"]]}
+```tsx title="src/admin/routes/custom/page.tsx" highlights={highlights}
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { ChatBubbleLeftRight } from "@medusajs/icons"
-import { Container } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 
 const CustomPage = () => {
-  return <Container>This is my custom route</Container>
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">This is my custom route</Heading>
+      </div>
+    </Container>
+  )
 }
 
 export const config = defineRouteConfig({
@@ -101,8 +113,10 @@ import { Container, Heading } from "@medusajs/ui"
 
 const CustomSettingPage = () => {
   return (
-    <Container>
-      <Heading level="h1">Custom Setting Page</Heading>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h1">Custom Setting Page</Heading>
+      </div>
     </Container>
   )
 }
@@ -124,14 +138,20 @@ A UI route can accept path parameters if the name of any of the directories in i
 
 For example, create the file `src/admin/routes/custom/[id]/page.tsx` with the following content:
 
-```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={[["5", "", "Retrieve the path parameter."], ["7", "{id}", "Show the path parameter."]]}
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={[["5", "", "Retrieve the path parameter."], ["10", "{id}", "Show the path parameter."]]}
 import { useParams } from "react-router-dom"
 import { Container } from "@medusajs/ui"
 
 const CustomPage = () => {
   const { id } = useParams()
 
-  return <Container>Passed ID: {id}</Container>
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h1">Passed ID: {id}</Heading>
+      </div>
+    </Container>
+  )
 }
 
 export default CustomPage
@@ -140,3 +160,9 @@ export default CustomPage
 You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/en/main/hooks/use-params).
 
 If you run the Medusa application and go to `localhost:9000/app/custom/123`, you'll see `123` printed in the page.
+
+---
+
+## Admin Components List
+
+To build admin customizations that match the Medusa Admin's designs and layouts, refer to [this guide](!resources!/admin-component) to find common components.

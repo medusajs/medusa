@@ -41,7 +41,7 @@ const ProductWidget = () => {
   }, [loading])
 
   return (
-    <Container>
+    <Container className="divide-y p-0">
       {loading && <span>Loading...</span>}
       {!loading && <span>You have {productsCount} Product(s).</span>}
     </Container>
@@ -78,7 +78,7 @@ import { Link } from "react-router-dom"
 // The widget
 const ProductWidget = () => {
   return (
-    <Container>
+    <Container className="divide-y p-0">
       <Link to={"/orders"}>View Orders</Link>
     </Container>
   )
