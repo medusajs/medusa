@@ -11,7 +11,6 @@ import {
   emitEventStep,
   removeRemoteLinkStep,
   useQueryGraphStep,
-  useRemoteQueryStep,
 } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
