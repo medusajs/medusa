@@ -478,14 +478,6 @@ paths:
       description: Retrieve a list of API keys. The API keys can be filtered by fields such as `id`. The API keys can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -1651,14 +1643,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -1712,14 +1696,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -1849,14 +1825,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -1918,14 +1886,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -1996,14 +1956,6 @@ paths:
       description: Retrieve a list of campaigns. The campaigns can be filtered by fields such as `id`. The campaigns can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -2108,14 +2060,6 @@ paths:
       description: Create a campaign.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -2260,14 +2204,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -2321,14 +2257,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -2519,14 +2447,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -2597,14 +2517,6 @@ paths:
       description: Retrieve a list of claims. The claims can be filtered by fields such as `id`. The claims can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -3443,14 +3355,6 @@ paths:
       description: Create a claim. The claim is still in the request state, and the changes are only applied on the order once the claim is confirmed.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -3517,14 +3421,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -3630,14 +3526,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -3707,14 +3595,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -3784,14 +3664,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4077,14 +3949,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4199,14 +4063,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4277,14 +4133,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4354,14 +4202,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4417,14 +4257,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4499,14 +4331,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4576,14 +4400,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4638,14 +4454,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -4739,14 +4547,6 @@ paths:
       description: Retrieve a list of collections. The collections can be filtered by fields such as `id`. The collections can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -5585,14 +5385,6 @@ paths:
       description: Create a collection.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -5658,14 +5450,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -5719,14 +5503,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -5836,14 +5612,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -5914,14 +5682,6 @@ paths:
       description: Retrieve a list of currencies. The currencies can be filtered by fields such as `id`. The currencies can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -6046,14 +5806,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -6102,14 +5854,6 @@ paths:
       description: Retrieve a list of customer groups. The customer groups can be filtered by fields such as `id`. The customer groups can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -6992,14 +6736,6 @@ paths:
       description: Create a customer group.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -7065,14 +6801,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -7126,14 +6854,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -7263,14 +6983,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -7341,14 +7053,6 @@ paths:
       description: Retrieve a list of customers. The customers can be filtered by fields such as `id`. The customers can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -10734,14 +10438,6 @@ paths:
       description: Create a customer.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -10852,14 +10548,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -10913,14 +10601,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11093,14 +10773,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11310,14 +10982,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11477,14 +11141,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11545,14 +11201,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11711,14 +11359,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -11791,14 +11431,6 @@ paths:
       description: Retrieve a list of draft orders. The draft orders can be filtered by fields such as `id`. The draft orders can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -13300,14 +12932,6 @@ paths:
       description: Create a draft order. This creates an order with the `is_draft_order` property enabled.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -13710,14 +13334,6 @@ paths:
       description: Retrieve a list of exchanges. The exchanges can be filtered by fields such as `id`. The exchanges can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -14585,14 +14201,6 @@ paths:
       description: Create an exchange request. Its changes aren't applied on the order until the exchange is confirmed.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -14658,14 +14266,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -14998,14 +14598,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15118,14 +14710,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15196,14 +14780,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15273,14 +14849,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15335,14 +14903,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15417,14 +14977,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15494,14 +15046,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15555,14 +15099,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15656,14 +15192,6 @@ paths:
       description: Retrieve a list of fulfillment providers. The fulfillment providers can be filtered by fields such as `id`. The fulfillment providers can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -15836,14 +15364,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16033,14 +15553,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16101,14 +15613,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16348,14 +15852,6 @@ paths:
       description: Create a fulfillment for an order, return, exchange, and more.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16463,14 +15959,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16527,14 +16015,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -16599,14 +16079,6 @@ paths:
       description: Retrieve a list of inventory items. The inventory items can be filtered by fields such as `id`. The inventory items can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17046,14 +16518,6 @@ paths:
       description: Create an inventory item.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17130,14 +16594,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17191,14 +16647,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17395,14 +16843,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17546,14 +16986,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17744,14 +17176,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17831,14 +17255,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -17911,14 +17327,6 @@ paths:
       description: Retrieve a list of invites. The invites can be filtered by fields such as `id`. The invites can also be sorted or paginated.
       x-authenticated: false
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -18430,14 +17838,6 @@ paths:
       description: Create a invite.
       x-authenticated: false
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -18586,14 +17986,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -18699,14 +18091,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -18750,14 +18134,6 @@ paths:
       description: Retrieve a list of notifications. The notifications can be filtered by fields such as `id`. The notifications can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -18896,14 +18272,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -19549,14 +18917,6 @@ paths:
       description: Retrieve a list of orders. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20249,14 +19609,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20311,14 +19663,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20373,14 +19717,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20448,14 +19784,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20515,14 +19843,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: |-
@@ -20581,14 +19901,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20659,14 +19971,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20787,14 +20091,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -20876,14 +20172,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: |-
@@ -20947,14 +20235,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -21124,14 +20404,6 @@ paths:
       description: Create a payment collection.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -21255,14 +20527,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -21329,14 +20593,6 @@ paths:
       description: Retrieve a list of payments. The payments can be filtered by fields such as `id`. The payments can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -21853,14 +21109,6 @@ paths:
       description: Retrieve a list of payment providers. The payment providers can be filtered by fields such as `id`. The payment providers can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22012,14 +21260,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22074,14 +21314,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22148,14 +21380,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22224,14 +21448,6 @@ paths:
       description: Retrieve a list of price lists. The price lists can be filtered by fields such as `id`. The price lists can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22611,14 +21827,6 @@ paths:
       description: Create a price list.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22686,14 +21894,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -22747,14 +21947,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23000,14 +22192,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23062,14 +22246,6 @@ paths:
       description: Retrieve a list of price preferences. The price preferences can be filtered by fields such as `id`. The price preferences can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23215,14 +22391,6 @@ paths:
       description: Create a price preference.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23283,14 +22451,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23344,14 +22504,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -23450,14 +22602,6 @@ paths:
       description: Retrieve a list of product categories. The product categories can be filtered by fields such as `id`. The product categories can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24018,14 +23162,6 @@ paths:
       description: Create a product category.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24092,14 +23228,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24169,14 +23297,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24320,14 +23440,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24398,14 +23510,6 @@ paths:
       description: Retrieve a list of product tags. The product tags can be filtered by fields such as `id`. The product tags can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24892,14 +23996,6 @@ paths:
       description: Create a product tag.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -24965,14 +24061,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25026,14 +24114,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25145,14 +24225,6 @@ paths:
       description: Retrieve a list of product types. The product types can be filtered by fields such as `id`. The product types can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25639,14 +24711,6 @@ paths:
       description: Create a product type.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25712,14 +24776,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25773,14 +24829,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -25892,14 +24940,6 @@ paths:
       description: Retrieve a list of product variants. The product variants can be filtered by fields such as `id`. The product variants can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -26420,14 +25460,6 @@ paths:
       description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27471,14 +26503,6 @@ paths:
       description: Create a product.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27545,14 +26569,6 @@ paths:
       description: Manage products to create, update, or delete them.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27611,14 +26627,6 @@ paths:
         Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27756,14 +26764,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27817,14 +26817,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -27938,14 +26930,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28113,14 +27097,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28203,14 +27179,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28271,14 +27239,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28356,14 +27316,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28420,14 +27372,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -28954,14 +27898,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29036,14 +27972,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29228,14 +28156,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29296,14 +28216,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29378,14 +28290,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29448,14 +28352,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29534,14 +28430,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29618,14 +28506,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -29675,14 +28555,6 @@ paths:
       description: Retrieve a list of promotions. The promotions can be filtered by fields such as `id`. The promotions can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -30217,14 +29089,6 @@ paths:
       description: Create a promotion.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -30789,14 +29653,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -30850,14 +29706,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31076,14 +29924,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31204,14 +30044,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31332,14 +30164,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31474,14 +30298,6 @@ paths:
               - rules
               - target-rules
               - buy-rules
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31539,14 +30355,6 @@ paths:
       description: Retrieve a list of refund reasons. The refund reasons can be filtered by fields such as `id`. The refund reasons can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31693,14 +30501,6 @@ paths:
       description: Create a refund reason.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31766,14 +30566,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31827,14 +30619,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -31966,14 +30750,6 @@ paths:
       description: Retrieve a list of regions. The regions can be filtered by fields such as `id`. The regions can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -32503,14 +31279,6 @@ paths:
       description: Create a region.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -32577,14 +31345,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -32638,14 +31398,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -32802,14 +31554,6 @@ paths:
       description: Retrieve a list of reservations. The reservations can be filtered by fields such as `id`. The reservations can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -33380,14 +32124,6 @@ paths:
       description: Create a reservation.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -33457,14 +32193,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -33518,14 +32246,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -33665,14 +32385,6 @@ paths:
       description: Retrieve a list of return reasons. The return reasons can be filtered by fields such as `id`. The return reasons can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -34203,14 +32915,6 @@ paths:
       description: Create a return reason.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -34276,14 +32980,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -34337,14 +33033,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -34443,14 +33131,6 @@ paths:
       description: Retrieve a list of returns. The returns can be filtered by fields such as `id`. The returns can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35135,14 +33815,6 @@ paths:
       description: Create a return. The return can later be requested or confirmed.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35221,14 +33893,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35282,14 +33946,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35405,14 +34061,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35483,14 +34131,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35560,14 +34200,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35623,14 +34255,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35768,14 +34392,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35846,14 +34462,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35923,14 +34531,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -35987,14 +34587,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36056,14 +34648,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36188,14 +34772,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36266,14 +34842,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36343,14 +34911,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36407,14 +34967,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36489,14 +35041,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36566,14 +35110,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -36623,14 +35159,6 @@ paths:
       description: Retrieve a list of sales channels. The sales channels can be filtered by fields such as `id`. The sales channels can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -37190,14 +35718,6 @@ paths:
       description: Create a sales channel.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -37264,14 +35784,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -37325,14 +35837,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -37443,14 +35947,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -37521,14 +36017,6 @@ paths:
       description: Retrieve a list of shipping options. The shipping options can be filtered by fields such as `id`. The shipping options can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -38098,14 +36586,6 @@ paths:
       description: Create a shipping option.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -38180,14 +36660,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: |-
@@ -38244,14 +36716,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -38522,14 +36986,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -38643,14 +37099,6 @@ paths:
       description: Retrieve a list of shipping profiles. The shipping profiles can be filtered by fields such as `id`. The shipping profiles can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -39168,14 +37616,6 @@ paths:
       description: Create a shipping profile.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -39242,14 +37682,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -39303,14 +37735,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -39426,14 +37850,6 @@ paths:
       description: Retrieve a list of stock locations. The stock locations can be filtered by fields such as `id`. The stock locations can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -39948,14 +38364,6 @@ paths:
       description: Create a stock location.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40022,14 +38430,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40083,14 +38483,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40201,14 +38593,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40286,14 +38670,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40373,14 +38749,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40451,14 +38819,6 @@ paths:
       description: Retrieve a list of stores. The stores can be filtered by fields such as `id`. The stores can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40595,14 +38955,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40656,14 +39008,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -40726,14 +39070,6 @@ paths:
       description: Retrieve a list of tax rates. The tax rates can be filtered by fields such as `id`. The tax rates can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41321,14 +39657,6 @@ paths:
       description: Create a tax rate.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41395,14 +39723,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41456,14 +39776,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41573,14 +39885,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41653,14 +39957,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -41735,14 +40031,6 @@ paths:
       description: Retrieve a list of tax regions. The tax regions can be filtered by fields such as `id`. The tax regions can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -42783,14 +41071,6 @@ paths:
       description: Create a tax region.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -42858,14 +41138,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43047,14 +41319,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43166,14 +41430,6 @@ paths:
       description: Retrieve a list of users. The users can be filtered by fields such as `id`. The users can also be sorted or paginated.
       x-authenticated: false
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43648,14 +41904,6 @@ paths:
       description: Retrieve the logged-in user's details.
       x-authenticated: false
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43704,14 +41952,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43759,14 +41999,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -43860,14 +42092,6 @@ paths:
       description: Retrieve a list of workflows executions. The workflows executions can be filtered by fields such as `id`. The workflows executions can also be sorted or paginated.
       x-authenticated: true
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -44007,14 +42231,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -44335,14 +42551,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -45289,7 +43497,11 @@ components:
           title: updated_at
           description: The claim's update date.
         order:
-          $ref: '#/components/schemas/AdminOrder'
+          type: string
+          title: order
+          description: The order's details.
+          externalDocs:
+            url: '#pagination'
         type:
           type: string
           description: The claim's type.
@@ -45372,7 +43584,11 @@ components:
         - claim
       properties:
         order:
-          $ref: '#/components/schemas/Order'
+          type: string
+          title: order
+          description: The order change's order.
+          externalDocs:
+            url: '#pagination'
         claim:
           $ref: '#/components/schemas/AdminClaim'
     AdminClaimPreviewResponse:
@@ -46490,7 +44706,7 @@ components:
                 description: The label's URL.
     AdminCreateShippingOption:
       type: object
-      description: The shipping option's details.
+      description: The shipping option's type.
       x-schemaName: AdminCreateShippingOption
       required:
         - label
@@ -46511,7 +44727,7 @@ components:
           description: The type's code.
     AdminCreateShippingOptionRule:
       type: object
-      description: The details of the shipping option rule.
+      description: The rule's rules.
       x-schemaName: AdminCreateShippingOptionRule
       required:
         - operator
@@ -46520,7 +44736,7 @@ components:
       properties:
         operator:
           type: string
-          description: The operator used to check whether a rule applies.
+          description: The rule's operator.
           enum:
             - gt
             - lt
@@ -46533,21 +44749,18 @@ components:
         attribute:
           type: string
           title: attribute
-          description: The name of a property or table that the rule applies to.
-          example: customer_group
+          description: The rule's attribute.
         value:
           oneOf:
             - type: string
               title: value
-              description: A value of the attribute that enables this rule.
-              example: cusgroup_123
+              description: The rule's value.
             - type: array
-              description: Values of the attribute that enable this rule.
+              description: The rule's value.
               items:
                 type: string
                 title: value
-                description: A value of the attribute that enables this rule.
-                example: cusgroup_123
+                description: The value's details.
     AdminCreateShippingProfile:
       type: object
       description: The shipping profile's details.
@@ -47774,7 +45987,11 @@ components:
           title: deleted_at
           description: The date the exchange was deleted.
         order:
-          $ref: '#/components/schemas/AdminOrder'
+          type: string
+          title: order
+          description: The order's details.
+          externalDocs:
+            url: '#pagination'
         allow_backorder:
           type: boolean
           title: allow_backorder
@@ -47810,8 +46027,11 @@ components:
         - exchange
       properties:
         order:
-          description: The details of the associated order.
-          $ref: '#/components/schemas/Order'
+          type: string
+          title: order
+          description: The order change's order.
+          externalDocs:
+            url: '#pagination'
         exchange:
           $ref: '#/components/schemas/AdminExchange'
     AdminExchangePreviewResponse:
@@ -50252,7 +48472,11 @@ components:
         - order
       properties:
         order:
-          $ref: '#/components/schemas/AdminOrderPreview'
+          type: string
+          title: order
+          description: A preview of an order if a change, such as exchange, return, edit, or claim is applied on it.
+          externalDocs:
+            url: '#pagination'
     AdminOrderResponse:
       type: object
       description: An order's details.
@@ -50261,7 +48485,11 @@ components:
         - order
       properties:
         order:
-          $ref: '#/components/schemas/AdminOrder'
+          type: string
+          title: order
+          description: The order's details.
+          externalDocs:
+            url: '#pagination'
     AdminOrderReturnResponse:
       type: object
       description: The order return details.
@@ -50271,7 +48499,11 @@ components:
         - return
       properties:
         order:
-          $ref: '#/components/schemas/Order'
+          type: string
+          title: order
+          description: The order change's order.
+          externalDocs:
+            url: '#pagination'
         return:
           $ref: '#/components/schemas/AdminReturn'
     AdminOrderShippingMethod:
@@ -56511,245 +54743,6 @@ components:
         - rate
         - created_at
         - updated_at
-    BaseOrder:
-      type: object
-      description: The order's details.
-      x-schemaName: BaseOrder
-      required:
-        - payment_collections
-        - id
-        - version
-        - region_id
-        - customer_id
-        - sales_channel_id
-        - email
-        - currency_code
-        - items
-        - shipping_methods
-        - payment_status
-        - fulfillment_status
-        - summary
-        - metadata
-        - created_at
-        - updated_at
-        - original_item_total
-        - original_item_subtotal
-        - original_item_tax_total
-        - item_total
-        - item_subtotal
-        - item_tax_total
-        - original_total
-        - original_subtotal
-        - original_tax_total
-        - total
-        - subtotal
-        - tax_total
-        - discount_total
-        - discount_tax_total
-        - gift_card_total
-        - gift_card_tax_total
-        - shipping_total
-        - shipping_subtotal
-        - shipping_tax_total
-        - original_shipping_total
-        - original_shipping_subtotal
-        - original_shipping_tax_total
-      properties:
-        payment_collections:
-          type: array
-          description: The order's payment collections.
-          items:
-            $ref: '#/components/schemas/AdminPaymentCollection'
-        fulfillments:
-          type: array
-          description: The order's fulfillments.
-          items:
-            $ref: '#/components/schemas/BaseOrderFulfillment'
-        sales_channel:
-          $ref: '#/components/schemas/AdminSalesChannel'
-        customer:
-          $ref: '#/components/schemas/AdminCustomer'
-        shipping_address:
-          $ref: '#/components/schemas/AdminOrderAddress'
-        billing_address:
-          $ref: '#/components/schemas/AdminOrderAddress'
-        id:
-          type: string
-          title: id
-          description: The order's ID.
-        version:
-          type: number
-          title: version
-          description: The order's version.
-        region_id:
-          type: string
-          title: region_id
-          description: The ID of the region associated with the order.
-        customer_id:
-          type: string
-          title: customer_id
-          description: The ID of the customer that placed the order.
-        sales_channel_id:
-          type: string
-          title: sales_channel_id
-          description: The ID of the sales channel the order is placed in.
-        email:
-          type: string
-          title: email
-          description: The email of the customer that placed the order.
-          format: email
-        currency_code:
-          type: string
-          title: currency_code
-          description: The order's currency code.
-        display_id:
-          type: number
-          title: display_id
-          description: The order's display ID.
-        items:
-          type: array
-          description: The order's items.
-          items:
-            $ref: '#/components/schemas/BaseOrderLineItem'
-        shipping_methods:
-          type: array
-          description: The order's shipping methods.
-          items:
-            $ref: '#/components/schemas/BaseOrderShippingMethod'
-        payment_status:
-          type: string
-          description: The order's payment status.
-          enum:
-            - canceled
-            - not_paid
-            - awaiting
-            - authorized
-            - partially_authorized
-            - captured
-            - partially_captured
-            - partially_refunded
-            - refunded
-            - requires_action
-        fulfillment_status:
-          type: string
-          description: The order's fulfillment status.
-          enum:
-            - canceled
-            - not_fulfilled
-            - partially_fulfilled
-            - fulfilled
-            - partially_shipped
-            - shipped
-            - partially_delivered
-            - delivered
-        transactions:
-          type: array
-          description: The order's transactions.
-          items:
-            $ref: '#/components/schemas/BaseOrderTransaction'
-        summary:
-          $ref: '#/components/schemas/BaseOrderSummary'
-        metadata:
-          type: object
-          description: The order's metadata, can hold custom key-value pairs.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the order was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the order was updated.
-        original_item_total:
-          type: number
-          title: original_item_total
-          description: The total of the order's items including taxes, excluding promotions.
-        original_item_subtotal:
-          type: number
-          title: original_item_subtotal
-          description: The total of the order's items excluding taxes, including promotions.
-        original_item_tax_total:
-          type: number
-          title: original_item_tax_total
-          description: The tax total of the order's items excluding promotions.
-        item_total:
-          type: number
-          title: item_total
-          description: The total of the order's items including taxes and promotions.
-        item_subtotal:
-          type: number
-          title: item_subtotal
-          description: The total of the order's items excluding taxes, including promotions.
-        item_tax_total:
-          type: number
-          title: item_tax_total
-          description: The tax total of the order's items including promotions.
-        original_total:
-          type: number
-          title: original_total
-          description: The order's total excluding promotions, including taxes.
-        original_subtotal:
-          type: number
-          title: original_subtotal
-          description: The order's total excluding taxes, including promotions.
-        original_tax_total:
-          type: number
-          title: original_tax_total
-          description: The order's tax total, excluding promotions.
-        total:
-          type: number
-          title: total
-          description: The order's total including taxes and promotions.
-        subtotal:
-          type: number
-          title: subtotal
-          description: The order's total excluding taxes, including promotions.
-        tax_total:
-          type: number
-          title: tax_total
-          description: The order's tax total including promotions.
-        discount_total:
-          type: number
-          title: discount_total
-          description: The order's discount or promotions total.
-        discount_tax_total:
-          type: number
-          title: discount_tax_total
-          description: The tax total of order's discount or promotion.
-        gift_card_total:
-          type: number
-          title: gift_card_total
-          description: The order's gift card total.
-        gift_card_tax_total:
-          type: number
-          title: gift_card_tax_total
-          description: The tax total of the order's gift card.
-        shipping_total:
-          type: number
-          title: shipping_total
-          description: The order's shipping total including taxes and promotions.
-        shipping_subtotal:
-          type: number
-          title: shipping_subtotal
-          description: The order's shipping total excluding taxes, including promotions.
-        shipping_tax_total:
-          type: number
-          title: shipping_tax_total
-          description: The tax total of the order's shipping.
-        original_shipping_total:
-          type: number
-          title: original_shipping_total
-          description: The order's shipping total including taxes, excluding promotions.
-        original_shipping_subtotal:
-          type: number
-          title: original_shipping_subtotal
-          description: The order's shipping total excluding taxes, including promotions.
-        original_shipping_tax_total:
-          type: number
-          title: original_shipping_tax_total
-          description: The tax total of the order's shipping excluding promotions.
     BaseOrderAddress:
       type: object
       description: An order address
@@ -58111,121 +56104,14 @@ components:
       type: object
       description: The image's details.
       x-schemaName: BaseProductImage
-      properties:
-        id:
-          type: string
-          title: id
-          description: The image's ID.
-        url:
-          type: string
-          title: url
-          description: The image's URL.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the image was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the image was updated.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The date the image was deleted.
-        metadata:
-          type: object
-          description: The image's metadata, can hold custom key-value pairs.
-      required:
-        - id
-        - url
     BaseProductOption:
       type: object
       description: The product option's details.
       x-schemaName: BaseProductOption
-      properties:
-        id:
-          type: string
-          title: id
-          description: The option's ID.
-        title:
-          type: string
-          title: title
-          description: The option's title.
-        product:
-          type: object
-        product_id:
-          type: string
-          title: product_id
-          description: The option's product id.
-        values:
-          type: array
-          description: The option's values.
-          items:
-            $ref: '#/components/schemas/BaseProductOptionValue'
-        metadata:
-          type: object
-          description: The option's metadata.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The option's created at.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The option's updated at.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The option's deleted at.
-      required:
-        - id
-        - title
     BaseProductOptionValue:
       type: object
       description: The product option value's details.
       x-schemaName: BaseProductOptionValue
-      required:
-        - id
-        - value
-      properties:
-        id:
-          type: string
-          title: id
-          description: The value's ID.
-        value:
-          type: string
-          title: value
-          description: The value.
-        option:
-          type: object
-        option_id:
-          type: string
-          title: option_id
-          description: The ID of the option this value belongs to.
-        metadata:
-          type: object
-          description: The value's metadata, can hold custom key-value pairs.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the value was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the value was updated.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The date the value was deleted.
     BaseProductTag:
       type: object
       description: The tag's tags.
@@ -63440,7 +61326,11 @@ components:
         - order
       properties:
         order:
-          $ref: '#/components/schemas/StoreOrder'
+          type: string
+          title: order
+          description: The order's details.
+          externalDocs:
+            url: '#pagination'
     StorePaymentCollection:
       type: object
       description: The payment collection's details.

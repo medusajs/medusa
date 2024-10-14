@@ -6,7 +6,10 @@ required:
   - exchange
 properties:
   order:
-    description: The details of the associated order.
-    $ref: ./Order.yaml
+    type: string
+    title: order
+    description: The order change's order.
+    externalDocs:
+      url: '#pagination'
   exchange:
     $ref: ./AdminExchange.yaml

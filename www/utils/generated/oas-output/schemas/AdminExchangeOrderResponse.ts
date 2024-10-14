@@ -8,8 +8,11 @@
  *   - exchange
  * properties:
  *   order:
- *     description: The details of the associated order.
- *     $ref: "#/components/schemas/Order"
+ *     type: string
+ *     title: order
+ *     description: The order change's order.
+ *     externalDocs:
+ *       url: "#pagination"
  *   exchange:
  *     $ref: "#/components/schemas/AdminExchange"
  * 

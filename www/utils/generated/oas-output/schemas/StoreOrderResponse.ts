@@ -7,7 +7,11 @@
  *   - order
  * properties:
  *   order:
- *     $ref: "#/components/schemas/StoreOrder"
+ *     type: string
+ *     title: order
+ *     description: The order's details.
+ *     externalDocs:
+ *       url: "#pagination"
  * 
 */
 
