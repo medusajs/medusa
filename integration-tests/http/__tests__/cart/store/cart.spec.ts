@@ -81,7 +81,7 @@ const productData = {
           currency_code: "eur",
         },
         {
-          amount: 1500,
+          amount: 1300,
           currency_code: "dkk",
         },
       ],
@@ -104,7 +104,7 @@ const productData = {
           currency_code: "eur",
         },
         {
-          amount: 1500,
+          amount: 1300,
           currency_code: "dkk",
         },
       ],
@@ -607,6 +607,68 @@ medusaIntegrationTestRunner({
           ).data.region
         })
 
+        it("should update prices when region is changed", async () => {
+          let updated = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            { variant_id: product.variants[0].id, quantity: 1 },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              items: [
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 2,
+                }),
+              ],
+            })
+          )
+
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { region_id: otherRegion.id },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "dkk",
+              items: [
+                expect.objectContaining({
+                  unit_price: 1300,
+                  quantity: 2,
+                }),
+              ],
+            })
+          )
+
+          updated = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            { variant_id: product.variants[0].id, quantity: 1 },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "dkk",
+              items: [
+                expect.objectContaining({
+                  unit_price: 1300,
+                  quantity: 3,
+                }),
+              ],
+            })
+          )
+        })
+
         it("should update a cart with promo codes with a replace action", async () => {
           const newPromotion = (
             await api.post(
@@ -786,7 +848,7 @@ medusaIntegrationTestRunner({
               region_id: otherRegion.id,
               items: expect.arrayContaining([
                 expect.objectContaining({
-                  unit_price: 1500,
+                  unit_price: 1300,
                   quantity: 1,
                   tax_lines: [
                     // Uses the danish default rate

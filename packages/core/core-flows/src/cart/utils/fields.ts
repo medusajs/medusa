@@ -26,11 +26,6 @@ export const cartFieldsForRefreshSteps = [
   "promotions.code",
 ]
 
-export const refreshCartFields = [
-  ...cartFieldsForRefreshSteps,
-  "items.variant.calculated_price.*",
-]
-
 export const completeCartFields = [
   "id",
   "currency_code",
