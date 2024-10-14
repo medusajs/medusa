@@ -10,6 +10,7 @@ import {
   arrayDifference,
   DALUtils,
   ModulesSdkUtils,
+  normalizeMigrationSQL,
   promiseAll,
 } from "@medusajs/framework/utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
@@ -259,7 +260,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           action: "create",
           linkDescriptor,
           tableName,
-          sql: await generator.getCreateSchemaSQL(),
+          sql: normalizeMigrationSQL(await generator.getCreateSchemaSQL()),
         }
       }
 
@@ -281,9 +282,11 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           },
         ])
 
-      const updateSQL = await generator.getUpdateSchemaSQL({
-        fromSchema: dbSchema,
-      })
+      const updateSQL = normalizeMigrationSQL(
+        await generator.getUpdateSchemaSQL({
+          fromSchema: dbSchema,
+        })
+      )
 
       /**
        * Entity is upto-date and hence we do not have to perform
