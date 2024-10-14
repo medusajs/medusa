@@ -4,13 +4,13 @@ import {
 } from "@medusajs/framework/types"
 import { MedusaError, PromotionActions } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createHook,
   createWorkflow,
   parallelize,
   transform,
   when,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
@@ -68,7 +68,11 @@ export const updateCartWorkflow = createWorkflow(
     const cartInput = transform(
       { input, region, customerData, salesChannel, cartToUpdate },
       (data) => {
-        const { promo_codes, ...updateCartData } = data.input
+        const {
+          promo_codes,
+          additional_data: _,
+          ...updateCartData
+        } = data.input
 
         const data_ = {
           ...updateCartData,
@@ -138,14 +142,13 @@ export const updateCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    parallelize(
-      refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesWorkflow.runAsStep({
-        input: {
-          cart_id: carts[0].id,
-        },
-      })
-    )
+    refreshCartShippingMethodsStep({ cart })
+
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_id: carts[0].id,
+      },
+    })
 
     updateCartPromotionsWorkflow.runAsStep({
       input: {

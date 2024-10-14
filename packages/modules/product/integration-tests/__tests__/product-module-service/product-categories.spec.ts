@@ -692,7 +692,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             [
               expect.objectContaining({
                 data: { id: productCategoryOne.id },
-                name: "Product.product-category.deleted",
+                name: "product.product-category.deleted",
                 metadata: {
                   action: CommonEvents.DELETED,
                   object: "product_category",

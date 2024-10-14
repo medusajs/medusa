@@ -17,7 +17,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
-const INSTRUMENTATION_FILE = "instrumentation.js"
+const INSTRUMENTATION_FILE = "instrumentation"
 
 /**
  * Imports the "instrumentation.js" file from the root of the
@@ -27,7 +27,9 @@ const INSTRUMENTATION_FILE = "instrumentation.js"
  */
 export async function registerInstrumentation(directory: string) {
   const fileSystem = new FileSystem(directory)
-  const exists = await fileSystem.exists(INSTRUMENTATION_FILE)
+  const exists =
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.ts`)) ||
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.js`))
   if (!exists) {
     return
   }
@@ -83,7 +85,7 @@ async function start({ port, directory, types }) {
       })
 
       if (gqlSchema && types) {
-        const outputDirGeneratedTypes = path.join(directory, ".medusa")
+        const outputDirGeneratedTypes = path.join(directory, ".medusa/types")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",

@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { UserDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -7,7 +7,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteUser } from "../../../../../hooks/api/users"
 
 type UserGeneralSectionProps = {
-  user: UserDTO
+  user: HttpTypes.AdminUser
 }
 
 export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {

@@ -55,6 +55,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/commerce-modules/api-key/relations-to-other-modules",
+        destination: "/commerce-modules/api-key/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/cart/relations-to-other-modules",
+        destination: "/commerce-modules/cart/links-to-other-modules",
+        permanent: true,
+      },
+      {
         source: "/commerce-modules/fulfillment/relations-to-other-modules",
         destination: "/commerce-modules/fulfillment/links-to-other-modules",
         permanent: true,
