@@ -25,16 +25,6 @@ export type ModelDTOConfig = {
   model?: DmlEntity<any, any>
   create?: any
   update?: any
-  /**
-   * @internal
-   * @deprecated
-   */
-  singular?: string
-  /**
-   * @internal
-   * @deprecated
-   */
-  plural?: string
 }
 
 export type ModelsConfigTemplate = { [key: string]: ModelDTOConfig }
@@ -51,21 +41,6 @@ export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
       : T[Key] extends IDmlEntity<any, any>
       ? T[Key]
       : never
-    /**
-     * @deprecated
-     */
-    create: any
-    update: any
-    /**
-     * @deprecated
-     */
-    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
-    /**
-     * @deprecated
-     */
-    plural: T[Key] extends { plural: string }
-      ? T[Key]["plural"]
-      : Pluralize<Key & string>
   }
 }
 
