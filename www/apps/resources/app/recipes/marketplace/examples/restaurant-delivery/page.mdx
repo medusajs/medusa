@@ -155,16 +155,16 @@ export default Module(RESTAURANT_MODULE, {
 
 ### Add Restaurant Module to Medusa Configuration
 
-Finally, add the module to the list of modules in `medusa-config.js`:
+Finally, add the module to the list of modules in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    restaurantModuleService: {
+  modules: [
+    {
       resolve: "./modules/restaurant",
     },
-  },
+  ]
 })
 ```
 
@@ -299,17 +299,16 @@ export default Module(DELIVERY_MODULE, {
 
 ### Add Delivery Module to Medusa Configuration
 
-Finally, add the module to the list of modules in `medusa-config.js`:
+Finally, add the module to the list of modules in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    deliveryModuleService: {
+  modules: [
+    {
       resolve: "./modules/delivery",
     },
-    // ...
-  },
+  ]
 })
 
 ```
