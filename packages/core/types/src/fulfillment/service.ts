@@ -2573,6 +2573,38 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<boolean>
 
   /**
+   * This method validates fulfillment data with the provider it belongs to.
+   *   e.g. if the shipping option requires a drop point, the data you pass to create the
+   *   shipping method must contain a drop point ID. This method can be used to
+   *   validate that.
+   *
+   * @param {string} providerId - The fulfillment provider's ID.
+   * @param {Record<string, unknown>} optionData - The fulfillment option data to validate.
+   * @param {Record<string, unknown>} data - The fulfillment data to validate.
+   * @param {Record<string, unknown>} context - The context to validate the fulfillment option data in.
+   * @returns {Promise<boolean>} Whether the fulfillment option data is valid with the specified provider.
+   *
+   * @example
+   * const isValid =
+   *   await fulfillmentModuleService.validateFulfillmentData(
+   *     "webshipper",
+   *     {
+   *       requires_drop_point: true,
+   *     },
+   *     {
+   *       drop_point_id: "dp_123",
+   *     },
+   *     {}
+   *   )
+   */
+  validateFulfillmentData(
+    providerId: string,
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<Record<string, unknown>>
+
+  /**
    * This method checks whether a shipping option can be used for a specified context.
    *
    * @param {string} shippingOptionId - The shipping option's ID.

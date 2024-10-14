@@ -61,7 +61,7 @@ export class BrandClient {
 
 This creates a `BrandClient` service. Using dependency injection, you resolve the `logger` and `configModule` from the Module's container.
 
-`logger` is useful to log messages, and `configModule` has configurations exported in `medusa-config.js`.
+`logger` is useful to log messages, and `configModule` has configurations exported in `medusa-config.ts`.
 
 You also define an `options_` property in your service to store the module's options.
 
@@ -180,19 +180,19 @@ In the main module service, you first resolve through dependency injection the `
 
 ## 4. Pass Options to the Module
 
-To pass options in the module, change its configurations in `medusa-config.js`:
+To pass options in the module, change its configurations in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    brandModuleService: {
+  modules: [
+    {
       resolve: "./modules/brand",
       options: {
         apiKey: process.env.BRAND_API_KEY || "temp",
       },
     },
-  },
+  ] 
 })
 ```
 

@@ -26,13 +26,13 @@ export const highlights = [
 ]
 
 ```ts title="src/jobs/log-message.ts" highlights={highlights}
-import { Logger } from "@medusajs/medusa"
 import { MedusaContainer } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function myCustomJob(
   container: MedusaContainer
 ) {
-  const logger: Logger = container.resolve("logger")
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   logger.info("I'm using the logger!")
 }
@@ -129,11 +129,14 @@ The `Logger` class has an `activity` method used to log a message of level `info
 
 For example:
 
-```ts title="src/loaders/log-message.ts"
-import { Logger, MedusaContainer } from "@medusajs/medusa"
+```ts title="src/jobs/log-message.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
-export default async (container: MedusaContainer) => {
-  const logger = container.resolve<Logger>("logger")
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   const activityId = logger.activity("First log message")
 
@@ -141,7 +144,6 @@ export default async (container: MedusaContainer) => {
 
   logger.success(activityId, "Last log message")
 }
-
 ```
 
 The `activity` method returns the ID of the started activity. This ID can then be passed to one of the following methods of the `Logger` class:

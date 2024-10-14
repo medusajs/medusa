@@ -30,7 +30,7 @@ This creates a fulfillment for an order.
 #### Example
 
 ```ts
-import { createOrderFulfillmentWorkflow } from "@medusajs/core-flows"
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
 
 createOrderFulfillmentWorkflow.hooks.fulfillmentCreated(
 	(async ({ fulfillment, additional_data }, { container }) => {
