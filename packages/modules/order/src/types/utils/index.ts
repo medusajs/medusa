@@ -11,6 +11,7 @@ export type VirtualOrder = {
     exchange_id?: string
 
     unit_price: BigNumberInput
+    compare_at_unit_price: BigNumberInput
     quantity: BigNumberInput
 
     detail: {
@@ -22,6 +23,7 @@ export type VirtualOrder = {
 
       item_id?: string
       unit_price?: BigNumberInput
+      compare_at_unit_price?: BigNumberInput
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput

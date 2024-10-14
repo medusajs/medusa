@@ -1,212 +1,565 @@
+import {
+  Modules,
+  PriceListStatus,
+  PriceListType,
+  ProductStatus,
+  PromotionType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
-  adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
-jest.setTimeout(50000)
+jest.setTimeout(100000)
+
+const env = { MEDUSA_FF_MEDUSA_V2: true }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
+
+const generateStoreHeadersWithCustomer = async ({
+  api,
+  storeHeaders,
+  customer,
+}) => {
+  const registeredCustomerToken = (
+    await api.post("/auth/customer/emailpass/register", {
+      email: customer.email,
+      password: "password",
+    })
+  ).data.token
+
+  return {
+    headers: {
+      ...storeHeaders.headers,
+      authorization: `Bearer ${registeredCustomerToken}`,
+    },
+  }
+}
+
+const shippingAddressData = {
+  address_1: "test address 1",
+  address_2: "test address 2",
+  city: "SF",
+  country_code: "US",
+  province: "CA",
+  postal_code: "94016",
+}
+
+const productData = {
+  title: "Medusa T-Shirt",
+  handle: "t-shirt",
+  status: ProductStatus.PUBLISHED,
+  options: [
+    {
+      title: "Size",
+      values: ["S"],
+    },
+    {
+      title: "Color",
+      values: ["Black", "White"],
+    },
+  ],
+  variants: [
+    {
+      title: "S / Black",
+      sku: "SHIRT-S-BLACK",
+      options: {
+        Size: "S",
+        Color: "Black",
+      },
+      manage_inventory: false,
+      prices: [
+        {
+          amount: 1500,
+          currency_code: "usd",
+        },
+      ],
+    },
+    {
+      title: "S / White",
+      sku: "SHIRT-S-WHITE",
+      options: {
+        Size: "S",
+        Color: "White",
+      },
+      manage_inventory: false,
+      prices: [
+        {
+          amount: 1500,
+          currency_code: "usd",
+        },
+      ],
+    },
+  ],
+}
 
 medusaIntegrationTestRunner({
+  env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
-      await createAdminUser(dbConnection, adminHeaders, getContainer())
-    })
+    describe("Store Carts API", () => {
+      let appContainer
+      let storeHeaders
+      let storeHeadersWithCustomer
+      let region, product, salesChannel, cart, customer, promotion
 
-    describe("noop", () => {
-      it("noop", () => {})
+      beforeAll(async () => {
+        appContainer = getContainer()
+      })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
+
+        customer = (
+          await api.post(
+            "/admin/customers",
+            {
+              first_name: "tony",
+              email: "tony@stark-industries.com",
+            },
+            adminHeaders
+          )
+        ).data.customer
+
+        storeHeadersWithCustomer = await generateStoreHeadersWithCustomer({
+          storeHeaders,
+          api,
+          customer,
+        })
+
+        await setupTaxStructure(appContainer.resolve(Modules.TAX))
+
+        region = (
+          await api.post(
+            "/admin/regions",
+            { name: "US", currency_code: "usd" },
+            adminHeaders
+          )
+        ).data.region
+
+        product = (await api.post("/admin/products", productData, adminHeaders))
+          .data.product
+
+        salesChannel = (
+          await api.post(
+            "/admin/sales-channels",
+            { name: "Webshop", description: "channel" },
+            adminHeaders
+          )
+        ).data.sales_channel
+
+        await api.post(
+          "/admin/price-preferences",
+          {
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          },
+          adminHeaders
+        )
+
+        promotion = (
+          await api.post(
+            `/admin/promotions`,
+            {
+              code: "PROMOTION_APPLIED",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 100,
+                max_quantity: 1,
+                currency_code: "usd",
+                target_rules: [
+                  {
+                    attribute: "product_id",
+                    operator: "in",
+                    values: [product.id],
+                  },
+                ],
+              },
+            },
+            adminHeaders
+          )
+        ).data.promotion
+      })
+
+      describe("POST /store/carts", () => {
+        it("should succesffully create a cart", async () => {
+          const response = await api.post(
+            `/store/carts`,
+            {
+              currency_code: "usd",
+              sales_channel_id: salesChannel.id,
+              region_id: region.id,
+              shipping_address: shippingAddressData,
+              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+            },
+            storeHeadersWithCustomer
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 1500,
+                  compare_at_unit_price: null,
+                  is_tax_inclusive: true,
+                  quantity: 1,
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "CA Default Rate",
+                      code: "CADEFAULT",
+                      rate: 5,
+                      provider_id: "system",
+                    }),
+                  ],
+                  adjustments: [],
+                }),
+              ]),
+            })
+          )
+        })
+
+        describe("with sale price lists", () => {
+          let priceList
+
+          beforeEach(async () => {
+            priceList = (
+              await api.post(
+                `/admin/price-lists`,
+                {
+                  title: "test price list",
+                  description: "test",
+                  status: PriceListStatus.ACTIVE,
+                  type: PriceListType.SALE,
+                  prices: [
+                    {
+                      amount: 350,
+                      currency_code: "usd",
+                      variant_id: product.variants[0].id,
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.price_list
+          })
+
+          it("should successfully create cart with price from price list", async () => {
+            const response = await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeadersWithCustomer
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                currency_code: "usd",
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    unit_price: 350,
+                    compare_at_unit_price: 1500,
+                    is_tax_inclusive: true,
+                    quantity: 1,
+                    tax_lines: [
+                      expect.objectContaining({
+                        description: "CA Default Rate",
+                        code: "CADEFAULT",
+                        rate: 5,
+                        provider_id: "system",
+                      }),
+                    ],
+                    adjustments: [],
+                  }),
+                ]),
+              })
+            )
+          })
+        })
+      })
+
+      describe("POST /store/carts/:id/line-items", () => {
+        beforeEach(async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeadersWithCustomer
+            )
+          ).data.cart
+
+          cart = (
+            await api.post(
+              `/store/carts/${cart.id}`,
+              { promo_codes: [promotion.code] },
+              storeHeadersWithCustomer
+            )
+          ).data.cart
+        })
+
+        it("should add item to cart", async () => {
+          let response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 1500,
+                  compare_at_unit_price: null,
+                  is_tax_inclusive: true,
+                  quantity: 2,
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "CA Default Rate",
+                      code: "CADEFAULT",
+                      rate: 5,
+                      provider_id: "system",
+                    }),
+                  ],
+                  adjustments: [
+                    {
+                      id: expect.any(String),
+                      code: "PROMOTION_APPLIED",
+                      promotion_id: promotion.id,
+                      amount: 100,
+                    },
+                  ],
+                }),
+              ]),
+            })
+          )
+        })
+
+        describe("with sale price lists", () => {
+          let priceList
+
+          beforeEach(async () => {
+            priceList = (
+              await api.post(
+                `/admin/price-lists`,
+                {
+                  title: "test price list",
+                  description: "test",
+                  status: PriceListStatus.ACTIVE,
+                  type: PriceListType.SALE,
+                  prices: [
+                    {
+                      amount: 350,
+                      currency_code: "usd",
+                      variant_id: product.variants[0].id,
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.price_list
+          })
+
+          it("should add price from price list and set compare_at_unit_price", async () => {
+            let response = await api.post(
+              `/store/carts/${cart.id}/line-items`,
+              {
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                id: cart.id,
+                currency_code: "usd",
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    unit_price: 350,
+                    compare_at_unit_price: 1500,
+                    is_tax_inclusive: true,
+                    quantity: 2,
+                    tax_lines: [
+                      expect.objectContaining({
+                        description: "CA Default Rate",
+                        code: "CADEFAULT",
+                        rate: 5,
+                        provider_id: "system",
+                      }),
+                    ],
+                    adjustments: [
+                      {
+                        id: expect.any(String),
+                        code: "PROMOTION_APPLIED",
+                        promotion_id: promotion.id,
+                        amount: 100,
+                      },
+                    ],
+                  }),
+                ]),
+              })
+            )
+          })
+        })
+      })
+
+      describe("POST /store/carts/:id/complete", () => {
+        beforeEach(async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeadersWithCustomer
+            )
+          ).data.cart
+
+          cart = (
+            await api.post(
+              `/store/carts/${cart.id}`,
+              { promo_codes: [promotion.code] },
+              storeHeadersWithCustomer
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              { cart_id: cart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+        })
+
+        it("should successfully complete cart", async () => {
+          const response = await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {},
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.order).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 1500,
+                  compare_at_unit_price: null,
+                  quantity: 1,
+                }),
+              ]),
+            })
+          )
+        })
+
+        describe("with sale price lists", () => {
+          let priceList
+
+          beforeEach(async () => {
+            priceList = (
+              await api.post(
+                `/admin/price-lists`,
+                {
+                  title: "test price list",
+                  description: "test",
+                  status: PriceListStatus.ACTIVE,
+                  type: PriceListType.SALE,
+                  prices: [
+                    {
+                      amount: 350,
+                      currency_code: "usd",
+                      variant_id: product.variants[0].id,
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.price_list
+
+            await api.post(
+              `/store/carts/${cart.id}/line-items`,
+              { variant_id: product.variants[0].id, quantity: 1 },
+              storeHeaders
+            )
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+          })
+
+          it("should add price from price list and set compare_at_unit_price for order item", async () => {
+            const response = await api.post(
+              `/store/carts/${cart.id}/complete`,
+              { variant_id: product.variants[0].id, quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    unit_price: 350,
+                    compare_at_unit_price: 1500,
+                    is_tax_inclusive: true,
+                    quantity: 2,
+                  }),
+                ]),
+              })
+            )
+          })
+        })
+      })
     })
   },
 })
-
-// TODO: Implement the tests below, which were migrated from v1.
-//   describe("POST /store/carts/:id", () => {
-//     let product
-//     const pubKeyId = IdMap.getId("pubkey-get-id")
-
-//     beforeEach(async () => {
-//       await adminSeeder(dbConnection)
-
-//       await simpleRegionFactory(dbConnection, {
-//         id: "test-region",
-//       })
-
-//       await simplePublishableApiKeyFactory(dbConnection, {
-//         id: pubKeyId,
-//         created_by: adminUserId,
-//       })
-
-//       product = await simpleProductFactory(dbConnection, {
-//         sales_channels: [
-//           {
-//             id: "sales-channel",
-//             name: "Sales channel",
-//             description: "Sales channel",
-//           },
-//           {
-//             id: "sales-channel2",
-//             name: "Sales channel2",
-//             description: "Sales channel2",
-//           },
-//         ],
-//       })
-//     })
-
-//     afterEach(async () => {
-//       const db = useDb()
-//       return await db.teardown()
-//     })
-
-//     it("should assign sales channel to order on cart completion if PK is present in the header", async () => {
-//       const api = useApi()
-
-//       await api.post(
-//         `/admin/api-keys/${pubKeyId}/sales-channels/batch`,
-//         {
-//           sales_channel_ids: [{ id: "sales-channel" }],
-//         },
-//         adminHeaders
-//       )
-
-//       const customerRes = await api.post("/store/customers", customerData, {
-//         withCredentials: true,
-//       })
-
-//       const createCartRes = await api.post(
-//         "/store/carts",
-//         {
-//           region_id: "test-region",
-//           items: [
-//             {
-//               variant_id: product.variants[0].id,
-//               quantity: 1,
-//             },
-//           ],
-//         },
-//         {
-//           headers: {
-//             "x-medusa-access-token": "test_token",
-//             "x-publishable-api-key": pubKeyId,
-//           },
-//         }
-//       )
-
-//       const cart = createCartRes.data.cart
-
-//       await api.post(`/store/carts/${cart.id}`, {
-//         customer_id: customerRes.data.customer.id,
-//       })
-
-//       await api.post(`/store/carts/${cart.id}/payment-sessions`)
-
-//       const createdOrder = await api.post(
-//         `/store/carts/${cart.id}/complete-cart`
-//       )
-
-//       expect(createdOrder.data.type).toEqual("order")
-//       expect(createdOrder.status).toEqual(200)
-//       expect(createdOrder.data.data).toEqual(
-//         expect.objectContaining({
-//           sales_channel_id: "sales-channel",
-//         })
-//       )
-//     })
-
-//     it("SC from params defines where product is assigned (passed SC still has to be in the scope of PK from the header)", async () => {
-//       const api = useApi()
-
-//       await api.post(
-//         `/admin/api-keys/${pubKeyId}/sales-channels/batch`,
-//         {
-//           sales_channel_ids: [
-//             { id: "sales-channel" },
-//             { id: "sales-channel2" },
-//           ],
-//         },
-//         adminHeaders
-//       )
-
-//       const customerRes = await api.post("/store/customers", customerData, {
-//         withCredentials: true,
-//       })
-
-//       const createCartRes = await api.post(
-//         "/store/carts",
-//         {
-//           sales_channel_id: "sales-channel2",
-//           region_id: "test-region",
-//           items: [
-//             {
-//               variant_id: product.variants[0].id,
-//               quantity: 1,
-//             },
-//           ],
-//         },
-//         {
-//           headers: {
-//             "x-medusa-access-token": "test_token",
-//             "x-publishable-api-key": pubKeyId,
-//           },
-//         }
-//       )
-
-//       const cart = createCartRes.data.cart
-
-//       await api.post(`/store/carts/${cart.id}`, {
-//         customer_id: customerRes.data.customer.id,
-//       })
-
-//       await api.post(`/store/carts/${cart.id}/payment-sessions`)
-
-//       const createdOrder = await api.post(
-//         `/store/carts/${cart.id}/complete-cart`
-//       )
-
-//       expect(createdOrder.data.type).toEqual("order")
-//       expect(createdOrder.status).toEqual(200)
-//       expect(createdOrder.data.data).toEqual(
-//         expect.objectContaining({
-//           sales_channel_id: "sales-channel2",
-//         })
-//       )
-//     })
-
-//     it("should throw because SC id in the body is not in the scope of PK from the header", async () => {
-//       const api = useApi()
-
-//       await api.post(
-//         `/admin/api-keys/${pubKeyId}/sales-channels/batch`,
-//         {
-//           sales_channel_ids: [{ id: "sales-channel" }],
-//         },
-//         adminHeaders
-//       )
-
-//       try {
-//         await api.post(
-//           "/store/carts",
-//           {
-//             sales_channel_id: "sales-channel2", // SC not in the PK scope
-//             region_id: "test-region",
-//             items: [
-//               {
-//                 variant_id: product.variants[0].id,
-//                 quantity: 1,
-//               },
-//             ],
-//           },
-//           {
-//             headers: {
-//               "x-medusa-access-token": "test_token",
-//               "x-publishable-api-key": pubKeyId,
-//             },
-//           }
-//         )
-//       } catch (error) {
-//         expect(error.response.status).toEqual(400)
-//         expect(error.response.data.errors[0]).toEqual(
-//           `Provided sales channel id param: sales-channel2 is not associated with the Publishable API Key passed in the header of the request.`
-//         )
-//       }
-//     })
-//   })
-// })
