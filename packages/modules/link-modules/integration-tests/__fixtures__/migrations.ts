@@ -10,7 +10,7 @@ export const User = model.define("user", {
   name: model.text(),
 })
 
-export const userJoinerConfig = defineJoinerConfig("User", {
+export const userJoinerConfig = defineJoinerConfig("user", {
   models: [User],
 })
 
@@ -20,7 +20,7 @@ export class UserService extends MedusaService({ User }) {
   }
 }
 
-export const UserModule = Module("User", {
+export const UserModule = Module("user", {
   service: UserService,
 })
 
@@ -29,7 +29,7 @@ export const Car = model.define("car", {
   name: model.text(),
 })
 
-export const carJoinerConfig = defineJoinerConfig("Car", {
+export const carJoinerConfig = defineJoinerConfig("car", {
   models: [Car],
 })
 
@@ -39,7 +39,7 @@ export class CarService extends MedusaService({ Car }) {
   }
 }
 
-export const CarModule = Module("Car", {
+export const CarModule = Module("car", {
   service: CarService,
 })
 
