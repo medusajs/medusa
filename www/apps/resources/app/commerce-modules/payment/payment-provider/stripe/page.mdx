@@ -12,14 +12,6 @@ export const metadata = {
 
 In this document, you’ll learn about the Stripe Module Provider and how to install and use it in the Payment Module.
 
-## Features
-
-[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales.
-
-These features are also available in a safe test environment, allowing for a concern-free development process.
-
----
-
 ## Register the Stripe Module Provider
 
 <Prerequisites items={[
@@ -103,7 +95,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
       </Table.Cell>
       <Table.Cell>
       
-      -
+      \-
       
       </Table.Cell>
     </Table.Row>
@@ -125,7 +117,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
       </Table.Cell>
       <Table.Cell>
       
-      -
+      \-
       
       </Table.Cell>
     </Table.Row>
@@ -198,6 +190,8 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
   </Table.Body>
 </Table>
 
+---
+
 ## Use Provider
 
 To use the Stripe provider, create a payment session for the provider:
@@ -217,3 +211,9 @@ const paymentSession =
     }
   )
 ```
+
+---
+
+## Useful Guides
+
+- [Storefront guide: Add Stripe payment method during checkout](../../../../storefront-development/checkout/payment/stripe/page.mdx).

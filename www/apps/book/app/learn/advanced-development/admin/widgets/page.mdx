@@ -24,7 +24,7 @@ For example, create the file `src/admin/widgets/product-widget.tsx` with the fol
 
 export const widgetHighlights = [
   ["5", "ProductWidget", "The React component of the product widget."], 
-  ["15", "zone", "The zone to inject the widget to."]
+  ["17", "zone", "The zone to inject the widget to."]
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={widgetHighlights}
@@ -34,8 +34,10 @@ import { Container, Heading } from "@medusajs/ui"
 // The widget
 const ProductWidget = () => {
   return (
-    <Container>
-      <Heading level="h2">Product Widget</Heading>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Product Widget</Heading>
+      </div>
     </Container>
   )
 }
@@ -85,7 +87,7 @@ For example:
 export const detailHighlights = [
   ["10", "data", "Receive the data as a prop."],
   ["11", "AdminProduct", "Pass the expected type of `data` as a type argument."],
-  ["15", "data.title"]
+  ["16", "data.title", "Show the product's title."]
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={detailHighlights}
@@ -101,10 +103,12 @@ const ProductWidget = ({
   data,
 }: DetailWidgetProps<AdminProduct>) => {
   return (
-    <Container>
-      <Heading level="h2">
-        Product Widget {data.title}
-      </Heading>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Product Widget {data.title}
+        </Heading>
+      </div>
     </Container>
   )
 }
