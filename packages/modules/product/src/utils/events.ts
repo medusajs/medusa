@@ -124,12 +124,12 @@ export const eventBuilders = {
     source: Modules.PRODUCT,
     action: CommonEvents.UPDATED,
     object: "product_collection",
-    eventsEnum: ProductEvents.PRODUCT_COLLECTION_UPDATED,
+    eventName: ProductEvents.PRODUCT_COLLECTION_UPDATED,
   }),
   deletedProductCollection: moduleEventBuilderFactory({
     source: Modules.PRODUCT,
     action: CommonEvents.DELETED,
     object: "product_collection",
-    eventsEnum: ProductEvents.PRODUCT_COLLECTION_DELETED,
+    eventName: ProductEvents.PRODUCT_COLLECTION_DELETED,
   }),
 }
