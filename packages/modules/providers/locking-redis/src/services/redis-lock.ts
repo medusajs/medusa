@@ -1,13 +1,10 @@
-import { MedusaService, promiseAll } from "@medusajs/framework/utils"
+import { promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
 import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
 import { setTimeout } from "node:timers/promises"
 
-export class RedisLockingProvider
-  extends MedusaService({})
-  implements ILockingProvider
-{
+export class RedisLockingProvider implements ILockingProvider {
   static identifier = "locking-redis"
 
   protected redisClient: Redis & {
@@ -25,7 +22,6 @@ export class RedisLockingProvider
   protected maximumRetryInterval: number = 200
 
   constructor({ redisClient, prefix }, options: RedisCacheModuleOptions) {
-    super(...arguments)
     this.redisClient = redisClient
     this.keyNamePrefix = prefix ?? "medusa_lock:"
 
