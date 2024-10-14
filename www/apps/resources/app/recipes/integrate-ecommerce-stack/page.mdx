@@ -116,19 +116,19 @@ export const serviceHighlights = [
   })
   ```
 
-  Finally, add the module to the `modules` object in `medusa-config.js`:
+  Finally, add the module to the `modules` object in `medusa-config.ts`:
 
-  ```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
+  ```ts title="medusa-config.ts" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
   module.exports = defineConfig({
     // ...
-    modules: {
-      erpModuleService: {
+    modules: [
+      {
         resolve: "./modules/erp",
         options: {
           apiKey: process.env.ERP_API_KEY,
         },
       },
-    },
+    ]
   })
   ```
 

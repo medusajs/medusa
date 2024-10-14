@@ -3770,6 +3770,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/undoLastChange",
+                        "title": "undoLastChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/updateOrderAddresses",
                         "title": "updateOrderAddresses",
                         "children": []
@@ -4292,6 +4300,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/payment/getWebhookActionAndData",
+                        "title": "getWebhookActionAndData",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/payment/listAndCountPaymentCollections",
                         "title": "listAndCountPaymentCollections",
                         "children": []
@@ -4358,14 +4374,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/payment/listRefunds",
                         "title": "listRefunds",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/payment/processEvent",
-                        "title": "processEvent",
                         "children": []
                       },
                       {
@@ -9360,6 +9368,14 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/references/helper-steps/useQueryGraphStep",
+            "title": "useQueryGraphStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/references/helper-steps/useRemoteQueryStep",
             "title": "useRemoteQueryStep",
             "children": []
@@ -9984,6 +10000,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/updateRemoteLinksStep",
                     "title": "updateRemoteLinksStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/useQueryGraphStep",
+                    "title": "useQueryGraphStep",
                     "children": []
                   },
                   {
@@ -12413,6 +12437,22 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/capturePaymentWorkflow",
                     "title": "capturePaymentWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/onPaymentProcessedWorkflow",
+                    "title": "onPaymentProcessedWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/processPaymentWorkflow",
+                    "title": "processPaymentWorkflow",
                     "children": []
                   },
                   {

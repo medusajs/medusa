@@ -9,7 +9,7 @@ const medusaConfigOptions: FormattingOptionsType = {
     frontmatterData: {
       slug: "/references/medusa-config",
     },
-    reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.`,
+    reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa application and the methods you must implement in it.`,
     reflectionTitle: {
       fullReplacement: "Configure Medusa Backend",
     },

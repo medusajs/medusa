@@ -12,6 +12,7 @@ import {
   validateCartShippingOptionsStep,
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
+import { validateAndReturnShippingMethodsDataStep } from "../steps/validate-shipping-methods-data"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
@@ -28,7 +29,7 @@ export const addShippingMethodToCartWorkflowId = "add-shipping-method-to-cart"
 /**
  * This workflow adds shipping methods to a cart.
  */
-export const addShippingMethodToWorkflow = createWorkflow(
+export const addShippingMethodToCartWorkflow = createWorkflow(
   addShippingMethodToCartWorkflowId,
   (
     input: WorkflowData<AddShippingMethodToCartWorkflowInput>
@@ -59,6 +60,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
         "name",
         "calculated_price.calculated_amount",
         "calculated_price.is_calculated_price_tax_inclusive",
+        "provider_id",
       ],
       variables: {
         id: optionIds,
@@ -68,8 +70,30 @@ export const addShippingMethodToWorkflow = createWorkflow(
       },
     }).config({ name: "fetch-shipping-option" })
 
-    const shippingMethodInput = transform(
+    const validateShippingMethodsDataInput = transform(
       { input, shippingOptions },
+      (data) => {
+        return data.input.options.map((inputOption) => {
+          const shippingOption = data.shippingOptions.find(
+            (so) => so.id === inputOption.id
+          )
+          return {
+            id: inputOption.id,
+            provider_id: shippingOption?.provider_id,
+            option_data: shippingOption?.data ?? {},
+            method_data: inputOption.data ?? {},
+          }
+        })
+      }
+    )
+
+    const validatedMethodData = validateAndReturnShippingMethodsDataStep({
+      options_to_validate: validateShippingMethodsDataInput,
+      context: {}, // TODO: Add cart, when we have a better idea about what's appropriate to pass
+    })
+
+    const shippingMethodInput = transform(
+      { input, shippingOptions, validatedMethodData },
       (data) => {
         const options = (data.input.options ?? []).map((option) => {
           const shippingOption = data.shippingOptions.find(
@@ -83,13 +107,17 @@ export const addShippingMethodToWorkflow = createWorkflow(
             )
           }
 
+          const methodData = data.validatedMethodData?.find((methodData) => {
+            return methodData?.[option.id]
+          })
+
           return {
             shipping_option_id: shippingOption.id,
             amount: shippingOption.calculated_price.calculated_amount,
             is_tax_inclusive:
               !!shippingOption.calculated_price
                 .is_calculated_price_tax_inclusive,
-            data: option.data ?? {},
+            data: methodData?.[option.id] ?? {},
             name: shippingOption.name,
             cart_id: data.input.cart_id,
           }

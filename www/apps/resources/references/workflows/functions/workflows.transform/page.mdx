@@ -33,7 +33,7 @@ type WorkflowInput = {
 }
 
 const myWorkflow = createWorkflow(
-  "hello-world", 
+  "hello-world",
   (input: WorkflowInput) => {
     const str1 = step1(input)
     const str2 = step2(input)

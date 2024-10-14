@@ -30,7 +30,7 @@ This workflow cancels an order's fulfillment.
 #### Example
 
 ```ts
-import { cancelOrderFulfillmentWorkflow } from "@medusajs/core-flows"
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
 
 cancelOrderFulfillmentWorkflow.hooks.orderFulfillmentCanceled(
 	(async ({ fulfillment, additional_data }, { container }) => {
