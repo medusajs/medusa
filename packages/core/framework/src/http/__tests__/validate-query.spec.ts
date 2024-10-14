@@ -397,7 +397,7 @@ describe("validateAndTransformQuery", () => {
     } as unknown as MedusaRequest
 
     queryConfig = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "deleted_at",
@@ -449,7 +449,7 @@ describe("validateAndTransformQuery", () => {
     const nextFunction: MedusaNextFunction = jest.fn()
 
     let queryConfig: any = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "updated_at",
@@ -496,7 +496,7 @@ describe("validateAndTransformQuery", () => {
     } as unknown as MedusaRequest
 
     queryConfig = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "updated_at",
@@ -543,7 +543,7 @@ describe("validateAndTransformQuery", () => {
     } as unknown as MedusaRequest
 
     queryConfig = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "deleted_at",

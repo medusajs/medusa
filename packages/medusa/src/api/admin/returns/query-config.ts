@@ -25,7 +25,7 @@ export const defaultAdminDetailsReturnFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminDetailsReturnFields,
+  defaults: defaultAdminDetailsReturnFields,
   isList: false,
 }
 

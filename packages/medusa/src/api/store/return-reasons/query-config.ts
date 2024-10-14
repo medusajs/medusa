@@ -12,7 +12,7 @@ export const defaultStoreRetrieveReturnReasonFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreRetrieveReturnReasonFields,
+  defaults: defaultStoreRetrieveReturnReasonFields,
   isList: false,
 }
 
