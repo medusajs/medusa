@@ -89,6 +89,7 @@ export const VerticalCodeTabs = ({
                 "!border !border-medusa-contrast-border-bot"
               )}
               innerClassName="h-full"
+              animateTokenHighlights
               overrideColors={{
                 bg: "bg-medusa-contrast-bg-subtle",
                 innerBg: "bg-medusa-contrast-bg-subtle",

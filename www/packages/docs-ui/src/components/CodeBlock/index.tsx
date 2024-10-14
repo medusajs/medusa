@@ -55,6 +55,7 @@ export type CodeBlockProps = {
   children?: React.ReactNode
   style?: React.HTMLAttributes<HTMLDivElement>["style"]
   forceNoTitle?: boolean
+  animateTokenHighlights?: boolean
   overrideColors?: {
     bg?: string
     innerBg?: string
@@ -88,6 +89,7 @@ export const CodeBlock = ({
   isTerminal,
   style,
   forceNoTitle = false,
+  animateTokenHighlights,
   ...rest
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
@@ -264,6 +266,7 @@ export const CodeBlock = ({
           lineNumberColorClassName={lineNumbersColor}
           lineNumberBgClassName={innerBgColor}
           isTerminal={isTerminalCode}
+          animateTokenHighlights={animateTokenHighlights}
           {...highlightProps}
         />
       )

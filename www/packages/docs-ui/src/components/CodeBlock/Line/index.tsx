@@ -24,6 +24,7 @@ type CodeBlockLineProps = {
   lineNumberColorClassName: string
   lineNumberBgClassName: string
   isTerminal: boolean
+  animateTokenHighlights?: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
 export const CodeBlockLine = ({
@@ -36,6 +37,7 @@ export const CodeBlockLine = ({
   lineNumberColorClassName,
   lineNumberBgClassName,
   isTerminal,
+  animateTokenHighlights = false,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
 
@@ -207,9 +209,22 @@ export const CodeBlockLine = ({
   }) => (
     <span
       className={clsx(
-        isTokenHighlighted && "lg:bg-medusa-contrast-border-base cursor-default"
+        isTokenHighlighted && "cursor-default",
+        isTokenHighlighted &&
+          !animateTokenHighlights &&
+          "lg:bg-medusa-contrast-border-base",
+        animateTokenHighlights && isTokenHighlighted && "relative"
       )}
     >
+      {animateTokenHighlights && isTokenHighlighted && (
+        <span
+          className={clsx(
+            "animate-fast animate-growWidth animation-fill-forwards",
+            "absolute left-0 top-0 h-full z-0",
+            "lg:bg-medusa-contrast-border-base"
+          )}
+        />
+      )}
       {tokens.map((token, key) => {
         const tokenKey = offset + key
         const { className: tokenClassName, ...rest } = getTokenProps({
@@ -222,7 +237,8 @@ export const CodeBlockLine = ({
             className={clsx(
               tokenClassName,
               (isTokenHighlighted || isLineHighlighted) &&
-                "!text-medusa-contrast-fg-primary"
+                "!text-medusa-contrast-fg-primary",
+              isTokenHighlighted && animateTokenHighlights && "relative z-[1]"
             )}
             {...rest}
           />
