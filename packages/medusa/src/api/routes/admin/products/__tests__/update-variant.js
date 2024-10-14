@@ -64,4 +64,58 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
       expect(subject.body.product.id).toEqual(IdMap.getId("productWithOptions"))
     })
   })
+
+  describe("successful updates variant prices with min_quantity and max_quantity", () => {
+    let subject
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      subject = await request(
+        "POST",
+        `/admin/products/${IdMap.getId(
+          "productWithOptions"
+        )}/variants/${IdMap.getId("variant1")}`,
+        {
+          payload: {
+            title: "hi",
+            prices: [
+              {
+                currency_code: "DKK",
+                amount: 100,
+                min_quantity: 1,
+                max_quantity: 5,
+              },
+            ],
+          },
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
+          },
+        }
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("filters prices", () => {
+      expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
+      expect(ProductVariantServiceMock.update).toHaveBeenCalledWith(
+        IdMap.getId("variant1"),
+        expect.objectContaining({
+          title: "hi",
+          prices: [
+            {
+              currency_code: "DKK",
+              amount: 100,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+          ],
+        })
+      )
+    })
+  })
 })

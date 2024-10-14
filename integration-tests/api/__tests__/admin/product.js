@@ -2072,6 +2072,50 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("successfully updates a variant's default prices by changing an existing price (currency_code) with min_quantity and max_quantity", async () => {
+          const data = {
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1500,
+                min_quantity: 1,
+                max_quantity: 5,
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}`,
+            data,
+            adminHeaders
+          )
+
+          expect(
+            baseProduct.variants[0].prices.find(
+              (p) => p.currency_code === "usd"
+            ).amount
+          ).toEqual(100)
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            product: expect.objectContaining({
+              id: baseProduct.id,
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: baseProduct.variants[0].id,
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      amount: 1500,
+                      currency_code: "usd",
+                      min_quantity: 1,
+                      max_quantity: 5,
+                    }),
+                  ]),
+                }),
+              ]),
+            }),
+          })
+        })
+
         it("successfully updates a variant's prices by adding a new price", async () => {
           const usdPrice = baseProduct.variants[0].prices.find(
             (p) => p.currency_code === "usd"
