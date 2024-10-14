@@ -19,21 +19,21 @@ The Redis Workflow Engine Module uses Redis to track workflow executions and han
   }
 ]} />
 
-Add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.ts`:
 
 export const highlights = [
   ["12", "url", "The Redis connection URL."]
 ]
 
-```js title="medusa-config.js" highlights={highlights}
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts" highlights={highlights}
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.WORKFLOW_ENGINE]: {
+  modules: [
+    {
       resolve: "@medusajs/workflow-engine-redis",
       options: {
         redis: {
@@ -41,7 +41,7 @@ module.exports = defineConfig({
         },
       },
     },
-  },
+  ]
 })
 ```
 

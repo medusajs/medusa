@@ -33,9 +33,9 @@ As Medusa v2 is still in active development, it's highly recommended not to depl
 
 ## 1. Configure Admin in Medusa
 
-In `medusa-config.js`, set the following admin configuration:
+In `medusa-config.ts`, set the following admin configuration:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {
@@ -89,7 +89,7 @@ To create a Vercel project, on your Vercel dashboard:
         npm run build
         ```
         
-        - Set the Output Directory field to `build`.
+        - Set the Output Directory field to `.medusa/admin`.
         - Set the Install Command field to the following:
         
         ```bash npm2yarn

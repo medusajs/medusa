@@ -30,7 +30,7 @@ This workflow completes one or more orders.
 #### Example
 
 ```ts
-import { completeOrderWorkflow } from "@medusajs/core-flows"
+import { completeOrderWorkflow } from "@medusajs/medusa/core-flows"
 
 completeOrderWorkflow.hooks.ordersCompleted(
 	(async ({ orders, additional_data }, { container }) => {
