@@ -30,7 +30,7 @@ This workflow creates one or more products.
 #### Example
 
 ```ts
-import { createProductsWorkflow } from "@medusajs/core-flows"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
 
 createProductsWorkflow.hooks.productsCreated(
 	(async ({ products, additional_data }, { container }) => {

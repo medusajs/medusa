@@ -30,7 +30,7 @@ This workflow updates product types matching the specified filters.
 #### Example
 
 ```ts
-import { updateProductTypesWorkflow } from "@medusajs/core-flows"
+import { updateProductTypesWorkflow } from "@medusajs/medusa/core-flows"
 
 updateProductTypesWorkflow.hooks.productTypesUpdated(
 	(async ({ product_types, additional_data }, { container }) => {
