@@ -19,7 +19,7 @@ const HomepageCodeTabs = () => {
 
   const tabs: Tab[] = [
     {
-      title: "Create Routes",
+      title: "Create API Route",
       textSection: {
         content:
           "Expose custom features with REST API routes, then consume them from your client applications.",

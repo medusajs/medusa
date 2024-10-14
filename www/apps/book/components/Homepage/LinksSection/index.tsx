@@ -29,7 +29,7 @@ const HomepageLinksSection = () => {
         },
         {
           href: "/learn/advanced-development/admin/ui-routes",
-          text: "Add a new UI route",
+          text: "Add a UI Route",
         },
         {
           href: "https://docs.medusajs.com/ui",
