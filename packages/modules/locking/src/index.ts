@@ -1,6 +1,6 @@
 import { Module, Modules } from "@medusajs/framework/utils"
-import { LockingModuleService } from "@services"
 import loadProviders from "./loaders/providers"
+import LockingModuleService from "./services/locking-module"
 
 export default Module(Modules.LOCKING, {
   service: LockingModuleService,
