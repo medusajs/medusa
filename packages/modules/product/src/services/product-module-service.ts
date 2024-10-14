@@ -1625,9 +1625,9 @@ export default class ProductModuleService
     if (missingOptionsVariants.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Product ${
+        `Product "${
           productData.title
-        } has variants with missing options: [${missingOptionsVariants.join(
+        }" has variants with missing options: [${missingOptionsVariants.join(
           ", "
         )}]`
       )

@@ -585,7 +585,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           }
 
           expect(error.message).toEqual(
-            `Variant "missing option" doesn't have "opt2" option provided.`
+            `Product "Product with variants and options" has variants with missing options: [missing option]`
           )
         })
 
