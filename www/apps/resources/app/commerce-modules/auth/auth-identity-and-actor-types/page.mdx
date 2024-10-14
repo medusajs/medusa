@@ -8,19 +8,39 @@ In this document, you’ll learn about concepts related to identity and actors i
 
 ## What is an Auth Identity?
 
-The [AuthIdentity data model](/references/auth/models/AuthIdentity) represents a registered user.
+The [AuthIdentity data model](/references/auth/models/AuthIdentity) represents a user registered by an [authentication provider](../auth-providers/page.mdx).
 
-When a user is registered, a record of `AuthIdentity` is created. This record is used to validate the user’s authentication in future requests.
+When a user is registered using an authentication provider, it creates a record of `AuthIdentity`.
+
+Then, when the user logs-in in the future with the same authentication provider, the associated auth identity is used to validate their credentials.
 
 ---
 
 ## Actor Types
 
-An actor type is a type of user that can be authenticated. This user is a record of a data model defined by a module.
+An actor type is a type of user that can be authenticated.
 
-For example, the `customer` actor type belongs to the Customer Module’s `Customer` data model. Similarly, the `user` actor type belongs to the User Module’s `User` data model.
+The Auth Module doesn't store or manage any user-like models, such as for customers or users.
 
-### Protect Routes by Actor Type
+Instead, the user types are created and managed by other modules. For example, a customer is managed by the Customer Module.
+
+Then, when an auth identity is created for the actor type, the ID of the user is stored in the `app_metadata` property of the auth identity.
+
+For example, an auth identity of a customer has the following `app_metadata` property:
+
+```json
+{
+  "app_metadata": {
+    "customer_id": "cus_123"
+  }
+}
+```
+
+The ID of the user is stored in the key `{actor_type}_id` of the `app_metadata` property.
+
+---
+
+## Protect Routes by Actor Type
 
 When you protect routes with the `authenticate` middleware, you specify in its first parameter the actor type that must be authenticated to access the specified API routes.
 
@@ -54,7 +74,7 @@ By specifying `user` as the first parameter of `authenticate`, only authenticate
 
 ## Custom Actor Types
 
-You can define custom actor types that point to the data model of your module.
+You can define custom actor types that allows a custom user, managed by your custom module, to authenticate into Medusa.
 
 For example, if you have a custom module with a `Manager` data model, you can authenticate managers with the `manager` actor type.
 
