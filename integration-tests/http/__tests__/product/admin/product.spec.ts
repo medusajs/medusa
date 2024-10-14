@@ -2587,7 +2587,7 @@ medusaIntegrationTestRunner({
 
           expect(response.status).toEqual(400)
           expect(response.data.message).toEqual(
-            `Cannot remove following inventory item(s) since they have reservations: ${inventoryItem1.id}.`
+            `Cannot remove following inventory item(s) since they have reservations: [${inventoryItem1.id}].`
           )
         })
 

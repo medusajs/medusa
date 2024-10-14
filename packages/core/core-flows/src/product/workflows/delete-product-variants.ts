@@ -12,7 +12,7 @@ import {
 import {
   emitEventStep,
   removeRemoteLinkStep,
-  useQueryGraphStep,
+  useRemoteQueryStep,
 } from "../../common"
 import { deleteProductVariantsStep } from "../steps"
 import { deleteInventoryItemWorkflow } from "../../inventory"
@@ -30,17 +30,18 @@ export const deleteProductVariantsWorkflow = createWorkflow(
       [Modules.PRODUCT]: { variant_id: input.ids },
     }).config({ name: "remove-variant-link-step" })
 
-    const { data: variantsWithInventory } = useQueryGraphStep({
-      entity: "variant",
+    const variantsWithInventory = useRemoteQueryStep({
+      entry_point: "variants",
       fields: [
         "id",
         "inventory.id",
         "manage_inventory",
         "inventory.variants.id",
       ],
-      filters: {
+      variables: {
         id: input.ids,
       },
+      list: true,
     })
 
     const toDeleteInventoryItemIds = transform(
@@ -48,7 +49,7 @@ export const deleteProductVariantsWorkflow = createWorkflow(
       (data) => {
         const variants = data.variants || []
 
-        const variantsMap = new Map(variants.map((v) => v.id))
+        const variantsMap = new Map(variants.map((v) => [v.id, true]))
         const toDeleteIds: Set<string> = new Set()
 
         variants.forEach((variant) => {
