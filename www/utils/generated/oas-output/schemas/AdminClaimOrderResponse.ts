@@ -8,11 +8,7 @@
  *   - claim
  * properties:
  *   order:
- *     type: string
- *     title: order
- *     description: The order change's order.
- *     externalDocs:
- *       url: "#pagination"
+ *     $ref: "#/components/schemas/Order"
  *   claim:
  *     $ref: "#/components/schemas/AdminClaim"
  * 

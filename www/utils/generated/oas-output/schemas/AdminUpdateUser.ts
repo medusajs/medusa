@@ -18,7 +18,7 @@
  *     description: The URL of the user's avatar.
  *   metadata:
  *     type: object
- *     description: The user's metadata.
+ *     description: The user's metadata, can hold custom key-value pairs.
  * 
 */
 

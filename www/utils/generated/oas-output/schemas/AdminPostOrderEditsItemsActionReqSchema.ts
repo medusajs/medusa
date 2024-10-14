@@ -15,7 +15,7 @@
  *   unit_price:
  *     type: number
  *     title: unit_price
- *     description: The order edit's unit price.
+ *     description: The item's unit price.
  * 
 */
 

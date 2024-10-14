@@ -7,11 +7,7 @@
  *   - order
  * properties:
  *   order:
- *     type: string
- *     title: order
- *     description: The order's details.
- *     externalDocs:
- *       url: "#pagination"
+ *     $ref: "#/components/schemas/AdminOrder"
  * 
 */
 

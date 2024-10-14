@@ -6877,11 +6877,7 @@ components:
           title: updated_at
           description: The claim's update date.
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
         type:
           type: string
           description: The claim's type.
@@ -6964,11 +6960,7 @@ components:
         - claim
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/Order'
         claim:
           $ref: '#/components/schemas/AdminClaim'
     AdminClaimPreviewResponse:
@@ -8086,7 +8078,7 @@ components:
                 description: The label's URL.
     AdminCreateShippingOption:
       type: object
-      description: The shipping option's type.
+      description: The shipping option's details.
       x-schemaName: AdminCreateShippingOption
       required:
         - label
@@ -8107,7 +8099,7 @@ components:
           description: The type's code.
     AdminCreateShippingOptionRule:
       type: object
-      description: The rule's rules.
+      description: The details of the shipping option rule.
       x-schemaName: AdminCreateShippingOptionRule
       required:
         - operator
@@ -8116,7 +8108,7 @@ components:
       properties:
         operator:
           type: string
-          description: The rule's operator.
+          description: The operator used to check whether a rule applies.
           enum:
             - gt
             - lt
@@ -8129,18 +8121,21 @@ components:
         attribute:
           type: string
           title: attribute
-          description: The rule's attribute.
+          description: The name of a property or table that the rule applies to.
+          example: customer_group
         value:
           oneOf:
             - type: string
               title: value
-              description: The rule's value.
+              description: A value of the attribute that enables this rule.
+              example: cusgroup_123
             - type: array
-              description: The rule's value.
+              description: Values of the attribute that enable this rule.
               items:
                 type: string
                 title: value
-                description: The value's details.
+                description: A value of the attribute that enables this rule.
+                example: cusgroup_123
     AdminCreateShippingProfile:
       type: object
       description: The shipping profile's details.
@@ -9367,11 +9362,7 @@ components:
           title: deleted_at
           description: The date the exchange was deleted.
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
         allow_backorder:
           type: boolean
           title: allow_backorder
@@ -9407,11 +9398,8 @@ components:
         - exchange
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          description: The details of the associated order.
+          $ref: '#/components/schemas/Order'
         exchange:
           $ref: '#/components/schemas/AdminExchange'
     AdminExchangePreviewResponse:
@@ -11852,11 +11840,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: A preview of an order if a change, such as exchange, return, edit, or claim is applied on it.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrderPreview'
     AdminOrderResponse:
       type: object
       description: An order's details.
@@ -11865,11 +11849,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
     AdminOrderReturnResponse:
       type: object
       description: The order return details.
@@ -11879,11 +11859,7 @@ components:
         - return
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/Order'
         return:
           $ref: '#/components/schemas/AdminReturn'
     AdminOrderShippingMethod:
@@ -12665,7 +12641,7 @@ components:
         unit_price:
           type: number
           title: unit_price
-          description: The order edit's unit price.
+          description: The item's unit price.
     AdminPostOrderEditsReqSchema:
       type: object
       description: The order edit's details.
@@ -12748,7 +12724,7 @@ components:
         unit_price:
           type: number
           title: unit_price
-          description: The order edit's unit price.
+          description: The item's unit price.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: The exchange's details.
@@ -16772,7 +16748,7 @@ components:
           description: The URL of the user's avatar.
         metadata:
           type: object
-          description: The user's metadata.
+          description: The user's metadata, can hold custom key-value pairs.
     AdminUpdateVariantInventoryItem:
       type: object
       description: The properties to update of the variant's inventory item association.
@@ -19723,14 +19699,121 @@ components:
       type: object
       description: The image's details.
       x-schemaName: BaseProductImage
+      properties:
+        id:
+          type: string
+          title: id
+          description: The image's ID.
+        url:
+          type: string
+          title: url
+          description: The image's URL.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the image was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the image was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the image was deleted.
+        metadata:
+          type: object
+          description: The image's metadata, can hold custom key-value pairs.
+      required:
+        - id
+        - url
     BaseProductOption:
       type: object
       description: The product option's details.
       x-schemaName: BaseProductOption
+      properties:
+        id:
+          type: string
+          title: id
+          description: The option's ID.
+        title:
+          type: string
+          title: title
+          description: The option's title.
+        product:
+          type: object
+        product_id:
+          type: string
+          title: product_id
+          description: The option's product id.
+        values:
+          type: array
+          description: The option's values.
+          items:
+            $ref: '#/components/schemas/BaseProductOptionValue'
+        metadata:
+          type: object
+          description: The option's metadata.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The option's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The option's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The option's deleted at.
+      required:
+        - id
+        - title
     BaseProductOptionValue:
       type: object
       description: The product option value's details.
       x-schemaName: BaseProductOptionValue
+      required:
+        - id
+        - value
+      properties:
+        id:
+          type: string
+          title: id
+          description: The value's ID.
+        value:
+          type: string
+          title: value
+          description: The value.
+        option:
+          type: object
+        option_id:
+          type: string
+          title: option_id
+          description: The ID of the option this value belongs to.
+        metadata:
+          type: object
+          description: The value's metadata, can hold custom key-value pairs.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the value was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the value was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the value was deleted.
     BaseProductTag:
       type: object
       description: The tag's tags.
@@ -24945,11 +25028,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/StoreOrder'
     StorePaymentCollection:
       type: object
       description: The payment collection's details.

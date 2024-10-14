@@ -93,11 +93,7 @@
  *     title: deleted_at
  *     description: The date the exchange was deleted.
  *   order:
- *     type: string
- *     title: order
- *     description: The order's details.
- *     externalDocs:
- *       url: "#pagination"
+ *     $ref: "#/components/schemas/AdminOrder"
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder
