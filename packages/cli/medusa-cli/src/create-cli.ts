@@ -1,7 +1,6 @@
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
-
 import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
 import { didYouMean } from "./did-you-mean"
@@ -337,6 +336,12 @@ function buildLocalCommands(cli, isLocalProject) {
             describe: process.env.PORT
               ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
               : `Set port. Defaults to ${defaultPort}`,
+          })
+          .option(`cluster`, {
+            type: `number`,
+            default: process.env.CPUS,
+            describe:
+              "Start the Node.js server in cluster mode. You can specify the number of cpus to use, which defaults to (env.CPUS)",
           }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
