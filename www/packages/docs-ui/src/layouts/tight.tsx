@@ -1,13 +1,14 @@
 import React from "react"
 import { RootLayout, RootLayoutProps } from "./root"
 import clsx from "clsx"
-import { Pagination } from ".."
+import { Breadcrumbs, Pagination } from ".."
 
 export const TightLayout = ({
   children,
   showPagination,
   feedbackComponent,
   editComponent,
+  showBreadcrumbs = true,
   ...props
 }: RootLayoutProps) => {
   return (
@@ -21,6 +22,7 @@ export const TightLayout = ({
           "px-docs_1 md:px-docs_4 lg:px-0"
         )}
       >
+        {showBreadcrumbs && <Breadcrumbs />}
         {children}
         {feedbackComponent}
         {showPagination && <Pagination />}

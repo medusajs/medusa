@@ -134,8 +134,16 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
-    const lineItemIds = transform({ orderItems }, (data) =>
-      data.orderItems.items.map(({ id }) => id)
+    const lineItemIds = transform(
+      { orderItems, previousOrderItems: order.items },
+
+      (data) => {
+        const previousItemIds = (data.previousOrderItems || []).map(
+          ({ id }) => id
+        ) // items that have been removed with the change
+        const newItemIds = data.orderItems.items.map(({ id }) => id)
+        return [...new Set([...previousItemIds, newItemIds])]
+      }
     )
 
     deleteReservationsByLineItemsStep(lineItemIds)

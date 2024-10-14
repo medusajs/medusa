@@ -281,7 +281,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
               {
-                name: "Product.product-collection.deleted",
+                name: "product.product-collection.deleted",
                 data: { id: collectionId },
                 metadata: {
                   action: CommonEvents.DELETED,
