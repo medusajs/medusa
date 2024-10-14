@@ -49,23 +49,22 @@ export const deleteProductsWorkflow = createWorkflow(
     const toDeleteInventoryItemIds = transform(
       { variants: variantsWithInventory },
       (data) => {
-        const variantsMap = new Map(data.variants.map((v) => [v.id, true]))
+        const variantsMap = new Map(data.variants.map((v) => v.id))
+        const toDeleteIds: Set<string> = new Set()
 
-        const toDeleteIds: string[] = []
-
-        for (const variant of data.variants) {
+        data.variants.forEach((variant) => {
           if (!variant.manage_inventory) {
-            continue
+            return
           }
 
           for (const inventoryItem of variant.inventory) {
             if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
-              toDeleteIds.push(inventoryItem.id)
+              toDeleteIds.add(inventoryItem.id)
             }
           }
-        }
+        })
 
-        return Array.from(new Set(toDeleteIds))
+        return Array.from(toDeleteIds)
       }
     )
 

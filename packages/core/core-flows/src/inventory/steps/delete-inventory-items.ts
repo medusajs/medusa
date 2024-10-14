@@ -12,13 +12,16 @@ export const validateVariantInventoryStepId = "validate-inventory-item-delete"
 export const validateInventoryDeleteStep = createStep(
   validateVariantInventoryStepId,
   async (data: ValidateInventoryDeleteStepInput) => {
-    for (const inventoryItem of data.inventory_items) {
-      if (MathBN.gt(inventoryItem.reserved_quantity, 0)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Cannot remove inventory item: ${inventoryItem.id} which has reservations.`
-        )
-      }
+    const nonDeletable = data.inventory_items.filter((inventoryItem) => {
+      return MathBN.gt(inventoryItem.reserved_quantity, 0)
+    })
+    if (nonDeletable.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot remove following inventory item(s) since they have reservations: [${nonDeletable
+          .map((inventoryItem) => inventoryItem.id)
+          .join(", ")}].`
+      )
     }
   }
 )

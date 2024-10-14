@@ -782,7 +782,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("DELETE /admin/inventory-items/:id", () => {
-        it("fails to remove inventory item with reservations", async () => {
+        it("should throw if inventory item with reservations is being removed", async () => {
           await api.post(
             `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
             {
@@ -829,7 +829,7 @@ medusaIntegrationTestRunner({
 
           expect(res.status).toEqual(400)
           expect(res.data.message).toEqual(
-            `Cannot remove inventory item: ${inventoryItem1.id} which has reservations.`
+            `Cannot remove following inventory item(s) since they have reservations: ${inventoryItem1.id}.`
           )
         })
 

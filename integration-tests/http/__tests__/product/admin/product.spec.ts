@@ -2510,7 +2510,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("fails to delete product that has a reservation", async () => {
+        it("should throw if product that has a reservation is being deleted", async () => {
           const stockLocation = (
             await api.post(
               `/admin/stock-locations`,
@@ -2587,7 +2587,7 @@ medusaIntegrationTestRunner({
 
           expect(response.status).toEqual(400)
           expect(response.data.message).toEqual(
-            `Cannot remove inventory item: ${inventoryItem1.id} which has reservations.`
+            `Cannot remove following inventory item(s) since they have reservations: ${inventoryItem1.id}.`
           )
         })
 
