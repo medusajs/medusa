@@ -6,6 +6,10 @@ required:
   - claim
 properties:
   order:
-    $ref: ./Order.yaml
+    type: string
+    title: order
+    description: The order change's order.
+    externalDocs:
+      url: '#pagination'
   claim:
     $ref: ./AdminClaim.yaml

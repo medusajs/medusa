@@ -16,6 +16,9 @@
  *     type: string
  *     title: avatar_url
  *     description: The URL of the user's avatar.
+ *   metadata:
+ *     type: object
+ *     description: The user's metadata.
  * 
 */
 

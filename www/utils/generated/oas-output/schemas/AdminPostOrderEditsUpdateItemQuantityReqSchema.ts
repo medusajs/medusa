@@ -14,6 +14,10 @@
  *     type: string
  *     title: internal_note
  *     description: A note viewed only by admin users.
+ *   unit_price:
+ *     type: number
+ *     title: unit_price
+ *     description: The order edit's unit price.
  * 
 */
 
