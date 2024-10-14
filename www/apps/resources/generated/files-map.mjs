@@ -1,5 +1,45 @@
 export const filesMap = [
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/action-menu/page.mdx",
+    "pathname": "/admin-components/components/action-menu"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/container/page.mdx",
+    "pathname": "/admin-components/components/container"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/forms/page.mdx",
+    "pathname": "/admin-components/components/forms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/header/page.mdx",
+    "pathname": "/admin-components/components/header"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/json-view-section/page.mdx",
+    "pathname": "/admin-components/components/json-view-section"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
+    "pathname": "/admin-components/components/section-row"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/table/page.mdx",
+    "pathname": "/admin-components/components/table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/layouts/single-column/page.mdx",
+    "pathname": "/admin-components/layouts/single-column"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/layouts/two-column/page.mdx",
+    "pathname": "/admin-components/layouts/two-column"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/page.mdx",
+    "pathname": "/admin-components"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
   },
