@@ -386,7 +386,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should throw if there is an existing variant with same options combination", async () => {
-          jest.clearAllMocks()
           let error
 
           const productFour = await service.createProducts({
@@ -454,9 +453,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should throw if there is an existing variant with same options combination (on update)", async () => {
-          jest.clearAllMocks()
-          let error
-
           const productFour = await service.createProducts({
             id: "product-4",
             title: "product 4",
@@ -483,16 +479,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           } as CreateProductDTO)
 
-          try {
-            await service.updateProductVariants(
+          const error = await service
+            .updateProductVariants(
               productFour.variants.find((v) => v.title === "new variant 2")!.id,
               {
                 options: { size: "small", color: "red" },
               } as UpdateProductVariantDTO
             )
-          } catch (e) {
-            error = e
-          }
+            .catch((err) => err)
 
           expect(error.message).toEqual(
             `Variant (new variant 1) with provided options already exists.`

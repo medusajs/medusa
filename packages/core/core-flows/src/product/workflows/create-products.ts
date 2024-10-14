@@ -35,13 +35,17 @@ const validateProductInputStep = createStep(
   async (data: ValidateProductInputStepInput) => {
     const { products } = data
 
-    for (const product of products) {
-      if (!product.options?.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Product options are not provided for ${product.title}`
-        )
-      }
+    const missingOptionsProductTitles = products
+      .filter((product) => !product.options?.length)
+      .map((product) => product.title)
+
+    if (missingOptionsProductTitles.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Product options are not provided for: [${missingOptionsProductTitles.join(
+          ", "
+        )}].`
+      )
     }
   }
 )

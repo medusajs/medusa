@@ -213,7 +213,6 @@ export default class ProductModuleService
         product_id: [...new Set<string>(data.map((v) => v.product_id!))],
       },
       {
-        take: null,
         relations: ["options"],
       },
       sharedContext
@@ -346,7 +345,7 @@ export default class ProductModuleService
 
     const allVariants = await this.productVariantService_.list(
       { product_id: variants.map((v) => v.product_id) },
-      { take: null, relations: ["options"] },
+      { relations: ["options"] },
       sharedContext
     )
 
@@ -1648,18 +1647,27 @@ export default class ProductModuleService
     this.validateProductPayload(productData)
 
     const options = productData.options
+    const missingOptionsVariants: string[] = []
 
     if (options?.length) {
       productData.variants?.forEach((variant) => {
         options.forEach((option) => {
           if (!variant.options?.[option.title]) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Variant "${variant.title}" doesn't have "${option.title}" option provided.`
-            )
+            missingOptionsVariants.push(variant.title)
           }
         })
       })
+    }
+
+    if (missingOptionsVariants.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Product ${
+          productData.title
+        } has variants with missing options: [${missingOptionsVariants.join(
+          ", "
+        )}]`
+      )
     }
   }
 
