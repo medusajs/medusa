@@ -26,27 +26,29 @@ By default, the `emailpass` provider is registered to authenticate customers and
 
 For example:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    resolve: "@medusajs/medusa/auth",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/medusa/auth-emailpass",
-          id: "emailpass",
-          options: {
-            // provider options...
+  modules: [
+    {
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/auth-emailpass",
+            id: "emailpass",
+            options: {
+              // provider options...
+            },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
+  ]
 })
 ```
 

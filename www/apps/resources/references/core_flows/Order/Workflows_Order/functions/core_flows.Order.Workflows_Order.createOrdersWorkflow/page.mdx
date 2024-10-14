@@ -30,7 +30,7 @@ This workflow creates an order.
 #### Example
 
 ```ts
-import { createOrdersWorkflow } from "@medusajs/core-flows"
+import { createOrdersWorkflow } from "@medusajs/medusa/core-flows"
 
 createOrdersWorkflow.hooks.orderCreated(
 	(async ({ order, additional_data }, { container }) => {

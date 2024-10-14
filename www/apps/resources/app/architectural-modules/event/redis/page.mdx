@@ -23,27 +23,27 @@ In production, it's recommended to use this module.
   }
 ]} />
 
-Add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.ts`:
 
 export const highlights = [
   ["11", "redisUrl", "The Redis connection URL."]
 ]
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.EVENT_BUS]: {
-      resolve: "@medusajs/medusa/event-bus-redis",
+  modules: [
+    {
+      resolve: "@medusajs/event-bus-redis",
       options: { 
         redisUrl: process.env.EVENTS_REDIS_URL,
       },
-    },
-  },
+    }
+  ]
 })
 ```
 

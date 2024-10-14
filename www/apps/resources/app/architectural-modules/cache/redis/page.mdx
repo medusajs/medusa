@@ -19,27 +19,27 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
   }
 ]} />
 
-Add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.ts`:
 
 export const highlights = [
   ["11", "redisUrl", "The Redis connection URL."]
 ]
 
-```js title="medusa-config.js" highlights={highlights}
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts" highlights={highlights}
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.CACHE]: {
-      resolve: "@medusajs/medusa/cache-redis",
+  modules: [
+    {
+      resolve: "@medusajs/cache-redis",
       options: { 
         redisUrl: process.env.CACHE_REDIS_URL,
       },
     },
-  },
+  ]
 })
 ```
 
