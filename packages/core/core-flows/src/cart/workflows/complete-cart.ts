@@ -85,21 +85,19 @@ export const completeCartWorkflow = createWorkflow(
       })
 
       const { variants, sales_channel_id } = transform({ cart }, (data) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
+        const variantsMap: Record<string, any> = {}
+        const allItems = data.cart?.items?.map((item) => {
+          variantsMap[item.variant_id] = item.variant
 
-const allVariants: any[] = []
-const allItems = data.cart?.items?.map((item) => {
-  allVariants.push(item.variant)
-  return {
-    id: item.id,
-    variant_id: item.variant_id,
-    quantity: item.quantity,
-  }
-})
+          return {
+            id: item.id,
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+          }
+        })
 
         return {
-          variants: allVariants,
+          variants: Object.values(variantsMap),
           items: allItems,
           sales_channel_id: data.cart.sales_channel_id,
         }
