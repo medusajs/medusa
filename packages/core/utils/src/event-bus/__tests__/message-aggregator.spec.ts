@@ -10,7 +10,7 @@ describe("MessageAggregator", function () {
     aggregator.save({
       name: "ProductVariant.created",
       metadata: {
-        source: "Product",
+        source: "product",
         action: "created",
         object: "ProductVariant",
         eventGroupId: "1",
@@ -20,7 +20,7 @@ describe("MessageAggregator", function () {
     aggregator.save({
       name: "Product.created",
       metadata: {
-        source: "Product",
+        source: "product",
         action: "created",
         object: "Product",
         eventGroupId: "1",
@@ -30,7 +30,7 @@ describe("MessageAggregator", function () {
     aggregator.save({
       name: "ProductVariant.created",
       metadata: {
-        source: "Product",
+        source: "product",
         action: "created",
         object: "ProductVariant",
         eventGroupId: "1",
@@ -40,7 +40,7 @@ describe("MessageAggregator", function () {
     aggregator.save({
       name: "ProductType.detached",
       metadata: {
-        source: "Product",
+        source: "product",
         action: "detached",
         object: "ProductType",
         eventGroupId: "1",
@@ -50,7 +50,7 @@ describe("MessageAggregator", function () {
     aggregator.save({
       name: "ProductVariant.updated",
       metadata: {
-        source: "Product",
+        source: "product",
         action: "updated",
         object: "ProductVariant",
         eventGroupId: "1",
@@ -76,7 +76,7 @@ describe("MessageAggregator", function () {
       {
         name: "ProductType.detached",
         metadata: {
-          source: "Product",
+          source: "product",
           action: "detached",
           object: "ProductType",
           eventGroupId: "1",
@@ -89,7 +89,7 @@ describe("MessageAggregator", function () {
       {
         name: "ProductVariant.updated",
         metadata: {
-          source: "Product",
+          source: "product",
           action: "updated",
           object: "ProductVariant",
           eventGroupId: "1",
@@ -102,7 +102,7 @@ describe("MessageAggregator", function () {
       {
         name: "ProductVariant.created",
         metadata: {
-          source: "Product",
+          source: "product",
           action: "created",
           object: "ProductVariant",
           eventGroupId: "1",
@@ -112,7 +112,7 @@ describe("MessageAggregator", function () {
       {
         name: "ProductVariant.created",
         metadata: {
-          source: "Product",
+          source: "product",
           action: "created",
           object: "ProductVariant",
           eventGroupId: "1",
@@ -125,7 +125,7 @@ describe("MessageAggregator", function () {
       {
         name: "Product.created",
         metadata: {
-          source: "Product",
+          source: "product",
           action: "created",
           object: "Product",
           eventGroupId: "1",

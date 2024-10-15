@@ -30,7 +30,7 @@ This workflow creates one or more product tags.
 #### Example
 
 ```ts
-import { createProductTagsWorkflow } from "@medusajs/core-flows"
+import { createProductTagsWorkflow } from "@medusajs/medusa/core-flows"
 
 createProductTagsWorkflow.hooks.productTagsCreated(
 	(async ({ product_tags, additional_data }, { container }) => {

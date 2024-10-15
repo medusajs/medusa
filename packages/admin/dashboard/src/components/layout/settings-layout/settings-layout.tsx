@@ -5,12 +5,11 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
-import { settingsRouteRegex } from "../../../lib/extension-helpers"
 import { Divider } from "../../common/divider"
-import { NavItem, NavItemProps } from "../nav-item"
+import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 
-import routes from "virtual:medusa/routes/links"
+import { useDashboardExtension } from "../../../extensions"
 import { UserMenu } from "../user-menu"
 
 export const SettingsLayout = () => {
@@ -21,7 +20,7 @@ export const SettingsLayout = () => {
   )
 }
 
-const useSettingRoutes = (): NavItemProps[] => {
+const useSettingRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -67,7 +66,7 @@ const useSettingRoutes = (): NavItemProps[] => {
   )
 }
 
-const useDeveloperRoutes = (): NavItemProps[] => {
+const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -89,7 +88,7 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   )
 }
 
-const useMyAccountRoutes = (): NavItemProps[] => {
+const useMyAccountRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -101,21 +100,6 @@ const useMyAccountRoutes = (): NavItemProps[] => {
     ],
     [t]
   )
-}
-
-const useExtensionRoutes = (): NavItemProps[] => {
-  const links = routes.links
-
-  return useMemo(() => {
-    const settingsLinks = links.filter((link) =>
-      settingsRouteRegex.test(link.path)
-    )
-
-    return settingsLinks.map((link) => ({
-      label: link.label,
-      to: link.path,
-    }))
-  }, [links])
 }
 
 /**
@@ -131,10 +115,12 @@ const getSafeFromValue = (from: string) => {
 }
 
 const SettingsSidebar = () => {
+  const { getMenu } = useDashboardExtension()
+
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
-  const extensionRoutes = useExtensionRoutes()
   const myAccountRoutes = useMyAccountRoutes()
+  const extensionRoutes = getMenu("settingsExtensions")
 
   const { t } = useTranslation()
 
@@ -227,7 +213,7 @@ const CollapsibleSection = ({
   items,
 }: {
   label: string
-  items: NavItemProps[]
+  items: INavItem[]
 }) => {
   return (
     <Collapsible.Root defaultOpen className="py-3">

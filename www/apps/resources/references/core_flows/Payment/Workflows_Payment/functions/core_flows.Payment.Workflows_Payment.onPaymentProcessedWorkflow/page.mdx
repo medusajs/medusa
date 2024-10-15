@@ -1,0 +1,18 @@
+---
+slug: /references/medusa-workflows/onPaymentProcessedWorkflow
+sidebar_label: onPaymentProcessedWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# onPaymentProcessedWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `onPaymentProcessedWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"onPaymentProcessedWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#useremotequerystep","depth":1},{"type":"when","condition":"{\n      return !!cartPaymentCollection.data.length\n    }","depth":"2","steps":[{"type":"workflow","name":"completeCartWorkflow","description":"This workflow completes a cart.","link":"../../../../core_flows.Workflows_Cart/page.mdx#completecartworkflow","depth":2}]}]}} />
+
+## Input
+
+<TypeList types={[{"name":"WebhookActionResult","type":"[WebhookActionResult](../../../../../payment/interfaces/payment.WebhookActionResult/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"action","type":"[PaymentActions](../../../../../payment/types/payment.PaymentActions/page.mdx)","description":"Normalized events from payment provider to internal payment module events.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[WebhookActionData](../../../../../payment/interfaces/payment.WebhookActionData/page.mdx)","description":"The webhook action's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"session_id","type":"`string`","description":"The associated payment session's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../../../../payment/types/payment.BigNumberValue/page.mdx)","description":"The amount to be captured or authorized (based on the action's type.)","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../payment/types/payment.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="onPaymentProcessedWorkflow"/>

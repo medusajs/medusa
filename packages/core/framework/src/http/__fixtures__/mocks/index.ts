@@ -4,7 +4,7 @@ export const customersGlobalMiddlewareMock = jest.fn()
 export const customersCreateMiddlewareMock = jest.fn()
 export const storeGlobalMiddlewareMock = jest.fn()
 
-export const config: ConfigModule = {
+export const config = {
   projectConfig: {
     databaseLogging: false,
     http: {
@@ -17,4 +17,4 @@ export const config: ConfigModule = {
   },
   featureFlags: {},
   plugins: [],
-}
+} satisfies Partial<ConfigModule>

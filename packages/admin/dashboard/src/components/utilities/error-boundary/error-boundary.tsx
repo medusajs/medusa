@@ -20,6 +20,16 @@ export const ErrorBoundary = () => {
     code = error.status ?? null
   }
 
+  /**
+   * Log error in development mode.
+   *
+   * react-router-dom will sometimes swallow the error,
+   * so this ensures that we always log it.
+   */
+  if (process.env.NODE_ENV === "development") {
+    console.error(error)
+  }
+
   let title: string
   let message: string
 

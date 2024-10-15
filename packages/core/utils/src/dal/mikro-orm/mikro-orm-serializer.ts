@@ -142,16 +142,6 @@ export class EntitySerializer {
       root.visited.add(entity)
     }
 
-    // Virtually augment the serialization context
-    root.visitedSerialized ??= new Map()
-    const primaryKeysValues = Array.from(keys)
-      .map((key) => entity[key])
-      .join("-")
-
-    if (root.visitedSerialized.has(primaryKeysValues)) {
-      return root.visitedSerialized.get(primaryKeysValues)
-    }
-
     ;[...keys]
       /** Medusa Custom properties filtering **/
       .filter((prop) =>
@@ -242,7 +232,7 @@ export class EntitySerializer {
               parents_
             ))
       )
-    root.visitedSerialized.set(primaryKeysValues, ret)
+
     return ret
   }
 

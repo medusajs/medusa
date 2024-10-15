@@ -189,16 +189,16 @@ export default Module(DIGITAL_PRODUCT_MODULE, {
 
 ### Add Module to Medusa Configuration
 
-Finally, add the module to the list of modules in `medusa-config.js`:
+Finally, add the module to the list of modules in `medusa-config.ts`:
 
-```tsx title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    digitalProductModuleService: {
+  modules: [
+    {
       resolve: "./modules/digital-product",
     },
-  },
+  ]
 })
 ```
 
@@ -1444,7 +1444,7 @@ class DigitalProductFulfillmentService extends AbstractFulfillmentProviderServic
     super()
   }
 
-  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
+  async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
     return [
       {
         id: "digital-fulfillment",
@@ -1502,21 +1502,21 @@ export default providerExport
 
 ### Register Module Provider in Medusa's Configurations
 
-Finally, register the module provider in `medusa-config.js`:
+Finally, register the module provider in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 // other imports...
-const { Modules } = require("@medusajs/framework/utils")
+import { Modules } from "@medusajs/framework/utils"
 
 module.exports = defineConfig({
-  modules: {
+  modules: [
     // ...
-    [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/medusa/fulfillment",
+    {
+      resolve: "@medusajs/fulfillment",
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/fulfillment-manual",
+            resolve: "@medusajs/fulfillment-manual",
             id: "manual",
           },
           {
@@ -1526,7 +1526,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 
@@ -2000,19 +2000,19 @@ In the `sendDigitalOrderNotificationStep`, you use a notification provider confi
 
 Check out the [Integrations page](../../../../integrations/page.mdx) to find Notification Module Providers.
 
-For testing purposes, add to `medusa-config.js` the following to use the Local Notification Module Provider:
+For testing purposes, add to `medusa-config.ts` the following to use the Local Notification Module Provider:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
+  modules: [
     // ...
-    [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/medusa/notification",
+    {
+      resolve: "@medusajs/notification",
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/notification-local",
+            resolve: "@medusajs/notification-local",
             id: "local",
             options: {
               name: "Local Notification Provider",
@@ -2022,7 +2022,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 
 ```

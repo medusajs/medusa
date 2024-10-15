@@ -4,10 +4,11 @@ import {
 } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
@@ -52,9 +53,10 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
       list: false,
     })
 
-    validateCartStep({ cart })
-
-    validateExistingPaymentCollectionStep({ cart })
+    parallelize(
+      validateCartStep({ cart }),
+      validateExistingPaymentCollectionStep({ cart })
+    )
 
     const paymentData = transform({ cart }, ({ cart }) => {
       return {

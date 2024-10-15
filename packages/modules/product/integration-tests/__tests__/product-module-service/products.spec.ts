@@ -3,7 +3,14 @@ import {
   ProductCategoryDTO,
   ProductTagDTO,
 } from "@medusajs/framework/types"
-import { Modules, ProductStatus, kebabCase } from "@medusajs/framework/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  kebabCase,
+  Modules,
+  ProductEvents,
+  ProductStatus,
+} from "@medusajs/framework/utils"
 import {
   Product,
   ProductCategory,
@@ -120,10 +127,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
             id: "product-1",
             title: "product 1",
             status: ProductStatus.PUBLISHED,
+            options: [
+              {
+                title: "opt-title",
+                values: ["val-1", "val-2"],
+              },
+            ],
             variants: [
               {
                 id: "variant-1",
                 title: "variant 1",
+                options: { "opt-title": "val-1" },
               },
             ],
           })
@@ -149,6 +163,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
               {
                 id: "variant-2",
                 title: "variant 2",
+                options: {
+                  size: "large",
+                  color: "blue",
+                },
               },
               {
                 id: "variant-3",
@@ -170,6 +188,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const data = buildProductAndRelationsData({
             images,
             thumbnail: images[0].url,
+            options: [
+              {
+                title: "opt-title",
+                values: ["val-1", "val-2"],
+              },
+            ],
           })
 
           const variantTitle = data.variants[0].title
@@ -188,7 +212,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           productBefore.title = "updated title"
           productBefore.variants = [
-            ...productBefore.variants!,
+            {
+              ...productBefore.variants[0]!,
+              options: { "opt-title": "val-2" },
+            },
             ...data.variants,
           ]
           productBefore.options = data.options
@@ -376,10 +403,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
-                name: "product.updated",
+              composeMessage(ProductEvents.PRODUCT_UPDATED, {
                 data: { id: productOne.id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
             ],
             {
               internal: true,
@@ -532,6 +561,34 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(error).toEqual(`Product with id: does-not-exist was not found`)
         })
 
+        it("should throw because variant doesn't have all options set", async () => {
+          let error
+
+          try {
+            await service.createProducts([
+              {
+                title: "Product with variants and options",
+                options: [
+                  { title: "opt1", values: ["1", "2"] },
+                  { title: "opt2", values: ["3", "4"] },
+                ],
+                variants: [
+                  {
+                    title: "missing option",
+                    options: { opt1: "1" },
+                  },
+                ],
+              },
+            ])
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            `Product "Product with variants and options" has variants with missing options: [missing option]`
+          )
+        })
+
         it("should update, create and delete variants", async () => {
           const updateData = {
             id: productTwo.id,
@@ -597,7 +654,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        it("should createa variant with id that was passed if it does not exist", async () => {
+        it("should create a variant with id that was passed if it does not exist", async () => {
           const updateData = {
             id: productTwo.id,
             // Note: VariantThree is already assigned to productTwo, that should be deleted
@@ -731,10 +788,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
-                name: "product.created",
+              composeMessage(ProductEvents.PRODUCT_CREATED, {
                 data: { id: products[0].id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
             ],
             {
               internal: true,
@@ -824,12 +883,30 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           await service.softDeleteProducts([products[0].id])
 
-          expect(eventBusSpy).toHaveBeenCalledWith(
+          expect(eventBusSpy).toHaveBeenNthCalledWith(
+            1,
             [
-              {
-                name: "product.created",
+              composeMessage(ProductEvents.PRODUCT_CREATED, {
                 data: { id: products[0].id },
-              },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
+
+          expect(eventBusSpy).toHaveBeenNthCalledWith(
+            2,
+            [
+              composeMessage(ProductEvents.PRODUCT_DELETED, {
+                data: { id: [products[0].id] },
+                object: "product",
+                source: Modules.PRODUCT,
+                action: CommonEvents.DELETED,
+              }),
             ],
             {
               internal: true,

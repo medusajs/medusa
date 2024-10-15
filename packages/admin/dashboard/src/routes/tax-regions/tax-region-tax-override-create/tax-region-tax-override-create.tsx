@@ -4,9 +4,11 @@ import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionCreateTaxOverrideForm } from "./components/tax-region-override-create-form"
 
 export const TaxRegionCreateTaxOverride = () => {
-  const { id } = useParams()
+  const { id, province_id } = useParams()
 
-  const { tax_region, isPending, isError, error } = useTaxRegion(id!)
+  const { tax_region, isPending, isError, error } = useTaxRegion(
+    province_id || id!
+  )
 
   const ready = !isPending && !!tax_region
 

@@ -4,7 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn how to implement an accept-payment flow.
+In this document, you’ll learn how to implement an accept-payment flow using the Payment Module's main service.
+
+<Note title="Tip">
+
+For a guide on how to implement this flow in the storefront, check out [this guide](../../../storefront-development/checkout/payment/page.mdx).
+
+</Note>
 
 ## Flow Overview
 
@@ -14,7 +20,7 @@ In this document, you’ll learn how to implement an accept-payment flow.
 
 ## 1. Create a Payment Collection
 
-The payment collection holds all details related to a resource’s payment operations. So, you start off by creating a payment collection.
+A payment collection holds all details related to a resource’s payment operations. So, you start off by creating a payment collection.
 
 For example:
 
@@ -27,11 +33,40 @@ const paymentCollection =
   })
 ```
 
-You can then link the payment collection to another resource, such as a cart in the Cart Module.
-
-<Note>
+<Note title="Tip">
 
 Learn more about the `createPaymentCollections` method in [this reference](/references/payment/createPaymentCollections).
+
+</Note>
+
+Then, create a link between the payment collection and the resource it's storing payment details for, such as a cart in the Cart Module:
+
+```ts
+import { 
+  ContainerRegistrationKeys,
+  Modules
+} from "@medusajs/framework/utils"
+
+// ...
+
+// resolve the remote link
+const remoteLink = container.resolve(
+  ContainerRegistrationKeys
+)
+
+remoteLink.create({
+  [Modules.CART]: {
+    cart_id: "cart_123"
+  },
+  [Modules.PAYMENT]: {
+    payment_collection_id: paymentCollection.id
+  }
+})
+```
+
+<Note title="Tip">
+
+Learn more about the remote link in [this documentation](!docs!/advanced-development/module-links/remote-link).
 
 </Note>
 
@@ -60,8 +95,6 @@ const paymentSession =
     }
   )
 ```
-
-You can also create payment sessions for every supported payment provider to allow customers to choose from them.
 
 <Note>
 
@@ -95,9 +128,9 @@ Learn more about the `authorizePaymentSession` method in [this reference](/refer
 
 ### Handling Additional Action
 
-If the payment authorization isn’t successful, either because it requires additional action or for another reason, the method updates the payment session with the new status and throws an error.
+If the payment authorization isn’t successful, whether because it requires additional action or for another reason, the method updates the payment session with the new status and throws an error.
 
-In that case, you can catch that error and, if there are required actions, handle them accordingly, then retry the authorization.
+In that case, you can catch that error and, if the session's `status` property is `requires_more`, handle the additional action, then retry the authorization.
 
 For example:
 

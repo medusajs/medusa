@@ -1,19 +1,13 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import {
-  GeneralSectionSkeleton,
-  JsonViewSectionSkeleton,
-  TableSectionSkeleton,
-} from "../../../components/common/skeleton"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
 import { apiKeyLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/api_key/details/after"
-import before from "virtual:medusa/widgets/api_key/details/before"
 
 export const ApiKeyManagementDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -21,19 +15,14 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
+  const { getWidgets } = useDashboardExtension()
 
-  const { api_key, isLoading, isError, error } = useApiKey(id!, undefined, {
+  const { api_key, isLoading, isError, error } = useApiKey(id!, {
     initialData: initialData,
   })
 
   if (isLoading || !api_key) {
-    return (
-      <div className="flex flex-col gap-y-2">
-        <GeneralSectionSkeleton rowCount={4} />
-        <TableSectionSkeleton />
-        <JsonViewSectionSkeleton />
-      </div>
-    )
+    return <SingleColumnPageSkeleton showJSON sections={1} />
   }
 
   const isPublishable = api_key?.type === ApiKeyType.PUBLISHABLE
@@ -43,25 +32,17 @@ export const ApiKeyManagementDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component apiKey={api_key} />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      hasOutlet
+      showJSON
+      widgets={{
+        before: getWidgets("api_key.details.before"),
+        after: getWidgets("api_key.details.after"),
+      }}
+      data={api_key}
+    >
       <ApiKeyGeneralSection apiKey={api_key} />
       {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component apiKey={api_key} />
-          </div>
-        )
-      })}
-      <JsonViewSection data={api_key} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

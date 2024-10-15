@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { ProductCreateSchemaType } from "./types"
 import { castNumber } from "../../../lib/cast-number"
+import { ProductCreateSchemaType } from "./types"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & {
@@ -57,8 +57,8 @@ export const normalizeVariants = (
       variant.custom_title || Object.values(variant.options || {}).join(" / "),
     options: variant.options,
     sku: variant.sku || undefined,
-    manage_inventory: variant.manage_inventory || undefined,
-    allow_backorder: variant.allow_backorder || undefined,
+    manage_inventory: !!variant.manage_inventory,
+    allow_backorder: !!variant.allow_backorder,
     inventory_items: variant
       .inventory!.map((i) => {
         const quantity = castNumber(i.required_quantity)

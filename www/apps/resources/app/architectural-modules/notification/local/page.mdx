@@ -26,21 +26,21 @@ Only one provider can be defined for a channel.
 
 </Note>
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/medusa/notification",
+  modules: [
+    {
+      resolve: "@medusajs/notification",
       options: {
         providers: [
           // ...
           {
-            resolve: "@medusajs/medusa/notification-local",
+            resolve: "@medusajs/notification-local",
             id: "local",
             options: {
               channels: ["email"],
@@ -49,7 +49,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 

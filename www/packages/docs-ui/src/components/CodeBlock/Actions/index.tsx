@@ -15,7 +15,7 @@ export type CodeBlockActionsProps = {
   inInnerCode?: boolean
   isCollapsed: boolean
   canShowApiTesting?: boolean
-  onApiTesting: React.Dispatch<React.SetStateAction<boolean>>
+  onApiTesting?: React.Dispatch<React.SetStateAction<boolean>>
   noReport?: boolean
   noCopy?: boolean
 }
@@ -91,7 +91,7 @@ export const CodeBlockActions = ({
                 inHeader && "p-[4.5px]",
                 "cursor-pointer"
               )}
-              onClick={() => onApiTesting(true)}
+              onClick={() => onApiTesting?.(true)}
             >
               <PlaySolid className={clsx(iconClassName)} />
             </span>

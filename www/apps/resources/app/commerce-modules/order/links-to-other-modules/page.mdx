@@ -1,0 +1,46 @@
+export const metadata = {
+  title: `Links between Order Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Order Module and other commerce modules.
+
+## Cart Module
+
+The Cart Module provides cart-management features.
+
+Medusa defines a link between the `Order` and `Cart` data models. The order is linked to the cart used for the purchased.
+
+![A diagram showcasing an example of how data models from the Cart and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728375735/Medusa%20Resources/cart-order_ijwmfs.jpg)
+
+---
+
+## Fulfillment Module
+
+A fulfillment is created for an orders' items. Medusa defines a link between the `Fulfillment` and `Order` data models.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716549903/Medusa%20Resources/order-fulfillment_h0vlps.jpg)
+
+
+A fulfillment is also created for a return's items. So, Medusa defines a link between the `Fulfillment` and `Return` data models.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399052/Medusa%20Resources/Social_Media_Graphics_2024_Order_Return_vetimk.jpg)
+
+---
+
+## Payment Module
+
+An order's payment details are stored in a payment collection. This also applies for claims and exchanges.
+
+So, Medusa defines links between the `PaymentCollection` data model and the `Order`, `OrderClaim`, and `OrderExchange` data models.
+
+![A diagram showcasing an example of how data models from the Order and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716554726/Medusa%20Resources/order-payment_ubdwok.jpg)
+
+---
+
+## Promotion Module
+
+An order is associated with the promotion applied on it. Medusa defines a link between the `Order` and `Promotion` data models.
+
+![A diagram showcasing an example of how data models from the Order and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716555015/Medusa%20Resources/order-promotion_dgjzzd.jpg)

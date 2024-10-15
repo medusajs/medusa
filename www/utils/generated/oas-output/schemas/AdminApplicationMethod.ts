@@ -30,7 +30,8 @@
  *       - percentage
  *   target_type:
  *     type: string
- *     description: Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order` means the promotion applies on the entire order.
+ *     description: Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order`
+ *       means the promotion applies on the entire order.
  *     enum:
  *       - items
  *       - shipping_methods

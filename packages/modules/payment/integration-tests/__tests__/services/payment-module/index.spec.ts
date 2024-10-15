@@ -37,7 +37,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               linkable: "payment_id",
               entity: "Payment",
               primaryKey: "id",
-              serviceName: "Payment",
+              serviceName: "payment",
               field: "payment",
             },
           },
@@ -46,7 +46,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               linkable: "payment_collection_id",
               entity: "PaymentCollection",
               primaryKey: "id",
-              serviceName: "Payment",
+              serviceName: "payment",
               field: "paymentCollection",
             },
           },
@@ -55,7 +55,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               linkable: "payment_provider_id",
               entity: "PaymentProvider",
               primaryKey: "id",
-              serviceName: "Payment",
+              serviceName: "payment",
               field: "paymentProvider",
             },
           },
@@ -65,7 +65,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               entity: "PaymentSession",
               linkable: "payment_session_id",
               primaryKey: "id",
-              serviceName: "Payment",
+              serviceName: "payment",
             },
           },
           refundReason: {
@@ -73,7 +73,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               linkable: "refund_reason_id",
               entity: "RefundReason",
               primaryKey: "id",
-              serviceName: "Payment",
+              serviceName: "payment",
               field: "refundReason",
             },
           },
@@ -636,21 +636,28 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
-          it("should fail to capture already captured payment", async () => {
+          it("should return payment if payment is already captured", async () => {
             await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
             })
 
-            const error = await service
-              .capturePayment({
-                amount: 100,
-                payment_id: "pay-id-1",
-              })
-              .catch((e) => e)
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
 
-            expect(error.message).toEqual(
-              "You cannot capture more than the authorized amount substracted by what is already captured."
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
             )
           })
 

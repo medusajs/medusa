@@ -1011,6 +1011,10 @@ paths:
     $ref: paths/auth_user_{auth_provider}_callback.yaml
   /auth/user/{auth_provider}/register:
     $ref: paths/auth_user_{auth_provider}_register.yaml
+  /auth/user/{auth_provider}/reset-password:
+    $ref: paths/auth_user_{auth_provider}_reset-password.yaml
+  /auth/user/{auth_provider}/update:
+    $ref: paths/auth_user_{auth_provider}_update.yaml
 components:
   securitySchemes:
     api_token:

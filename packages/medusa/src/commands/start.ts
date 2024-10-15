@@ -1,15 +1,18 @@
+import os from "os"
 import path from "path"
+import http from "http"
 import express from "express"
+import cluster from "cluster"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
 import {
   dynamicImport,
+  isPresent,
   FileSystem,
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
-import http from "http"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
@@ -17,7 +20,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
-const INSTRUMENTATION_FILE = "instrumentation.js"
+const INSTRUMENTATION_FILE = "instrumentation"
 
 /**
  * Imports the "instrumentation.js" file from the root of the
@@ -27,7 +30,9 @@ const INSTRUMENTATION_FILE = "instrumentation.js"
  */
 export async function registerInstrumentation(directory: string) {
   const fileSystem = new FileSystem(directory)
-  const exists = await fileSystem.exists(INSTRUMENTATION_FILE)
+  const exists =
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.ts`)) ||
+    (await fileSystem.exists(`${INSTRUMENTATION_FILE}.js`))
   if (!exists) {
     return
   }
@@ -52,8 +57,14 @@ export async function registerInstrumentation(directory: string) {
 // eslint-disable-next-line no-var
 export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
 
-async function start({ port, directory, types }) {
-  async function internalStart() {
+async function start(args: {
+  directory: string
+  port?: number
+  types?: boolean
+  cluster?: number
+}) {
+  const { port, directory, types } = args
+  async function internalStart(generateTypes: boolean) {
     track("CLI_START")
     await registerInstrumentation(directory)
 
@@ -82,8 +93,8 @@ async function start({ port, directory, types }) {
         expressApp: app,
       })
 
-      if (gqlSchema && types) {
-        const outputDirGeneratedTypes = path.join(directory, ".medusa")
+      if (gqlSchema && generateTypes) {
+        const outputDirGeneratedTypes = path.join(directory, ".medusa/types")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",
@@ -91,7 +102,7 @@ async function start({ port, directory, types }) {
           schema: gqlSchema,
           joinerConfigs: MedusaModule.getAllJoinerConfigs(),
         })
-        logger.info("Geneated modules types")
+        logger.info("Generated modules types")
       }
 
       const serverActivity = logger.activity(`Creating server`)
@@ -131,7 +142,54 @@ async function start({ port, directory, types }) {
     }
   }
 
-  await internalStart()
+  /**
+   * When the cluster flag is used we will start the process in
+   * cluster mode
+   */
+  if ("cluster" in args) {
+    const maxCpus = os.cpus().length
+    const cpus = args.cluster ?? maxCpus
+
+    if (cluster.isPrimary) {
+      let isShuttingDown = false
+      const numCPUs = Math.min(maxCpus, cpus)
+      const killMainProccess = () => process.exit(0)
+      const gracefulShutDown = () => {
+        isShuttingDown = true
+        for (const id of Object.keys(cluster.workers ?? {})) {
+          cluster.workers?.[id]?.kill("SIGTERM")
+        }
+      }
+
+      for (let index = 0; index < numCPUs; index++) {
+        cluster.fork().send({ index })
+      }
+
+      cluster.on("exit", () => {
+        if (!isShuttingDown) {
+          cluster.fork()
+        } else if (!isPresent(cluster.workers)) {
+          setTimeout(killMainProccess, 100)
+        }
+      })
+
+      process.on("SIGTERM", gracefulShutDown)
+      process.on("SIGINT", gracefulShutDown)
+    } else {
+      process.on("message", async (msg: any) => {
+        if (msg.index > 0) {
+          process.env.PLUGIN_ADMIN_UI_SKIP_CACHE = "true"
+        }
+
+        await internalStart(!!types && msg.index === 0)
+      })
+    }
+  } else {
+    /**
+     * Not in cluster mode
+     */
+    await internalStart(!!types)
+  }
 }
 
 export default start

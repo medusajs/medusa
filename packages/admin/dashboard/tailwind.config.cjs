@@ -1,9 +1,4 @@
-import path from "path"
-
-const rootProject = path.join(
-  process.cwd(),
-  "../../apps/server/src/admin/**/*.{js,jsx,ts,tsx}"
-)
+const path = require("path")
 
 // get the path of the dependency "@medusajs/ui"
 const medusaUI = path.join(
@@ -14,12 +9,7 @@ const medusaUI = path.join(
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require("@medusajs/ui-preset")],
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    medusaUI,
-    rootProject,
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", medusaUI],
   darkMode: "class",
   theme: {
     extend: {},
