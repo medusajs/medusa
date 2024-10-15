@@ -26,11 +26,14 @@ container.register(
  * @param entryDirectory The directory to find the config file from
  * @param configFileName The name of the config file to search for in the entry directory
  */
-export function configLoader(
+export async function configLoader(
   entryDirectory: string,
   configFileName: string
-): ConfigModule {
-  const config = getConfigFile<ConfigModule>(entryDirectory, configFileName)
+): Promise<ConfigModule> {
+  const config = await getConfigFile<ConfigModule>(
+    entryDirectory,
+    configFileName
+  )
 
   if (config.error) {
     handleConfigError(config.error)
