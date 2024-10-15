@@ -4,18 +4,51 @@ import {
   PricingTypes,
   ProductTypes,
 } from "@medusajs/framework/types"
-import { ProductWorkflowEvents, isPresent } from "@medusajs/framework/utils"
+import {
+  ProductWorkflowEvents,
+  isPresent,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
+  createStep,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 import { createProductsStep } from "../steps/create-products"
 import { createProductVariantsWorkflow } from "./create-product-variants"
+
+interface ValidateProductInputStepInput {
+  products: CreateProductWorkflowInputDTO[]
+}
+
+const validateProductInputStepId = "validate-product-input"
+/**
+ * This step validates a product data before creation.
+ */
+const validateProductInputStep = createStep(
+  validateProductInputStepId,
+  async (data: ValidateProductInputStepInput) => {
+    const { products } = data
+
+    const missingOptionsProductTitles = products
+      .filter((product) => !product.options?.length)
+      .map((product) => product.title)
+
+    if (missingOptionsProductTitles.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Product options are not provided for: [${missingOptionsProductTitles.join(
+          ", "
+        )}].`
+      )
+    }
+  }
+)
 
 export type CreateProductsWorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
@@ -36,6 +69,8 @@ export const createProductsWorkflow = createWorkflow(
         variants: undefined,
       }))
     )
+
+    validateProductInputStep({ products: productWithoutExternalRelations })
 
     const createdProducts = createProductsStep(productWithoutExternalRelations)
 

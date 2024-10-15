@@ -801,18 +801,24 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "product 1",
+              options: [
+                { title: "size", values: ["large", "medium", "small"] },
+              ],
               variants: [
                 {
                   title: "variant 1",
                   prices: [{ currency_code: "usd", amount: 100 }],
+                  options: { size: "large" },
                 },
                 {
                   title: "variant 2",
                   prices: [{ currency_code: "usd", amount: 100 }],
+                  options: { size: "small" },
                 },
                 {
                   title: "variant 3",
                   prices: [{ currency_code: "usd", amount: 100 }],
+                  options: { size: "medium" },
                 },
               ],
             },

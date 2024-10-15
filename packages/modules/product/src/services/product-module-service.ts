@@ -151,7 +151,6 @@ export default class ProductModuleService
     return joinerConfig
   }
 
-  // TODO: Add options validation, among other things
   // @ts-ignore
   createProductVariants(
     data: ProductTypes.CreateProductVariantDTO[],
@@ -205,8 +204,23 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const variants = await this.productVariantService_.list(
+      {
+        product_id: [...new Set<string>(data.map((v) => v.product_id!))],
+      },
+      {
+        relations: ["options"],
+      },
+      sharedContext
+    )
+
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
+
+    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
+      productVariantsWithOptions as any,
+      variants
+    )
 
     const createdVariants = await this.productVariantService_.create(
       productVariantsWithOptions,
@@ -324,6 +338,13 @@ export default class ProductModuleService
       {},
       sharedContext
     )
+
+    const allVariants = await this.productVariantService_.list(
+      { product_id: variants.map((v) => v.product_id) },
+      { relations: ["options"] },
+      sharedContext
+    )
+
     if (variants.length !== data.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -353,12 +374,20 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const productVariantsWithOptions =
+      ProductModuleService.assignOptionsToVariants(
+        variantsWithProductId,
+        productOptions
+      )
+
+    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
+      productVariantsWithOptions as any,
+      allVariants
+    )
+
     const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
-        ProductModuleService.assignOptionsToVariants(
-          variantsWithProductId,
-          productOptions
-        ),
+        productVariantsWithOptions,
         {
           relations: ["options"],
         },
@@ -1400,7 +1429,7 @@ export default class ProductModuleService
           d,
           sharedContext
         )
-        this.validateProductPayload(normalized)
+        this.validateProductCreatePayload(normalized)
         return normalized
       })
     )
@@ -1466,7 +1495,7 @@ export default class ProductModuleService
           d,
           sharedContext
         )
-        this.validateProductPayload(normalized)
+        this.validateProductUpdatePayload(normalized)
         return normalized
       })
     )
@@ -1522,18 +1551,26 @@ export default class ProductModuleService
         }
 
         if (product.variants?.length) {
+          const productVariantsWithOptions =
+            ProductModuleService.assignOptionsToVariants(
+              product.variants.map((v) => ({
+                ...v,
+                product_id: upsertedProduct.id,
+              })) ?? [],
+              allOptions
+            )
+
+          ProductModuleService.checkIfVariantsHaveUniqueOptionsCombinations(
+            productVariantsWithOptions as any
+          )
+
           const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
-              ProductModuleService.assignOptionsToVariants(
-                product.variants?.map((v) => ({
-                  ...v,
-                  product_id: upsertedProduct.id,
-                })) ?? [],
-                allOptions
-              ),
+              productVariantsWithOptions,
               { relations: ["options"] },
               sharedContext
             )
+
           upsertedProduct.variants = productVariants
 
           await this.productVariantService_.delete(
@@ -1565,6 +1602,40 @@ export default class ProductModuleService
         `Invalid product handle '${productData.handle}'. It must contain URL safe characters`
       )
     }
+  }
+
+  protected validateProductCreatePayload(
+    productData: ProductTypes.CreateProductDTO
+  ) {
+    this.validateProductPayload(productData)
+
+    const options = productData.options
+    const missingOptionsVariants: string[] = []
+
+    if (options?.length) {
+      productData.variants?.forEach((variant) => {
+        options.forEach((option) => {
+          if (!variant.options?.[option.title]) {
+            missingOptionsVariants.push(variant.title)
+          }
+        })
+      })
+    }
+
+    if (missingOptionsVariants.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Product "${
+          productData.title
+        }" has variants with missing options: [${missingOptionsVariants.join(
+          ", "
+        )}]`
+      )
+    }
+  }
+
+  protected validateProductUpdatePayload(productData: UpdateProductInput) {
+    this.validateProductPayload(productData)
   }
 
   protected async normalizeCreateProductInput(
@@ -1686,11 +1757,27 @@ export default class ProductModuleService
     }
 
     const variantsWithOptions = variants.map((variant: any) => {
-      const variantOptions = Object.entries(variant.options ?? {}).map(
+      const numOfProvidedVariantOptionValues = Object.keys(
+        variant.options || {}
+      ).length
+
+      const productsOptions = options.filter(
+        (o) => o.product_id === variant.product_id
+      )
+
+      if (
+        numOfProvidedVariantOptionValues &&
+        productsOptions.length !== numOfProvidedVariantOptionValues
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product has ${productsOptions.length} but there were ${numOfProvidedVariantOptionValues} provided option values for the variant: ${variant.title}.`
+        )
+      }
+
+      const variantOptions = Object.entries(variant.options || {}).map(
         ([key, val]) => {
-          const option = options.find(
-            (o) => o.title === key && o.product_id === variant.product_id
-          )
+          const option = productsOptions.find((o) => o.title === key)
 
           const optionValue = option?.values?.find(
             (v: any) => (v.value?.value ?? v.value) === val
@@ -1720,5 +1807,79 @@ export default class ProductModuleService
     })
 
     return variantsWithOptions
+  }
+
+  /**
+   * Validate that `data` doesn't create or update a variant to have same options combination
+   * as an existing variant on the product.
+   * @param data - create / update payloads
+   * @param variants - existing variants
+   * @protected
+   */
+  protected static checkIfVariantWithOptionsAlreadyExists(
+    data: ((
+      | ProductTypes.CreateProductVariantDTO
+      | ProductTypes.UpdateProductVariantDTO
+    ) & { options: { id: string }[]; product_id: string })[],
+    variants: ProductVariant[]
+  ) {
+    for (const variantData of data) {
+      const existingVariant = variants.find((v) => {
+        if (
+          variantData.product_id! !== v.product_id ||
+          !variantData.options?.length
+        ) {
+          return false
+        }
+
+        return (variantData.options as unknown as { id: string }[])!.every(
+          (optionValue) => {
+            const variantOptionValue = v.options.find(
+              (vo) => vo.id === optionValue.id
+            )
+            return !!variantOptionValue
+          }
+        )
+      })
+
+      if (existingVariant) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Variant (${existingVariant.title}) with provided options already exists.`
+        )
+      }
+    }
+  }
+
+  /**
+   * Validate that array of variants that we are upserting doesn't have variants with the same options.
+   * @param variants -
+   * @protected
+   */
+  protected static checkIfVariantsHaveUniqueOptionsCombinations(
+    variants: (ProductTypes.UpdateProductVariantDTO & {
+      options: { id: string }[]
+    })[]
+  ) {
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i]
+      for (let j = i + 1; j < variants.length; j++) {
+        const compareVariant = variants[j]
+
+        const exists = variant.options?.every(
+          (optionValue) =>
+            !!compareVariant.options.find(
+              (compareOptionValue) => compareOptionValue.id === optionValue.id
+            )
+        )
+
+        if (exists) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant "${variant.title}" has same combination of option values as "${compareVariant.title}".`
+          )
+        }
+      }
+    }
   }
 }
