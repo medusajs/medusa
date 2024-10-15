@@ -327,6 +327,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "test name",
+              options: [{ title: "size", values: ["large"] }],
             },
             adminHeaders
           )

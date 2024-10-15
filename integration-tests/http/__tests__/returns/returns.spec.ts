@@ -30,10 +30,12 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Test product",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 sku: "test-variant",
+                options: { size: "l" },
                 prices: [
                   {
                     currency_code: "usd",
