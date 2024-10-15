@@ -25,7 +25,6 @@ export * from "./module-provider"
 export * from "./remote-query"
 export * from "./remote-query-entry-points"
 export * from "./to-remote-query"
-export * from "./query-filter"
 
 export type LogLevel =
   | "query"
