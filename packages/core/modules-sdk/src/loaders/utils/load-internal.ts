@@ -52,6 +52,17 @@ type ResolvedModuleProvider = ModuleProviderExports & {
   discoveryPath: string
 }
 
+export const moduleProviderRegistrationKeyPrefix = "__providers__"
+
+/**
+ * Return the key used to register a module provider in the container
+ * @param {string} moduleKey
+ * @return {string}
+ */
+export function getProviderRegistrationKey(moduleKey: string): string {
+  return moduleProviderRegistrationKeyPrefix + moduleKey
+}
+
 export async function resolveModuleExports({
   resolution,
 }: {
@@ -112,6 +123,7 @@ async function loadInternalProvider(
 ): Promise<{ error?: Error } | void> {
   const { container, resolution, logger, migrationOnly } = args
 
+  const errors: { error?: Error }[] = []
   for (const provider of providers) {
     const providerRes = provider.resolve as ModuleProviderExports
 
@@ -122,7 +134,7 @@ async function loadInternalProvider(
       continue
     }
 
-    const error = await loadInternalModule({
+    const res = await loadInternalModule({
       container,
       resolution: {
         ...resolution,
@@ -138,10 +150,21 @@ async function loadInternalProvider(
       loadingProviders: true,
     })
 
-    return error
+    if (res) {
+      errors.push(res)
+    }
   }
 
-  return
+  const errorMessages = errors.map((e) => e.error?.message).join("\n")
+  return errors.length
+    ? {
+        error: {
+          name: "ModuleProviderError",
+          message: `Errors while loading module providers for module ${resolution.definition.key}:\n${errorMessages}`,
+          stack: errors.map((e) => e.error?.stack).join("\n"),
+        },
+      }
+    : undefined
 }
 
 export async function loadInternalModule(args: {
@@ -237,7 +260,7 @@ export async function loadInternalModule(args: {
   if (!loadingProviders) {
     const providers = (resolution?.options?.providers as any[]) ?? []
 
-    const err = await loadInternalProvider(
+    const res = await loadInternalProvider(
       {
         ...args,
         container: localContainer,
@@ -245,8 +268,8 @@ export async function loadInternalModule(args: {
       providers
     )
 
-    if (err?.error) {
-      return err
+    if (res?.error) {
+      return res
     }
   } else {
     providerOptions = (resolution?.options?.providers as any[]).find(
@@ -296,15 +319,18 @@ export async function loadInternalModule(args: {
       return
     }
 
-    for (const moduleService of moduleProviderServices) {
-      const modProvider_ = moduleService as any
+    for (const moduleProviderService of moduleProviderServices) {
+      const modProvider_ = moduleProviderService as any
 
       modProvider_.identifier ??= keyName
       modProvider_.__type = MedusaModuleProviderType
+      const registrationKey = getProviderRegistrationKey(
+        modProvider_.identifier
+      )
       container.register({
-        ["__providers__" + keyName]: asFunction((cradle) => {
-          ;(moduleService as any).__type = MedusaModuleType
-          return new moduleService(
+        [registrationKey]: asFunction((cradle) => {
+          ;(moduleProviderService as any).__type = MedusaModuleType
+          return new moduleProviderService(
             localContainer.cradle,
             resolution.options,
             resolution.moduleDeclaration
