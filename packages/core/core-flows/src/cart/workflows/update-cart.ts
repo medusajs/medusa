@@ -2,7 +2,11 @@ import {
   AdditionalData,
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  CartWorkflowEvents,
+  isDefined,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -12,7 +16,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import {
   findOrCreateCustomerStep,
   findSalesChannelStep,
@@ -113,15 +117,15 @@ export const updateCartWorkflow = createWorkflow(
         }
 
         if (
-          updateCartData.customer_id !== undefined ||
-          updateCartData.email !== undefined
+          isDefined(updateCartData.customer_id) ||
+          isDefined(updateCartData.email)
         ) {
           data_.customer_id = data.customerData.customer?.id || null
           data_.email =
             data.input?.email ?? (data.customerData.customer?.email || null)
         }
 
-        if (updateCartData.sales_channel_id !== undefined) {
+        if (isDefined(updateCartData.sales_channel_id)) {
           data_.sales_channel_id = data.salesChannel?.id || null
         }
 
@@ -129,7 +133,31 @@ export const updateCartWorkflow = createWorkflow(
       }
     )
 
-    updateCartsStep([cartInput])
+    when({ cartInput }, ({ cartInput }) => {
+      return isDefined(cartInput.customer_id) || isDefined(cartInput.email)
+    }).then(() => {
+      emitEventStep({
+        eventName: CartWorkflowEvents.CUSTOMER_UPDATED,
+        data: { id: input.id },
+      })
+    })
+
+    when({ region, cartToUpdate }, ({ region, cartToUpdate }) => {
+      return region?.id !== cartToUpdate.region?.id
+    }).then(() => {
+      emitEventStep({
+        eventName: CartWorkflowEvents.REGION_UPDATED,
+        data: { id: input.id },
+      })
+    })
+
+    parallelize(
+      updateCartsStep([cartInput]),
+      emitEventStep({
+        eventName: CartWorkflowEvents.UPDATED,
+        data: { id: input.id },
+      })
+    )
 
     const cart = refreshCartItemsWorkflow.runAsStep({
       input: { cart_id: cartInput.id, promo_codes: input.promo_codes },
