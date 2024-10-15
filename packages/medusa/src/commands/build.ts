@@ -39,7 +39,7 @@ async function clean(path: string) {
 /**
  * Loads the medusa config file or exits with an error
  */
-function loadMedusaConfig(directory: string) {
+async function loadMedusaConfig(directory: string) {
   /**
    * Parsing the medusa config file to ensure it is error
    * free
