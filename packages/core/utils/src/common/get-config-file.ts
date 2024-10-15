@@ -1,4 +1,5 @@
 import { join } from "path"
+import { resolveExports } from "./resolve-exports"
 
 /**
  * Attempts to resolve the config file in a given root directory.
@@ -18,10 +19,7 @@ export function getConfigFile<TConfig = unknown>(
     const configFilePath = require.resolve(configPath)
     const configExports = require(configFilePath)
     return {
-      configModule:
-        configExports && "default" in configExports
-          ? configExports.default
-          : configExports,
+      configModule: resolveExports(configExports).default,
       configFilePath,
       error: null,
     }
