@@ -339,7 +339,6 @@ function buildLocalCommands(cli, isLocalProject) {
           })
           .option(`cluster`, {
             type: `number`,
-            default: process.env.CPUS,
             describe:
               "Start the Node.js server in cluster mode. You can specify the number of cpus to use, which defaults to (env.CPUS)",
           }),
