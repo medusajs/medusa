@@ -1,6 +1,5 @@
 "use client"
 
-import { TriangleRightMini } from "@medusajs/icons"
 import { Link, VerticalCodeTab, VerticalCodeTabs } from "docs-ui"
 import { useState } from "react"
 
@@ -367,10 +366,10 @@ export const config = defineWidgetConfig({
         <span className="text-medusa-fg-subtle text-small">&#183;</span>
         <Link
           href={tabs[selectedTabIndex].textSection.link.link}
-          className="flex gap-0.25 items-center text-compact-small-plus"
+          className="text-compact-small-plus"
+          withIcon={true}
         >
           <span>{tabs[selectedTabIndex].textSection.link.title}</span>
-          <TriangleRightMini />
         </Link>
       </div>
     </div>

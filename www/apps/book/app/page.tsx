@@ -29,7 +29,10 @@ const Homepage = () => {
           >
             <MainNav
               className="border-b border-medusa-border-base"
-              itemsClassName="!my-1 [&_li_div]:!text-medusa-fg-subtle [&_li_a]:!text-medusa-fg-subtle"
+              itemsClassName={clsx(
+                "!my-1 [&_li_div]:!text-medusa-fg-subtle [&_li_a]:!text-medusa-fg-subtle",
+                "hover:[&_li_div]:!text-medusa-fg-base hover:[&_li_a]:!text-medusa-fg-base"
+              )}
             />
             <HomepageTopSection />
             <HomepageLinksSection />

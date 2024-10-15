@@ -3,7 +3,7 @@
 import React from "react"
 import clsx from "clsx"
 import { CardProps } from "../.."
-import { BorderedIcon, useIsExternalLink } from "../../../.."
+import { BorderedIcon, ThemeImage, useIsExternalLink } from "../../../.."
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRightOnBox, TriangleRightMini } from "@medusajs/icons"
@@ -11,6 +11,7 @@ import { ArrowUpRightOnBox, TriangleRightMini } from "@medusajs/icons"
 export const CardLayoutMini = ({
   icon,
   image,
+  themeImage,
   title,
   text,
   href,
@@ -20,10 +21,11 @@ export const CardLayoutMini = ({
   return (
     <div
       className={clsx(
-        "relative rounded-docs_DEFAULT border-medusa-fg-on-color border",
+        "relative rounded-docs_DEFAULT border-medusa-fg-on-inverted border",
         "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
         "hover:shadow-elevation-card-hover dark:hover:shadow-elevation-card-hover-dark",
-        "bg-medusa-tag-neutral-bg hover:bg-medusa-tag-neutral-bg-hover",
+        "bg-medusa-tag-neutral-bg dark:bg-medusa-bg-component",
+        "hover:bg-medusa-tag-neutral-bg-hover dark:hover:bg-medusa-bg-component-hover",
         "w-fit transition-all"
       )}
     >
@@ -42,10 +44,33 @@ export const CardLayoutMini = ({
         {image && (
           <Image
             src={image}
-            className="shadow-elevation-card-rest rounded-docs_xs"
+            className={clsx(
+              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
+              "rounded-docs_xs"
+            )}
             width={45}
             height={36}
             alt={title || text || ""}
+            style={{
+              width: "45px",
+              height: "36px",
+            }}
+          />
+        )}
+        {themeImage && (
+          <ThemeImage
+            {...themeImage}
+            className={clsx(
+              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
+              "rounded-docs_xs"
+            )}
+            width={45}
+            height={36}
+            alt={title || text || ""}
+            style={{
+              width: "45px",
+              height: "36px",
+            }}
           />
         )}
         <div className="flex flex-col">

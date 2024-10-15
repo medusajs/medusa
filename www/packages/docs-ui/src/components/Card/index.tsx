@@ -10,6 +10,10 @@ export type CardProps = {
   type?: "default" | "large" | "filler" | "mini"
   icon?: React.FC<IconProps>
   image?: string
+  themeImage?: {
+    light: string
+    dark: string
+  }
   title?: string
   text?: string
   href?: string

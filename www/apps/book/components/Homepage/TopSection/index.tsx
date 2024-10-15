@@ -21,11 +21,9 @@ const HomepageTopSection = () => {
       <div
         className={clsx(
           "absolute h-full lg:h-[calc(50%-32px)] border-b border-medusa-border-base",
-          "left-0 top-0 w-full z-1 bg-cover bg-repeat"
+          "left-0 top-0 w-full z-1 bg-cover bg-repeat",
+          "bg-bg-stripes dark:bg-bg-stripes-dark"
         )}
-        style={{
-          backgroundImage: `url(${basePathUrl("/images/bg-stripes.png")})`,
-        }}
       />
       <div
         className={clsx(
@@ -47,7 +45,10 @@ const HomepageTopSection = () => {
             type="mini"
             title="Get started"
             text="Introduction"
-            image={basePathUrl("/images/get-started-card.png")}
+            themeImage={{
+              light: basePathUrl("/images/get-started-card.png"),
+              dark: basePathUrl("/images/get-started-card-dark.png"),
+            }}
             href={"/learn"}
           />
         </div>

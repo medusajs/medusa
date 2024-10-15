@@ -147,7 +147,7 @@ const HomepageModulesSection = () => {
           "xl:mx-auto xl:max-w-[1136px] w-full px-1 sm:px-4 xl:px-0"
         )}
       >
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col gap-0.5 lg:max-w-[560px]">
           <IconHeadline
             title="Browse Commerce Modules"
             icon={<PuzzleColoredIcon />}
