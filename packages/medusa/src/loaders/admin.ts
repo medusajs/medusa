@@ -12,7 +12,7 @@ type Options = {
 }
 
 type IntializedOptions = Required<Pick<AdminOptions, "path" | "disable">> &
-  Omit<AdminOptions, "outDir"> & {
+  AdminOptions & {
     outDir: string
     sources?: string[]
   }

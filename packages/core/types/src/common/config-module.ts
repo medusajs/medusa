@@ -50,23 +50,6 @@ export interface AdminOptions {
    */
   path: `/${string}`
   /**
-   * @deprecated medusa will manage the output dir and the source dir to consume the admin if enabled. All other cases need to be handled manually. This value will be ignored if provided.
-   *
-   * The directory where the admin build is outputted when you run the `build` command.
-   * The default value is `./build`.
-   *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = defineConfig({
-   *   admin: {
-   *     outDir: process.env.ADMIN_BUILD_DIR || `./build`,
-   *   },
-   *   // ...
-   * })
-   * ```
-   */
-  outDir?: string
-  /**
    * The URL of your Medusa application. This is useful to set when you deploy the Medusa application.
    *
    * @example
