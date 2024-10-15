@@ -57,9 +57,9 @@ export const getLineItemActionsStep = createStep(
             id: existingItem.id,
             quantity: quantity,
             variant_id: item.variant_id!,
-            unit_price: item.unit_price || existingItem.unit_price,
+            unit_price: item.unit_price ?? existingItem.unit_price,
             compare_at_unit_price:
-              item.compare_at_unit_price || existingItem.compare_at_unit_price,
+              item.compare_at_unit_price ?? existingItem.compare_at_unit_price,
           },
         })
       } else {
