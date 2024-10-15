@@ -142,8 +142,11 @@ export const updateCartWorkflow = createWorkflow(
       })
     })
 
-    when({ region, cartToUpdate }, ({ region, cartToUpdate }) => {
-      return region?.id !== cartToUpdate.region?.id
+    when({ input, cartToUpdate }, ({ input, cartToUpdate }) => {
+      return (
+        isDefined(input.region_id) &&
+        input.region_id !== cartToUpdate?.region?.id
+      )
     }).then(() => {
       emitEventStep({
         eventName: CartWorkflowEvents.REGION_UPDATED,
