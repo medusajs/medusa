@@ -12,6 +12,8 @@ Each section links to the associated documentation page to learn more about it.
 
 ## API Routes
 
+An API route is a REST API endpoint that exposes commerce features to external applications, such as storefronts, the admin dashboard, or third-party systems.
+
 ### Create API Route
 
 Create the file `src/api/hello-world/route.ts` with the following content:
@@ -36,10 +38,12 @@ This creates a `GET` API route at `/hello-world`.
 
 Learn more in [this documentation](!docs!/basics/api-routes).
 
-### Resolve Resources
+### Resolve Resources in API Route
 
-```ts
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+To resolve resources from the Medusa container in an API route:
+
+```ts highlights={[["8", "resolve", "Resolve the Product Module's\nmain service from the Medusa container."]]}
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -65,7 +69,9 @@ Learn more in [this documentation](!docs!/basics/medusa-container).
 
 ### Use Path Parameters
 
-Create the file `src/api/hello-world/[id]/route.ts` with the following content:
+API routes can accept path parameters.
+
+To do that, create the file `src/api/hello-world/[id]/route.ts` with the following content:
 
 export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
@@ -91,6 +97,8 @@ Learn more about path parameters in [this documentation](!docs!/advanced-develop
 
 ### Use Query Parameters
 
+API routes can accept query parameters:
+
 export const queryHighlights = [
   ["11", "req.query.name", "Access the query parameter `name`"],
 ]
@@ -114,6 +122,8 @@ export const GET = async (
 Learn more about query parameters in [this documentation](!docs!/advanced-development/api-routes/parameters#query-parameters).
 
 ### Use Body Parameters
+
+API routes can accept request body parameters:
 
 export const bodyHighlights = [
   ["11", "HelloWorldReq", "Specify the type of the request body parameters."],
@@ -144,7 +154,9 @@ Learn more about request body parameters in [this documentation](!docs!/advanced
 
 ### Set Response Code
 
-```ts
+You can change the response code of an API route:
+
+```ts highlights={[["7", "status", "Change the response's status."]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const GET = async (
@@ -160,6 +172,8 @@ export const GET = async (
 Learn more about setting the response code in [this documentation](!docs!/advanced-development/api-routes/responses#set-response-status-code).
 
 ### Execute a Workflow in an API Route
+
+To execute a workflow in an API route:
 
 ```ts
 import type {
@@ -187,7 +201,15 @@ Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflo
 
 ### Change Response Content Type
 
-```ts
+By default, an API route's response has the content type `application/json`.
+
+To change it to another content type, use the `writeHead` method of `MedusaResponse`:
+
+export const responseContentTypeHighlights = [
+  ["7", "writeHead", "Change the content type in the header."]
+]
+
+```ts highlights={responseContentTypeHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const GET = async (
@@ -216,6 +238,8 @@ This changes the response type to return an event stream.
 Learn more in [this documentation](!docs!/advanced-development/api-routes/responses#change-response-content-type).
 
 ### Create Middleware
+
+A middleware is a function executed when a request is sent to an API Route.
 
 Create the file `src/api/middlewares.ts` with the following content:
 
@@ -265,7 +289,13 @@ Learn more about middlewares in [this documentation](!docs!/advanced-development
 
 ### Restrict HTTP Methods in Middleware
 
-```ts title="src/api/middlewares.ts"
+To restrict a middleware to an HTTP method:
+
+export const middlewareMethodHighlights = [
+  ["12", "method", "Apply the middleware on `POST` and `PUT` requests only."]
+]
+
+```ts title="src/api/middlewares.ts" highlights={middlewareMethodHighlights}
 import { defineMiddlewares } from "@medusajs/medusa"
 import type { 
   MedusaNextFunction, 
@@ -301,11 +331,9 @@ export const PostStoreCustomSchema = z.object({
 
 2. Add a validation middleware to the custom route in `src/api/middlewares.ts`:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/middlewares.ts" highlights={[["11", "validateAndTransformBody"]]}
 import { defineMiddlewares } from "@medusajs/medusa"
-import { 
-  validateAndTransformBody,
-} from "@medusajs/framework/utils"
+import { validateAndTransformBody } from "@medusajs/framework/utils"
 import { PostStoreCustomSchema } from "./custom/validators"
 
 export default defineMiddlewares({
@@ -323,7 +351,7 @@ export default defineMiddlewares({
 
 3. Use the validated body in the `/custom` API route:
 
-```ts title="src/api/custom/route.ts"
+```ts title="src/api/custom/route.ts" highlights={[["14", "validatedBody"]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { z } from "zod"
 import { PostStoreCustomSchema } from "./validators"
@@ -346,7 +374,7 @@ Learn more about request body validation in [this documentation](!docs!/advanced
 
 ### Pass Additional Data to API Route
 
-In this example, you'll pass additional data to the Create Product API route, then consume its hook.
+In this example, you'll pass additional data to the Create Product API route, then consume its hook:
 
 <Note>
 
@@ -408,9 +436,11 @@ Learn more about workflow hooks in [this documentation](!docs!/advanced-developm
 
 ### Restrict an API Route to Admin Users
 
+You can protect API routes by restricting access to authenticated admin users only.
+
 Add the following middleware in `src/api/middlewares.ts`:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/middlewares.ts" highlights={[["11", "authenticate"]]}
 import { 
   defineMiddlewares,
   authenticate,
@@ -420,7 +450,12 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom/admin*",
-      middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+      middlewares: [
+        authenticate(
+          "user", 
+          ["session", "bearer", "api-key"]
+        )
+      ],
     },
   ],
 })
@@ -430,9 +465,11 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/protec
 
 ### Restrict an API Route to Logged-In Customers
 
+You can protect API routes by restricting access to authenticated customers only.
+
 Add the following middleware in `src/api/middlewares.ts`:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/middlewares.ts" highlights={[["11", "authenticate"]]}
 import { 
   defineMiddlewares,
   authenticate,
@@ -442,7 +479,9 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom/customer*",
-      middlewares: [authenticate("customer", ["session", "bearer"])],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"])
+      ],
     },
   ],
 })
@@ -452,13 +491,15 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/protec
 
 ### Retrieve Logged-In Admin User
 
+To retrieve the currently logged-in user in an API route:
+
 <Note>
 
 Requires setting up the authentication middleware as explained in [this example](#restrict-an-api-route-to-admin-users).
 
 </Note>
 
-```ts
+```ts highlights={[["16", "req.auth_context.actor_id", "Access the user's ID."]]}
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -485,13 +526,15 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/protec
 
 ### Retrieve Logged-In Customer
 
+To retrieve the currently logged-in customer in an API route:
+
 <Note>
 
 Requires setting up the authentication middleware as explained in [this example](#restrict-an-api-route-to-logged-in-customers).
 
 </Note>
 
-```ts
+```ts highlights={[["18", "req.auth_context.actor_id", "Access the customer's ID."]]}
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -521,7 +564,9 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/protec
 
 ### Throw Errors in API Route
 
-```ts
+To throw errors in an API route, use the `MedusaError` utility:
+
+```ts highlights={[["9", "MedusaError"]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -544,9 +589,9 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/errors
 
 ### Override Error Handler of API Routes
 
-Create the file `src/api/middlewares.ts` with the following content:
+To override the error handler of API routes, create the file `src/api/middlewares.ts` with the following content:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/middlewares.ts" highlights={[["10", "errorHandler"]]}
 import { 
   defineMiddlewares, 
   MedusaNextFunction, 
@@ -573,7 +618,9 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/errors
 
 ### Setting up CORS for Custom API Routes
 
-Create the file `src/api/middlewares.ts` with the following content:
+By default, Medusa configures CORS for all routes starting with `/admin`, `/store`, and `/auth`.
+
+To configure CORS for routes under other prefixes, create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/medusa"
@@ -614,9 +661,11 @@ export default defineMiddlewares({
 
 ### Parse Webhook Body
 
-Create the file `src/api/middlewares.ts` with the following content:
+By default, the Medusa application parses a request's body using JSON.
 
-```ts title="src/api/middlewares.ts"
+To parse a webhook's body, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts" highlights={[["9"]]}
 import { 
   defineMiddlewares, 
 } from "@medusajs/framework/http"
@@ -651,6 +700,8 @@ export const POST = (
 ---
 
 ## Modules
+
+A module is a package of reusable commerce or architectural functionalities. They handle business logic in a class called a service, and define and manage data models that represent tables in the database.
 
 ### Create Module
 
@@ -796,9 +847,13 @@ Learn more in [this documentation](!docs!/advanced-development/modules/multiple-
 
 ### Accept Module Options
 
+A module can accept options for configurations and secrets.
+
+To accept options in your module:
+
 1. Pass options to the module in `medusa-config.ts`:
 
-```ts title="medusa-config.ts"
+```ts title="medusa-config.ts" highlights={[["6", "options"]]}
 module.exports = defineConfig({
   // ...
   modules: [
@@ -814,7 +869,7 @@ module.exports = defineConfig({
 
 2. Access the options in the module's main service:
 
-```ts title="src/modules/hello/service.ts"
+```ts title="src/modules/hello/service.ts" highlights={[["14", "options"]]}
 import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
@@ -842,7 +897,9 @@ export default class HelloModuleService extends MedusaService({
 
 Learn more in [this documentation](!docs!/advanced-development/modules/options).
 
-### Integrate Third-Party Service in Module
+### Integrate Third-Party System in Module
+
+An example of integrating a dummy third-party system in a module's service:
 
 ```ts title="src/modules/hello/service.ts"
 import { Logger } from "@medusajs/framework/types"
@@ -885,7 +942,11 @@ Find a longer example of integrating a third-party service in [this documentatio
 
 ## Data Models
 
+A data model represents a table in the database. Medusa provides a data model language to intuitively create data models.
+
 ### Create Data Model
+
+To create a data model in a module:
 
 <Note>
 
@@ -1006,7 +1067,7 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/prope
 
 To set an `id` property as the primary key of a data model:
 
-```ts
+```ts highlights={[["4", "primaryKey"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1019,7 +1080,7 @@ export default MyCustom
 
 To set a `text` property as the primary key:
 
-```ts
+```ts highlights={[["4", "primaryKey"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1032,7 +1093,7 @@ export default MyCustom
 
 To set a `number` property as the primary key:
 
-```ts
+```ts highlights={[["4", "primaryKey"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1049,7 +1110,7 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/prima
 
 To set the default value of a property:
 
-```ts
+```ts highlights={[["6"], ["9"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1069,7 +1130,9 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/confi
 
 ### Nullable Property
 
-```ts
+To allow `null` values for a property:
+
+```ts highlights={[["4", "nullable"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1086,7 +1149,7 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/confi
 
 To create a unique index on a property:
 
-```ts
+```ts highlights={[["4", "unique"]]}
 import { model } from "@medusajs/framework/utils"
 
 const User = model.define("user", {
@@ -1101,7 +1164,9 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/confi
 
 ### Define Database Index on Property
 
-```ts
+To define a database index on a property:
+
+```ts highlights={[["5", "index"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1118,7 +1183,9 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/index
 
 ### Define Composite Index on Data Model
 
-```ts
+To define a composite index on a data model:
+
+```ts highlights={[["7", "indexes"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1143,7 +1210,9 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/index
 
 ### Make a Property Searchable
 
-```ts
+To make a property searchable using terms or keywords:
+
+```ts highlights={[["4", "searchable"]]}
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
@@ -1172,7 +1241,9 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/searc
 
 ### Create One-to-One Relationship
 
-```ts
+The following creates a one-to-one relationship between the `User` and `Email` data models:
+
+```ts highlights={[["5", "hasOne"], ["10", "belongsTo"]]}
 import { model } from "@medusajs/framework/utils"
 
 const User = model.define("user", {
@@ -1188,13 +1259,13 @@ const Email = model.define("email", {
 })
 ```
 
-This creates a one-to-one relationship between the `User` and `Email` data models.
-
 Learn more in [this documentation](!docs!/advanced-development/data-models/relationships#one-to-one-relationship).
 
 ### Create One-to-Many Relationship
 
-```ts
+The following creates a one-to-many relationship between the `Store` and `Product` data models:
+
+```ts highlights={[["5", "hasMany"], ["10", "belongsTo"]]}
 import { model } from "@medusajs/framework/utils"
 
 const Store = model.define("store", {
@@ -1210,13 +1281,13 @@ const Product = model.define("product", {
 })
 ```
 
-This creates a one-to-many relationship between the `Store` and `Product` data models.
-
 Learn more in [this documentation](!docs!/advanced-development/data-models/relationships#one-to-many-relationship).
 
 ### Create Many-to-Many Relationship
 
-```ts
+The following creates a many-to-many relationship between the `Order` and `Product` data models:
+
+```ts highlights={[["5", "manyToMany"], ["12", "manyToMany"]]}
 import { model } from "@medusajs/framework/utils"
 
 const Order = model.define("order", {
@@ -1234,14 +1305,15 @@ const Product = model.define("product", {
 })
 ```
 
-This creates a many-to-many relationship between the `Order` and `Product` data models.
-
 Learn more in [this documentation](!docs!/advanced-development/data-models/relationships#many-to-many-relationship).
 
 ### Configure Cascades of Data Model
 
-```ts
+To configure cascade on a data model:
+
+```ts highlights={[["7", "cascades"]]}
 import { model } from "@medusajs/framework/utils"
+// Product import
 
 const Store = model.define("store", {
   id: model.id().primaryKey(),
@@ -1249,13 +1321,6 @@ const Store = model.define("store", {
 })
 .cascades({
   delete: ["products"],
-})
-
-const Product = model.define("product", {
-  id: model.id().primaryKey(),
-  store: model.belongsTo(() => Store, {
-    mappedBy: "products",
-  }),
 })
 ```
 
@@ -1390,7 +1455,7 @@ To retrieve records related to a data model's records through a relation, pass t
 
 </Note>
 
-```ts
+```ts highlights={[["4", "relations"]]}
 const product = await helloModuleService.retrieveProducts(
   "123",
   {
@@ -1405,9 +1470,15 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/manag
 
 ## Services
 
+A service is the main resource in a module. It manages the records of your custom data models in the database, or integrate third-party systems.
+
 ### Extend Service Factory
 
-```ts
+The service factory `MedusaService` generates data-management methods for your data models.
+
+To extend the service factory in your module's service:
+
+```ts highlights={[["4", "MedusaService"]]}
 import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
@@ -1420,7 +1491,7 @@ class HelloModuleService extends MedusaService({
 export default HelloModuleService
 ```
 
-The `HelloModuleService` will now have data-management methods for the specified models.
+The `HelloModuleService` will now have data-management methods for `MyCustom`.
 
 Refer to [this reference](../service-factory-reference/page.mdx) for details on the generated methods.
 
@@ -1428,10 +1499,12 @@ Learn more about the service factory in [this documentation](!docs!/advanced-dev
 
 ### Resolve Resources in the Service
 
+To resolve resources from the module's container in a service:
+
 <CodeTabs group="service-type">
   <CodeTab label="With Service Factory" value="service-factory">
 
-```ts
+```ts highlights={[["14"]]}
 import { Logger } from "@medusajs/framework/types"
 import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
@@ -1461,7 +1534,7 @@ export default HelloModuleService
   </CodeTab>
   <CodeTab label="Without Service Factory" value="no-service-factory">
 
-```ts
+```ts highlights={[["10"]]}
 import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
@@ -1488,13 +1561,15 @@ Learn more in [this documentation](!docs!/advanced-development/modules/container
 
 ### Access Module Options in Service
 
-```ts
+To access options passed to a module in its service:
+
+```ts highlights={[["14", "options"]]}
 import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 // recommended to define type in another file
 type ModuleOptions = {
-  capitalize?: boolean
+  apiKey?: boolean
 }
 
 export default class HelloModuleService extends MedusaService({
@@ -1506,7 +1581,7 @@ export default class HelloModuleService extends MedusaService({
     super(...arguments)
 
     this.options_ = options || {
-      capitalize: false,
+      apiKey: "",
     }
   }
 
@@ -1518,7 +1593,9 @@ Learn more in [this documentation](!docs!/advanced-development/modules/options).
 
 ### Run Database Query in Service
 
-```ts
+To run database query in your service:
+
+```ts highlights={[["14", "count"], ["21", "execute"]]}
 // other imports...
 import { 
   InjectManager,
@@ -1551,6 +1628,8 @@ class HelloModuleService {
 Learn more in [this documentation](!docs!/advanced-development/modules/db-operations#run-queries)
 
 ### Execute Database Operations in Transactions
+
+To execute database operations within a transaction in your service:
 
 ```ts
 import { 
@@ -1609,7 +1688,11 @@ Learn more in [this documentation](!docs!/advanced-development/modules/db-operat
 
 ## Module Links
 
+A module link forms an association between two data models of different modules, while maintaining module isolation.
+
 ### Define a Link
+
+To define a link between your custom module and a commerce module, such as the Product Module:
 
 1. Create the file `src/links/hello-product.ts` with the following content:
 
@@ -1634,7 +1717,9 @@ Learn more in [this documentation](!docs!/advanced-development/module-links).
 
 ### Define a List Link
 
-```ts
+To define a list link, where multiple records of a model can be linked to a record in another:
+
+```ts highlights={[["9", "isList"]]}
 import HelloModule from "../modules/hello"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
@@ -1652,7 +1737,9 @@ Learn more about list links in [this documentation](!docs!/advanced-development/
 
 ### Set Delete Cascade on Link Definition
 
-```ts
+To ensure a model's records linked to another model are deleted when the linked model is deleted:
+
+```ts highlights={[["9", "deleteCascades"]]}
 import HelloModule from "../modules/hello"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
@@ -1670,7 +1757,9 @@ Learn more in [this documentation](!docs!/advanced-development/module-links#defi
 
 ### Add Custom Columns to Module Link
 
-```ts
+To add a custom column to the table that stores the linked records of two data models:
+
+```ts highlights={[["9", "database"]]}
 import HelloModule from "../modules/hello"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
@@ -1814,11 +1903,13 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/remo
 
 ## Query
 
+Query fetches data across modules. It’s a set of methods registered in the Medusa container under the `query` key.
+
 ### Retrieve Records of Data Model
 
-Example in an API route:
+To retrieve records using Query in an API route:
 
-```ts
+```ts highlights={[["15", "graph"]]}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -1846,9 +1937,9 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 
 ### Retrieve Linked Records of Data Model
 
-Example in an API route:
+To retrieve records linked to a data model:
 
-```ts
+```ts highlights={[["20"]]}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -1880,9 +1971,9 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 
 ### Apply Filters to Retrieved Records
 
-Example in an API route:
+To filter the retrieved records:
 
-```ts
+```ts highlights={[["18", "filters"]]}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -1916,9 +2007,9 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 
 ### Apply Pagination and Sort Records
 
-Example in an API route:
+To paginate and sort retrieved records:
 
-```ts
+```ts highlights={[["21", "pagination"]]}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -1962,6 +2053,10 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 ---
 
 ## Workflows
+
+A workflow is a series of queries and actions that complete a task.
+
+A workflow allows you to track its execution's progress, provide roll-back logic for each step to mitigate data inconsistency when errors occur, automatically retry failing steps, and more.
 
 ### Create a Workflow
 
@@ -2122,7 +2217,7 @@ Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflo
 
 Pass a compensation function that undoes what a step did as a second parameter to `createStep`:
 
-```ts
+```ts highlights={[["15"]]}
 import { 
   createStep,
   StepResponse,
@@ -2149,7 +2244,7 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/compens
 
 To manipulate variables within a workflow's constructor function, use the `transform` utility:
 
-```ts
+```ts highlights={[["14", "transform"]]}
 import { 
   createWorkflow,
   WorkflowResponse,
@@ -2179,7 +2274,7 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/variabl
 
 To perform steps or set a variable's value based on a condition, use the `when-then` utility:
 
-```ts
+```ts highlights={[["14", "when"]]}
 import { 
   createWorkflow,
   WorkflowResponse,
@@ -2217,7 +2312,7 @@ const workflow = createWorkflow(
 
 To run a workflow in another, use the workflow's `runAsStep` special method:
 
-```ts
+```ts highlights={[["11", "runAsStep"]]}
 import {
   createWorkflow,
 } from "@medusajs/framework/workflows-sdk"
@@ -2268,7 +2363,7 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/workflo
 
 To expose a hook in a workflow, pass it in the second parameter of the returned `WorkflowResponse`:
 
-```ts
+```ts highlights={[["19", "hooks"]]}
 import {
   createStep,
   createHook,
@@ -2501,7 +2596,7 @@ Use the Workflow Engine Module's `subscribe` and `unsubscribe` methods to access
 
 For example, in an API route:
 
-```ts
+```ts highlights={[["18", "subscribe", "Subscribe to the workflow's status changes."]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import myWorkflow from "../../../workflows/hello-world"
 import { Modules } from "@medusajs/framework/utils"
@@ -2545,6 +2640,8 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/long-ru
 
 ## Subscribers
 
+A subscriber is a function executed whenever the event it listens to is emitted.
+
 ### Create a Subscriber
 
 To create a subscriber that listens to the `product.created` event, create the file `src/subscribers/product-created.ts` with the following content:
@@ -2573,7 +2670,7 @@ Learn more in [this documentation](!docs!/basics/events-and-subscribers).
 
 To resolve resources from the Medusa container in a subscriber, use the `container` property of its parameter:
 
-```ts
+```ts highlights={[["6", "container"], ["8", "resolve", "Resolve the Product Module's main service."]]}
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { Modules } from "@medusajs/framework/utils"
 
@@ -2581,8 +2678,7 @@ export default async function productCreateHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const productModuleService =
-    container.resolve(Modules.PRODUCT)
+  const productModuleService = container.resolve(Modules.PRODUCT)
 
   const productId = data.id
 
@@ -2645,9 +2741,51 @@ export const config: SubscriberConfig = {
 
 Learn more in [this documentation](../commerce-modules/auth/reset-password/page.mdx).
 
+### Execute a Workflow in a Subscriber
+
+To execute a workflow in a subscriber:
+
+```ts
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import myWorkflow from "../workflows/hello-world"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function handleCustomerCreate({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const userId = data.id
+  const userModuleService = container.resolve(
+    Modules.USER
+  )
+
+  const user = await userModuleService.retrieveUser(userId)
+
+  const { result } = await myWorkflow(container)
+    .run({
+      input: {
+        name: user.first_name,
+      },
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "user.created",
+}
+```
+
+Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflow)
+
 ---
 
 ## Scheduled Jobs
+
+A scheduled job is a function executed at a specified interval of time in the background of your Medusa application.
 
 ### Create a Scheduled Job
 
@@ -2673,15 +2811,14 @@ Learn more in [this documentation](!docs!/basics/scheduled-jobs).
 
 To resolve resources in a scheduled job, use the `container` accepted as a first parameter:
 
-```ts
+```ts highlights={[["5", "container"], ["7", "resolve", "Resolve the Product Module's main service."]]}
 import { MedusaContainer } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export default async function myCustomJob(
   container: MedusaContainer
 ) {
-  const productModuleService = 
-    container.resolve(Modules.PRODUCT)
+  const productModuleService = container.resolve(Modules.PRODUCT)
 
   const [, count] = await productModuleService.listAndCountProducts()
 
@@ -2703,7 +2840,7 @@ Learn more in [this documentation](!docs!/basics/scheduled-jobs#resolve-resource
 
 To limit the scheduled job's execution to a number of times during the Medusa application's runtime, use the `numberOfExecutions` configuration:
 
-```ts
+```ts highlights={[["9", "numberOfExecutions"]]}
 export default async function myCustomJob() {
   console.log("I'll be executed three times only.")
 }
@@ -2718,9 +2855,40 @@ export const config = {
 
 Learn more in [this documentation](!docs!/advanced-development/scheduled-jobs/execution-number).
 
+### Execute a Workflow in a Scheduled Job
+
+To execute a workflow in a scheduled job:
+
+```ts
+import { MedusaContainer } from "@medusajs/framework/types"
+import myWorkflow from "../workflows/hello-world"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await myWorkflow(container)
+    .run({
+      input: {
+        name: "John",
+      },
+    })
+
+  console.log(result.message)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: `0 0 * * *`,
+}
+```
+
+Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflow)
+
 ---
 
 ## Loaders
+
+A loader is a function defined in a module that's executed when the Medusa application starts.
 
 ### Create a Loader
 
@@ -2742,7 +2910,7 @@ Learn more in [this documentation](!docs!/basics/loaders).
 
 To resolve resources in a loader, use the `container` property of its first parameter:
 
-```ts
+```ts highlights={[["9", "container"], ["11", "resolve", "Resolve the Logger from the module's container."]]}
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
@@ -2765,7 +2933,7 @@ Learn more in [this documentation](!docs!/advanced-development/modules/container
 
 To access a module's options in its loader, use the `options` property of its first parameter:
 
-```ts
+```ts highlights={[["11", "options"]]}
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
@@ -2792,7 +2960,7 @@ Learn more in [this documentation](!docs!/advanced-development/modules/options).
 
 To register a resource in the Module's container using a loader, use the `container`'s `registerAdd` method:
 
-```ts
+```ts highlights={[["9", "registerAdd"]]}
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
@@ -2814,3 +2982,952 @@ Where the first parameter of `registerAdd` is the name to register the resource 
 
 ---
 
+## Admin Customizations
+
+You can customize the Medusa Admin to inject widgets in existing pages, or create new pages using UI routes.
+
+<Note>
+
+For a list of components to use in the admin dashboard, refere to [this documentation](../admin-components/page.mdx).
+
+</Note>
+
+### Create Widget
+
+A widget is a React component that can be injected into an existing page in the admin dashboard.
+
+To create a widget in the admin dashboard, create the file `src/admin/widgets/products-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/products-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+
+const ProductWidget = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Product Widget</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.list.before",
+})
+
+export default ProductWidget
+```
+
+Learn more about widgets in [this documentation](!docs!/advanced-development/admin/widgets).
+
+### Receive Details Props in Widgets
+
+Widgets created in a details page, such as widgets in the `product.details.before` injection zone, receive a prop of the data of the details page (for example, the product):
+
+```tsx highlights={[["10", "data"]]}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps, 
+  AdminProduct,
+} from "@medusajs/framework/types"
+
+// The widget
+const ProductWidget = ({ 
+  data,
+}: DetailWidgetProps<AdminProduct>) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Product Widget {data.title}
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Learn more in [this documentation](!docs!/advanced-development/admin/widgets#detail-widget-props).
+
+### Create a UI Route
+
+A UI route is a React Component that adds a new page to your admin dashboard. The UI Route can be shown in the sidebar or added as a nested page.
+
+To create a UI route in the admin dashboard, create the file `src/admin/routes/custom/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { ChatBubbleLeftRight } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+
+const CustomPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">This is my custom route</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Custom Route",
+  icon: ChatBubbleLeftRight,
+})
+
+export default CustomPage
+```
+
+This adds a new page at `localhost:9000/app/custom`.
+
+Learn more in [this documentation](!docs!/advanced-development/admin/ui-routes).
+
+### Create Settings Page
+
+To create a settings page, create a UI route under the `src/admin/routes/settings` directory.
+
+For example, create the file `src/admin/routes/settings/custom/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/settings/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+
+const CustomSettingPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h1">Custom Setting Page</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export default CustomSettingPage
+```
+
+This adds a setting page at `localhost:9000/app/settings/custom`.
+
+Learn more in [this documentation](!docs!/advanced-development/admin/ui-routes#create-settings-page)
+
+### Accept Path Parameters in UI Routes
+
+To accept a path parameter in a UI route, name one of the directories in its path in the format `[param]`.
+
+For example, create the file `src/admin/routes/custom/[id]/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx"
+import { useParams } from "react-router-dom"
+import { Container } from "@medusajs/ui"
+
+const CustomPage = () => {
+  const { id } = useParams()
+
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h1">Passed ID: {id}</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export default CustomPage
+```
+
+This creates a UI route at `localhost:9000/app/custom/:id`, where `:id` is a path parameter.
+
+Learn more in [this documentation](!docs!/advanced-development/admin/ui-routes#path-parameters)
+
+### Send Request to API Route
+
+To send a request to custom API routes from the admin dashboard, use the Fetch API.
+
+For example:
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container } from "@medusajs/ui"
+import { useEffect, useState } from "react"
+
+const ProductWidget = () => {
+  const [productsCount, setProductsCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!loading) {
+      return
+    }
+
+    fetch(`/admin/products`, {
+      credentials: "include",
+    })
+    .then((res) => res.json())
+    .then(({ count }) => {
+      setProductsCount(count)
+      setLoading(false)
+    })
+  }, [loading])
+
+  return (
+    <Container className="divide-y p-0">
+      {loading && <span>Loading...</span>}
+      {!loading && <span>You have {productsCount} Product(s).</span>}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.list.before",
+})
+
+export default ProductWidget
+```
+
+Learn more in [this documentation](!docs!/advanced-development/admin/tips#send-requests-to-api-routes)
+
+### Add Link to Another Page
+
+To add a link to another page in a UI route or a widget, use `react-router-dom`'s `Link` component:
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+
+// The widget
+const ProductWidget = () => {
+  return (
+    <Container className="divide-y p-0">
+      <Link to={"/orders"}>View Orders</Link>
+    </Container>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Learn more in [this documentation](!docs!/advanced-development/admin/tips#routing-functionalities).
+
+---
+
+## Integration Tests
+
+Medusa provides a `medusa-test-utils` package with utility tools to create integration tests for your custom API routes, modules, or other Medusa customizations.
+
+<Note>
+
+For details on setting up your project for integration tests, refer to [this documentation](!docs!/debugging-and-testing/testing-tools).
+
+</Note>
+
+### Test Custom API Route
+
+To create a test for a custom API route, create the file `integration-tests/http/custom-routes.spec.ts` with the following content:
+
+```ts title="integration-tests/http/custom-routes.spec.ts"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ api, getContainer }) => {
+    describe("Custom endpoints", () => {
+      describe("GET /custom", () => {
+        it("returns correct message", async () => {
+          const response = await api.get(
+            `/custom`
+          )
+  
+          expect(response.status).toEqual(200)
+          expect(response.data).toHaveProperty("message")
+          expect(response.data.message).toEqual("Hello, World!")
+        })
+      })
+    })
+  },
+})
+```
+
+Then, run the test with the following command:
+
+```bash npm2yarn
+npm run test:integration
+```
+
+Learn more in [this documentation](!docs!/debugging-and-testing/testing-tools/integration-tests/api-routes).
+
+### Test Workflow
+
+To create a test for a workflow, create the file `integration-tests/http/workflow.spec.ts` with the following content:
+
+```ts title="integration-tests/http/workflow.spec.ts"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { helloWorldWorkflow } from "../../src/workflows/hello-world"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ getContainer }) => {
+    describe("Test hello-world workflow", () => {
+      it("returns message", async () => {
+        const { result } = await helloWorldWorkflow(getContainer())
+          .run()
+
+        expect(result).toEqual("Hello, World!")
+      })
+    })
+  },
+})
+```
+
+Then, run the test with the following command:
+
+```bash npm2yarn
+npm run test:integration
+```
+
+Learn more in [this documentation](!docs!/debugging-and-testing/testing-tools/integration-tests/workflows).
+
+### Test Module's Service
+
+To create a test for a module's service, create the test under the `__tests__` directory of the module.
+
+For example, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
+
+```ts title="src/modules/hello/__tests__/service.spec.ts"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { HELLO_MODULE } from ".."
+import HelloModuleService from "../service"
+import MyCustom from "../models/my-custom"
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleName: HELLO_MODULE,
+  moduleModels: [MyCustom],
+  resolve: "./modules/hello",
+  testSuite: ({ service }) => {
+    describe("HelloModuleService", () => {
+      it("says hello world", () => {
+        const message = service.getMessage()
+
+        expect(message).toEqual("Hello, World!")
+      })
+    })
+  },
+})
+```
+
+Then, run the test with the following command:
+
+```bash npm2yarn
+npm run test:modules
+```
+
+---
+
+## Commerce Modules
+
+Medusa provides all its commerce features as separate commerce modules, such as the Product or Order modules.
+
+<Note>
+
+Refer to the [Commerce Modules](../commerce-modules/page.mdx) documentation for concepts and reference of every module's main service.
+
+</Note>
+
+### Create an Actor Type to Authenticate
+
+To create an actor type that can authenticate to the Medusa application, such as a `manager`:
+
+1. Create the data model in a module:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Manager = model.define("manager", {
+  id: model.id().primaryKey(),
+  firstName: model.text(),
+  lastName: model.text(),
+  email: model.text(),
+})
+
+export default Manager
+```
+
+2. Use the `setAuthAppMetadataStep` as a step in a workflow that creates a manager:
+
+```ts
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  setAuthAppMetadataStep,
+} from "@medusajs/medusa/core-flows"
+// other imports...
+
+const createManagerWorkflow = createWorkflow(
+  "create-manager",
+  function (input: CreateManagerWorkflowInput) {
+    const manager = createManagerStep({
+      manager: input.manager,
+    })
+
+    setAuthAppMetadataStep({
+      authIdentityId: input.authIdentityId,
+      actorType: "manager",
+      value: manager.id,
+    })
+
+    return new WorkflowResponse(manager)
+  }
+)
+```
+
+3. Use the workflow in an API route that creates a user (manager) of the actor type:
+
+```ts
+import type { 
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+import createManagerWorkflow from "../../workflows/create-manager"
+
+type RequestBody = {
+  first_name: string
+  last_name: string
+  email: string
+}
+
+export async function POST(
+  req: AuthenticatedMedusaRequest<RequestBody>, 
+  res: MedusaResponse
+) {
+  // If `actor_id` is present, the request carries 
+  // authentication for an existing manager
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Request already authenticated as a manager."
+    )
+  }
+
+  const { result } = await createManagerWorkflow(req.scope)
+    .run({
+      input: {
+        manager: req.body,
+        authIdentityId: req.auth_context.auth_identity_id,
+      },
+    })
+  
+    res.status(200).json({ manager: result })
+}
+```
+
+4. Apply the `authenticate` middleware on the new route in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import { 
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/medusa"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/manager",
+      method: "POST",
+      middlewares: [
+        authenticate("manager", ["session", "bearer"], {
+          allowUnregistered: true,
+        }),
+      ],
+    },
+    {
+      matcher: "/manager/me*",
+      middlewares: [
+        authenticate("manager", ["session", "bearer"]),
+      ],
+    },
+  ],
+})
+```
+
+Now, manager users can use the `/manager` API route to register, and all routes starting with `/manager/me` are only accessible by authenticated managers.
+
+Find an elaborate example and learn more in [this documentation](../commerce-modules/auth/create-actor-type/page.mdx).
+
+### Apply Promotion on Cart Items and Shipping
+
+To apply a promotion on a cart's items and shipping methods using the [Cart](../commerce-modules/cart/page.mdx) and [Promotion](../commerce-modules/promotion/page.mdx) modules:
+
+```ts
+import {
+  ComputeActionAdjustmentLine,
+  ComputeActionItemLine,
+  ComputeActionShippingLine,
+  AddItemAdjustmentAction,
+  AddShippingMethodAdjustment,
+  // ...
+} from "@medusajs/framework/types"
+
+// retrieve the cart
+const cart = await cartModuleService.retrieveCart("cart_123", {
+  relations: [
+    "items.adjustments",
+    "shipping_methods.adjustments",
+  ],
+})
+
+// retrieve line item adjustments
+const lineItemAdjustments: ComputeActionItemLine[] = []
+cart.items.forEach((item) => {
+  const filteredAdjustments = item.adjustments?.filter(
+    (adjustment) => adjustment.code !== undefined
+  ) as unknown as ComputeActionAdjustmentLine[]
+  if (filteredAdjustments.length) {
+    lineItemAdjustments.push({
+      ...item,
+      adjustments: filteredAdjustments,
+    })
+  }
+})
+
+// retrieve shipping method adjustments
+const shippingMethodAdjustments: ComputeActionShippingLine[] =
+  []
+cart.shipping_methods.forEach((shippingMethod) => {
+  const filteredAdjustments =
+    shippingMethod.adjustments?.filter(
+      (adjustment) => adjustment.code !== undefined
+    ) as unknown as ComputeActionAdjustmentLine[]
+  if (filteredAdjustments.length) {
+    shippingMethodAdjustments.push({
+      ...shippingMethod,
+      adjustments: filteredAdjustments,
+    })
+  }
+})
+
+// compute actions
+const actions = await promotionModuleService.computeActions(
+  ["promo_123"],
+  {
+    items: lineItemAdjustments,
+    shipping_methods: shippingMethodAdjustments,
+  }
+)
+
+// set the adjustments on the line item
+await cartModuleService.setLineItemAdjustments(
+  cart.id,
+  actions.filter(
+    (action) => action.action === "addItemAdjustment"
+  ) as AddItemAdjustmentAction[]
+)
+
+// set the adjustments on the shipping method
+await cartModuleService.setShippingMethodAdjustments(
+  cart.id,
+  actions.filter(
+    (action) =>
+      action.action === "addShippingMethodAdjustment"
+  ) as AddShippingMethodAdjustment[]
+)
+```
+
+Learn more in [this documentation](../commerce-modules/cart/tax-lines/page.mdx).
+
+### Retrieve Tax Lines of a Cart's Items and Shipping
+
+To retrieve the tax lines of a cart's items and shipping methods using the [Cart](../commerce-modules/cart/page.mdx) and [Tax](../commerce-modules/tax/page.mdx) modules:
+
+```ts
+// retrieve the cart
+const cart = await cartModuleService.retrieveCart("cart_123", {
+  relations: [
+    "items.tax_lines",
+    "shipping_methods.tax_lines",
+    "shipping_address",
+  ],
+})
+
+// retrieve the tax lines
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    ...(cart.items as TaxableItemDTO[]),
+    ...(cart.shipping_methods as TaxableShippingDTO[]),
+  ],
+  {
+    address: {
+      ...cart.shipping_address,
+      country_code:
+        cart.shipping_address.country_code || "us",
+    },
+  }
+)
+
+// set line item tax lines
+await cartModuleService.setLineItemTaxLines(
+  cart.id,
+  taxLines.filter((line) => "line_item_id" in line)
+)
+
+// set shipping method tax lines
+await cartModuleService.setLineItemTaxLines(
+  cart.id,
+  taxLines.filter((line) => "shipping_line_id" in line)
+)
+```
+
+Learn more in [this documentation](../commerce-modules/cart/tax-lines/page.mdx)
+
+### Apply Promotion on an Order's Items and Shipping
+
+To apply a promotion on an order's items and shipping methods using the [Order](../commerce-modules/order/page.mdx) and [Promotion](../commerce-modules/promotion/page.mdx) modules:
+
+```ts
+import {
+  ComputeActionAdjustmentLine,
+  ComputeActionItemLine,
+  ComputeActionShippingLine,
+  AddItemAdjustmentAction,
+  AddShippingMethodAdjustment,
+  // ...
+} from "@medusajs/framework/types"
+
+// ...
+
+// retrieve the order
+const order = await orderModuleService.retrieveOrder("ord_123", {
+  relations: [
+    "items.item.adjustments",
+    "shipping_methods.shipping_method.adjustments",
+  ],
+})
+// retrieve the line item adjustments
+const lineItemAdjustments: ComputeActionItemLine[] = []
+order.items.forEach((item) => {
+  const filteredAdjustments = item.adjustments?.filter(
+    (adjustment) => adjustment.code !== undefined
+  ) as unknown as ComputeActionAdjustmentLine[]
+  if (filteredAdjustments.length) {
+    lineItemAdjustments.push({
+      ...item,
+      ...item.detail,
+      adjustments: filteredAdjustments,
+    })
+  }
+})
+
+//retrieve shipping method adjustments
+const shippingMethodAdjustments: ComputeActionShippingLine[] =
+  []
+order.shipping_methods.forEach((shippingMethod) => {
+  const filteredAdjustments =
+    shippingMethod.adjustments?.filter(
+      (adjustment) => adjustment.code !== undefined
+    ) as unknown as ComputeActionAdjustmentLine[]
+  if (filteredAdjustments.length) {
+    shippingMethodAdjustments.push({
+      ...shippingMethod,
+      adjustments: filteredAdjustments,
+    })
+  }
+})
+
+// compute actions
+const actions = await promotionModuleService.computeActions(
+  ["promo_123"],
+  {
+    items: lineItemAdjustments,
+    shipping_methods: shippingMethodAdjustments,
+    // TODO infer from cart or region
+    currency_code: "usd",
+  }
+)
+
+// set the adjustments on the line items
+await orderModuleService.setOrderLineItemAdjustments(
+  order.id,
+  actions.filter(
+    (action) => action.action === "addItemAdjustment"
+  ) as AddItemAdjustmentAction[]
+)
+
+// set the adjustments on the shipping methods
+await orderModuleService.setOrderShippingMethodAdjustments(
+  order.id,
+  actions.filter(
+    (action) =>
+      action.action === "addShippingMethodAdjustment"
+  ) as AddShippingMethodAdjustment[]
+)
+```
+
+Learn more in [this documentation](../commerce-modules/order/promotion-adjustments/page.mdx)
+
+### Accept Payment using Module
+
+To accept payment using the Payment Module's main service:
+
+1. Create a payment collection and link it to the cart:
+
+```ts
+import { 
+  ContainerRegistrationKeys,
+  Modules
+} from "@medusajs/framework/utils"
+
+// ...
+
+const paymentCollection =
+  await paymentModuleService.createPaymentCollections({
+    region_id: "reg_123",
+    currency_code: "usd",
+    amount: 5000,
+  })
+
+// resolve the remote link
+const remoteLink = container.resolve(
+  ContainerRegistrationKeys
+)
+
+// create a link between the cart and payment collection
+remoteLink.create({
+  [Modules.CART]: {
+    cart_id: "cart_123"
+  },
+  [Modules.PAYMENT]: {
+    payment_collection_id: paymentCollection.id
+  }
+})
+```
+
+2. Create a payment session in the collection:
+
+```ts
+const paymentSession =
+  await paymentModuleService.createPaymentSession(
+    paymentCollection.id,
+    {
+      provider_id: "stripe",
+      currency_code: "usd",
+      amount: 5000,
+      data: {
+        // any necessary data for the
+        // payment provider
+      },
+    }
+  )
+```
+
+3. Authorize the payment session:
+
+```ts
+const payment =
+  await paymentModuleService.authorizePaymentSession(
+    paymentSession.id,
+    {}
+  )
+```
+
+Learn more in [this documentation](../commerce-modules/payment/payment-flow/page.mdx).
+
+### Get Variant's Prices for Region and Currency
+
+To get prices of a product variant for a region and currency using [Query](!docs!/advanced-development/module-links/query):
+
+```ts
+import { QueryContext } from "@medusajs/framework/utils"
+
+// ...
+
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*",
+  ],
+  filters: {
+    id: "prod_123",
+  },
+  context: {
+    variants: {
+      calculated_price: QueryContext({
+        region_id: "reg_01J3MRPDNXXXDSCC76Y6YCZARS",
+        currency_code: "eur",
+      }),
+    },
+  },
+})
+```
+
+Learn more in [this documentation](../commerce-modules/product/guides/price/page.mdx#retrieve-calculated-price-for-a-context).
+
+### Get All Variant's Prices
+
+To get all prices of a product variant using [Query](!docs!/advanced-development/module-links/query):
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.prices.*",
+  ],
+  filters: {
+    id: [
+      "prod_123",
+    ],
+  },
+})
+```
+
+Learn more in [this documentation](../commerce-modules/product/guides/price/page.mdx).
+
+### Get Variant Prices with Taxes
+
+To get a variant's prices with taxes using [Query](!docs!/advanced-development/module-links/query) and the [Tax Module](../commerce-modules/tax/page.mdx)
+
+```ts
+import {
+  HttpTypes,
+  TaxableItemDTO,
+  ItemTaxLineDTO,
+} from "@medusajs/framework/types"
+import { 
+  QueryContext,
+  calculateAmountsWithTax
+} from "@medusajs/framework/utils"
+// other imports...
+
+// ...
+const asTaxItem = (product: HttpTypes.StoreProduct): TaxableItemDTO[] => {
+  return product.variants
+    ?.map((variant) => {
+      if (!variant.calculated_price) {
+        return
+      }
+
+      return {
+        id: variant.id,
+        product_id: product.id,
+        product_name: product.title,
+        product_categories: product.categories?.map((c) => c.name),
+        product_category_id: product.categories?.[0]?.id,
+        product_sku: variant.sku,
+        product_type: product.type,
+        product_type_id: product.type_id,
+        quantity: 1,
+        unit_price: variant.calculated_price.calculated_amount,
+        currency_code: variant.calculated_price.currency_code,
+      }
+    })
+    .filter((v) => !!v) as unknown as TaxableItemDTO[]
+}
+
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*",
+  ],
+  filters: {
+    id: "prod_123",
+  },
+  context: {
+    variants: {
+      calculated_price: QueryContext({
+        region_id: "region_123",
+        currency_code: "usd",
+      }),
+    },
+  },
+})
+
+const taxLines = (await taxModuleService.getTaxLines(
+  products.map(asTaxItem).flat(),
+  {
+    // example of context properties. You can pass other ones.
+    address: {
+      country_code,
+    },
+  }
+)) as unknown as ItemTaxLineDTO[]
+
+const taxLinesMap = new Map<string, ItemTaxLineDTO[]>()
+taxLines.forEach((taxLine) => {
+  const variantId = taxLine.line_item_id
+  if (!taxLinesMap.has(variantId)) {
+    taxLinesMap.set(variantId, [])
+  }
+
+  taxLinesMap.get(variantId)?.push(taxLine)
+})
+
+products.forEach((product) => {
+  product.variants?.forEach((variant) => {
+    if (!variant.calculated_price) {
+      return
+    }
+
+    const taxLinesForVariant = taxLinesMap.get(variant.id) || []
+    const { priceWithTax, priceWithoutTax } = calculateAmountsWithTax({
+      taxLines: taxLinesForVariant,
+      amount: variant.calculated_price!.calculated_amount!,
+      includesTax:
+        variant.calculated_price!.is_calculated_price_tax_inclusive!,
+    })
+
+    // do something with prices...
+  })
+})
+```
+
+Learn more in [this documentation](../commerce-modules/product/guides/price-with-taxes/page.mdx).
+
+### Invite Users
+
+To invite a user using the [User Module](../commerce-modules/user/page.mdx):
+
+```ts
+const invite = await userModuleService.createInvites({
+  email: "user@example.com",
+})
+```
+
+### Accept User Invite
+
+To accept an invite and create a user using the [User Module](../commerce-modules/user/page.mdx):
+
+```ts
+const invite =
+  await userModuleService.validateInviteToken(inviteToken)
+
+await userModuleService.updateInvites({
+  id: invite.id,
+  accepted: true,
+})
+
+const user = await userModuleService.createUsers({
+  email: invite.email,
+})
+```

@@ -167,13 +167,18 @@ const nextConfig = {
       {
         source: "/basics/modules-and-services",
         destination: "/basics/modules",
-        permanent: true
+        permanent: true,
       },
       {
         source: "/basics/data-models",
         destination: "/basics/modules",
-        permanent: true
-      }
+        permanent: true,
+      },
+      {
+        source: "/more-resources/examples",
+        destination: "/resources/examples",
+        permanent: true,
+      },
     ]
   },
 }

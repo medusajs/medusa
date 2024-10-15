@@ -584,6 +584,10 @@ export const filesMap = [
     "pathname": "/events-reference"
   },
   {
+    "filePath": "/www/apps/resources/app/examples/page.mdx",
+    "pathname": "/examples"
+  },
+  {
     "filePath": "/www/apps/resources/app/integrations/page.mdx",
     "pathname": "/integrations"
   },
