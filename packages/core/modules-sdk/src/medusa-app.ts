@@ -18,6 +18,7 @@ import {
   dynamicImport,
   GraphQLUtils,
   isObject,
+  isSharedConnectionSymbol,
   isString,
   MedusaError,
   MODULE_PACKAGE_NAMES,
@@ -128,7 +129,7 @@ export async function loadModules(args: {
       declaration.options ??= {}
 
       if (!declaration.options.database) {
-        declaration.options[Symbol.for("isSharedConnection")] = true
+        declaration.options[isSharedConnectionSymbol] = true
       }
 
       declaration.options.database ??= {

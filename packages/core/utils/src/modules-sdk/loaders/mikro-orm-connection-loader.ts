@@ -7,6 +7,7 @@ import {
   mikroOrmCreateConnection,
   mikroOrmFreeTextSearchFilterOptionsFactory,
 } from "../../dal"
+import { isSharedConnectionSymbol } from "../create-pg-connection"
 import { loadDatabaseConfig } from "../load-module-database-config"
 
 /**
@@ -55,7 +56,7 @@ export async function mikroOrmConnectionLoader({
 
   const moduleOptions = options as any
   const reuseSharedConnection =
-    moduleOptions[Symbol.for("isSharedConnection")] || !moduleOptions?.database
+    moduleOptions[isSharedConnectionSymbol] || !moduleOptions?.database
 
   if (moduleDeclaration?.scope === "internal" && reuseSharedConnection) {
     const shouldSwallowError = true

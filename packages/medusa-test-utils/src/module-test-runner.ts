@@ -1,6 +1,7 @@
 import {
   ContainerRegistrationKeys,
   DmlEntity,
+  isSharedConnectionSymbol,
   loadModels,
   Modules,
   ModulesSdkUtils,
@@ -118,7 +119,7 @@ export function moduleIntegrationTestRunner<TService = any>({
       options: {
         database: dbConfig,
         ...moduleOptions,
-        [Symbol.for("isSharedConnection")]: true,
+        [isSharedConnectionSymbol]: true,
       },
     },
   }
