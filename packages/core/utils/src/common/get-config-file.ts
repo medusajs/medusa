@@ -17,8 +17,8 @@ export async function getConfigFile<TConfig = unknown>(
   const configPath = join(rootDir, configName)
 
   try {
-    const configFilePath = require.resolve(configPath)
-    const resolvedExports = await dynamicImport(configFilePath)
+    const configFilePath = join(process.cwd(), rootDir, configName)
+    const resolvedExports = await dynamicImport(configPath)
     return {
       configModule:
         "default" in resolvedExports && resolvedExports.default
