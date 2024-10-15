@@ -3,10 +3,23 @@ import { Modules, promiseAll } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout } from "node:timers/promises"
 
-jest.setTimeout(10000)
+jest.setTimeout(5000)
 
+const providerId = "locking-redis"
 moduleIntegrationTestRunner<ILockingModule>({
   moduleName: Modules.LOCKING,
+  moduleOptions: {
+    providers: [
+      {
+        id: providerId,
+        resolve: require.resolve("../../src"),
+        is_default: true,
+        options: {
+          redisUrl: process.env.REDIS_URL ?? "redis://localhost:6379",
+        },
+      },
+    ],
+  },
   testSuite: ({ service }) => {
     describe("Locking Module Service", () => {
       let stock = 5
@@ -27,6 +40,10 @@ moduleIntegrationTestRunner<ILockingModule>({
         }
         return false
       }
+
+      beforeEach(async () => {
+        await service.releaseAll()
+      })
 
       it("should execute functions respecting the key locked", async () => {
         // 10 parallel calls to buy should oversell the stock
@@ -62,7 +79,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         })
 
         expect(userReleased).toBe(false)
-        await expect(anotherUserLock).rejects.toThrowError(
+        await expect(anotherUserLock).rejects.toThrow(
           `Failed to acquire lock for key "key_name"`
         )
 
@@ -90,11 +107,11 @@ moduleIntegrationTestRunner<ILockingModule>({
           service.acquire(keyToLock, user_1)
         ).resolves.toBeUndefined()
 
-        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
-        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
@@ -153,8 +170,8 @@ moduleIntegrationTestRunner<ILockingModule>({
       await service.execute("lock_key", fn_1).catch(() => {})
       await service.execute("lock_key", fn_2).catch(() => {})
 
-      expect(fn_1).toBeCalledTimes(1)
-      expect(fn_2).toBeCalledTimes(1)
+      expect(fn_1).toHaveBeenCalledTimes(1)
+      expect(fn_2).toHaveBeenCalledTimes(1)
     })
 
     it("should release lock in case of timeout failure", async () => {
@@ -186,7 +203,7 @@ moduleIntegrationTestRunner<ILockingModule>({
 
         service
           .execute("lock_key", fn_3, {
-            timeout: 2,
+            timeout: 5,
           })
           .catch((e) => e),
       ]

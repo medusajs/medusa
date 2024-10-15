@@ -66,6 +66,9 @@ describe("defineConfig", function () {
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
           },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -212,6 +215,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -367,6 +373,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -524,6 +533,9 @@ describe("defineConfig", function () {
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
           },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -668,6 +680,9 @@ describe("defineConfig", function () {
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
           },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -811,6 +826,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory-next",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {

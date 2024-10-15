@@ -7,6 +7,9 @@ import {
   MedusaContainer,
   ModuleExports,
   ModuleLoaderFunction,
+  ModuleProvider,
+  ModuleProviderExports,
+  ModuleProviderLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -15,6 +18,8 @@ import {
   defineJoinerConfig,
   DmlEntity,
   dynamicImport,
+  isString,
+  MedusaModuleProviderType,
   MedusaModuleType,
   ModulesSdkUtils,
   toMikroOrmEntities,
@@ -28,7 +33,7 @@ type ModuleResource = {
   services: Function[]
   models: Function[]
   repositories: Function[]
-  loaders: ModuleLoaderFunction[]
+  loaders: ModuleLoaderFunction[] | ModuleProviderLoaderFunction[]
   moduleService: Constructor<any>
   normalizedPath: string
 }
@@ -38,22 +43,36 @@ type MigrationFunction = (
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
+type ResolvedModule = ModuleExports & {
+  discoveryPath: string
+}
+
+type ResolvedModuleProvider = ModuleProviderExports & {
+  discoveryPath: string
+}
+
+export const moduleProviderRegistrationKeyPrefix = "__providers__"
+
+/**
+ * Return the key used to register a module provider in the container
+ * @param {string} moduleKey
+ * @return {string}
+ */
+export function getProviderRegistrationKey(moduleKey: string): string {
+  return moduleProviderRegistrationKeyPrefix + moduleKey
+}
+
 export async function resolveModuleExports({
   resolution,
 }: {
   resolution: ModuleResolution
-}): Promise<
-  | (ModuleExports & {
-      discoveryPath: string
-    })
-  | { error: any }
-> {
+}): Promise<ResolvedModule | ResolvedModuleProvider | { error: any }> {
   let resolvedModuleExports: ModuleExports
   try {
     if (resolution.moduleExports) {
       // TODO:
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
-      resolvedModuleExports = resolution.moduleExports
+      resolvedModuleExports = resolution.moduleExports as ModuleExports
       resolvedModuleExports.discoveryPath = resolution.resolutionPath as string
     } else {
       const module = await dynamicImport(resolution.resolutionPath as string)
@@ -61,10 +80,12 @@ export async function resolveModuleExports({
       if ("discoveryPath" in module) {
         const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
         const discoveryPath = module.discoveryPath
-        resolvedModuleExports = reExportedLoadedModule.default
+        resolvedModuleExports =
+          reExportedLoadedModule.default ?? reExportedLoadedModule
         resolvedModuleExports.discoveryPath = discoveryPath as string
       } else {
-        resolvedModuleExports = (module as { default: ModuleExports }).default
+        resolvedModuleExports =
+          (module as { default: ModuleExports }).default ?? module
         resolvedModuleExports.discoveryPath =
           resolution.resolutionPath as string
       }
@@ -89,13 +110,79 @@ export async function resolveModuleExports({
   }
 }
 
-export async function loadInternalModule(
-  container: MedusaContainer,
-  resolution: ModuleResolution,
-  logger: Logger,
-  migrationOnly?: boolean,
-  loaderOnly?: boolean
+async function loadInternalProvider(
+  args: {
+    container: MedusaContainer
+    resolution: ModuleResolution
+    logger: Logger
+    migrationOnly?: boolean
+    loaderOnly?: boolean
+  },
+  providers: ModuleProvider[]
 ): Promise<{ error?: Error } | void> {
+  const { container, resolution, logger, migrationOnly } = args
+
+  const errors: { error?: Error }[] = []
+  for (const provider of providers) {
+    const providerRes = provider.resolve as ModuleProviderExports
+
+    const canLoadProvider =
+      providerRes && (isString(providerRes) || !providerRes?.services)
+
+    if (!canLoadProvider) {
+      continue
+    }
+
+    const res = await loadInternalModule({
+      container,
+      resolution: {
+        ...resolution,
+        moduleExports: !isString(providerRes) ? providerRes : undefined,
+        definition: {
+          ...resolution.definition,
+          key: provider.id,
+        },
+        resolutionPath: isString(provider.resolve) ? provider.resolve : false,
+      },
+      logger,
+      migrationOnly,
+      loadingProviders: true,
+    })
+
+    if (res) {
+      errors.push(res)
+    }
+  }
+
+  const errorMessages = errors.map((e) => e.error?.message).join("\n")
+  return errors.length
+    ? {
+        error: {
+          name: "ModuleProviderError",
+          message: `Errors while loading module providers for module ${resolution.definition.key}:\n${errorMessages}`,
+          stack: errors.map((e) => e.error?.stack).join("\n"),
+        },
+      }
+    : undefined
+}
+
+export async function loadInternalModule(args: {
+  container: MedusaContainer
+  resolution: ModuleResolution
+  logger: Logger
+  migrationOnly?: boolean
+  loaderOnly?: boolean
+  loadingProviders?: boolean
+}): Promise<{ error?: Error } | void> {
+  const {
+    container,
+    resolution,
+    logger,
+    migrationOnly,
+    loaderOnly,
+    loadingProviders,
+  } = args
+
   const keyName = !loaderOnly
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
@@ -117,7 +204,12 @@ export async function loadInternalModule(
     })
   }
 
-  if (!loadedModule?.service && !moduleResources.moduleService) {
+  const loadedModule_ = loadedModule as ModuleExports
+  if (
+    !loadingProviders &&
+    !loadedModule_?.service &&
+    !moduleResources.moduleService
+  ) {
     container.register({
       [keyName]: asValue(undefined),
     })
@@ -127,20 +219,6 @@ export async function loadInternalModule(
         `No service found in module ${resolution?.definition?.label}. Make sure your module exports a service.`
       ),
     }
-  }
-
-  if (migrationOnly) {
-    const moduleService_ = moduleResources.moduleService ?? loadedModule.service
-
-    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
-    const moduleService = {
-      __joinerConfig: moduleService_.prototype.__joinerConfig,
-    }
-
-    container.register({
-      [keyName]: asValue(moduleService),
-    })
-    return
   }
 
   const localContainer = createMedusaContainer()
@@ -172,6 +250,44 @@ export async function loadInternalModule(
     )
   }
 
+  // if module has providers, load them
+  let providerOptions: any = undefined
+  if (!loadingProviders) {
+    const providers = (resolution?.options?.providers as any[]) ?? []
+
+    const res = await loadInternalProvider(
+      {
+        ...args,
+        container: localContainer,
+      },
+      providers
+    )
+
+    if (res?.error) {
+      return res
+    }
+  } else {
+    providerOptions = (resolution?.options?.providers as any[]).find(
+      (p) => p.id === resolution.definition.key
+    )?.options
+  }
+
+  if (migrationOnly && !loadingProviders) {
+    const moduleService_ =
+      moduleResources.moduleService ?? loadedModule_.service
+
+    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
+    const moduleService = {
+      __joinerConfig: moduleService_.prototype.__joinerConfig,
+    }
+
+    container.register({
+      [keyName]: asValue(moduleService),
+    })
+
+    return
+  }
+
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
   const error = await runLoaders(loaders, {
     container,
@@ -180,24 +296,56 @@ export async function loadInternalModule(
     resolution,
     loaderOnly,
     keyName,
+    providerOptions,
   })
 
   if (error) {
     return error
   }
 
-  const moduleService = moduleResources.moduleService ?? loadedModule.service
+  if (loadingProviders) {
+    const loadedProvider_ = loadedModule as ModuleProviderExports
 
-  container.register({
-    [keyName]: asFunction((cradle) => {
-      ;(moduleService as any).__type = MedusaModuleType
-      return new moduleService(
-        localContainer.cradle,
-        resolution.options,
-        resolution.moduleDeclaration
+    let moduleProviderServices = moduleResources.moduleService
+      ? [moduleResources.moduleService]
+      : loadedProvider_.services ?? loadedProvider_
+
+    if (!moduleProviderServices) {
+      return
+    }
+
+    for (const moduleProviderService of moduleProviderServices) {
+      const modProvider_ = moduleProviderService as any
+
+      modProvider_.identifier ??= keyName
+      modProvider_.__type = MedusaModuleProviderType
+      const registrationKey = getProviderRegistrationKey(
+        modProvider_.identifier
       )
-    }).singleton(),
-  })
+      container.register({
+        [registrationKey]: asFunction((cradle) => {
+          ;(moduleProviderService as any).__type = MedusaModuleType
+          return new moduleProviderService(
+            localContainer.cradle,
+            resolution.options,
+            resolution.moduleDeclaration
+          )
+        }).singleton(),
+      })
+    }
+  } else {
+    const moduleService = moduleResources.moduleService ?? loadedModule_.service
+    container.register({
+      [keyName]: asFunction((cradle) => {
+        ;(moduleService as any).__type = MedusaModuleType
+        return new moduleService(
+          localContainer.cradle,
+          resolution.options,
+          resolution.moduleDeclaration
+        )
+      }).singleton(),
+    })
+  }
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
@@ -215,46 +363,114 @@ export async function loadModuleMigrations(
   revertMigration?: MigrationFunction
   generateMigration?: MigrationFunction
 }> {
-  const loadedModule = await resolveModuleExports({
+  const mainLoadedModule = await resolveModuleExports({
     resolution: { ...resolution, moduleExports },
   })
 
-  if ("error" in loadedModule) {
-    throw loadedModule.error
-  }
+  const loadedServices = [mainLoadedModule] as (
+    | ResolvedModule
+    | ResolvedModuleProvider
+  )[]
 
-  try {
-    let runMigrations = loadedModule.runMigrations
-    let revertMigration = loadedModule.revertMigration
-    let generateMigration = loadedModule.generateMigration
+  if (Array.isArray(resolution?.options?.providers)) {
+    for (const provider of (resolution.options as any).providers) {
+      const providerRes = provider.resolve as ModuleProviderExports
 
-    if (!runMigrations || !revertMigration) {
-      const moduleResources = await loadResources({
-        moduleResolution: resolution,
-        discoveryPath: loadedModule.discoveryPath,
-        loadedModuleLoaders: loadedModule?.loaders,
-      })
+      const canLoadProvider =
+        providerRes && (isString(providerRes) || !providerRes?.services)
 
-      const migrationScriptOptions = {
-        moduleName: resolution.definition.key,
-        models: moduleResources.models,
-        pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
+      if (!canLoadProvider) {
+        continue
       }
 
-      runMigrations ??= ModulesSdkUtils.buildMigrationScript(
-        migrationScriptOptions
-      )
+      const loadedProvider = await resolveModuleExports({
+        resolution: {
+          ...resolution,
+          moduleExports: !isString(providerRes) ? providerRes : undefined,
+          definition: {
+            ...resolution.definition,
+            key: provider.id,
+          },
+          resolutionPath: isString(provider.resolve) ? provider.resolve : false,
+        },
+      })
+      loadedServices.push(loadedProvider as ResolvedModuleProvider)
+    }
+  }
 
-      revertMigration ??= ModulesSdkUtils.buildRevertMigrationScript(
-        migrationScriptOptions
-      )
+  if ("error" in mainLoadedModule) {
+    throw mainLoadedModule.error
+  }
 
-      generateMigration ??= ModulesSdkUtils.buildGenerateMigrationScript(
-        migrationScriptOptions
-      )
+  const runMigrationsFn: ((...args) => Promise<any>)[] = []
+  const revertMigrationFn: ((...args) => Promise<any>)[] = []
+  const generateMigrationFn: ((...args) => Promise<any>)[] = []
+
+  try {
+    const migrationScripts: any[] = []
+    for (const loadedModule of loadedServices) {
+      let runMigrationsCustom = loadedModule.runMigrations
+      let revertMigrationCustom = loadedModule.revertMigration
+      let generateMigrationCustom = loadedModule.generateMigration
+
+      runMigrationsCustom && runMigrationsFn.push(runMigrationsCustom)
+      revertMigrationCustom && revertMigrationFn.push(revertMigrationCustom)
+      generateMigrationCustom &&
+        generateMigrationFn.push(generateMigrationCustom)
+
+      if (!runMigrationsCustom || !revertMigrationCustom) {
+        const moduleResources = await loadResources({
+          moduleResolution: resolution,
+          discoveryPath: loadedModule.discoveryPath,
+          loadedModuleLoaders: loadedModule?.loaders,
+        })
+
+        migrationScripts.push({
+          moduleName: resolution.definition.key,
+          models: moduleResources.models,
+          pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
+        })
+      }
+
+      for (const migrationScriptOptions of migrationScripts) {
+        const migrationUp =
+          runMigrationsCustom ??
+          ModulesSdkUtils.buildMigrationScript(migrationScriptOptions)
+        runMigrationsFn.push(migrationUp)
+
+        const migrationDown =
+          revertMigrationCustom ??
+          ModulesSdkUtils.buildRevertMigrationScript(migrationScriptOptions)
+        revertMigrationFn.push(migrationDown)
+
+        const genMigration =
+          generateMigrationCustom ??
+          ModulesSdkUtils.buildGenerateMigrationScript(migrationScriptOptions)
+        generateMigrationFn.push(genMigration)
+      }
     }
 
-    return { runMigrations, revertMigration, generateMigration }
+    const runMigrations = async (...args) => {
+      for (const migration of runMigrationsFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+    const revertMigration = async (...args) => {
+      for (const migration of revertMigrationFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+    const generateMigration = async (...args) => {
+      for (const migration of generateMigrationFn.filter(Boolean)) {
+        await migration.apply(migration, args)
+      }
+    }
+
+    return {
+      runMigrations,
+      revertMigration,
+      generateMigration,
+    }
   } catch {
     return {}
   }
@@ -303,7 +519,7 @@ export async function loadResources({
   moduleResolution: ModuleResolution
   discoveryPath: string
   logger?: Logger
-  loadedModuleLoaders?: ModuleLoaderFunction[]
+  loadedModuleLoaders?: ModuleLoaderFunction[] | ModuleProviderLoaderFunction[]
 }): Promise<ModuleResource> {
   logger ??= console as unknown as Logger
   loadedModuleLoaders ??= []
@@ -319,7 +535,8 @@ export async function loadResources({
 
     const [moduleService, services, models, repositories] = await Promise.all([
       dynamicImport(modulePath).then((moduleExports) => {
-        return moduleExports.default.service
+        const mod = moduleExports.default ?? moduleExports
+        return mod.service
       }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
@@ -360,11 +577,14 @@ export async function loadResources({
       migrationPath: normalizedPath + "/migrations",
     })
 
-    generateJoinerConfigIfNecessary({
-      moduleResolution,
-      service: moduleService,
-      models: potentialModels,
-    })
+    // if a module service is provided, we generate a joiner config
+    if (moduleService) {
+      generateJoinerConfigIfNecessary({
+        moduleResolution,
+        service: moduleService,
+        models: potentialModels,
+      })
+    }
 
     return {
       services: potentialServices,
@@ -385,7 +605,15 @@ export async function loadResources({
 
 async function runLoaders(
   loaders: Function[] = [],
-  { localContainer, container, logger, resolution, loaderOnly, keyName }
+  {
+    localContainer,
+    container,
+    logger,
+    resolution,
+    loaderOnly,
+    keyName,
+    providerOptions,
+  }
 ): Promise<void | { error: Error }> {
   try {
     for (const loader of loaders) {
@@ -393,8 +621,9 @@ async function runLoaders(
         {
           container: localContainer,
           logger,
-          options: resolution.options,
+          options: providerOptions ?? resolution.options,
           dataLoaderOnly: loaderOnly,
+          moduleOptions: providerOptions ? resolution.options : undefined,
         },
         resolution.moduleDeclaration as InternalModuleDeclaration
       )
@@ -413,14 +642,17 @@ async function runLoaders(
 }
 
 function prepareLoaders({
-  loadedModuleLoaders = [] as ModuleLoaderFunction[],
+  loadedModuleLoaders = [] as
+    | ModuleLoaderFunction[]
+    | ModuleProviderLoaderFunction[],
   models,
   repositories,
   services,
   moduleResolution,
   migrationPath,
 }) {
-  const finalLoaders: ModuleLoaderFunction[] = []
+  const finalLoaders: (ModuleLoaderFunction | ModuleProviderLoaderFunction)[] =
+    []
 
   const toObjectReducer = (acc, curr) => {
     acc[curr.name] = curr

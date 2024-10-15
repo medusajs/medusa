@@ -8,10 +8,10 @@ import {
   Modules,
   REVERSED_MODULE_PACKAGE_NAMES,
 } from "../modules-sdk"
-import { isString } from "./is-string"
-import { resolveExports } from "./resolve-exports"
 import { isObject } from "./is-object"
+import { isString } from "./is-string"
 import { normalizeImportPathWithSource } from "./normalize-import-path-with-source"
+import { resolveExports } from "./resolve-exports"
 
 const DEFAULT_SECRET = "supersecret"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"
@@ -132,6 +132,7 @@ function resolveModules(
     { resolve: MODULE_PACKAGE_NAMES[Modules.CACHE] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE] },
+    { resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.STOCK_LOCATION] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.INVENTORY] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.PRODUCT] },
