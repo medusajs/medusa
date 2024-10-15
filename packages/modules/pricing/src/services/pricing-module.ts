@@ -47,8 +47,8 @@ import {
   PriceSet,
 } from "@models"
 
-import { eventBuilders, validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
+import { eventBuilders, validatePriceListDates } from "@utils"
 import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {

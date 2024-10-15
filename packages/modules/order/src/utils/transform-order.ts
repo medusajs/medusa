@@ -48,6 +48,11 @@ export function formatOrder<T = any>(
         raw_quantity: detail.raw_quantity,
         unit_price: detail.unit_price ?? orderItem.item.unit_price,
         raw_unit_price: detail.raw_unit_price ?? orderItem.item.raw_unit_price,
+        compare_at_unit_price:
+          detail.compare_at_unit_price ?? orderItem.item.compare_at_unit_price,
+        raw_compare_at_unit_price:
+          detail.raw_compare_at_unit_price ??
+          orderItem.item.raw_compare_at_unit_price,
         detail,
       }
     })
@@ -252,6 +257,11 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
     if (original.unit_price) {
       conf.where.items.unit_price = original.unit_price
       delete conf.where.items.item.unit_price
+    }
+
+    if (original.compare_at_unit_price) {
+      conf.where.items.compare_at_unit_price = original.compare_at_unit_price
+      delete conf.where.items.item.compare_at_unit_price
     }
 
     if (original.detail) {
