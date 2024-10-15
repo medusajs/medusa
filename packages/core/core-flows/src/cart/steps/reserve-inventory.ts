@@ -1,5 +1,5 @@
 import { MathBN, Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { BigNumberInput } from "@medusajs/types"
 
 export interface ReserveVariantInventoryStepInput {
@@ -25,10 +25,10 @@ export const reserveInventoryStep = createStep(
 
     const locking = container.resolve(Modules.LOCKING)
 
-    const keysToLock: string[] = []
+    const inventoryItemIds: string[] = []
 
     const items = data.items.map((item) => {
-      keysToLock.push(item.inventory_item_id)
+      inventoryItemIds.push(item.inventory_item_id)
 
       return {
         line_item_id: item.id,
@@ -39,13 +39,13 @@ export const reserveInventoryStep = createStep(
       }
     })
 
-    const reservations = await locking.execute(keysToLock, async () => {
+    const reservations = await locking.execute(inventoryItemIds, async () => {
       return await inventoryService.createReservationItems(items)
     })
 
     return new StepResponse(reservations, {
       reservations: reservations.map((r) => r.id),
-      inventoryItemIds: keysToLock,
+      inventoryItemIds,
     })
   },
   async (data, { container }) => {
@@ -56,8 +56,8 @@ export const reserveInventoryStep = createStep(
     const inventoryService = container.resolve(Modules.INVENTORY)
     const locking = container.resolve(Modules.LOCKING)
 
-    const keysToLock = data.inventoryItemIds
-    await locking.execute(keysToLock, async () => {
+    const inventoryItemIds = data.inventoryItemIds
+    await locking.execute(inventoryItemIds, async () => {
       await inventoryService.deleteReservationItems(data.reservations)
     })
 

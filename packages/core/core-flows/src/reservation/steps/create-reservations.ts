@@ -1,5 +1,5 @@
 import { InventoryTypes } from "@medusajs/framework/types"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { Modules } from "@medusajs/framework/utils"
 
@@ -13,15 +13,15 @@ export const createReservationsStep = createStep(
     const service = container.resolve(Modules.INVENTORY)
     const locking = container.resolve(Modules.LOCKING)
 
-    const keysToLock = data.map((item) => item.inventory_item_id)
+    const inventoryItemIds = data.map((item) => item.inventory_item_id)
 
-    const created = await locking.execute(keysToLock, async () => {
+    const created = await locking.execute(inventoryItemIds, async () => {
       return await service.createReservationItems(data)
     })
 
     return new StepResponse(created, {
       reservations: created.map((reservation) => reservation.id),
-      inventoryItemIds: keysToLock,
+      inventoryItemIds: inventoryItemIds,
     })
   },
   async (data, { container }) => {
@@ -32,8 +32,8 @@ export const createReservationsStep = createStep(
     const service = container.resolve(Modules.INVENTORY)
     const locking = container.resolve(Modules.LOCKING)
 
-    const keysToLock = data.inventoryItemIds
-    await locking.execute(keysToLock, async () => {
+    const inventoryItemIds = data.inventoryItemIds
+    await locking.execute(inventoryItemIds, async () => {
       await service.deleteReservationItems(data.reservations)
     })
   }

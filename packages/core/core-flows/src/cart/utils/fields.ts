@@ -1,10 +1,13 @@
 export const cartFieldsForRefreshSteps = [
   "id",
+  "currency_code",
+  "quantity",
   "subtotal",
   "item_subtotal",
   "shipping_subtotal",
   "region_id",
   "currency_code",
+  "metadata",
   "completed_at",
   "region.*",
   "items.*",
@@ -20,6 +23,7 @@ export const cartFieldsForRefreshSteps = [
   "shipping_methods.tax_lines.*",
   "customer.*",
   "customer.groups.*",
+  "promotions.code",
 ]
 
 export const completeCartFields = [
@@ -113,8 +117,7 @@ export const productVariantsFields = [
   "product.collection.title",
   "product.handle",
   "product.discountable",
-  "calculated_price.calculated_amount",
-  "calculated_price.is_calculated_price_tax_inclusive",
+  "calculated_price.*",
   "inventory_items.inventory_item_id",
   "inventory_items.required_quantity",
   "inventory_items.inventory.requires_shipping",

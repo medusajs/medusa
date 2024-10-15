@@ -6,6 +6,7 @@ export interface StoreCreateCart {
   currency_code?: string
   items?: StoreAddCartLineItem[]
   sales_channel_id?: string
+  promo_codes?: string[]
   metadata?: Record<string, unknown>
 }
 
