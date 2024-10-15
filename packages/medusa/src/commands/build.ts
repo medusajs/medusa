@@ -6,6 +6,7 @@ import { ConfigModule } from "@medusajs/framework/types"
 import { getConfigFile } from "@medusajs/framework/utils"
 
 const ADMIN_FOLDER = "src/admin"
+const ADMIN_RELATIVE_OUTPUT_DIR = "./public/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
 
 function computeDist(
@@ -231,7 +232,7 @@ async function buildFrontend(
     disable: false,
     sources: [adminSource],
     ...configFile.configModule.admin,
-    outDir: path.join(dist, configFile.configModule.admin.outDir),
+    outDir: path.join(dist, ADMIN_RELATIVE_OUTPUT_DIR),
   }
 
   if (adminOptions.disable) {
