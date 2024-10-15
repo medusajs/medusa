@@ -21,7 +21,7 @@ function computeDist(
   return dist
 }
 
-async function getTsConfigPath(projectRoot: string) {
+async function loadTsConfig(projectRoot: string) {
   const ts = await import("typescript")
   const tsConfig = parseTSConfig(projectRoot, ts)
   if (!tsConfig) {
@@ -264,7 +264,7 @@ export default async function ({
 }): Promise<boolean> {
   logger.info("Starting build...")
 
-  const tsConfig = await getTsConfigPath(directory)
+  const tsConfig = await loadTsConfig(directory)
   if (!tsConfig) {
     return false
   }
