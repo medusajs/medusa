@@ -1,5 +1,5 @@
 import { join } from "path"
-import { resolveExports } from "./resolve-exports"
+import { dynamicImport } from "./dynamic-import"
 
 /**
  * Attempts to resolve the config file in a given root directory.
@@ -7,18 +7,18 @@ import { resolveExports } from "./resolve-exports"
  * @param {string} configName - the name of the config file.
  * @return {object} an object containing the config module and its path as well as an error property if the config couldn't be loaded.
  */
-export function getConfigFile<TConfig = unknown>(
+export async function getConfigFile<TConfig = unknown>(
   rootDir: string,
   configName: string
-):
+): Promise<
   | { configModule: null; configFilePath: string; error: Error }
-  | { configModule: TConfig; configFilePath: string; error: null } {
+  | { configModule: TConfig; configFilePath: string; error: null }
+> {
   const configPath = join(rootDir, configName)
 
   try {
     const configFilePath = require.resolve(configPath)
-    const configExports = require(configFilePath)
-    const resolvedExports = resolveExports(configExports)
+    const resolvedExports = await dynamicImport(configFilePath)
     return {
       configModule:
         "default" in resolvedExports && resolvedExports.default
