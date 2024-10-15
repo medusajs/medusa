@@ -139,7 +139,7 @@ export const updateCartWorkflow = createWorkflow(
       emitEventStep({
         eventName: CartWorkflowEvents.CUSTOMER_UPDATED,
         data: { id: input.id },
-      })
+      }).config({ name: "emit-customer-updated" })
     })
 
     when({ input, cartToUpdate }, ({ input, cartToUpdate }) => {
@@ -151,7 +151,7 @@ export const updateCartWorkflow = createWorkflow(
       emitEventStep({
         eventName: CartWorkflowEvents.REGION_UPDATED,
         data: { id: input.id },
-      })
+      }).config({ name: "emit-region-updated" })
     })
 
     parallelize(
