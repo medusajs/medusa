@@ -490,10 +490,10 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               relationship: expect.objectContaining({
-                serviceName: "Region",
+                serviceName: "region",
                 entity: "Region",
                 primaryKey: "id",
                 foreignKey: "currency",
@@ -508,10 +508,10 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               relationship: expect.objectContaining({
-                serviceName: "Region",
+                serviceName: "region",
                 entity: "Region",
                 primaryKey: "id",
                 foreignKey: "my_custom_currency_code",
@@ -526,10 +526,10 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               relationship: expect.objectContaining({
-                serviceName: "Region",
+                serviceName: "region",
                 entity: "Country",
                 primaryKey: "region_country_code_id",
                 foreignKey: "my_custom_id",
@@ -544,10 +544,10 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               relationship: expect.objectContaining({
-                serviceName: "Currency",
+                serviceName: "currency",
                 entity: "Currency",
                 primaryKey: "code",
                 foreignKey: "custom_currency_id",
@@ -562,10 +562,10 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Currency",
+              serviceName: "currency",
               entity: "Currency",
               relationship: expect.objectContaining({
-                serviceName: "Region",
+                serviceName: "region",
                 entity: "Country",
                 primaryKey: "region_country_code_id",
                 foreignKey: "my_custom_id",
@@ -580,7 +580,7 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Region",
+              serviceName: "region",
               entity: "Country",
               relationship: expect.objectContaining({
                 serviceName: "Weather",
@@ -597,7 +597,7 @@ medusaIntegrationTestRunner({
           isReadOnlyLink: true,
           extends: [
             {
-              serviceName: "Product",
+              serviceName: "product",
               relationship: expect.objectContaining({
                 serviceName: "Weather",
                 primaryKey: "season_id",
