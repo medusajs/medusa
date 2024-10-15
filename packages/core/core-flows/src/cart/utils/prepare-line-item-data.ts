@@ -5,8 +5,8 @@ import {
   CreateOrderLineItemTaxLineDTO,
   InventoryItemDTO,
   ProductVariantDTO,
-} from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { isDefined } from "@medusajs/framework/utils"
 
 interface Input {
   item?: CartLineItemDTO

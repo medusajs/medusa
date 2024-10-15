@@ -1,11 +1,11 @@
-import { BatchResponse, DeleteResponse, PaginatedResponse } from "../../common";
-import { 
-  AdminPromotion, 
-  AdminPromotionRule, 
-  AdminRuleAttributeOption, 
-  AdminRuleOperatorOption, 
-  AdminRuleValueOption
-} from "./entities";
+import { BatchResponse, DeleteResponse, PaginatedResponse } from "../../common"
+import {
+  AdminPromotion,
+  AdminPromotionRule,
+  AdminRuleAttributeOption,
+  AdminRuleOperatorOption,
+  AdminRuleValueOption,
+} from "./entities"
 
 export interface AdminPromotionResponse {
   promotion: AdminPromotion

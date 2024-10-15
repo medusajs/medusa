@@ -1,3 +1,3 @@
-import { MedusaV2Flag } from "@medusajs/utils"
+import { MedusaV2Flag } from "@medusajs/framework/utils"
 
 export default MedusaV2Flag

@@ -1,11 +1,11 @@
-import { IPromotionModuleService } from "@medusajs/types"
+import { IPromotionModuleService } from "@medusajs/framework/types"
 import {
   ApplicationMethodType,
   CampaignBudgetType,
   Module,
   Modules,
   PromotionType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { PromotionModuleService } from "@services"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
@@ -49,7 +49,7 @@ moduleIntegrationTestRunner({
               linkable: "promotion_id",
               entity: "Promotion",
               primaryKey: "id",
-              serviceName: "Promotion",
+              serviceName: "promotion",
               field: "promotion",
             },
           },
@@ -58,7 +58,7 @@ moduleIntegrationTestRunner({
               linkable: "campaign_id",
               entity: "Campaign",
               primaryKey: "id",
-              serviceName: "Promotion",
+              serviceName: "promotion",
               field: "campaign",
             },
           },
@@ -67,7 +67,7 @@ moduleIntegrationTestRunner({
               linkable: "promotion_rule_id",
               entity: "PromotionRule",
               primaryKey: "id",
-              serviceName: "Promotion",
+              serviceName: "promotion",
               field: "promotionRule",
             },
           },

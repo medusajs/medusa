@@ -17,13 +17,12 @@ import {
   dynamicImport,
   MedusaModuleType,
   ModulesSdkUtils,
-  resolveExports,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
-import { join, resolve } from "path"
+import { dirname, join, resolve } from "path"
 import { MODULE_RESOURCE_TYPE } from "../../types"
 
 type ModuleResource = {
@@ -40,35 +39,40 @@ type MigrationFunction = (
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
-export async function loadInternalModule(
-  container: MedusaContainer,
-  resolution: ModuleResolution,
-  logger: Logger,
-  migrationOnly?: boolean,
-  loaderOnly?: boolean
-): Promise<{ error?: Error } | void> {
-  const keyName = !loaderOnly
-    ? resolution.definition.key
-    : resolution.definition.key + "__loaderOnly"
-
-  const { resources } =
-    resolution.moduleDeclaration as InternalModuleDeclaration
-
-  let loadedModule: ModuleExports
+export async function resolveModuleExports({
+  resolution,
+}: {
+  resolution: ModuleResolution
+}): Promise<
+  | (ModuleExports & {
+      discoveryPath: string
+    })
+  | { error: any }
+> {
+  let resolvedModuleExports: ModuleExports
   try {
-    // When loading manually, we pass the exports to be loaded, meaning that we do not need to import the package to find
-    // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
-    // does not need to import the package that is currently being loaded as it would create a
-    // circular reference.
-    const modulePath = resolution.resolutionPath as string
-
     if (resolution.moduleExports) {
       // TODO:
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
-      loadedModule = resolution.moduleExports
+      resolvedModuleExports = resolution.moduleExports
+      resolvedModuleExports.discoveryPath = resolution.resolutionPath as string
     } else {
-      loadedModule = await dynamicImport(modulePath)
-      loadedModule = (loadedModule as any).default
+      const module = await dynamicImport(resolution.resolutionPath as string)
+
+      if ("discoveryPath" in module) {
+        const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
+        const discoveryPath = module.discoveryPath
+        resolvedModuleExports = reExportedLoadedModule.default
+        resolvedModuleExports.discoveryPath = discoveryPath as string
+      } else {
+        resolvedModuleExports = (module as { default: ModuleExports }).default
+        resolvedModuleExports.discoveryPath =
+          resolution.resolutionPath as string
+      }
+    }
+
+    return resolvedModuleExports as ModuleExports & {
+      discoveryPath: string
     }
   } catch (error) {
     if (
@@ -84,15 +88,37 @@ export async function loadInternalModule(
 
     return { error }
   }
+}
+
+export async function loadInternalModule(
+  container: MedusaContainer,
+  resolution: ModuleResolution,
+  logger: Logger,
+  migrationOnly?: boolean,
+  loaderOnly?: boolean
+): Promise<{ error?: Error } | void> {
+  const keyName = !loaderOnly
+    ? resolution.definition.key
+    : resolution.definition.key + "__loaderOnly"
+
+  const { resources } =
+    resolution.moduleDeclaration as InternalModuleDeclaration
+
+  const loadedModule = await resolveModuleExports({ resolution })
+
+  if ("error" in loadedModule) {
+    return loadedModule
+  }
 
   let moduleResources = {} as ModuleResource
 
-  if (resolution.resolutionPath) {
-    moduleResources = await loadResources(
-      resolution,
+  if (loadedModule.discoveryPath) {
+    moduleResources = await loadResources({
+      moduleResolution: resolution,
+      discoveryPath: loadedModule.discoveryPath,
       logger,
-      loadedModule?.loaders ?? []
-    )
+      loadedModuleLoaders: loadedModule?.loaders,
+    })
   }
 
   if (!loadedModule?.service && !moduleResources.moduleService) {
@@ -194,22 +220,25 @@ export async function loadModuleMigrations(
   revertMigration?: MigrationFunction
   generateMigration?: MigrationFunction
 }> {
-  let loadedModule: ModuleExports
-  try {
-    loadedModule =
-      moduleExports ??
-      (await dynamicImport(resolution.resolutionPath as string))
+  const loadedModule = await resolveModuleExports({
+    resolution: { ...resolution, moduleExports },
+  })
 
+  if ("error" in loadedModule) {
+    throw loadedModule.error
+  }
+
+  try {
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration
     let generateMigration = loadedModule.generateMigration
 
     if (!runMigrations || !revertMigration) {
-      const moduleResources = await loadResources(
-        resolution,
-        console as unknown as Logger,
-        loadedModule?.loaders ?? []
-      )
+      const moduleResources = await loadResources({
+        moduleResolution: resolution,
+        discoveryPath: loadedModule.discoveryPath,
+        loadedModuleLoaders: loadedModule?.loaders,
+      })
 
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
@@ -264,21 +293,28 @@ async function importAllFromDir(path: string) {
   })
 
   return (
-    await Promise.all(filesToLoad.map((filePath) => import(filePath)))
+    await Promise.all(filesToLoad.map((filePath) => dynamicImport(filePath)))
   ).flatMap((value) => {
-    return Object.values(resolveExports(value))
+    return Object.values(value)
   })
 }
 
-export async function loadResources(
-  moduleResolution: ModuleResolution,
-  logger: Logger = console as unknown as Logger,
+export async function loadResources({
+  moduleResolution,
+  discoveryPath,
+  logger,
+  loadedModuleLoaders,
+}: {
+  moduleResolution: ModuleResolution
+  discoveryPath: string
+  logger?: Logger
   loadedModuleLoaders?: ModuleLoaderFunction[]
-): Promise<ModuleResource> {
-  let modulePath = moduleResolution.resolutionPath as string
-  let normalizedPath = modulePath
-    .replace("index.js", "")
-    .replace("index.ts", "")
+}): Promise<ModuleResource> {
+  logger ??= console as unknown as Logger
+  loadedModuleLoaders ??= []
+
+  const modulePath = discoveryPath
+  let normalizedPath = dirname(require.resolve(modulePath))
   normalizedPath = resolve(normalizedPath)
 
   try {
@@ -287,8 +323,8 @@ export async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(modulePath).then((moduleExports) => {
-        return resolveExports(moduleExports).default.service
+      dynamicImport(modulePath).then((moduleExports) => {
+        return moduleExports.default.service
       }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail

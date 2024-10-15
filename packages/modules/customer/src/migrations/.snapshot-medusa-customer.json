@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -134,9 +132,7 @@
         },
         {
           "keyName": "customer_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -320,9 +316,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "keyName": "IDX_customer_address_customer_id",
           "primary": false,
@@ -346,9 +340,7 @@
         },
         {
           "keyName": "customer_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -358,13 +350,9 @@
       "foreignKeys": {
         "customer_address_customer_id_foreign": {
           "constraintName": "customer_address_customer_id_foreign",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "localTableName": "public.customer_address",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -447,9 +435,7 @@
       "indexes": [
         {
           "keyName": "IDX_customer_group_name_unique",
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -457,9 +443,7 @@
         },
         {
           "keyName": "customer_group_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -542,18 +526,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "customer_group_id"
-          ],
+          "columnNames": ["customer_group_id"],
           "composite": false,
           "keyName": "IDX_customer_group_customer_group_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "keyName": "IDX_customer_group_customer_customer_id",
           "primary": false,
@@ -561,9 +541,7 @@
         },
         {
           "keyName": "customer_group_customer_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -573,25 +551,17 @@
       "foreignKeys": {
         "customer_group_customer_customer_group_id_foreign": {
           "constraintName": "customer_group_customer_customer_group_id_foreign",
-          "columnNames": [
-            "customer_group_id"
-          ],
+          "columnNames": ["customer_group_id"],
           "localTableName": "public.customer_group_customer",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer_group",
           "deleteRule": "cascade"
         },
         "customer_group_customer_customer_id_foreign": {
           "constraintName": "customer_group_customer_customer_id_foreign",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "localTableName": "public.customer_group_customer",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.customer",
           "deleteRule": "cascade"
         }

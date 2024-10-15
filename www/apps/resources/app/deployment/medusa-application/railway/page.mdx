@@ -48,9 +48,9 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 The `workerMode` configuration determines which mode the Medusa application runs in. As mentioned at the beginning of this guide, you’ll deploy two Medusa applications: one in server mode, and one in worker mode.
 
-So, add the following configuration in `medusa-config.js`:
+So, add the following configuration in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     // ...
@@ -74,9 +74,9 @@ To host the admin with the Medusa application, the hosting provider and plan sho
 
 </Note>
 
-Add the following configuration in `medusa-config.js`:
+Add the following configuration in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {
@@ -89,9 +89,9 @@ Later, you’ll set different values of the `DISABLE_MEDUSA_ADMIN` environment v
 
 ### Configure Redis URL
 
-Add the following configuration in `medusa-config.js` :
+Add the following configuration in `medusa-config.ts` :
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     // ...
@@ -134,34 +134,33 @@ For example, add the following dependencies in `package.json` for the Cache, Eve
 ```json
 "dependencies": {
   // ...
-  "@medusajs/cache-redis": "preview",
-  "@medusajs/event-bus-redis": "preview",
-  "@medusajs/workflow-engine-redis": "preview"
+  "@medusajs/cache-redis": "rc",
+  "@medusajs/event-bus-redis": "rc",
+  "@medusajs/workflow-engine-redis": "rc"
 }
 ```
 
-Then, add these modules in `medusa-config.js`:
+Then, add these modules in `medusa-config.ts`:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    // ...
-    [Modules.CACHE]: {
+  modules: [
+    {
       resolve: "@medusajs/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    [Modules.EVENT_BUS]: {
+    {
       resolve: "@medusajs/event-bus-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    [Modules.WORKFLOW_ENGINE]: {
+    {
       resolve: "@medusajs/workflow-engine-redis",
       options: {
         redis: {
@@ -169,7 +168,7 @@ module.exports = defineConfig({
         },
       },
     },
-  },
+  ]
 })
 ```
 
@@ -286,9 +285,9 @@ You can either generate a random domain name or set a custom one. To do that:
 
 If you’re deploying the Medusa application in server mode with the admin, you have to make some changes now that you’ve obtained the application’s URL.
 
-First, add the following configuration to `medusa-config.js`:
+First, add the following configuration to `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {

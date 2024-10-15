@@ -14,17 +14,17 @@
  *       schema:
  *         oneOf:
  *           - type: object
- *             description: The files to upload.
+ *             description: The files to upload
  *             required:
  *               - files
  *             properties:
  *               files:
  *                 type: array
- *                 description: The files to upload.
+ *                 description: The upload's files.
  *                 items:
  *                   oneOf:
  *                     - type: object
- *                       description: A file's details.
+ *                       description: The file's files.
  *                       required:
  *                         - name
  *                         - content
@@ -36,9 +36,22 @@
  *                         content:
  *                           type: string
  *                           title: content
- *                           description: The file's base64 content.
- *                     - $ref: "#/components/schemas/File"
- *           - $ref: "#/components/schemas/FileList"
+ *                           description: The file's content.
+ *                     - type: object
+ *                       description: A File to upload.
+ *                       externalDocs:
+ *                         url: https://developer.mozilla.org/en-US/docs/Web/API/File
+ *                         description: Learn more about the File API
+ *                       title: files
+ *           - type: array
+ *             description: list of files to upload.
+ *             items:
+ *               type: object
+ *               description: A File to upload.
+ *               externalDocs:
+ *                 url: https://developer.mozilla.org/en-US/docs/Web/API/File
+ *                 description: Learn more about the File API
+ *             title: FileList
  *         description: The files to upload.
  * x-codeSamples:
  *   - lang: Shell

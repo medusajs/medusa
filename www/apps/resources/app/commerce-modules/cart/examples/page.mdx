@@ -13,16 +13,15 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -51,7 +50,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -87,16 +86,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -112,7 +110,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function GET(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -135,16 +133,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -167,7 +164,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -195,16 +192,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -226,7 +222,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -253,16 +249,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -284,7 +279,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -311,16 +306,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -343,7 +337,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -371,16 +365,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -396,7 +389,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function DELETE(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -415,16 +408,15 @@ export async function DELETE(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -437,16 +429,15 @@ export async function DELETE(
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 

@@ -15,11 +15,6 @@ if (os.platform() === `win32`) {
   // ensureWindowsDriveLetterIsUppercase()
 }
 
-// Check if update is available
-// updateNotifier({ pkg }).notify({ isGlobal: true })
-
-const MIN_NODE_VERSION = `10.13.0`
-
 process.on(`unhandledRejection`, (reason) => {
   // This will exit the process in newer Node anyway so lets be consistent
   // across versions and crash

@@ -1,13 +1,13 @@
-import { MedusaError, isPresent } from "@medusajs/utils"
-import { MedusaResponse } from "../../../../types/routing"
+import { isPresent, MedusaError } from "@medusajs/framework/utils"
+import { MedusaResponse } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
 import {
-  RequestWithContext,
   refetchProduct,
+  RequestWithContext,
   wrapProductsWithTaxPrices,
 } from "../helpers"
 import { StoreGetProductParamsType } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: RequestWithContext<StoreGetProductParamsType>,

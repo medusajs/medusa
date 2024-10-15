@@ -1,9 +1,9 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { importProductsWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (

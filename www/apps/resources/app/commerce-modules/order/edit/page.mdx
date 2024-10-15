@@ -1,0 +1,57 @@
+export const metadata = {
+  title: `Order Edit`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about order edits.
+
+## What is an Order Edit?
+
+A merchant can edit an order to add new items or change the quantity of existing items in the order.
+
+An order edit is represented by the [OrderChange data model](/references/order/models/OrderChange).
+
+The `OrderChange` data model is associated with any type of change, including a return or exchange. However, its `change_type` property distinguishes the type of change it's making.
+
+In the case of an order edit, the `OrderChange`'s type is `edit`.
+
+---
+
+## Add Items in an Order Edit
+
+When the merchant adds new items to the order in the order edit, the item is added as an [OrderItem](/references/order/models/OrderItem).
+
+Also, an `OrderChangeAction` is created. The [OrderChangeAction data model](/references/order/models/OrderChangeAction) represents a change made by an `OrderChange`, such as an item added.
+
+So, when an item is added, an `OrderChangeAction` is created with the type `ITEM_ADD`. In its `details` property, the item's ID, price, and quantity are stored.
+
+---
+
+## Update Items in an Order Edit
+
+A merchant can update an existing item's quantity or price.
+
+This change is added as an `OrderChangeAction` with the type `ITEM_UPDATE`. In its `details` property, the item's ID, new price, and new quantity are stored.
+
+---
+
+## Shipping Methods of New Items in the Edit
+
+Adding new items to the order requires adding shipping methods for those items.
+
+These shipping methods are represented by the [OrderShippingMethod data model](/references/order/models/OrderItem). Also, an `OrderChangeAction` is created with the type `SHIPPING_ADD`
+
+---
+
+## How Order Edits Impact an Order’s Version
+
+When an order edit is confirmed, the order’s version is incremented.
+
+---
+
+## Payments and Refunds for Order Edit Changes
+
+Once the Order Edit is confirmed, any additional payment or refund required can be made on the original order.
+
+This is determined by the comparison between the `OrderSummary` and the order's transactions, as mentioned in [this guide](../transactions/page.mdx#checking-outstanding-amount).

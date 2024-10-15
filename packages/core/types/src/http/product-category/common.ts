@@ -22,7 +22,7 @@ export interface BaseProductCategory {
 
 export interface BaseProductCategoryListParams
   extends FindParams,
-  BaseFilterable<BaseProductCategoryListParams> {
+    BaseFilterable<BaseProductCategoryListParams> {
   q?: string
   id?: string | string[]
   name?: string | string[]

@@ -1,13 +1,13 @@
 import { createReturnReasonsWorkflow } from "@medusajs/core-flows"
-import { CreateOrderReturnReasonDTO, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminReturnReasonListParams>,
@@ -36,7 +36,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateOrderReturnReasonDTO>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateReturnReason>,
   res: MedusaResponse<HttpTypes.AdminReturnReasonResponse>
 ) => {
   const workflow = createReturnReasonsWorkflow(req.scope)

@@ -3,7 +3,7 @@ import {
   ChangeActionType,
   MathBN,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
@@ -13,11 +13,12 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
       (item) => item.id === action.details.reference_id
     )
 
+    const unitPrice = action.details.unit_price
     const existing = currentOrder.items[existingIndex]
 
     existing.detail.quantity ??= 0
 
-    const quantityDiff = MathBN.sub(
+    let quantityDiff = MathBN.sub(
       action.details.quantity,
       existing.detail.quantity
     )
@@ -26,8 +27,29 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
     existing.quantity = quant
     existing.detail.quantity = quant
 
-    setActionReference(existing, action, options)
+    if (unitPrice) {
+      const currentUnitPriceBN = MathBN.convert(unitPrice)
+      const originalUnitPriceBn = MathBN.convert(
+        existing.detail.unit_price ?? existing.unit_price
+      )
 
+      const currentQuantityBn = MathBN.convert(action.details.quantity)
+      const originalQuantityBn = MathBN.convert(
+        existing.detail.quantity ?? existing.quantity
+      )
+
+      const originalTotal = MathBN.mult(originalUnitPriceBn, originalQuantityBn)
+      const currentTotal = MathBN.mult(currentUnitPriceBN, currentQuantityBn)
+
+      existing.unit_price = currentUnitPriceBN
+      existing.detail.unit_price = currentUnitPriceBN
+
+      setActionReference(existing, action, options)
+
+      return MathBN.sub(currentTotal, originalTotal)
+    }
+
+    setActionReference(existing, action, options)
     return MathBN.mult(existing.unit_price, quantityDiff)
   },
   validate({ action, currentOrder }) {

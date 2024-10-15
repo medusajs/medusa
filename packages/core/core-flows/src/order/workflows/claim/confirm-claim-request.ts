@@ -7,14 +7,14 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderReturnItemDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ChangeActionType,
   MedusaError,
   Modules,
   OrderChangeStatus,
   ReturnStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -22,7 +22,7 @@ import {
   parallelize,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
@@ -246,6 +246,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: [
         "id",
+        "status",
         "actions.id",
         "actions.claim_id",
         "actions.return_id",
@@ -291,7 +292,11 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       }
     )
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    confirmOrderChanges({
+      changes: [orderChange],
+      orderId: order.id,
+      confirmed_by: input.confirmed_by,
+    })
 
     when({ returnId }, ({ returnId }) => {
       return !!returnId

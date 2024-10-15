@@ -21,7 +21,7 @@ Start by creating the directory `src/modules/brand` that will hold the Brand Mod
 To create a data model that represents a new `brand` table in the database, create the file `src/modules/brand/models/brand.ts` with the following content:
 
 ```ts title="src/modules/brand/models/brand.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 export const Brand = model.define("brand", {
   id: model.id().primaryKey(),
@@ -44,7 +44,7 @@ export const serviceHighlights = [
 ]
 
 ```ts title="src/modules/brand/service.ts" highlights={serviceHighlights}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import { Brand } from "./models/brand"
 
 class BrandModuleService extends MedusaService({
@@ -56,7 +56,7 @@ class BrandModuleService extends MedusaService({
 export default BrandModuleService
 ```
 
-The `BrandModuleService` extends a `MedusaService` function imported from `@medusajs/utils` which is a service factory.
+The `BrandModuleService` extends a `MedusaService` function imported from `@medusajs/framework/utils` which is a service factory.
 
 The `MedusaService` function receives an object of the module's data models as a parameter, and generates methods to manage those data models, such as `createBrands` and `updateBrands`.
 
@@ -75,7 +75,7 @@ Find a reference of the generated methods in [this guide](!resources!/service-fa
 To export the module's definition, create the file `src/modules/brand/index.ts` with the following content:
 
 ```ts title="src/modules/brand/index.ts"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 import BrandModuleService from "./service"
 
 export const BRAND_MODULE = "brandModuleService"
@@ -89,7 +89,7 @@ This exposes the module to your application and allows you to resolve the `Brand
 
 <Note>
 
-Learn more about modules and services [in this guide](../../../basics/modules-and-services/page.mdx).
+Learn more about modules and services [in this guide](../../../basics/modules/page.mdx).
 
 </Note>
 
@@ -97,16 +97,16 @@ Learn more about modules and services [in this guide](../../../basics/modules-an
 
 ## 5. Register Module in Config
 
-Finally, add the module to Medusa's configurations in `medusa-config.js`:
+Finally, add the module to Medusa's configurations in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    brandModuleService: {
+  modules: [
+    {
       resolve: "./modules/brand",
-    },
-  },
+    }
+  ]
 })
 ```
 

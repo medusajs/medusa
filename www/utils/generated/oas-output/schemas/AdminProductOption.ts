@@ -16,7 +16,7 @@
  *     title: title
  *     description: The product option's title.
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id
@@ -25,7 +25,7 @@
  *     type: array
  *     description: The product option's values.
  *     items:
- *       $ref: "#/components/schemas/BaseProductOptionValue"
+ *       $ref: "#/components/schemas/AdminProductOptionValue"
  *   metadata:
  *     type: object
  *     description: The product option's metadata, can hold custom key-value pairs.

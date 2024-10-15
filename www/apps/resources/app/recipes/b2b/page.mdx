@@ -173,13 +173,13 @@ You can create a B2B module that adds necessary data models to represent a B2B c
 
 <CardList items={[
   {
-    href: "!docs!/basics/modules-and-services",
+    href: "!docs!/basics/modules",
     title: "Create Module",
     text: "Learn how to create a module in Medusa.",
     icon: AcademicCapSolid,
   },
   {
-    href: "!docs!/basics/data-models",
+    href: "!docs!/basics/modules#1-create-data-model",
     title: "Create Data Models",
     text: "Learn how to create data models.",
     icon: AcademicCapSolid,
@@ -202,7 +202,7 @@ You can create a B2B module that adds necessary data models to represent a B2B c
   Then, create the file `src/modules/b2b/models/company.ts` with the following content:
 
   ```ts title="src/modules/b2b/models/company.ts" highlights={[["8", "", "The property will be used to create a relationship to customer groups."]]}
-  import { model } from "@medusajs/utils"
+  import { model } from "@medusajs/framework/utils"
 
   const Company = model.define("company", {
     id: model.id().primaryKey(),
@@ -239,7 +239,7 @@ You can create a B2B module that adds necessary data models to represent a B2B c
   Then, create the module's main service at `src/modules/b2b/service.ts` with the following content:
   
   ```ts title="src/modules/b2b/service.ts"
-  import { MedusaService } from "@medusajs/utils"
+  import { MedusaService } from "@medusajs/framework/utils"
   import Company from "./models/company"
 
   class B2bModuleService extends MedusaService({
@@ -257,7 +257,7 @@ You can create a B2B module that adds necessary data models to represent a B2B c
 
   ```ts title="src/modules/b2b/index.ts"
   import B2bModuleService from "./service"
-  import { Module } from "@medusajs/utils"
+  import { Module } from "@medusajs/framework/utils"
 
   export default Module("b2b", {
     service: B2bModuleService,
@@ -293,7 +293,7 @@ You can create a B2B module that adds necessary data models to represent a B2B c
   Start by creating the file `src/types/b2b/index.ts` with some helper types:
 
   ```ts title="src/types/b2b/index.ts"
-  import { CustomerGroupDTO } from "@medusajs/types"
+  import { CustomerGroupDTO } from "@medusajs/framework/types"
 
   export type CompanyDTO = {
     id: string
@@ -327,11 +327,11 @@ export const workflowHighlights = [
     StepResponse, 
     createStep, 
     createWorkflow,
-  } from "@medusajs/workflows-sdk"
+  } from "@medusajs/framework/workflows-sdk"
   import { 
     createCustomerGroupsWorkflow,
-  } from "@medusajs/core-flows"
-  import { CreateCustomerGroupDTO } from "@medusajs/types"
+  } from "@medusajs/medusa/core-flows"
+  import { CreateCustomerGroupDTO } from "@medusajs/framework/types"
   import { CompanyDTO, CreateCompanyDTO } from "../types/b2b"
   import B2bModuleService from "../modules/b2b/service"
 
@@ -573,7 +573,7 @@ To implement a more advanced B2B sales flow, add custom data models such as `Com
 This provides more granular control of your B2B sales and allows you to build features like privileges, limits, and more. 
 
 <Card
-  href="!docs!/basics/data-models"
+  href="!docs!/basics/modules#1-create-data-model"
   title="Create a Data Model"
   text="Learn how to create a custom data model in a module."
   icon={AcademicCapSolid}
@@ -609,8 +609,8 @@ export const checkCustomerHighlights = [
     AuthenticatedMedusaRequest, 
     MedusaResponse,
   } from "@medusajs/medusa"
-  import { Modules } from "@medusajs/utils"
-  import { ICustomerModuleService } from "@medusajs/types"
+  import { Modules } from "@medusajs/framework/utils"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
   import B2bModuleService from "../../../../modules/b2b/service"
   
   export async function GET(

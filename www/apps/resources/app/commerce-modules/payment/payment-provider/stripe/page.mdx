@@ -12,15 +12,7 @@ export const metadata = {
 
 In this document, you’ll learn about the Stripe Module Provider and how to install and use it in the Payment Module.
 
-## Features
-
-[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales.
-
-These features are also available in a safe test environment, allowing for a concern-free development process.
-
----
-
-## Install the Stripe Module Provider
+## Register the Stripe Module Provider
 
 <Prerequisites items={[
   {
@@ -37,29 +29,17 @@ These features are also available in a safe test environment, allowing for a con
   }
 ]} />
 
-To install the Stripe Module Provider, run the following command in the directory of your Medusa application:
+Add the module to the array of providers passed to the Payment Module:
 
-```bash npm2yarn
-npm install @medusajs/payment-stripe@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module to the array of providers passed to the Payment Module:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.PAYMENT]: {
+  modules: [
+    {
       resolve: "@medusajs/payment",
       options: {
         providers: [
@@ -73,7 +53,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 
@@ -115,7 +95,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
       </Table.Cell>
       <Table.Cell>
       
-      -
+      \-
       
       </Table.Cell>
     </Table.Row>
@@ -137,7 +117,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
       </Table.Cell>
       <Table.Cell>
       
-      -
+      \-
       
       </Table.Cell>
     </Table.Row>
@@ -210,6 +190,8 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
   </Table.Body>
 </Table>
 
+---
+
 ## Use Provider
 
 To use the Stripe provider, create a payment session for the provider:
@@ -229,3 +211,9 @@ const paymentSession =
     }
   )
 ```
+
+---
+
+## Useful Guides
+
+- [Storefront guide: Add Stripe payment method during checkout](../../../../storefront-development/checkout/payment/stripe/page.mdx).

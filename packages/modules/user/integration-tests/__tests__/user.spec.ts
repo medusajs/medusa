@@ -1,5 +1,5 @@
-import { IUserModuleService } from "@medusajs/types"
-import { Module, Modules, UserEvents } from "@medusajs/utils"
+import { IUserModuleService } from "@medusajs/framework/types"
+import { Module, Modules, UserEvents } from "@medusajs/framework/utils"
 import { UserModuleService } from "@services"
 import {
   MockEventBusService,
@@ -45,7 +45,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
             linkable: "user_id",
             entity: "User",
             primaryKey: "id",
-            serviceName: "User",
+            serviceName: "user",
             field: "user",
           },
         },
@@ -54,7 +54,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
             linkable: "invite_id",
             entity: "Invite",
             primaryKey: "id",
-            serviceName: "User",
+            serviceName: "user",
             field: "invite",
           },
         },

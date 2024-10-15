@@ -5,6 +5,7 @@
  * x-schemaName: AdminProductVariant
  * required:
  *   - prices
+ *   - options
  *   - id
  *   - title
  *   - sku
@@ -21,7 +22,6 @@
  *   - length
  *   - height
  *   - width
- *   - options
  *   - created_at
  *   - updated_at
  *   - deleted_at
@@ -107,9 +107,9 @@
  *     type: array
  *     description: The variant's option values.
  *     items:
- *       $ref: "#/components/schemas/BaseProductOptionValue"
+ *       $ref: "#/components/schemas/AdminProductOptionValue"
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id

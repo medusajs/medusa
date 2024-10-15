@@ -20,7 +20,7 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the product variant was deleted.
- *     default: "variant"
+ *     default: variant
  *   parent:
  *     $ref: "#/components/schemas/AdminProduct"
  * 

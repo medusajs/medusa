@@ -1,17 +1,12 @@
 import type { NextFunction, Request, Response } from "express"
 import { ZodObject } from "zod"
 
-import { MedusaPricingContext, RequestQueryFields } from "@medusajs/types"
-import * as core from "express-serve-static-core"
+import {
+  FindConfig,
+  MedusaPricingContext,
+  RequestQueryFields,
+} from "@medusajs/types"
 import { MedusaContainer } from "../container"
-
-export interface FindConfig<Entity> {
-  select?: (keyof Entity)[]
-  skip?: number
-  take?: number
-  relations?: string[]
-  order?: { [K: string]: "ASC" | "DESC" }
-}
 
 /**
  * List of all the supported HTTP methods
@@ -95,7 +90,13 @@ export type GlobalMiddlewareDescriptor = {
 }
 
 export interface MedusaRequest<Body = unknown>
-  extends Request<core.ParamsDictionary, any, Body> {
+  extends Request<
+    {
+      [key: string]: string
+    },
+    any,
+    Body
+  > {
   validatedBody: Body
   validatedQuery: RequestQueryFields & Record<string, unknown>
   /**
@@ -122,15 +123,10 @@ export interface MedusaRequest<Body = unknown>
    */
   filterableFields: Record<string, unknown>
   includes?: Record<string, boolean>
+
   /**
    * An array of fields and relations that are allowed to be queried, this can be set by the
-   * consumer as part of a middleware and it will take precedence over the defaultAllowedFields
-   * @deprecated use `allowed` instead
-   */
-  allowedFields?: string[]
-  /**
-   * An array of fields and relations that are allowed to be queried, this can be set by the
-   * consumer as part of a middleware and it will take precedence over the defaultAllowedFields set
+   * consumer as part of a middleware and it will take precedence over the req.allowed set
    * by the api
    */
   allowed?: string[]

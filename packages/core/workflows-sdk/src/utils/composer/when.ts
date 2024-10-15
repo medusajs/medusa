@@ -1,4 +1,7 @@
 import { OrchestrationUtils } from "@medusajs/utils"
+import { ulid } from "ulid"
+import { createStep } from "./create-step"
+import { StepResponse } from "./helpers/step-response"
 import { StepExecutionContext, WorkflowData } from "./type"
 
 type ConditionFunction<T extends object | WorkflowData> = (
@@ -41,9 +44,18 @@ export function when(input, condition) {
     then: (fn) => {
       thenCalled = true
       const ret = fn()
+      let returnStep = ret
 
       const applyCondition =
         global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition].steps
+
+      if (ret?.__type !== OrchestrationUtils.SymbolWorkflowStep) {
+        const retStep = createStep(
+          "when-then-" + ulid(),
+          ({ input }: { input: any }) => new StepResponse(input)
+        )
+        returnStep = retStep({ input: ret })
+      }
 
       for (const step of applyCondition) {
         step.if(input, condition)
@@ -51,7 +63,7 @@ export function when(input, condition) {
 
       delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
 
-      return ret
+      return returnStep
     },
   }
 }

@@ -1,4 +1,4 @@
-import { INotificationModuleService } from "@medusajs/types"
+import { INotificationModuleService } from "@medusajs/framework/types"
 import {
   CommonEvents,
   composeMessage,
@@ -6,7 +6,7 @@ import {
   Modules,
   NotificationEvents,
   NotificationStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { NotificationModuleService } from "@services"
 import {
   MockEventBusService,
@@ -60,7 +60,7 @@ moduleIntegrationTestRunner<INotificationModuleService>({
               linkable: "notification_id",
               entity: "Notification",
               primaryKey: "id",
-              serviceName: "Notification",
+              serviceName: "notification",
               field: "notification",
             },
           },

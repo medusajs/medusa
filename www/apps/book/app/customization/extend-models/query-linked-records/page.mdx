@@ -49,10 +49,10 @@ export const highlights = [
 import {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   ContainerRegistrationKeys,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
@@ -112,7 +112,7 @@ Make sure to replace the email and password with your user's credentials.
 Then, send a `GET` request to `/admin/products/:id/brand`:
 
 ```bash
-curl 'http://localhost:9000/admin/product/prod_123/brand' \
+curl 'http://localhost:9000/admin/products/prod_123/brand' \
 -H 'Authorization: Bearer {token}'
 ```
 

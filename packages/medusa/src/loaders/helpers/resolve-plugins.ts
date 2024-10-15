@@ -1,5 +1,5 @@
-import { ConfigModule, PluginDetails } from "@medusajs/types"
-import { isString } from "@medusajs/utils"
+import { ConfigModule, PluginDetails } from "@medusajs/framework/types"
+import { isString } from "@medusajs/framework/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import path, { isAbsolute } from "path"
@@ -14,14 +14,7 @@ function createFileContentHash(path, files): string {
 }
 
 function getExtensionDirectoryPath() {
-  /**
-   * Grab directory for loading resources inside a starter kit from
-   * the medusa-config file.
-   *
-   * When using ts-node we will read resources from "src" directory
-   * otherwise from "dist" directory.
-   */
-  return process[Symbol.for("ts-node.register.instance")] ? "src" : "dist"
+  return "src"
 }
 
 /**

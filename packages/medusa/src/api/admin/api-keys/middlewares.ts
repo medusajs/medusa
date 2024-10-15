@@ -1,7 +1,10 @@
 import * as QueryConfig from "./query-config"
 
-import { MiddlewareRoute } from "@medusajs/framework"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import {
   AdminCreateApiKey,
   AdminGetApiKeyParams,
@@ -9,7 +12,6 @@ import {
   AdminRevokeApiKey,
   AdminUpdateApiKey,
 } from "./validators"
-import { validateAndTransformBody } from "../../utils/validate-body"
 import { createLinkBody } from "../../utils/validators"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [

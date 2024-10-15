@@ -1,8 +1,8 @@
 import {
   BigNumberInput,
   ConfirmVariantInventoryWorkflowInputDTO,
-} from "@medusajs/types"
-import { MedusaError, deepFlatMap } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError, deepFlatMap } from "@medusajs/framework/utils"
 
 interface ConfirmInventoryPreparationInput {
   product_variant_inventory_items: {
@@ -28,7 +28,7 @@ interface ConfirmInventoryItem {
   inventory_item_id: string
   required_quantity: number
   allow_backorder: boolean
-  quantity: number
+  quantity: BigNumberInput
   location_ids: string[]
 }
 
@@ -143,25 +143,27 @@ const formatInventoryInput = ({
       return
     }
 
-    const variantInventoryItem = product_variant_inventory_items.find(
+    const variantInventoryItems = product_variant_inventory_items.filter(
       (i) => i.variant_id === item.variant_id
     )
 
-    if (!variantInventoryItem) {
+    if (!variantInventoryItems.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Variant ${item.variant_id} does not have any inventory items associated with it.`
       )
     }
 
-    itemsToConfirm.push({
-      id: item.id,
-      inventory_item_id: variantInventoryItem.inventory_item_id,
-      required_quantity: variantInventoryItem.required_quantity,
-      allow_backorder: !!variant.allow_backorder,
-      quantity: item.quantity as number, // TODO: update type to BigNumberInput
-      location_ids: location_ids,
-    })
+    variantInventoryItems.forEach((variantInventoryItem) =>
+      itemsToConfirm.push({
+        id: item.id,
+        inventory_item_id: variantInventoryItem.inventory_item_id,
+        required_quantity: variantInventoryItem.required_quantity,
+        allow_backorder: !!variant.allow_backorder,
+        quantity: item.quantity,
+        location_ids: location_ids,
+      })
+    )
   })
 
   return itemsToConfirm

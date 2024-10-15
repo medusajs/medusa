@@ -1,6 +1,6 @@
-import { ITaxModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ITaxModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const deleteTaxRatesStepId = "delete-tax-rates"
 /**

@@ -17,8 +17,8 @@ In this document, you'll learn about the options of the Payment Module.
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/4">Option</Table.HeaderCell>
+      <Table.HeaderCell className="w-2/4">Description</Table.HeaderCell>
       <Table.HeaderCell>Required</Table.HeaderCell>
       <Table.HeaderCell>Default</Table.HeaderCell>
     </Table.Row>
@@ -93,7 +93,9 @@ In this document, you'll learn about the options of the Payment Module.
   </Table.Body>
 </Table>
 
-## providers
+---
+
+## providers Option
 
 The `providers` option is an array of payment module providers.
 
@@ -101,15 +103,15 @@ When the Medusa application starts, these providers are registered and can be us
 
 For example:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.PAYMENT]: {
+  modules: [
+    {
       resolve: "@medusajs/payment",
       options: {
         providers: [
@@ -123,7 +125,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 

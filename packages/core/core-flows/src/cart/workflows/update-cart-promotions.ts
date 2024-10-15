@@ -1,9 +1,10 @@
-import { PromotionActions } from "@medusajs/utils"
+import { PromotionActions } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
   createWorkflow,
   parallelize,
-} from "@medusajs/workflows-sdk"
+  transform,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
   createLineItemAdjustmentsStep,
@@ -42,10 +43,18 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       list: false,
     })
 
+    const promo_codes = transform({ input }, (data) => {
+      return (data.input.promo_codes || []) as string[]
+    })
+
+    const action = transform({ input }, (data) => {
+      return data.input.action || PromotionActions.ADD
+    })
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
-      promo_codes: input.promo_codes ?? [],
-      action: input.action || PromotionActions.ADD,
+      promo_codes,
+      action: action as PromotionActions,
     })
 
     const actions = getActionsToComputeFromPromotionsStep({

@@ -18,7 +18,7 @@ const server = setupServer(
       statusText: "Internal Server Error",
     })
   }),
-  http.get(`${baseUrl}/header`, ({ request, params, cookies }) => {
+  http.get(`${baseUrl}/header`, ({ request }) => {
     if (
       request.headers.get("X-custom-header") === "test" &&
       request.headers.get("Content-Type") === "application/json"
@@ -27,28 +27,43 @@ const server = setupServer(
         test: "test",
       })
     }
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
   }),
-  http.get(`${baseUrl}/replaced-header`, ({ request, params, cookies }) => {
-    request.headers
+  http.get(`${baseUrl}/replaced-header`, ({ request }) => {
     if (request.headers.get("Content-Type") === "application/xml") {
       return HttpResponse.json({
         test: "test",
       })
     }
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
   }),
-  http.get(`${baseUrl}/apikey`, ({ request, params, cookies }) => {
+  http.get(`${baseUrl}/apikey`, ({ request }) => {
     if (request.headers.get("authorization")?.startsWith("Basic")) {
       return HttpResponse.json({
         test: "test",
       })
     }
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
   }),
-  http.get(`${baseUrl}/pubkey`, ({ request, params, cookies }) => {
+  http.get(`${baseUrl}/pubkey`, ({ request }) => {
     if (request.headers.get(PUBLISHABLE_KEY_HEADER) === "test-pub-key") {
       return HttpResponse.json({
         test: "test",
       })
     }
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
   }),
   http.post(`${baseUrl}/create`, async ({ request, params, cookies }) => {
     return HttpResponse.json(await request.json())
@@ -56,12 +71,16 @@ const server = setupServer(
   http.delete(`${baseUrl}/delete/123`, async ({ request, params, cookies }) => {
     return HttpResponse.json({ test: "test" })
   }),
-  http.get(`${baseUrl}/jwt`, ({ request, params, cookies }) => {
+  http.get(`${baseUrl}/jwt`, ({ request }) => {
     if (request.headers.get("authorization") === "Bearer token-123") {
       return HttpResponse.json({
         test: "test",
       })
     }
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
   }),
   http.all("*", ({ request, params, cookies }) => {
     return new HttpResponse(null, {

@@ -1,5 +1,5 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { knex } from "@mikro-orm/knex"
+import { knex } from "@mikro-orm/postgresql"
 
 type Options = ModuleServiceInitializeOptions["database"]
 
@@ -19,7 +19,7 @@ export function createPgConnection(options: Options) {
     searchPath: schema,
     connection: {
       connectionString: clientUrl,
-      ssl,
+      ssl: ssl as any,
       idle_in_transaction_session_timeout:
         (driverOptions?.idle_in_transaction_session_timeout as number) ??
         undefined, // prevent null to be passed

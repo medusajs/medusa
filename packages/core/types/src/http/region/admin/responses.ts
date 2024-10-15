@@ -1,5 +1,5 @@
-import { DeleteResponse, PaginatedResponse } from "../../common";
-import { AdminRegion } from "./entities";
+import { DeleteResponse, PaginatedResponse } from "../../common"
+import { AdminRegion } from "./entities"
 
 export interface AdminRegionResponse {
   region: AdminRegion

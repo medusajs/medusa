@@ -1,5 +1,5 @@
-import { ICartModuleService } from "@medusajs/types"
-import { BigNumber, Module, Modules } from "@medusajs/utils"
+import { ICartModuleService } from "@medusajs/framework/types"
+import { BigNumber, Module, Modules } from "@medusajs/framework/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { CartModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
@@ -36,7 +36,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "cart_id",
               entity: "Cart",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "cart",
             },
           },
@@ -45,7 +45,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "address_id",
               entity: "Address",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "address",
             },
           },
@@ -54,7 +54,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "line_item_id",
               entity: "LineItem",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "lineItem",
             },
           },
@@ -63,7 +63,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "line_item_adjustment_id",
               entity: "LineItemAdjustment",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "lineItemAdjustment",
             },
           },
@@ -72,7 +72,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "line_item_tax_line_id",
               entity: "LineItemTaxLine",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "lineItemTaxLine",
             },
           },
@@ -81,7 +81,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "shipping_method_id",
               entity: "ShippingMethod",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "shippingMethod",
             },
           },
@@ -90,7 +90,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "shipping_method_adjustment_id",
               entity: "ShippingMethodAdjustment",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "shippingMethodAdjustment",
             },
           },
@@ -99,7 +99,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
               linkable: "shipping_method_tax_line_id",
               entity: "ShippingMethodTaxLine",
               primaryKey: "id",
-              serviceName: "Cart",
+              serviceName: "cart",
               field: "shippingMethodTaxLine",
             },
           },

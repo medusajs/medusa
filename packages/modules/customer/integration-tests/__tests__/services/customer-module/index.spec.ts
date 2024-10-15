@@ -1,5 +1,5 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ICustomerModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { CustomerModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -31,7 +31,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               linkable: "customer_address_id",
               entity: "CustomerAddress",
               primaryKey: "id",
-              serviceName: "Customer",
+              serviceName: "customer",
               field: "customerAddress",
             },
           },
@@ -40,7 +40,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               linkable: "customer_group_customer_id",
               entity: "CustomerGroupCustomer",
               primaryKey: "id",
-              serviceName: "Customer",
+              serviceName: "customer",
               field: "customerGroupCustomer",
             },
           },
@@ -49,7 +49,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               linkable: "customer_group_id",
               entity: "CustomerGroup",
               primaryKey: "id",
-              serviceName: "Customer",
+              serviceName: "customer",
               field: "customerGroup",
             },
           },
@@ -58,7 +58,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               linkable: "customer_id",
               entity: "Customer",
               primaryKey: "id",
-              serviceName: "Customer",
+              serviceName: "customer",
               field: "customer",
             },
           },

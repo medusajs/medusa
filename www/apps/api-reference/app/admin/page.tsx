@@ -1,31 +1,17 @@
 import AreaProvider from "@/providers/area"
-import AdminContentV2 from "../_mdx/admin.mdx"
-import ClientLibrariesV2 from "../_mdx/client-libraries.mdx"
-import Section from "@/components/Section"
+import AdminContent from "../_mdx/admin.mdx"
 import Tags from "@/components/Tags"
-import DividedLayout from "@/layouts/Divided"
 import PageTitleProvider from "@/providers/page-title"
+import { H1 } from "docs-ui"
 
 const ReferencePage = async () => {
   return (
     <AreaProvider area={"admin"}>
       <PageTitleProvider>
-        <h1 className="!text-h2 scroll-m-56 lg:pl-4" id="introduction">
+        <H1 className="!h2-docs scroll-m-56 lg:pl-4" id="introduction">
           Medusa V2 Admin API Reference
-        </h1>
-        <DividedLayout
-          mainContent={
-            <Section checkActiveOnScroll={true}>
-              <AdminContentV2 />
-            </Section>
-          }
-          codeContent={
-            <div className="mb-1 lg:mb-0">
-              <ClientLibrariesV2 />
-            </div>
-          }
-          className="flex-col-reverse"
-        />
+        </H1>
+        <AdminContent />
         <Tags />
       </PageTitleProvider>
     </AreaProvider>
@@ -37,7 +23,7 @@ export default ReferencePage
 export function generateMetadata() {
   return {
     title: `Medusa Admin API Reference`,
-    description: `REST API reference for the Medusa admin API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
+    description: `REST API reference for the Medusa v2 admin API, with code snippets and examples.`,
     metadataBase: process.env.NEXT_PUBLIC_BASE_URL,
   }
 }

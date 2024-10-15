@@ -10,6 +10,7 @@ export const StoreGetShippingOptions = createFindParams({
 }).merge(
   z.object({
     cart_id: z.string(),
+    is_return: z.boolean().optional(),
     $and: z.lazy(() => StoreGetShippingOptions.array()).optional(),
     $or: z.lazy(() => StoreGetShippingOptions.array()).optional(),
   })

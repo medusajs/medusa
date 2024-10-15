@@ -1,7 +1,7 @@
-import { IInventoryService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService } from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 export const deleteInventoryLevelsStepId = "delete-inventory-levels-step"
 /**

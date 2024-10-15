@@ -13,6 +13,7 @@ import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { SidebarItem, SidebarItemSections } from "types"
 import basePathUrl from "../../utils/base-path-url"
+import { useRouter } from "next/navigation"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -31,8 +32,9 @@ const Tags = () => {
   const [loadData, setLoadData] = useState<boolean>(false)
   const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
-  const { addItems, setActivePath } = useSidebar()
+  const { activePath, addItems, setActivePath } = useSidebar()
   const { area, prevArea } = useArea()
+  const router = useRouter()
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
@@ -88,9 +90,16 @@ const Tags = () => {
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
+            showLoadingIfEmpty: true,
             onOpen: () => {
-              history.pushState({}, "", `#${tagPathName}`)
-              setActivePath(tagPathName)
+              if (location.hash !== tagPathName) {
+                router.push(`#${tagPathName}`, {
+                  scroll: false,
+                })
+              }
+              if (activePath !== tagPathName) {
+                setActivePath(tagPathName)
+              }
             },
           })
         })

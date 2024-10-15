@@ -21,24 +21,29 @@ It’s registered in the Medusa container under the `ContainerRegistrationKeys.R
 For example, consider the following step:
 
 export const stepHighlights = [
-  ["14", "resolve", "Resolve the remote link."],
-  ["18", "create", "Create a link between two records."]
+  ["19", "resolve", "Resolve the remote link."],
+  ["23", "create", "Create a link between two records."]
 ]
 
 ```ts highlights={stepHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   Modules,
   ContainerRegistrationKeys,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { BRAND_MODULE } from "../../modules/brand"
+
+type LinkProductToBrandStepInput = {
+  productId: string
+  brandId: string
+}
 
 export const linkProductToBrandStep = createStep(
   "link-product-to-brand",
-  async ({ productId, brandId }, { container }) => {
+  async ({ productId, brandId }: LinkProductToBrandStepInput, { container }) => {
     const remoteLink = container.resolve(
       ContainerRegistrationKeys.REMOTE_LINK
     )
@@ -66,7 +71,7 @@ The `create` method accepts as a parameter an object whose properties are the na
 
 <Note title="Tip">
 
-Use the `Modules` enum imported from `@medusajs/utils` to for the commerce module's names.
+Use the `Modules` enum imported from `@medusajs/framework/utils` to for the commerce module's names.
 
 </Note>
 

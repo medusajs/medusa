@@ -112,6 +112,7 @@ export function EditShippingOptionsPricingForm({
   const { setCloseOnEscape } = useRouteModal()
 
   const columns = useShippingOptionPriceColumns({
+    name: shippingOption.name,
     currencies,
     regions,
     pricePreferences,
@@ -126,6 +127,13 @@ export function EditShippingOptionsPricingForm({
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
         if (value === "" || value === undefined) {
+          return undefined
+        }
+
+        const currencyExists = currencies.some(
+          (currencyCode) => currencyCode.toLowerCase() == code.toLowerCase()
+        )
+        if (!currencyExists) {
           return undefined
         }
 
@@ -152,6 +160,14 @@ export function EditShippingOptionsPricingForm({
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
         if (value === "" || value === undefined) {
+          return undefined
+        }
+
+        // Check if the region_id exists in the regions array to avoid
+        // sending updates of region prices where the region has been
+        // deleted
+        const regionExists = regions?.some((region) => region.id === region_id)
+        if (!regionExists) {
           return undefined
         }
 

@@ -13,16 +13,15 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+  const currencyModuleService = req.scope.resolve(
     Modules.CURRENCY
   )
 
@@ -38,7 +37,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCurrencyModule } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
 export async function GET(request: Request) {
   const currencyModuleService = await initializeCurrencyModule()
@@ -59,16 +58,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+  const currencyModuleService = req.scope.resolve(
     Modules.CURRENCY
   )
 
@@ -86,7 +84,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCurrencyModule } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
 export async function GET(request: Request) {
   const currencyModuleService = await initializeCurrencyModule()

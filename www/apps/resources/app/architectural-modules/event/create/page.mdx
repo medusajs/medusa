@@ -16,11 +16,11 @@ Start by creating a new directory for your module. For example, `src/modules/my-
 
 Create the file `src/modules/my-event/service.ts` that holds the implementation of the event service.
 
-The Event Module's main service must extend the `AbstractEventBusModuleService` class imported from `@medusajs/utils`:
+The Event Module's main service must extend the `AbstractEventBusModuleService` class imported from `@medusajs/framework/utils`:
 
 ```ts title="src/modules/my-event/service.ts"
-import { EmitData, Message } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EmitData, Message } from "@medusajs/framework/types"
+import { AbstractEventBusModuleService } from "@medusajs/framework/utils"
 
 class MyEventService extends AbstractEventBusModuleService {
   emit<T>(eventName: string, data: T, options: Record<string, unknown>): Promise<void>;
@@ -90,7 +90,7 @@ Create the file `src/modules/my-event/index.ts` with the following content:
 
 ```ts title="src/modules/my-event/index.ts"
 import MyEventService from "./service"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 
 export default Module("my-event", {
   service: MyEventService,
@@ -103,24 +103,24 @@ This exports the module's definition, indicating that the `MyEventService` is th
 
 ## 4. Use Module
 
-To use your Event Module, add it to the `modules` object exported as part of the configurations in `medusa-config.js`. An Event Module is added under the `eventBus` key.
+To use your Event Module, add it to the `modules` object exported as part of the configurations in `medusa-config.ts`. An Event Module is added under the `eventBus` key.
 
 For example:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.EVENT_BUS]: {
+  modules: [
+    {
       resolve: "./modules/my-event",
       options: { 
         // any options
       },
     },
-  },
+  ]
 })
 ```

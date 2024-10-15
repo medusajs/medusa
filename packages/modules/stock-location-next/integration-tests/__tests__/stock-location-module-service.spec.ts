@@ -1,7 +1,7 @@
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
-import { IStockLocationService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IStockLocationService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { StockLocationModuleService } from "../../src/services"
 
 jest.setTimeout(100000)
@@ -30,7 +30,7 @@ moduleIntegrationTestRunner<IStockLocationService>({
               linkable: "stock_location_address_id",
               entity: "StockLocationAddress",
               primaryKey: "id",
-              serviceName: "StockLocation",
+              serviceName: "stock_location",
               field: "stockLocationAddress",
             },
           },
@@ -40,13 +40,13 @@ moduleIntegrationTestRunner<IStockLocationService>({
               entity: "StockLocation",
               linkable: "stock_location_id",
               primaryKey: "id",
-              serviceName: "StockLocation",
+              serviceName: "stock_location",
             },
             location_id: {
               linkable: "location_id",
               entity: "StockLocation",
               primaryKey: "location_id",
-              serviceName: "StockLocation",
+              serviceName: "stock_location",
               field: "stockLocation",
             },
           },

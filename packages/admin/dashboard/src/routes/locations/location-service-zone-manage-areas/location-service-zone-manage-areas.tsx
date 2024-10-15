@@ -9,7 +9,7 @@ export const LocationServiceZoneManageAreas = () => {
 
   const { stock_location, isPending, isFetching, isError, error } =
     useStockLocation(location_id!, {
-      fields: "*fulfillment_sets.service_zones.geo_zones",
+      fields: "*fulfillment_sets.service_zones.geo_zones,fulfillment_sets.service_zones.name",
     })
 
   const zone = stock_location?.fulfillment_sets

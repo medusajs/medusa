@@ -1,11 +1,15 @@
-import { moduleProviderLoader } from "@medusajs/modules-sdk"
-import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
+import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
+import {
+  LoaderOptions,
+  ModuleProvider,
+  ModulesSdkTypes,
+} from "@medusajs/framework/types"
 import { FileProviderService } from "@services"
 import {
   FileProviderIdentifierRegistrationName,
   FileProviderRegistrationPrefix,
 } from "@types"
-import { Lifetime, asFunction, asValue } from "awilix"
+import { asFunction, asValue, Lifetime } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = FileProviderService.getRegistrationIdentifier(

@@ -1,8 +1,8 @@
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The remote query's details.
@@ -59,10 +59,10 @@ export const useRemoteQueryStepId = "use-remote-query"
  * ```ts
  * import {
  *   createWorkflow
- * } from "@medusajs/workflows-sdk"
+ * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   useRemoteQueryStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
@@ -83,7 +83,7 @@ export const useRemoteQueryStepId = "use-remote-query"
  * ```ts
  * import {
  *   createWorkflow
- * } from "@medusajs/workflows-sdk"
+ * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   useRemoteQueryStep
  * } from "@medusajs/core-flows"
@@ -113,7 +113,7 @@ export const useRemoteQueryStepId = "use-remote-query"
  * ```ts
  * import {
  *   createWorkflow
- * } from "@medusajs/workflows-sdk"
+ * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   useRemoteQueryStep
  * } from "@medusajs/core-flows"
@@ -154,8 +154,6 @@ export const useRemoteQueryStep = createStep(
       entryPoint: isUsingEntryPoint ? data.entry_point : undefined,
       service: !isUsingEntryPoint ? data.service : undefined,
     } as Parameters<typeof remoteQueryObjectFromString>[0]
-
-    const queryObject = remoteQueryObjectFromString(queryObjectConfig)
 
     const config = {
       throwIfKeyNotFound: !!data.throw_if_key_not_found,

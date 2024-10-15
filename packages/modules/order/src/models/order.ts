@@ -1,9 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   OrderStatus,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -90,6 +91,7 @@ export default class Order {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ autoincrement: true, primary: false })
   @DisplayIdIndex.MikroORMIndex()
   display_id: number
@@ -130,6 +132,7 @@ export default class Order {
   @IsDraftOrderIndex.MikroORMIndex()
   is_draft_order: boolean = false
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 

@@ -13,7 +13,7 @@ import {
   SoftDeleteReturn,
   UpdateFulfillmentSetDTO,
   UpdateServiceZoneDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   deepEqualObj,
@@ -28,7 +28,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Fulfillment,
   FulfillmentProvider,
@@ -1924,6 +1924,20 @@ export default class FulfillmentModuleService
   ): Promise<Record<string, any>[]> {
     return await this.fulfillmentProviderService_.getFulfillmentOptions(
       providerId
+    )
+  }
+
+  async validateFulfillmentData(
+    providerId: string,
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    return await this.fulfillmentProviderService_.validateFulfillmentData(
+      providerId,
+      optionData,
+      data,
+      context
     )
   }
 

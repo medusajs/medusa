@@ -2,15 +2,15 @@ import {
   cancelBeginOrderClaimWorkflow,
   confirmClaimRequestWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { defaultAdminDetailsReturnFields } from "../../../returns/query-config"
 
 export const POST = async (
@@ -58,7 +58,7 @@ export const POST = async (
   }
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     claim: orderClaim,
     return: orderReturn,
   })

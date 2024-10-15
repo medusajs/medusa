@@ -2,15 +2,15 @@ import {
   removeAddItemClaimActionWorkflow,
   updateClaimAddItemWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminPostClaimsItemsActionReqSchemaType } from "../../../../validators"
 
 export const POST = async (
@@ -43,7 +43,7 @@ export const POST = async (
   const [orderClaim] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     claim: orderClaim,
   })
 }
@@ -77,7 +77,7 @@ export const DELETE = async (
   const [orderClaim] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: orderPreview,
+    order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,
     claim: orderClaim,
   })
 }

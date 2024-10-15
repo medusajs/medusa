@@ -39,7 +39,7 @@ Create the file `src/api/admin/brands/route.ts` with the following content:
 import {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { BRAND_MODULE } from "../../../modules/brand"
 import BrandModuleService from "../../../modules/brand/service"
 
@@ -116,24 +116,28 @@ const BrandsPage = () => {
 
 
   return (
-    <Container>
-      <Heading level="h2">Brands</Heading>
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {brands.map((brand) => (
-            <Table.Row key={brand.id}>
-              <Table.Cell>{brand.id}</Table.Cell>
-              <Table.Cell>{brand.name}</Table.Cell>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Brands</Heading>
+      </div>
+      <div className="flex h-full flex-col overflow-hidden !border-t-0">
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>ID</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
             </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+          </Table.Header>
+          <Table.Body>
+            {brands.map((brand) => (
+              <Table.Row key={brand.id}>
+                <Table.Cell>{brand.id}</Table.Cell>
+                <Table.Cell>{brand.name}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
     </Container>
   )
 }
@@ -146,6 +150,12 @@ export default BrandsPage
 This adds a new page in the admin at `http://localhost:9000/app/brands`.
 
 In the UI route's component, you retrieve the brands from the `/admin/brands` API route. You show the brands in a table.
+
+<Note>
+
+Admin customizations can use the [Medusa UI package](!ui!) to align your customizations with the admin's design. Also, [this guide](!resources!/admin-components) includes examples of common components in the Medusa Admin.
+
+</Note>
 
 ### Add UI Route to the Sidebar
 

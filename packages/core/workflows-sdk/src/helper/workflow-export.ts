@@ -6,7 +6,13 @@ import {
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import {
+  Context,
+  IEventBusModuleService,
+  LoadedModule,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   isPresent,
@@ -44,6 +50,7 @@ function createContextualWorkflowRunner<
   dataPreparation?: (data: TData) => Promise<unknown>
   options?: {
     wrappedInput?: boolean
+    sourcePath?: string
   }
   container?: LoadedModule[] | MedusaContainer
 }): Omit<
@@ -93,6 +100,7 @@ function createContextualWorkflowRunner<
     const flowMetadata = {
       eventGroupId,
       parentStepIdempotencyKey,
+      sourcePath: options?.sourcePath,
     }
 
     const args = [
@@ -102,7 +110,7 @@ function createContextualWorkflowRunner<
       events,
       flowMetadata,
     ]
-    const transaction = await method.apply(method, args)
+    const transaction = await method.apply(method, args) as DistributedTransactionType
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
@@ -334,6 +342,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   dataPreparation?: (data: TData) => Promise<unknown>,
   options?: {
     wrappedInput?: boolean
+    sourcePath?: string
   }
 ): MainExportedWorkflow<TData, TResult> => {
   function exportedWorkflow<
@@ -511,7 +520,7 @@ function attachOnFinishReleaseEvents(
     const flowEventGroupId = transaction.getFlow().metadata?.eventGroupId
 
     const logger =
-      (flow.container as MedusaContainer).resolve(
+      (flow.container as MedusaContainer).resolve<Logger>(
         ContainerRegistrationKeys.LOGGER,
         { allowUnregistered: true }
       ) || console
@@ -536,10 +545,11 @@ function attachOnFinishReleaseEvents(
 
     await onFinish?.(args)
 
-    const eventBusService = (flow.container as MedusaContainer).resolve(
-      Modules.EVENT_BUS,
-      { allowUnregistered: true }
-    )
+    const eventBusService = (
+      flow.container as MedusaContainer
+    ).resolve<IEventBusModuleService>(Modules.EVENT_BUS, {
+      allowUnregistered: true,
+    })
 
     if (!eventBusService || !flowEventGroupId) {
       return

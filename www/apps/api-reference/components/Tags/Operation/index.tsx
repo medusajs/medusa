@@ -12,6 +12,7 @@ import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
 import { useLoading } from "@/providers/loading"
+import { useRouter } from "next/navigation"
 import SectionDivider from "../../Section/Divider"
 import checkElementInViewport from "../../../utils/check-element-in-viewport"
 
@@ -33,7 +34,8 @@ const TagOperation = ({
   endpointPath,
   className,
 }: TagOperationProps) => {
-  const { setActivePath } = useSidebar()
+  const { activePath, setActivePath } = useSidebar()
+  const router = useRouter()
   const [show, setShow] = useState(false)
   const path = useMemo(
     () => getSectionId([...(operation.tags || []), operation.operationId]),
@@ -57,10 +59,14 @@ const TagOperation = ({
           }
           setShow(true)
         }
-        // can't use next router as it doesn't support
-        // changing url without scrolling
-        history.replaceState({}, "", `#${path}`)
-        setActivePath(path)
+        if (location.hash !== path) {
+          router.push(`#${path}`, {
+            scroll: false,
+          })
+        }
+        if (activePath !== path) {
+          setActivePath(path)
+        }
       }
     },
   })
@@ -77,7 +83,7 @@ const TagOperation = ({
   )
 
   const scrollIntoView = useCallback(() => {
-    if (nodeRef.current && !checkElementInViewport(nodeRef.current, 10)) {
+    if (nodeRef.current && !checkElementInViewport(nodeRef.current, 0)) {
       const elm = nodeRef.current as HTMLElement
       scrollToTop(
         elm.offsetTop + (elm.offsetParent as HTMLElement)?.offsetTop,

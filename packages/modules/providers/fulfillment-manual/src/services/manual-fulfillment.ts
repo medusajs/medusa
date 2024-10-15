@@ -1,4 +1,5 @@
-import { AbstractFulfillmentProviderService } from "@medusajs/utils"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
+import { FulfillmentOption } from "@medusajs/types"
 
 // TODO rework type and DTO's
 
@@ -9,7 +10,7 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     super()
   }
 
-  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
+  async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
     return [
       {
         id: "manual-fulfillment",

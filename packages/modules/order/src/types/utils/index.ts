@@ -1,4 +1,4 @@
-import { BigNumberInput } from "@medusajs/types"
+import { BigNumberInput } from "@medusajs/framework/types"
 
 export type VirtualOrder = {
   id: string
@@ -21,6 +21,7 @@ export type VirtualOrder = {
       exchange_id?: string
 
       item_id?: string
+      unit_price?: BigNumberInput
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput

@@ -1,84 +1,70 @@
-import type {
-  IApiKeyModuleService,
-  IAuthModuleService,
-  ICacheService,
-  ICartModuleService,
-  ICurrencyModuleService,
-  ICustomerModuleService,
-  IEventBusModuleService,
-  IFileModuleService,
-  IFulfillmentModuleService,
-  IInventoryService,
-  INotificationModuleService,
-  IOrderModuleService,
-  IPaymentModuleService,
-  IPricingModuleService,
-  IProductModuleService,
-  IPromotionModuleService,
-  IRegionModuleService,
-  ISalesChannelModuleService,
-  IStockLocationService,
-  IStoreModuleService,
-  ITaxModuleService,
-  IUserModuleService,
-  IWorkflowEngineService,
-} from "@medusajs/types"
+export const Modules = {
+  AUTH: "auth",
+  CACHE: "cache",
+  CART: "cart",
+  CUSTOMER: "customer",
+  EVENT_BUS: "event_bus",
+  INVENTORY: "inventory",
+  LINK: "link_modules",
+  PAYMENT: "payment",
+  PRICING: "pricing",
+  PRODUCT: "product",
+  PROMOTION: "promotion",
+  SALES_CHANNEL: "sales_channel",
+  TAX: "tax",
+  FULFILLMENT: "fulfillment",
+  STOCK_LOCATION: "stock_location",
+  USER: "user",
+  WORKFLOW_ENGINE: "workflows",
+  REGION: "region",
+  ORDER: "order",
+  API_KEY: "api_key",
+  STORE: "store",
+  CURRENCY: "currency",
+  FILE: "file",
+  NOTIFICATION: "notification",
+  INDEX: "index",
+  LOCKING: "locking",
+} as const
 
-export enum Modules {
-  AUTH = "Auth",
-  CACHE = "Cache",
-  CART = "Cart",
-  CUSTOMER = "Customer",
-  EVENT_BUS = "EventBus",
-  INVENTORY = "Inventory",
-  LINK = "LinkModules",
-  PAYMENT = "Payment",
-  PRICING = "Pricing",
-  PRODUCT = "Product",
-  PROMOTION = "Promotion",
-  SALES_CHANNEL = "SalesChannel",
-  TAX = "Tax",
-  FULFILLMENT = "Fulfillment",
-  STOCK_LOCATION = "StockLocation",
-  USER = "User",
-  WORKFLOW_ENGINE = "Workflows",
-  REGION = "Region",
-  ORDER = "Order",
-  API_KEY = "ApiKey",
-  STORE = "Store",
-  CURRENCY = "Currency",
-  FILE = "File",
-  NOTIFICATION = "Notification",
-  INDEX = "Index",
+export const MODULE_PACKAGE_NAMES = {
+  [Modules.AUTH]: "@medusajs/medusa/auth",
+  [Modules.CACHE]: "@medusajs/medusa/cache-inmemory",
+  [Modules.CART]: "@medusajs/medusa/cart",
+  [Modules.CUSTOMER]: "@medusajs/medusa/customer",
+  [Modules.EVENT_BUS]: "@medusajs/medusa/event-bus-local",
+  [Modules.INVENTORY]: "@medusajs/medusa/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
+  [Modules.LINK]: "@medusajs/medusa/link-modules",
+  [Modules.PAYMENT]: "@medusajs/medusa/payment",
+  [Modules.PRICING]: "@medusajs/medusa/pricing",
+  [Modules.PRODUCT]: "@medusajs/medusa/product",
+  [Modules.PROMOTION]: "@medusajs/medusa/promotion",
+  [Modules.SALES_CHANNEL]: "@medusajs/medusa/sales-channel",
+  [Modules.FULFILLMENT]: "@medusajs/medusa/fulfillment",
+  [Modules.STOCK_LOCATION]: "@medusajs/medusa/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
+  [Modules.TAX]: "@medusajs/medusa/tax",
+  [Modules.USER]: "@medusajs/medusa/user",
+  [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflow-engine-inmemory",
+  [Modules.REGION]: "@medusajs/medusa/region",
+  [Modules.ORDER]: "@medusajs/medusa/order",
+  [Modules.API_KEY]: "@medusajs/medusa/api-key",
+  [Modules.STORE]: "@medusajs/medusa/store",
+  [Modules.CURRENCY]: "@medusajs/medusa/currency",
+  [Modules.FILE]: "@medusajs/medusa/file",
+  [Modules.NOTIFICATION]: "@medusajs/medusa/notification",
+  [Modules.INDEX]: "@medusajs/medusa/index-module",
+  [Modules.LOCKING]: "@medusajs/medusa/locking",
 }
 
+export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
+  MODULE_PACKAGE_NAMES
+).reduce((acc, [key, value]) => {
+  acc[value] = key
+  return acc
+}, {})
+
+/**
+ * Making modules be referenced as a type as well.
+ */
+export type Modules = (typeof Modules)[keyof typeof Modules]
 export const ModuleRegistrationName = Modules
-
-declare module "@medusajs/types" {
-  export interface ModuleImplementations {
-    [Modules.AUTH]: IAuthModuleService
-    [Modules.CACHE]: ICacheService
-    [Modules.CART]: ICartModuleService
-    [Modules.CUSTOMER]: ICustomerModuleService
-    [Modules.EVENT_BUS]: IEventBusModuleService
-    [Modules.INVENTORY]: IInventoryService
-    [Modules.PAYMENT]: IPaymentModuleService
-    [Modules.PRICING]: IPricingModuleService
-    [Modules.PRODUCT]: IProductModuleService
-    [Modules.PROMOTION]: IPromotionModuleService
-    [Modules.SALES_CHANNEL]: ISalesChannelModuleService
-    [Modules.TAX]: ITaxModuleService
-    [Modules.FULFILLMENT]: IFulfillmentModuleService
-    [Modules.STOCK_LOCATION]: IStockLocationService
-    [Modules.USER]: IUserModuleService
-    [Modules.WORKFLOW_ENGINE]: IWorkflowEngineService
-    [Modules.REGION]: IRegionModuleService
-    [Modules.ORDER]: IOrderModuleService
-    [Modules.API_KEY]: IApiKeyModuleService
-    [Modules.STORE]: IStoreModuleService
-    [Modules.CURRENCY]: ICurrencyModuleService
-    [Modules.FILE]: IFileModuleService
-    [Modules.NOTIFICATION]: INotificationModuleService
-    [Modules.INDEX]: any // TODO: define index module interface
-  }
-}

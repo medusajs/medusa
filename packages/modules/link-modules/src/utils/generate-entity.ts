@@ -1,10 +1,13 @@
-import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
 import {
-  SoftDeletableFilterKey,
+  JoinerRelationship,
+  ModuleJoinerConfig,
+} from "@medusajs/framework/types"
+import {
   composeTableName,
   mikroOrmSoftDeletableFilterOptions,
   simpleHash,
-} from "@medusajs/utils"
+  SoftDeletableFilterKey,
+} from "@medusajs/framework/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 import { compressName } from "./compress-name"
@@ -33,7 +36,7 @@ export function generateEntity(
       primary.foreignKey,
       foreign.serviceName,
       foreign.foreignKey
-    )
+    ).toLowerCase()
 
   const fields = fieldNames.reduce((acc, curr) => {
     acc[curr] = {

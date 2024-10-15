@@ -20,7 +20,7 @@ export const defaultAdminDetailsClaimFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminDetailsClaimFields,
+  defaults: defaultAdminDetailsClaimFields,
   isList: false,
 }
 

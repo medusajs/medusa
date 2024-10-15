@@ -1,5 +1,8 @@
-import { AdditionalData, CreateCartWorkflowInputDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import {
+  AdditionalData,
+  CreateCartWorkflowInputDTO,
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,7 +10,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createCartsStep,
@@ -23,9 +26,6 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
-
-// TODO: The createCartWorkflow are missing the following steps:
-// - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
 /**
@@ -116,6 +116,16 @@ export const createCartWorkflow = createWorkflow(
           data_.sales_channel_id = data.salesChannel.id
         }
 
+        // If there is only one country in the region, we prepare a shipping address with that country's code.
+        if (
+          !data.input.shipping_address &&
+          data.region.countries.length === 1
+        ) {
+          data_.shipping_address = {
+            country_code: data.region.countries[0].iso_2,
+          }
+        }
+
         return data_
       }
     )
@@ -126,9 +136,11 @@ export const createCartWorkflow = createWorkflow(
 
         return prepareLineItemData({
           variant: variant,
-          unitPrice: item.unit_price || 
+          unitPrice:
+            item.unit_price ||
             data.priceSets[item.variant_id].calculated_amount,
-          isTaxInclusive: item.is_tax_inclusive ||
+          isTaxInclusive:
+            item.is_tax_inclusive ||
             data.priceSets[item.variant_id].is_calculated_price_tax_inclusive,
           quantity: item.quantity,
           metadata: item?.metadata ?? {},
@@ -150,7 +162,7 @@ export const createCartWorkflow = createWorkflow(
 
     updateTaxLinesWorkflow.runAsStep({
       input: {
-        cart_or_cart_id: cart.id,
+        cart_id: cart.id,
       },
     })
 

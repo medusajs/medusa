@@ -1,5 +1,5 @@
-import { IStoreModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IStoreModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { StoreModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createStoreFixture } from "../__fixtures__"
@@ -27,7 +27,7 @@ moduleIntegrationTestRunner<IStoreModuleService>({
               linkable: "store_id",
               entity: "Store",
               primaryKey: "id",
-              serviceName: "Store",
+              serviceName: "store",
               field: "store",
             },
           },
@@ -36,7 +36,7 @@ moduleIntegrationTestRunner<IStoreModuleService>({
               linkable: "store_currency_id",
               entity: "StoreCurrency",
               primaryKey: "id",
-              serviceName: "Store",
+              serviceName: "store",
               field: "storeCurrency",
             },
           },

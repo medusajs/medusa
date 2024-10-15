@@ -1,4 +1,9 @@
-import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  FindConfig,
+  ProductTypes,
+} from "@medusajs/framework/types"
 import {
   FreeTextSearchFilterKey,
   InjectManager,
@@ -7,7 +12,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { ProductCategory } from "@models"
 import { ProductCategoryRepository } from "@repositories"
 import { UpdateCategoryInput } from "@types"
@@ -79,7 +84,7 @@ export default class ProductCategoryService {
     delete filters.include_ancestors_tree
 
     // Apply free text search filter
-    if (filters?.q) {
+    if (isDefined(filters?.q)) {
       config.filters ??= {}
       config.filters[FreeTextSearchFilterKey] = {
         value: filters.q,
@@ -116,7 +121,7 @@ export default class ProductCategoryService {
     delete filters.include_ancestors_tree
 
     // Apply free text search filter
-    if (filters?.q) {
+    if (isDefined(filters?.q)) {
       config.filters ??= {}
       config.filters[FreeTextSearchFilterKey] = {
         value: filters.q,

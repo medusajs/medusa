@@ -10,7 +10,7 @@ In this document, you’ll learn what a payment module provider is.
 
 ## What's a Payment Module Provider?
 
-A payment module provider registers a payment provider that handles payment processing. It can integrate third-party payment providers, such as Stripe.
+A payment module provider registers a payment provider that handles payment processing in the Medusa application. It integrates third-party payment providers, such as Stripe.
 
 To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
 
@@ -24,19 +24,17 @@ After the payment session is authorized, the payment provider is associated with
 
 ## System Payment Provider
 
-The Payment Module provides a `system` payment provider that acts as a placeholder payment provider. It doesn’t handle payment processing and delegates that to the merchant. It acts similarly to a cash-on-delivery (COD) payment method.
+The Payment Module provides a `system` payment provider that acts as a placeholder payment provider.
+
+It doesn’t handle payment processing and delegates that to the merchant. It acts similarly to a cash-on-delivery (COD) payment method.
 
 ---
 
 ## How are Payment Providers Created?
 
-A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` imported from `@medusajs/utils`. It can then be exported as the main service of a module.
-
-<Note title="Tip">
+A payment provider is a module whose main service extends the `AbstractPaymentProvider` imported from `@medusajs/framework/utils`.
 
 Refer to [this guide](/references/payment/provider) on how to create a payment provider for the Payment Module.
-
-</Note>
 
 ---
 
@@ -50,4 +48,6 @@ Learn more about this option in [this documentation](../module-options/page.mdx#
 
 ## PaymentProvider Data Model
 
-When the Medusa application starts and registers the payment providers, it also creates a record of the `PaymentProvider` data model if none exists. This data model is used to reference a payment provider and determine whether it’s installed in the application.
+When the Medusa application starts and registers the payment providers, it also creates a record of the `PaymentProvider` data model if none exists.
+
+This data model is used to reference a payment provider and determine whether it’s installed in the application.

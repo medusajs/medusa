@@ -1,18 +1,15 @@
 import { updateTaxLinesWorkflow } from "@medusajs/core-flows"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { refetchCart } from "../../helpers"
-import { StoreCalculateCartTaxesType } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: MedusaRequest<StoreCalculateCartTaxesType>,
+  req: MedusaRequest,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
-  const workflow = updateTaxLinesWorkflow(req.scope)
-
-  await workflow.run({
+  await updateTaxLinesWorkflow(req.scope).run({
     input: {
-      cart_or_cart_id: req.params.id,
+      cart_id: req.params.id,
       force_tax_calculation: true,
     },
   })

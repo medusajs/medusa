@@ -30,3 +30,10 @@ properties:
     description: The price's rules.
     example:
       region_id: reg_123
+    properties:
+      region_id:
+        type: string
+        title: region_id
+        description: The ID of a region.
+    required:
+      - region_id

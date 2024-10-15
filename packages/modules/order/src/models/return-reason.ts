@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   DALUtils,
   Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -70,7 +70,6 @@ export default class ReturnReason {
     cascade: [Cascade.PERSIST],
   })
   parent_return_reason?: Rel<ReturnReason> | null
-  Searchable
   @OneToMany(
     () => ReturnReason,
     (return_reason) => return_reason.parent_return_reason,

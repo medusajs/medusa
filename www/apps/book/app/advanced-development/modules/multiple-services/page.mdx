@@ -1,0 +1,130 @@
+export const metadata = {
+  title: `${pageNumber} Multiple Services in a Module`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use multiple services in a module.
+
+## Module's Main and Internal Services
+
+A module has one main service only, which is the service exported in the module's definition.
+
+However, you may use other services in your module to better organize your code or split functionalities. These are called internal services that can be resolved within your module, but not in external resources.
+
+---
+
+## How to Add an Internal Service
+
+### 1. Create Service
+
+To add an internal service, create it in the `services` directory of your module.
+
+For example, create the file `src/modules/hello/services/client.ts` with the following content:
+
+```ts title="src/modules/hello/services/client.ts"
+export class ClientService {
+  async getMessage(): Promise<string> {
+    return "Hello, World!"
+  }
+}
+```
+
+### 2. Export Service in Index
+
+Next, create an `index.ts` file under the `services` directory of the module that exports your internal services.
+
+For example, create the file `src/modules/hello/services/index.ts` with the following content:
+
+```ts title="src/modules/hello/services/index.ts"
+export * from "./client"
+```
+
+This exports the `ClientService`.
+
+### 3. Resolve Internal Service
+
+Internal services exported in the `services/index.ts` file of your module are now registered in the container and can be resolved in other services in the module as well as loaders.
+
+For example, in your main service:
+
+```ts title="src/modules/hello/service.ts" highlights={[["5"], ["13"]]}
+// other imports...
+import { ClientService } from "./services"
+
+type InjectedDependencies = {
+  clientService: ClientService
+}
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  protected clientService_: ClientService
+
+  constructor({ clientService }: InjectedDependencies) {
+    super(...arguments)
+    this.clientService_ = clientService
+  }
+}
+```
+
+You can now use your internal service in your main service.
+
+---
+
+## Resolve Resources in Internal Service
+
+Resolve dependencies from your module's container in the constructor of your internal service.
+
+For example:
+
+```ts
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export class ClientService {
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+  }
+}
+```
+
+---
+
+## Access Module Options
+
+Your internal service can't access the module's options.
+
+To retrieve the module's options, use the `configModule` registered in the module's container, which is the configurations in `medusa-config.ts`.
+
+For example:
+
+```ts
+import { ConfigModule } from "@medusajs/framework/types"
+import { HELLO_MODULE } from ".."
+
+export type InjectedDependencies = {
+  configModule: ConfigModule
+}
+
+export class ClientService {
+  protected options: Record<string, any>
+
+  constructor({ configModule }: InjectedDependencies) {
+    const moduleDef = configModule.modules[HELLO_MODULE]
+
+    if (typeof moduleDef !== "boolean") {
+      this.options = moduleDef.options
+    }
+  }
+}
+```
+
+The `configModule` has a `modules` property that includes all registered modules. Retrieve the module's configuration using its registration key.
+
+If its value is not a `boolean`, set the service's options to the module configuration's `options` property.

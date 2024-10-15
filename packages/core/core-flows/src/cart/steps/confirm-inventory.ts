@@ -1,13 +1,18 @@
-import { IInventoryService } from "@medusajs/types"
-import { MathBN, MedusaError, Modules, promiseAll } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { BigNumberInput, IInventoryService } from "@medusajs/framework/types"
+import {
+  MathBN,
+  MedusaError,
+  Modules,
+  promiseAll,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ConfirmVariantInventoryStepInput {
   items: {
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
-    quantity: number
+    quantity: BigNumberInput
     location_ids: string[]
   }[]
 }

@@ -14,21 +14,21 @@ In this document, you'll learn about the options of the User Module.
 
 ## Module Options
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.USER]: {
+  modules: [
+    {
       resolve: "@medusajs/user",
       options: {
         jwt_secret: process.env.JWT_SECRET,
       },
     },
-  },
+  ]
 })
 ```
 

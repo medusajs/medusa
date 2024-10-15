@@ -1,40 +1,12 @@
-import { IEventBusModuleService, Logger, ProductTypes } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  Logger,
+  ProductTypes,
+} from "@medusajs/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
   EventBus?: IEventBusModuleService
-}
-
-// TODO: remove and cleanup bellow code
-
-export type ProductCategoryEventData = {
-  id: string
-}
-
-export enum ProductCategoryEvents {
-  CATEGORY_UPDATED = "product-category.updated",
-  CATEGORY_CREATED = "product-category.created",
-  CATEGORY_DELETED = "product-category.deleted",
-}
-
-export type ProductEventData = {
-  id: string
-}
-
-export enum ProductEvents {
-  PRODUCT_UPDATED = "product.updated",
-  PRODUCT_CREATED = "product.created",
-  PRODUCT_DELETED = "product.deleted",
-}
-
-export type ProductCollectionEventData = {
-  id: string
-}
-
-export enum ProductCollectionEvents {
-  COLLECTION_UPDATED = "product-collection.updated",
-  COLLECTION_CREATED = "product-collection.created",
-  COLLECTION_DELETED = "product-collection.deleted",
 }
 
 export type UpdateProductInput = ProductTypes.UpdateProductDTO & {

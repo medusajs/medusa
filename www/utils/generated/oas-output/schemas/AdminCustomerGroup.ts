@@ -4,9 +4,9 @@
  * description: The customer group's details.
  * x-schemaName: AdminCustomerGroup
  * required:
+ *   - customers
  *   - id
  *   - name
- *   - customers
  *   - metadata
  *   - created_at
  *   - updated_at
@@ -23,7 +23,7 @@
  *     type: array
  *     description: The customer group's customers.
  *     items:
- *       $ref: "#/components/schemas/BaseCustomer"
+ *       $ref: "#/components/schemas/AdminCustomer"
  *   metadata:
  *     type: object
  *     description: The customer group's metadata, used to store custom key-value pairs.

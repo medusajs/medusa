@@ -1,10 +1,13 @@
 import {
-  AuthIdentityDTO,
-  AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse,
-} from "@medusajs/types"
-import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
+  AuthIdentityDTO,
+  AuthIdentityProviderService,
+} from "@medusajs/framework/types"
+import {
+  AbstractAuthModuleProvider,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 export class AuthServiceFixtures extends AbstractAuthModuleProvider {
   constructor() {

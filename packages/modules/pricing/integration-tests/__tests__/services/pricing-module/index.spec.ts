@@ -1,5 +1,5 @@
-import { IPricingModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IPricingModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { PricingModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -29,7 +29,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               linkable: "price_set_id",
               entity: "PriceSet",
               primaryKey: "id",
-              serviceName: "Pricing",
+              serviceName: "pricing",
               field: "priceSet",
             },
           },
@@ -38,7 +38,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               linkable: "price_list_id",
               entity: "PriceList",
               primaryKey: "id",
-              serviceName: "Pricing",
+              serviceName: "pricing",
               field: "priceList",
             },
           },
@@ -47,7 +47,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               linkable: "price_id",
               entity: "Price",
               primaryKey: "id",
-              serviceName: "Pricing",
+              serviceName: "pricing",
               field: "price",
             },
           },
@@ -56,7 +56,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               linkable: "price_preference_id",
               entity: "PricePreference",
               primaryKey: "id",
-              serviceName: "Pricing",
+              serviceName: "pricing",
               field: "pricePreference",
             },
           },

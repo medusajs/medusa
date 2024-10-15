@@ -1,6 +1,7 @@
-import { IInventoryService } from "@medusajs/types"
-import { MathBN, Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService } from "@medusajs/framework/types"
+import { MathBN, Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { BigNumberInput } from "@medusajs/types"
 
 export interface ReserveVariantInventoryStepInput {
   items: {
@@ -8,7 +9,7 @@ export interface ReserveVariantInventoryStepInput {
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
-    quantity: number
+    quantity: BigNumberInput
     location_ids: string[]
   }[]
 }

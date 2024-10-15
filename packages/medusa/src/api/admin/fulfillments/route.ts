@@ -1,9 +1,9 @@
 import { createFulfillmentWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchFulfillment } from "./helpers"
 import { AdminCreateFulfillmentType } from "./validators"
 

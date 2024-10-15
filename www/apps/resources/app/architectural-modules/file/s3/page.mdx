@@ -102,15 +102,9 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
 
 ---
 
-## Install the S3 File Module
+## Register the S3 File Module
 
-To install the S3 File Module Provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/file-s3@preview
-```
-
-Next, add the module into the `providers` array of the File Module:
+Add the module into the `providers` array of the File Module:
 
 <Note>
 
@@ -118,16 +112,16 @@ The File Module accepts one provider only.
 
 </Note>
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = {
   // ...
-  modules: {
+  modules: [
     // ...
-    [Modules.FILE]: {
+    {
       resolve: "@medusajs/file",
       options: {
         providers: [
@@ -147,7 +141,7 @@ module.exports = {
         ],
       },
     },
-  },
+  ]
 }
 ```
 
@@ -355,11 +349,11 @@ If you're using MinIO or Supabase, set `forcePathStyle` to `true` in the `additi
 
 For example:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.FILE]: {
+  modules: [
+    {
       resolve: "@medusajs/file",
       options: {
         providers: [
@@ -376,7 +370,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  },
+  ]
 })
 ```
 ---

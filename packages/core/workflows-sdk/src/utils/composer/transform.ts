@@ -2,6 +2,11 @@ import { resolveValue } from "./helpers"
 import { StepExecutionContext, WorkflowData } from "./type"
 import { proxify } from "./helpers/proxy"
 import { OrchestrationUtils } from "@medusajs/utils"
+import { ulid } from "ulid"
+import {
+  TransactionContext,
+  WorkflowStepHandlerArguments,
+} from "@medusajs/orchestration"
 
 type Func1<T extends object | WorkflowData, U> = (
   input: T extends WorkflowData<infer U>
@@ -30,32 +35,27 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  * @example
  * import {
  *   createWorkflow,
- *   transform
- * } from "@medusajs/workflows-sdk"
+ *   transform,
+ *   WorkflowResponse
+ * } from "@medusajs/framework/workflows-sdk"
  * import { step1, step2 } from "./steps"
  *
  * type WorkflowInput = {
  *   name: string
  * }
  *
- * type WorkflowOutput = {
- *   message: string
- * }
- *
- * const myWorkflow = createWorkflow<
- *     WorkflowInput,
- *     WorkflowOutput
- *   >
- *   ("hello-world", (input) => {
+ * const myWorkflow = createWorkflow(
+ *   "hello-world",
+ *   (input: WorkflowInput) => {
  *     const str1 = step1(input)
  *     const str2 = step2(input)
  *
- *     return transform({
+ *     const message = transform({
  *       str1,
  *       str2
- *     }, (input) => ({
- *       message: `${input.str1}${input.str2}`
- *     }))
+ *     }, (input) => `${input.str1}${input.str2}`)
+ *
+ *     return new WorkflowResponse(message)
  * })
  */
 // prettier-ignore
@@ -163,16 +163,26 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
+  const uniqId = ulid()
+
   const ret = {
+    __id: uniqId,
     __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
-    __resolver: undefined,
   }
 
-  const returnFn = async function (transactionContext): Promise<any> {
-    const allValues = await resolveValue(values, transactionContext)
-    const stepValue = allValues
-      ? JSON.parse(JSON.stringify(allValues))
-      : allValues
+  const returnFn = async function (
+    // If a transformer is returned as the result of a workflow, then at this point the workflow is entirely done, in that case we have a TransactionContext
+    transactionContext: WorkflowStepHandlerArguments | TransactionContext
+  ): Promise<any> {
+    if ("transaction" in transactionContext) {
+      const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
+
+      if (transactionContext.transaction.hasTemporaryData(temporaryDataKey)) {
+        return transactionContext.transaction.getTemporaryData(temporaryDataKey)
+      }
+    }
+
+    const stepValue = await resolveValue(values, transactionContext)
 
     let finalResult
     for (let i = 0; i < functions.length; i++) {
@@ -180,6 +190,15 @@ export function transform(
       const arg = i === 0 ? stepValue : finalResult
 
       finalResult = await fn.apply(fn, [arg, transactionContext])
+    }
+
+    if ("transaction" in transactionContext) {
+      const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
+
+      transactionContext.transaction.setTemporaryData(
+        temporaryDataKey,
+        finalResult
+      )
     }
 
     return finalResult

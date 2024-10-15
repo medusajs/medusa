@@ -4,7 +4,7 @@ import {
   createWorkflow,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 import { useRemoteQueryStep } from "../../common"
 import { deleteUsersWorkflow } from "./delete-users"

@@ -31,8 +31,8 @@
  *               description: A price's details.
  *               required:
  *                 - currency_code
- *                 - amount
  *                 - variant_id
+ *                 - amount
  *               properties:
  *                 currency_code:
  *                   type: string

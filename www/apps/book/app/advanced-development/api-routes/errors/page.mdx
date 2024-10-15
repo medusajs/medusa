@@ -10,15 +10,15 @@ In this guide, you'll learn how to throw errors in your Medusa application, how 
 
 ## Throw MedusaError
 
-When throwing an error in your API routes, middlewares, workflows, or any customization, throw a `MedusaError`, which is imported from `@medusajs/utils`.
+When throwing an error in your API routes, middlewares, workflows, or any customization, throw a `MedusaError`, which is imported from `@medusajs/framework/utils`.
 
 The Medusa application's API route error handler then wraps your thrown error in a uniform object and returns it in the response.
 
 For example:
 
 ```ts
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
@@ -257,8 +257,8 @@ import {
   MedusaNextFunction, 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export default defineMiddlewares({
   errorHandler: (

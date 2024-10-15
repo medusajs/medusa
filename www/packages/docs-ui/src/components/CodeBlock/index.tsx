@@ -51,6 +51,7 @@ export type CodeBlockProps = {
   collapsed?: boolean
   blockStyle?: CodeBlockStyle
   children?: React.ReactNode
+  style?: React.HTMLAttributes<HTMLDivElement>["style"]
 } & CodeBlockMetaFields &
   Omit<HighlightProps, "code" | "language" | "children">
 
@@ -71,6 +72,7 @@ export const CodeBlock = ({
   collapsibleLines,
   expandButtonLabel,
   isTerminal,
+  style,
   ...rest
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
@@ -92,8 +94,12 @@ export const CodeBlock = ({
       : isTerminal
   }, [isTerminal, lang])
   const codeTitle = useMemo(() => {
-    if (title || hasTabs) {
+    if (title) {
       return title
+    }
+
+    if (hasTabs) {
+      return ""
     }
 
     if (isTerminalCode) {
@@ -329,6 +335,7 @@ export const CodeBlock = ({
             !hasInnerCodeBlock && "rounded-docs_DEFAULT",
             className
           )}
+          style={style}
         >
           <Highlight
             theme={codeTheme}
@@ -370,9 +377,6 @@ export const CodeBlock = ({
                     !hasInnerCodeBlock &&
                       tokens.length <= 1 &&
                       "px-docs_1 py-[6px]",
-                    !codeTitle.length &&
-                      (!noCopy || !noReport) &&
-                      "xs:max-w-[83%]",
                     (noLineNumbers ||
                       (tokens.length <= 1 && !isTerminalCode)) &&
                       "pl-docs_1",

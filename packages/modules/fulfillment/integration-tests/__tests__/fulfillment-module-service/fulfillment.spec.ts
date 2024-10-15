@@ -2,7 +2,7 @@ import { resolve } from "path"
 import {
   IFulfillmentModuleService,
   UpdateFulfillmentDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -12,7 +12,7 @@ import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
-import { FulfillmentEvents, Modules } from "@medusajs/utils"
+import { FulfillmentEvents, Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(100000)
 

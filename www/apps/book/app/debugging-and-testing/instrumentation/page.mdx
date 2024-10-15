@@ -44,35 +44,34 @@ Also, install the dependencies relevant for the exporter you use. If you're usin
 npm install @opentelemetry/exporter-zipkin
 ```
 
-### Add instrumentation.js
+### Add instrumentation.ts
 
-Next, create the file `instrumentation.js` with the following content:
+Next, create the file `instrumentation.ts` with the following content:
 
-```js title="instrumentation.js"
-const { registerOtel } = require("@medusajs/medusa")
-// If using an exporter other than Zipkin, require it here.
-const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin')
+```ts title="instrumentation.ts"
+import { registerOtel } from "@medusajs/medusa"
+import { ZipkinExporter } from "@opentelemetry/exporter-zipkin"
 
 // If using an exporter other than Zipkin, initialize it here.
 const exporter = new ZipkinExporter({
-  serviceName: 'my-medusa-project',
+  serviceName: "my-medusa-project",
 })
 
 export function register() {
   registerOtel({
-    serviceName: 'medusajs',
+    serviceName: "medusajs",
     // pass exporter
     exporter,
     instrument: {
       http: true,
       workflows: true,
-      remoteQuery: true
+      query: true,
     },
   })
 }
 ```
 
-In the `instrumentation.js` file, you export a `register` function that uses Medusa's `registerOtel` utility function.
+In the `instrumentation.ts` file, you export a `register` function that uses Medusa's `registerOtel` utility function.
 
 You also initialize an instance of the exporter, such as Zipkin, and pass it to the `registerOtel` function.
 

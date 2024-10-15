@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
-  DALUtils,
-  Searchable,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
-} from "@medusajs/utils"
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -13,8 +13,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,

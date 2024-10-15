@@ -12,7 +12,7 @@ import type { InlineConfig } from "vite"
  *
  * Admin dashboard configurations.
  */
-export type AdminOptions = {
+export interface AdminOptions {
   /**
    * Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,
    * in both development and production environments. The default value is `false`.
@@ -48,7 +48,7 @@ export type AdminOptions = {
    * })
    * ```
    */
-  path?: `/${string}`
+  path: `/${string}`
   /**
    * The directory where the admin build is outputted when you run the `build` command.
    * The default value is `./build`.
@@ -63,7 +63,7 @@ export type AdminOptions = {
    * })
    * ```
    */
-  outDir?: string
+  outDir: string
   /**
    * The URL of your Medusa application. This is useful to set when you deploy the Medusa application.
    *
@@ -266,15 +266,6 @@ export type ProjectConfigOptions = {
   databaseLogging?: boolean
 
   /**
-   * @ignore
-   * @deprecated
-   *
-   * @privateRemarks
-   * only postgres is supported, so this config has no effect
-   */
-  databaseType?: string
-
-  /**
    * This configuration is used to pass additional options to the database connection. You can pass any configuration. For example, pass the
    * `ssl` property that enables support for TLS/SSL connections.
    *
@@ -399,19 +390,6 @@ export type ProjectConfigOptions = {
    * ```
    */
   sessionOptions?: SessionOptions
-
-  /**
-   * This property configures the HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
-   * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
-   *
-   * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
-   *
-   * @ignore
-   *
-   * @deprecated use {@link http }'s `compression` property instead.
-   *
-   */
-  httpCompression?: HttpCompressionOptions
 
   /**
    * Configure the number of staged jobs that are polled from the database. Default is `1000`.
@@ -828,7 +806,7 @@ export type ConfigModule = {
    * })
    * ```
    */
-  admin?: AdminOptions
+  admin: AdminOptions
 
   /**
    * On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services.

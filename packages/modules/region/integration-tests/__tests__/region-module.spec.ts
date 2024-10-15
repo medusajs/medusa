@@ -1,5 +1,5 @@
-import { IRegionModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IRegionModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { RegionModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -26,7 +26,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               linkable: "region_id",
               entity: "Region",
               primaryKey: "id",
-              serviceName: "Region",
+              serviceName: "region",
               field: "region",
             },
           },
@@ -35,7 +35,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               linkable: "country_iso_2",
               entity: "Country",
               primaryKey: "iso_2",
-              serviceName: "Region",
+              serviceName: "region",
               field: "country",
             },
           },

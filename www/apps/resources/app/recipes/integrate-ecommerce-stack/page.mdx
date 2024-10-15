@@ -28,7 +28,7 @@ To integrate an external system, such as an ERP, into your Medusa application, c
 Then, resolve the module's main service in other resources, such as API routes or workflows, to perform actions in the external system.
 
 <Card
-  href="!docs!/basics/modules-and-services"
+  href="!docs!/basics/modules"
   title="Create a Module"
   text="Learn how to create a module in Medusa."
   icon={AcademicCapSolid}
@@ -53,7 +53,7 @@ export const serviceHighlights = [
   
   ```ts title="src/modules/erp/service.ts" highlights={serviceHighlights}
   import axios, { AxiosInstance } from "axios"
-  import { ProductDTO } from "@medusajs/types"
+  import { ProductDTO } from "@medusajs/framework/types"
 
   type ErpModuleOptions = {
     apiKey: string
@@ -101,7 +101,7 @@ export const serviceHighlights = [
 
   <Note title="Tip">
 
-  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
+  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/modules#1-create-data-model) in your module to store data related to the external system.
 
   </Note>
 
@@ -109,26 +109,26 @@ export const serviceHighlights = [
 
   ```ts title="src/modules/erp/index.ts"
   import ErpModuleService from "./service"
-  import { Module } from "@medusajs/utils"
+  import { Module } from "@medusajs/framework/utils"
 
   export default Module("erp", {
     service: ErpModuleService,
   })
   ```
 
-  Finally, add the module to the `modules` object in `medusa-config.js`:
+  Finally, add the module to the `modules` object in `medusa-config.ts`:
 
-  ```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
+  ```ts title="medusa-config.ts" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
   module.exports = defineConfig({
     // ...
-    modules: {
-      erpModuleService: {
+    modules: [
+      {
         resolve: "./modules/erp",
         options: {
           apiKey: process.env.ERP_API_KEY,
         },
       },
-    },
+    ]
   })
   ```
 
@@ -180,9 +180,9 @@ export const workflowHighlights = [
       StepResponse,
       createWorkflow,
       WorkflowResponse,
-    } from "@medusajs/workflows-sdk"
-    import { IProductModuleService } from "@medusajs/types"
-    import { Modules } from "@medusajs/utils"
+    } from "@medusajs/framework/workflows-sdk"
+    import { IProductModuleService } from "@medusajs/framework/types"
+    import { Modules } from "@medusajs/framework/utils"
     import ErpModuleService from "../modules/erp/service"
 
     type WorkflowInput = {
@@ -259,7 +259,7 @@ export const workflowHighlights = [
     import type { 
       SubscriberConfig, 
       SubscriberArgs,
-    } from "@medusajs/medusa"
+    } from "@medusajs/framework"
     import createProductWorkflow from "../workflows/create-product"
 
     export default async function handleProductUpdate({ 
@@ -309,14 +309,14 @@ For example, suppose an administrator changes the product data in the ERP system
     import { 
       MedusaRequest, 
       MedusaResponse, 
-    } from "@medusajs/medusa"
+    } from "@medusajs/framework/http"
     import { 
       IProductModuleService, 
       UpdateProductDTO
-    } from "@medusajs/types"
+    } from "@medusajs/framework/types"
     import {
       Modules
-    } from "@medusajs/utils"
+    } from "@medusajs/framework/utils"
 
     type WebhookReq = {
       id: string

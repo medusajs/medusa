@@ -2,17 +2,20 @@ import {
   deleteProductCategoriesWorkflow,
   updateProductCategoriesWorkflow,
 } from "@medusajs/core-flows"
-import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
+import {
+  AdminProductCategoryResponse,
+  HttpTypes,
+} from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
-import { refetchEntities } from "../../../utils/refetch-entity"
+  refetchEntities,
+} from "@medusajs/framework/http"
 import {
   AdminProductCategoryParamsType,
   AdminUpdateProductCategoryType,
 } from "../validators"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoryParamsType>,

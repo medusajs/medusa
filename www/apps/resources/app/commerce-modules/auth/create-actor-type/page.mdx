@@ -8,12 +8,18 @@ In this document, learn how to create an actor type and authenticate its associa
 
 ## 0. Create Module with Data Model
 
-Before creating an actor type, you must define a data model the actor type belongs to. The data model is defined in a custom module.
+Before creating an actor type, you must have a module with a data model representing the actor type.
+
+<Note title="Tip">
+
+Learn how to create a module in [this guide](!docs!/basics/modules).
+
+</Note>
 
 The rest of this guide uses this `Manager` data model as an example:
 
 ```ts title="src/modules/manager/models/manager.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const Manager = model.define("manager", {
   id: model.id().primaryKey(),
@@ -31,7 +37,7 @@ export default Manager
 
 Start by creating a workflow that does two things:
 
-- Create a record of the `Manager` data model.
+- Creates a record of the `Manager` data model.
 - Sets the `app_metadata` property of the associated `AuthIdentity` record based on the new actor type.
 
 For example, create the file `src/workflows/create-manager.ts`. with the following content:
@@ -49,10 +55,10 @@ import {
   createStep,
   StepResponse,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import ManagerModuleService from "../modules/manager/service"
 
 type CreateManagerWorkflowInput = {
@@ -106,7 +112,7 @@ This workflow accepts the manager’s data and the associated auth identity’s 
 The workflow has two steps:
 
 1. Create the manager using the `createManagerStep`.
-2. Set the `app_metadata` property of the associated auth identity using the `setAuthAppMetadataStep` step imported from `@medusajs/core-flows`. You specify the actor type `manager` in the `actorType` property of the step’s input.
+2. Set the `app_metadata` property of the associated auth identity using the `setAuthAppMetadataStep` step imported from `@medusajs/medusa/core-flows`. You specify the actor type `manager` in the `actorType` property of the step’s input.
 
 ---
 
@@ -126,8 +132,8 @@ export const createRouteHighlights = [
 import type { 
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
 import createManagerWorkflow from "../../workflows/create-manager"
 
 type RequestBody = {
@@ -222,7 +228,7 @@ For example, create the file `src/api/manager/me/route.ts` with the following co
 import { 
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import ManagerModuleService from "../../../modules/manager/service"
 
 export async function GET(
@@ -308,7 +314,7 @@ For example, create the following workflow that deletes a manager and updates it
 import {
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import ManagerModuleService from "../modules/manager/service"
 
 export type DeleteManagerWorkflow = {
@@ -348,17 +354,17 @@ export const deleteHighlights = [
 
 ```ts title="src/workflows/delete-manager.ts" collapsibleLines="1-15" expandButtonLabel="Show Imports" highlights={deleteHighlights}
 // other imports
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
   useRemoteQueryStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 // ...
 

@@ -20,7 +20,7 @@ type TaxRegionTaxRateCreateFormProps = {
 
 const TaxRegionTaxRateCreateSchema = z.object({
   name: z.string().min(1),
-  code: z.string().optional(),
+  code: z.string().min(1),
   rate: z
     .object({
       float: z.number().optional(),
@@ -57,7 +57,7 @@ export const TaxRegionTaxRateCreateForm = ({
         tax_region_id: taxRegion.id,
         is_default: true,
         name: values.name,
-        code: values.code || undefined,
+        code: values.code,
         rate: values.rate?.float,
         is_combinable: values.is_combinable,
       },

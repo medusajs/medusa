@@ -1,20 +1,16 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
-import {
-  AdminCreateShippingOptionRuleType,
-  AdminUpdateShippingOptionRuleType,
-} from "../../../validators"
+} from "@medusajs/framework/http"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import { refetchBatchRules } from "../../../helpers"
 import { batchShippingOptionRulesWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     BatchMethodRequest<
-      AdminCreateShippingOptionRuleType,
-      AdminUpdateShippingOptionRuleType
+      HttpTypes.AdminCreateShippingOptionRule,
+      HttpTypes.AdminUpdateShippingOptionRule
     >
   >,
   res: MedusaResponse<HttpTypes.AdminUpdateShippingOptionRulesResponse>

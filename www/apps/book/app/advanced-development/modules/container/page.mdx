@@ -8,11 +8,13 @@ In this chapter, you'll learn about the module's container and how to resolve re
 
 ## Module's Container
 
-Each module has a local container only used by the resources of that module.
+Since modules are isolated, each module has a local container only used by the resources of that module.
 
-So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container, such as:
+So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container.
 
-- `logger`: A utility to log message in the Medusa application's logs.
+### List of Registered Resources
+
+Find a list of resources or dependencies registered in a module's container in [this Learning Resources reference](!resoures!/medusa-container-resources).
 
 ---
 
@@ -25,7 +27,7 @@ A service's constructor accepts as a first parameter an object used to resolve r
 For example:
 
 ```ts highlights={[["4"], ["10"]]}
-import { Logger } from "@medusajs/medusa"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -53,13 +55,15 @@ For example:
 ```ts highlights={[["9"]]}
 import {
   LoaderOptions,
-} from "@medusajs/modules-sdk"
-import { Logger } from "@medusajs/medusa"
+} from "@medusajs/framework/modules-sdk"
+import { 
+  ContainerRegistrationKeys
+} from "@medusajs/framework/utils"
 
 export default async function helloWorldLoader({
   container,
 }: LoaderOptions) {
-  const logger: Logger = container.resolve("logger")
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   logger.info("[helloWorldLoader]: Hello, World!")
 }

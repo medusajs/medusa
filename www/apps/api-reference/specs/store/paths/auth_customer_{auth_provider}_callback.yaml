@@ -17,8 +17,8 @@ post:
     in the request's Authorization header.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow
-    description: Learn about third-party authentication flow.
+      https://docs.medusajs.com/v2/storefront-development/customers/third-party-login
+    description: 'Storefront development: Implement third-party (social) login.'
   x-authenticated: false
   parameters:
     - name: auth_provider
@@ -33,10 +33,10 @@ post:
       label: Google Provider
       source:
         $ref: ../code_samples/Shell/auth_customer_{auth_provider}_callback/post.sh
-    - lang: Shell
+    - lang: Bash
       label: GitHub Provider
       source:
-        $ref: ../code_samples/Shell/auth_customer_{auth_provider}_callback/post.sh
+        $ref: ../code_samples/Bash/auth_customer_{auth_provider}_callback/post.sh
   tags:
     - Auth
   responses:

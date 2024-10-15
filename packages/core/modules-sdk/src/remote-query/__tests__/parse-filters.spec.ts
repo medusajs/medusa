@@ -11,6 +11,44 @@ const entitiesMap = getEntitiesMap(
 
 describe("parse-filters", () => {
   describe("Without operator map usage", () => {
+    it(`should parse filter for a single level module with ambiguous entity`, () => {
+      const filters = {
+        id: "string",
+        product: {
+          title: "test",
+        },
+      }
+
+      const remoteQueryObject = {
+        custom_product: {
+          fields: ["id", "product.*"],
+        },
+      }
+
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "custom_product",
+          filters,
+        },
+        entitiesMap
+      )
+
+      expect(remoteQueryObject).toEqual({
+        custom_product: {
+          fields: ["id", "product.*"],
+          __args: {
+            filters: {
+              id: "string",
+              product: {
+                title: "test",
+              },
+            },
+          },
+        },
+      })
+    })
+
     it("should parse filter for a single level module", () => {
       const filters = {
         id: "string",

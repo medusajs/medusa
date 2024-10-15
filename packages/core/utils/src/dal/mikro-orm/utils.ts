@@ -1,6 +1,7 @@
 import { Collection, EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { buildQuery } from "../../modules-sdk/build-query"
+import { isString } from "../../common/is-string"
 
 function detectCircularDependency(
   manager: SqlEntityManager,
@@ -23,7 +24,13 @@ function detectCircularDependency(
   for (const relation of relationsToCascade) {
     const branchVisited = new Set(Array.from(visited))
 
-    const isSelfCircularDependency = entityMetadata.class === relation.entity()
+    const relationEntity =
+      typeof relation.entity === "function"
+        ? relation.entity()
+        : relation.entity
+    const isSelfCircularDependency = isString(relationEntity)
+      ? entityMetadata.className === relationEntity
+      : entityMetadata.class === relationEntity
 
     if (!isSelfCircularDependency && branchVisited.has(relation.name)) {
       const dependencies = Array.from(visited)

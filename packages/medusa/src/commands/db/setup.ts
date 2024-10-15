@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import { dbCreate } from "./create"
 import { migrate } from "./migrate"
 

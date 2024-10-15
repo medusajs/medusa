@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -99,9 +97,7 @@
       "indexes": [
         {
           "keyName": "IDX_store_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -109,9 +105,7 @@
         },
         {
           "keyName": "store_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -197,9 +191,7 @@
       "indexes": [
         {
           "keyName": "IDX_store_currency_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -207,9 +199,7 @@
         },
         {
           "keyName": "store_currency_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -219,13 +209,9 @@
       "foreignKeys": {
         "store_currency_store_id_foreign": {
           "constraintName": "store_currency_store_id_foreign",
-          "columnNames": [
-            "store_id"
-          ],
+          "columnNames": ["store_id"],
           "localTableName": "public.store_currency",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.store",
           "deleteRule": "cascade",
           "updateRule": "cascade"

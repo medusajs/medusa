@@ -1,8 +1,8 @@
-import { RemoteLink } from "@medusajs/modules-sdk"
-import { LinkDefinition } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { RemoteLink } from "@medusajs/framework/modules-sdk"
+import { LinkDefinition } from "@medusajs/framework/types"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export type DismissRemoteLinksStepInput = LinkDefinition | LinkDefinition[]
 
@@ -16,13 +16,13 @@ export const dismissRemoteLinkStepId = "dismiss-remote-links"
  * @example
  * import {
  *   createWorkflow
- * } from "@medusajs/workflows-sdk"
+ * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   dismissRemoteLinkStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  * import {
  *   Modules
- * } from "@medusajs/utils"
+ * } from "@medusajs/framework/utils"
  *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",

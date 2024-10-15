@@ -23,10 +23,10 @@ const paymentProviderOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-payment\`.`,
       `## 2. Create the Payment Provider Service
 
-Create the file \`src/modules/my-payment/service.ts\` that holds the module's main service. It must extend the \`AbstractPaymentProvider\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-payment/service.ts\` that holds the module's main service. It must extend the \`AbstractPaymentProvider\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-payment/service.ts"
-import { AbstractPaymentProvider } from "@medusajs/utils"
+import { AbstractPaymentProvider } from "@medusajs/framework/utils"
 
 type Options = {
   apiKey: string
@@ -57,18 +57,18 @@ export default {
 This exports the module's definition, indicating that the \`MyPaymentProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module:
+To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module in \`medusa-config.ts\`:
 
-\`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+\`\`\`ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
+  modules: [
+    {
+      resolve: "@medusajs/framework/payment",
       options: {
         providers: [
           {
@@ -82,9 +82,19 @@ module.exports = defineConfig({
         ]
       }
     }
-  }
+  ]
 })
 \`\`\`
+`,
+      `## 5. Test it Out
+
+Before you use your payment provider, enable it in a region using the Medusa Admin.
+
+Then, go through checkout to place an order. Your payment provider is used to authorize the payment.
+`,
+      `## Useful Guides
+
+- [Storefront Guide: how to implement UI for your payment provider during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment)
 `,
     ],
   },

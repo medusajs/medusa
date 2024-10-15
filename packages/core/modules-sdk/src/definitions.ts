@@ -1,38 +1,11 @@
 import { ModuleDefinition } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  MODULE_PACKAGE_NAMES,
   Modules,
   upperCaseFirst,
 } from "@medusajs/utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
-
-export const MODULE_PACKAGE_NAMES = {
-  [Modules.AUTH]: "@medusajs/auth",
-  [Modules.CACHE]: "@medusajs/cache-inmemory",
-  [Modules.CART]: "@medusajs/cart",
-  [Modules.CUSTOMER]: "@medusajs/customer",
-  [Modules.EVENT_BUS]: "@medusajs/event-bus-local",
-  [Modules.INVENTORY]: "@medusajs/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
-  [Modules.LINK]: "@medusajs/link-modules",
-  [Modules.PAYMENT]: "@medusajs/payment",
-  [Modules.PRICING]: "@medusajs/pricing",
-  [Modules.PRODUCT]: "@medusajs/product",
-  [Modules.PROMOTION]: "@medusajs/promotion",
-  [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
-  [Modules.FULFILLMENT]: "@medusajs/fulfillment",
-  [Modules.STOCK_LOCATION]: "@medusajs/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
-  [Modules.TAX]: "@medusajs/tax",
-  [Modules.USER]: "@medusajs/user",
-  [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
-  [Modules.REGION]: "@medusajs/region",
-  [Modules.ORDER]: "@medusajs/order",
-  [Modules.API_KEY]: "@medusajs/api-key",
-  [Modules.STORE]: "@medusajs/store",
-  [Modules.CURRENCY]: "@medusajs/currency",
-  [Modules.FILE]: "@medusajs/file",
-  [Modules.NOTIFICATION]: "@medusajs/notification",
-  [Modules.INDEX]: "@medusajs/index",
-}
 
 export const ModulesDefinition: {
   [key: string]: ModuleDefinition
@@ -43,7 +16,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.EVENT_BUS),
     isRequired: true,
     isQueryable: false,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -90,7 +63,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.PRODUCT),
     isRequired: false,
     isQueryable: true,
-    dependencies: [Modules.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -102,7 +75,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.PRICING),
     isRequired: false,
     isQueryable: true,
-    dependencies: [Modules.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -114,7 +87,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.PROMOTION),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -126,7 +99,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.AUTH),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -138,7 +111,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.WORKFLOW_ENGINE),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     __passSharedContainer: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
@@ -151,7 +124,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.SALES_CHANNEL),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -163,7 +136,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.FULFILLMENT),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", Modules.EVENT_BUS],
+    dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -175,7 +148,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.CART),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -187,7 +160,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.CUSTOMER),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -199,7 +172,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.PAYMENT),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -211,7 +184,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.USER),
     isRequired: false,
     isQueryable: true,
-    dependencies: [Modules.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -223,7 +196,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.REGION),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -235,7 +208,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.ORDER),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", Modules.EVENT_BUS],
+    dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -247,7 +220,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.TAX),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", Modules.EVENT_BUS],
+    dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -259,7 +232,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.API_KEY),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -271,7 +244,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.STORE),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -283,7 +256,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.CURRENCY),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -295,7 +268,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.FILE),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -307,7 +280,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.NOTIFICATION),
     isRequired: false,
     isQueryable: true,
-    dependencies: [Modules.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -321,10 +294,22 @@ export const ModulesDefinition: {
     isQueryable: false,
     dependencies: [
       Modules.EVENT_BUS,
-      "logger",
+      ContainerRegistrationKeys.LOGGER,
       ContainerRegistrationKeys.REMOTE_QUERY,
       ContainerRegistrationKeys.QUERY,
     ],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
+  },
+  [Modules.LOCKING]: {
+    key: Modules.LOCKING,
+    defaultPackage: false,
+    label: upperCaseFirst(Modules.LOCKING),
+    isRequired: false,
+    isQueryable: false,
+    dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

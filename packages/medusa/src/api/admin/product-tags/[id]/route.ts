@@ -5,15 +5,15 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+  refetchEntity,
+} from "@medusajs/framework/http"
 
 import {
   AdminGetProductTagParamsType,
   AdminUpdateProductTagType,
 } from "../validators"
-import { refetchEntity } from "../../../utils/refetch-entity"
-import { HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTagParamsType>,

@@ -1,5 +1,13 @@
-import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import {
+  ConfigModule,
+  MedusaContainer,
+  PluginDetails,
+} from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  GraphQLSchema,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { join } from "path"
@@ -7,20 +15,16 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import {
-  configLoader,
-  container,
-  expressLoader,
-  featureFlagsLoader,
-  GraphQLSchema,
-  JobLoader,
-  LinkLoader,
-  logger,
-  MedusaAppLoader,
-  pgConnectionLoader,
-  SubscriberLoader,
-  WorkflowLoader,
-} from "@medusajs/framework"
+import { configLoader } from "@medusajs/framework/config"
+import { expressLoader } from "@medusajs/framework/http"
+import { JobLoader } from "@medusajs/framework/jobs"
+import { LinkLoader } from "@medusajs/framework/links"
+import { logger } from "@medusajs/framework/logger"
+import { container, MedusaAppLoader } from "@medusajs/framework"
+import { pgConnectionLoader } from "@medusajs/framework/database"
+import { SubscriberLoader } from "@medusajs/framework/subscribers"
+import { WorkflowLoader } from "@medusajs/framework/workflows"
+import { featureFlagsLoader } from "@medusajs/framework/feature-flags"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 
 type Options = {
@@ -114,7 +118,7 @@ async function loadEntrypoints(
 export async function initializeContainer(
   rootDirectory: string
 ): Promise<MedusaContainer> {
-  configLoader(rootDirectory, "medusa-config.js")
+  configLoader(rootDirectory, "medusa-config")
   await featureFlagsLoader(join(__dirname, "feature-flags"))
 
   container.register({

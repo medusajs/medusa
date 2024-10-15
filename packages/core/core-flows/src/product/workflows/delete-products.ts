@@ -1,4 +1,4 @@
-import { Modules, ProductWorkflowEvents } from "@medusajs/utils"
+import { Modules, ProductWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,10 +6,15 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
-import { emitEventStep, removeRemoteLinkStep } from "../../common"
+} from "@medusajs/framework/workflows-sdk"
+import {
+  emitEventStep,
+  removeRemoteLinkStep,
+  useQueryGraphStep,
+} from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
+import { deleteInventoryItemWorkflow } from "../../inventory"
 
 export type DeleteProductsWorkflowInput = { ids: string[] }
 
@@ -25,6 +30,47 @@ export const deleteProductsWorkflow = createWorkflow(
       return data.productsToDelete
         .flatMap((product) => product.variants)
         .map((variant) => variant.id)
+    })
+
+    const variantsWithInventoryStepResponse = useQueryGraphStep({
+      entity: "variants",
+      fields: [
+        "id",
+        "manage_inventory",
+        "inventory.id",
+        "inventory.variants.id",
+      ],
+      filters: {
+        id: variantsToBeDeleted,
+      },
+    })
+
+    const toDeleteInventoryItemIds = transform(
+      { variants: variantsWithInventoryStepResponse.data },
+      (data) => {
+        const variants = data.variants || []
+
+        const variantsMap = new Map(variants.map((v) => [v.id, true]))
+        const toDeleteIds: Set<string> = new Set()
+
+        variants.forEach((variant) => {
+          if (!variant.manage_inventory) {
+            return
+          }
+
+          for (const inventoryItem of variant.inventory) {
+            if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
+              toDeleteIds.add(inventoryItem.id)
+            }
+          }
+        })
+
+        return Array.from(toDeleteIds)
+      }
+    )
+
+    deleteInventoryItemWorkflow.runAsStep({
+      input: toDeleteInventoryItemIds,
     })
 
     const [, deletedProduct] = parallelize(

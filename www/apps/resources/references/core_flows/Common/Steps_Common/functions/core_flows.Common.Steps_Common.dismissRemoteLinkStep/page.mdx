@@ -7,7 +7,7 @@ import { TypeList, WorkflowDiagram } from "docs-ui"
 
 # dismissRemoteLinkStep - Medusa Workflows API Reference
 
-This documentation provides a reference to the `dismissRemoteLinkStep`. It belongs to the `@medusajs/core-flows` package.
+This documentation provides a reference to the `dismissRemoteLinkStep`. It belongs to the `@medusajs/medusa/core-flows` package.
 
 This step removes remote links between two records of linked data models.
 
@@ -18,13 +18,13 @@ Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/adva
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   dismissRemoteLinkStep
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import {
   Modules
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",

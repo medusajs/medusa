@@ -3,12 +3,12 @@ import {
   InternalModuleDeclaration,
   Logger,
   Message,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   AbstractEventBusModuleService,
   isPresent,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { BulkJobOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EventBusRedisModuleOptions, Options } from "../types"
@@ -60,8 +60,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
-    if (shouldStartWorker) {
+    if (this.isWorkerMode) {
       this.bullWorker_ = new Worker(
         moduleOptions.queueName ?? "events-queue",
         this.worker_,
@@ -116,7 +115,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           // options for a particular event
           ...eventData.options,
         },
-      }
+      } as any
     })
   }
 

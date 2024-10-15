@@ -8,8 +8,13 @@ import {
   createProductVariants,
 } from "../__fixtures__/product"
 
-import { IProductModuleService, ProductDTO } from "@medusajs/types"
-import { Module, Modules, ProductStatus, kebabCase } from "@medusajs/utils"
+import { IProductModuleService, ProductDTO } from "@medusajs/framework/types"
+import {
+  Module,
+  Modules,
+  ProductStatus,
+  kebabCase,
+} from "@medusajs/framework/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   ProductCategoryService,
@@ -67,7 +72,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_id",
             entity: "Product",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "product",
           },
         },
@@ -76,7 +81,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_variant_id",
             entity: "ProductVariant",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productVariant",
           },
           variant_id: {
@@ -84,7 +89,7 @@ moduleIntegrationTestRunner<Service>({
             entity: "ProductVariant",
             linkable: "variant_id",
             primaryKey: "variant_id",
-            serviceName: "Product",
+            serviceName: "product",
           },
         },
         productOption: {
@@ -92,7 +97,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_option_id",
             entity: "ProductOption",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productOption",
           },
         },
@@ -101,7 +106,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_type_id",
             entity: "ProductType",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productType",
           },
         },
@@ -110,7 +115,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_image_id",
             entity: "ProductImage",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productImage",
           },
         },
@@ -119,7 +124,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_tag_id",
             entity: "ProductTag",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productTag",
           },
         },
@@ -128,7 +133,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_collection_id",
             entity: "ProductCollection",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productCollection",
           },
         },
@@ -137,7 +142,7 @@ moduleIntegrationTestRunner<Service>({
             linkable: "product_category_id",
             entity: "ProductCategory",
             primaryKey: "id",
-            serviceName: "Product",
+            serviceName: "product",
             field: "productCategory",
           },
         },

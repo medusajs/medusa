@@ -1,6 +1,9 @@
-import { FilterableProductProps, RemoteQueryFunction } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  FilterableProductProps,
+  RemoteQueryFunction,
+} from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export type GetAllProductsStepInput = {
   select: string[]
@@ -33,6 +36,7 @@ export const getAllProductsStep = createStep(
         },
         fields: data.select,
       })
+
       allProducts.push(...products)
 
       if (products.length < pageSize) {

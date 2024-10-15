@@ -10,7 +10,7 @@ import type { Client } from "pg"
 const ADMIN_EMAIL = "admin@medusa-test.com"
 const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com"
 const ADMIN_CORS =
-  "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com"
+  "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com"
 const AUTH_CORS = ADMIN_CORS
 const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
@@ -145,7 +145,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await execute(
-          ["npx medusa migrations run && npx medusa links sync", npxOptions],
+          ["npx medusa db:migrate", npxOptions],
           { verbose, needOutput: true }
         )
 
@@ -242,11 +242,22 @@ export default async ({
     )
 
     if (apiKeys.rowCount) {
-      const nextjsEnvPath = path.join(nextjsDirectory, fs.existsSync(path.join(nextjsDirectory, ".env.local")) ? ".env.local" : ".env.template")
+      const nextjsEnvPath = path.join(
+        nextjsDirectory,
+        fs.existsSync(path.join(nextjsDirectory, ".env.local"))
+          ? ".env.local"
+          : ".env.template"
+      )
 
       const originalContent = fs.readFileSync(nextjsEnvPath, "utf-8")
 
-      fs.appendFileSync(nextjsEnvPath, originalContent.replace("NEXT_PUBLIC_PUBLISHABLE_KEY=", `NEXT_PUBLIC_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`))
+      fs.writeFileSync(
+        nextjsEnvPath,
+        originalContent.replace(
+          "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_test",
+          `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`
+        )
+      )
     }
   }
 

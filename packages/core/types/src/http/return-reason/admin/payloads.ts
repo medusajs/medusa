@@ -1,14 +1,12 @@
-import { AdminReturnReason } from "./entities"
-
-type AdminBaseReturnReasonPayload = Pick<
-  AdminReturnReason,
-  "value" | "label" | "description"
->
+type AdminBaseReturnReasonPayload = {
+  value: string
+  label: string
+  description?: string
+  metadata?: Record<string, unknown> | null
+}
 
 export interface AdminCreateReturnReason extends AdminBaseReturnReasonPayload {
-  metadata?: Record<string, unknown> | null
+  parent_return_reason_id?: string
 }
 
-export interface AdminUpdateReturnReason extends AdminBaseReturnReasonPayload {
-  metadata?: Record<string, unknown> | null
-}
+export interface AdminUpdateReturnReason extends AdminBaseReturnReasonPayload {}

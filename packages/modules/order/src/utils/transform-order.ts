@@ -4,7 +4,7 @@ import {
   deduplicate,
   isDefined,
   isObject,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 // Reshape the order object to match the OrderDTO
 // This function is used to format the order object before returning to the main module methods
@@ -46,6 +46,8 @@ export function formatOrder<T = any>(
         ...orderItem.item,
         quantity: detail.quantity,
         raw_quantity: detail.raw_quantity,
+        unit_price: detail.unit_price ?? orderItem.item.unit_price,
+        raw_unit_price: detail.raw_unit_price ?? orderItem.item.raw_unit_price,
         detail,
       }
     })
@@ -245,6 +247,11 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
     if (original.quantity) {
       conf.where.items.quantity = original.quantity
       delete conf.where.items.item.quantity
+    }
+
+    if (original.unit_price) {
+      conf.where.items.unit_price = original.unit_price
+      delete conf.where.items.item.unit_price
     }
 
     if (original.detail) {

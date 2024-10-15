@@ -13,6 +13,7 @@
     "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/core-flows": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/fulfillment": "workspace:^",
@@ -30,7 +31,8 @@
     "@medusajs/user": "workspace:^",
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
-    "faker": "^5.5.3",
+    "form-data": "^4.0.0",
+    "jsonwebtoken": "^9.0.2",
     "medusa-test-utils": "workspace:*",
     "pg": "^8.11.3"
   },
@@ -39,7 +41,6 @@
     "@swc/core": "^1.4.8",
     "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
-    "jest-environment-node": "^29.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   }
 }

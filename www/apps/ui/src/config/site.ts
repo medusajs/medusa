@@ -19,4 +19,11 @@ export const siteConfig: SiteConfig = {
     default: [],
     mobile: [],
   },
+  project: {
+    title: "Medusa UI",
+    key: "ui",
+  },
+  breadcrumbOptions: {
+    showCategories: true,
+  },
 }

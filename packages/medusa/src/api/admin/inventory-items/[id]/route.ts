@@ -1,5 +1,5 @@
-import { MedusaError } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   deleteInventoryItemWorkflow,
   updateInventoryItemsWorkflow,
@@ -9,7 +9,7 @@ import {
   AdminUpdateInventoryItemType,
 } from "../validators"
 import { refetchInventoryItem } from "../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: MedusaRequest<AdminGetInventoryItemParamsType>,

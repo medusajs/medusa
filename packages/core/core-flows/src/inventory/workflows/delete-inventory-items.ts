@@ -2,11 +2,12 @@ import {
   createWorkflow,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
-import { deleteInventoryItemStep } from "../steps"
+import { deleteInventoryItemStep, validateInventoryDeleteStep } from "../steps"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
-import { Modules } from "@medusajs/utils"
+import { useQueryGraphStep } from "../../common"
 
 export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 /**
@@ -15,6 +16,16 @@ export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 export const deleteInventoryItemWorkflow = createWorkflow(
   deleteInventoryItemWorkflowId,
   (input: WorkflowData<string[]>): WorkflowResponse<string[]> => {
+    const { data: inventoryItemsToDelete } = useQueryGraphStep({
+      entity: "inventory",
+      fields: ["id", "reserved_quantity"],
+      filters: {
+        id: input,
+      },
+    })
+
+    validateInventoryDeleteStep({ inventory_items: inventoryItemsToDelete })
+
     deleteInventoryItemStep(input)
     removeRemoteLinkStep({
       [Modules.INVENTORY]: { inventory_item_id: input },

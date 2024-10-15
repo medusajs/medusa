@@ -1,4 +1,7 @@
-import { BigNumberInput, CampaignBudgetTypeValues } from "@medusajs/types"
+import {
+  BigNumberInput,
+  CampaignBudgetTypeValues,
+} from "@medusajs/framework/types"
 import { Campaign } from "@models"
 
 export interface CreateCampaignBudgetDTO {

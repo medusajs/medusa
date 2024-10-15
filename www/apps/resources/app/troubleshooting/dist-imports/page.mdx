@@ -1,0 +1,36 @@
+export const metadata = {
+  title: `Importing from /dist Sub-Path`,
+}
+
+# {metadata.title}
+
+Because of how Medusa packages are bundled and released, importing from the `/dist` sub-path of its packages is not allowed.
+
+For example, this is not allowed:
+
+```ts
+import { 
+  AdminGetApiKeysParams,
+} from "@medusajs/medusa/dist/api/admin/api-keys" // <-- Not allowed
+```
+
+## Importing from Exposed Directories
+
+The `@medusajs/medusa` package allows you to import from the following sub-directories:
+
+- `api`
+- `subscribers`
+- `jobs`
+- `core-flows`
+- `loaders`
+- `commands`
+
+So, you can still import `AdminGetApiKeysParams` from the example above, however, the import path shouldn't include `/dist`.
+
+So, this is allowed:
+
+```ts
+import { 
+  AdminGetApiKeysParams,
+} from "@medusajs/medusa/api/admin/api-keys" // <-- Allowed
+```

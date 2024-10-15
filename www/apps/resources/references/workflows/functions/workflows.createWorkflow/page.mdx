@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # createWorkflow - Workflows API Reference
 
-This documentation provides a reference to the `createWorkflow` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `createWorkflow` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function creates a workflow with the provided name and a constructor function.
 The constructor function builds the workflow from steps created by the [createStep](../workflows.createStep/page.mdx) function.
@@ -17,8 +17,11 @@ invoke the exported workflow, then run its `run` method.
 ## Example
 
 ```ts
-import { createWorkflow } from "@medusajs/workflows-sdk"
-import { MedusaRequest, MedusaResponse, Product } from "@medusajs/medusa"
+import {
+  createWorkflow,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import {
   createProductStep,
   getProductStep,
@@ -29,16 +32,15 @@ interface WorkflowInput {
  title: string
 }
 
-const myWorkflow = createWorkflow<
-    WorkflowInput,
-    Product
-  >("my-workflow", (input) => {
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  (input: WorkflowInput) => {
    // Everything here will be executed and resolved later
    // during the execution. Including the data access.
 
     const product = createProductStep(input)
     const prices = createPricesStep(product)
-    return getProductStep(product.id)
+    return new WorkflowResponse(getProductStep(product.id))
   }
 )
 

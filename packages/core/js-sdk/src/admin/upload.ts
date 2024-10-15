@@ -59,9 +59,12 @@ export class Upload {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return this.client.fetch<HttpTypes.AdminFileDeleteResponse>(`/admin/uploads/${id}`, {
-      method: "DELETE",
-      headers,
-    })
+    return this.client.fetch<HttpTypes.AdminFileDeleteResponse>(
+      `/admin/uploads/${id}`,
+      {
+        method: "DELETE",
+        headers,
+      }
+    )
   }
 }

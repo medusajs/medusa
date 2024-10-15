@@ -3,7 +3,7 @@ import {
   DALUtils,
   generateEntityId,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,

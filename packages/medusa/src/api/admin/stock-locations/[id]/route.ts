@@ -1,19 +1,19 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import {
   deleteStockLocationsWorkflow,
   updateStockLocationsWorkflow,
 } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { refetchStockLocation } from "../helpers"
 import {
   AdminGetStockLocationParamsType,
   AdminUpdateStockLocationType,
 } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateStockLocationType>,

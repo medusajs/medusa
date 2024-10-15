@@ -1,10 +1,10 @@
-import { OrderWorkflowDTO } from "@medusajs/types"
+import { OrderWorkflowDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
   getOrderItemTaxLinesStep,
