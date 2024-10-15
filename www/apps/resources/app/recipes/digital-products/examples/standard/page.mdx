@@ -1512,11 +1512,11 @@ module.exports = defineConfig({
   modules: [
     // ...
     {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
-            resolve: "@medusajs/fulfillment-manual",
+            resolve: "@medusajs/medusa/fulfillment-manual",
             id: "manual",
           },
           {
@@ -2008,11 +2008,11 @@ module.exports = defineConfig({
   modules: [
     // ...
     {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "@medusajs/notification-local",
+            resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
               name: "Local Notification Provider",
