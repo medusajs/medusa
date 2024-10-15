@@ -18,8 +18,12 @@ export function getConfigFile<TConfig = unknown>(
   try {
     const configFilePath = require.resolve(configPath)
     const configExports = require(configFilePath)
+    const resolvedExports = resolveExports(configExports)
     return {
-      configModule: resolveExports(configExports).default,
+      configModule:
+        "default" in resolvedExports && resolvedExports.default
+          ? resolvedExports.default
+          : resolvedExports,
       configFilePath,
       error: null,
     }
