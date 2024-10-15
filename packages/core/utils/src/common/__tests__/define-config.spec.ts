@@ -20,7 +20,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -57,7 +57,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -77,7 +77,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
@@ -167,7 +167,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -204,7 +204,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -224,7 +224,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
@@ -322,7 +322,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -359,7 +359,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -379,7 +379,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
@@ -478,7 +478,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -515,7 +515,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -535,7 +535,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
@@ -622,7 +622,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -659,7 +659,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -679,7 +679,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
@@ -769,7 +769,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "emailpass",
-                  "resolve": "@medusajs/auth-emailpass",
+                  "resolve": "@medusajs/medusa/auth-emailpass",
                 },
               ],
             },
@@ -803,7 +803,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "manual",
-                  "resolve": "@medusajs/fulfillment-manual",
+                  "resolve": "@medusajs/medusa/fulfillment-manual",
                 },
               ],
             },
@@ -823,7 +823,7 @@ describe("defineConfig", function () {
                     ],
                     "name": "Local Notification Provider",
                   },
-                  "resolve": "@medusajs/notification-local",
+                  "resolve": "@medusajs/medusa/notification-local",
                 },
               ],
             },
