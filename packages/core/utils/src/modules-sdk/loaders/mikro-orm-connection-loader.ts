@@ -53,10 +53,7 @@ export async function mikroOrmConnectionLoader({
     return
   }
 
-  if (
-    moduleDeclaration?.scope === "internal" &&
-    moduleDeclaration.resources === "shared"
-  ) {
+  if (moduleDeclaration?.scope === "internal") {
     const shouldSwallowError = true
     const dbConfig = loadDatabaseConfig(
       moduleName,

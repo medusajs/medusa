@@ -26,7 +26,6 @@ describe("load internal - load resources", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
       }
@@ -109,7 +108,6 @@ describe("load internal - load resources", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
       }
@@ -192,7 +190,6 @@ describe("load internal - load resources", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
       }
@@ -274,7 +271,6 @@ describe("load internal - load resources", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
       }

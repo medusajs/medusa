@@ -26,7 +26,7 @@ import {
   registerMedusaModule,
 } from "./loaders"
 import { loadModuleMigrations } from "./loaders/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import { MODULE_SCOPE } from "./types"
 
 const logger: any = {
   log: (a) => console.log(a),
@@ -439,9 +439,6 @@ class MedusaModule {
       if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
         modDeclaration = {
           scope: declaration?.scope || MODULE_SCOPE.INTERNAL,
-          resources:
-            (declaration as InternalModuleDeclaration)?.resources ||
-            MODULE_RESOURCE_TYPE.ISOLATED,
           resolve: defaultPath,
           options: declaration?.options ?? declaration,
           dependencies:
@@ -449,15 +446,10 @@ class MedusaModule {
           alias: declaration?.alias,
           main: declaration?.main,
           worker_mode: workerMode,
-        } as any
+        } as InternalModuleDeclaration
       }
 
-      // TODO: Only do that while legacy modules sharing the manager exists then remove the ternary in favor of createMedusaContainer({}, globalContainer)
-      const container =
-        modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
-        modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-          ? sharedContainer ?? createMedusaContainer()
-          : createMedusaContainer({}, sharedContainer)
+      const container = sharedContainer ?? createMedusaContainer()
 
       if (injectedDependencies) {
         for (const service in injectedDependencies) {
@@ -750,7 +742,6 @@ class MedusaModule {
   }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.ISOLATED,
       resolve: modulePath,
       options,
     })
@@ -787,7 +778,6 @@ class MedusaModule {
   }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.ISOLATED,
       resolve: modulePath,
       options,
     })
@@ -824,7 +814,6 @@ class MedusaModule {
   }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.ISOLATED,
       resolve: modulePath,
       options,
     })
