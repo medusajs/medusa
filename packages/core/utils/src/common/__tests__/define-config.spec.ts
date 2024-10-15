@@ -7,7 +7,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -151,7 +150,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -301,7 +299,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -457,7 +454,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -609,7 +605,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -756,7 +751,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
