@@ -245,6 +245,12 @@ async function buildFrontend(
     return false
   }
 
+  if (!adminOptions.disable && adminOnly) {
+    logger.warn(
+      `You are building using the flag --admin-only but the admin is enabled in your medusa-config, If you intend to host the dashboard separately you should disable the admin in your medusa config`
+    )
+  }
+
   try {
     logger.info("Compiling frontend source...")
     const { build: buildProductionBuild } = await import(
