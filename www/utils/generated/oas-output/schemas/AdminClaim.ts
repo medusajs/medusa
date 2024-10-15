@@ -80,7 +80,11 @@
  *     title: updated_at
  *     description: The claim's update date.
  *   order:
- *     $ref: "#/components/schemas/AdminOrder"
+ *     type: string
+ *     title: order
+ *     description: The order's details.
+ *     externalDocs:
+ *       url: "#pagination"
  *   type:
  *     type: string
  *     description: The claim's type.

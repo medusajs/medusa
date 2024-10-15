@@ -8,7 +8,11 @@
  *   - return
  * properties:
  *   order:
- *     $ref: "#/components/schemas/Order"
+ *     type: string
+ *     title: order
+ *     description: The order change's order.
+ *     externalDocs:
+ *       url: "#pagination"
  *   return:
  *     $ref: "#/components/schemas/AdminReturn"
  * 

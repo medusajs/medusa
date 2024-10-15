@@ -16,6 +16,10 @@
  *     type: number
  *     title: unit_price
  *     description: The item's unit price.
+ *   compare_at_unit_price:
+ *     type: number
+ *     title: compare_at_unit_price
+ *     description: The order edit's compare at unit price.
  * 
 */
 

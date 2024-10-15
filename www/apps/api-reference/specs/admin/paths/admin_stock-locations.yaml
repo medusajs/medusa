@@ -6,16 +6,6 @@ get:
     fields such as `id`. The stock locations can also be sorted or paginated.
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
@@ -608,16 +598,6 @@ post:
   description: Create a stock location.
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-

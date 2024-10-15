@@ -6,16 +6,6 @@ get:
     `id`. The claims can also be sorted or paginated.
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
@@ -1032,16 +1022,6 @@ post:
     only applied on the order once the claim is confirmed.
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
