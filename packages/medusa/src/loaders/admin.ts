@@ -3,6 +3,7 @@ import { AdminOptions, ConfigModule } from "@medusajs/framework/types"
 import { Express } from "express"
 import fs from "fs"
 import path from "path"
+import { ADMIN_RELATIVE_OUTPUT_DIR } from "../utils"
 
 type Options = {
   app: Express
@@ -10,10 +11,9 @@ type Options = {
   rootDirectory: string
 }
 
-type IntializedOptions = Required<
-  Pick<AdminOptions, "path" | "disable" | "outDir">
-> &
-  AdminOptions & {
+type IntializedOptions = Required<Pick<AdminOptions, "path" | "disable">> &
+  Omit<AdminOptions, "outDir"> & {
+    outDir: string
     sources?: string[]
   }
 
@@ -39,6 +39,7 @@ export default async function adminLoader({
     disable: false,
     sources,
     ...admin,
+    outDir: path.join(rootDirectory, ADMIN_RELATIVE_OUTPUT_DIR),
   }
 
   if (adminOptions?.disable) {

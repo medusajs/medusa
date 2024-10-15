@@ -4,9 +4,12 @@ import type tsStatic from "typescript"
 import { logger } from "@medusajs/framework/logger"
 import { ConfigModule } from "@medusajs/framework/types"
 import { getConfigFile } from "@medusajs/framework/utils"
+import {
+  ADMIN_ONLY_OUTPUT_DIR,
+  ADMIN_RELATIVE_OUTPUT_DIR,
+  ADMIN_SOURCE_DIR,
+} from "../utils"
 
-const ADMIN_FOLDER = "src/admin"
-const ADMIN_RELATIVE_OUTPUT_DIR = "./public/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
 
 function computeDist(
@@ -14,11 +17,9 @@ function computeDist(
   tsConfig: { options: { outDir?: string } }
 ): string {
   const distFolder = tsConfig.options.outDir ?? ".medusa/server"
-  const dist = path.isAbsolute(distFolder)
+  return path.isAbsolute(distFolder)
     ? distFolder
     : path.join(projectRoot, distFolder)
-
-  return dist
 }
 
 async function loadTsConfig(projectRoot: string) {
@@ -142,7 +143,7 @@ async function buildBackend(
    */
   const filesToCompile = tsConfig.fileNames.filter((fileName) => {
     return (
-      !fileName.includes(`${ADMIN_FOLDER}/`) &&
+      !fileName.includes(`${ADMIN_SOURCE_DIR}/`) &&
       !fileName.includes(`${INTEGRATION_TESTS_FOLDER}/`)
     )
   })
@@ -217,6 +218,7 @@ async function buildBackend(
  */
 async function buildFrontend(
   projectRoot: string,
+  adminOnly: boolean,
   tsConfig: tsStatic.ParsedCommandLine
 ): Promise<boolean> {
   const startTime = process.hrtime()
@@ -227,15 +229,19 @@ async function buildFrontend(
 
   const dist = computeDist(projectRoot, tsConfig)
 
-  const adminSource = path.join(projectRoot, ADMIN_FOLDER)
+  const adminOutputPath = adminOnly
+    ? path.join(projectRoot, ADMIN_ONLY_OUTPUT_DIR)
+    : path.join(dist, ADMIN_RELATIVE_OUTPUT_DIR)
+
+  const adminSource = path.join(projectRoot, ADMIN_SOURCE_DIR)
   const adminOptions = {
     disable: false,
     sources: [adminSource],
     ...configFile.configModule.admin,
-    outDir: path.join(dist, ADMIN_RELATIVE_OUTPUT_DIR),
+    outDir: adminOutputPath,
   }
 
-  if (adminOptions.disable) {
+  if (adminOptions.disable && !adminOnly) {
     return false
   }
 
@@ -259,8 +265,10 @@ async function buildFrontend(
 
 export default async function ({
   directory,
+  adminOnly,
 }: {
   directory: string
+  adminOnly: boolean
 }): Promise<boolean> {
   logger.info("Starting build...")
 
@@ -269,9 +277,14 @@ export default async function ({
     return false
   }
 
-  await Promise.all([
-    buildBackend(directory, tsConfig),
-    buildFrontend(directory, tsConfig),
-  ])
+  const promises: Promise<any>[] = []
+
+  if (!adminOnly) {
+    promises.push(buildBackend(directory, tsConfig))
+  }
+
+  promises.push(buildFrontend(directory, adminOnly, tsConfig))
+
+  await Promise.all(promises)
   return true
 }
