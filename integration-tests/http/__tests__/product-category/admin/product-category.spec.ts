@@ -1347,6 +1347,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "product 1",
+            options: [{ title: "size", values: ["x", "l"] }],
             categories: [{ id: productCategory.id }],
           },
           adminHeaders
@@ -1356,6 +1357,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "product 2",
+            options: [{ title: "color", values: ["r", "g"] }],
           },
           adminHeaders
         )

@@ -90,10 +90,12 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Test product",
+            options: [{ title: "size", values: ["large", "small"] }],
             variants: [
               {
                 title: "Test variant",
                 sku: "test-variant",
+                options: { size: "large" },
                 prices: [
                   {
                     currency_code: "usd",
@@ -112,10 +114,12 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Extra product",
+            options: [{ title: "size", values: ["large", "small"] }],
             variants: [
               {
                 title: "my variant",
                 sku: "variant-sku",
+                options: { size: "large" },
                 prices: [
                   {
                     currency_code: "usd",

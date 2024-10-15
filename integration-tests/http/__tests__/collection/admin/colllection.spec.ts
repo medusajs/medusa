@@ -49,6 +49,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "test-product",
+            options: [{ title: "size", values: ["x", "l"] }],
           },
           adminHeaders
         )
@@ -59,6 +60,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "test-product1",
+            options: [{ title: "size", values: ["x", "l"] }],
           },
           adminHeaders
         )

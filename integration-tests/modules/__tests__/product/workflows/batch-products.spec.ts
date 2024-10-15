@@ -40,7 +40,12 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                create: [{ title: "test3" }],
+                create: [
+                  {
+                    title: "test3",
+                    options: [{ title: "size", options: ["x"] }],
+                  },
+                ],
                 update: [{ id: product1.id, title: "test1-updated" }],
                 delete: [product2.id],
               },
@@ -88,14 +93,17 @@ medusaIntegrationTestRunner({
                 create: [
                   {
                     title: "test1",
+                    options: [{ title: "size", values: ["x", "l", "m"] }],
                     variants: [
                       {
                         title: "variant1",
                         prices: [{ amount: 100, currency_code: "EUR" }],
+                        options: { size: "x" },
                       },
                       {
                         title: "variant2",
                         prices: [{ amount: 100, currency_code: "EUR" }],
+                        options: { size: "l" },
                       },
                     ],
                   },
@@ -110,6 +118,7 @@ medusaIntegrationTestRunner({
                   {
                     title: "variant3",
                     product_id: product1.id,
+                    options: { size: "m" },
                     prices: [{ amount: 100, currency_code: "EUR" }],
                   },
                 ],
