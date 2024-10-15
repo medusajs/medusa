@@ -510,7 +510,7 @@ async function MedusaApp_({
         modulePath: moduleResolution.resolutionPath as string,
         container: sharedContainer,
         options: moduleResolution.options,
-        moduleExports: moduleResolution.moduleExports,
+        moduleExports: moduleResolution.moduleExports as ModuleExports,
       }
 
       if (action === "revert") {

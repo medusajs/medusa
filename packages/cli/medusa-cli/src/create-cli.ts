@@ -339,7 +339,6 @@ function buildLocalCommands(cli, isLocalProject) {
           })
           .option(`cluster`, {
             type: `number`,
-            default: process.env.CPUS,
             describe:
               "Start the Node.js server in cluster mode. You can specify the number of cpus to use, which defaults to (env.CPUS)",
           }),
@@ -355,9 +354,15 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `build`,
-      desc: `Build your project.`,
-      builder: (_) => _,
+      command: "build",
+      desc: "Build your project.",
+      builder: (_) =>
+        _.option("admin-only", {
+          default: false,
+          type: "boolean",
+          describe:
+            "Only build the admin to serve it separately (outDir .medusa/admin)",
+        }),
       handler: handlerP(
         getCommandHandler(`build`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

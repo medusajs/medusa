@@ -57,6 +57,7 @@ export const defaultStoreCartFields = [
   "items.title",
   "items.quantity",
   "items.unit_price",
+  "items.compare_at_unit_price",
   "items.is_tax_inclusive",
   "items.tax_lines.id",
   "items.tax_lines.description",

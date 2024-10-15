@@ -517,12 +517,18 @@ medusaIntegrationTestRunner({
         ;[product3, [variant3]] = await createProducts({
           title: "product not in price list",
           status: ProductStatus.PUBLISHED,
-          variants: [{ title: "test variant 3", prices: [] }],
+          options: [{ title: "size", values: ["large", "small"] }],
+          variants: [
+            { title: "test variant 3", prices: [], options: { size: "large" } },
+          ],
         })
         ;[product4, [variant4]] = await createProducts({
           title: "draft product",
           status: ProductStatus.DRAFT,
-          variants: [{ title: "test variant 4", prices: [] }],
+          options: [{ title: "size", values: ["large", "small"] }],
+          variants: [
+            { title: "test variant 4", prices: [], options: { size: "large" } },
+          ],
         })
 
         const defaultSalesChannel = await createSalesChannel(
@@ -1135,10 +1141,17 @@ medusaIntegrationTestRunner({
         ;[product, [variant]] = await createProducts({
           title: "test product 1",
           status: ProductStatus.PUBLISHED,
+          options: [{ title: "size", values: ["large"] }],
           variants: [
             {
               title: "test variant 1",
-              prices: [{ amount: 3000, currency_code: "usd" }],
+              prices: [
+                {
+                  amount: 3000,
+                  currency_code: "usd",
+                  options: { size: "large" },
+                },
+              ],
             },
           ],
         })
