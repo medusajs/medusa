@@ -50,7 +50,7 @@ async function loadModule(
   }
 
   const keyName = modDefinition.key
-  const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
+  const { scope } = resolution.moduleDeclaration ?? ({} as any)
 
   const canSkip =
     !resolution.resolutionPath &&
@@ -63,11 +63,8 @@ async function loadModule(
     throw new Error("External Modules are not supported yet.")
   }
 
-  if (!scope || (scope === MODULE_SCOPE.INTERNAL && !resources)) {
+  if (!scope) {
     let message = `The module ${resolution.definition.label} has to define its scope (internal | external)`
-    if (scope === MODULE_SCOPE.INTERNAL && !resources) {
-      message = `The module ${resolution.definition.label} is missing its resources config`
-    }
 
     container.register(keyName, asValue(undefined))
 
