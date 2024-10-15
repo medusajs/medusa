@@ -552,20 +552,38 @@ const Cost = ({
 
 const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const discountTotal = order.items.reduce(
+    (total, item) => total + (item.discount_total || 0),
+    0
+  )
+
+  const taxCodes = useMemo(() => {
+    const taxCodeMap = {}
+
+    order.items.forEach((item) => {
+      item.tax_lines?.forEach((line) => {
+        taxCodeMap[line.code] = (taxCodeMap[line.code] || 0) + line.total
+      })
+    })
+
+    order.shipping_methods.forEach((sm) => {
+      sm.tax_lines?.forEach((line) => {
+        taxCodeMap[line.code] = (taxCodeMap[line.code] || 0) + line.total
+      })
+    })
+
+    return taxCodeMap
+  }, [order])
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
         label={t("fields.discount")}
-        // TODO: DISCOUNTS -> moved to line items now
-        // secondaryValue={
-        //   order.discounts.length > 0
-        //     ? order.discounts.map((d) => d.code).join(", ")
-        //     : "-"
-        // }
         value={
-          order.discount_total > 0
-            ? `- ${getLocaleAmount(order.discount_total, order.currency_code)}`
+          discountTotal > 0
+            ? `- ${getLocaleAmount(discountTotal, order.currency_code)}`
             : "-"
         }
       />
@@ -589,6 +607,53 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
             </div>
           )
         })}
+      <>
+        <div
+          onClick={() => setIsOpen((o) => !o)}
+          className="flex justify-between"
+        >
+          <div className="flex cursor-pointer items-center gap-1">
+            <TriangleDownMini
+              style={{
+                transform: `rotate(${isOpen ? 0 : -90}deg)`,
+              }}
+            />
+            <span className="txt-small select-none">
+              {t("orders.summary.taxes")}
+            </span>
+          </div>
+
+          <div className="text-right">
+            <Text size="small" leading="compact">
+              {getLocaleAmount(order.tax_total, order.currency_code)}
+            </Text>
+          </div>
+        </div>
+        {isOpen && (
+          <div className="flex flex-col gap-1 pb-4 pl-5">
+            {Object.entries(taxCodes).map(([code, total]) => {
+              return (
+                <div
+                  key={code}
+                  className="flex items-center justify-between gap-x-2"
+                >
+                  <div>
+                    <span className="txt-small text-ui-fg-subtle font-medium">
+                      {code}
+                    </span>
+                  </div>
+                  <div className="relative flex-1">
+                    <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                  </div>
+                  <span className="txt-small text-ui-fg-muted">
+                    {getLocaleAmount(total, order.currency_code)}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </>
     </div>
   )
 }
