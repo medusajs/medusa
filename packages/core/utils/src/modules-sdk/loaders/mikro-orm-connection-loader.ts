@@ -53,7 +53,11 @@ export async function mikroOrmConnectionLoader({
     return
   }
 
-  if (moduleDeclaration?.scope === "internal") {
+  const hasOwnDbConfig = !!(
+    options as ModulesSdkTypes.ModuleServiceInitializeOptions
+  )?.database
+
+  if (moduleDeclaration?.scope === "internal" && !hasOwnDbConfig) {
     const shouldSwallowError = true
     const dbConfig = loadDatabaseConfig(
       moduleName,
