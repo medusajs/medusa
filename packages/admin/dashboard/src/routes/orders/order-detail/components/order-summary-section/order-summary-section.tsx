@@ -31,6 +31,7 @@ import {
   toast,
   Tooltip,
   usePrompt,
+  clx,
 } from "@medusajs/ui"
 
 import { AdminPaymentCollection } from "../../../../../../../../core/types/dist/http/payment/admin/entities"
@@ -592,6 +593,8 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
     return taxCodeMap
   }, [order])
 
+  const hasTaxLines = !!Object.keys(taxCodes).length
+
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
@@ -625,15 +628,21 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         })}
       <>
         <div
-          onClick={() => setIsOpen((o) => !o)}
+          onClick={() => hasTaxLines && setIsOpen((o) => !o)}
           className="flex justify-between"
         >
-          <div className="flex cursor-pointer items-center gap-1">
-            <TriangleDownMini
-              style={{
-                transform: `rotate(${isOpen ? 0 : -90}deg)`,
-              }}
-            />
+          <div
+            className={clx("flex items-center gap-1", {
+              "cursor-pointer": hasTaxLines,
+            })}
+          >
+            {hasTaxLines && (
+              <TriangleDownMini
+                style={{
+                  transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                }}
+              />
+            )}
             <span className="txt-small select-none">
               {t("orders.summary.taxes")}
             </span>
