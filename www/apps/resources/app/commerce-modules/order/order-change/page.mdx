@@ -1,0 +1,204 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Order Change`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the Order Change data model and possible actions in it.
+
+## OrderChange Data Model
+
+The [OrderChange data model](/references/order/models/OrderChange) represents any kind of change to an order, such as a return, exchange, or edit.
+
+Its `change_type` property indicates what the order change is created for:
+
+1. `edit`: The order change is making edits to the order, as explained in [this guide](../edit/page.mdx).
+2. `exchange`: The order change is associated with an exchange, which you can learn about in [this guide](../exchange/page.mdx).
+3. `claim`: The order change is associated with a claim, which you can learn about in [this guide](../claim/page.mdx).
+4. `return_request` or `return_receive`: The order change is associated with a return, which you can learn about in [this guide](../return/page.mdx).
+
+Once the order change is confirmed, its changes are applied on the order.
+
+---
+
+## Order Change Actions
+
+The actions to perform on the original order by a change, such as adding an item, are represented by the [OrderChangeAction data model](/references/order/models/OrderChangeAction).
+
+The `OrderChangeAction` has an `action` property that indicates the type of action to perform on the order, and a `details` property that holds more details related to the action.
+
+The following table lists the possible `action` values that Medusa uses and what `details` they carry.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Action</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-2/4">Details</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `ITEM_ADD`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Add an item to the order.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the new item.
+      - `quantity`: The item's quantity.
+      - `unit_price`: The item's unit price.
+      - `metadata`: The item's metadata.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `ITEM_UPDATE`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Update an item in the order.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the item.
+      - `quantity`: The item's quantity.
+      - `unit_price`: The item's unit price.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `RETURN_ITEM`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Set an item to be returned.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the item.
+      - `quantity`: The quantity to be returned.
+      - `reason_id`: The ID of the return reason.
+      - `metadata`: The item's metadata.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `RECEIVE_RETURN_ITEM`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Mark a return item as received.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the item.
+      - `quantity`: The quantity received. This quantity is added to the inventory quantity of the item's variant when the return is confirmed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `RECEIVE_DAMAGED_RETURN_ITEM`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Mark a return item that's damaged as received.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the item.
+      - `quantity`: The quantity received. This quantity isn't added to the item variant's inventory quantity, as the quantity is damaged.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `SHIPPING_ADD`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Add a shipping method for new or returned items.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      No details added. The ID to the shipping method is added in the `reference_id` property of the action.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `SHIPPING_ADD`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Add a shipping method for new or returned items.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      No details added. The ID to the shipping method is added in the `reference_id` property of the action.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `WRITE_OFF_ITEM`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Remove an item's quantity as part of the claim, without adding the quantity back to the item variant's inventory.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object having the following properties:
+
+      - `reference_id`: the ID of the item.
+      - `quantity`: The quantity to write off.
+      - `reason`: The claim reason.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

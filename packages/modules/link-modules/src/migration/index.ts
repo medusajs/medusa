@@ -7,9 +7,10 @@ import {
 } from "@medusajs/framework/types"
 
 import {
+  arrayDifference,
   DALUtils,
   ModulesSdkUtils,
-  arrayDifference,
+  normalizeMigrationSQL,
   promiseAll,
 } from "@medusajs/framework/utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
@@ -259,7 +260,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           action: "create",
           linkDescriptor,
           tableName,
-          sql: await generator.getCreateSchemaSQL(),
+          sql: normalizeMigrationSQL(await generator.getCreateSchemaSQL()),
         }
       }
 
@@ -281,9 +282,11 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           },
         ])
 
-      const updateSQL = await generator.getUpdateSchemaSQL({
-        fromSchema: dbSchema,
-      })
+      const updateSQL = normalizeMigrationSQL(
+        await generator.getUpdateSchemaSQL({
+          fromSchema: dbSchema,
+        })
+      )
 
       /**
        * Entity is upto-date and hence we do not have to perform
@@ -332,24 +335,30 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     }[] = []
 
     for (let trackedTable of trackedTables) {
-      const newTableName = this.#linksEntities.find((entity) => {
+      const linkEntity = this.#linksEntities.find((entity) => {
         return (
           entity.linkDescriptor.fromModel ===
             trackedTable.link_descriptor.fromModel &&
           entity.linkDescriptor.toModel ===
             trackedTable.link_descriptor.toModel &&
-          entity.linkDescriptor.fromModule ===
-            trackedTable.link_descriptor.fromModule &&
-          entity.linkDescriptor.toModule ===
-            trackedTable.link_descriptor.toModule
+          entity.linkDescriptor.fromModule.toLowerCase() ===
+            trackedTable.link_descriptor.fromModule.toLowerCase() &&
+          entity.linkDescriptor.toModule.toLowerCase() ===
+            trackedTable.link_descriptor.toModule.toLowerCase()
         )
-      })?.entity.meta.collection
+      })
+      const newTableName = linkEntity?.entity.meta.collection
 
       /**
        * Perform rename
        */
       if (newTableName && trackedTable.table_name !== newTableName) {
-        await this.renameOldTable(orm, trackedTable.table_name, newTableName)
+        await this.renameOldTable(
+          orm,
+          trackedTable.table_name,
+          newTableName,
+          linkEntity.linkDescriptor
+        )
         migratedTables.push({
           ...trackedTable,
           table_name: newTableName,
@@ -370,11 +379,16 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   protected async renameOldTable(
     orm: MikroORM<PostgreSqlDriver>,
     oldName: string,
-    newName: string
+    newName: string,
+    descriptor: PlannerActionLinkDescriptor
   ) {
     await orm.em.getDriver().getConnection().execute(`
       ALTER TABLE "${oldName}" RENAME TO "${newName}";
-      UPDATE "${this.tableName}" SET table_name = '${newName}' WHERE table_name = '${oldName}';
+      UPDATE "${
+        this.tableName
+      }" SET table_name = '${newName}', link_descriptor = '${JSON.stringify(
+      descriptor
+    )}' WHERE table_name = '${oldName}';
     `)
   }
 

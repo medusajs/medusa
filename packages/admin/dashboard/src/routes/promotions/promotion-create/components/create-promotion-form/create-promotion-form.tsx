@@ -7,6 +7,7 @@ import {
   CurrencyInput,
   Heading,
   Input,
+  ProgressStatus,
   ProgressTabs,
   RadioGroup,
   Text,
@@ -60,9 +61,15 @@ const defaultValues = {
   campaign: undefined,
 }
 
+type TabState = Record<Tab, ProgressStatus>
+
 export const CreatePromotionForm = () => {
   const [tab, setTab] = useState<Tab>(Tab.TYPE)
-  const [detailsValidated, setDetailsValidated] = useState(false)
+  const [tabState, setTabState] = useState<TabState>({
+    [Tab.TYPE]: "in-progress",
+    [Tab.PROMOTION]: "not-started",
+    [Tab.CAMPAIGN]: "not-started",
+  })
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -77,9 +84,9 @@ export const CreatePromotionForm = () => {
   const handleSubmit = form.handleSubmit(
     async (data) => {
       const {
-        campaign_choice,
+        campaign_choice: _campaignChoice,
         is_automatic,
-        template_id,
+        template_id: _templateId,
         application_method,
         rules,
         ...promotionData
@@ -151,7 +158,7 @@ export const CreatePromotionForm = () => {
       )
     },
     async (error) => {
-      const { campaign, ...rest } = error || {}
+      const { campaign: _campaign, ...rest } = error || {}
       const errorInPromotionTab = !!Object.keys(rest || {}).length
 
       if (errorInPromotionTab) {
@@ -160,39 +167,64 @@ export const CreatePromotionForm = () => {
     }
   )
 
-  const handleContinue = async () => {
+  const handleTabChange = async (tab: Tab) => {
     switch (tab) {
       case Tab.TYPE:
-        setTab(Tab.PROMOTION)
+        setTabState((prev) => ({
+          ...prev,
+          [Tab.TYPE]: "in-progress",
+        }))
+        setTab(tab)
         break
       case Tab.PROMOTION:
+        setTabState((prev) => ({
+          ...prev,
+          [Tab.TYPE]: "completed",
+          [Tab.PROMOTION]: "in-progress",
+        }))
+        setTab(tab)
+        break
+      case Tab.CAMPAIGN: {
         const valid = await form.trigger()
 
-        if (valid) {
-          setTab(Tab.CAMPAIGN)
-        } else {
-          // TODO: Set errors on the root level
+        if (!valid) {
+          // If the promotion tab is not valid, we want to set the tab state to in-progress
+          // and set the tab to the promotion tab
+          setTabState({
+            [Tab.TYPE]: "completed",
+            [Tab.PROMOTION]: "in-progress",
+            [Tab.CAMPAIGN]: "not-started",
+          })
+          setTab(Tab.PROMOTION)
+          break
         }
 
+        setTabState((prev) => ({
+          ...prev,
+          [Tab.PROMOTION]: "completed",
+          [Tab.CAMPAIGN]: "in-progress",
+        }))
+        setTab(tab)
         break
-      case Tab.CAMPAIGN:
-        break
+      }
     }
   }
 
-  const handleTabChange = (tab: Tab) => {
+  const handleContinue = async () => {
     switch (tab) {
       case Tab.TYPE:
-        setDetailsValidated(false)
-        setTab(tab)
+        handleTabChange(Tab.PROMOTION)
         break
-      case Tab.PROMOTION:
-        setDetailsValidated(false)
-        setTab(tab)
+      case Tab.PROMOTION: {
+        const valid = await form.trigger()
+
+        if (valid) {
+          handleTabChange(Tab.CAMPAIGN)
+        }
+
         break
+      }
       case Tab.CAMPAIGN:
-        setDetailsValidated(false)
-        setTab(tab)
         break
     }
   }
@@ -268,14 +300,6 @@ export const CreatePromotionForm = () => {
 
   const { campaigns } = useCampaigns(campaignQuery)
 
-  const detailsProgress = useMemo(() => {
-    if (detailsValidated) {
-      return "completed"
-    }
-
-    return "not-started"
-  }, [detailsValidated])
-
   const watchCampaignChoice = useWatch({
     control: form.control,
     name: "campaign_choice",
@@ -339,7 +363,7 @@ export const CreatePromotionForm = () => {
                   <ProgressTabs.Trigger
                     className="w-full"
                     value={Tab.TYPE}
-                    status={detailsProgress}
+                    status={tabState[Tab.TYPE]}
                   >
                     {t("promotions.tabs.template")}
                   </ProgressTabs.Trigger>
@@ -347,11 +371,16 @@ export const CreatePromotionForm = () => {
                   <ProgressTabs.Trigger
                     className="w-full"
                     value={Tab.PROMOTION}
+                    status={tabState[Tab.PROMOTION]}
                   >
                     {t("promotions.tabs.details")}
                   </ProgressTabs.Trigger>
 
-                  <ProgressTabs.Trigger className="w-full" value={Tab.CAMPAIGN}>
+                  <ProgressTabs.Trigger
+                    className="w-full"
+                    value={Tab.CAMPAIGN}
+                    status={tabState[Tab.CAMPAIGN]}
+                  >
                     {t("promotions.tabs.campaign")}
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
@@ -439,7 +468,9 @@ export const CreatePromotionForm = () => {
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label>Method</Form.Label>
+                          <Form.Label>
+                            {t("promotions.form.method.label")}
+                          </Form.Label>
 
                           <Form.Control>
                             <RadioGroup

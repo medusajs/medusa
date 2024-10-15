@@ -85,6 +85,7 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
             reference_id: item.id,
             quantity: item.quantity,
             unit_price: item.unit_price,
+            compare_at_unit_price: item.compare_at_unit_price,
           },
         }))
       }

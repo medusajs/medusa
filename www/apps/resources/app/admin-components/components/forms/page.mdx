@@ -1,0 +1,584 @@
+---
+sidebar_label: "Forms"
+---
+
+export const metadata = {
+  title: `Forms - Admin Components`,
+}
+
+# {metadata.title}
+
+The Medusa Admin has two types of forms:
+
+1. Create forms, created using the [FocusModal UI component](!ui!/components/focus-modal).
+2. Edit or update forms, created using the [Drawer UI component](!ui!/ui/components/drawer).
+
+This guide explains how to create these two form types following the Medusa Admin's conventions.
+
+## Form Tooling
+
+The Medusa Admin uses the following tools to build the forms:
+
+1. [react-hook-form](https://react-hook-form.com/) to easily build forms and manage their states.
+2. [Zod](https://zod.dev/) to validate the form's fields.
+
+Both of these libraries are available in your project, so you don't have to install them to use them.
+
+---
+
+## Create Form
+
+In this section, you'll build a form component to create an item of a resource.
+
+<Details summaryContent="Full Component">
+  
+```tsx title="src/admin/components/create-form.tsx"
+import { 
+  FocusModal,
+  Heading,
+  Label,
+  Input,
+  Button
+} from "@medusajs/ui"
+import { 
+  useForm, 
+  FormProvider,
+  Controller
+} from "react-hook-form"
+import * as zod from "zod"
+
+const schema = zod.object({
+  name: zod.string()
+})
+
+export const CreateForm = () => {
+  const form = useForm<zod.infer<typeof schema>>({
+    defaultValues: {
+      name: ""
+    }
+  })
+
+  const handleSubmit = form.handleSubmit(({ name }) => {
+    // TODO submit to backend
+    console.log(name)
+  })
+
+  return (
+    <FocusModal>
+      <FocusModal.Trigger asChild>
+        <Button>Create</Button>
+      </FocusModal.Trigger>
+      <FocusModal.Content>
+        <FormProvider {...form}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex h-full flex-col overflow-hidden"
+          >
+            <FocusModal.Header>
+              <div className="flex items-center justify-end gap-x-2">
+                  <FocusModal.Close asChild>
+                    <Button size="small" variant="secondary">
+                      Cancel
+                    </Button>
+                  </FocusModal.Close>
+                  <Button type="submit" size="small">
+                    Save
+                  </Button>
+                </div>
+            </FocusModal.Header>
+            <FocusModal.Body>
+                <div className="flex flex-1 flex-col items-center overflow-y-auto">
+                  <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+                    <div>
+                      <Heading className="capitalize">
+                        Create Item
+                      </Heading>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Controller
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => {
+                          return (
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center gap-x-1">
+                                <Label size="small" weight="plus">
+                                  Name
+                                </Label>
+                              </div>
+                              <Input {...field} />
+                            </div>
+                          )
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+            </FocusModal.Body>
+          </form>
+        </FormProvider>
+      </FocusModal.Content>
+    </FocusModal>
+  )
+}
+```
+
+</Details>
+
+Unlike other components in this documentation, this form component isn't reusable. You have to create one for every resource that has a create form in the admin.
+
+Start by creating the file `src/admin/components/create-form.tsx` that you'll create the form in.
+
+### Create Validation Schema
+
+In `src/admin/components/create-form.tsx`, create a validation schema with Zod for the form's fields:
+
+```tsx title="src/admin/components/create-form.tsx"
+import * as zod from "zod"
+
+const schema = zod.object({
+  name: zod.string()
+})
+```
+
+The form in this guide is simple, it only has a required `name` field, which is a string.
+
+### Initialize Form
+
+Next, you'll initialize the form using `react-hook-form`.
+
+Add to `src/admin/components/create-form.tsx` the following:
+
+```tsx title="src/admin/components/create-form.tsx"
+// other imports...
+import { useForm } from "react-hook-form"
+
+// validation schema...
+
+export const CreateForm = () => {
+  const form = useForm<zod.infer<typeof schema>>({
+    defaultValues: {
+      name: ""
+    }
+  })
+
+  const handleSubmit = form.handleSubmit(({ name }) => {
+    // TODO submit to backend
+    console.log(name)
+  })
+
+  // TODO render form
+}
+```
+
+You create the `CreateForm` component. For now, it uses `useForm` from `react-hook-form` to initialize a form.
+
+You also define a `handleSubmit` function to perform an action when the form is submitted.
+
+You can replace the content of the function with sending a request to Medusa's routes. Refer to [this guide](!docs!/advanced-development/admin/tips#send-requests-to-api-routes) for more details on how to do that.
+
+### Render Components
+
+You'll now add a `return` statement that renders the focus modal where the form is shown.
+
+Replace `// TODO render form` with the following:
+
+```tsx title="src/admin/components/create-form.tsx"
+// other imports...
+import { 
+  FocusModal,
+  Heading,
+  Label,
+  Input,
+  Button
+} from "@medusajs/ui"
+import { 
+  FormProvider,
+  Controller
+} from "react-hook-form"
+
+export const CreateForm = () => {
+  // ...
+
+  return (
+    <FocusModal>
+      <FocusModal.Trigger asChild>
+        <Button>Create</Button>
+      </FocusModal.Trigger>
+      <FocusModal.Content>
+        <FormProvider {...form}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex h-full flex-col overflow-hidden"
+          >
+            <FocusModal.Header>
+              <div className="flex items-center justify-end gap-x-2">
+                  <FocusModal.Close asChild>
+                    <Button size="small" variant="secondary">
+                      Cancel
+                    </Button>
+                  </FocusModal.Close>
+                  <Button type="submit" size="small">
+                    Save
+                  </Button>
+                </div>
+            </FocusModal.Header>
+            <FocusModal.Body>
+                <div className="flex flex-1 flex-col items-center overflow-y-auto">
+                  <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+                    <div>
+                      <Heading className="capitalize">
+                        Create Item
+                      </Heading>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Controller
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => {
+                          return (
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center gap-x-1">
+                                <Label size="small" weight="plus">
+                                  Name
+                                </Label>
+                              </div>
+                              <Input {...field} />
+                            </div>
+                          )
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+            </FocusModal.Body>
+          </form>
+        </FormProvider>
+      </FocusModal.Content>
+    </FocusModal>
+  )
+}
+```
+
+You render a focus modal, with a trigger button to open it.
+
+In the `FocusModal.Content` component, you wrap the content with the `FormProvider` component from `react-hook-form`, passing it the details of the form you initialized earlier as props.
+
+In the `FormProvider`, you add a `form` component passing it the `handleSubmit` function you created earlier as the handler of the `onSubmit` event.
+
+In the `FocusModal.Header` component, you add buttons to save or cancel the form submission.
+
+Finally, you render the form's components inside the `FocusModal.Body`. To render inputs, you use the `Controller` component imported from `react-hook-form`.
+
+### Use Create Form Component
+
+You can use the `CreateForm` component in your widget or UI route.
+
+For example, create the widget `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { CreateForm } from "../components/create-form"
+import { Container } from "../components/container"
+import { Header } from "../components/header"
+
+const ProductWidget = () => {
+  return (
+    <Container>
+      <Header
+        title="Items"
+        actions={[
+          {
+            type: "custom",
+            children: <CreateForm />
+          }
+        ]}
+      />
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+This component uses the [Container](../container/page.mdx) and [Header](../header/page.mdx) custom components.
+
+It will add at the top of a product's details page a new section, and in its header you'll find a Create button. If you click on it, it will open the focus modal with your form.
+
+---
+
+## Edit Form
+
+In this section, you'll build a form component to edit an item of a resource.
+
+<Details summaryContent="Full Component">
+  
+```tsx title="src/admin/components/edit-form.tsx"
+import { 
+  Drawer,
+  Heading,
+  Label,
+  Input,
+  Button
+} from "@medusajs/ui"
+import { 
+  useForm, 
+  FormProvider,
+  Controller
+} from "react-hook-form"
+import * as zod from "zod"
+
+const schema = zod.object({
+  name: zod.string()
+})
+
+export const EditForm = () => {
+  const form = useForm<zod.infer<typeof schema>>({
+    defaultValues: {
+      name: ""
+    }
+  })
+
+  const handleSubmit = form.handleSubmit(({ name }) => {
+    // TODO submit to backend
+    console.log(name)
+  })
+
+  return (
+    <Drawer>
+      <Drawer.Trigger asChild>
+        <Button>Edit Item</Button>
+      </Drawer.Trigger>
+      <Drawer.Content>
+        <FormProvider {...form}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-1 flex-col overflow-hidden"
+          >
+          <Drawer.Header>
+            <Heading className="capitalize">
+              Edit Item
+            </Heading>
+          </Drawer.Header>
+          <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
+            <Controller
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center gap-x-1">
+                      <Label size="small" weight="plus">
+                        Name
+                      </Label>
+                    </div>
+                    <Input {...field} />
+                  </div>
+                )
+              }}
+            />
+          </Drawer.Body>
+          <Drawer.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <Drawer.Close asChild>
+                <Button size="small" variant="secondary">
+                  Cancel
+                </Button>
+              </Drawer.Close>
+              <Button size="small" type="submit">
+                Save
+              </Button>
+            </div>
+          </Drawer.Footer>
+          </form>
+        </FormProvider>
+      </Drawer.Content>
+    </Drawer>
+  )
+}
+```
+
+</Details>
+
+Unlike other components in this documentation, this form component isn't reusable. You have to create one for every resource that has an edit form in the admin.
+
+Start by creating the file `src/admin/components/edit-form.tsx` that you'll create the form in.
+
+### Create Validation Schema
+
+In `src/admin/components/edit-form.tsx`, create a validation schema with Zod for the form's fields:
+
+```tsx title="src/admin/components/edit-form.tsx"
+import * as zod from "zod"
+
+const schema = zod.object({
+  name: zod.string()
+})
+```
+
+The form in this guide is simple, it only has a required `name` field, which is a string.
+
+### Initialize Form
+
+Next, you'll initialize the form using `react-hook-form`.
+
+Add to `src/admin/components/edit-form.tsx` the following:
+
+```tsx title="src/admin/components/edit-form.tsx"
+// other imports...
+import { useForm } from "react-hook-form"
+
+// validation schema...
+
+export const EditForm = () => {
+  const form = useForm<zod.infer<typeof schema>>({
+    defaultValues: {
+      name: ""
+    }
+  })
+
+  const handleSubmit = form.handleSubmit(({ name }) => {
+    // TODO submit to backend
+    console.log(name)
+  })
+
+  // TODO render form
+}
+```
+
+You create the `EditForm` component. For now, it uses `useForm` from `react-hook-form` to initialize a form.
+
+You also define a `handleSubmit` function to perform an action when the form is submitted.
+
+You can replace the content of the function with sending a request to Medusa's routes. Refer to [this guide](!docs!/advanced-development/admin/tips#send-requests-to-api-routes) for more details on how to do that.
+
+### Render Components
+
+You'll now add a `return` statement that renders the drawer where the form is shown.
+
+Replace `// TODO render form` with the following:
+
+```tsx title="src/admin/components/edit-form.tsx"
+// other imports...
+import { 
+  Drawer,
+  Heading,
+  Label,
+  Input,
+  Button
+} from "@medusajs/ui"
+import { 
+  FormProvider,
+  Controller
+} from "react-hook-form"
+
+export const EditForm = () => {
+  // ...
+
+  return (
+    <Drawer>
+      <Drawer.Trigger asChild>
+        <Button>Edit Item</Button>
+      </Drawer.Trigger>
+      <Drawer.Content>
+        <FormProvider {...form}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-1 flex-col overflow-hidden"
+          >
+          <Drawer.Header>
+            <Heading className="capitalize">
+              Edit Item
+            </Heading>
+          </Drawer.Header>
+          <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
+            <Controller
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center gap-x-1">
+                      <Label size="small" weight="plus">
+                        Name
+                      </Label>
+                    </div>
+                    <Input {...field} />
+                  </div>
+                )
+              }}
+            />
+          </Drawer.Body>
+          <Drawer.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <Drawer.Close asChild>
+                <Button size="small" variant="secondary">
+                  Cancel
+                </Button>
+              </Drawer.Close>
+              <Button size="small" type="submit">
+                Save
+              </Button>
+            </div>
+          </Drawer.Footer>
+          </form>
+        </FormProvider>
+      </Drawer.Content>
+    </Drawer>
+  )
+}
+```
+
+You render a drawer, with a trigger button to open it.
+
+In the `Drawer.Content` component, you wrap the content with the `FormProvider` component from `react-hook-form`, passing it the details of the form you initialized earlier as props.
+
+In the `FormProvider`, you add a `form` component passing it the `handleSubmit` function you created earlier as the handler of the `onSubmit` event.
+
+You render the form's components inside the `Drawer.Body`. To render inputs, you use the `Controller` component imported from `react-hook-form`.
+
+Finally, in the `Drawer.Footer` component, you add buttons to save or cancel the form submission.
+
+### Use Edit Form Component
+
+You can use the `EditForm` component in your widget or UI route.
+
+For example, create the widget `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container } from "../components/container"
+import { Header } from "../components/header"
+import { EditForm } from "../components/edit-form"
+
+const ProductWidget = () => {
+  return (
+    <Container>
+      <Header
+        title="Items"
+        actions={[
+          {
+            type: "custom",
+            children: <EditForm />
+          }
+        ]}
+      />
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+This component uses the [Container](../container/page.mdx) and [Header](../header/page.mdx) custom components.
+
+It will add at the top of a product's details page a new section, and in its header you'll find an "Edit Item" button. If you click on it, it will open the drawer with your form.
+

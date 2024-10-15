@@ -637,8 +637,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/order/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/order/edit",
+                title: "Order Edit",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/order-change",
+                title: "Order Change",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -723,13 +733,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/payment/payment-provider",
                 title: "Payment Provider Module",
-                children: [
-                  {
-                    type: "link",
-                    path: "/commerce-modules/payment/payment-provider/stripe",
-                    title: "Stripe",
-                  },
-                ],
               },
               {
                 type: "link",
@@ -738,8 +741,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/payment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/payment/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -756,6 +759,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/references/payment/provider",
                 title: "Create Payment Provider",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Payment Providers",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/payment/payment-provider/stripe",
+                title: "Stripe",
               },
             ],
           },
@@ -1607,47 +1621,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    type: "separator",
-  },
-  {
-    type: "category",
-    title: "SDKs and Tools",
-    children: [
-      {
-        type: "link",
-        path: "/create-medusa-app",
-        title: "create-medusa-app",
-      },
-      {
-        type: "link",
-        path: "/medusa-cli",
-        title: "Medusa CLI",
-        isChildSidebar: true,
-        childSidebarTitle: "Medusa CLI Reference",
-        children: [
-          {
-            type: "link",
-            path: "/medusa-cli",
-            title: "Overview",
-          },
-          {
-            type: "separator",
-          },
-          {
-            type: "category",
-            title: "Commands",
-            autogenerate_path: "medusa-cli/commands",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/nextjs-starter",
-        title: "Next.js Starter",
-      },
-    ],
-  },
-  {
     type: "link",
     path: "/architectural-modules",
     title: "Architectural Modules",
@@ -1806,6 +1779,47 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Redis",
           },
         ],
+      },
+    ],
+  },
+  {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "SDKs and Tools",
+    children: [
+      {
+        type: "link",
+        path: "/create-medusa-app",
+        title: "create-medusa-app",
+      },
+      {
+        type: "link",
+        path: "/medusa-cli",
+        title: "Medusa CLI",
+        isChildSidebar: true,
+        childSidebarTitle: "Medusa CLI Reference",
+        children: [
+          {
+            type: "link",
+            path: "/medusa-cli",
+            title: "Overview",
+          },
+          {
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Commands",
+            autogenerate_path: "medusa-cli/commands",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/nextjs-starter",
+        title: "Next.js Starter",
       },
     ],
   },
@@ -2078,17 +2092,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    type: "link",
-    path: "/references/medusa-config",
-    title: "Medusa Configurations",
-  },
-  {
     type: "separator",
   },
   {
     type: "category",
     title: "General",
     children: [
+      {
+        type: "link",
+        path: "/references/medusa-config",
+        title: "Medusa Configurations",
+      },
       {
         type: "link",
         path: "/upgrade-guides",
@@ -2220,6 +2234,38 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "Admin",
+    children: [
+      {
+        type: "link",
+        path: "/admin-widget-injection-zones",
+        title: "Admin Widget Injection Zones",
+      },
+      {
+        type: "link",
+        path: "/admin-components",
+        title: "Admin Components",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Layouts",
+            autogenerate_path: "/admin-components/layouts",
+          },
+          {
+            type: "category",
+            title: "Components",
+            autogenerate_path: "/admin-components/components",
+          },
+        ],
+      },
+    ],
+  },
+  {
     type: "category",
     title: "Lists",
     children: [
@@ -2232,11 +2278,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/events-reference",
         title: "Events List",
-      },
-      {
-        type: "link",
-        path: "/admin-widget-injection-zones",
-        title: "Admin Widget Injection Zones",
       },
     ],
   },

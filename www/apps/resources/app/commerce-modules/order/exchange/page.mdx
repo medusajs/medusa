@@ -10,15 +10,17 @@ In this document, you’ll learn about order exchanges.
 
 ## What is an Exchange?
 
-An exchange is the replacement of an item that the customer ordered with another. A merchant creates the exchange, specifying the items to be replaced and the new items to be sent.
+An exchange is the replacement of an item that the customer ordered with another.
 
-The [Exchange data model](/references/order/models/Exchange) represents an exchange.
+A merchant creates the exchange, specifying the items to be replaced and the new items to be sent.
+
+The [OrderExchange data model](/references/order/models/OrderExchange) represents an exchange.
 
 ---
 
 ## Returned and New Items
 
-When the exchange is created, a return is created to handle receiving the items back from the customer.
+When the exchange is created, a return, represented by the [Return data model](/references/order/models/Return), is created to handle receiving the items back from the customer.
 
 <Note>
 
@@ -26,7 +28,7 @@ Learn more about returns in [this guide](../return/page.mdx).
 
 </Note>
 
-The [ExchangeItem data model](/references/order/models/ExchangeItem) represents the new items to be sent to the customer.
+The [OrderExchangeItem data model](/references/order/models/OrderExchangeItem) represents the new items to be sent to the customer.
 
 ---
 
@@ -34,7 +36,7 @@ The [ExchangeItem data model](/references/order/models/ExchangeItem) represents 
 
 An exchange has shipping methods used to send the new items to the customer. They’re represented by the [OrderShippingMethod data model](/references/order/models/OrderShippingMethod).
 
-The items returned from the customer are handled by the associated return.
+The shipping methods for the returned items are associated with the exchange's return, as explained in [this guide](../return/page.mdx#return-shipping-methods).
 
 ---
 
@@ -58,7 +60,7 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
       </Table.Cell>
       <Table.Cell>
 
-      Merchant refunds the difference_due amount.
+      Merchant owes the customer a refund of the `difference_due` amount.
 
       </Table.Cell>
     </Table.Row>
@@ -70,7 +72,7 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
       </Table.Cell>
       <Table.Cell>
 
-      Merchant requires additional payment from the customer.
+      Merchant requires additional payment from the customer of the `difference_due` amount.
 
       </Table.Cell>
     </Table.Row>
@@ -89,10 +91,10 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
   </Table.Body>
 </Table>
 
-Any payment or refund made is stored in the [Transaction data model](/references/order/models/Transaction).
+Any payment or refund made is stored in the [Transaction data model](/references/order/models/OrderTransaction).
 
 ---
 
 ## How Exchanges Impact an Order’s Version
 
-When an exchange is created, the order’s version is incremented.
+When an exchange is confirmed, the order’s version is incremented.

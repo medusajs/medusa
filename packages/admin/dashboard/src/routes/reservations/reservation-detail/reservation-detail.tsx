@@ -7,6 +7,7 @@ import { useReservationItem } from "../../../hooks/api/reservations"
 import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
+import { useInventoryItem } from "../../../hooks/api"
 
 export const ReservationDetail = () => {
   const { id } = useParams()
@@ -21,6 +22,13 @@ export const ReservationDetail = () => {
     {
       initialData,
     }
+  )
+
+  // TEMP: fetch directly since the fields are not populated with reservation call
+  const { inventory_item } = useInventoryItem(
+    reservation?.inventory_item?.id!,
+    undefined,
+    { enabled: !!reservation?.inventory_item?.id! }
   )
 
   const { getWidgets } = useDashboardExtension()
@@ -56,9 +64,9 @@ export const ReservationDetail = () => {
         <ReservationGeneralSection reservation={reservation} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <InventoryItemGeneralSection
-          inventoryItem={reservation.inventory_item}
-        />
+        {inventory_item && (
+          <InventoryItemGeneralSection inventoryItem={inventory_item} />
+        )}
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )
