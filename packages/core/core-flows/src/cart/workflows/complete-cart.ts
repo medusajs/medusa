@@ -88,14 +88,15 @@ export const completeCartWorkflow = createWorkflow(
         const allItems: any[] = []
         const allVariants: any[] = []
 
-        data.cart?.items?.forEach((item) => {
-          allItems.push({
-            id: item.id,
-            variant_id: item.variant_id,
-            quantity: item.quantity,
-          })
-          allVariants.push(item.variant)
-        })
+const allVariants: any[] = []
+const allItems = data.cart?.items?.map((item) => {
+  allVariants.push(item.variant)
+  return {
+    id: item.id,
+    variant_id: item.variant_id,
+    quantity: item.quantity,
+  }
+})
 
         return {
           variants: allVariants,
