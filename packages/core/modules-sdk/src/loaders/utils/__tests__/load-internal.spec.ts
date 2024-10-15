@@ -375,7 +375,7 @@ describe("load internal", () => {
       await loadInternalModule({
         container: container,
         resolution: moduleResolution,
-        logger: console,
+        logger: console as any,
       })
 
       const moduleService = container.resolve(moduleResolution.definition.key)

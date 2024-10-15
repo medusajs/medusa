@@ -1,6 +1,6 @@
-import { IModuleService, InternalModuleDeclaration } from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/types"
 
-export class ModuleService implements IModuleService {
+export class ModuleService {
   constructor(
     public container: Record<any, any>,
     public moduleOptions: Record<any, any>,
