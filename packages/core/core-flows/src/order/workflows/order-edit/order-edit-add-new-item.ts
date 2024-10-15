@@ -104,6 +104,9 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
             reference_id: lineItems[index].id,
             quantity: item.quantity,
             unit_price: item.unit_price ?? lineItems[index].unit_price,
+            compare_at_unit_price:
+              item.compare_at_unit_price ??
+              lineItems[index].compare_at_unit_price,
             metadata: item.metadata,
           },
         }))
