@@ -46,7 +46,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -64,7 +64,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -105,7 +105,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",
@@ -193,7 +193,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -211,7 +211,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -252,7 +252,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",
@@ -348,7 +348,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -366,7 +366,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -407,7 +407,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",
@@ -504,7 +504,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -522,7 +522,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -563,7 +563,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",
@@ -648,7 +648,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -666,7 +666,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -707,7 +707,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",
@@ -792,7 +792,7 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
-                  "resolve": "@medusajs/file-local-next",
+                  "resolve": "@medusajs/medusa/file-local",
                 },
               ],
             },
@@ -810,7 +810,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/fulfillment",
           },
           "inventory": {
-            "resolve": "@medusajs/medusa/inventory-next",
+            "resolve": "@medusajs/medusa/inventory",
           },
           "notification": {
             "options": {
@@ -851,7 +851,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/sales-channel",
           },
           "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location-next",
+            "resolve": "@medusajs/medusa/stock-location",
           },
           "store": {
             "resolve": "@medusajs/medusa/store",

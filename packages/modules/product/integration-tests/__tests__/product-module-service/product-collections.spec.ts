@@ -10,7 +10,7 @@ import { Product, ProductCollection } from "@models"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { createCollections } from "../../__fixtures__/product"
 
 jest.setTimeout(30000)

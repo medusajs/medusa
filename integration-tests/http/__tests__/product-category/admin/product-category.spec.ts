@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -176,12 +176,12 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it('gets the metadata of a category', async () => {
+      it("gets the metadata of a category", async () => {
         await api.post(
           `/admin/product-categories/${productCategory.id}`,
           {
             metadata: {
-              test: "test"
+              test: "test",
             },
           },
           adminHeaders
@@ -193,7 +193,9 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.product_category.metadata).toEqual({ test: "test" })
+        expect(response.data.product_category.metadata).toEqual({
+          test: "test",
+        })
       })
     })
 
@@ -311,12 +313,12 @@ medusaIntegrationTestRunner({
         ).data.product_category
 
         await api.post(
-            "/admin/product-categories",
-            {
-              name: "Something different",
-            },
-            adminHeaders
-          )
+          "/admin/product-categories",
+          {
+            name: "Something different",
+          },
+          adminHeaders
+        )
 
         const response = await api.get(
           "/admin/product-categories?q=Category",

@@ -22,7 +22,7 @@ import { UpdateProductInput } from "@types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import {
   buildProductAndRelationsData,
   createCollections,

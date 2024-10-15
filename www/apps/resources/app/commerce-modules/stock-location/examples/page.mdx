@@ -13,10 +13,10 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IStockLocationService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IStockLocationService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -41,7 +41,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
 
 export async function POST(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -64,10 +64,10 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IStockLocationService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IStockLocationService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
@@ -88,7 +88,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
 
 export async function GET(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -109,10 +109,10 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IStockLocationService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IStockLocationService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -143,7 +143,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
 
 export async function POST(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -174,10 +174,10 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IStockLocationService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { IStockLocationService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   request: MedusaRequest,
@@ -198,7 +198,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
 
 export async function DELETE(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})

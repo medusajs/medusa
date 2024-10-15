@@ -16,7 +16,7 @@ import {
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 
 jest.setTimeout(30000)
 

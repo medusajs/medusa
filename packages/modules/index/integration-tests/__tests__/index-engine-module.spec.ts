@@ -14,7 +14,7 @@ import {
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { asValue } from "awilix"
-import { initDb, TestDatabaseUtils } from "medusa-test-utils"
+import { initDb, TestDatabaseUtils } from "@medusajs/test-utils"
 import * as path from "path"
 import { EventBusServiceMock } from "../__fixtures__"
 import { dbName } from "../__fixtures__/medusa-config"

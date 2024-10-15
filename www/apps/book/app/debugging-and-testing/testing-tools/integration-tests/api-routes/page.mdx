@@ -12,8 +12,8 @@ In this chapter, you'll learn how to write integration tests for API routes usin
   items={[
     {
       text: "Testing Tools Setup",
-      link: "/debugging-and-testing/testing-tools"
-    }
+      link: "/debugging-and-testing/testing-tools",
+    },
   ]}
 />
 
@@ -24,10 +24,7 @@ Consider the following API route created at `src/api/custom/route.ts`:
 ```ts title="src/api/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
-export async function GET(
-  req: MedusaRequest,
-  res: MedusaResponse
-){
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
   res.json({
     message: "Hello, World!",
   })
@@ -37,21 +34,19 @@ export async function GET(
 To write an integration test that tests this API route, create the file `integration-tests/http/custom-routes.spec.ts` with the following content:
 
 export const getHighlights = [
-  ["8", "api.get", "Send a GET request to the `/custom` API route."]
+  ["8", "api.get", "Send a GET request to the `/custom` API route."],
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={getHighlights}
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
     describe("Custom endpoints", () => {
       describe("GET /custom", () => {
         it("returns correct message", async () => {
-          const response = await api.get(
-            `/custom`
-          )
-  
+          const response = await api.get(`/custom`)
+
           expect(response.status).toEqual(200)
           expect(response.data).toHaveProperty("message")
           expect(response.data.message).toEqual("Hello, World!")
@@ -111,17 +106,11 @@ import HelloModuleService from "../../../modules/hello/service"
 
 // ...
 
-export async function POST(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const helloModuleService: HelloModuleService = req.scope.resolve(
-    "helloModuleService"
-  )
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const helloModuleService: HelloModuleService =
+    req.scope.resolve("helloModuleService")
 
-  const myCustom = await helloModuleService.createMyCustoms(
-    req.body
-  )
+  const myCustom = await helloModuleService.createMyCustoms(req.body)
 
   res.json({
     my_custom: myCustom,
@@ -134,7 +123,7 @@ This API route creates a new record of `MyCustom`.
 To write tests for this API route, add the following at the end of the `testSuite` function in `integration-tests/http/custom-routes.spec.ts`:
 
 export const postHighlights = [
-  ["14", "api.post", "Send a POST request to the `/custom` API route."]
+  ["14", "api.post", "Send a POST request to the `/custom` API route."],
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={postHighlights}
@@ -150,15 +139,11 @@ medusaIntegrationTestRunner({
         const id = "1"
 
         it("Creates my custom", async () => {
-  
-          const response = await api.post(
-            `/custom`,
-            {
-              id,
-              name: "Test",
-            }
-          )
-  
+          const response = await api.post(`/custom`, {
+            id,
+            name: "Test",
+          })
+
           expect(response.status).toEqual(200)
           expect(response.data).toHaveProperty("my_custom")
           expect(response.data.my_custom).toEqual({
@@ -202,9 +187,8 @@ medusaIntegrationTestRunner({
       describe("POST /custom", () => {
         // ...
         afterAll(() => async () => {
-          const helloModuleService: HelloModuleService = getContainer().resolve(
-            "helloModuleService"
-          )
+          const helloModuleService: HelloModuleService =
+            getContainer().resolve("helloModuleService")
 
           await helloModuleService.deleteMyCustoms(id)
         })
@@ -226,13 +210,9 @@ Consider a `/custom/:id` API route created at `src/api/custom/[id]/route.ts`:
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import HelloModuleService from "../../../modules/hello/service"
 
-export async function DELETE(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const helloModuleService: HelloModuleService = req.scope.resolve(
-    "helloModuleService"
-  )
+export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
+  const helloModuleService: HelloModuleService =
+    req.scope.resolve("helloModuleService")
 
   await helloModuleService.deleteMyCustoms(req.params.id)
 
@@ -247,7 +227,7 @@ This API route accepts an ID path parameter, and uses the `HelloModuleService` t
 To add tests for this API route, add the following to `integration-tests/http/custom-routes.spec.ts`:
 
 export const deleteHighlights = [
-  ["21", "api.delete", "Send a DELETE request to the `/custom/:id` API route."]
+  ["21", "api.delete", "Send a DELETE request to the `/custom/:id` API route."],
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={deleteHighlights}
@@ -260,9 +240,8 @@ medusaIntegrationTestRunner({
         const id = "1"
 
         beforeAll(() => async () => {
-          const helloModuleService: HelloModuleService = getContainer().resolve(
-            "helloModuleService"
-          )
+          const helloModuleService: HelloModuleService =
+            getContainer().resolve("helloModuleService")
 
           await helloModuleService.createMyCustoms({
             id,
@@ -271,9 +250,7 @@ medusaIntegrationTestRunner({
         })
 
         it("Deletes my custom", async () => {
-          const response = await api.delete(
-            `/custom/${id}`
-          )
+          const response = await api.delete(`/custom/${id}`)
 
           expect(response.status).toEqual(200)
           expect(response.data).toHaveProperty("success")
@@ -292,4 +269,3 @@ In the test, you use the `api.delete` method to send a `DELETE` request to `/cus
 - Has a `200` status code.
 - Has a `success` property in its data.
 - The `success` property's value is true.
-
