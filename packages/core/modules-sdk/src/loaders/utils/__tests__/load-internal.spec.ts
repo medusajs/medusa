@@ -13,6 +13,7 @@ import {
   loadResources,
 } from "../load-internal"
 import { ModuleProviderService as ModuleServiceWithProviderProvider1 } from "../__fixtures__/module-with-providers/provider-1"
+import { ModuleProvider2Service as ModuleServiceWithProviderProvider2 } from "../__fixtures__/module-with-providers/provider-2"
 import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
 
 describe("load internal", () => {
@@ -337,7 +338,7 @@ describe("load internal", () => {
   })
 
   describe("loadInternalModule", () => {
-    test("should load the module and its providers", async () => {
+    test("should load the module and its providers using their identifier", async () => {
       const moduleResolution: ModuleResolution = {
         resolutionPath: join(
           __dirname,
@@ -363,6 +364,7 @@ describe("load internal", () => {
                 __dirname,
                 "../__fixtures__/module-with-providers/provider-1"
               ),
+              id: "provider-1-id",
               options: {
                 api_key: "test",
               },
@@ -387,6 +389,57 @@ describe("load internal", () => {
 
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
       expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider1)
+    })
+
+    test("should load the module and its providers using the provided id", async () => {
+      const moduleResolution: ModuleResolution = {
+        resolutionPath: join(
+          __dirname,
+          "../__fixtures__/module-with-providers"
+        ),
+        moduleDeclaration: {
+          scope: "internal",
+          resources: "shared",
+        },
+        definition: {
+          key: "module-with-providers",
+          label: "Module with providers",
+          defaultPackage: false,
+          defaultModuleDeclaration: {
+            scope: "internal",
+            resources: "shared",
+          },
+        },
+        options: {
+          providers: [
+            {
+              resolve: join(
+                __dirname,
+                "../__fixtures__/module-with-providers/provider-2"
+              ),
+              id: "provider-2-id",
+              options: {
+                api_key: "test",
+              },
+            },
+          ],
+        },
+      }
+
+      const container = createMedusaContainer()
+      await loadInternalModule({
+        container: container,
+        resolution: moduleResolution,
+        logger: console as any,
+      })
+
+      const moduleService = container.resolve(moduleResolution.definition.key)
+      const provider = (moduleService as any).container[
+        getProviderRegistrationKey(moduleResolution.options!.providers![0].id)
+      ]
+
+      expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
+      expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider2)
     })
   })
 })
