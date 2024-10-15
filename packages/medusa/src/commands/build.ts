@@ -1,5 +1,5 @@
 import path from "path"
-import { rm, copyFile, access, constants } from "node:fs/promises"
+import { access, constants, copyFile, rm } from "node:fs/promises"
 import type tsStatic from "typescript"
 import { logger } from "@medusajs/framework/logger"
 import { ConfigModule } from "@medusajs/framework/types"
@@ -39,15 +39,13 @@ async function clean(path: string) {
 /**
  * Loads the medusa config file or exits with an error
  */
-function loadMedusaConfig(directory: string) {
+async function loadMedusaConfig(directory: string) {
   /**
    * Parsing the medusa config file to ensure it is error
    * free
    */
-  const { configModule, configFilePath, error } = getConfigFile<ConfigModule>(
-    directory,
-    "medusa-config"
-  )
+  const { configModule, configFilePath, error } =
+    await getConfigFile<ConfigModule>(directory, "medusa-config")
   if (error) {
     console.error(`Failed to load medusa-config.js`)
     console.error(error)
@@ -199,7 +197,7 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
  */
 async function buildFrontend(projectRoot: string): Promise<boolean> {
   const startTime = process.hrtime()
-  const configFile = loadMedusaConfig(projectRoot)
+  const configFile = await loadMedusaConfig(projectRoot)
   if (!configFile) {
     return false
   }
