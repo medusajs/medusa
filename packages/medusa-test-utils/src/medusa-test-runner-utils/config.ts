@@ -5,7 +5,7 @@ export async function configLoaderOverride(
   override: { clientUrl: string; debug?: boolean }
 ) {
   const { configManager } = await import("@medusajs/framework/config")
-  const { configModule, error } = getConfigFile<
+  const { configModule, error } = await getConfigFile<
     ReturnType<typeof configManager.loadConfig>
   >(entryDirectory, "medusa-config")
 

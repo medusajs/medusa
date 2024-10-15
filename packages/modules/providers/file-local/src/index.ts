@@ -1,10 +1,8 @@
-import { ModuleProviderExports } from "@medusajs/framework/types"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import { LocalFileService } from "./services/local-file"
 
 const services = [LocalFileService]
 
-const providerExport: ModuleProviderExports = {
+export default ModuleProvider(Modules.FILE, {
   services,
-}
-
-export default providerExport
+})

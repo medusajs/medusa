@@ -63,6 +63,13 @@ export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
   return acc
 }, {})
 
+// TODO: temporary fix until the event bus, cache and workflow engine are migrated to use providers and therefore only a single resolution will be good
+REVERSED_MODULE_PACKAGE_NAMES["@medusajs/medusa/event-bus-redis"] =
+  Modules.EVENT_BUS
+REVERSED_MODULE_PACKAGE_NAMES["@medusajs/medusa/cache-redis"] = Modules.CACHE
+REVERSED_MODULE_PACKAGE_NAMES["@medusajs/medusa/workflow-engine-redis"] =
+  Modules.WORKFLOW_ENGINE
+
 /**
  * Making modules be referenced as a type as well.
  */
