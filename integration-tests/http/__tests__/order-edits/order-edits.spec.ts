@@ -369,22 +369,56 @@ medusaIntegrationTestRunner({
         expect(result.summary.current_order_total).toEqual(84)
         expect(result.summary.original_order_total).toEqual(60)
 
-        // Update item quantity
+        // Update item quantity and unit_price with the same amount as we have originally should not change totals
         result = (
           await api.post(
             `/admin/order-edits/${orderId}/items/item/${item.id}`,
             {
-              quantity: 4,
+              quantity: 2,
+              unit_price: 25,
             },
             adminHeaders
           )
         ).data.order_preview
 
-        expect(result.summary.current_order_total).toEqual(134)
+        expect(result.summary.current_order_total).toEqual(84)
+        expect(result.summary.original_order_total).toEqual(60)
+
+        // Update item quantity, but keep the price as it was originally, should add + 25 to previous amount
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/items/item/${item.id}`,
+            {
+              quantity: 3,
+              unit_price: 25,
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        expect(result.summary.current_order_total).toEqual(109)
+        expect(result.summary.original_order_total).toEqual(60)
+
+        // Update item quantity, with a new price
+        // 30 * 3 = 90 (new item)
+        // 12 * 2 = 24 (custom item)
+        // 10 * 1 = 10 (shipping item)
+        // total = 124
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/items/item/${item.id}`,
+            {
+              quantity: 3,
+              unit_price: 30,
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        expect(result.summary.current_order_total).toEqual(124)
         expect(result.summary.original_order_total).toEqual(60)
 
         // Remove the item by setting the quantity to 0
-
         result = (
           await api.post(
             `/admin/order-edits/${orderId}/items/item/${item.id}`,
@@ -439,7 +473,7 @@ medusaIntegrationTestRunner({
           )
         ).data.order_changes
 
-        expect(result[0].actions).toHaveLength(3)
+        expect(result[0].actions).toHaveLength(5)
         expect(result[0].status).toEqual("confirmed")
         expect(result[0].confirmed_by).toEqual(expect.stringContaining("user_"))
       })

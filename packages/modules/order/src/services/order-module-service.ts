@@ -1994,7 +1994,10 @@ export default class OrderModuleService<
       if (!isExistingItem) {
         addedItems[item.id] = {
           ...item,
-          unit_price: item.detail?.unit_price ?? item.unit_price,
+          quantity: item.detail?.quantity ?? item.quantity,
+          unit_price: item.detail?.unit_price || item.unit_price,
+          compare_at_unit_price:
+            item.detail?.compare_at_unit_price || item.compare_at_unit_price,
         }
       }
     }
@@ -2026,13 +2029,15 @@ export default class OrderModuleService<
 
         const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
         const unitPrice = newItem?.unit_price ?? item.unit_price
+        const compareAtUnitPrice =
+          newItem?.compare_at_unit_price ?? item.compare_at_unit_price
 
         calculated.order.items[idx] = {
           ...lineItem,
           actions,
           quantity: newItem.quantity,
           unit_price: unitPrice,
-          raw_unit_price: new BigNumber(unitPrice),
+          compare_at_unit_price: compareAtUnitPrice,
           detail: {
             ...newItem,
             ...item,

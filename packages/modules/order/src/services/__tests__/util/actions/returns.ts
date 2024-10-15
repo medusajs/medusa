@@ -10,6 +10,7 @@ describe("Order Return - Actions", function () {
         id: "1",
         quantity: 1,
         unit_price: 10,
+        compare_at_unit_price: null,
         order_id: "1",
 
         detail: {
@@ -28,6 +29,7 @@ describe("Order Return - Actions", function () {
         id: "2",
         quantity: 2,
         unit_price: 100,
+        compare_at_unit_price: null,
         order_id: "1",
 
         detail: {
@@ -46,6 +48,7 @@ describe("Order Return - Actions", function () {
         id: "3",
         quantity: 3,
         unit_price: 20,
+        compare_at_unit_price: null,
         order_id: "1",
 
         detail: {
@@ -144,6 +147,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 1,
         unit_price: 10,
+        compare_at_unit_price: null,
         detail: {
           order_id: "1",
           quantity: 1,
@@ -161,6 +165,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 2,
         unit_price: 100,
+        compare_at_unit_price: null,
         detail: {
           order_id: "1",
           quantity: 2,
@@ -178,6 +183,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 3,
         unit_price: 20,
+        compare_at_unit_price: null,
         detail: {
           quantity: 3,
           order_id: "1",
@@ -284,6 +290,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 1,
         unit_price: 10,
+        compare_at_unit_price: null,
         detail: {
           quantity: 1,
           order_id: "1",
@@ -301,6 +308,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 2,
         unit_price: 100,
+        compare_at_unit_price: null,
         detail: {
           quantity: 2,
           order_id: "1",
@@ -318,6 +326,7 @@ describe("Order Return - Actions", function () {
         order_id: "1",
         quantity: 3,
         unit_price: 20,
+        compare_at_unit_price: null,
         detail: {
           quantity: 3,
           order_id: "1",
