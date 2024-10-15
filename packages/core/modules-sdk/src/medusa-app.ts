@@ -126,6 +126,11 @@ export async function loadModules(args: {
 
     if (declaration.scope === MODULE_SCOPE.INTERNAL) {
       declaration.options ??= {}
+
+      if (!declaration.options.database) {
+        declaration.options[Symbol.for("isSharedConnection")] = true
+      }
+
       declaration.options.database ??= {
         ...sharedResourcesConfig?.database,
       }

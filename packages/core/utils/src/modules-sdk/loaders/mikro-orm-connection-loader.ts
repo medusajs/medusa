@@ -53,11 +53,11 @@ export async function mikroOrmConnectionLoader({
     return
   }
 
-  const hasOwnDbConfig = !!(
-    options as ModulesSdkTypes.ModuleServiceInitializeOptions
-  )?.database
+  const moduleOptions = options as any
+  const reuseSharedConnection =
+    moduleOptions[Symbol.for("isSharedConnection")] || !moduleOptions?.database
 
-  if (moduleDeclaration?.scope === "internal" && !hasOwnDbConfig) {
+  if (moduleDeclaration?.scope === "internal" && reuseSharedConnection) {
     const shouldSwallowError = true
     const dbConfig = loadDatabaseConfig(
       moduleName,
