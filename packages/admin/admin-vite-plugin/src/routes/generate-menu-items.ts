@@ -2,7 +2,12 @@ import fs from "fs/promises"
 import { outdent } from "outdent"
 import { isIdentifier, isObjectProperty, parse, traverse } from "../babel"
 import { logger } from "../logger"
-import { crawl, getConfigObjectProperties, getParserOptions } from "../utils"
+import {
+  crawl,
+  getConfigObjectProperties,
+  getParserOptions,
+  normalizePath,
+} from "../utils"
 import { getRoute } from "./helpers"
 
 type MenuItem = {
@@ -90,7 +95,8 @@ async function parseFile(
 }
 
 function generateImport(file: string, index: number): string {
-  return `import { config as ${generateRouteConfigName(index)} } from "${file}"`
+  const path = normalizePath(file)
+  return `import { config as ${generateRouteConfigName(index)} } from "${path}"`
 }
 
 function generateMenuItem(

@@ -18,5 +18,5 @@
       "@babel/types": ["../../../node_modules/@babel/types"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "vitest.config.ts", "tsup.config.ts"]
 }
