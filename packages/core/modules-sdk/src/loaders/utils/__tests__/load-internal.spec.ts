@@ -116,7 +116,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -199,7 +198,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
