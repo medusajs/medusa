@@ -6248,9 +6248,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@^0.0.3, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location-next":
+"@medusajs/stock-location@^0.0.3, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
   version: 0.0.0-use.local
-  resolution: "@medusajs/stock-location@workspace:packages/modules/stock-location-next"
+  resolution: "@medusajs/stock-location@workspace:packages/modules/stock-location"
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@medusajs/test-utils": ^1.1.44
