@@ -1,3 +1,5 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
 export const metadata = {
   title: `Medusa Examples`,
 }
@@ -1401,6 +1403,210 @@ Learn more in [this documentation](!docs!/advanced-development/data-models/manag
 
 ---
 
+## Services
+
+### Extend Service Factory
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  // TODO implement custom methods
+}
+
+export default HelloModuleService
+```
+
+The `HelloModuleService` will now have data-management methods for the specified models.
+
+Refer to [this reference](../service-factory-reference/page.mdx) for details on the generated methods.
+
+Learn more about the service factory in [this documentation](!docs!/advanced-development/modules/service-factory).
+
+### Resolve Resources in the Service
+
+<CodeTabs group="service-type">
+  <CodeTab label="With Service Factory" value="service-factory">
+
+```ts
+import { Logger } from "@medusajs/framework/types"
+import { MedusaService } from "@medusajs/framework/utils"
+import MyCustom from "./models/my-custom"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    super(...arguments)
+    this.logger_ = logger
+
+    this.logger_.info("[HelloModuleService]: Hello World!")
+  }
+
+  // ...
+}
+
+export default HelloModuleService
+```
+
+  </CodeTab>
+  <CodeTab label="Without Service Factory" value="no-service-factory">
+
+```ts
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export default class HelloModuleService {
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+
+    this.logger_.info("[HelloModuleService]: Hello World!")
+  }
+
+  // ...
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Learn more in [this documentation](!docs!/advanced-development/modules/container).
+
+### Access Module Options in Service
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import MyCustom from "./models/my-custom"
+
+// recommended to define type in another file
+type ModuleOptions = {
+  capitalize?: boolean
+}
+
+export default class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  protected options_: ModuleOptions
+
+  constructor({}, options?: ModuleOptions) {
+    super(...arguments)
+
+    this.options_ = options || {
+      capitalize: false,
+    }
+  }
+
+  // ...
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/modules/options).
+
+### Run Database Query in Service
+
+```ts
+// other imports...
+import { 
+  InjectManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+
+class HelloModuleService {
+  // ...
+
+  @InjectManager()
+  async getCount(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number> {
+    return await sharedContext.manager.count("my_custom")
+  }
+  
+  @InjectManager()
+  async getCountSql(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number> {
+    const data = await sharedContext.manager.execute(
+      "SELECT COUNT(*) as num FROM my_custom"
+    ) 
+    
+    return parseInt(data[0].num)
+  }
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/modules/db-operations#run-queries)
+
+### Execute Database Operations in Transactions
+
+```ts
+import { 
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@mikro-orm/knex"
+
+class HelloModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    const transactionManager = sharedContext.transactionManager
+    await transactionManager.nativeUpdate(
+      "my_custom",
+      {
+        id: input.id,
+      },
+      {
+        name: input.name,
+      }
+    )
+
+    // retrieve again
+    const updatedRecord = await transactionManager.execute(
+      `SELECT * FROM my_custom WHERE id = '${input.id}'`
+    )
+
+    return updatedRecord
+  }
+
+  @InjectManager()
+  async update(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    return await this.update_(input, sharedContext)
+  }
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/modules/db-operations#execute-operations-in-transactions).
+
+---
+
 ## Module Links
 
 ### Define a Link
@@ -1752,4 +1958,859 @@ export const GET = async (
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/module-links/query#sort-records).
+
+---
+
+## Workflows
+
+### Create a Workflow
+
+To create a workflow:
+
+1. Create the first step at `src/workflows/hello-world/steps/step-1.ts` with the following content:
+
+```ts title="src/workflows/hello-world/steps/step-1.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+
+export const step1 = createStep("step-1", async () => {
+  return new StepResponse(`Hello from step one!`)
+})
+```
+
+2. Create the second step at `src/workflows/hello-world/steps/step-2.ts` with the following content:
+
+```ts title="src/workflows/hello-world/steps/step-2.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+
+type StepInput = {
+  name: string
+}
+
+export const step2 = createStep(
+  "step-2", 
+  async ({ name }: StepInput) => {
+    return new StepResponse(`Hello ${name} from step two!`)
+  }
+)
+```
+
+3. Create the workflow at `src/workflows/hello-world/index.ts` with the following content:
+
+```ts title="src/workflows/hello-world/index.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { step1 } from "./steps/step-1"
+import { step2 } from "./steps/step-2"
+
+const myWorkflow = createWorkflow(
+  "hello-world",
+  function (input: WorkflowInput) {
+    const str1 = step1()
+    // to pass input
+    const str2 = step2(input)
+
+    return new WorkflowResponse({
+      message: str1,
+    })
+  }
+)
+
+export default myWorkflow
+```
+
+Learn more in [this documentation](!docs!/basics/workflows).
+
+### Execute a Workflow
+
+<CodeTabs group="resource-types">
+  <CodeTab label="API Route" value="api-route">
+    
+    ```ts title="src/api/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/framework/http"
+    import myWorkflow from "../../workflows/hello-world"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await myWorkflow(req.scope)
+        .run({
+          input: {
+            name: req.query.name as string,
+          },
+        })
+
+      res.send(result)
+    }
+    ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscriber">
+    
+    ```ts title="src/subscribers/customer-created.ts" highlights={[["20"], ["21"], ["22"], ["23"], ["24"], ["25"]]} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+    } from "@medusajs/framework"
+    import myWorkflow from "../workflows/hello-world"
+    import { Modules } from "@medusajs/framework/utils"
+    import { IUserModuleService } from "@medusajs/framework/types"
+
+    export default async function handleCustomerCreate({
+      event: { data },
+      container,
+    }: SubscriberArgs<{ id: string }>) {
+      const userId = data.id
+      const userModuleService: IUserModuleService = container.resolve(
+        Modules.USER
+      )
+
+      const user = await userModuleService.retrieveUser(userId)
+
+      const { result } = await myWorkflow(container)
+        .run({
+          input: {
+            name: user.first_name,
+          },
+        })
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: "user.created",
+    }
+    ```
+
+  </CodeTab>
+  <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+    ```ts title="src/jobs/message-daily.ts" highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"]]}
+    import { MedusaContainer } from "@medusajs/framework/types"
+    import myWorkflow from "../workflows/hello-world"
+
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
+      const { result } = await myWorkflow(container)
+        .run({
+          input: {
+            name: "John",
+          },
+        })
+
+      console.log(result.message)
+    }
+
+    export const config = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    };
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflow).
+
+### Step with a Compensation Function
+
+Pass a compensation function that undoes what a step did as a second parameter to `createStep`:
+
+```ts
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  async () => {
+    const message = `Hello from step one!`
+
+    console.log(message)
+
+    return new StepResponse(message)
+  },
+  async () => {
+    console.log("Oops! Rolling back my changes...")
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/compensation-function).
+
+### Manipulate Variables in Workflow
+
+To manipulate variables within a workflow's constructor function, use the `transform` utility:
+
+```ts
+import { 
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+// step imports...
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input) {
+    const str1 = step1(input)
+    const str2 = step2(input)
+
+    const str3 = transform(
+      { str1, str2 },
+      (data) => `${data.str1}${data.str2}`
+    )
+
+    return new WorkflowResponse(str3)
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/variable-manipulation)
+
+### Using Conditions in Workflow
+
+To perform steps or set a variable's value based on a condition, use the `when-then` utility:
+
+```ts
+import { 
+  createWorkflow,
+  WorkflowResponse,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+// step imports...
+
+const workflow = createWorkflow(
+  "workflow", 
+  function (input: {
+    is_active: boolean
+  }) {
+
+    const result = when(
+      input, 
+      (input) => {
+        return input.is_active
+      }
+    ).then(() => {
+      const stepResult = isActiveStep()
+      return stepResult
+    })
+
+    // executed without condition
+    const anotherStepResult = anotherStep(result)
+
+    return new WorkflowResponse(
+      anotherStepResult
+    )
+  }
+)
+```
+
+### Run Workflow in Another
+
+To run a workflow in another, use the workflow's `runAsStep` special method:
+
+```ts
+import {
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  createProductsWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+const workflow = createWorkflow(
+  "hello-world",
+  async (input) => {
+    const products = createProductsWorkflow.runAsStep({
+      input: {
+        products: [
+          // ...
+        ],
+      },
+    })
+
+    // ...
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/execute-another-workflow).
+
+### Consume a Workflow Hook
+
+To consume a workflow hook, create a file under `src/workflows/hooks`:
+
+```ts title="src/workflows/hooks/product-created.ts"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+createProductsWorkflow.hooks.productsCreated(
+  async ({ products, additional_data }, { container }) => {
+    // TODO perform an action
+  },
+  async (dataFromStep, { container }) => {
+    // undo the performed action
+  }
+)
+```
+
+This executes a custom step at the hook's designated point in the workflow.
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/workflow-hooks).
+
+### Expose a Hook
+
+To expose a hook in a workflow, pass it in the second parameter of the returned `WorkflowResponse`:
+
+```ts
+import {
+  createStep,
+  createHook,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { createProductStep } from "./steps/create-product"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow", 
+  function (input) {
+    const product = createProductStep(input)
+    const productCreatedHook = createHook(
+      "productCreated", 
+      { productId: product.id }
+    )
+
+    return new WorkflowResponse(product, {
+      hooks: [productCreatedHook],
+    })
+  }
+)
+```
+
+Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook).
+
+### Retry Steps
+
+To configure steps to retry in case of errors, pass the `maxRetries` step option:
+
+```ts highlights={[["10"]]}
+import { 
+  createStep, 
+} from "@medusajs/framework/workflows-sdk"
+
+export const step1 = createStep(
+  {
+    name: "step-1",
+    maxRetries: 2,
+  },
+  async () => {
+    console.log("Executing step 1")
+
+    throw new Error("Oops! Something happened.")
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/retry-failed-steps).
+
+### Run Steps in Parallel
+
+If steps in a workflow don't depend on one another, run them in parallel using the `parallel` utility:
+
+```ts highlights={[["22", "parallelize"]]}
+import {
+  createWorkflow,
+  WorkflowResponse,
+  parallelize,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  createProductStep,
+  getProductStep,
+  createPricesStep,
+  attachProductToSalesChannelStep,
+} from "./steps"
+
+interface WorkflowInput {
+  title: string
+}
+
+const myWorkflow = createWorkflow(
+  "my-workflow", 
+  (input: WorkflowInput) => {
+   const product = createProductStep(input)
+
+   const [prices, productSalesChannel] = parallelize(
+     createPricesStep(product),
+     attachProductToSalesChannelStep(product)
+   )
+
+   const id = product.id
+   const refetchedProduct = getProductStep(product.id)
+
+   return new WorkflowResponse(refetchedProduct)
+ }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/parallel-steps).
+
+### Configure Workflow Timeout
+
+To configure the timeout of a workflow, at which the workflow's status is changed, but its execution isn't stopped, use the `timeout` configuration:
+
+```ts highlights={[["10"]]}
+import { 
+  createStep,  
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+// step import...
+
+const myWorkflow = createWorkflow({
+  name: "hello-world",
+  timeout: 2, // 2 seconds
+}, function () {
+  const str1 = step1()
+
+  return new WorkflowResponse({
+    message: str1,
+  })
+})
+
+export default myWorkflow
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/workflow-timeout).
+
+### Configure Step Timeout
+
+To configure a step's timeout, at which its state changes but its execution isn't stopped, use the `timeout` property:
+
+```ts highlights={[["4"]]}
+const step1 = createStep(
+  {
+    name: "step-1",
+    timeout: 2, // 2 seconds
+  },
+  async () => {
+    // ...
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/workflow-timeout#configure-step-timeout).
+
+### Long-Running Workflow
+
+A long-running workflow is a workflow that runs in the background. You can wait before executing some of its steps until another external or separate action occurs.
+
+To create a long-running workflow, configure any of its steps to be `async` without returning any data:
+
+```ts highlights={[["4"]]}
+const step2 = createStep(
+  {
+    name: "step-2",
+    async: true,
+  },
+  async () => {
+    console.log("Waiting to be successful...")
+  }
+)
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/long-running-workflow).
+
+### Change Step Status in Long-Running Workflow
+
+To change a step's status:
+
+1. Grab the workflow's transaction ID when you run it:
+
+```ts
+const { transaction } = await myLongRunningWorkflow(req.scope)
+  .run()
+```
+
+2. In an API route, workflow, or other resource, change a step's status to successful using the [Worfklow Engine Module](../architectural-modules/workflow-engine/page.mdx):
+
+export const stepSuccessHighlights = [
+  ["5", "setStepSuccess", "Change a step's status to success"],
+  ["8", "transactionId", "Pass the workflow's transaction ID"],
+  ["9", "stepId", "The ID of the step to change its status."],
+  ["10", "workflowId", "The ID of the workflow that the step belongs to."]
+]
+
+```ts highlights={stepSuccessHighlights}
+const workflowEngineService = container.resolve(
+  Modules.WORKFLOW_ENGINE
+)
+
+await workflowEngineService.setStepSuccess({
+  idempotencyKey: {
+    action: TransactionHandlerType.INVOKE,
+    transactionId,
+    stepId: "step-2",
+    workflowId: "hello-world",
+  },
+  stepResponse: new StepResponse("Done!"),
+  options: {
+    container,
+  },
+})
+```
+
+3. In an API route, workflow, or other resource, change a step's status to failure using the [Worfklow Engine Module](../architectural-modules/workflow-engine/page.mdx):
+
+export const stepFailureHighlights = [
+  ["5", "setStepFailure", "Change a step's status to failure"],
+  ["8", "transactionId", "Pass the workflow's transaction ID"],
+  ["9", "stepId", "The ID of the step to change its status."],
+  ["10", "workflowId", "The ID of the workflow that the step belongs to."]
+]
+
+```ts highlights={stepFailureHighlights}
+const workflowEngineService = container.resolve(
+  Modules.WORKFLOW_ENGINE
+)
+
+await workflowEngineService.setStepFailure({
+  idempotencyKey: {
+    action: TransactionHandlerType.INVOKE,
+    transactionId,
+    stepId: "step-2",
+    workflowId: "hello-world",
+  },
+  stepResponse: new StepResponse("Failed!"),
+  options: {
+    container,
+  },
+})
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/long-running-workflow).
+
+### Access Long-Running Workflow's Result
+
+Use the Workflow Engine Module's `subscribe` and `unsubscribe` methods to access the status of a long-running workflow.
+
+For example, in an API route:
+
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import myWorkflow from "../../../workflows/hello-world"
+import { Modules } from "@medusajs/framework/utils"
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const { transaction, result } = await myWorkflow(req.scope).run()
+
+  const workflowEngineService = req.scope.resolve(
+    Modules.WORKFLOW_ENGINE
+  )
+
+  const subscriptionOptions = {
+    workflowId: "hello-world",
+    transactionId: transaction.transactionId,
+    subscriberId: "hello-world-subscriber",
+  }
+
+  await workflowEngineService.subscribe({
+    ...subscriptionOptions,
+    subscriber: async (data) => {
+      if (data.eventType === "onFinish") {
+        console.log("Finished execution", data.result)
+        // unsubscribe
+        await workflowEngineService.unsubscribe({
+          ...subscriptionOptions,
+          subscriberOrId: subscriptionOptions.subscriberId,
+        })
+      } else if (data.eventType === "onStepFailure") {
+        console.log("Workflow failed", data.step)
+      }
+    },
+  })
+
+  res.send(result)
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/workflows/long-running-workflow#access-long-running-workflow-status-and-result).
+
+---
+
+## Subscribers
+
+### Create a Subscriber
+
+To create a subscriber that listens to the `product.created` event, create the file `src/subscribers/product-created.ts` with the following content:
+
+```ts title="src/subscribers/product-created.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+
+export default async function productCreateHandler({
+  event,
+}: SubscriberArgs<{ id: string }>) {
+  const productId = event.data.id
+  console.log(`The product ${productId} was created`)
+}
+
+export const config: SubscriberConfig = {
+  event: "product.created",
+}
+```
+
+Learn more in [this documentation](!docs!/basics/events-and-subscribers).
+
+### Resolve Resources in Subscriber
+
+To resolve resources from the Medusa container in a subscriber, use the `container` property of its parameter:
+
+```ts
+import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function productCreateHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const productModuleService =
+    container.resolve(Modules.PRODUCT)
+
+  const productId = data.id
+
+  const product = await productModuleService.retrieveProduct(
+    productId
+  )
+
+  console.log(`The product ${product.title} was created`)
+}
+
+export const config: SubscriberConfig = {
+  event: `product.created`,
+}
+```
+
+Learn more in [this documentation](!docs!/basics/events-and-subscribers#resolve-resources).
+
+### Send a Notification to Reset Password
+
+To send a notification, such as an email when a user requests to reset their password, create a subscriber at `src/subscribers/handle-reset.ts` with the following content:
+
+```ts title="src/subscribers/handle-reset.ts"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function resetPasswordTokenHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{ entity_id: string, token: string, actor_type: string }>) {
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+
+  const urlPrefix = actor_type === "customer" ? 
+    "https://storefront.com" : 
+    "https://admin.com"
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    channel: "email",
+    template: "reset-password-template",
+    data: {
+      // a URL to a frontend application
+      url: `${urlPrefix}/reset-password?token=${token}&email=${email}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.password_reset",
+}
+```
+
+Learn more in [this documentation](../commerce-modules/auth/reset-password/page.mdx).
+
+---
+
+## Scheduled Jobs
+
+### Create a Scheduled Job
+
+To create a scheduled job, create the file `src/jobs/hello-world.ts` with the following content:
+
+```ts title="src/jobs/hello-world.ts"
+// the scheduled-job function
+export default function () {
+  console.log("Time to say hello world!")
+}
+
+// the job's configurations
+export const config = {
+  name: "every-minute-message",
+  // execute every minute
+  schedule: "* * * * *",
+}
+```
+
+Learn more in [this documentation](!docs!/basics/scheduled-jobs).
+
+### Resolve Resources in Scheduled Job
+
+To resolve resources in a scheduled job, use the `container` accepted as a first parameter:
+
+```ts
+import { MedusaContainer } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const productModuleService = 
+    container.resolve(Modules.PRODUCT)
+
+  const [, count] = await productModuleService.listAndCountProducts()
+
+  console.log(
+    `Time to check products! You have ${count} product(s)`
+  )
+}
+
+export const config = {
+  name: "every-minute-message",
+  // execute every minute
+  schedule: "* * * * *",
+}
+```
+
+Learn more in [this documentation](!docs!/basics/scheduled-jobs#resolve-resources)
+
+### Specify a Job's Execution Number
+
+To limit the scheduled job's execution to a number of times during the Medusa application's runtime, use the `numberOfExecutions` configuration:
+
+```ts
+export default async function myCustomJob() {
+  console.log("I'll be executed three times only.")
+}
+
+export const config = {
+  name: "hello-world",
+  // execute every minute
+  schedule: "* * * * *",
+  numberOfExecutions: 3,
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/scheduled-jobs/execution-number).
+
+---
+
+## Loaders
+
+### Create a Loader
+
+To create a loader, add it to a module's `loaders` directory.
+
+For example, create the file `src/modules/hello/loaders/hello-world.ts` with the following content:
+
+```ts title="src/modules/hello/loaders/hello-world.ts"
+export default async function helloWorldLoader() {
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!"
+  )
+}
+```
+
+Learn more in [this documentation](!docs!/basics/loaders).
+
+### Resolve Resources in Loader
+
+To resolve resources in a loader, use the `container` property of its first parameter:
+
+```ts
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+import { 
+  ContainerRegistrationKeys
+} from "@medusajs/framework/utils"
+
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  logger.info("[helloWorldLoader]: Hello, World!")
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/modules/container).
+
+### Access Module Options
+
+To access a module's options in its loader, use the `options` property of its first parameter:
+
+```ts
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+
+// recommended to define type in another file
+type ModuleOptions = {
+  apiKey?: boolean
+}
+
+export default async function helloWorldLoader({
+  options,
+}: LoaderOptions<ModuleOptions>) {
+  
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!",
+    options
+  )
+}
+```
+
+Learn more in [this documentation](!docs!/advanced-development/modules/options).
+
+### Register Resources in the Module's Container
+
+To register a resource in the Module's container using a loader, use the `container`'s `registerAdd` method:
+
+```ts
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+import { asValue } from "awilix"
+
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  container.registerAdd(
+    "custom_data",
+    asValue({
+      test: true
+    })
+  )
+}
+```
+
+Where the first parameter of `registerAdd` is the name to register the resource under, and the second parameter is the resource to register.
+
+---
 
