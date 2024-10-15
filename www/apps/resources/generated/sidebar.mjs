@@ -6277,8 +6277,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/region/relations-to-other-modules",
-                "title": "Relations to Other Modules",
+                "path": "/commerce-modules/region/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
@@ -6486,8 +6486,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/sales-channel/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/sales-channel/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
@@ -6663,8 +6663,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/stock-location/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/stock-location/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
@@ -6829,22 +6829,6 @@ export const generatedSidebar = [
             "path": "/commerce-modules/store/examples",
             "title": "Examples",
             "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "sub-category",
-            "title": "Concepts",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/store/relations-to-other-modules",
-                "title": "Relation to Modules",
-                "children": []
-              }
-            ]
           },
           {
             "loaded": true,
@@ -7340,7 +7324,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "sub-category",
-            "title": "Concepts",
+            "title": "Guides",
             "children": [
               {
                 "loaded": true,

@@ -1,0 +1,29 @@
+export const metadata = {
+  title: `Links between Stock Location Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Stock Location Module and other commerce modules.
+
+## Fulfillment Module
+
+A fulfillment set can be conditioned to a specific stock location.
+
+Medusa defines a link between the `FulfillmentSet` and `StockLocation` data models.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712567101/Medusa%20Resources/fulfillment-stock-location_nlkf7e.jpg)
+
+Medusa also defines a link between the `FulfillmentProvider` and `StockLocation` data models to indicate the providers that can be used in a location.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399492/Medusa%20Resources/fulfillment-provider-stock-location_b0mulo.jpg)
+
+---
+
+## Sales Channel Module
+
+A stock location is associated with a sales channel. This scopes inventory quantities in a stock location by the associated sales channel.
+
+Medusa defines a link between the `SalesChannel` and `StockLocation` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716796872/Medusa%20Resources/sales-channel-location_cqrih1.jpg)

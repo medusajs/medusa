@@ -460,16 +460,20 @@ export const filesMap = [
     "pathname": "/commerce-modules/region/examples"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/region/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/region/links-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/region/page.mdx",
     "pathname": "/commerce-modules/region"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/region/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/region/relations-to-other-modules"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/examples/page.mdx",
     "pathname": "/commerce-modules/sales-channel/examples"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/sales-channel/links-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/page.mdx",
@@ -480,10 +484,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/sales-channel/publishable-api-keys"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/sales-channel/relations-to-other-modules"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/stock-location/concepts/page.mdx",
     "pathname": "/commerce-modules/stock-location/concepts"
   },
@@ -492,12 +492,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/stock-location/examples"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/page.mdx",
-    "pathname": "/commerce-modules/stock-location"
+    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/stock-location/links-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/stock-location/relations-to-other-modules"
+    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/page.mdx",
+    "pathname": "/commerce-modules/stock-location"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/examples/page.mdx",
@@ -506,10 +506,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/page.mdx",
     "pathname": "/commerce-modules/store"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/store/relations-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/store/relations-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/examples/page.mdx",
