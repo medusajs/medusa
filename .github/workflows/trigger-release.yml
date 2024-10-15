@@ -81,8 +81,8 @@ jobs:
                 {
                   "type": "section",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ github.event.release.html_url }}"
+                    "type": "plain_text",
+                    "text": "Triggering a release for preview environments failed"
                   }
                 }
               ]

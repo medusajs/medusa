@@ -1,0 +1,40 @@
+---
+displayed_sidebar: fulfillmentReference
+slug: /references/fulfillment/validateFulfillmentData
+sidebar_label: validateFulfillmentData
+---
+
+import { TypeList } from "docs-ui"
+
+# validateFulfillmentData - Fulfillment Module Reference
+
+This documentation provides a reference to the `validateFulfillmentData` method. This belongs to the Fulfillment Module.
+
+This method validates fulfillment data with the provider it belongs to.
+  e.g. if the shipping option requires a drop point, the data you pass to create the
+  shipping method must contain a drop point ID. This method can be used to
+  validate that.
+
+## Example
+
+```ts
+const isValid =
+  await fulfillmentModuleService.validateFulfillmentData(
+    "webshipper",
+    {
+      requires_drop_point: true,
+    },
+    {
+      drop_point_id: "dp_123",
+    },
+    {}
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"providerId","type":"`string`","description":"The fulfillment provider's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionData","type":"`Record<string, unknown>`","description":"The fulfillment option data to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The fulfillment data to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context to validate the fulfillment option data in.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option data is valid with the specified provider.","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>

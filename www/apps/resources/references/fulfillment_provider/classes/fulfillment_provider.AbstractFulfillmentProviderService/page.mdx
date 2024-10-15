@@ -142,7 +142,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"optionData","type":"`any`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"The `data` property of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`any`","description":"Context details, such as context of the cart or customer.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>
+<TypeList types={[{"name":"optionData","type":"`Record<string, unknown>`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The `data` property of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"Context details, such as context of the cart or customer.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateFulfillmentData"/>
 
 #### Returns
 
@@ -168,7 +168,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The data to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOption"/>
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"The data to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOption"/>
 
 #### Returns
 
@@ -192,7 +192,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canCalculate"/>
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"The `data` property of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canCalculate"/>
 
 #### Returns
 
@@ -222,7 +222,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"optionData","type":"`any`","description":"The `data` property of a shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"If the price is calculated for a shipping option, it's the `data` of the shipping option. Otherwise, it's the `data of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The cart details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="calculatePrice"/>
+<TypeList types={[{"name":"optionData","type":"`Record<string, unknown>`","description":"The `data` property of a shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"If the price is calculated for a shipping option, it's the `data` of the shipping option. Otherwise, it's the `data of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="calculatePrice"/>
 
 #### Returns
 
@@ -268,7 +268,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipping method this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`any`","description":"The items in the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`any`","description":"The order this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createFulfillment"/>
+<TypeList types={[{"name":"data","type":"`object`","description":"The `data` property of the shipping method this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`object`[]","description":"The items in the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`undefined` \\| `object`","description":"The order this fulfillment is created for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment","type":"`Record<string, unknown>`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createFulfillment"/>
 
 #### Returns
 
@@ -294,7 +294,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelFulfillment"/>
+<TypeList types={[{"name":"fulfillment","type":"`Record<string, unknown>`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelFulfillment"/>
 
 #### Returns
 
@@ -319,7 +319,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getFulfillmentDocuments"/>
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getFulfillmentDocuments"/>
 
 #### Returns
 
@@ -359,7 +359,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"fulfillment","type":"`any`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createReturnFulfillment"/>
+<TypeList types={[{"name":"fulfillment","type":"`Record<string, unknown>`","description":"The fulfillment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createReturnFulfillment"/>
 
 #### Returns
 
@@ -384,7 +384,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getReturnDocuments"/>
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getReturnDocuments"/>
 
 #### Returns
 
@@ -409,7 +409,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`any`","description":"The `data` property of the shipmnet.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getShipmentDocuments"/>
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"The `data` property of the shipmnet.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getShipmentDocuments"/>
 
 #### Returns
 
@@ -440,7 +440,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"fulfillmentData","type":"`any`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documentType","type":"`any`","description":"The document's type. For example, `invoice`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveDocuments"/>
+<TypeList types={[{"name":"fulfillmentData","type":"`Record<string, unknown>`","description":"The `data` property of the fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documentType","type":"`string`","description":"The document's type. For example, `invoice`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveDocuments"/>
 
 #### Returns
 
@@ -466,17 +466,17 @@ This exports the module's definition, indicating that the `MyFulfillmentProvider
 
 ## 4. Use Module
 
-To use your Fulfillment Module Provider, add it to the `providers` array of the Fulfillment Module:
+To use your Fulfillment Module Provider, add it to the `providers` array of the Fulfillment Module in `medusa-config.ts`:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.FULFILLMENT]: {
+  modules: [
+    {
       resolve: "@medusajs/framework/fulfillment",
       options: {
         providers: [
@@ -490,7 +490,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  ]
 })
 ```
 
