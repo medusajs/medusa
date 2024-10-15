@@ -1,5 +1,5 @@
 import path from "path"
-import { rm, copyFile, access, constants } from "node:fs/promises"
+import { access, constants, copyFile, rm } from "node:fs/promises"
 import type tsStatic from "typescript"
 import { logger } from "@medusajs/framework/logger"
 import { ConfigModule } from "@medusajs/framework/types"
@@ -7,6 +7,29 @@ import { getConfigFile } from "@medusajs/framework/utils"
 
 const ADMIN_FOLDER = "src/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
+
+function computeDist(
+  projectRoot: string,
+  tsConfig: { options: { outDir?: string } }
+): string {
+  const distFolder = tsConfig.options.outDir ?? ".medusa/server"
+  const dist = path.isAbsolute(distFolder)
+    ? distFolder
+    : path.join(projectRoot, distFolder)
+
+  return dist
+}
+
+async function getTsConfigPath(projectRoot: string) {
+  const ts = await import("typescript")
+  const tsConfig = parseTSConfig(projectRoot, ts)
+  if (!tsConfig) {
+    logger.error("Unable to compile backend source")
+    return false
+  }
+
+  return tsConfig!
+}
 
 /**
  * Copies the file to the destination without throwing any
@@ -100,21 +123,14 @@ function parseTSConfig(projectRoot: string, ts: typeof tsStatic) {
 /**
  * Builds the backend project using TSC
  */
-async function buildBackend(projectRoot: string): Promise<boolean> {
+async function buildBackend(
+  projectRoot: string,
+  tsConfig: tsStatic.ParsedCommandLine
+): Promise<boolean> {
   const startTime = process.hrtime()
   logger.info("Compiling backend source...")
 
-  const ts = await import("typescript")
-  const tsConfig = parseTSConfig(projectRoot, ts)
-  if (!tsConfig) {
-    logger.error("Unable to compile backend source")
-    return false
-  }
-
-  const distFolder = tsConfig.options.outDir ?? ".medusa/server"
-  const dist = path.isAbsolute(distFolder)
-    ? distFolder
-    : path.join(projectRoot, distFolder)
+  const dist = computeDist(projectRoot, tsConfig)
 
   logger.info(`Removing existing "${path.relative(projectRoot, dist)}" folder`)
   await clean(dist)
@@ -130,6 +146,7 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
     )
   })
 
+  const ts = await import("typescript")
   const program = ts.createProgram(filesToCompile, {
     ...tsConfig.options,
     ...{
@@ -197,18 +214,24 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
 /**
  * Builds the frontend project using the "@medusajs/admin-bundler"
  */
-async function buildFrontend(projectRoot: string): Promise<boolean> {
+async function buildFrontend(
+  projectRoot: string,
+  tsConfig: tsStatic.ParsedCommandLine
+): Promise<boolean> {
   const startTime = process.hrtime()
   const configFile = loadMedusaConfig(projectRoot)
   if (!configFile) {
     return false
   }
 
+  const dist = computeDist(projectRoot, tsConfig)
+
   const adminSource = path.join(projectRoot, ADMIN_FOLDER)
   const adminOptions = {
     disable: false,
     sources: [adminSource],
     ...configFile.configModule.admin,
+    outDir: path.join(dist, configFile.configModule.admin.outDir),
   }
 
   if (adminOptions.disable) {
@@ -233,7 +256,21 @@ async function buildFrontend(projectRoot: string): Promise<boolean> {
   }
 }
 
-export default async function ({ directory }: { directory: string }) {
+export default async function ({
+  directory,
+}: {
+  directory: string
+}): Promise<boolean> {
   logger.info("Starting build...")
-  await Promise.all([buildBackend(directory), buildFrontend(directory)])
+
+  const tsConfig = await getTsConfigPath(directory)
+  if (!tsConfig) {
+    return false
+  }
+
+  await Promise.all([
+    buildBackend(directory, tsConfig),
+    buildFrontend(directory, tsConfig),
+  ])
+  return true
 }

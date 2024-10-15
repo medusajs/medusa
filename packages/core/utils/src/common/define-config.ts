@@ -90,9 +90,9 @@ export function defineConfig(config: Config = {}): ConfigModule {
    */
   const admin: ConfigModule["admin"] = {
     backendUrl: process.env.MEDUSA_BACKEND_URL || DEFAULT_ADMIN_URL,
-    outDir: ".medusa/admin",
     path: "/app",
     ...config.admin,
+    outDir: "./public/admin",
   }
 
   /**
