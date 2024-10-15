@@ -17,7 +17,7 @@ import {
 } from "./babel"
 
 export function normalizePath(file: string) {
-  return path.normalize(file).split(path.sep).join("/")
+  return path.normalize(file.replace(/\\/g, "/"))
 }
 
 /**
@@ -144,4 +144,12 @@ export function isFileInAdminSubdirectory(
 ): boolean {
   const normalizedPath = normalizePath(file)
   return normalizedPath.includes(`/src/admin/${subdirectory}/`)
+}
+
+/**
+ * Test util to normalize strings, so they can be compared without taking
+ * whitespace into account.
+ */
+export function normalizeString(str: string): string {
+  return str.replace(/\s+/g, " ").trim()
 }
