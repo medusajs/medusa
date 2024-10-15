@@ -554,10 +554,25 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
-  const discountTotal = order.items.reduce(
-    (total, item) => total + (item.discount_total || 0),
-    0
+  const discountTotal = useMemo(
+    () =>
+      order.items.reduce(
+        (total, item) => total + (item.discount_total || 0),
+        0
+      ),
+    [order]
   )
+
+  const discountCodes = useMemo(() => {
+    const codes = new Set()
+    order.items.forEach((item) =>
+      item.adjustments?.forEach((adj) => {
+        codes.add(adj.code)
+      })
+    )
+
+    return Array.from(codes).sort()
+  }, [order])
 
   const taxCodes = useMemo(() => {
     const taxCodeMap = {}
@@ -581,6 +596,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
         label={t("fields.discount")}
+        secondaryValue={discountCodes.join(", ")}
         value={
           discountTotal > 0
             ? `- ${getLocaleAmount(discountTotal, order.currency_code)}`
