@@ -122,11 +122,11 @@ module.exports = {
   modules: [
     // ...
     {
-      resolve: "@medusajs/file",
+      resolve: "@medusajs/medusa/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-s3",
+            resolve: "@medusajs/medusa/file-s3",
             id: "s3",
             options: {
               file_url: process.env.S3_FILE_URL,
@@ -354,11 +354,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/file",
+      resolve: "@medusajs/medusa/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-s3",
+            resolve: "@medusajs/medusa/file-s3",
             id: "s3",
             options: {
               // ...

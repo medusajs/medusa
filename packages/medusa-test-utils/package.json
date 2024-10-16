@@ -1,5 +1,5 @@
 {
-  "name": "medusa-test-utils",
+  "name": "@medusajs/test-utils",
   "version": "1.1.44",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",

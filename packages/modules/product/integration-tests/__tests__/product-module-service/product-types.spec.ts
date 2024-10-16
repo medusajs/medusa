@@ -1,6 +1,6 @@
 import { IProductModuleService } from "@medusajs/framework/types"
 import { ProductType } from "@models"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(30000)

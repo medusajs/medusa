@@ -1,4 +1,4 @@
-import { ChildDocs } from "docs-ui"
+import { CardList } from "docs-ui"
 
 export const metadata = {
   title: `Payment Module Provider`,
@@ -18,7 +18,15 @@ After the payment session is authorized, the payment provider is associated with
 
 ### List of Payment Module Providers
 
-<ChildDocs type="item" />
+<CardList
+  items={[
+    {
+      href: "/commerce-modules/payment/payment-provider/stripe",
+      title: "Stripe"
+    }
+  ]}
+/>
+
 
 ---
 

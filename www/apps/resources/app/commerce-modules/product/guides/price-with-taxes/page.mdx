@@ -14,7 +14,7 @@ In this document, you'll learn how to calculate a product variant's price with t
 
 You'll need the following resources for the taxes calculation:
 
-1. Query to retrieve the product's variants' prices for a context. Learn more about that in [this guide](../price/page.mdx).
+1. [Query](!docs!/advanced-development/module-links/query) to retrieve the product's variants' prices for a context. Learn more about that in [this guide](../price/page.mdx).
 2. The Tax Module's main service to get the tax lines for each product.
 
 ```ts
@@ -36,6 +36,12 @@ const taxModuleService = container.resolve(
 ## Step 1: Retrieve Prices for a Context
 
 After resolving the resources, use Query to retrieve the products with the variants' prices for a context:
+
+<Note>
+
+Learn more about retrieving product variants' prices for a context in [this guide](../price/page.mdx).
+
+</Note>
 
 ```ts
 import { QueryContext } from "@medusajs/framework/utils"
@@ -62,12 +68,6 @@ const { data: products } = await query.graph({
   },
 })
 ```
-
-<Note>
-
-Learn more about retrieving product variants' prices for a context in [this guide](../price/page.mdx).
-
-</Note>
 
 ---
 

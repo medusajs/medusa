@@ -127,20 +127,20 @@ The last step is to add the module in Medusa’s configurations.
 
 In `medusa-config.ts`, add a `modules` property and pass in it your custom module:
 
-```ts title="medusa-config.ts" highlights={[["6", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
+```ts title="medusa-config.ts" highlights={[["7"]]}
 module.exports = defineConfig({
   projectConfig: {
     // ...
   },
   modules: [
     {
-      resolve: "./modules/hello",
+      resolve: "./src/modules/hello",
     }
   ]
 })
 ```
 
-Its value is an array of objects, each having a `resolve` property, whose value is either a path to module's directory relative to `src` (it shouldn't include `src` in the path), or an `npm` package’s name.
+Its value is an array of objects, each having a `resolve` property, whose value is either a path to module's directory, or an `npm` package’s name.
 
 ### 5. Generate Migrations
 
