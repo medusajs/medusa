@@ -15,11 +15,13 @@ export const useReturnReasonTableColumns = () => {
         cell: ({ row }) => {
           const { label, description } = row.original
           return (
-            <div className="flex h-full w-full flex-col justify-center py-4">
-              <span className="truncate font-medium">{label}</span>
-              <span className="truncate">
-                {description ? description : "-"}
-              </span>
+            <div className=" py-4">
+              <div className="flex h-full w-full flex-col justify-center">
+                <span className="truncate font-medium">{label}</span>
+                <span className="truncate">
+                  {description ? description : "-"}
+                </span>
+              </div>
             </div>
           )
         },
