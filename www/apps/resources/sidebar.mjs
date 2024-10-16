@@ -1181,8 +1181,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/commerce-modules/region/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/region/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1249,8 +1249,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/sales-channel/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/sales-channel/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1319,8 +1319,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/stock-location/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/stock-location/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1378,17 +1378,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/commerce-modules/store/examples",
             title: "Examples",
-          },
-          {
-            type: "sub-category",
-            title: "Concepts",
-            children: [
-              {
-                type: "link",
-                path: "/commerce-modules/store/relations-to-other-modules",
-                title: "Relation to Modules",
-              },
-            ],
           },
           {
             type: "sub-category",
@@ -1538,7 +1527,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "Concepts",
+            title: "Guides",
             children: [
               {
                 type: "link",
