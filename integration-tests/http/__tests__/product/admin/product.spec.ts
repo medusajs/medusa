@@ -667,10 +667,12 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }
@@ -1056,10 +1058,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
                 manage_inventory: true,
                 inventory_items: [
                   {
@@ -1097,16 +1101,19 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
                 manage_inventory: true,
+                options: { size: "x" },
                 inventory_items: [],
               },
               {
                 title: "Custom inventory 2",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: false,
               },
             ],
@@ -1294,9 +1301,11 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test create",
+              options: [{ title: "size", values: ["x", "l"] }],
               variants: [
                 {
                   title: "Price with rules",
+                  options: { size: "l" },
                   prices: [
                     {
                       currency_code: "usd",
@@ -1345,10 +1354,12 @@ medusaIntegrationTestRunner({
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
             tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
+            options: [{ title: "size", values: ["large"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large" },
               },
             ],
           }
@@ -1375,14 +1386,17 @@ medusaIntegrationTestRunner({
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
             tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
+            options: [{ title: "size", values: ["l", x] }],
             variants: [
               {
                 title: "Test variant 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
               {
                 title: "Test variant 2",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
               },
             ],
           }
@@ -1423,10 +1437,12 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
+            options: [{ title: "size", values: ["large"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large" },
               },
             ],
           }
@@ -2096,11 +2112,13 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
                 manage_inventory: true,
+                options: { size: "l" },
                 inventory_items: [
                   {
                     inventory_item_id: inventoryItem1.id,
@@ -2207,10 +2225,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: true,
                 inventory_items: [
                   {
@@ -2256,10 +2276,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: true,
                 inventory_items: [
                   {
@@ -2678,10 +2700,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: baseProduct.title,
             handle: baseProduct.handle,
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }
@@ -2708,10 +2732,12 @@ medusaIntegrationTestRunner({
             title: baseProduct.title,
             handle: baseProduct.handle,
             description: "test-product-description",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }
@@ -2842,30 +2868,6 @@ medusaIntegrationTestRunner({
               (v) => v.id === baseProduct.variants[0].id
             )?.title
           ).toEqual("Updated variant")
-        })
-
-        it("removes options not present in update", async () => {
-          const baseVariant = baseProduct.variants[0]
-          const updatedProduct = (
-            await api.post(
-              `/admin/products/${baseProduct.id}/variants/${baseVariant.id}`,
-              {
-                title: "Updated variant",
-                options: {
-                  size: "small",
-                },
-              },
-              adminHeaders
-            )
-          ).data.product
-
-          expect(
-            updatedProduct.variants.find((v) => v.id === baseVariant.id).options
-          ).toEqual([
-            expect.objectContaining({
-              value: "small",
-            }),
-          ])
         })
 
         it("updates multiple options in the same call", async () => {

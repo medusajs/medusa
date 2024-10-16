@@ -21,6 +21,7 @@ export const CreateCart = z
     currency_code: z.string().nullish(),
     items: z.array(ItemSchema).optional(),
     sales_channel_id: z.string().nullish(),
+    promo_codes: z.array(z.string()).optional(),
     metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
@@ -45,7 +46,7 @@ export const StoreRemoveCartPromotions = z
 export type StoreUpdateCartType = z.infer<typeof UpdateCart>
 export const UpdateCart = z
   .object({
-    region_id: z.string().nullish(),
+    region_id: z.string().optional(),
     email: z.string().email().nullish(),
     billing_address: z.union([AddressPayload, z.string()]).optional(),
     shipping_address: z.union([AddressPayload, z.string()]).optional(),

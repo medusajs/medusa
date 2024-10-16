@@ -1,5 +1,5 @@
 import { ILockingModule } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, promiseAll } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout } from "node:timers/promises"
 
@@ -63,7 +63,7 @@ moduleIntegrationTestRunner<ILockingModule>({
 
         expect(userReleased).toBe(false)
         await expect(anotherUserLock).rejects.toThrowError(
-          `"key_name" is already locked.`
+          `Failed to acquire lock for key "key_name"`
         )
 
         const releasing = await service.release("key_name", {
@@ -82,16 +82,20 @@ moduleIntegrationTestRunner<ILockingModule>({
           ownerId: "user_id_000",
         }
 
-        expect(service.acquire(keyToLock, user_1)).resolves.toBeUndefined()
+        await expect(
+          service.acquire(keyToLock, user_1)
+        ).resolves.toBeUndefined()
 
-        expect(service.acquire(keyToLock, user_1)).resolves.toBeUndefined()
+        await expect(
+          service.acquire(keyToLock, user_1)
+        ).resolves.toBeUndefined()
 
-        expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
-          `"${keyToLock}" is already locked.`
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+          `Failed to acquire lock for key "${keyToLock}"`
         )
 
-        expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
-          `"${keyToLock}" is already locked.`
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+          `Failed to acquire lock for key "${keyToLock}"`
         )
 
         await service.acquire(keyToLock, user_1)
@@ -102,6 +106,40 @@ moduleIntegrationTestRunner<ILockingModule>({
         expect(releaseNotLocked).toBe(false)
 
         const release = await service.release(keyToLock, user_1)
+        expect(release).toBe(true)
+      })
+
+      it("should fail to acquire the same key when no owner is provided", async () => {
+        const keyToLock = "mySpecialKey"
+
+        const user_2 = {
+          ownerId: "user_id_000",
+        }
+
+        await expect(service.acquire(keyToLock)).resolves.toBeUndefined()
+
+        await expect(service.acquire(keyToLock)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
+          `Failed to acquire lock for key "${keyToLock}"`
+        )
+
+        const releaseNotLocked = await service.release(keyToLock, {
+          ownerId: "user_id_000",
+        })
+        expect(releaseNotLocked).toBe(false)
+
+        const release = await service.release(keyToLock)
         expect(release).toBe(true)
       })
     })
@@ -117,6 +155,49 @@ moduleIntegrationTestRunner<ILockingModule>({
 
       expect(fn_1).toBeCalledTimes(1)
       expect(fn_2).toBeCalledTimes(1)
+    })
+
+    it("should release lock in case of timeout failure", async () => {
+      const fn_1 = jest.fn(async () => {
+        await setTimeout(1010)
+        return "fn_1"
+      })
+
+      const fn_2 = jest.fn(async () => {
+        return "fn_2"
+      })
+
+      const fn_3 = jest.fn(async () => {
+        return "fn_3"
+      })
+
+      const ops = [
+        service
+          .execute("lock_key", fn_1, {
+            timeout: 1,
+          })
+          .catch((e) => e),
+
+        service
+          .execute("lock_key", fn_2, {
+            timeout: 1,
+          })
+          .catch((e) => e),
+
+        service
+          .execute("lock_key", fn_3, {
+            timeout: 2,
+          })
+          .catch((e) => e),
+      ]
+
+      const res = await promiseAll(ops)
+
+      expect(res).toEqual(["fn_1", Error("Timed-out acquiring lock."), "fn_3"])
+
+      expect(fn_1).toHaveBeenCalledTimes(1)
+      expect(fn_2).toHaveBeenCalledTimes(0)
+      expect(fn_3).toHaveBeenCalledTimes(1)
     })
   },
 })

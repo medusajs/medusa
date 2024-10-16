@@ -58,6 +58,8 @@ export function applyChangesToOrder(
         version,
         quantity: orderItem.quantity,
         unit_price: item.unit_price ?? orderItem.unit_price,
+        compare_at_unit_price:
+          item.compare_at_unit_price ?? orderItem.compare_at_unit_price,
         fulfilled_quantity: orderItem.fulfilled_quantity ?? 0,
         delivered_quantity: orderItem.delivered_quantity ?? 0,
         shipped_quantity: orderItem.shipped_quantity ?? 0,
