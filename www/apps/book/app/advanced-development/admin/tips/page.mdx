@@ -1,3 +1,5 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Admin Development Tips`,
 }
@@ -8,42 +10,64 @@ In this chapter, you'll find some tips for your admin development.
 
 ## Send Requests to API Routes
 
-To send a request to an API route in the Medusa Application, use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+To send a request to an API route in the Medusa Application, use Medusa's [JS SDK](!resources!/js-sdk) with [Tanstack Query](https://tanstack.com/query/latest). Both of these tools are installed in your project by default.
+
+First, create the file `src/admin/lib/config.ts` to setup the SDK for use in your customizations:
+
+```ts
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+```
+
+<Note>
+
+Learn more about the JS SDK's configurations [this documentation](!resources!/js-sdk#js-sdk-configurations).
+
+</Note>
+
+Then, use the configured SDK with the `useQuery` Tanstack Query hook to send `GET` requests, and `useMutation` hook to send `POST` or `DELETE` requests.
 
 For example:
 
-export const fetchHighlights = [
-  ["14", "fetch", "Send a request to the `/admin/products` API route."]
+<CodeTabs group="query-type">
+  <CodeTab label="Query" value="query">
+
+export const queryHighlights = [
+  ["8", "useQuery", "Use Tanstack Query's `useQuery` to send a `GET` request."],
+  ["9", "sdk.admin.product.list", "Use the SDK to send the request."],
+  ["10", "queryKey", "Specify the key used to cache data."]
 ]
 
-```tsx title="src/admin/widgets/product-widget.tsx" highlights={fetchHighlights}
+```tsx title="src/admin/widgets/product-widget.ts" highlights={queryHighlights}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Container } from "@medusajs/ui"
-import { useEffect, useState } from "react"
+import { Button, Container } from "@medusajs/ui"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
 
 const ProductWidget = () => {
-  const [productsCount, setProductsCount] = useState(0)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!loading) {
-      return
-    }
-
-    fetch(`/admin/products`, {
-      credentials: "include",
-    })
-    .then((res) => res.json())
-    .then(({ count }) => {
-      setProductsCount(count)
-      setLoading(false)
-    })
-  }, [loading])
-
+  const { data, isLoading } = useQuery({
+    queryFn: () => sdk.admin.product.list(),
+    queryKey: ["products"]
+  })
+  
   return (
     <Container className="divide-y p-0">
-      {loading && <span>Loading...</span>}
-      {!loading && <span>You have {productsCount} Product(s).</span>}
+      {isLoading && <span>Loading...</span>}
+      {data?.products && (
+        <ul>
+          {data.products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
     </Container>
   )
 }
@@ -55,7 +79,52 @@ export const config = defineWidgetConfig({
 export default ProductWidget
 ```
 
-In this example, you send a request to the [List Products API route](!api!/admin#products_getproducts) and show the count of products in a widget.
+  </CodeTab>
+  <CodeTab label="Mutation" value="mutation">
+
+export const mutationHighlights = [
+  ["10", "useMutation", "Use Tanstack Query's `useMutation` to send `POST` or `DELETE` requests."],
+  ["12", "sdk.admin.product.update", "Use the configured SDK to send the request."],
+]
+
+```tsx title="src/admin/widgets/product-widget.ts" highlights={mutationHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
+
+const ProductWidget = ({ 
+  data: productData
+}: DetailWidgetProps<HttpTypes.AdminProduct>) => {
+  const { mutateAsync } = useMutation({
+    mutationFn: (payload: HttpTypes.AdminUpdateProduct) => 
+      sdk.admin.product.update(productData.id, payload),
+    onSuccess: () => alert("updated product")
+  })
+
+  const handleUpdate = () => {
+    mutateAsync({
+      title: "New Product Title"
+    })
+  }
+  
+  return (
+    <Container className="divide-y p-0">
+      <Button onClick={handleUpdate}>Update Title</Button>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+  </CodeTab>
+</CodeTabs>
 
 ---
 
