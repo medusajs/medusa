@@ -121,7 +121,7 @@ export class MikroOrmBaseRepository<T extends object = object>
   static compensateRelationFieldsSelectionFromLoadStrategy({
     findOptions,
   }: {
-    findOptions: DAL.FindOptions<any>
+    findOptions: DAL.FindOptions
   }) {
     const loadStrategy = findOptions?.options?.strategy
 
@@ -349,7 +349,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       await manager.nativeDelete<T>(entity as EntityName<T>, filters as any)
     }
 
-    async find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
+    async find(
+      options: DAL.FindOptions<T> = { where: {} },
+      context?: Context
+    ): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
       const findOptions_ = { ...options }
