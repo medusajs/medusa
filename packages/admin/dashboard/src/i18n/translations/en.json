@@ -1716,6 +1716,7 @@
       "value_type": "Value Type",
       "value": "Value",
       "campaign": "Campaign",
+      "method": "Method",
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
