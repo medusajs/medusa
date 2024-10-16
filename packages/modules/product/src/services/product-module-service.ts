@@ -380,10 +380,12 @@ export default class ProductModuleService
         productOptions
       )
 
-    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
-      productVariantsWithOptions as any,
-      allVariants
-    )
+    if (data.some((d) => !!d.options)) {
+      ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
+        productVariantsWithOptions as any,
+        allVariants
+      )
+    }
 
     const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
