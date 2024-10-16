@@ -1,5 +1,4 @@
 import {
-  BigNumber,
   ChangeActionType,
   MathBN,
   MedusaError,
@@ -13,36 +12,28 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
       (item) => item.id === action.details.reference_id
     )
 
-    const unitPrice = action.details.unit_price
     const existing = currentOrder.items[existingIndex]
 
-    existing.detail.quantity ??= 0
-
-    let quantityDiff = MathBN.sub(
-      action.details.quantity,
-      existing.detail.quantity
+    const originalQuantity = MathBN.convert(
+      existing.detail.quantity ?? existing.quantity
+    )
+    const originalUnitPrice = MathBN.convert(
+      existing.detail.unit_price ?? existing.unit_price
     )
 
-    const quant = new BigNumber(action.details.quantity)
-    existing.quantity = quant
-    existing.detail.quantity = quant
+    const currentQuantity = MathBN.convert(action.details.quantity)
+    const quantityDiff = MathBN.sub(currentQuantity, originalQuantity)
 
-    if (unitPrice) {
-      const currentUnitPriceBN = MathBN.convert(unitPrice)
-      const originalUnitPriceBn = MathBN.convert(
-        existing.detail.unit_price ?? existing.unit_price
-      )
+    existing.quantity = currentQuantity
+    existing.detail.quantity = currentQuantity
 
-      const currentQuantityBn = MathBN.convert(action.details.quantity)
-      const originalQuantityBn = MathBN.convert(
-        existing.detail.quantity ?? existing.quantity
-      )
+    if (action.details.unit_price) {
+      const currentUnitPrice = MathBN.convert(action.details.unit_price)
+      const originalTotal = MathBN.mult(originalUnitPrice, originalQuantity)
+      const currentTotal = MathBN.mult(currentUnitPrice, currentQuantity)
 
-      const originalTotal = MathBN.mult(originalUnitPriceBn, originalQuantityBn)
-      const currentTotal = MathBN.mult(currentUnitPriceBN, currentQuantityBn)
-
-      existing.unit_price = currentUnitPriceBN
-      existing.detail.unit_price = currentUnitPriceBN
+      existing.unit_price = currentUnitPrice
+      existing.detail.unit_price = currentUnitPrice
 
       setActionReference(existing, action, options)
 
@@ -50,6 +41,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
     }
 
     setActionReference(existing, action, options)
+
     return MathBN.mult(existing.unit_price, quantityDiff)
   },
   validate({ action, currentOrder }) {

@@ -59,7 +59,7 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
