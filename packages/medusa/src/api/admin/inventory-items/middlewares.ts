@@ -1,9 +1,11 @@
-import * as QueryConfig from "./query-config"
-import { MiddlewareRoute, unlessPath } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute, unlessPath } from "@medusajs/framework/http"
+import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
+import { createBatchBody } from "../../utils/validators"
+import * as QueryConfig from "./query-config"
 import {
   AdminCreateInventoryItem,
   AdminCreateInventoryLocationLevel,
@@ -14,7 +16,6 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
-import { createBatchBody } from "../../utils/validators"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -83,6 +84,9 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/inventory-items/:id/location-levels/batch",
+    bodyParser: {
+      sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
+    },
     middlewares: [
       validateAndTransformBody(
         createBatchBody(

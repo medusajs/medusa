@@ -16,6 +16,7 @@ import {
   getConfigObjectProperties,
   getParserOptions,
   hasDefaultExport,
+  normalizePath,
 } from "../utils"
 import { getWidgetFilesFromSources } from "./helpers"
 
@@ -135,9 +136,10 @@ function generateWidgetConfigName(index: number): string {
 }
 
 function generateImport(file: string, index: number): string {
+  const path = normalizePath(file)
   return `import ${generateWidgetComponentName(
     index
-  )}, { config as ${generateWidgetConfigName(index)} } from "${file}"`
+  )}, { config as ${generateWidgetConfigName(index)} } from "${path}"`
 }
 
 function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {

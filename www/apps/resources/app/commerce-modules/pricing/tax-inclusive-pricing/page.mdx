@@ -4,19 +4,19 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about tax-inclusive pricing and how it's used during prices calculation.
+In this document, you’ll learn about tax-inclusive pricing and how it's used when calculating prices.
 
 ## What is Tax-Inclusive Pricing?
 
-A tax-inclusive price is a price that includes taxes. The tax amount is calculated from the price rather than added to it.
+A tax-inclusive price is a price of a resource that includes taxes. Medusa calculates the tax amount from the price rather than adds the amount to it.
 
-For example, if a product’s price is $50 and the tax rate is 2%, then the tax-inclusive price is $49, and the applied tax amount is $1.
+For example, if a product’s price is $50, the tax rate is 2%, and tax-inclusive pricing is enabled, then the product's price is $49, and the applied tax amount is $1.
 
 ---
 
 ## How is Tax-Inclusive Pricing Set?
 
-The `PricePreference` data model holds the tax-inclusive setting for a context. It has two properties that indicate the context:
+The [PricePreference data model](/references/pricing/PricePreference) holds the tax-inclusive setting for a context. It has two properties that indicate the context:
 
 - `attribute`: The name of the attribute to compare against. For example, `region_id` or `currency_code`.
 - `value`: The attribute’s value. For example, `reg_123` or `usd`.
@@ -55,6 +55,12 @@ To get accurate tax results, pass the `region_id` and / or `currency_code` in th
 
 The `calculatePrices` method returns two properties related to tax-inclusivity:
 
+<Note title="Tip">
+
+Learn more about the returned properties in [this guide](../price-calculation/page.mdx#returned-price-object).
+
+</Note>
+
 - `is_calculated_price_tax_inclusive`: Whether the selected `calculated_price` is tax-inclusive.
 - `is_original_price_tax_inclusive` : Whether the selected `original_price` is tax-inclusive.
 
@@ -65,10 +71,8 @@ A price is considered tax-inclusive if:
 
 ### Tax Context Precedence
 
-If:
+A region’s price preference’s `is_tax_inclusive`'s value takes higher precedence in determining whether a price is tax-inclusive if:
 
 - both the `region_id` and `currency_code` are provided in the calculation context;
 - the selected price belongs to the region;
 - and the region has a price preference
-
-Then, the region’s price preference’s `is_tax_inclusive`'s value takes higher precedence in determining whether a price is tax-inclusive.

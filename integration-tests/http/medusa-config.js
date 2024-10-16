@@ -51,7 +51,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-local-next",
+            resolve: "@medusajs/file-local",
             id: "local",
             options: {
               // This is the directory where we can reliably write in CI environments
