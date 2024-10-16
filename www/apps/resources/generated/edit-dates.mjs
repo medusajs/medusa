@@ -124,7 +124,7 @@ export const generatedEditDates = {
   "app/deployment/medusa-application/railway/page.mdx": "2024-10-15T12:50:50.981Z",
   "app/deployment/storefront/vercel/page.mdx": "2024-07-26T07:21:31+00:00",
   "app/deployment/page.mdx": "2024-07-25T09:55:22+03:00",
-  "app/integrations/page.mdx": "2024-07-19T08:49:08+00:00",
+  "app/integrations/page.mdx": "2024-10-15T12:26:39.839Z",
   "app/medusa-cli/page.mdx": "2024-08-28T11:25:32.382Z",
   "app/medusa-container-resources/page.mdx": "2024-09-30T08:43:53.173Z",
   "app/medusa-workflows-reference/page.mdx": "2024-09-30T08:43:53.174Z",
@@ -2295,5 +2295,6 @@ export const generatedEditDates = {
   "references/fulfillment/interfaces/fulfillment.IFulfillmentModuleService/page.mdx": "2024-10-14T15:28:22.238Z",
   "references/types/CommonTypes/interfaces/types.CommonTypes.RequestQueryFields/page.mdx": "2024-10-14T15:27:49.882Z",
   "references/utils/utils.ProductUtils/page.mdx": "2024-10-14T15:27:51.874Z",
+  "app/examples/page.mdx": "2024-10-15T12:19:18.820Z",
   "app/medusa-cli/commands/build/page.mdx": "2024-10-16T08:16:27.618Z"
 }

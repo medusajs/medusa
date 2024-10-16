@@ -11,6 +11,158 @@ export const generatedSidebar = [
     "loaded": true,
     "isPathHref": true,
     "type": "link",
+    "path": "/examples",
+    "title": "Examples",
+    "children": []
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "type": "link",
+    "path": "/recipes",
+    "title": "Recipes",
+    "isChildSidebar": true,
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/marketplace",
+        "title": "Marketplace",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/marketplace/examples/vendors",
+            "title": "Example: Vendors",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/marketplace/examples/restaurant-delivery",
+            "title": "Example: Restaurant-Delivery",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/subscriptions/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/digital-products/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/b2b",
+        "title": "B2B",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/commerce-automation",
+        "title": "Commerce Automation",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/ecommerce",
+        "title": "Ecommerce",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/integrate-ecommerce-stack",
+        "title": "Integrate Ecommerce Stack",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/multi-region-store",
+        "title": "Multi-Region Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/omnichannel",
+        "title": "Omnichannel Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/oms",
+        "title": "OMS",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/personalized-products",
+        "title": "Personalized Products",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/pos",
+        "title": "POS",
+        "children": []
+      }
+    ]
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "type": "link",
     "path": "/commerce-modules",
     "title": "Commerce Modules",
     "isChildSidebar": true,
@@ -7585,205 +7737,6 @@ export const generatedSidebar = [
     "loaded": true,
     "isPathHref": true,
     "type": "link",
-    "path": "/integrations",
-    "title": "Integrations",
-    "isChildSidebar": true,
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "category",
-        "title": "File",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/architectural-modules/file/s3",
-            "title": "AWS S3 (and Compatible APIs)",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "category",
-        "title": "Notification",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/architectural-modules/notification/sendgrid",
-            "title": "SendGrid",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "category",
-        "title": "Payment",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/commerce-modules/payment/payment-provider/stripe",
-            "title": "Stripe",
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "loaded": true,
-    "isPathHref": true,
-    "type": "link",
-    "path": "/recipes",
-    "title": "Recipes",
-    "isChildSidebar": true,
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/marketplace",
-        "title": "Marketplace",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/recipes/marketplace/examples/vendors",
-            "title": "Example: Vendors",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/recipes/marketplace/examples/restaurant-delivery",
-            "title": "Example: Restaurant-Delivery",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/recipes/subscriptions/examples/standard",
-            "title": "Example",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/digital-products",
-        "title": "Digital Products",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/recipes/digital-products/examples/standard",
-            "title": "Example",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/b2b",
-        "title": "B2B",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/commerce-automation",
-        "title": "Commerce Automation",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/ecommerce",
-        "title": "Ecommerce",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/integrate-ecommerce-stack",
-        "title": "Integrate Ecommerce Stack",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/multi-region-store",
-        "title": "Multi-Region Store",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/omnichannel",
-        "title": "Omnichannel Store",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/oms",
-        "title": "OMS",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/personalized-products",
-        "title": "Personalized Products",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/pos",
-        "title": "POS",
-        "children": []
-      }
-    ]
-  },
-  {
-    "loaded": true,
-    "isPathHref": true,
-    "type": "link",
     "path": "/architectural-modules",
     "title": "Architectural Modules",
     "isChildSidebar": true,
@@ -8021,6 +7974,14 @@ export const generatedSidebar = [
         ]
       }
     ]
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "type": "link",
+    "path": "/integrations",
+    "title": "Integrations",
+    "children": []
   },
   {
     "type": "separator"
