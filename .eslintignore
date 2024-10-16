@@ -23,6 +23,7 @@ packages/*
 !packages/cache-inmemory
 !packages/create-medusa-app
 !packages/product
+!packages/locking
 !packages/orchestration
 !packages/workflows-sdk
 !packages/core-flows
@@ -32,6 +33,7 @@ packages/*
 !packages/workflow-engine-inmemory
 !packages/fulfillment
 !packages/fulfillment-manual
+!packages/locking-redis
 !packages/index
 
 !packages/framework

@@ -97,16 +97,16 @@ Learn more about modules and services [in this guide](../../../basics/modules/pa
 
 ## 5. Register Module in Config
 
-Finally, add the module to Medusa's configurations in `medusa-config.js`:
+Finally, add the module to Medusa's configurations in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  modules: {
-    brandModuleService: {
+  modules: [
+    {
       resolve: "./modules/brand",
-    },
-  },
+    }
+  ]
 })
 ```
 

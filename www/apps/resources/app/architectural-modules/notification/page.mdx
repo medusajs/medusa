@@ -30,16 +30,16 @@ When you send a notification, you specify the channel to send it through, such a
 
 For example:
 
-```js title="medusa-config.js" highlights={[["19"]]}
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts" highlights={[["19"]]}
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = {
   // ...
-  modules: {
+  modules: [
     // ...
-    [Modules.NOTIFICATION]: {
+    {
       resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
@@ -54,7 +54,7 @@ module.exports = {
         ],
       },
     },
-  },
+  ]
 }
 ```
 

@@ -2,7 +2,7 @@ import {
   AdditionalData,
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/framework/types"
-import { MedusaError, PromotionActions } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -16,13 +16,9 @@ import { useRemoteQueryStep } from "../../common"
 import {
   findOrCreateCustomerStep,
   findSalesChannelStep,
-  refreshCartShippingMethodsStep,
   updateCartsStep,
 } from "../steps"
-import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
-import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
-import { updateTaxLinesWorkflow } from "./update-tax-lines"
+import { refreshCartItemsWorkflow } from "./refresh-cart-items"
 
 export const updateCartWorkflowId = "update-cart"
 /**
@@ -68,7 +64,11 @@ export const updateCartWorkflow = createWorkflow(
     const cartInput = transform(
       { input, region, customerData, salesChannel, cartToUpdate },
       (data) => {
-        const { promo_codes, ...updateCartData } = data.input
+        const {
+          promo_codes,
+          additional_data: _,
+          ...updateCartData
+        } = data.input
 
         const data_ = {
           ...updateCartData,
@@ -129,35 +129,10 @@ export const updateCartWorkflow = createWorkflow(
       }
     )
 
-    const carts = updateCartsStep([cartInput])
+    updateCartsStep([cartInput])
 
-    const cart = useRemoteQueryStep({
-      entry_point: "cart",
-      fields: cartFieldsForRefreshSteps,
-      variables: { id: cartInput.id },
-      list: false,
-    }).config({ name: "refetch–cart" })
-
-    refreshCartShippingMethodsStep({ cart })
-
-    updateTaxLinesWorkflow.runAsStep({
-      input: {
-        cart_id: carts[0].id,
-      },
-    })
-
-    updateCartPromotionsWorkflow.runAsStep({
-      input: {
-        cart_id: input.id,
-        promo_codes: input.promo_codes,
-        action: PromotionActions.REPLACE,
-      },
-    })
-
-    refreshPaymentCollectionForCartWorkflow.runAsStep({
-      input: {
-        cart_id: input.id,
-      },
+    const cart = refreshCartItemsWorkflow.runAsStep({
+      input: { cart_id: cartInput.id, promo_codes: input.promo_codes },
     })
 
     const cartUpdated = createHook("cartUpdated", {

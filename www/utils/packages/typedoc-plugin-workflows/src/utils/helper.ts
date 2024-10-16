@@ -171,7 +171,7 @@ export default class Helper {
     workflowName: string
     parameter: ParameterReflection
   }): string {
-    let str = `import { ${workflowName} } from "@medusajs/core-flows"\n\n`
+    let str = `import { ${workflowName} } from "@medusajs/medusa/core-flows"\n\n`
 
     str += `${workflowName}.hooks.${hookName}(\n\t(async ({`
 

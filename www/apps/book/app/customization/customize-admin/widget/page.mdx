@@ -29,7 +29,7 @@ export const highlights = [
   ["7", "data", "Receive the product's details as a prop"],
   ["9", "brand", "A state variable to store the brand"],
   ["19", "fetch", "Retrieve the brand of a product using the custom API route"],
-  ["39", "zone", "Show the widget at the top of the product details page."]
+  ["41", "zone", "Show the widget at the top of the product details page."]
 ]
 
 ```tsx title="src/admin/widgets/product-brand.tsx" highlights={highlights}
@@ -62,8 +62,10 @@ const ProductBrandWidget = ({
   }, [loading])
   
   return (
-    <Container>
-      <Heading level="h2">Brand</Heading>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Brand</Heading>
+      </div>
       {loading && <span>Loading...</span>}
       {brand && <span>Name: {brand.name}</span>}
     </Container>
@@ -91,7 +93,7 @@ In the widget, you fetch the product's brand from the `/admin/products/:id/brand
 
 <Note>
 
-Admin customizations can use the [Medusa UI package](!ui!) to align your customizations with the admin's design.
+Admin customizations can use the [Medusa UI package](!ui!) to align your customizations with the admin's design. Also, [this guide](!resources!/admin-components) includes examples of common components in the Medusa Admin.
 
 </Note>
 

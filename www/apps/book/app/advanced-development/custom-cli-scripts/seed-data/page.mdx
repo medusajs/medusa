@@ -1,0 +1,200 @@
+export const metadata = {
+  title: `${pageNumber} Seed Data with Custom CLI Script`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to seed data using a custom CLI script.
+
+## How to Seed Data
+
+To seed dummy data for development or demo purposes, use a custom CLI script.
+
+In the CLI script, use your custom workflows or Medusa's existing workflows, which you can browse in [this reference](!resources!/medusa-workflows-reference), to seed data.
+
+### Example: Seed Dummy Products
+
+In this section, you'll follow an example of creating a custom CLI script that seeds fifty dummy products.
+
+First, install the [Faker](https://fakerjs.dev/) library to generate random data in your script:
+
+```bash npm2yarn
+npm install --save-dev @faker-js/faker
+```
+
+Then, create the file `src/scripts/demo-products.ts` with the following content:
+
+export const highlights = [
+  ["16", "salesChannelModuleService", "Resolve the Sales Chanel Module's main service"],
+  ["19", "logger", "Resolve the logger to log messages in the terminal."],
+  ["22", "query", "Resolve Query to retrieve data later."],
+  ["26", "defaultSalesChannel", "Retrieve the default sales channel to associate products with."],
+  ["31", "sizeOptions", "Declare the size options to be used in the products' variants."],
+  ["32", "colorOptions", "Declare the color options to be used in the products' variants."],
+  ["33", "currency_code", "Declare the currency code to use in products' prices."],
+  ["34", "productsNum", "The number of products to seed."]
+]
+
+```ts title="src/scripts/demo-products.ts" highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
+import { ExecArgs } from "@medusajs/framework/types"
+import { faker } from "@faker-js/faker"
+import { 
+  ContainerRegistrationKeys, 
+  Modules, 
+  ProductStatus,
+} from "@medusajs/framework/utils"
+import { 
+  createInventoryLevelsWorkflow,
+  createProductsWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function seedDummyProducts({
+  container,
+}: ExecArgs) {
+  const salesChannelModuleService = container.resolve(
+    Modules.SALES_CHANNEL
+  )
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const defaultSalesChannel = await salesChannelModuleService
+    .listSalesChannels({
+      name: "Default Sales Channel",
+    })
+
+  const sizeOptions = ["S", "M", "L", "XL"]
+  const colorOptions = ["Black", "White"]
+  const currency_code = "eur"
+  const productsNum = 50
+
+  // TODO seed products
+}
+```
+
+So far, in the script, you:
+
+- Resolve the Sales Channel Module's main service to retrieve the application's default sales channel. This is the sales channel the dummy products will be available in.
+- Resolve the Logger to log messages in the terminal, and Query to later retrieve data useful for the seeded products.
+- Initialize some default data to use when seeding the products next.
+
+Next, replace the `TODO` with the following:
+
+```ts title="src/scripts/demo-products.ts"
+const productsData = new Array(productsNum).fill(0).map((_, index) => {
+  const title = faker.commerce.product() + "_" + index
+  return {
+    title,
+    is_giftcard: true,
+    description: faker.commerce.productDescription(),
+    status: ProductStatus.PUBLISHED,
+    options: [
+      {
+        title: "Size",
+        values: sizeOptions,
+      },
+      {
+        title: "Color",
+        values: colorOptions,
+      },
+    ],
+    images: [
+      {
+        url: faker.image.urlPlaceholder({
+          text: title,
+        }),
+      },
+      {
+        url: faker.image.urlPlaceholder({
+          text: title,
+        }),
+      },
+    ],
+    variants: new Array(10).fill(0).map((_, variantIndex) => ({
+      title: `${title} ${variantIndex}`,
+      sku: `variant-${variantIndex}${index}`,
+      prices: new Array(10).fill(0).map((_, priceIndex) => ({
+        currency_code,
+        amount: 10 * priceIndex,
+      })),
+      options: {
+        Size: sizeOptions[Math.floor(Math.random() * 3)],
+      },
+    })),
+    sales_channels: [
+      {
+        id: defaultSalesChannel[0].id,
+      },
+    ],
+  }
+})
+
+// TODO seed products
+```
+
+You generate fifty products using the sales channel and variables you initialized, and using Faker for random data, such as the product's title or images.
+
+Then, replace the new `TODO` with the following:
+
+```ts title="src/scripts/demo-products.ts"
+const { result: products } = await createProductsWorkflow(container).run({
+  input: {
+    products: productsData,
+  },
+})
+
+logger.info(`Seeded ${products.length} products.`)
+
+// TODO add inventory levels
+```
+
+You create the generated products using the `createProductsWorkflow` imported previously from `@medusajs/medusa/core-flows`. It accepts the product data as input, and returns the created products.
+
+Only thing left is to create inventory levels for the products. So, replace the last `TODO` with the following:
+
+```ts title="src/scripts/demo-products.ts"
+logger.info("Seeding inventory levels.")
+
+const { data: stockLocations } = await query.graph({
+  entity: "stock_location",
+  fields: ["id"],
+})
+
+const { data: inventoryItems } = await query.graph({
+  entity: "inventory_item",
+  fields: ["id"],
+})
+
+const inventoryLevels = inventoryItems.map((inventoryItem) => ({
+  location_id: stockLocations[0].id,
+  stocked_quantity: 1000000,
+  inventory_item_id: inventoryItem.id,
+}))
+
+await createInventoryLevelsWorkflow(container).run({
+  input: {
+    inventory_levels: inventoryLevels,
+  },
+})
+
+logger.info("Finished seeding inventory levels data.")
+```
+
+You use Query to retrieve the stock location, to use the first location in the application, and the inventory items.
+
+Then, you generate inventory levels for each inventory item, associating it with the first stock location.
+
+Finally, you use the `createInventoryLevelsWorkflow` imported from `@medusajs/medusa/core-flows` to create the inventory levels.
+
+### Test Script
+
+To test out the script, run the following command in your project's directory:
+
+```bash
+npx medusa exec ./src/scripts/demo-products.ts
+```
+
+This seeds the products to your database. If you run your Medusa application and view the products in the dashboard, you'll find fifty new products.

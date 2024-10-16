@@ -45,6 +45,26 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/commerce-modules/order/relations-to-other-modules",
+        destination: "/commerce-modules/order/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/payment/relations-to-other-modules",
+        destination: "/commerce-modules/payment/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/api-key/relations-to-other-modules",
+        destination: "/commerce-modules/api-key/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/cart/relations-to-other-modules",
+        destination: "/commerce-modules/cart/links-to-other-modules",
+        permanent: true,
+      },
+      {
         source: "/commerce-modules/fulfillment/relations-to-other-modules",
         destination: "/commerce-modules/fulfillment/links-to-other-modules",
         permanent: true,

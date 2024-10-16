@@ -56,7 +56,7 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
           linkable: "api_key_id",
           entity: "ApiKey",
           primaryKey: "id",
-          serviceName: "ApiKey",
+          serviceName: "api_key",
           field: "apiKey",
         },
         publishable_key_id: {
@@ -64,7 +64,7 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
           entity: "ApiKey",
           linkable: "publishable_key_id",
           primaryKey: "publishable_key_id",
-          serviceName: "ApiKey",
+          serviceName: "api_key",
         },
       })
     })

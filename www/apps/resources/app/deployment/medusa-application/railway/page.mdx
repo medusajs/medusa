@@ -48,9 +48,9 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 The `workerMode` configuration determines which mode the Medusa application runs in. As mentioned at the beginning of this guide, you’ll deploy two Medusa applications: one in server mode, and one in worker mode.
 
-So, add the following configuration in `medusa-config.js`:
+So, add the following configuration in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     // ...
@@ -74,9 +74,9 @@ To host the admin with the Medusa application, the hosting provider and plan sho
 
 </Note>
 
-Add the following configuration in `medusa-config.js`:
+Add the following configuration in `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {
@@ -89,9 +89,9 @@ Later, you’ll set different values of the `DISABLE_MEDUSA_ADMIN` environment v
 
 ### Configure Redis URL
 
-Add the following configuration in `medusa-config.js` :
+Add the following configuration in `medusa-config.ts` :
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     // ...
@@ -121,7 +121,7 @@ So, add the following script in `package.json`:
 
 By default, your Medusa application uses modules and providers useful for development, such as the In-Memory Cache Module or the Local File Module Provider.
 
-It’s highly recommended to instead install modules and providers suitable for production, including:
+It’s highly recommended to instead use modules and providers suitable for production, including:
 
 - [Redis Cache Module](../../../architectural-modules/cache/redis/page.mdx)
 - [Redis Event Bus Module](../../../architectural-modules/event/redis/page.mdx)
@@ -129,47 +129,35 @@ It’s highly recommended to instead install modules and providers suitable for 
 - [S3 File Module Provider](../../../architectural-modules/file/s3/page.mdx) (or other file module providers production-ready).
 - [SendGrid Notification Module Provider](../../../architectural-modules/notification/sendgrid/page.mdx) (or other notification module providers production-ready).
 
-For example, add the following dependencies in `package.json` for the Cache, Event Bus, and Workflow Engine modules:
+Then, add these modules in `medusa-config.ts`:
 
-```json
-"dependencies": {
-  // ...
-  "@medusajs/medusa/cache-redis": "rc",
-  "@medusajs/medusa/event-bus-redis": "rc",
-  "@medusajs/workflow-engine-redis": "rc"
-}
-```
-
-Then, add these modules in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    // ...
-    [Modules.CACHE]: {
+  modules: [
+    {
       resolve: "@medusajs/medusa/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    [Modules.EVENT_BUS]: {
+    {
       resolve: "@medusajs/medusa/event-bus-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    [Modules.WORKFLOW_ENGINE]: {
-      resolve: "@medusajs/workflow-engine-redis",
+    {
+      resolve: "@medusajs/medusa/workflow-engine-redis",
       options: {
         redis: {
           url: process.env.REDIS_URL,
         },
       },
     },
-  },
+  ]
 })
 ```
 
@@ -286,9 +274,9 @@ You can either generate a random domain name or set a custom one. To do that:
 
 If you’re deploying the Medusa application in server mode with the admin, you have to make some changes now that you’ve obtained the application’s URL.
 
-First, add the following configuration to `medusa-config.js`:
+First, add the following configuration to `medusa-config.ts`:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {

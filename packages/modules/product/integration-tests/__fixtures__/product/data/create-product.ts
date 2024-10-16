@@ -74,9 +74,11 @@ export const buildProductAndRelationsData = ({
       {
         title: faker.commerce.productName(),
         sku: faker.commerce.productName(),
-        options: {
-          [defaultOptionTitle]: defaultOptionValue,
-        },
+        options: options
+          ? { [options[0].title]: options[0].values[0] }
+          : {
+              [defaultOptionTitle]: defaultOptionValue,
+            },
       },
     ],
     // TODO: add categories, must be created first

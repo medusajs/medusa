@@ -12,7 +12,7 @@ import {
   traverse,
 } from "../babel"
 import { logger } from "../logger"
-import { crawl, getParserOptions } from "../utils"
+import { crawl, getParserOptions, normalizePath } from "../utils"
 import { getConfigArgument, getModel } from "./helpers"
 
 type ParsedCustomFieldLink = {
@@ -138,7 +138,8 @@ function generateCustomFieldConfigName(index: number): string {
 }
 
 function generateImport(file: string, index: number): string {
-  return `import ${generateCustomFieldConfigName(index)} from "${file}"`
+  const path = normalizePath(file)
+  return `import ${generateCustomFieldConfigName(index)} from "${path}"`
 }
 
 function getLink(

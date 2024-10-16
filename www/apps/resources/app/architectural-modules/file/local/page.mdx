@@ -32,15 +32,15 @@ The File Module accepts one provider only.
 
 </Note>
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = {
   // ...
-  modules: {
-    [Modules.FILE]: {
+  modules: [
+    {
       resolve: "@medusajs/medusa/file",
       options: {
         providers: [
@@ -54,7 +54,7 @@ module.exports = {
         ],
       },
     },
-  },
+  ]
 }
 ```
 

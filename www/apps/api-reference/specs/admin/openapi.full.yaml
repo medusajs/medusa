@@ -38192,8 +38192,8 @@ paths:
           in: query
           description: |-
             Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+            without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
@@ -51050,6 +51050,10 @@ components:
           type: string
           title: internal_note
           description: A note viewed only by admin users.
+        unit_price:
+          type: number
+          title: unit_price
+          description: The item's unit price.
     AdminPostOrderEditsReqSchema:
       type: object
       description: The order edit's details.
@@ -51129,6 +51133,10 @@ components:
           type: string
           title: internal_note
           description: A note viewed only by admin users.
+        unit_price:
+          type: number
+          title: unit_price
+          description: The item's unit price.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: The exchange's details.
@@ -53180,19 +53188,19 @@ components:
         exchange_id:
           type: string
           title: exchange_id
-          description: The ID of the exchange that this return belongs to.
+          description: The return's exchange id.
         location_id:
           type: string
           title: location_id
-          description: The ID of the location the items are returned to.
+          description: The return's location id.
         claim_id:
           type: string
           title: claim_id
-          description: The ID of the claim that this return belongs to.
+          description: The return's claim id.
         order_version:
           type: number
           title: order_version
-          description: The version of the order once the return is applied.
+          description: The return's order version.
         display_id:
           type: number
           title: display_id
@@ -55150,6 +55158,9 @@ components:
           type: string
           title: avatar_url
           description: The URL of the user's avatar.
+        metadata:
+          type: object
+          description: The user's metadata, can hold custom key-value pairs.
     AdminUpdateVariantInventoryItem:
       type: object
       description: The properties to update of the variant's inventory item association.
@@ -56318,104 +56329,6 @@ components:
       type: object
       description: The collection's details.
       x-schemaName: BaseCollection
-    BaseCustomerAddress:
-      type: object
-      description: The customer's address.
-      x-schemaName: BaseCustomerAddress
-      required:
-        - id
-        - address_name
-        - is_default_shipping
-        - is_default_billing
-        - customer_id
-        - company
-        - first_name
-        - last_name
-        - address_1
-        - address_2
-        - city
-        - country_code
-        - province
-        - postal_code
-        - phone
-        - metadata
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          title: id
-          description: The address's ID.
-        address_name:
-          type: string
-          title: address_name
-          description: The address's name.
-        is_default_shipping:
-          type: boolean
-          title: is_default_shipping
-          description: Whether the address is the default shipping address.
-        is_default_billing:
-          type: boolean
-          title: is_default_billing
-          description: Whether the address is the default billing address.
-        customer_id:
-          type: string
-          title: customer_id
-          description: The ID of the customer that this address belongs to.
-        company:
-          type: string
-          title: company
-          description: The customer's company.
-        first_name:
-          type: string
-          title: first_name
-          description: The customer's first name.
-        last_name:
-          type: string
-          title: last_name
-          description: The customer's last name.
-        address_1:
-          type: string
-          title: address_1
-          description: The address's first line.
-        address_2:
-          type: string
-          title: address_2
-          description: The address's second line.
-        city:
-          type: string
-          title: city
-          description: The address's city.
-        country_code:
-          type: string
-          title: country_code
-          description: The address's country code.
-          example: us
-        province:
-          type: string
-          title: province
-          description: The address's province.
-        postal_code:
-          type: string
-          title: postal_code
-          description: The address's postal code.
-        phone:
-          type: string
-          title: phone
-          description: The address's phone.
-        metadata:
-          type: object
-          description: The address's metadata, used to store custom key-value pairs.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The address's creation date.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The address's update date.
     BaseExchangeItem:
       type: object
       description: The item's details.
@@ -56911,92 +56824,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the address was updated.
-    BaseOrderChangeAction:
-      type: object
-      description: The action's actions.
-      x-schemaName: BaseOrderChangeAction
-      properties:
-        order_change:
-          type: object
-        id:
-          type: string
-          title: id
-          description: The action's ID.
-        order_change_id:
-          type: string
-          title: order_change_id
-          description: The ID of the order change this action belongs to.
-        order_id:
-          type: string
-          title: order_id
-          description: The ID of the associated order.
-        reference:
-          type: string
-          title: reference
-          description: The name of the table this action applies on.
-          enum:
-            - claim
-            - exchange
-            - return
-            - order_shipping_method
-        reference_id:
-          type: string
-          title: reference_id
-          description: The ID of the record in the referenced table.
-        action:
-          type: string
-          title: action
-          description: The applied action.
-        details:
-          type: object
-          description: The action's details.
-          example:
-            reference_id: 123
-            quantity: 1
-        internal_note:
-          type: string
-          title: internal_note
-          description: A note viewed only by admin users.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the order change action was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the order change action was updated.
-        return_id:
-          type: string
-          title: return_id
-          description: The ID of the associated return.
-        claim_id:
-          type: string
-          title: claim_id
-          description: The ID of the associated claim.
-        exchange_id:
-          type: string
-          title: exchange_id
-          description: The ID of the associated exchange.
-        order:
-          $ref: '#/components/schemas/BaseOrder'
-      required:
-        - order_change
-        - id
-        - order_change_id
-        - order_id
-        - reference
-        - reference_id
-        - action
-        - details
-        - internal_note
-        - created_at
-        - updated_at
-        - return_id
-        - claim_id
-        - exchange_id
-        - order
     BaseOrderFulfillment:
       type: object
       description: The fulfillment's fulfillments.
@@ -58532,46 +58359,6 @@ components:
         metadata:
           type: object
           description: The variant's metadata, can hold custom key-value pairs.
-    BasePromotion:
-      type: object
-      description: The application method's promotion.
-      x-schemaName: BasePromotion
-    BasePromotionRule:
-      type: object
-      description: The rule's rules.
-      x-schemaName: BasePromotionRule
-      required:
-        - id
-        - values
-      properties:
-        id:
-          type: string
-          title: id
-          description: The rule's ID.
-        description:
-          type: string
-          title: description
-          description: The rule's description.
-        attribute:
-          type: string
-          title: attribute
-          description: The rule's attribute.
-        operator:
-          type: string
-          description: The rule's operator.
-          enum:
-            - gt
-            - lt
-            - eq
-            - ne
-            - in
-            - lte
-            - gte
-        values:
-          type: array
-          description: The rule's values.
-          items:
-            $ref: '#/components/schemas/BasePromotionRuleValue'
     BasePromotionRuleValue:
       type: object
       description: The rule value's details.
@@ -59390,10 +59177,6 @@ components:
             - unexpected_state
             - invalid_argument
             - unknown_error
-    IBigNumber:
-      type: object
-      description: The shipping method's discount tax total.
-      x-schemaName: IBigNumber
     InventoryLevel:
       type: object
       description: The inventory level's details
@@ -64437,39 +64220,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the region was updated.
-    StoreRegionCountry:
-      type: object
-      description: The country's details.
-      x-schemaName: StoreRegionCountry
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          title: id
-          description: The country's ID.
-        iso_2:
-          type: string
-          title: iso_2
-          description: The country's ISO 2 code.
-          example: us
-        iso_3:
-          type: string
-          title: iso_3
-          description: The country's ISO 3 codel.
-          example: usa
-        num_code:
-          type: string
-          title: num_code
-          description: The country's num code.
-        name:
-          type: string
-          title: name
-          description: The country's name.
-        display_name:
-          type: string
-          title: display_name
-          description: The country's display name.
     StoreReturn:
       type: object
       description: The return's details.

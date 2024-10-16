@@ -1,10 +1,8 @@
-import { ModuleProviderExports } from "@medusajs/framework/types"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import { ManualFulfillmentService } from "./services/manual-fulfillment"
 
 const services = [ManualFulfillmentService]
 
-const providerExport: ModuleProviderExports = {
+export default ModuleProvider(Modules.FULFILLMENT, {
   services,
-}
-
-export default providerExport
+})

@@ -52,7 +52,7 @@ export default {
 This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Notification Module Provider, add it to the \`providers\` array of the Notification Module:
+To use your Notification Module Provider, add it to the \`providers\` array of the Notification Module in \`medusa-config.ts\`:
 
 <Note>
 
@@ -60,16 +60,16 @@ The Notification Module accepts one provider per channel.
 
 </Note>
 
-\`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+\`\`\`ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/framework/notification",
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
@@ -83,7 +83,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  ]
 })
 \`\`\`
 

@@ -1,6 +1,6 @@
 import {
   CartWorkflowDTO,
-  UsageComputedActions
+  UsageComputedActions,
 } from "@medusajs/framework/types"
 import {
   Modules,
@@ -85,20 +85,19 @@ export const completeCartWorkflow = createWorkflow(
       })
 
       const { variants, sales_channel_id } = transform({ cart }, (data) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
+        const variantsMap: Record<string, any> = {}
+        const allItems = data.cart?.items?.map((item) => {
+          variantsMap[item.variant_id] = item.variant
 
-      data.cart?.items?.forEach((item) => {
-        allItems.push({
-          id: item.id,
-          variant_id: item.variant_id,
-          quantity: item.quantity,
+          return {
+            id: item.id,
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+          }
         })
-        allVariants.push(item.variant)
-      })
 
         return {
-          variants: allVariants,
+          variants: Object.values(variantsMap),
           items: allItems,
           sales_channel_id: data.cart.sales_channel_id,
         }
@@ -110,6 +109,8 @@ export const completeCartWorkflow = createWorkflow(
             item,
             variant: item.variant,
             unitPrice: item.raw_unit_price ?? item.unit_price,
+            compareAtUnitPrice:
+              item.raw_compare_at_unit_price ?? item.compare_at_unit_price,
             isTaxInclusive: item.is_tax_inclusive,
             quantity: item.raw_quantity ?? item.quantity,
             metadata: item?.metadata,

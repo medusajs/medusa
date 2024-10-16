@@ -57,18 +57,18 @@ export default {
 This exports the module's definition, indicating that the \`MyPaymentProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module:
+To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module in \`medusa-config.ts\`:
 
-\`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+\`\`\`ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.PAYMENT]: {
-      resolve: "@medusajs/framework/payment",
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
       options: {
         providers: [
           {
@@ -82,7 +82,7 @@ module.exports = defineConfig({
         ]
       }
     }
-  }
+  ]
 })
 \`\`\`
 `,
