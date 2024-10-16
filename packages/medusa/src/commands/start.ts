@@ -3,7 +3,7 @@ import path from "path"
 import http from "http"
 import express from "express"
 import cluster from "cluster"
-import { track } from "medusa-telemetry"
+import { track } from "@medusajs/telemetry"
 import { scheduleJob } from "node-schedule"
 
 import {

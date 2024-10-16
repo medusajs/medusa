@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { MedusaApp } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
