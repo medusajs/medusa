@@ -15,6 +15,7 @@
 
 # production
 /build
+!app/medusa-cli/commands/build
 
 # misc
 .DS_Store
