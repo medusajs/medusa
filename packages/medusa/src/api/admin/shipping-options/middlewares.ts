@@ -1,8 +1,9 @@
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
 import { createBatchBody } from "../../utils/validators"
 import {
   listTransformQueryConfig,
@@ -75,6 +76,9 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch",
+    bodyParser: {
+      sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
+    },
     middlewares: [
       validateAndTransformBody(
         createBatchBody(
