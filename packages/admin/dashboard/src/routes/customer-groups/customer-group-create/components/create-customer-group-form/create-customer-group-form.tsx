@@ -53,23 +53,7 @@ export const CreateCustomerGroupForm = () => {
   return (
     <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit}>
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              isLoading={isPending}
-            >
-              {t("actions.create")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
+        <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
@@ -97,6 +81,21 @@ export const CreateCustomerGroupForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              {t("actions.cancel")}
+            </Button>
+          </RouteFocusModal.Close>
+          <Button
+            type="submit"
+            variant="primary"
+            size="small"
+            isLoading={isPending}
+          >
+            {t("actions.create")}
+          </Button>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )

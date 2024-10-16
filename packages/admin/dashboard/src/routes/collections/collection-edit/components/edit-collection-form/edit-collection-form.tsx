@@ -6,10 +6,8 @@ import * as zod from "zod"
 
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateCollection } from "../../../../../hooks/api/collections"
 
 type EditCollectionFormProps = {
@@ -45,7 +43,7 @@ export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
@@ -106,7 +104,7 @@ export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }
