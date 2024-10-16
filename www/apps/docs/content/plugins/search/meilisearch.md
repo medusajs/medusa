@@ -134,7 +134,11 @@ const plugins = [
       settings: {
         products: {
           indexSettings: {
-            searchableAttributes: ["title", "description", "variant_sku"],
+            searchableAttributes: [
+              "title", 
+              "description", 
+              "variant_sku"
+            ],
             displayedAttributes: [
               "title",
               "description",

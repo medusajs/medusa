@@ -326,13 +326,13 @@ To update a record of an entity, use the `save` method of the repository:
 
 ```ts
 const data = {
-  title: 'some_title'
+  title: "some_title",
 }
 
 const post = await postRepository.findOne({
   where: {
-    id: '1'
-  }
+    id: "1",
+  },
 })
 
 Object.assign(post, data)
