@@ -69,11 +69,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "./modules/my-notification",
+            resolve: "./src/modules/my-notification",
             id: "my-notification",
             options: {
               channels: ["email"],
