@@ -3,6 +3,7 @@ import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
+import { ModuleProviderExports } from "./module-provider"
 import {
   RemoteQueryGraph,
   RemoteQueryInput,
@@ -86,7 +87,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
-  moduleExports?: ModuleExports
+  moduleExports?: ModuleExports | ModuleProviderExports
 }
 
 export type ModuleDefinition = {
