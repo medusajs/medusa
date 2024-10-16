@@ -48,8 +48,8 @@ export const getLineItemActionsStep = createStep(
       if (existingItem && metadataMatches) {
         const quantity = MathBN.sum(
           existingItem.quantity as number,
-          item.quantity || 1
-        ).toNumber()
+          item.quantity ?? 1
+        )
 
         itemsToUpdate.push({
           selector: { id: existingItem.id },
@@ -57,6 +57,9 @@ export const getLineItemActionsStep = createStep(
             id: existingItem.id,
             quantity: quantity,
             variant_id: item.variant_id!,
+            unit_price: item.unit_price ?? existingItem.unit_price,
+            compare_at_unit_price:
+              item.compare_at_unit_price ?? existingItem.compare_at_unit_price,
           },
         })
       } else {

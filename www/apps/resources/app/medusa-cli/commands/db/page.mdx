@@ -154,6 +154,8 @@ Use this command if you're setting up a Medusa project or database manually.
   </Table.Body>
 </Table>
 
+---
+
 ## db\:create
 
 Creates a database for the Medusa application with the specified name, if it doesn't exit.
@@ -170,7 +172,7 @@ Use this command if you want to only create a database.
 
 </Note>
 
-## Options
+### Options
 
 <Table>
   <Table.Header>
@@ -229,6 +231,8 @@ Use this command if you want to only create a database.
   </Table.Body>
 </Table>
 
+---
+
 ## db\:generate
 
 Generate a migration file for the latest changes in one or more modules.
@@ -237,7 +241,7 @@ Generate a migration file for the latest changes in one or more modules.
 npx medusa db:generate <module_names...>
 ```
 
-## Arguments
+### Arguments
 
 <Table>
   <Table.Header>
@@ -267,6 +271,8 @@ npx medusa db:generate <module_names...>
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
 
 ## db\:migrate
 
@@ -363,6 +369,8 @@ Use this command if you've updated the Medusa packages, or you've created custom
   </Table.Body>
 </Table>
 
+---
+
 ## db\:rollback
 
 Revert the last migrations ran on one or more modules.
@@ -370,6 +378,8 @@ Revert the last migrations ran on one or more modules.
 ```bash
 npx medusa db:rollback <module_names...>
 ```
+
+### Arguments
 
 <Table>
   <Table.Header>
@@ -399,6 +409,8 @@ npx medusa db:rollback <module_names...>
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
 
 ## db\:sync-links
 

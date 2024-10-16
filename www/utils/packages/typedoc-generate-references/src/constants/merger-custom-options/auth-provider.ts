@@ -48,22 +48,22 @@ export default {
 This exports the module's definition, indicating that the \`MyAuthProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Auth Module Provider, add it to the \`providers\` array of the Auth Module:
+To use your Auth Module Provider, add it to the \`providers\` array of the Auth Module in \`medusa-config.ts\`:
 
-\`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+\`\`\`ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.AUTH]: {
-      resolve: "@medusajs/framework/auth",
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
       options: {
         providers: [
           {
-            resolve: "./modules/my-auth",
+            resolve: "./src/modules/my-auth",
             id: "my-auth",
             options: {
               // provider options...
@@ -72,7 +72,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  ]
 })
 \`\`\`
 `,

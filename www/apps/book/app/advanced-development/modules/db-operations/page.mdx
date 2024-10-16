@@ -28,15 +28,15 @@ So, to run database queries in a service:
 For example, in your service, add the following methods:
 
 export const methodsHighlight = [
-  ["4", "getCount", "Retrieves the number of records in `my_custom` using the `count` method."],
-  ["8", "getCountSql", "Retrieves the number of records in `my_custom` using the `execute` method."]
+  ["11", "getCount", "Retrieves the number of records in `my_custom` using the `count` method."],
+  ["18", "getCountSql", "Retrieves the number of records in `my_custom` using the `execute` method."]
 ]
 
 ```ts highlights={methodsHighlight}
 // other imports...
 import { 
   InjectManager,
-  MedusaContext
+  MedusaContext,
 } from "@medusajs/framework/utils"
 
 class HelloModuleService {
@@ -99,7 +99,7 @@ export const opHighlights = [
 import { 
   InjectManager,
   InjectTransactionManager,
-  MedusaContext
+  MedusaContext,
 } from "@medusajs/framework/utils"
 import { Context } from "@medusajs/framework/types"
 import { EntityManager } from "@mikro-orm/knex"
@@ -118,10 +118,10 @@ class HelloModuleService {
     await transactionManager.nativeUpdate(
       "my_custom",
       {
-        id: input.id
+        id: input.id,
       },
       {
-        name: input.name
+        name: input.name,
       }
     )
 
@@ -307,7 +307,7 @@ export const repoHighlights = [
 import { 
   InjectManager,
   InjectTransactionManager,
-  MedusaContext
+  MedusaContext,
 } from "@medusajs/framework/utils"
 import { Context } from "@medusajs/framework/types"
 import { EntityManager } from "@mikro-orm/knex"
@@ -327,10 +327,10 @@ class HelloModuleService {
         await transactionManager.nativeUpdate(
           "my_custom",
           {
-            id: input.id
+            id: input.id,
           },
           {
-            name: input.name
+            name: input.name,
           }
         )
 
@@ -342,7 +342,7 @@ class HelloModuleService {
         return updatedRecord
       },
       {
-        transaction: sharedContext.transactionManager
+        transaction: sharedContext.transactionManager,
       }
     )
   }
@@ -397,7 +397,7 @@ class HelloModuleService {
         // ...
       },
       {
-        transaction: sharedContext.transactionManager
+        transaction: sharedContext.transactionManager,
       }
     )
   }
@@ -430,7 +430,7 @@ class HelloModuleService {
         // ...
       },
       {
-        isolationLevel: IsolationLevel.READ_COMMITTED
+        isolationLevel: IsolationLevel.READ_COMMITTED,
       }
     )
   }
@@ -456,7 +456,7 @@ class HelloModuleService {
         // ...
       },
       {
-        enableNestedTransactions: false
+        enableNestedTransactions: false,
       }
     )
   }

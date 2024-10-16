@@ -45,6 +45,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/commerce-modules/order/relations-to-other-modules",
+        destination: "/commerce-modules/order/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/payment/relations-to-other-modules",
+        destination: "/commerce-modules/payment/links-to-other-modules",
+        permanent: true,
+      },
+      {
         source: "/commerce-modules/api-key/relations-to-other-modules",
         destination: "/commerce-modules/api-key/links-to-other-modules",
         permanent: true,
@@ -62,6 +72,36 @@ const nextConfig = {
       {
         source: "/commerce-modules/inventory/relations-to-other-modules",
         destination: "/commerce-modules/inventory/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/region/relations-to-other-modules",
+        destination: "/commerce-modules/region/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/sales-channel/relations-to-other-modules",
+        destination: "/commerce-modules/sales-channel/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/stock-location/relations-to-other-modules",
+        destination: "/commerce-modules/stock-location/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/pricing/relations-to-other-modules",
+        destination: "/commerce-modules/pricing/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/product/relations-to-other-modules",
+        destination: "/commerce-modules/product/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/promotion/relations-to-other-modules",
+        destination: "/commerce-modules/promotion/links-to-other-modules",
         permanent: true,
       },
     ]

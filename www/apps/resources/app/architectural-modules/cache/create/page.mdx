@@ -148,25 +148,25 @@ This exports the module's definition, indicating that the `MyCacheService` is th
 
 ## 4. Use Module
 
-To use your Cache Module, add it to the `modules` object exported as part of the configurations in `medusa-config.js`. A Cache Module is added under the `cacheService` key.
+To use your Cache Module, add it to the `modules` object exported as part of the configurations in `medusa-config.ts`. A Cache Module is added under the `cacheService` key.
 
 For example:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.CACHE]: {
-      resolve: "./modules/my-cache",
+  modules: [
+    {
+      resolve: "./src/modules/my-cache",
       options: {
         // any options
         ttl: 30,
       },
     },
-  },
+  ]
 })
 ```

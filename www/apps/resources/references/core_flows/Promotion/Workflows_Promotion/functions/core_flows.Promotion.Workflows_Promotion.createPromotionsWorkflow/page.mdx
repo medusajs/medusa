@@ -30,7 +30,7 @@ This workflow creates one or more promotions.
 #### Example
 
 ```ts
-import { createPromotionsWorkflow } from "@medusajs/core-flows"
+import { createPromotionsWorkflow } from "@medusajs/medusa/core-flows"
 
 createPromotionsWorkflow.hooks.promotionsCreated(
 	(async ({ promotions, additional_data }, { container }) => {

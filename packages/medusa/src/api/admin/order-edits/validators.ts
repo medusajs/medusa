@@ -37,8 +37,9 @@ export const AdminPostOrderEditsAddItemsReqSchema = z.object({
     z.object({
       variant_id: z.string(),
       quantity: z.number(),
-      unit_price: z.number().optional(),
-      internal_note: z.string().optional(),
+      unit_price: z.number().nullish(),
+      compare_at_unit_price: z.number().nullish(),
+      internal_note: z.string().nullish(),
       allow_backorder: z.boolean().optional(),
       metadata: z.record(z.unknown()).optional(),
     })
@@ -51,7 +52,8 @@ export type AdminPostOrderEditsAddItemsReqSchemaType = z.infer<
 
 export const AdminPostOrderEditsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
-  unit_price: z.number().optional(),
+  unit_price: z.number().nullish(),
+  compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().nullish().optional(),
 })
 
@@ -61,7 +63,8 @@ export type AdminPostOrderEditsItemsActionReqSchemaType = z.infer<
 
 export const AdminPostOrderEditsUpdateItemQuantityReqSchema = z.object({
   quantity: z.number(),
-  unit_price: z.number().optional(),
+  unit_price: z.number().nullish(),
+  compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().nullish().optional(),
 })
 

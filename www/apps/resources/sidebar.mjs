@@ -9,6 +9,108 @@ export const sidebar = sidebarAttachHrefCommonOptions([
   },
   {
     type: "link",
+    path: "/examples",
+    title: "Examples",
+  },
+  {
+    type: "link",
+    path: "/recipes",
+    title: "Recipes",
+    isChildSidebar: true,
+    children: [
+      {
+        type: "link",
+        path: "/recipes/marketplace",
+        title: "Marketplace",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/vendors",
+            title: "Example: Vendors",
+          },
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/restaurant-delivery",
+            title: "Example: Restaurant-Delivery",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/subscriptions/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/digital-products/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/recipes/b2b",
+        title: "B2B",
+      },
+      {
+        type: "link",
+        path: "/recipes/commerce-automation",
+        title: "Commerce Automation",
+      },
+      {
+        type: "link",
+        path: "/recipes/ecommerce",
+        title: "Ecommerce",
+      },
+      {
+        type: "link",
+        path: "/recipes/integrate-ecommerce-stack",
+        title: "Integrate Ecommerce Stack",
+      },
+      {
+        type: "link",
+        path: "/recipes/multi-region-store",
+        title: "Multi-Region Store",
+      },
+      {
+        type: "link",
+        path: "/recipes/omnichannel",
+        title: "Omnichannel Store",
+      },
+      {
+        type: "link",
+        path: "/recipes/oms",
+        title: "OMS",
+      },
+      {
+        type: "link",
+        path: "/recipes/personalized-products",
+        title: "Personalized Products",
+      },
+      {
+        type: "link",
+        path: "/recipes/pos",
+        title: "POS",
+      },
+    ],
+  },
+  {
+    type: "separator",
+  },
+  {
+    type: "link",
     path: "/commerce-modules",
     title: "Commerce Modules",
     isChildSidebar: true,
@@ -637,8 +739,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/order/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/order/edit",
+                title: "Order Edit",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/order-change",
+                title: "Order Change",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/order/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -723,13 +835,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/payment/payment-provider",
                 title: "Payment Provider Module",
-                children: [
-                  {
-                    type: "link",
-                    path: "/commerce-modules/payment/payment-provider/stripe",
-                    title: "Stripe",
-                  },
-                ],
               },
               {
                 type: "link",
@@ -738,8 +843,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/payment/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/payment/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -756,6 +861,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/references/payment/provider",
                 title: "Create Payment Provider",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Payment Providers",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/payment/payment-provider/stripe",
+                title: "Stripe",
               },
             ],
           },
@@ -837,8 +953,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/pricing/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/pricing/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -896,13 +1012,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/product/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
               {
                 type: "link",
-                path: "/commerce-modules/product/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/product/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -965,6 +1086,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/promotion/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -990,8 +1116,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/promotion/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/promotion/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1055,8 +1181,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/commerce-modules/region/relations-to-other-modules",
-                title: "Relations to Other Modules",
+                path: "/commerce-modules/region/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1123,8 +1249,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/sales-channel/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/sales-channel/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1193,8 +1319,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/stock-location/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/stock-location/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },
@@ -1252,17 +1378,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/commerce-modules/store/examples",
             title: "Examples",
-          },
-          {
-            type: "sub-category",
-            title: "Concepts",
-            children: [
-              {
-                type: "link",
-                path: "/commerce-modules/store/relations-to-other-modules",
-                title: "Relation to Modules",
-              },
-            ],
           },
           {
             type: "sub-category",
@@ -1412,7 +1527,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "Concepts",
+            title: "Guides",
             children: [
               {
                 type: "link",
@@ -1458,182 +1573,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
         ],
-      },
-    ],
-  },
-  {
-    type: "link",
-    path: "/integrations",
-    title: "Integrations",
-    isChildSidebar: true,
-    children: [
-      {
-        type: "category",
-        title: "File",
-        children: [
-          {
-            type: "link",
-            path: "/architectural-modules/file/s3",
-            title: "AWS S3 (and Compatible APIs)",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Notification",
-        children: [
-          {
-            type: "link",
-            path: "/architectural-modules/notification/sendgrid",
-            title: "SendGrid",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Payment",
-        children: [
-          {
-            type: "link",
-            path: "/commerce-modules/payment/payment-provider/stripe",
-            title: "Stripe",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "link",
-    path: "/recipes",
-    title: "Recipes",
-    isChildSidebar: true,
-    children: [
-      {
-        type: "link",
-        path: "/recipes/marketplace",
-        title: "Marketplace",
-        children: [
-          {
-            type: "link",
-            path: "/recipes/marketplace/examples/vendors",
-            title: "Example: Vendors",
-          },
-          {
-            type: "link",
-            path: "/recipes/marketplace/examples/restaurant-delivery",
-            title: "Example: Restaurant-Delivery",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
-        children: [
-          {
-            type: "link",
-            path: "/recipes/subscriptions/examples/standard",
-            title: "Example",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/recipes/digital-products",
-        title: "Digital Products",
-        children: [
-          {
-            type: "link",
-            path: "/recipes/digital-products/examples/standard",
-            title: "Example",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/recipes/b2b",
-        title: "B2B",
-      },
-      {
-        type: "link",
-        path: "/recipes/commerce-automation",
-        title: "Commerce Automation",
-      },
-      {
-        type: "link",
-        path: "/recipes/ecommerce",
-        title: "Ecommerce",
-      },
-      {
-        type: "link",
-        path: "/recipes/integrate-ecommerce-stack",
-        title: "Integrate Ecommerce Stack",
-      },
-      {
-        type: "link",
-        path: "/recipes/multi-region-store",
-        title: "Multi-Region Store",
-      },
-      {
-        type: "link",
-        path: "/recipes/omnichannel",
-        title: "Omnichannel Store",
-      },
-      {
-        type: "link",
-        path: "/recipes/oms",
-        title: "OMS",
-      },
-      {
-        type: "link",
-        path: "/recipes/personalized-products",
-        title: "Personalized Products",
-      },
-      {
-        type: "link",
-        path: "/recipes/pos",
-        title: "POS",
-      },
-    ],
-  },
-  {
-    type: "separator",
-  },
-  {
-    type: "category",
-    title: "SDKs and Tools",
-    children: [
-      {
-        type: "link",
-        path: "/create-medusa-app",
-        title: "create-medusa-app",
-      },
-      {
-        type: "link",
-        path: "/medusa-cli",
-        title: "Medusa CLI",
-        isChildSidebar: true,
-        childSidebarTitle: "Medusa CLI Reference",
-        children: [
-          {
-            type: "link",
-            path: "/medusa-cli",
-            title: "Overview",
-          },
-          {
-            type: "separator",
-          },
-          {
-            type: "category",
-            title: "Commands",
-            autogenerate_path: "medusa-cli/commands",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/nextjs-starter",
-        title: "Next.js Starter",
       },
     ],
   },
@@ -1798,6 +1737,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
     ],
+  },
+  {
+    type: "link",
+    path: "/integrations",
+    title: "Integrations",
   },
   {
     type: "link",
@@ -2068,9 +2012,45 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    type: "link",
-    path: "/references/medusa-config",
-    title: "Medusa Configurations",
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "SDKs and Tools",
+    children: [
+      {
+        type: "link",
+        path: "/create-medusa-app",
+        title: "create-medusa-app",
+      },
+      {
+        type: "link",
+        path: "/medusa-cli",
+        title: "Medusa CLI",
+        isChildSidebar: true,
+        childSidebarTitle: "Medusa CLI Reference",
+        children: [
+          {
+            type: "link",
+            path: "/medusa-cli",
+            title: "Overview",
+          },
+          {
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Commands",
+            autogenerate_path: "medusa-cli/commands",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/nextjs-starter",
+        title: "Next.js Starter",
+      },
+    ],
   },
   {
     type: "separator",
@@ -2079,6 +2059,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     type: "category",
     title: "General",
     children: [
+      {
+        type: "link",
+        path: "/references/medusa-config",
+        title: "Medusa Configurations",
+      },
       {
         type: "link",
         path: "/upgrade-guides",
@@ -2211,6 +2196,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
   },
   {
     type: "category",
+    title: "Admin",
+    children: [
+      {
+        type: "link",
+        path: "/admin-widget-injection-zones",
+        title: "Admin Widget Injection Zones",
+      },
+      {
+        type: "link",
+        path: "/admin-components",
+        title: "Admin Components",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Layouts",
+            autogenerate_path: "/admin-components/layouts",
+          },
+          {
+            type: "category",
+            title: "Components",
+            autogenerate_path: "/admin-components/components",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "category",
     title: "Lists",
     children: [
       {
@@ -2222,11 +2236,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/events-reference",
         title: "Events List",
-      },
-      {
-        type: "link",
-        path: "/admin-widget-injection-zones",
-        title: "Admin Widget Injection Zones",
       },
     ],
   },

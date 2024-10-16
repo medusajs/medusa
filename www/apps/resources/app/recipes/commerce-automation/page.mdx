@@ -150,19 +150,16 @@ export const restockModelHighlights = [
   })
   ```
 
-  Finally, add the module to the `modules` object in `medusa-config.js`:
+  Finally, add the module to the `modules` object in `medusa-config.ts`:
 
-  ```js title="medusa-config.js"
+  ```ts title="medusa-config.ts"
   module.exports = defineConfig({
     // ...
-    modules: {
-      "restockNotificationModuleService": {
-        resolve: "./modules/restock-notification",
-        definition: {
-          isQueryable: true,
-        },
+    modules: [
+      {
+        resolve: "./src/modules/restock-notification",
       },
-    },
+    ]
   })
   ```
 

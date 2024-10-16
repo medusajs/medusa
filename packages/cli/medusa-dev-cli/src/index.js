@@ -1,5 +1,11 @@
 #!/usr/bin/env node
 
+try {
+  require("ts-node").register({})
+  require("tsconfig-paths").register({})
+} catch {}
+require("dotenv").config()
+
 const Configstore = require(`configstore`)
 const pkg = require(`../package.json`)
 const _ = require(`lodash`)
