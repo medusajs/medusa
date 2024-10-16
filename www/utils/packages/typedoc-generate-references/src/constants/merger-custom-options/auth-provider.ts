@@ -59,7 +59,7 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/auth",
+      resolve: "@medusajs/medusa/auth",
       options: {
         providers: [
           {
