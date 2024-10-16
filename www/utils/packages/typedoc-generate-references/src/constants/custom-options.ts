@@ -49,6 +49,16 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "fulfillment-provider",
     parentIgnore: true,
   }),
+  "js-sdk": getOptions({
+    entryPointPath: [
+      "packages/core/js-sdk/src/admin/index.ts",
+      "packages/core/js-sdk/src/auth/index.ts",
+      "packages/core/js-sdk/src/store/index.ts",
+    ],
+    tsConfigName: "js-sdk.json",
+    name: "js-sdk",
+    enableInternalResolve: true,
+  }),
   "helper-steps": getOptions({
     entryPointPath: "packages/core/core-flows/src/common/index.ts",
     tsConfigName: "core-flows.json",
@@ -141,9 +151,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     exclude: [
       ...(baseOptions.exclude || []),
       "**/api-key/**",
+      "**/auth/**",
+      "**/bundles/**",
       "**/common/**",
       "**/dal/**/**",
-      "**/decorators/**",
+      "**/dml/**",
       "**/defaults/**",
       "**/**provider.ts",
       "**/event-bus/**",
@@ -151,10 +163,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       "**/feature-flags/**",
       "**/modules-sdk/**",
       "**/orchestration/**",
+      "**/pg/**",
       "**/pricing/builders.ts",
       "**/search/**",
       "**/totals/**",
-      "**/dml/**",
     ],
   }),
   workflows: getOptions({
