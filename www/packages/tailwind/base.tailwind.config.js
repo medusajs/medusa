@@ -185,6 +185,14 @@ module.exports = {
               hover: "#505052",
             },
           },
+          alpha: {
+            white: {
+              alpha: {
+                6: "var(--docs-alpha-white-alpha-6)",
+                12: "var(--docs-alpha-white-alpha-12)",
+              },
+            },
+          },
         },
       },
       boxShadow: {

@@ -199,12 +199,10 @@ export const CodeBlockLine = ({
   const getTokensElm = ({
     tokens,
     isTokenHighlighted,
-    isLineHighlighted,
     offset,
   }: {
     tokens: Token[]
     isTokenHighlighted: boolean
-    isLineHighlighted: boolean
     offset: number
   }) => (
     <span
@@ -212,7 +210,7 @@ export const CodeBlockLine = ({
         isTokenHighlighted && "cursor-default",
         isTokenHighlighted &&
           !animateTokenHighlights &&
-          "lg:bg-medusa-contrast-border-base",
+          "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12 lg:rounded-docs_xs",
         animateTokenHighlights && isTokenHighlighted && "relative"
       )}
     >
@@ -221,7 +219,7 @@ export const CodeBlockLine = ({
           className={clsx(
             "animate-fast animate-growWidth animation-fill-forwards",
             "absolute left-0 top-0 h-full z-0",
-            "lg:bg-medusa-contrast-border-base"
+            "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12 lg:rounded-docs_xs"
           )}
         />
       )}
@@ -236,8 +234,6 @@ export const CodeBlockLine = ({
             key={tokenKey}
             className={clsx(
               tokenClassName,
-              (isTokenHighlighted || isLineHighlighted) &&
-                "!text-medusa-contrast-fg-primary",
               isTokenHighlighted && animateTokenHighlights && "relative z-[1]"
             )}
             {...rest}
@@ -258,7 +254,7 @@ export const CodeBlockLine = ({
       {...lineProps}
       className={clsx(
         "table-row",
-        isHighlightedLine && "bg-medusa-contrast-border-base",
+        isHighlightedLine && "bg-medusa-alpha-white-alpha-6",
         lineProps.className
       )}
     >
@@ -303,7 +299,6 @@ export const CodeBlockLine = ({
                     tokens,
                     isTokenHighlighted: isHighlighted,
                     offset,
-                    isLineHighlighted: isHighlightedLine,
                   })}
                 </Tooltip>
               )}
@@ -312,7 +307,6 @@ export const CodeBlockLine = ({
                   tokens,
                   isTokenHighlighted: isHighlighted,
                   offset,
-                  isLineHighlighted: isHighlightedLine,
                 })}
             </React.Fragment>
           )

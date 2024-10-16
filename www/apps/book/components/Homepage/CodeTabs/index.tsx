@@ -49,7 +49,7 @@ const HomepageCodeTabs = () => {
           ["1", "GET", "Create a GET endpoint."],
           [
             "5",
-            "query",
+            `"query"`,
             "Query utility to retrieve data from a graph of\nall data models and their relations.",
           ],
           ["8", `"company"`, "Retrieve records of the `company` data model"],
