@@ -851,8 +851,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/pricing/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/pricing/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -910,13 +910,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/product/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
               {
                 type: "link",
-                path: "/commerce-modules/product/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/product/links-to-other-modules",
+                title: "Links to Other Modules",
               },
             ],
           },
@@ -979,6 +984,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            type: "link",
+            path: "/commerce-modules/promotion/extend",
+            title: "Extend Module",
+          },
+          {
             type: "sub-category",
             title: "Concepts",
             children: [
@@ -1004,8 +1014,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/promotion/relations-to-other-modules",
-                title: "Relation to Modules",
+                path: "/commerce-modules/promotion/links-to-other-modules",
+                title: "Links to Modules",
               },
             ],
           },

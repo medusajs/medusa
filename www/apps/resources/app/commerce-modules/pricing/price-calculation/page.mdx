@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn how prices are calculated when you use the `calculatePrices` method of the Pricing Module's main service.
+In this document, you'll learn how prices are calculated when you use the [calculatePrices method](/references/pricing/calculatePrices) of the Pricing Module's main service.
 
 ## calculatePrices Method
 
@@ -14,9 +14,7 @@ The [calculatePrices method](/references/pricing/calculatePrices) accepts as par
 
 It returns a price object with the best matching price for each price set.
 
----
-
-## Calculation Context
+### Calculation Context
 
 The calculation context is an optional object passed as a second parameter to the `calculatePrices` method. It accepts rules to restrict the selected prices in the price set.
 
@@ -34,16 +32,18 @@ const price = await pricingModuleService.calculatePrices(
 )
 ```
 
----
+In this example, you retrieve the prices in a price set for the specified currency code and region ID.
 
-## Returned Price Object
+### Returned Price Object
 
-For each price set, the method selects two prices:
+For each price set, the `calculatePrices` method selects two prices:
 
-- The calculated price: Either the best context-matching price that belongs to a price list or the same as the original price.
-- The original price: Either the same as the calculated price if its price list is of type `override`, or the best context-matching price that doesn't belong to a price list.
+- A calculated price: Either a price that belongs to a price list and best matches the specified context, or the same as the original price.
+- An original price, which is either:
+    - The same price as the calculated price if the price list it belongs to is of type `override`;
+    - Or a price that doesn't belong to a price list and best matches the specified context.
 
-Both prices are returned in an object along with the following properties:
+Both prices are returned in an object that has the following properties:
 
 <TypeList
   types={[

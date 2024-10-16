@@ -4,11 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about the main concepts in the Pricing Module, and how data is stored and related.
+In this document, you’ll learn about the main concepts in the Pricing Module.
 
 ## Price Set
 
-A [PriceSet](/references/pricing/models/PriceSet) represents a collection of prices that are linked to a resource (for example, a product or a shipping option). Each of these prices are represented by the [Price data module](/references/pricing/models/Price).
+A [PriceSet](/references/pricing/models/PriceSet) represents a collection of prices that are linked to a resource (for example, a product or a shipping option).
+
+Each of these prices are represented by the [Price data module](/references/pricing/models/Price).
 
 ![A diagram showcasing the relation between the price set and price](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648650/Medusa%20Resources/price-set-money-amount_xeees0.jpg)
 
@@ -16,6 +18,8 @@ A [PriceSet](/references/pricing/models/PriceSet) represents a collection of pri
 
 ## Price List
 
-A [PriceList](/references/pricing/models/PriceList) is a group of prices only enabled if their conditions and rules are satisfied. A price list has optional `start_date` and `end_date` properties, which indicate the date range in which a price list can be applied.
+A [PriceList](/references/pricing/models/PriceList) is a group of prices only enabled if their conditions and rules are satisfied.
+
+A price list has optional `start_date` and `end_date` properties that indicate the date range in which a price list can be applied.
 
 Its associated prices are represented by the `Price` data model.
