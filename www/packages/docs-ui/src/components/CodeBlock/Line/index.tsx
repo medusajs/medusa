@@ -205,21 +205,17 @@ export const CodeBlockLine = ({
     isTokenHighlighted: boolean
     offset: number
   }) => (
-    <span
-      className={clsx(
-        isTokenHighlighted && "cursor-default",
-        isTokenHighlighted &&
-          !animateTokenHighlights &&
-          "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12 lg:rounded-docs_xs",
-        animateTokenHighlights && isTokenHighlighted && "relative"
-      )}
-    >
-      {animateTokenHighlights && isTokenHighlighted && (
+    <span className={clsx(isTokenHighlighted && "relative")}>
+      {isTokenHighlighted && (
         <span
           className={clsx(
-            "animate-fast animate-growWidth animation-fill-forwards",
+            animateTokenHighlights && [
+              "animate-fast animate-growWidth animation-fill-forwards",
+            ],
+            !animateTokenHighlights && "w-full",
             "absolute left-0 top-0 h-full z-0",
-            "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12 lg:rounded-docs_xs"
+            "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12",
+            "lg:rounded-docs_xs scale-x-[1.05]"
           )}
         />
       )}
@@ -234,7 +230,7 @@ export const CodeBlockLine = ({
             key={tokenKey}
             className={clsx(
               tokenClassName,
-              isTokenHighlighted && animateTokenHighlights && "relative z-[1]"
+              isTokenHighlighted && "relative z-[1]"
             )}
             {...rest}
           />
