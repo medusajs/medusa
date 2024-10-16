@@ -8086,6 +8086,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/medusa-cli/commands/build",
+                "title": "build",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/medusa-cli/commands/db",
                 "title": "db",
                 "children": []

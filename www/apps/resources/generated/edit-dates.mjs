@@ -123,7 +123,7 @@ export const generatedEditDates = {
   "app/contribution-guidelines/_admin-translations/page.mdx": "2024-05-13T18:55:11+03:00",
   "app/contribution-guidelines/docs/page.mdx": "2024-05-13T18:55:11+03:00",
   "app/create-medusa-app/page.mdx": "2024-08-05T11:10:55+03:00",
-  "app/deployment/admin/vercel/page.mdx": "2024-07-31T17:01:33+03:00",
+  "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
   "app/deployment/medusa-application/railway/page.mdx": "2024-10-15T12:50:50.981Z",
   "app/deployment/storefront/vercel/page.mdx": "2024-07-26T07:21:31+00:00",
   "app/deployment/page.mdx": "2024-07-25T09:55:22+03:00",
@@ -2287,5 +2287,6 @@ export const generatedEditDates = {
   "references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentData/page.mdx": "2024-10-14T15:28:22.586Z",
   "references/fulfillment/interfaces/fulfillment.IFulfillmentModuleService/page.mdx": "2024-10-14T15:28:22.238Z",
   "references/types/CommonTypes/interfaces/types.CommonTypes.RequestQueryFields/page.mdx": "2024-10-14T15:27:49.882Z",
-  "references/utils/utils.ProductUtils/page.mdx": "2024-10-14T15:27:51.874Z"
+  "references/utils/utils.ProductUtils/page.mdx": "2024-10-14T15:27:51.874Z",
+  "app/medusa-cli/commands/build/page.mdx": "2024-10-16T08:16:27.618Z"
 }

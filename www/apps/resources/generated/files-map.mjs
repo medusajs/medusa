@@ -588,6 +588,10 @@ export const filesMap = [
     "pathname": "/integrations"
   },
   {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/build/page.mdx",
+    "pathname": "/medusa-cli/commands/build"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/db/page.mdx",
     "pathname": "/medusa-cli/commands/db"
   },
