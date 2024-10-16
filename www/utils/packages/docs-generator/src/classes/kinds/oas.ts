@@ -2055,8 +2055,49 @@ class OasKindGenerator extends FunctionKindGenerator {
               !Object.hasOwn(oldSchemaObj!.properties!, propertyKey)
           )
           .forEach((newPropertyKey) => {
-            oldSchemaObj!.properties![newPropertyKey] =
-              newSchemaObj!.properties![newPropertyKey]
+            const tryToUpdateSchema = (
+              schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+            ) => {
+              let updatedSchema = schema
+              const newPropertySchemaName = this.oasSchemaHelper.isRefObject(
+                schema
+              )
+                ? schema.$ref
+                : "x-schemaName" in schema
+                  ? (schema["x-schemaName"] as string)
+                  : undefined
+              if (newPropertySchemaName) {
+                const schemaToUpdate = this.oasSchemaHelper.getSchemaByName(
+                  newPropertySchemaName,
+                  true,
+                  true
+                )
+
+                if (schemaToUpdate) {
+                  updatedSchema =
+                    this.updateSchema({
+                      oldSchema: schemaToUpdate.schema,
+                      newSchema: schema,
+                      level: maybeIncrementLevel(level, "object"),
+                    }) || newProperty
+                }
+              }
+
+              return updatedSchema
+            }
+
+            let newProperty = newSchemaObj!.properties![newPropertyKey]
+
+            if (
+              !this.oasSchemaHelper.isRefObject(newProperty) &&
+              newProperty.type === "array"
+            ) {
+              newProperty.items = tryToUpdateSchema(newProperty.items)
+            } else {
+              newProperty = tryToUpdateSchema(newProperty)
+            }
+
+            oldSchemaObj!.properties![newPropertyKey] = newProperty
           })
       }
     } else if (
