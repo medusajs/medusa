@@ -73,7 +73,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-notification",
+            resolve: "./src/modules/my-notification",
             id: "my-notification",
             options: {
               channels: ["email"],

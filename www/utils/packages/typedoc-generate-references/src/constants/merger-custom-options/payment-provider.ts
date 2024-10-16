@@ -72,7 +72,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-payment",
+            resolve: "./src/modules/my-payment",
             id: "my-payment",
             options: {
               // provider options...
