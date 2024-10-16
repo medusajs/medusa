@@ -27,7 +27,9 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const inventoryItem = await inventoryModuleService.createInventoryItems({
     sku: request.body.sku,
@@ -79,7 +81,9 @@ export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const inventoryItems = await inventoryModuleService.listInventoryItems({})
 
@@ -122,7 +126,9 @@ export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const inventoryItem = await inventoryModuleService.retrieveInventoryItem(
     request.params.id
@@ -175,7 +181,9 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const inventoryLevel = await inventoryModuleService.createInventoryLevels({
     inventory_item_id: request.body.inventory_item_id,
@@ -227,7 +235,9 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const inventoryLevel = await inventoryModuleService.adjustInventory(
     request.body.inventory_item_id,
@@ -279,7 +289,9 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   res.json({
     is_available: await inventoryModuleService.confirmInventory(
@@ -331,7 +343,9 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const reservationItem = await inventoryModuleService.createReservationItems({
     inventory_item_id: request.body.inventory_item_id,
@@ -385,7 +399,9 @@ export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   const reservedQuantity =
     await inventoryModuleService.retrieveReservedQuantity(
@@ -469,7 +485,9 @@ export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const inventoryModuleService = request.scope.resolve(Modules.INVENTORY)
+  const inventoryModuleService = request.scope.resolve(
+    Modules.INVENTORY
+  )
 
   await inventoryModuleService.deleteReservationItems([
     request.params.reservation_id,

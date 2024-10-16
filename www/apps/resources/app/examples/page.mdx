@@ -19,9 +19,15 @@ An API route is a REST API endpoint that exposes commerce features to external a
 Create the file `src/api/hello-world/route.ts` with the following content:
 
 ```ts title="src/api/hello-world/route.ts"
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
-export const GET = (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   res.json({
     message: "[GET] Hello world!",
   })
@@ -40,10 +46,16 @@ To resolve resources from the Medusa container in an API route:
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const productModuleService = req.scope.resolve(Modules.PRODUCT)
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const productModuleService = req.scope.resolve(
+    Modules.PRODUCT
+  )
 
-  const [, count] = await productModuleService.listAndCountProducts()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,
@@ -62,13 +74,19 @@ API routes can accept path parameters.
 To do that, create the file `src/api/hello-world/[id]/route.ts` with the following content:
 
 export const singlePathHighlights = [
-  ["11", "req.params.id", "Access the path parameter `id`"],
+  ["11", "req.params.id", "Access the path parameter `id`"]
 ]
 
 ```ts title="src/api/hello-world/[id]/route.ts" highlights={singlePathHighlights}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   res.json({
     message: `[GET] Hello ${req.params.id}!`,
   })
@@ -86,9 +104,15 @@ export const queryHighlights = [
 ]
 
 ```ts highlights={queryHighlights}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   res.json({
     message: `Hello ${req.query.name}`,
   })
@@ -107,7 +131,10 @@ export const bodyHighlights = [
 ]
 
 ```ts highlights={bodyHighlights}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
 type HelloWorldReq = {
   name: string
@@ -132,7 +159,10 @@ You can change the response code of an API route:
 ```ts highlights={[["7", "status", "Change the response's status."]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   res.status(201).json({
     message: "Hello, World!",
   })
@@ -146,15 +176,22 @@ Learn more about setting the response code in [this documentation](!docs!/advanc
 To execute a workflow in an API route:
 
 ```ts
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import myWorkflow from "../../workflows/hello-world"
 
-export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const { result } = await myWorkflow(req.scope).run({
-    input: {
-      name: req.query.name as string,
-    },
-  })
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await myWorkflow(req.scope)
+    .run({
+      input: {
+        name: req.query.name as string,
+      },
+    })
 
   res.send(result)
 }
@@ -169,13 +206,16 @@ By default, an API route's response has the content type `application/json`.
 To change it to another content type, use the `writeHead` method of `MedusaResponse`:
 
 export const responseContentTypeHighlights = [
-  ["7", "writeHead", "Change the content type in the header."],
+  ["7", "writeHead", "Change the content type in the header."]
 ]
 
 ```ts highlights={responseContentTypeHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
@@ -205,10 +245,10 @@ Create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/medusa"
-import type {
-  MedusaNextFunction,
-  MedusaRequest,
-  MedusaResponse,
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
 } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
@@ -216,7 +256,11 @@ export default defineMiddlewares({
     {
       matcher: "/custom*",
       middlewares: [
-        (req: MedusaRequest, res: MedusaResponse, next: MedusaNextFunction) => {
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
           console.log("Received a request!")
 
           next()
@@ -226,7 +270,11 @@ export default defineMiddlewares({
     {
       matcher: "/custom/:id",
       middlewares: [
-        (req: MedusaRequest, res: MedusaResponse, next: MedusaNextFunction) => {
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
           console.log("With Path Parameter")
 
           next()
@@ -244,15 +292,15 @@ Learn more about middlewares in [this documentation](!docs!/advanced-development
 To restrict a middleware to an HTTP method:
 
 export const middlewareMethodHighlights = [
-  ["12", "method", "Apply the middleware on `POST` and `PUT` requests only."],
+  ["12", "method", "Apply the middleware on `POST` and `PUT` requests only."]
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={middlewareMethodHighlights}
 import { defineMiddlewares } from "@medusajs/medusa"
-import type {
-  MedusaNextFunction,
-  MedusaRequest,
-  MedusaResponse,
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
 } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
@@ -293,7 +341,9 @@ export default defineMiddlewares({
     {
       matcher: "/custom",
       method: "POST",
-      middlewares: [validateAndTransformBody(PostStoreCustomSchema)],
+      middlewares: [
+        validateAndTransformBody(PostStoreCustomSchema),
+      ],
     },
   ],
 })
@@ -306,7 +356,9 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { z } from "zod"
 import { PostStoreCustomSchema } from "./validators"
 
-type PostStoreCustomSchemaType = z.infer<typeof PostStoreCustomSchema>
+type PostStoreCustomSchemaType = z.infer<
+  typeof PostStoreCustomSchema
+>
 
 export const POST = async (
   req: MedusaRequest<PostStoreCustomSchemaType>,
@@ -362,16 +414,17 @@ import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
 import { StepResponse } from "@medusajs/framework/workflows-sdk"
 
 createProductsWorkflow.hooks.productsCreated(
-  async ({ products, additional_data }, { container }) => {
+  (async ({ products, additional_data }, { container }) => {
     if (!additional_data.brand_id) {
       return new StepResponse([], [])
     }
 
     // TODO perform custom action
-  },
-  async (links, { container }) => {
+  }),
+  (async (links, { container }) => {
     // TODO undo the action in the compensation
-  }
+  })
+
 )
 ```
 
@@ -388,13 +441,21 @@ You can protect API routes by restricting access to authenticated admin users on
 Add the following middleware in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts" highlights={[["11", "authenticate"]]}
-import { defineMiddlewares, authenticate } from "@medusajs/medusa"
+import { 
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/medusa"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom/admin*",
-      middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+      middlewares: [
+        authenticate(
+          "user", 
+          ["session", "bearer", "api-key"]
+        )
+      ],
     },
   ],
 })
@@ -409,13 +470,18 @@ You can protect API routes by restricting access to authenticated customers only
 Add the following middleware in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts" highlights={[["11", "authenticate"]]}
-import { defineMiddlewares, authenticate } from "@medusajs/medusa"
+import { 
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/medusa"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom/customer*",
-      middlewares: [authenticate("customer", ["session", "bearer"])],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"])
+      ],
     },
   ],
 })
@@ -444,9 +510,13 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const userModuleService = req.scope.resolve(Modules.USER)
+  const userModuleService = req.scope.resolve(
+    Modules.USER
+  )
 
-  const user = await userModuleService.retrieveUser(req.auth_context.actor_id)
+  const user = await userModuleService.retrieveUser(
+    req.auth_context.actor_id
+  )
 
   // ...
 }
@@ -477,7 +547,9 @@ export const GET = async (
 ) => {
   if (req.auth_context?.actor_id) {
     // retrieve customer
-    const customerModuleService = req.scope.resolve(Modules.CUSTOMER)
+    const customerModuleService = req.scope.resolve(
+      Modules.CUSTOMER
+    )
 
     const customer = await customerModuleService.retrieveCustomer(
       req.auth_context.actor_id
@@ -498,7 +570,10 @@ To throw errors in an API route, use the `MedusaError` utility:
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   if (!req.query.q) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -517,19 +592,19 @@ Learn more in [this documentation](!docs!/advanced-development/api-routes/errors
 To override the error handler of API routes, create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts" highlights={[["10", "errorHandler"]]}
-import {
-  defineMiddlewares,
-  MedusaNextFunction,
-  MedusaRequest,
+import { 
+  defineMiddlewares, 
+  MedusaNextFunction, 
+  MedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export default defineMiddlewares({
   errorHandler: (
-    error: MedusaError | any,
-    req: MedusaRequest,
-    res: MedusaResponse,
+    error: MedusaError | any, 
+    req: MedusaRequest, 
+    res: MedusaResponse, 
     next: MedusaNextFunction
   ) => {
     res.status(400).json({
@@ -549,10 +624,10 @@ To configure CORS for routes under other prefixes, create the file `src/api/midd
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/medusa"
-import type {
-  MedusaNextFunction,
-  MedusaRequest,
-  MedusaResponse,
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
 } from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/framework/types"
 import { parseCorsOrigins } from "@medusajs/framework/utils"
@@ -563,11 +638,18 @@ export default defineMiddlewares({
     {
       matcher: "/custom*",
       middlewares: [
-        (req: MedusaRequest, res: MedusaResponse, next: MedusaNextFunction) => {
-          const configModule: ConfigModule = req.scope.resolve("configModule")
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
+          const configModule: ConfigModule =
+            req.scope.resolve("configModule")
 
           return cors({
-            origin: parseCorsOrigins(configModule.projectConfig.http.storeCors),
+            origin: parseCorsOrigins(
+              configModule.projectConfig.http.storeCors
+            ),
             credentials: true,
           })(req, res, next)
         },
@@ -584,7 +666,9 @@ By default, the Medusa application parses a request's body using JSON.
 To parse a webhook's body, create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts" highlights={[["9"]]}
-import { defineMiddlewares } from "@medusajs/framework/http"
+import { 
+  defineMiddlewares, 
+} from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
@@ -592,17 +676,23 @@ export default defineMiddlewares({
       matcher: "/webhooks/*",
       bodyParser: { preserveRawBody: true },
       method: ["POST"],
-    },
-  ],
+    }
+  ]
 })
 ```
 
 To access the raw body data in your route, use the `req.rawBody` property:
 
 ```ts title="src/api/webhooks/route.ts"
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
-export const POST = (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   console.log(req.rawBody)
 }
 ```
@@ -643,7 +733,8 @@ import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({
   MyCustom,
-}) {}
+}){
+}
 
 export default HelloModuleService
 ```
@@ -671,8 +762,8 @@ module.exports = defineConfig({
   modules: [
     {
       resolve: "./modules/hello",
-    },
-  ],
+    }
+  ]
 })
 ```
 
@@ -694,14 +785,16 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const helloModuleService: HelloModuleService = req.scope.resolve(HELLO_MODULE)
+  const helloModuleService: HelloModuleService = req.scope.resolve(
+    HELLO_MODULE
+  )
 
   const my_custom = await helloModuleService.createMyCustoms({
-    name: "test",
+    name: "test"
   })
 
   res.json({
-    my_custom,
+    my_custom
   })
 }
 ```
@@ -737,7 +830,7 @@ type InjectedDependencies = {
 
 class HelloModuleService extends MedusaService({
   MyCustom,
-}) {
+}){
   private customService: CustomService
 
   constructor({ customService }: InjectedDependencies) {
@@ -770,7 +863,7 @@ module.exports = defineConfig({
         apiKey: true,
       },
     },
-  ],
+  ]
 })
 ```
 
@@ -787,7 +880,7 @@ type ModuleOptions = {
 
 export default class HelloModuleService extends MedusaService({
   MyCustom,
-}) {
+}){
   protected options_: ModuleOptions
 
   constructor({}, options?: ModuleOptions) {
@@ -824,22 +917,21 @@ export class BrandClient {
   private options_: ModuleOptions
   private logger_: Logger
 
-  constructor({ logger }: InjectedDependencies, options: ModuleOptions) {
+  constructor(
+    { logger }: InjectedDependencies, 
+    options: ModuleOptions
+  ) {
     this.logger_ = logger
     this.options_ = options
   }
 
   private async sendRequest(url: string, method: string, data?: any) {
-    this.logger_.info(
-      `Sending a ${method} request to ${url}. data: ${JSON.stringify(
-        data,
-        null,
-        2
-      )}`
-    )
-    this.logger_.info(
-      `Client Options: ${JSON.stringify(this.options_, null, 2)}`
-    )
+    this.logger_.info(`Sending a ${
+      method
+    } request to ${url}. data: ${JSON.stringify(data, null, 2)}`)
+    this.logger_.info(`Client Options: ${
+      JSON.stringify(this.options_, null, 2)
+    }`)
   }
 }
 ```
@@ -1022,8 +1114,12 @@ To set the default value of a property:
 import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
-  color: model.enum(["black", "white"]).default("black"),
-  age: model.number().default(0),
+  color: model
+    .enum(["black", "white"])
+    .default("black"),
+  age: model
+    .number()
+    .default(0),
   // ...
 })
 
@@ -1075,7 +1171,9 @@ import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
-  name: model.text().index("IDX_MY_CUSTOM_NAME"),
+  name: model.text().index(
+    "IDX_MY_CUSTOM_NAME"
+  ),
 })
 
 export default MyCustom
@@ -1090,22 +1188,20 @@ To define a composite index on a data model:
 ```ts highlights={[["7", "indexes"]]}
 import { model } from "@medusajs/framework/utils"
 
-const MyCustom = model
-  .define("my_custom", {
-    id: model.id().primaryKey(),
-    name: model.text(),
-    age: model.number().nullable(),
-  })
-  .indexes([
-    {
-      on: ["name", "age"],
-      where: {
-        age: {
-          $ne: null,
-        },
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  age: model.number().nullable(),
+}).indexes([
+  {
+    on: ["name", "age"],
+    where: {
+      age: {
+        $ne: null,
       },
     },
-  ])
+  },
+])
 
 export default MyCustom
 ```
@@ -1219,19 +1315,19 @@ To configure cascade on a data model:
 import { model } from "@medusajs/framework/utils"
 // Product import
 
-const Store = model
-  .define("store", {
-    id: model.id().primaryKey(),
-    products: model.hasMany(() => Product),
-  })
-  .cascades({
-    delete: ["products"],
-  })
+const Store = model.define("store", {
+  id: model.id().primaryKey(),
+  products: model.hasMany(() => Product),
+})
+.cascades({
+  delete: ["products"],
+})
 ```
 
 This configures the delete cascade on the `Store` data model so that, when a store is delete, its products are also deleted.
 
 Learn more in [this documentation](!docs!/advanced-development/data-models/relationships#cascades).
+
 
 ### Manage One-to-One Relationship
 
@@ -1330,14 +1426,20 @@ const product = await helloModuleService.createProducts({
 To add new orders to a product without removing the previous associations:
 
 ```ts
-const product = await helloModuleService.retrieveProduct("123", {
-  relations: ["orders"],
-})
+const product = await helloModuleService.retrieveProduct(
+  "123",
+  {
+    relations: ["orders"],
+  }
+)
 
 const updatedProduct = await helloModuleService.updateProducts({
   id: product.id,
   // other properties...
-  orders: [...product.orders.map((order) => order.id), "321"],
+  orders: [
+    ...product.orders.map((order) => order.id),
+    "321",
+  ],
 })
 ```
 
@@ -1354,9 +1456,12 @@ To retrieve records related to a data model's records through a relation, pass t
 </Note>
 
 ```ts highlights={[["4", "relations"]]}
-const product = await helloModuleService.retrieveProducts("123", {
-  relations: ["orders"],
-})
+const product = await helloModuleService.retrieveProducts(
+  "123",
+  {
+    relations: ["orders"],
+  }
+)
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/data-models/manage-relationships#retrieve-records-of-relation).
@@ -1379,7 +1484,7 @@ import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({
   MyCustom,
-}) {
+}){
   // TODO implement custom methods
 }
 
@@ -1410,7 +1515,7 @@ type InjectedDependencies = {
 
 class HelloModuleService extends MedusaService({
   MyCustom,
-}) {
+}){
   protected logger_: Logger
 
   constructor({ logger }: InjectedDependencies) {
@@ -1469,7 +1574,7 @@ type ModuleOptions = {
 
 export default class HelloModuleService extends MedusaService({
   MyCustom,
-}) {
+}){
   protected options_: ModuleOptions
 
   constructor({}, options?: ModuleOptions) {
@@ -1492,7 +1597,10 @@ To run database query in your service:
 
 ```ts highlights={[["14", "count"], ["21", "execute"]]}
 // other imports...
-import { InjectManager, MedusaContext } from "@medusajs/framework/utils"
+import { 
+  InjectManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
 
 class HelloModuleService {
   // ...
@@ -1503,15 +1611,15 @@ class HelloModuleService {
   ): Promise<number> {
     return await sharedContext.manager.count("my_custom")
   }
-
+  
   @InjectManager()
   async getCountSql(
     @MedusaContext() sharedContext?: Context<EntityManager>
   ): Promise<number> {
     const data = await sharedContext.manager.execute(
       "SELECT COUNT(*) as num FROM my_custom"
-    )
-
+    ) 
+    
     return parseInt(data[0].num)
   }
 }
@@ -1524,7 +1632,7 @@ Learn more in [this documentation](!docs!/advanced-development/modules/db-operat
 To execute database operations within a transaction in your service:
 
 ```ts
-import {
+import { 
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -1537,7 +1645,7 @@ class HelloModuleService {
   @InjectTransactionManager()
   protected async update_(
     input: {
-      id: string
+      id: string,
       name: string
     },
     @MedusaContext() sharedContext?: Context<EntityManager>
@@ -1564,7 +1672,7 @@ class HelloModuleService {
   @InjectManager()
   async update(
     input: {
-      id: string
+      id: string,
       name: string
     },
     @MedusaContext() sharedContext?: Context<EntityManager>
@@ -1616,10 +1724,13 @@ import HelloModule from "../modules/hello"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
 
-export default defineLink(ProductModule.linkable.product, {
-  linkable: HelloModule.linkable.myCustom,
-  isList: true,
-})
+export default defineLink(
+  ProductModule.linkable.product,
+  {
+    linkable: HelloModule.linkable.myCustom,
+    isList: true,
+  }
+)
 ```
 
 Learn more about list links in [this documentation](!docs!/advanced-development/module-links#define-a-list-link).
@@ -1633,10 +1744,13 @@ import HelloModule from "../modules/hello"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
 
-export default defineLink(ProductModule.linkable.product, {
-  linkable: HelloModule.linkable.myCustom,
-  deleteCascades: true,
-})
+export default defineLink(
+  ProductModule.linkable.product,
+  {
+    linkable: HelloModule.linkable.myCustom,
+    deleteCascades: true,
+  }
+)
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/module-links#define-a-list-link).
@@ -1796,10 +1910,18 @@ Query fetches data across modules. It’s a set of methods registered in the Med
 To retrieve records using Query in an API route:
 
 ```ts highlights={[["15", "graph"]]}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: myCustoms } = await query.graph({
@@ -1818,15 +1940,27 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 To retrieve records linked to a data model:
 
 ```ts highlights={[["20"]]}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: myCustoms } = await query.graph({
     entity: "my_custom",
-    fields: ["id", "name", "product.*"],
+    fields: [
+      "id", 
+      "name",
+      "product.*",
+    ],
   })
 
   res.json({ my_customs: myCustoms })
@@ -1840,17 +1974,28 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 To filter the retrieved records:
 
 ```ts highlights={[["18", "filters"]]}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: myCustoms } = await query.graph({
     entity: "my_custom",
     fields: ["id", "name"],
     filters: {
-      id: ["mc_01HWSVWR4D2XVPQ06DQ8X9K7AX", "mc_01HWSVWK3KYHKQEE6QGS2JC3FX"],
+      id: [
+        "mc_01HWSVWR4D2XVPQ06DQ8X9K7AX",
+        "mc_01HWSVWK3KYHKQEE6QGS2JC3FX",
+      ],
     },
   })
 
@@ -1865,13 +2010,21 @@ Learn more in [this documentation](!docs!/advanced-development/module-links/quer
 To paginate and sort retrieved records:
 
 ```ts highlights={[["21", "pagination"]]}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const {
+  const { 
     data: myCustoms,
     metadata: { count, take, skip },
   } = await query.graph({
@@ -1886,11 +2039,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     },
   })
 
-  res.json({
+  res.json({ 
     my_customs: myCustoms,
     count,
     take,
-    skip,
+    skip
   })
 }
 ```
@@ -1928,9 +2081,12 @@ type StepInput = {
   name: string
 }
 
-export const step2 = createStep("step-2", async ({ name }: StepInput) => {
-  return new StepResponse(`Hello ${name} from step two!`)
-})
+export const step2 = createStep(
+  "step-2", 
+  async ({ name }: StepInput) => {
+    return new StepResponse(`Hello ${name} from step two!`)
+  }
+)
 ```
 
 3. Create the workflow at `src/workflows/hello-world/index.ts` with the following content:
@@ -2062,7 +2218,10 @@ Learn more in [this documentation](!docs!/basics/workflows#3-execute-the-workflo
 Pass a compensation function that undoes what a step did as a second parameter to `createStep`:
 
 ```ts highlights={[["15"]]}
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -2086,21 +2245,27 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/compens
 To manipulate variables within a workflow's constructor function, use the `transform` utility:
 
 ```ts highlights={[["14", "transform"]]}
-import {
+import { 
   createWorkflow,
   WorkflowResponse,
   transform,
 } from "@medusajs/framework/workflows-sdk"
 // step imports...
 
-const myWorkflow = createWorkflow("hello-world", function (input) {
-  const str1 = step1(input)
-  const str2 = step2(input)
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input) {
+    const str1 = step1(input)
+    const str2 = step2(input)
 
-  const str3 = transform({ str1, str2 }, (data) => `${data.str1}${data.str2}`)
+    const str3 = transform(
+      { str1, str2 },
+      (data) => `${data.str1}${data.str2}`
+    )
 
-  return new WorkflowResponse(str3)
-})
+    return new WorkflowResponse(str3)
+  }
+)
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/workflows/variable-manipulation)
@@ -2110,7 +2275,7 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/variabl
 To perform steps or set a variable's value based on a condition, use the `when-then` utility:
 
 ```ts highlights={[["14", "when"]]}
-import {
+import { 
   createWorkflow,
   WorkflowResponse,
   when,
@@ -2118,11 +2283,17 @@ import {
 // step imports...
 
 const workflow = createWorkflow(
-  "workflow",
-  function (input: { is_active: boolean }) {
-    const result = when(input, (input) => {
-      return input.is_active
-    }).then(() => {
+  "workflow", 
+  function (input: {
+    is_active: boolean
+  }) {
+
+    const result = when(
+      input, 
+      (input) => {
+        return input.is_active
+      }
+    ).then(() => {
       const stepResult = isActiveStep()
       return stepResult
     })
@@ -2130,7 +2301,9 @@ const workflow = createWorkflow(
     // executed without condition
     const anotherStepResult = anotherStep(result)
 
-    return new WorkflowResponse(anotherStepResult)
+    return new WorkflowResponse(
+      anotherStepResult
+    )
   }
 )
 ```
@@ -2140,20 +2313,27 @@ const workflow = createWorkflow(
 To run a workflow in another, use the workflow's `runAsStep` special method:
 
 ```ts highlights={[["11", "runAsStep"]]}
-import { createWorkflow } from "@medusajs/framework/workflows-sdk"
-import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+import {
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  createProductsWorkflow,
+} from "@medusajs/medusa/core-flows"
 
-const workflow = createWorkflow("hello-world", async (input) => {
-  const products = createProductsWorkflow.runAsStep({
-    input: {
-      products: [
-        // ...
-      ],
-    },
-  })
+const workflow = createWorkflow(
+  "hello-world",
+  async (input) => {
+    const products = createProductsWorkflow.runAsStep({
+      input: {
+        products: [
+          // ...
+        ],
+      },
+    })
 
-  // ...
-})
+    // ...
+  }
+)
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/workflows/execute-another-workflow).
@@ -2192,16 +2372,20 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { createProductStep } from "./steps/create-product"
 
-export const myWorkflow = createWorkflow("my-workflow", function (input) {
-  const product = createProductStep(input)
-  const productCreatedHook = createHook("productCreated", {
-    productId: product.id,
-  })
+export const myWorkflow = createWorkflow(
+  "my-workflow", 
+  function (input) {
+    const product = createProductStep(input)
+    const productCreatedHook = createHook(
+      "productCreated", 
+      { productId: product.id }
+    )
 
-  return new WorkflowResponse(product, {
-    hooks: [productCreatedHook],
-  })
-})
+    return new WorkflowResponse(product, {
+      hooks: [productCreatedHook],
+    })
+  }
+)
 ```
 
 Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook).
@@ -2211,7 +2395,9 @@ Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-develop
 To configure steps to retry in case of errors, pass the `maxRetries` step option:
 
 ```ts highlights={[["10"]]}
-import { createStep } from "@medusajs/framework/workflows-sdk"
+import { 
+  createStep, 
+} from "@medusajs/framework/workflows-sdk"
 
 export const step1 = createStep(
   {
@@ -2249,19 +2435,22 @@ interface WorkflowInput {
   title: string
 }
 
-const myWorkflow = createWorkflow("my-workflow", (input: WorkflowInput) => {
-  const product = createProductStep(input)
+const myWorkflow = createWorkflow(
+  "my-workflow", 
+  (input: WorkflowInput) => {
+   const product = createProductStep(input)
 
-  const [prices, productSalesChannel] = parallelize(
-    createPricesStep(product),
-    attachProductToSalesChannelStep(product)
-  )
+   const [prices, productSalesChannel] = parallelize(
+     createPricesStep(product),
+     attachProductToSalesChannelStep(product)
+   )
 
-  const id = product.id
-  const refetchedProduct = getProductStep(product.id)
+   const id = product.id
+   const refetchedProduct = getProductStep(product.id)
 
-  return new WorkflowResponse(refetchedProduct)
-})
+   return new WorkflowResponse(refetchedProduct)
+ }
+)
 ```
 
 Learn more in [this documentation](!docs!/advanced-development/workflows/parallel-steps).
@@ -2271,26 +2460,23 @@ Learn more in [this documentation](!docs!/advanced-development/workflows/paralle
 To configure the timeout of a workflow, at which the workflow's status is changed, but its execution isn't stopped, use the `timeout` configuration:
 
 ```ts highlights={[["10"]]}
-import {
-  createStep,
+import { 
+  createStep,  
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 // step import...
 
-const myWorkflow = createWorkflow(
-  {
-    name: "hello-world",
-    timeout: 2, // 2 seconds
-  },
-  function () {
-    const str1 = step1()
+const myWorkflow = createWorkflow({
+  name: "hello-world",
+  timeout: 2, // 2 seconds
+}, function () {
+  const str1 = step1()
 
-    return new WorkflowResponse({
-      message: str1,
-    })
-  }
-)
+  return new WorkflowResponse({
+    message: str1,
+  })
+})
 
 export default myWorkflow
 ```
@@ -2342,7 +2528,8 @@ To change a step's status:
 1. Grab the workflow's transaction ID when you run it:
 
 ```ts
-const { transaction } = await myLongRunningWorkflow(req.scope).run()
+const { transaction } = await myLongRunningWorkflow(req.scope)
+  .run()
 ```
 
 2. In an API route, workflow, or other resource, change a step's status to successful using the [Worfklow Engine Module](../architectural-modules/workflow-engine/page.mdx):
@@ -2351,11 +2538,13 @@ export const stepSuccessHighlights = [
   ["5", "setStepSuccess", "Change a step's status to success"],
   ["8", "transactionId", "Pass the workflow's transaction ID"],
   ["9", "stepId", "The ID of the step to change its status."],
-  ["10", "workflowId", "The ID of the workflow that the step belongs to."],
+  ["10", "workflowId", "The ID of the workflow that the step belongs to."]
 ]
 
 ```ts highlights={stepSuccessHighlights}
-const workflowEngineService = container.resolve(Modules.WORKFLOW_ENGINE)
+const workflowEngineService = container.resolve(
+  Modules.WORKFLOW_ENGINE
+)
 
 await workflowEngineService.setStepSuccess({
   idempotencyKey: {
@@ -2377,11 +2566,13 @@ export const stepFailureHighlights = [
   ["5", "setStepFailure", "Change a step's status to failure"],
   ["8", "transactionId", "Pass the workflow's transaction ID"],
   ["9", "stepId", "The ID of the step to change its status."],
-  ["10", "workflowId", "The ID of the workflow that the step belongs to."],
+  ["10", "workflowId", "The ID of the workflow that the step belongs to."]
 ]
 
 ```ts highlights={stepFailureHighlights}
-const workflowEngineService = container.resolve(Modules.WORKFLOW_ENGINE)
+const workflowEngineService = container.resolve(
+  Modules.WORKFLOW_ENGINE
+)
 
 await workflowEngineService.setStepFailure({
   idempotencyKey: {
@@ -2413,7 +2604,9 @@ import { Modules } from "@medusajs/framework/utils"
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { transaction, result } = await myWorkflow(req.scope).run()
 
-  const workflowEngineService = req.scope.resolve(Modules.WORKFLOW_ENGINE)
+  const workflowEngineService = req.scope.resolve(
+    Modules.WORKFLOW_ENGINE
+  )
 
   const subscriptionOptions = {
     workflowId: "hello-world",
@@ -2454,7 +2647,10 @@ A subscriber is a function executed whenever the event it listens to is emitted.
 To create a subscriber that listens to the `product.created` event, create the file `src/subscribers/product-created.ts` with the following content:
 
 ```ts title="src/subscribers/product-created.ts"
-import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
 
 export default async function productCreateHandler({
   event,
@@ -2486,7 +2682,9 @@ export default async function productCreateHandler({
 
   const productId = data.id
 
-  const product = await productModuleService.retrieveProduct(productId)
+  const product = await productModuleService.retrieveProduct(
+    productId
+  )
 
   console.log(`The product ${product.title} was created`)
 }
@@ -2503,19 +2701,27 @@ Learn more in [this documentation](!docs!/basics/events-and-subscribers#resolve-
 To send a notification, such as an email when a user requests to reset their password, create a subscriber at `src/subscribers/handle-reset.ts` with the following content:
 
 ```ts title="src/subscribers/handle-reset.ts"
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
 import { Modules } from "@medusajs/framework/utils"
 
 export default async function resetPasswordTokenHandler({
-  event: {
-    data: { entity_id: email, token, actor_type },
-  },
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
   container,
-}: SubscriberArgs<{ entity_id: string; token: string; actor_type: string }>) {
-  const notificationModuleService = container.resolve(Modules.NOTIFICATION)
+}: SubscriberArgs<{ entity_id: string, token: string, actor_type: string }>) {
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
 
-  const urlPrefix =
-    actor_type === "customer" ? "https://storefront.com" : "https://admin.com"
+  const urlPrefix = actor_type === "customer" ? 
+    "https://storefront.com" : 
+    "https://admin.com"
 
   await notificationModuleService.createNotifications({
     to: email,
@@ -2540,7 +2746,10 @@ Learn more in [this documentation](../commerce-modules/auth/reset-password/page.
 To execute a workflow in a subscriber:
 
 ```ts
-import { type SubscriberConfig, type SubscriberArgs } from "@medusajs/framework"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
 import myWorkflow from "../workflows/hello-world"
 import { Modules } from "@medusajs/framework/utils"
 
@@ -2549,15 +2758,18 @@ export default async function handleCustomerCreate({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const userId = data.id
-  const userModuleService = container.resolve(Modules.USER)
+  const userModuleService = container.resolve(
+    Modules.USER
+  )
 
   const user = await userModuleService.retrieveUser(userId)
 
-  const { result } = await myWorkflow(container).run({
-    input: {
-      name: user.first_name,
-    },
-  })
+  const { result } = await myWorkflow(container)
+    .run({
+      input: {
+        name: user.first_name,
+      },
+    })
 
   console.log(result)
 }
@@ -2603,12 +2815,16 @@ To resolve resources in a scheduled job, use the `container` accepted as a first
 import { MedusaContainer } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
-export default async function myCustomJob(container: MedusaContainer) {
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
   const productModuleService = container.resolve(Modules.PRODUCT)
 
   const [, count] = await productModuleService.listAndCountProducts()
 
-  console.log(`Time to check products! You have ${count} product(s)`)
+  console.log(
+    `Time to check products! You have ${count} product(s)`
+  )
 }
 
 export const config = {
@@ -2647,12 +2863,15 @@ To execute a workflow in a scheduled job:
 import { MedusaContainer } from "@medusajs/framework/types"
 import myWorkflow from "../workflows/hello-world"
 
-export default async function myCustomJob(container: MedusaContainer) {
-  const { result } = await myWorkflow(container).run({
-    input: {
-      name: "John",
-    },
-  })
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await myWorkflow(container)
+    .run({
+      input: {
+        name: "John",
+      },
+    })
 
   console.log(result.message)
 }
@@ -2679,7 +2898,9 @@ For example, create the file `src/modules/hello/loaders/hello-world.ts` with the
 
 ```ts title="src/modules/hello/loaders/hello-world.ts"
 export default async function helloWorldLoader() {
-  console.log("[HELLO MODULE] Just started the Medusa application!")
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!"
+  )
 }
 ```
 
@@ -2690,10 +2911,16 @@ Learn more in [this documentation](!docs!/basics/loaders).
 To resolve resources in a loader, use the `container` property of its first parameter:
 
 ```ts highlights={[["9", "container"], ["11", "resolve", "Resolve the Logger from the module's container."]]}
-import { LoaderOptions } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+import { 
+  ContainerRegistrationKeys
+} from "@medusajs/framework/utils"
 
-export default async function helloWorldLoader({ container }: LoaderOptions) {
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   logger.info("[helloWorldLoader]: Hello, World!")
@@ -2707,7 +2934,9 @@ Learn more in [this documentation](!docs!/advanced-development/modules/container
 To access a module's options in its loader, use the `options` property of its first parameter:
 
 ```ts highlights={[["11", "options"]]}
-import { LoaderOptions } from "@medusajs/framework/types"
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
 
 // recommended to define type in another file
 type ModuleOptions = {
@@ -2717,7 +2946,11 @@ type ModuleOptions = {
 export default async function helloWorldLoader({
   options,
 }: LoaderOptions<ModuleOptions>) {
-  console.log("[HELLO MODULE] Just started the Medusa application!", options)
+  
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!",
+    options
+  )
 }
 ```
 
@@ -2728,14 +2961,18 @@ Learn more in [this documentation](!docs!/advanced-development/modules/options).
 To register a resource in the Module's container using a loader, use the `container`'s `registerAdd` method:
 
 ```ts highlights={[["9", "registerAdd"]]}
-import { LoaderOptions } from "@medusajs/framework/types"
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
 import { asValue } from "awilix"
 
-export default async function helloWorldLoader({ container }: LoaderOptions) {
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
   container.registerAdd(
     "custom_data",
     asValue({
-      test: true,
+      test: true
     })
   )
 }
@@ -2791,14 +3028,21 @@ Widgets created in a details page, such as widgets in the `product.details.befor
 ```tsx highlights={[["10", "data"]]}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
-import { DetailWidgetProps, AdminProduct } from "@medusajs/framework/types"
+import { 
+  DetailWidgetProps, 
+  AdminProduct,
+} from "@medusajs/framework/types"
 
 // The widget
-const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
+const ProductWidget = ({ 
+  data,
+}: DetailWidgetProps<AdminProduct>) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Product Widget {data.title}</Heading>
+        <Heading level="h2">
+          Product Widget {data.title}
+        </Heading>
       </div>
     </Container>
   )
@@ -2930,11 +3174,11 @@ const ProductWidget = () => {
     fetch(`/admin/products`, {
       credentials: "include",
     })
-      .then((res) => res.json())
-      .then(({ count }) => {
-        setProductsCount(count)
-        setLoading(false)
-      })
+    .then((res) => res.json())
+    .then(({ count }) => {
+      setProductsCount(count)
+      setLoading(false)
+    })
   }, [loading])
 
   return (
@@ -3006,8 +3250,10 @@ medusaIntegrationTestRunner({
     describe("Custom endpoints", () => {
       describe("GET /custom", () => {
         it("returns correct message", async () => {
-          const response = await api.get(`/custom`)
-
+          const response = await api.get(
+            `/custom`
+          )
+  
           expect(response.status).toEqual(200)
           expect(response.data).toHaveProperty("message")
           expect(response.data.message).toEqual("Hello, World!")
@@ -3038,7 +3284,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
     describe("Test hello-world workflow", () => {
       it("returns message", async () => {
-        const { result } = await helloWorldWorkflow(getContainer()).run()
+        const { result } = await helloWorldWorkflow(getContainer())
+          .run()
 
         expect(result).toEqual("Hello, World!")
       })
@@ -3123,11 +3370,13 @@ export default Manager
 2. Use the `setAuthAppMetadataStep` as a step in a workflow that creates a manager:
 
 ```ts
-import {
-  createWorkflow,
+import { 
+  createWorkflow, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { setAuthAppMetadataStep } from "@medusajs/medusa/core-flows"
+import { 
+  setAuthAppMetadataStep,
+} from "@medusajs/medusa/core-flows"
 // other imports...
 
 const createManagerWorkflow = createWorkflow(
@@ -3151,7 +3400,7 @@ const createManagerWorkflow = createWorkflow(
 3. Use the workflow in an API route that creates a user (manager) of the actor type:
 
 ```ts
-import type {
+import type { 
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
@@ -3165,10 +3414,10 @@ type RequestBody = {
 }
 
 export async function POST(
-  req: AuthenticatedMedusaRequest<RequestBody>,
+  req: AuthenticatedMedusaRequest<RequestBody>, 
   res: MedusaResponse
 ) {
-  // If `actor_id` is present, the request carries
+  // If `actor_id` is present, the request carries 
   // authentication for an existing manager
   if (req.auth_context.actor_id) {
     throw new MedusaError(
@@ -3177,21 +3426,25 @@ export async function POST(
     )
   }
 
-  const { result } = await createManagerWorkflow(req.scope).run({
-    input: {
-      manager: req.body,
-      authIdentityId: req.auth_context.auth_identity_id,
-    },
-  })
-
-  res.status(200).json({ manager: result })
+  const { result } = await createManagerWorkflow(req.scope)
+    .run({
+      input: {
+        manager: req.body,
+        authIdentityId: req.auth_context.auth_identity_id,
+      },
+    })
+  
+    res.status(200).json({ manager: result })
 }
 ```
 
 4. Apply the `authenticate` middleware on the new route in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares, authenticate } from "@medusajs/medusa"
+import { 
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/medusa"
 
 export default defineMiddlewares({
   routes: [
@@ -3206,7 +3459,9 @@ export default defineMiddlewares({
     },
     {
       matcher: "/manager/me*",
-      middlewares: [authenticate("manager", ["session", "bearer"])],
+      middlewares: [
+        authenticate("manager", ["session", "bearer"]),
+      ],
     },
   ],
 })
@@ -3232,7 +3487,10 @@ import {
 
 // retrieve the cart
 const cart = await cartModuleService.retrieveCart("cart_123", {
-  relations: ["items.adjustments", "shipping_methods.adjustments"],
+  relations: [
+    "items.adjustments",
+    "shipping_methods.adjustments",
+  ],
 })
 
 // retrieve line item adjustments
@@ -3250,11 +3508,13 @@ cart.items.forEach((item) => {
 })
 
 // retrieve shipping method adjustments
-const shippingMethodAdjustments: ComputeActionShippingLine[] = []
+const shippingMethodAdjustments: ComputeActionShippingLine[] =
+  []
 cart.shipping_methods.forEach((shippingMethod) => {
-  const filteredAdjustments = shippingMethod.adjustments?.filter(
-    (adjustment) => adjustment.code !== undefined
-  ) as unknown as ComputeActionAdjustmentLine[]
+  const filteredAdjustments =
+    shippingMethod.adjustments?.filter(
+      (adjustment) => adjustment.code !== undefined
+    ) as unknown as ComputeActionAdjustmentLine[]
   if (filteredAdjustments.length) {
     shippingMethodAdjustments.push({
       ...shippingMethod,
@@ -3264,10 +3524,13 @@ cart.shipping_methods.forEach((shippingMethod) => {
 })
 
 // compute actions
-const actions = await promotionModuleService.computeActions(["promo_123"], {
-  items: lineItemAdjustments,
-  shipping_methods: shippingMethodAdjustments,
-})
+const actions = await promotionModuleService.computeActions(
+  ["promo_123"],
+  {
+    items: lineItemAdjustments,
+    shipping_methods: shippingMethodAdjustments,
+  }
+)
 
 // set the adjustments on the line item
 await cartModuleService.setLineItemAdjustments(
@@ -3281,7 +3544,8 @@ await cartModuleService.setLineItemAdjustments(
 await cartModuleService.setShippingMethodAdjustments(
   cart.id,
   actions.filter(
-    (action) => action.action === "addShippingMethodAdjustment"
+    (action) =>
+      action.action === "addShippingMethodAdjustment"
   ) as AddShippingMethodAdjustment[]
 )
 ```
@@ -3311,7 +3575,8 @@ const taxLines = await taxModuleService.getTaxLines(
   {
     address: {
       ...cart.shipping_address,
-      country_code: cart.shipping_address.country_code || "us",
+      country_code:
+        cart.shipping_address.country_code || "us",
     },
   }
 )
@@ -3370,11 +3635,13 @@ order.items.forEach((item) => {
 })
 
 //retrieve shipping method adjustments
-const shippingMethodAdjustments: ComputeActionShippingLine[] = []
+const shippingMethodAdjustments: ComputeActionShippingLine[] =
+  []
 order.shipping_methods.forEach((shippingMethod) => {
-  const filteredAdjustments = shippingMethod.adjustments?.filter(
-    (adjustment) => adjustment.code !== undefined
-  ) as unknown as ComputeActionAdjustmentLine[]
+  const filteredAdjustments =
+    shippingMethod.adjustments?.filter(
+      (adjustment) => adjustment.code !== undefined
+    ) as unknown as ComputeActionAdjustmentLine[]
   if (filteredAdjustments.length) {
     shippingMethodAdjustments.push({
       ...shippingMethod,
@@ -3384,12 +3651,15 @@ order.shipping_methods.forEach((shippingMethod) => {
 })
 
 // compute actions
-const actions = await promotionModuleService.computeActions(["promo_123"], {
-  items: lineItemAdjustments,
-  shipping_methods: shippingMethodAdjustments,
-  // TODO infer from cart or region
-  currency_code: "usd",
-})
+const actions = await promotionModuleService.computeActions(
+  ["promo_123"],
+  {
+    items: lineItemAdjustments,
+    shipping_methods: shippingMethodAdjustments,
+    // TODO infer from cart or region
+    currency_code: "usd",
+  }
+)
 
 // set the adjustments on the line items
 await orderModuleService.setOrderLineItemAdjustments(
@@ -3403,7 +3673,8 @@ await orderModuleService.setOrderLineItemAdjustments(
 await orderModuleService.setOrderShippingMethodAdjustments(
   order.id,
   actions.filter(
-    (action) => action.action === "addShippingMethodAdjustment"
+    (action) =>
+      action.action === "addShippingMethodAdjustment"
   ) as AddShippingMethodAdjustment[]
 )
 ```
@@ -3417,54 +3688,62 @@ To accept payment using the Payment Module's main service:
 1. Create a payment collection and link it to the cart:
 
 ```ts
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { 
+  ContainerRegistrationKeys,
+  Modules
+} from "@medusajs/framework/utils"
 
 // ...
 
-const paymentCollection = await paymentModuleService.createPaymentCollections({
-  region_id: "reg_123",
-  currency_code: "usd",
-  amount: 5000,
-})
+const paymentCollection =
+  await paymentModuleService.createPaymentCollections({
+    region_id: "reg_123",
+    currency_code: "usd",
+    amount: 5000,
+  })
 
 // resolve the remote link
-const remoteLink = container.resolve(ContainerRegistrationKeys)
+const remoteLink = container.resolve(
+  ContainerRegistrationKeys
+)
 
 // create a link between the cart and payment collection
 remoteLink.create({
   [Modules.CART]: {
-    cart_id: "cart_123",
+    cart_id: "cart_123"
   },
   [Modules.PAYMENT]: {
-    payment_collection_id: paymentCollection.id,
-  },
+    payment_collection_id: paymentCollection.id
+  }
 })
 ```
 
 2. Create a payment session in the collection:
 
 ```ts
-const paymentSession = await paymentModuleService.createPaymentSession(
-  paymentCollection.id,
-  {
-    provider_id: "stripe",
-    currency_code: "usd",
-    amount: 5000,
-    data: {
-      // any necessary data for the
-      // payment provider
-    },
-  }
-)
+const paymentSession =
+  await paymentModuleService.createPaymentSession(
+    paymentCollection.id,
+    {
+      provider_id: "stripe",
+      currency_code: "usd",
+      amount: 5000,
+      data: {
+        // any necessary data for the
+        // payment provider
+      },
+    }
+  )
 ```
 
 3. Authorize the payment session:
 
 ```ts
-const payment = await paymentModuleService.authorizePaymentSession(
-  paymentSession.id,
-  {}
-)
+const payment =
+  await paymentModuleService.authorizePaymentSession(
+    paymentSession.id,
+    {}
+  )
 ```
 
 Learn more in [this documentation](../commerce-modules/payment/payment-flow/page.mdx).
@@ -3480,7 +3759,11 @@ import { QueryContext } from "@medusajs/framework/utils"
 
 const { data: products } = await query.graph({
   entity: "product",
-  fields: ["*", "variants.*", "variants.calculated_price.*"],
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*",
+  ],
   filters: {
     id: "prod_123",
   },
@@ -3504,9 +3787,15 @@ To get all prices of a product variant using [Query](!docs!/advanced-development
 ```ts
 const { data: products } = await query.graph({
   entity: "product",
-  fields: ["*", "variants.*", "variants.prices.*"],
+  fields: [
+    "*",
+    "variants.*",
+    "variants.prices.*",
+  ],
   filters: {
-    id: ["prod_123"],
+    id: [
+      "prod_123",
+    ],
   },
 })
 ```
@@ -3523,9 +3812,9 @@ import {
   TaxableItemDTO,
   ItemTaxLineDTO,
 } from "@medusajs/framework/types"
-import {
+import { 
   QueryContext,
-  calculateAmountsWithTax,
+  calculateAmountsWithTax
 } from "@medusajs/framework/utils"
 // other imports...
 
@@ -3556,7 +3845,11 @@ const asTaxItem = (product: HttpTypes.StoreProduct): TaxableItemDTO[] => {
 
 const { data: products } = await query.graph({
   entity: "product",
-  fields: ["*", "variants.*", "variants.calculated_price.*"],
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*",
+  ],
   filters: {
     id: "prod_123",
   },
@@ -3600,7 +3893,8 @@ products.forEach((product) => {
     const { priceWithTax, priceWithoutTax } = calculateAmountsWithTax({
       taxLines: taxLinesForVariant,
       amount: variant.calculated_price!.calculated_amount!,
-      includesTax: variant.calculated_price!.is_calculated_price_tax_inclusive!,
+      includesTax:
+        variant.calculated_price!.is_calculated_price_tax_inclusive!,
     })
 
     // do something with prices...
@@ -3625,7 +3919,8 @@ const invite = await userModuleService.createInvites({
 To accept an invite and create a user using the [User Module](../commerce-modules/user/page.mdx):
 
 ```ts
-const invite = await userModuleService.validateInviteToken(inviteToken)
+const invite =
+  await userModuleService.validateInviteToken(inviteToken)
 
 await userModuleService.updateInvites({
   id: invite.id,

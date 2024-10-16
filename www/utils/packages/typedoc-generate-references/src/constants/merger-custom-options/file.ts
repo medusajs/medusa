@@ -39,14 +39,10 @@ Create the file \`src/modules/my-file/index.ts\` with the following content:
 
 \`\`\`ts title="src/modules/my-file/index.ts"
 import MyFileProviderService from "./service"
-import { 
-  ModuleProvider, 
-  Modules
-} from "@medusajs/framework/utils"
 
-export default ModuleProvider(Modules.FILE, {
+export default {
   services: [MyFileProviderService],
-})
+}
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyFileProviderService\` is the module's service.`,

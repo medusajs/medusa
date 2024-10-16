@@ -39,14 +39,10 @@ Create the file \`src/modules/my-fulfillment/index.ts\` with the following conte
 
 \`\`\`ts title="src/modules/my-fulfillment/index.ts"
 import MyFulfillmentProviderService from "./service"
-import { 
-  ModuleProvider, 
-  Modules
-} from "@medusajs/framework/utils"
 
-export default ModuleProvider(Modules.FULFILLMENT, {
+export default {
   services: [MyFulfillmentProviderService],
-})
+}
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyFulfillmentProviderService\` is the module's service.`,

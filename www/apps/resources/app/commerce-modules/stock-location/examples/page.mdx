@@ -21,10 +21,6 @@ You should only use the Stock Location Module's main service when implementing c
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-<<<<<<< HEAD
-import { IStockLocationService } from "@medusajs/framework/types"
-=======
->>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
@@ -75,10 +71,6 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-<<<<<<< HEAD
-import { IStockLocationService } from "@medusajs/framework/types"
-=======
->>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
@@ -123,10 +115,6 @@ export async function GET(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-<<<<<<< HEAD
-import { IStockLocationService } from "@medusajs/framework/types"
-=======
->>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
@@ -197,9 +185,8 @@ export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const stockLocationModuleService = request.scope.resolve(
-    Modules.STOCK_LOCATION
-  )
+  const stockLocationModuleService =
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   await stockLocationModuleService.deleteStockLocations("sloc_123")
 

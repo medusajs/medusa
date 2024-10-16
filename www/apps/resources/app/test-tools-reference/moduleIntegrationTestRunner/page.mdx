@@ -39,26 +39,25 @@ moduleIntegrationTestRunner<HelloModuleService>({
           type: "`string`",
           name: "moduleName",
           description: "The module's name.",
-          optional: false,
+          optional: false
         },
         {
           type: "DmlEntity[]",
           name: "moduleModels",
           description: "The module's data models.",
-          optional: false,
+          optional: false
         },
         {
           type: "string",
           name: "resolve",
-          description:
-            "The path to the module relative to the `src` directory.",
-          optional: false,
+          description: "The path to the module relative to the `src` directory.",
+          optional: false
         },
         {
           type: "`() => void`",
           name: "testSuite",
           description: "The Jest tests to run.",
-          optional: false,
+          optional: false
         },
         {
           type: "`Record<string, any>`",
@@ -68,8 +67,7 @@ moduleIntegrationTestRunner<HelloModuleService>({
         {
           type: "`Record<string, any>`",
           name: "injectedDependencies",
-          description:
-            "Dependencies to inject into the module's container. They key is the registration name, and the value is the instance of the dependency.",
+          description: "Dependencies to inject into the module's container. They key is the registration name, and the value is the instance of the dependency.",
         },
         {
           type: "`string`",
@@ -80,10 +78,10 @@ moduleIntegrationTestRunner<HelloModuleService>({
           type: "`boolean`",
           name: "debug",
           description: "Whether to show database log messages.",
-          defaultValue: "false",
-        },
-      ],
-    },
+          defaultValue: "false"
+        }
+      ]
+    }
   ]}
   sectionTitle="Parameters"
 />
@@ -102,9 +100,8 @@ The function passed to `testSuite` accepts the following parameters:
         {
           type: "any",
           name: "service",
-          description:
-            "An instance of the module's main service. Its type is the type argument passed to the `moduleIntegrationTestRunner` function.",
-          optional: false,
+          description: "An instance of the module's main service. Its type is the type argument passed to the `moduleIntegrationTestRunner` function.",
+          optional: false
         },
         {
           type: "`Record<string, string>`",
@@ -114,14 +111,14 @@ The function passed to `testSuite` accepts the following parameters:
             {
               type: "`string`",
               name: "schema",
-              description: "The PostgreSQL schema the database is created in.",
+              description: "The PostgreSQL schema the database is created in."
             },
             {
               type: "`string`",
               name: "clientUrl",
-              description: "The connection URL to the database.",
+              description: "The connection URL to the database."
             },
-          ],
+          ]
         },
         {
           type: "`TestDatabase`",
@@ -131,28 +128,27 @@ The function passed to `testSuite` accepts the following parameters:
             {
               type: `[SqlEntityManager](https://mikro-orm.io/api/5.9/knex/class/EntityManager)`,
               name: "manager",
-              description:
-                "An instance of MikroORM's entity manager, which can be used to run queries and perform other database tasks.",
+              description: "An instance of MikroORM's entity manager, which can be used to run queries and perform other database tasks."
             },
             {
               type: "`() => Promise<void>`",
               name: "setupDatabase",
-              description: "Creates the database for the test.",
+              description: "Creates the database for the test."
             },
             {
               type: "`() => Promise<void>`",
               name: "clearDatabase",
-              description: "Removes all data in the database's tables.",
+              description: "Removes all data in the database's tables."
             },
             {
               type: "`() => SqlEntityManager`",
               name: "forkManager",
-              description: "Returns a new entity manager.",
-            },
-          ],
-        },
-      ],
-    },
+              description: "Returns a new entity manager."
+            }
+          ]
+        }
+      ]
+    }
   ]}
   sectionTitle="Test Suite Parameters"
 />

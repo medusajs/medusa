@@ -12,8 +12,8 @@ In this chapter, you'll learn about the `medusaIntegrationTestRunner` utility fu
   items={[
     {
       text: "Testing Tools Setup",
-      link: "/debugging-and-testing/testing-tools",
-    },
+      link: "/debugging-and-testing/testing-tools"
+    }
   ]}
 />
 
@@ -24,12 +24,8 @@ The `medusaIntegrationTestRunner` utility function is provided by the `medusa-te
 For example:
 
 export const highlights = [
-  [
-    "4",
-    "api",
-    "A set of utility methods used to send requests to the Medusa application.",
-  ],
-  ["4", "getContainer", "A function to retrieve the Medusa container."],
+  ["4", "api", "A set of utility methods used to send requests to the Medusa application."],
+  ["4", "getContainer", "A function to retrieve the Medusa container."]
 ]
 
 ```ts title="integration-tests/http/test.spec.ts" highlights={highlights}
@@ -47,9 +43,9 @@ The `medusaIntegrationTestRunner` function accepts an object as a parameter. The
 `testSuite`'s value is a function that defines the tests to run. The function accepts as a parameter an object that has the following properties:
 
 - `api`: a set of utility methods used to send requests to the Medusa application. It has the following methods:
-  - `get`: Send a `GET` request to an API route.
-  - `post`: Send a `POST` request to an API route.
-  - `delete`: Send a `DELETE` request to an API route.
+    - `get`: Send a `GET` request to an API route.
+    - `post`: Send a `POST` request to an API route.
+    - `delete`: Send a `DELETE` request to an API route.
 - `getContainer`: a function that retrieves the Medusa Container. Use the `getContainer().resolve` method to resolve resources from the Medusa Container.
 
 The tests in the `testSuite` function are written using [Jest](https://jestjs.io/).

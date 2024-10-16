@@ -12,8 +12,8 @@ In this chapter, you'll learn how to write integration tests for workflows using
   items={[
     {
       text: "Testing Tools Setup",
-      link: "/debugging-and-testing/testing-tools",
-    },
+      link: "/debugging-and-testing/testing-tools"
+    }
   ]}
 />
 
@@ -33,11 +33,14 @@ const step1 = createStep("step-1", () => {
   return new StepResponse("Hello, World!")
 })
 
-export const helloWorldWorkflow = createWorkflow("hello-world-workflow", () => {
-  const message = step1()
+export const helloWorldWorkflow = createWorkflow(
+  "hello-world-workflow",
+  () => {
+    const message = step1()
 
-  return new WorkflowResponse(message)
-})
+    return new WorkflowResponse(message)
+  }
+)
 ```
 
 To write a test for this workflow, create the file `integration-tests/http/workflow.spec.ts` with the following content:
@@ -50,7 +53,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
     describe("Test hello-world workflow", () => {
       it("returns message", async () => {
-        const { result } = await helloWorldWorkflow(getContainer()).run()
+        const { result } = await helloWorldWorkflow(getContainer())
+          .run()
 
         expect(result).toEqual("Hello, World!")
       })
