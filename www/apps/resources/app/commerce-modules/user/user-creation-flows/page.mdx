@@ -4,21 +4,37 @@ export const metadata = {
 
 # {metadata.title}
 
-This document provides flows to create a user.
+In this document, learn the different ways to create a user using the User Module.
+
+## Straightforward User Creation
+
+To create a user, use the [create method of the User Module’s main service](/references/user/create):
+
+```ts
+const user = await userModuleService.createUsers({
+  email: "user@example.com",
+})
+```
+
+You can pair this with the Auth Module to allow the user to authenticate, as explained in a [later section](#create-identity-with-the-auth-module).
+
+---
 
 ## Invite Users
 
-Another possible flow to create a user is by sending them an invite. Then, once they accept it, you create a new user for them:
+To create a user, you can create an invite for them using the [createInvites method](/references/user/createInvites) of the User Module's main service:
 
 ```ts
-// create invite
 const invite = await userModuleService.createInvites({
   email: "user@example.com",
 })
+```
 
-// later, accept invite and create user
+Later, you can accept the invite and create a new user for them:
+
+```ts
 const invite =
-  await userModuleService.validateInviteToken("secret123")
+  await userModuleService.validateInviteToken("secret_123")
 
 await userModuleService.updateInvites({
   id: invite.id,
@@ -32,7 +48,7 @@ const user = await userModuleService.createUsers({
 
 ### Invite Expiry
 
-An invite has an expiry date. You can renew the expiry date and refresh the token using the `refreshInviteTokens` method:
+An invite has an expiry date. You can renew the expiry date and refresh the token using the [refreshInviteTokens method](/references/user/refreshInviteTokens):
 
 ```ts
 await userModuleService.refreshInviteTokens(["invite_123"])
@@ -40,17 +56,7 @@ await userModuleService.refreshInviteTokens(["invite_123"])
 
 ---
 
-## Straightforward Creation
-
-Finally, you can create a user using the [create method of the User Module’s main service](/references/user/create):
-
-```ts
-const user = await userModuleService.createUsers({
-  email: "user@example.com",
-})
-```
-
-### With the Auth Module
+## Create Identity with the Auth Module
 
 By combining the User and Auth Modules, you can use the Auth Module for authenticating users, and the User Module to manage those users.
 
@@ -62,7 +68,6 @@ const { success, authIdentity } =
     // ...
   })
 
-// assuming authIdentity is defined
 const [, count] = await userModuleService.listAndCountUsers({
   email: authIdentity.entity_id,
 })
