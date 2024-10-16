@@ -19,7 +19,7 @@ In this chapter, you'll learn about the `medusaIntegrationTestRunner` utility fu
 
 ## medusaIntegrationTestRunner Utility
 
-The `medusaIntegrationTestRunner` utility function is provided by the `@medusajs/test-utils` package to create integration tests in your Medusa project. It runs a full Medusa application, allowing you test API routes, workflows, or other customizations.
+The `medusaIntegrationTestRunner` utility function is provided by the `medusa-test-utils` package to create integration tests in your Medusa project. It runs a full Medusa application, allowing you test API routes, workflows, or other customizations.
 
 For example:
 
@@ -33,7 +33,7 @@ export const highlights = [
 ]
 
 ```ts title="integration-tests/http/test.spec.ts" highlights={highlights}
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {

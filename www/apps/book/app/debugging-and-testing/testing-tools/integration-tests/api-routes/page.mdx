@@ -12,8 +12,8 @@ In this chapter, you'll learn how to write integration tests for API routes usin
   items={[
     {
       text: "Testing Tools Setup",
-      link: "/debugging-and-testing/testing-tools",
-    },
+      link: "/debugging-and-testing/testing-tools"
+    }
   ]}
 />
 
@@ -24,7 +24,11 @@ Consider the following API route created at `src/api/custom/route.ts`:
 ```ts title="src/api/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
-export async function GET(req: MedusaRequest, res: MedusaResponse) {
+export async function GET(
+
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
   res.json({
     message: "Hello, World!",
   })
@@ -34,18 +38,20 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 To write an integration test that tests this API route, create the file `integration-tests/http/custom-routes.spec.ts` with the following content:
 
 export const getHighlights = [
-  ["8", "api.get", "Send a GET request to the `/custom` API route."],
+  ["8", "api.get", "Send a GET request to the `/custom` API route."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={getHighlights}
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
     describe("Custom endpoints", () => {
       describe("GET /custom", () => {
         it("returns correct message", async () => {
-          const response = await api.get(`/custom`)
+          const response = await api.get(
+            `/custom`
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data).toHaveProperty("message")
@@ -106,11 +112,20 @@ import HelloModuleService from "../../../modules/hello/service"
 
 // ...
 
-export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const helloModuleService: HelloModuleService =
-    req.scope.resolve("helloModuleService")
+export async function POST(
 
-  const myCustom = await helloModuleService.createMyCustoms(req.body)
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const helloModuleService: HelloModuleService =
+    req.scope.resolve(
+      "helloModuleService"
+    )
+
+  const myCustom = await helloModuleService.createMyCustoms(
+
+    req.body
+  )
 
   res.json({
     my_custom: myCustom,

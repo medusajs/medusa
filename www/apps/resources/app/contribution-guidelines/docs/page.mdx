@@ -106,11 +106,11 @@ If you’re adding code blocks that use NPM and Yarn, you must add the `npm2yarn
 
 For example:
 
-````md
+~~~md
 ```bash npm2yarn
 npm run start
 ```
-````
+~~~
 
 The code snippet must be written using NPM.
 
@@ -119,7 +119,7 @@ The code snippet must be written using NPM.
 When a command uses the global option `-g`, add it at the end of the NPM command to ensure that it’s transformed to a Yarn command properly. For example:
 
 ```bash npm2yarn
-npm install @medusajs/cli -g
+npm install @medusajs/medusa-cli -g
 ```
 
 ---
@@ -156,7 +156,7 @@ cd www/vale
 
 {/* TODO need to enable MDX v1 comments first. */}
 
-{/\* ### Linter Exceptions
+{/* ### Linter Exceptions
 
 If it's needed to break some style guide rules in a document, you can wrap the parts that the linter shouldn't scan with the following comments in the `md` or `mdx` files:
 
@@ -178,7 +178,7 @@ Medusa supports Node versions 14 and 16.
 <!-- vale docs.Numbers = YES -->
 ```
 
-If you use this in your PR, you must justify its usage. \*/}
+If you use this in your PR, you must justify its usage. */}
 
 ---
 
@@ -228,11 +228,11 @@ This will fix any fixable errors, and show errors that require your action.
 
 {/* TODO need to enable MDX v1 comments first. */}
 
-{/\* ### ESLint Exceptions
+{\* ### ESLint Exceptions
 
 If some code blocks have errors that can't or shouldn't be fixed, you can add the following command before the code block:
 
-````md
+~~~md
 <!-- eslint-skip -->
 
 ```js
@@ -242,11 +242,11 @@ console.log("This block isn't linted")
 ```js
 console.log("This block is linted")
 ```
-````
+~~~
 
 You can also disable specific rules. For example:
 
-````md
+~~~md
 <!-- eslint-disable semi -->
 
 ```js
@@ -260,4 +260,4 @@ console.log("This block can't use semi colons")
 ```*/}
 
 ```
-````
+~~~

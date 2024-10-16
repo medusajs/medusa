@@ -19,12 +19,12 @@ In this chapter, you'll learn about the `moduleIntegrationTestRunner` utility fu
 
 ## moduleIntegrationTestRunner Utility
 
-The `moduleIntegrationTestRunner` utility function is provided by the `@medusajs/test-utils` package to create integration tests for a module. The integration tests run on a test Medusa application with only the specified module enabled.
+The `moduleIntegrationTestRunner` utility function is provided by the `medusa-test-utils` package to create integration tests for a module. The integration tests run on a test Medusa application with only the specified module enabled.
 
 For example, assuming you have a `hello` module, create a test file at `src/modules/hello/__tests__/service.spec.ts`:
 
 ```ts title="src/modules/hello/__tests__/service.spec.ts"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { HELLO_MODULE } from ".."
 import HelloModuleService from "../service"
 import MyCustom from "../models/my-custom"
@@ -83,7 +83,7 @@ If your module accepts options, you can set them using the `moduleOptions` prope
 For example:
 
 ```ts
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import HelloModuleService from "../service"
 
 moduleIntegrationTestRunner<HelloModuleService>({
@@ -103,7 +103,7 @@ If your module doesn't have a data model, pass a dummy model in the `moduleModel
 For example:
 
 ```ts
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import HelloModuleService from "../service"
 import { model } from "@medusajs/framework/utils"
 

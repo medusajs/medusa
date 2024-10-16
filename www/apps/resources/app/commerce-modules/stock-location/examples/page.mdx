@@ -50,7 +50,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
 
 export async function POST(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -100,7 +100,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
 
 export async function GET(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -158,7 +158,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
 
 export async function POST(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
@@ -213,7 +213,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location"
+import { initialize as initializeStockLocationModule } from "@medusajs/medusa/stock-location-next"
 
 export async function DELETE(request: Request) {
   const stockLocationModuleService = await initializeStockLocationModule({})
