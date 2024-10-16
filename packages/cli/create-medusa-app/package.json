@@ -13,11 +13,11 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@medusajs/telemetry": "^0.0.17",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
     "inquirer": "^9.2.2",
-    "medusa-telemetry": "^0.0.17",
     "nanoid": "^4.0.2",
     "node-emoji": "^2.0.2",
     "node-fetch": "^3.3.1",

@@ -16,7 +16,7 @@ import url from "url"
 // @ts-ignore
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
-import { track } from "medusa-telemetry"
+import { track } from "@medusajs/telemetry"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"

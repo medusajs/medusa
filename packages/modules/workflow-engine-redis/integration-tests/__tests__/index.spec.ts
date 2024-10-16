@@ -16,7 +16,7 @@ import {
   TransactionStepState,
 } from "@medusajs/framework/utils"
 import { asValue } from "awilix"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"

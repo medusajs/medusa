@@ -542,7 +542,9 @@ export async function loadResources({
   loadedModuleLoaders ??= []
 
   const modulePath = discoveryPath
-  let normalizedPath = dirname(require.resolve(modulePath))
+  let normalizedPath = dirname(
+    require.resolve(modulePath, { paths: [process.cwd()] })
+  )
   normalizedPath = resolve(normalizedPath)
 
   try {
