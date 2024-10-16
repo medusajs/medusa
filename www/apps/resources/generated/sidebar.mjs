@@ -4789,8 +4789,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/pricing/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/pricing/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -5272,6 +5272,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/product/extend",
+            "title": "Extend Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "type": "sub-category",
             "title": "Concepts",
             "children": [
@@ -5279,8 +5287,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/product/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/product/links-to-other-modules",
+                "title": "Links to Other Modules",
                 "children": []
               }
             ]
@@ -5297,7 +5305,7 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "type": "link",
                 "path": "/commerce-modules/product/guides/price",
-                "title": "Get Product Variant Prices",
+                "title": "Get Variant Prices",
                 "children": []
               },
               {
@@ -6019,6 +6027,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/promotion/extend",
+            "title": "Extend Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "type": "sub-category",
             "title": "Concepts",
             "children": [
@@ -6058,8 +6074,8 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/promotion/relations-to-other-modules",
-                "title": "Relation to Modules",
+                "path": "/commerce-modules/promotion/links-to-other-modules",
+                "title": "Links to Modules",
                 "children": []
               }
             ]
@@ -8041,6 +8057,14 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/medusa-cli/commands/user",
                 "title": "user",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/build",
+                "title": "build",
                 "children": []
               },
               {
