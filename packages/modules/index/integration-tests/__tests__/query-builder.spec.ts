@@ -33,7 +33,10 @@ let medusaAppLoader!: MedusaAppLoader
 
 const beforeAll_ = async () => {
   try {
-    configLoader(path.join(__dirname, "./../__fixtures__"), "medusa-config")
+    await configLoader(
+      path.join(__dirname, "./../__fixtures__"),
+      "medusa-config"
+    )
 
     console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)

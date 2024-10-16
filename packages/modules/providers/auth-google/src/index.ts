@@ -1,10 +1,8 @@
-import { ModuleProviderExports } from "@medusajs/framework/types"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import { GoogleAuthService } from "./services/google"
 
 const services = [GoogleAuthService]
 
-const providerExport: ModuleProviderExports = {
+export default ModuleProvider(Modules.AUTH, {
   services,
-}
-
-export default providerExport
+})

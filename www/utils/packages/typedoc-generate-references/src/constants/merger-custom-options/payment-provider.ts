@@ -68,11 +68,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/payment",
+      resolve: "@medusajs/medusa/payment",
       options: {
         providers: [
           {
-            resolve: "./modules/my-payment",
+            resolve: "./src/modules/my-payment",
             id: "my-payment",
             options: {
               // provider options...
