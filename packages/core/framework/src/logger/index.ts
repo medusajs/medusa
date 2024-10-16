@@ -1,8 +1,3 @@
-let logger
-try {
-  logger = require("@medusajs/cli/dist/reporter")
-} catch {
-  logger = require("@medusajs/medusa-cli/dist/reporter")
-}
+import logger from "@medusajs/cli/dist/reporter"
 
 export { logger }
