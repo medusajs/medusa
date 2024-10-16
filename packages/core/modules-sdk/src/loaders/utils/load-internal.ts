@@ -372,50 +372,56 @@ export async function loadModuleMigrations(
   revertMigration?: MigrationFunction
   generateMigration?: MigrationFunction
 }> {
-  const mainLoadedModule = await resolveModuleExports({
-    resolution: { ...resolution, moduleExports },
-  })
-
-  const loadedServices = [mainLoadedModule] as (
-    | ResolvedModule
-    | ResolvedModuleProvider
-  )[]
-
-  if (Array.isArray(resolution?.options?.providers)) {
-    for (const provider of (resolution.options as any).providers) {
-      const providerRes = provider.resolve as ModuleProviderExports
-
-      const canLoadProvider =
-        providerRes && (isString(providerRes) || !providerRes?.services)
-
-      if (!canLoadProvider) {
-        continue
-      }
-
-      const loadedProvider = await resolveModuleExports({
-        resolution: {
-          ...resolution,
-          moduleExports: !isString(providerRes) ? providerRes : undefined,
-          definition: {
-            ...resolution.definition,
-            key: provider.id,
-          },
-          resolutionPath: isString(provider.resolve) ? provider.resolve : false,
-        },
-      })
-      loadedServices.push(loadedProvider as ResolvedModuleProvider)
-    }
-  }
-
-  if ("error" in mainLoadedModule) {
-    throw mainLoadedModule.error
-  }
-
   const runMigrationsFn: ((...args) => Promise<any>)[] = []
   const revertMigrationFn: ((...args) => Promise<any>)[] = []
   const generateMigrationFn: ((...args) => Promise<any>)[] = []
 
   try {
+    const mainLoadedModule = await resolveModuleExports({
+      resolution: { ...resolution, moduleExports },
+    })
+    if ("error" in mainLoadedModule) {
+      throw mainLoadedModule.error
+    }
+
+    const loadedServices = [mainLoadedModule] as (
+      | ResolvedModule
+      | ResolvedModuleProvider
+    )[]
+
+    if (Array.isArray(resolution?.options?.providers)) {
+      for (const provider of (resolution.options as any).providers) {
+        const providerRes = provider.resolve as ModuleProviderExports
+
+        const canLoadProvider =
+          providerRes && (isString(providerRes) || !providerRes?.services)
+
+        if (!canLoadProvider) {
+          continue
+        }
+
+        const loadedProvider = await resolveModuleExports({
+          resolution: {
+            ...resolution,
+            moduleExports: !isString(providerRes) ? providerRes : undefined,
+            definition: {
+              ...resolution.definition,
+              key: provider.id,
+            },
+            resolutionPath: isString(provider.resolve)
+              ? provider.resolve
+              : false,
+          },
+        })
+
+        if ("error" in loadedProvider) {
+          throw loadedProvider.error
+        }
+
+        loadedServices.push(loadedProvider as ResolvedModuleProvider)
+      }
+    }
+
     const migrationScripts: any[] = []
     for (const loadedModule of loadedServices) {
       let runMigrationsCustom = loadedModule.runMigrations
