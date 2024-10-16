@@ -50,7 +50,7 @@ describe("modules loader", () => {
   it("should register the service ", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/default",
+        resolutionPath: require.resolve("../__mocks__/@modules/default"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
@@ -90,7 +90,7 @@ describe("modules loader", () => {
   it("should run the defined loaders and logs the errors if something fails", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/brokenloader",
+        resolutionPath: require.resolve("../__mocks__/@modules/brokenloader"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
@@ -115,7 +115,7 @@ describe("modules loader", () => {
   it("should log the errors if no service is defined", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/no-service",
+        resolutionPath: require.resolve("../__mocks__/@modules/no-service"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
@@ -142,7 +142,7 @@ describe("modules loader", () => {
   it("should throw an error if no service is defined and the module is required", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/no-service",
+        resolutionPath: require.resolve("../__mocks__/@modules/no-service"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
