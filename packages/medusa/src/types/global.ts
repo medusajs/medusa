@@ -1,7 +1,8 @@
 import {
   FindConfig,
-  MedusaContainer as coreMedusaContainer,
   RequestQueryFields,
+  Logger as coreLogger,
+  MedusaContainer as coreMedusaContainer,
 } from "@medusajs/framework/types"
 
 declare global {
@@ -58,20 +59,6 @@ export type ClassConstructor<T> = {
 
 export type MedusaContainer = coreMedusaContainer
 
-export type Logger = {
-  panic: (data) => void
-  shouldLog: (level: string) => void
-  setLogLevel: (level: string) => void
-  unsetLogLevel: () => void
-  activity: (message: string, config?) => void
-  progress: (activityId, message) => void
-  error: (messageOrError, error?) => void
-  failure: (activityId, message) => void
-  success: (activityId, message) => void
-  debug: (message) => void
-  info: (message) => void
-  warn: (message) => void
-  log: (...args) => void
-}
+export type Logger = coreLogger
 
 export type Constructor<T> = new (...args: any[]) => T

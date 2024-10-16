@@ -19,16 +19,15 @@ You should only use the Promotion Module's main service when implementing comple
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPromotionModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+  const promotionModuleService = request.scope.resolve(
     Modules.PROMOTION
   )
 
@@ -84,16 +83,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPromotionModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+  const promotionModuleService = request.scope.resolve(
     Modules.PROMOTION
   )
 
@@ -141,16 +139,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPromotionModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+  const promotionModuleService = request.scope.resolve(
     Modules.PROMOTION
   )
 
@@ -219,16 +216,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPromotionModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+  const promotionModuleService = request.scope.resolve(
     Modules.PROMOTION
   )
 
