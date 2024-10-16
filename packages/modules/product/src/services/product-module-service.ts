@@ -1834,6 +1834,11 @@ export default class ProductModuleService
           return false
         }
 
+        // @ts-ignore
+        if (variantData?.id && variantData.id === v.id) {
+          return false
+        }
+
         return (variantData.options as unknown as { id: string }[])!.every(
           (optionValue) => {
             const variantOptionValue = v.options.find(
