@@ -121,24 +121,13 @@ So, add the following script in `package.json`:
 
 By default, your Medusa application uses modules and providers useful for development, such as the In-Memory Cache Module or the Local File Module Provider.
 
-It’s highly recommended to instead install modules and providers suitable for production, including:
+It’s highly recommended to instead use modules and providers suitable for production, including:
 
 - [Redis Cache Module](../../../architectural-modules/cache/redis/page.mdx)
 - [Redis Event Bus Module](../../../architectural-modules/event/redis/page.mdx)
 - [Workflow Engine Redis Module](../../../architectural-modules/workflow-engine/redis/page.mdx)
 - [S3 File Module Provider](../../../architectural-modules/file/s3/page.mdx) (or other file module providers production-ready).
 - [SendGrid Notification Module Provider](../../../architectural-modules/notification/sendgrid/page.mdx) (or other notification module providers production-ready).
-
-For example, add the following dependencies in `package.json` for the Cache, Event Bus, and Workflow Engine modules:
-
-```json
-"dependencies": {
-  // ...
-  "@medusajs/cache-redis": "rc",
-  "@medusajs/event-bus-redis": "rc",
-  "@medusajs/workflow-engine-redis": "rc"
-}
-```
 
 Then, add these modules in `medusa-config.ts`:
 
@@ -149,19 +138,19 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/cache-redis",
+      resolve: "@medusajs/medusa/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
     {
-      resolve: "@medusajs/event-bus-redis",
+      resolve: "@medusajs/medusa/event-bus-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
     {
-      resolve: "@medusajs/workflow-engine-redis",
+      resolve: "@medusajs/medusa/workflow-engine-redis",
       options: {
         redis: {
           url: process.env.REDIS_URL,

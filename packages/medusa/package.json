@@ -84,6 +84,7 @@
     "@medusajs/inventory": "^0.0.3",
     "@medusajs/link-modules": "^0.2.11",
     "@medusajs/locking": "^0.0.1",
+    "@medusajs/locking-redis": "^0.0.1",
     "@medusajs/notification": "^0.1.2",
     "@medusajs/notification-local": "^0.0.1",
     "@medusajs/notification-sendgrid": "^0.0.1",

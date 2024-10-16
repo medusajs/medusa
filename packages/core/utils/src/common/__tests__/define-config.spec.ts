@@ -7,7 +7,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -65,6 +64,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -151,7 +153,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -212,6 +213,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -301,7 +305,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -367,6 +370,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -457,7 +463,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -523,6 +528,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -609,7 +617,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -667,6 +674,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {
@@ -756,7 +766,6 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "http://localhost:9000",
-          "outDir": ".medusa/admin",
           "path": "/app",
         },
         "featureFlags": {},
@@ -811,6 +820,9 @@ describe("defineConfig", function () {
           },
           "inventory": {
             "resolve": "@medusajs/medusa/inventory",
+          },
+          "locking": {
+            "resolve": "@medusajs/medusa/locking",
           },
           "notification": {
             "options": {

@@ -8,6 +8,12 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/locking"
   },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
   "publishConfig": {
     "access": "public"
   },

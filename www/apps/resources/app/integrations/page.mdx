@@ -1,4 +1,4 @@
-import { ChildDocs } from "docs-ui"
+import { CardList } from "docs-ui"
 
 export const metadata = {
   title: `Integrations`,
@@ -12,7 +12,14 @@ Find in this document Medusa's modules that integrate third-party services and s
 
 Learn how to create a payment provider in [this guide](/references/payment/provider).
 
-<ChildDocs showItems={["Payment"]} hideTitle />
+<CardList
+  items={[
+    {
+      href: "/architectural-modules/file/s3",
+      title: "AWS S3 (and Compatible APIs)"
+    }
+  ]}
+/>
 
 ---
 
@@ -20,7 +27,14 @@ Learn how to create a payment provider in [this guide](/references/payment/provi
 
 Learn how to create a notification provider in [this guide](/references/notification-provider-module).
 
-<ChildDocs showItems={["Notification"]} hideTitle />
+<CardList
+  items={[
+    {
+      href: "/architectural-modules/notification/sendgrid",
+      title: "SendGrid"
+    }
+  ]}
+/>
 
 ---
 
@@ -28,4 +42,11 @@ Learn how to create a notification provider in [this guide](/references/notifica
 
 Learn how to create a file provider in [this guide](/references/file-provider-module).
 
-<ChildDocs showItems={["File"]} hideTitle />
+<CardList
+  items={[
+    {
+      href: "/commerce-modules/payment/payment-provider/stripe",
+      title: "Stripe"
+    }
+  ]}
+/>

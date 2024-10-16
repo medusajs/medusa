@@ -1,4 +1,3 @@
-export * from "./graphql"
 export * from "./api-key"
 export * from "./auth"
 export * from "./bundles"
@@ -12,6 +11,7 @@ export * from "./exceptions"
 export * from "./feature-flags"
 export * from "./file"
 export * from "./fulfillment"
+export * from "./graphql"
 export * from "./inventory"
 export * from "./link"
 export * from "./modules-sdk"
@@ -30,3 +30,4 @@ export * from "./totals/big-number"
 export * from "./user"
 
 export const MedusaModuleType = Symbol.for("MedusaModule")
+export const MedusaModuleProviderType = Symbol.for("MedusaModuleProvider")

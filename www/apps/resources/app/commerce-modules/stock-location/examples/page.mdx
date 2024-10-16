@@ -8,6 +8,12 @@ export const metadata = {
 
 In this document, you’ll find common examples of how you can use the Stock Location Module in your application.
 
+<Note>
+
+You should only use the Stock Location Module's main service when implementing complex customizations. For common cases, check out [available workflows instead](../../../medusa-workflows-reference/page.mdx).
+
+</Note>
+
 ## Create a Stock Location
 
 <CodeTabs groupId="app-type">
@@ -15,14 +21,17 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+<<<<<<< HEAD
 import { IStockLocationService } from "@medusajs/framework/types"
+=======
+>>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const stockLocationModuleService: IStockLocationService =
+  const stockLocationModuleService =
     request.scope.resolve(Modules.STOCK_LOCATION)
 
   const stockLocation = await stockLocationModuleService.createStockLocations({
@@ -66,14 +75,17 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+<<<<<<< HEAD
 import { IStockLocationService } from "@medusajs/framework/types"
+=======
+>>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const stockLocationModuleService: IStockLocationService =
+  const stockLocationModuleService =
     request.scope.resolve(Modules.STOCK_LOCATION)
 
   res.json({
@@ -111,14 +123,17 @@ export async function GET(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+<<<<<<< HEAD
 import { IStockLocationService } from "@medusajs/framework/types"
+=======
+>>>>>>> develop
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const stockLocationModuleService: IStockLocationService =
+  const stockLocationModuleService =
     request.scope.resolve(Modules.STOCK_LOCATION)
 
   const stockLocation = await stockLocationModuleService.updateStockLocations({
@@ -176,15 +191,15 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IStockLocationService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(Modules.STOCK_LOCATION)
+  const stockLocationModuleService = request.scope.resolve(
+    Modules.STOCK_LOCATION
+  )
 
   await stockLocationModuleService.deleteStockLocations("sloc_123")
 
