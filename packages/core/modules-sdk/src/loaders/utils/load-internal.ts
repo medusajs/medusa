@@ -480,8 +480,10 @@ export async function loadModuleMigrations(
       revertMigration,
       generateMigration,
     }
-  } catch {
-    return {}
+  } catch (e) {
+    throw new Error(
+      `Unable to resolve the migration scripts for the module ${resolution.definition.key}\n${e.message}\n${e.stack}`
+    )
   }
 }
 
