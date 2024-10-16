@@ -6,9 +6,7 @@ import React from "react"
 export const KeyboundForm = React.forwardRef<
   HTMLFormElement,
   React.FormHTMLAttributes<HTMLFormElement>
->((props, ref) => {
-  const { onSubmit, ...rest } = props
-
+>(({ onSubmit, onKeyDown, ...rest }, ref) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     onSubmit?.(event)
@@ -28,7 +26,7 @@ export const KeyboundForm = React.forwardRef<
     <form
       {...rest}
       onSubmit={handleSubmit}
-      onKeyDown={handleKeyDown}
+      onKeyDown={onKeyDown ?? handleKeyDown}
       ref={ref}
     />
   )

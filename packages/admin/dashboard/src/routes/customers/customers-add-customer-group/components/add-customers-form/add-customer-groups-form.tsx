@@ -10,11 +10,13 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   customerGroupsQueryKeys,
   useCustomerGroups,
@@ -23,7 +25,7 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { client, sdk } from "../../../../../lib/client"
+import { sdk } from "../../../../../lib/client"
 import { queryClient } from "../../../../../lib/query-client"
 
 type AddCustomerGroupsFormProps = {
@@ -126,15 +128,14 @@ export const AddCustomerGroupsForm = ({
 
       await Promise.all(promises)
 
-      toast.success(t("general.success"), {
-        description: t("customers.groups.add.success", {
+      toast.success(
+        t("customers.groups.add.success", {
           groups: data.customer_group_ids
             .map((id) => customer_groups?.find((g) => g.id === id))
             .filter(Boolean)
-            .map((cg) => cg.name),
-        }),
-        dismissLabel: t("actions.close"),
-      })
+            .map((cg) => cg?.name),
+        })
+      )
 
       await queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
@@ -154,7 +155,7 @@ export const AddCustomerGroupsForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -199,7 +200,7 @@ export const AddCustomerGroupsForm = ({
             {t("actions.save")}
           </Button>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

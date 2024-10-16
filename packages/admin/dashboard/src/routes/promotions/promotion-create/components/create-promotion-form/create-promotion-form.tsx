@@ -32,6 +32,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
@@ -350,7 +351,7 @@ export const CreatePromotionForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+      <KeyboundForm className="flex h-full flex-col" onSubmit={handleSubmit}>
         <ProgressTabs
           value={tab}
           onValueChange={(tab) => handleTabChange(tab as Tab)}
@@ -875,7 +876,7 @@ export const CreatePromotionForm = () => {
             )}
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

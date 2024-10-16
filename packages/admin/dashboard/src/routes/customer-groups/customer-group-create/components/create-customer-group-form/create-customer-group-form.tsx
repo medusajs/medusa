@@ -9,6 +9,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 export const CreateCustomerGroupSchema = zod.object({
@@ -52,15 +53,19 @@ export const CreateCustomerGroupForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
+      <KeyboundForm onSubmit={handleSubmit}>
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
-              <Heading>{t("customerGroups.create.header")}</Heading>
-              <Text size="small" className="text-ui-fg-subtle">
-                {t("customerGroups.create.hint")}
-              </Text>
+              <RouteFocusModal.Title asChild>
+                <Heading>{t("customerGroups.create.header")}</Heading>
+              </RouteFocusModal.Title>
+              <RouteFocusModal.Description asChild>
+                <Text size="small" className="text-ui-fg-subtle">
+                  {t("customerGroups.create.hint")}
+                </Text>
+              </RouteFocusModal.Description>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Form.Field
@@ -96,7 +101,7 @@ export const CreateCustomerGroupForm = () => {
             {t("actions.create")}
           </Button>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

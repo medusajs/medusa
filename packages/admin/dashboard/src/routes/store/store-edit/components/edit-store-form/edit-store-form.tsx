@@ -7,6 +7,7 @@ import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 
@@ -62,7 +63,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-8">
             <Form.Field
@@ -150,7 +151,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

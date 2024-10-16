@@ -11,6 +11,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
 import { castNumber } from "../../../../../lib/cast-number"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
@@ -89,7 +90,7 @@ export const PriceListPricesEditForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex size-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex size-full flex-col">
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
           <DataGrid
@@ -116,7 +117,7 @@ export const PriceListPricesEditForm = ({
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }
@@ -185,13 +186,10 @@ function convertToPriceArray(
 ) {
   const prices: PriceObject[] = []
 
-  const regionCurrencyMap = regions.reduce(
-    (map, region) => {
-      map[region.id] = region.currency_code
-      return map
-    },
-    {} as Record<string, string>
-  )
+  const regionCurrencyMap = regions.reduce((map, region) => {
+    map[region.id] = region.currency_code
+    return map
+  }, {} as Record<string, string>)
 
   for (const [_productId, product] of Object.entries(data || {})) {
     const { variants } = product || {}
@@ -249,21 +247,15 @@ function comparePrices(initialPrices: PriceObject[], newPrices: PriceObject[]) {
   const pricesToCreate: HttpTypes.AdminCreatePriceListPrice[] = []
   const pricesToDelete: string[] = []
 
-  const initialPriceMap = initialPrices.reduce(
-    (map, price) => {
-      map[createMapKey(price)] = price
-      return map
-    },
-    {} as Record<string, (typeof initialPrices)[0]>
-  )
+  const initialPriceMap = initialPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof initialPrices)[0]>)
 
-  const newPriceMap = newPrices.reduce(
-    (map, price) => {
-      map[createMapKey(price)] = price
-      return map
-    },
-    {} as Record<string, (typeof newPrices)[0]>
-  )
+  const newPriceMap = newPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof newPrices)[0]>)
 
   const keys = new Set([
     ...Object.keys(initialPriceMap),

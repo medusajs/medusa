@@ -30,6 +30,7 @@ import {
 
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useAddReturnItem,
   useAddReturnShipping,
@@ -402,9 +403,8 @@ export const ReturnCreateForm = ({
         }
       }}
     >
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
-
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
             <Heading level="h1">{t("orders.returns.create")}</Heading>
@@ -508,7 +508,7 @@ export const ReturnCreateForm = ({
               ))}
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
-                {/*LOCATION*/}
+                {/* LOCATION*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
                     <Form.Label>{t("orders.returns.location")}</Form.Label>
@@ -545,7 +545,7 @@ export const ReturnCreateForm = ({
                   />
                 </div>
 
-                {/*INBOUND SHIPPING*/}
+                {/* INBOUND SHIPPING*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
                     <Form.Label>
@@ -553,7 +553,7 @@ export const ReturnCreateForm = ({
                       <Text
                         size="small"
                         leading="compact"
-                        className="text-ui-fg-muted inline ml-1"
+                        className="text-ui-fg-muted ml-1 inline"
                       >
                         ({t("fields.optional")})
                       </Text>
@@ -564,7 +564,7 @@ export const ReturnCreateForm = ({
                     </Form.Hint>
                   </div>
 
-                  {/*TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
+                  {/* TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
                   <Form.Field
                     control={form.control}
                     name="option_id"
@@ -621,7 +621,7 @@ export const ReturnCreateForm = ({
               </Alert>
             )}
 
-            {/*TOTALS SECTION*/}
+            {/* TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
                 <span className="txt-small text-ui-fg-subtle">
@@ -658,7 +658,7 @@ export const ReturnCreateForm = ({
 
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
-                            for (let a of s.actions) {
+                            for (const a of s.actions) {
                               if (a.action === "SHIPPING_ADD") {
                                 actionId = a.id
                               }
@@ -707,7 +707,7 @@ export const ReturnCreateForm = ({
               </div>
             </div>
 
-            {/*SEND NOTIFICATION*/}
+            {/* SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
@@ -763,7 +763,7 @@ export const ReturnCreateForm = ({
             </div>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }
