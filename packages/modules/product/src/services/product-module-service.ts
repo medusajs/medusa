@@ -1821,7 +1821,7 @@ export default class ProductModuleService
   protected static checkIfVariantWithOptionsAlreadyExists(
     data: ((
       | ProductTypes.CreateProductVariantDTO
-      | ProductTypes.UpdateProductVariantDTO
+      | UpdateProductVariantInput
     ) & { options: { id: string }[]; product_id: string })[],
     variants: ProductVariant[]
   ) {
@@ -1834,8 +1834,7 @@ export default class ProductModuleService
           return false
         }
 
-        // @ts-ignore
-        if (variantData?.id && variantData.id === v.id) {
+        if ((variantData as UpdateProductVariantInput)?.id === v.id) {
           return false
         }
 
