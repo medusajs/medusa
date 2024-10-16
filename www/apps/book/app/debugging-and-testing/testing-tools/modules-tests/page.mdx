@@ -32,7 +32,7 @@ import MyCustom from "../models/my-custom"
 moduleIntegrationTestRunner<HelloModuleService>({
   moduleName: HELLO_MODULE,
   moduleModels: [MyCustom],
-  resolve: "./modules/hello",
+  resolve: "./src/modules/hello",
   testSuite: ({ service }) => {
     // TODO write tests
   },
@@ -43,7 +43,7 @@ The `moduleIntegrationTestRunner` function accepts as a parameter an object with
 
 - `moduleName`: The name of the module.
 - `moduleModels`: An array of models in the module. Refer to [this section](#write-tests-for-modules-without-data-models) if your module doesn't have data models.
-- `resolve`: The path to the model relative to the `src` directory.
+- `resolve`: The path to the model.
 - `testSuite`: A function that defines the tests to run.
 
 The `testSuite` function accepts as a parameter an object having the `service` property, which is an instance of the module's main service.

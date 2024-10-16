@@ -134,13 +134,13 @@ module.exports = defineConfig({
   },
   modules: [
     {
-      resolve: "./modules/hello",
+      resolve: "./src/modules/hello",
     }
   ]
 })
 ```
 
-Its value is an array of objects, each having a `resolve` property, whose value is either a path to module's directory relative to `src` (it shouldn't include `src` in the path), or an `npm` package’s name.
+Its value is an array of objects, each having a `resolve` property, whose value is either a path to module's directory, or an `npm` package’s name.
 
 ### 5. Generate Migrations
 

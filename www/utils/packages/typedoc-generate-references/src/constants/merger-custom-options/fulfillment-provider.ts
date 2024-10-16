@@ -63,7 +63,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-fulfillment",
+            resolve: "./src/modules/my-fulfillment",
             id: "my-fulfillment",
             options: {
               // provider options...

@@ -47,7 +47,7 @@ import MyCustom from "../models/my-custom"
 moduleIntegrationTestRunner<HelloModuleService>({
   moduleName: HELLO_MODULE,
   moduleModels: [MyCustom],
-  resolve: "./modules/hello",
+  resolve: "./src/modules/hello",
   testSuite: ({ service }) => {
     describe("HelloModuleService", () => {
       it("says hello world", () => {
