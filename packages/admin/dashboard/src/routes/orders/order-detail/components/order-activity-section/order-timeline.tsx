@@ -226,9 +226,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         items.push({
           title: t("orders.activity.events.fulfillment.delivered"),
           timestamp: fulfillment.delivered_at,
-          children: (
-            <FulfillmentCreatedBody fulfillment={fulfillment} />
-          ),
+          children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
         })
       }
 
@@ -350,10 +348,10 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           edit.status === "requested"
             ? edit.requested_at
             : edit.status === "declined"
-              ? edit.declined_at
-              : edit.status === "canceled"
-                ? edit.canceled_at
-                : edit.created_at,
+            ? edit.declined_at
+            : edit.status === "canceled"
+            ? edit.canceled_at
+            : edit.created_at,
         children: isConfirmed ? (
           <OrderEditBody edit={edit} itemsMap={itemsMap} />
         ) : null,
@@ -390,7 +388,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     }
 
     return [...sortedActivities, createdAt]
-  }, [order, payments, returns, exchanges, orderChanges, notes, isLoading])
+  }, [
+    order,
+    payments,
+    returns,
+    exchanges,
+    orderChanges,
+    notes,
+    isLoading,
+    itemsMap,
+  ])
 }
 
 type OrderActivityItemProps = PropsWithChildren<{
