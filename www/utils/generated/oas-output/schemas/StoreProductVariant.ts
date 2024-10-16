@@ -118,6 +118,8 @@
  *   - length
  *   - title
  *   - id
+ *   - created_at
+ *   - updated_at
  *   - width
  *   - weight
  *   - height
@@ -125,8 +127,6 @@
  *   - hs_code
  *   - mid_code
  *   - material
- *   - created_at
- *   - updated_at
  *   - deleted_at
  *   - sku
  *   - barcode

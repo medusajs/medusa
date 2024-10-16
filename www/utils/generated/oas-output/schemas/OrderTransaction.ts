@@ -6,13 +6,14 @@
  * required:
  *   - id
  *   - order_id
+ *   - order
  *   - amount
  *   - currency_code
  *   - reference
  *   - reference_id
- *   - metadata
  *   - created_at
  *   - updated_at
+ *   - metadata
  * properties:
  *   id:
  *     type: string
@@ -55,5 +56,8 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date that the transaction was updated.
+ *   order:
+ *     $ref: "#/components/schemas/Order"
  * 
 */
+
