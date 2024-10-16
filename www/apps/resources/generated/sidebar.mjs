@@ -7968,136 +7968,6 @@ export const generatedSidebar = [
     "children": []
   },
   {
-    "type": "separator"
-  },
-  {
-    "loaded": true,
-    "isPathHref": true,
-    "type": "category",
-    "title": "SDKs and Tools",
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/create-medusa-app",
-        "title": "create-medusa-app",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/medusa-cli",
-        "title": "Medusa CLI",
-        "isChildSidebar": true,
-        "childSidebarTitle": "Medusa CLI Reference",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/medusa-cli",
-            "title": "Overview",
-            "children": []
-          },
-          {
-            "type": "separator"
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "category",
-            "title": "Commands",
-            "autogenerate_path": "medusa-cli/commands",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/new",
-                "title": "new",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/develop",
-                "title": "develop",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/start",
-                "title": "start",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/user",
-                "title": "user",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/build",
-                "title": "build",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/db",
-                "title": "db",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/exec",
-                "title": "exec",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/start-cluster",
-                "title": "start-cluster",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/medusa-cli/commands/telemtry",
-                "title": "telemetry",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/nextjs-starter",
-        "title": "Next.js Starter",
-        "children": []
-      }
-    ]
-  },
-  {
     "loaded": true,
     "isPathHref": true,
     "type": "link",
@@ -8538,6 +8408,136 @@ export const generatedSidebar = [
     "loaded": true,
     "isPathHref": true,
     "type": "category",
+    "title": "SDKs and Tools",
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/create-medusa-app",
+        "title": "create-medusa-app",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/medusa-cli",
+        "title": "Medusa CLI",
+        "isChildSidebar": true,
+        "childSidebarTitle": "Medusa CLI Reference",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/medusa-cli",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Commands",
+            "autogenerate_path": "medusa-cli/commands",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/new",
+                "title": "new",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/develop",
+                "title": "develop",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start",
+                "title": "start",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/user",
+                "title": "user",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/build",
+                "title": "build",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/db",
+                "title": "db",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/exec",
+                "title": "exec",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start-cluster",
+                "title": "start-cluster",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/telemtry",
+                "title": "telemetry",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/nextjs-starter",
+        "title": "Next.js Starter",
+        "children": []
+      }
+    ]
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "type": "category",
     "title": "General",
     "children": [
       {
@@ -8765,9 +8765,6 @@ export const generatedSidebar = [
         ]
       }
     ]
-  },
-  {
-    "type": "separator"
   },
   {
     "loaded": true,
