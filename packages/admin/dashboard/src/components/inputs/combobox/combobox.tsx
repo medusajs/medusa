@@ -237,7 +237,7 @@ const ComboboxImpl = <T extends Value = string>(
         )}
         style={
           {
-            "--tag-width": `${showTag ? tagWidth : 0}px`,
+            "--tag-width": `${tagWidth}px`,
           } as CSSProperties
         }
       >
