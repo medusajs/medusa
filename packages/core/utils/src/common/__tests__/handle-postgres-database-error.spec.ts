@@ -37,7 +37,7 @@ describe("handlePostgresDataError", function () {
       - You have a PostgreSQL database running
       - You have passed the correct credentials in medusa-config.js
       - You have formatted the database connection string correctly. See below:
-      "postgres://[username]:[password]@[host]:[post]/[db_name]" - If there is no password, you can omit it from the connection string
+      "postgres://[username]:[password]@[host]:[port]/[db_name]" - If there is no password, you can omit it from the connection string
       ${EOL}
       ${error.message}`
     )
