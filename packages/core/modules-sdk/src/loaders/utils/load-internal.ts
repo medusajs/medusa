@@ -143,7 +143,11 @@ async function loadInternalProvider(
           ...resolution.definition,
           key: provider.id,
         },
-        resolutionPath: isString(provider.resolve) ? provider.resolve : false,
+        resolutionPath: isString(provider.resolve)
+          ? require.resolve(provider.resolve, {
+              paths: [process.cwd()],
+            })
+          : false,
       },
       logger,
       migrationOnly,
