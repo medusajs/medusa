@@ -101,20 +101,20 @@
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder
- *     description: The exchange's allow backorder.
+ *     description: Whether variants that are out of stock can be added to the exchange.
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The exchange's created by.
+ *     description: The ID of the user that created the exchange.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The exchange's deleted at.
+ *     description: The date the exchange was deleted.
  *   canceled_at:
  *     type: string
  *     title: canceled_at
- *     description: The exchange's canceled at.
+ *     description: The date the exchange was canceled.
  *     format: date-time
  * 
 */

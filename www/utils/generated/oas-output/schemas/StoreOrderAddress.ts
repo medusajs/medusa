@@ -1,7 +1,7 @@
 /**
  * @schema StoreOrderAddress
  * type: object
- * description: An order address
+ * description: The details of the order's address.
  * x-schemaName: StoreOrderAddress
  * required:
  *   - id

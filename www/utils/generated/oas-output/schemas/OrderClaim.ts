@@ -115,16 +115,16 @@
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The claim's created by.
+ *     description: The ID of the user that created the claim.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The claim's deleted at.
+ *     description: The date the claim was deleted.
  *   canceled_at:
  *     type: string
  *     title: canceled_at
- *     description: The claim's canceled at.
+ *     description: The date the claim was canceled.
  *     format: date-time
  * 
 */

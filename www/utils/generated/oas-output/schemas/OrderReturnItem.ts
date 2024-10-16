@@ -40,17 +40,17 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The item's order id.
+ *     description: The ID of the associated order.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The item's created at.
+ *     description: The date the item was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The item's updated at.
+ *     description: The date the item was updated.
  * 
 */
 

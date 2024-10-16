@@ -7808,33 +7808,35 @@ components:
         service_zone_id:
           type: string
           title: service_zone_id
-          description: The shipping option's service zone id.
+          description: The ID of the associated service zone.
         shipping_profile_id:
           type: string
           title: shipping_profile_id
-          description: The shipping option's shipping profile id.
+          description: The ID of the shipping profile that the option belongs to.
         data:
           type: object
-          description: The shipping option's data.
+          description: Data useful for the fulfillment provider handling the processing of this shipping option.
+          externalDocs:
+            url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
         price_type:
           type: string
-          description: The shipping option's price type.
+          description: The type of the shipping option's price. If `flat`, the shipping option's price is in the `prices` field. If `calculated`, it will be calculated by the fulfillment provider duing checkout.
           enum:
             - flat
             - calculated
         provider_id:
           type: string
           title: provider_id
-          description: The shipping option's provider id.
+          description: The ID of the associated fulfillment provider.
         type:
           $ref: '#/components/schemas/AdminCreateShippingOptionType'
         prices:
           type: array
-          description: The shipping option's prices.
+          description: The shipping option's prices if its `price_type` is flat.
           items:
             oneOf:
               - type: object
-                description: The price's prices.
+                description: A shipping option price.
                 x-schemaName: AdminCreateShippingOptionPriceWithCurrency
                 required:
                   - currency_code
@@ -7844,12 +7846,13 @@ components:
                     type: string
                     title: currency_code
                     description: The price's currency code.
+                    example: usd
                   amount:
                     type: number
                     title: amount
                     description: The price's amount.
               - type: object
-                description: The price's prices.
+                description: A shipping option price.
                 x-schemaName: AdminCreateShippingOptionPriceWithRegion
                 required:
                   - region_id
@@ -7858,7 +7861,7 @@ components:
                   region_id:
                     type: string
                     title: region_id
-                    description: The price's region id.
+                    description: The ID of the region this price is used in.
                   amount:
                     type: number
                     title: amount
@@ -7909,7 +7912,7 @@ components:
                 example: cusgroup_123
     AdminCreateShippingOptionType:
       type: object
-      description: The shipping option's type.
+      description: The details of the shipping option type to create.
       x-schemaName: AdminCreateShippingOptionType
       required:
         - label
@@ -12432,7 +12435,7 @@ components:
         compare_at_unit_price:
           type: number
           title: compare_at_unit_price
-          description: The order edit's compare at unit price.
+          description: The original price of the item before a promotion or sale.
     AdminPostOrderEditsReqSchema:
       type: object
       description: The order edit's details.
@@ -12519,7 +12522,7 @@ components:
         compare_at_unit_price:
           type: number
           title: compare_at_unit_price
-          description: The order edit's compare at unit price.
+          description: The original price of the item before a promotion or sale.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: The exchange's details.
@@ -21334,16 +21337,16 @@ components:
         created_by:
           type: string
           title: created_by
-          description: The claim's created by.
+          description: The ID of the user that created the claim.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The claim's deleted at.
+          description: The date the claim was deleted.
         canceled_at:
           type: string
           title: canceled_at
-          description: The claim's canceled at.
+          description: The date the claim was canceled.
           format: date-time
     OrderExchange:
       type: object
@@ -21447,20 +21450,20 @@ components:
         allow_backorder:
           type: boolean
           title: allow_backorder
-          description: The exchange's allow backorder.
+          description: Whether variants that are out of stock can be added to the exchange.
         created_by:
           type: string
           title: created_by
-          description: The exchange's created by.
+          description: The ID of the user that created the exchange.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The exchange's deleted at.
+          description: The date the exchange was deleted.
         canceled_at:
           type: string
           title: canceled_at
-          description: The exchange's canceled at.
+          description: The date the exchange was canceled.
           format: date-time
     OrderItem:
       type: object
@@ -21893,17 +21896,17 @@ components:
         order_id:
           type: string
           title: order_id
-          description: The item's order id.
+          description: The ID of the associated order.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The item's created at.
+          description: The date the item was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The item's updated at.
+          description: The date the item was updated.
     OrderShippingMethod:
       type: object
       description: The shipping method's details.
@@ -22332,13 +22335,13 @@ components:
         exchange_id:
           type: string
           title: exchange_id
-          description: The return order's exchange id.
+          description: The ID of the associated exchange.
         exchange:
           type: object
         claim_id:
           type: string
           title: claim_id
-          description: The return order's claim id.
+          description: The ID of the associated claim
         claim:
           $ref: '#/components/schemas/OrderClaim'
         display_id:
@@ -22348,29 +22351,29 @@ components:
         location_id:
           type: string
           title: location_id
-          description: The return order's location id.
+          description: The ID of the location that the items are returned to.
         no_notification:
           type: boolean
           title: no_notification
-          description: The return order's no notification.
+          description: Whether the customer should receive a notification about updates to the return.
         created_by:
           type: string
           title: created_by
-          description: The return order's created by.
+          description: The ID of the user that created the return.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The return order's deleted at.
+          description: The date the return was deleted.
         requested_at:
           type: string
           title: requested_at
-          description: The return order's requested at.
+          description: The date the return was requested.
           format: date-time
         received_at:
           type: string
           title: received_at
-          description: The return order's received at.
+          description: The date the return was received.
           format: date-time
     StoreAddCartLineItem:
       type: object
@@ -23974,7 +23977,7 @@ components:
             $ref: '#/components/schemas/BaseOrderTransaction'
     StoreOrderAddress:
       type: object
-      description: An order address
+      description: The details of the order's address.
       x-schemaName: StoreOrderAddress
       required:
         - id
@@ -24048,7 +24051,7 @@ components:
           description: The date the address was updated.
     StoreOrderFulfillment:
       type: object
-      description: The fulfillment's fulfillments.
+      description: The fulfillment's details.
       x-schemaName: StoreOrderFulfillment
       required:
         - id
@@ -24125,7 +24128,7 @@ components:
           description: The fulfillment's requires shipping.
     StoreOrderLineItem:
       type: object
-      description: The item's items.
+      description: The item's details.
       x-schemaName: StoreOrderLineItem
       required:
         - detail
@@ -30649,12 +30652,12 @@ components:
         iso_2:
           type: string
           title: iso_2
-          description: The country's iso 2.
+          description: The country's ISO 2 code.
           example: us
         iso_3:
           type: string
           title: iso_3
-          description: The country's iso 3.
+          description: The country's ISO 3 code.
           example: usa
         num_code:
           type: string

@@ -19,33 +19,35 @@
  *   service_zone_id:
  *     type: string
  *     title: service_zone_id
- *     description: The shipping option's service zone id.
+ *     description: The ID of the associated service zone.
  *   shipping_profile_id:
  *     type: string
  *     title: shipping_profile_id
- *     description: The shipping option's shipping profile id.
+ *     description: The ID of the shipping profile that the option belongs to.
  *   data:
  *     type: object
- *     description: The shipping option's data.
+ *     description: Data useful for the fulfillment provider handling the processing of this shipping option.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
  *   price_type:
  *     type: string
- *     description: The shipping option's price type.
+ *     description: The type of the shipping option's price. If `flat`, the shipping option's price is in the `prices` field. If `calculated`, it will be calculated by the fulfillment provider duing checkout.
  *     enum:
  *       - flat
  *       - calculated
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The shipping option's provider id.
+ *     description: The ID of the associated fulfillment provider.
  *   type:
  *     $ref: "#/components/schemas/AdminCreateShippingOptionType"
  *   prices:
  *     type: array
- *     description: The shipping option's prices.
+ *     description: The shipping option's prices if its `price_type` is flat.
  *     items:
  *       oneOf:
  *         - type: object
- *           description: The price's prices.
+ *           description: A shipping option price.
  *           x-schemaName: AdminCreateShippingOptionPriceWithCurrency
  *           required:
  *             - currency_code
@@ -55,12 +57,13 @@
  *               type: string
  *               title: currency_code
  *               description: The price's currency code.
+ *               example: usd
  *             amount:
  *               type: number
  *               title: amount
  *               description: The price's amount.
  *         - type: object
- *           description: The price's prices.
+ *           description: A shipping option price.
  *           x-schemaName: AdminCreateShippingOptionPriceWithRegion
  *           required:
  *             - region_id
@@ -69,7 +72,7 @@
  *             region_id:
  *               type: string
  *               title: region_id
- *               description: The price's region id.
+ *               description: The ID of the region this price is used in.
  *             amount:
  *               type: number
  *               title: amount

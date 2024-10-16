@@ -20,14 +20,14 @@ properties:
     type: array
     description: The category's children.
     items:
-      $ref: ./BaseProductCategory.yaml
+      type: object
   parent_category:
-    $ref: ./BaseProductCategory.yaml
+    type: object
   products:
     type: array
     description: The category's products.
     items:
-      $ref: ./BaseProduct.yaml
+      type: object
   name:
     type: string
     title: name

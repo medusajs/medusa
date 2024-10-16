@@ -94,13 +94,13 @@
  *   exchange_id:
  *     type: string
  *     title: exchange_id
- *     description: The return order's exchange id.
+ *     description: The ID of the associated exchange.
  *   exchange:
  *     $ref: "#/components/schemas/OrderExchange"
  *   claim_id:
  *     type: string
  *     title: claim_id
- *     description: The return order's claim id.
+ *     description: The ID of the associated claim
  *   claim:
  *     $ref: "#/components/schemas/OrderClaim"
  *   display_id:
@@ -110,29 +110,29 @@
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The return order's location id.
+ *     description: The ID of the location that the items are returned to.
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The return order's no notification.
+ *     description: Whether the customer should receive a notification about updates to the return.
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The return order's created by.
+ *     description: The ID of the user that created the return.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The return order's deleted at.
+ *     description: The date the return was deleted.
  *   requested_at:
  *     type: string
  *     title: requested_at
- *     description: The return order's requested at.
+ *     description: The date the return was requested.
  *     format: date-time
  *   received_at:
  *     type: string
  *     title: received_at
- *     description: The return order's received at.
+ *     description: The date the return was received.
  *     format: date-time
  * 
 */
