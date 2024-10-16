@@ -1,3 +1,11 @@
+import {
+  Modules,
+  PriceListStatus,
+  PriceListType,
+  ProductStatus,
+  PromotionRuleOperator,
+  PromotionType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   createAdminUser,
