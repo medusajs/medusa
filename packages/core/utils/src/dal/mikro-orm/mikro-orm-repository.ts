@@ -10,24 +10,22 @@ import {
   UpsertWithReplaceConfig,
 } from "@medusajs/types"
 import {
+  EntityClass,
   EntityManager,
+  EntityName,
+  EntityProperty,
   EntitySchema,
+  FilterQuery as MikroFilterQuery,
+  FindOptions as MikroOptions,
   LoadStrategy,
   ReferenceType,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import {
-  EntityClass,
-  EntityName,
-  EntityProperty,
-  FindOptions as MikroOptions,
-  FilterQuery as MikroFilterQuery,
-} from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
   arrayDifference,
   isString,
+  MedusaError,
   promiseAll,
 } from "../../common"
 import { buildQuery } from "../../modules-sdk/build-query"
@@ -110,6 +108,40 @@ export class MikroOrmBaseRepository<T extends object = object>
       (entity as EntitySchema).meta?.primaryKeys ??
       (entity as EntityClass<any>).prototype.__meta.primaryKeys ?? ["id"]
     )
+  }
+
+  /**
+   * When using the select-in strategy, the populated fields are not selected by default unlike when using the joined strategy.
+   * This method will add the populated fields to the fields array if they are not already specifically selected.
+   *
+   * TODO: Revisit if this is still needed in v6 as it seems to be a workaround for a bug in v5
+   *
+   * @param {FindOptions<any>} findOptions
+   */
+  static compensateRelationFieldsSelectionFromLoadStrategy({
+    findOptions,
+  }: {
+    findOptions: DAL.FindOptions<any>
+  }) {
+    const loadStrategy = findOptions?.options?.strategy
+
+    if (loadStrategy !== LoadStrategy.SELECT_IN) {
+      return
+    }
+
+    findOptions.options ??= {}
+    const populate = findOptions.options.populate ?? []
+    const fields = findOptions.options.fields ?? []
+    populate.forEach((populateRelation: string) => {
+      if (
+        fields.some((field: string) => field.startsWith(populateRelation + "."))
+      ) {
+        return
+      }
+
+      // If there is no specific fields selected for the relation but the relation is populated, we select all fields
+      fields.push(populateRelation + ".*")
+    })
   }
 
   create(data: unknown[], context?: Context): Promise<T[]> {
@@ -335,6 +367,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         }
       }
 
+      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
+        findOptions: findOptions_,
+      })
+
       return await manager.find(
         entity as EntityName<T>,
         findOptions_.where as MikroFilterQuery<T>,
@@ -353,6 +389,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       Object.assign(findOptions_.options, {
         strategy: LoadStrategy.SELECT_IN,
+      })
+
+      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
+        findOptions: findOptions_,
       })
 
       return await manager.findAndCount(
