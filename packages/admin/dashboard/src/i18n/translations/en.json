@@ -2376,7 +2376,7 @@
       },
       "label": { "label": "Label", "placeholder": "Wrong size" },
       "description": {
-        "label": "Descriptions",
+        "label": "Description",
         "placeholder": "Customer received the wrong size"
       }
     }
