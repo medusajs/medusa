@@ -1,0 +1,147 @@
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa JS SDK`,
+}
+
+# {metadata.title}
+
+In this documentation, you'll learn how to install and use Medusa's JS SDK.
+
+## What is Medusa JS SDK?
+
+Medusa's JS SDK is a library to easily send requests to your Medusa application. You can use it in your admin customizations or custom storefronts.
+
+---
+
+## How to Install Medusa JS SDK?
+
+The Medusa JS SDK is available in your Medusa application by default. So, you don't need to install it before using it in your admin customizations.
+
+To install the Medusa JS SDK in other projects, such as a custom storefront, run the following command:
+
+```bash npm2yarn
+npm install @medusajs/js-sdk@rc @medusajs/types@rc
+```
+
+You install two libraries:
+
+- `@medusajs/js-sdk`: the Medusa JS SDK.
+- `@medusajs/types`: Medusa's types library, which is useful if you're using TypeScript in your development.
+
+---
+
+## Setup Medusa JS SDK
+
+In your project, create the following `config.ts` file:
+
+<Note>
+
+For admin customizations, create this file at `src/admin/lib/config.ts`.
+
+</Note>
+
+<CodeTabs group="sdk-project">
+  <CodeTab label="Admin" value="admin">
+
+```ts title="src/admin/lib/config.ts"
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+
+```
+
+  </CodeTab>
+  <CodeTab label="Storefront" value="storefront">
+
+```ts title="config.ts"
+import Medusa from "@medusajs/js-sdk"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### JS SDK Configurations
+
+The `Medusa` initializer accepts as a parameter an object with the following properties:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Property</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `baseUrl`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the URL to the Medusa backend.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \- (This is the only required configuration)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `publishableKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the publishable API key to use in the storefront. You can retrieve it from the Medusa Admin.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \- (This is required for storefront applications. Otherwise, all requests will fail.)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `publishableKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the publishable API key to use in the storefront. You can retrieve it from the Medusa Admin.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \- (This is required for storefront applications. Otherwise, all requests will fail.)
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
