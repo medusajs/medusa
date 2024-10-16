@@ -39,16 +39,21 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Examples",
+        link: "/v2/resources/examples",
+      },
+      {
+        type: "link",
         title: "Recipes",
         link: "/v2/resources/recipes",
+      },
+      {
+        type: "divider",
       },
       {
         type: "link",
         title: "UI Library",
         link: "/ui",
-      },
-      {
-        type: "divider",
       },
       {
         type: "link",

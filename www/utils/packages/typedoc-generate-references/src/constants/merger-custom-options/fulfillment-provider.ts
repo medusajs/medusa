@@ -59,11 +59,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
-            resolve: "./modules/my-fulfillment",
+            resolve: "./src/modules/my-fulfillment",
             id: "my-fulfillment",
             options: {
               // provider options...

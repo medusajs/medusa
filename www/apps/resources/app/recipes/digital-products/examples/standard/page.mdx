@@ -196,7 +196,7 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "./modules/digital-product",
+      resolve: "./src/modules/digital-product",
     },
   ]
 })
@@ -1512,15 +1512,15 @@ module.exports = defineConfig({
   modules: [
     // ...
     {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
-            resolve: "@medusajs/fulfillment-manual",
+            resolve: "@medusajs/medusa/fulfillment-manual",
             id: "manual",
           },
           {
-            resolve: "./modules/digital-product-fulfillment",
+            resolve: "./src/modules/digital-product-fulfillment",
             id: "digital",
           },
         ],
@@ -2008,11 +2008,11 @@ module.exports = defineConfig({
   modules: [
     // ...
     {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "@medusajs/notification-local",
+            resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
               name: "Local Notification Provider",

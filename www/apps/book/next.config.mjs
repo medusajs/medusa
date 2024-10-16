@@ -169,6 +169,11 @@ const nextConfig = {
         destination: "/learn/storefront-development/:path*",
         permanent: true,
       },
+      {
+        source: "/more-resources/examples",
+        destination: "/resources/examples",
+        permanent: true,
+      },
     ]
   },
 }

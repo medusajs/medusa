@@ -13,16 +13,15 @@ In this document, you’ll find common examples of how you can use the Pricing M
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -84,16 +83,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -130,16 +128,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -176,16 +173,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -255,7 +251,7 @@ export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -330,16 +326,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 

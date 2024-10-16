@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Get Product Variant Prices"
+sidebar_label: "Get Variant Prices"
 ---
 
 export const metadata = {
@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn how to retrieve product variant prices in the Medusa application using the [Query](!docs!/learn/advanced-development/module-links/query).
+In this document, you'll learn how to retrieve product variant prices in the Medusa application using [Query](!docs!/learn/advanced-development/module-links/query).
 
 <Note title="Why use Query?">
 
@@ -57,11 +57,11 @@ Learn more about prices calculation in [this Pricing Module documentation](../..
 To retrieve calculated prices of variants based on a context, retrieve the products using Query and:
 
 - Pass `variants.calculated_price.*` in the `fields` property.
-- Pass a `context` property in the object parameter. Its value is an object of objects to sets the context for the retrieved fields.
+- Pass a `context` property in the object parameter. Its value is an object of objects that sets the context for the retrieved fields.
 
 For example:
 
-```ts highlights={[["6"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"]]}
+```ts highlights={[["10"], ["15"], ["16"], ["17"], ["18"], ["19"], ["20"], ["21"], ["22"]]}
 import { QueryContext } from "@medusajs/framework/utils"
 
 // ...

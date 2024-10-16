@@ -82,11 +82,11 @@ async function loadModule(
     return
   }
 
-  return await loadInternalModule(
+  return await loadInternalModule({
     container,
     resolution,
     logger,
     migrationOnly,
-    loaderOnly
-  )
+    loaderOnly,
+  })
 }
