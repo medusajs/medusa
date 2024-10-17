@@ -41,7 +41,7 @@ export const SearchModalOpener = ({
     <Button
       variant="transparent"
       onClick={handleOpen}
-      className="hidden sm:flex !p-[6.5px]"
+      className="flex !p-[6.5px]"
     >
       <MagnifyingGlass className="text-medusa-fg-subtle" />
     </Button>

@@ -228,7 +228,7 @@ export const SearchProvider = ({
           "!p-0 overflow-hidden relative h-full",
           "flex flex-col justify-between"
         )}
-        modalContainerClassName="sm:h-[480px] sm:max-h-[480px]"
+        modalContainerClassName="!h-[480px] max-h-[480px]"
         open={isOpen}
         onClose={() => setIsOpen(false)}
         passedRef={modalRef}

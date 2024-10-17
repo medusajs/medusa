@@ -41,7 +41,7 @@ fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
 })
 ```
 
-You pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](https://docs.medusajs.com/v2/api/store#products_getproductsid).
+You pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](!api!/store#products_getproductsid).
 
 <Note title="Tip">
 
@@ -248,6 +248,6 @@ export default function Product({ params: { id } }: Params) {
 
 In this example, you:
 
-- Pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](https://docs.medusajs.com/v2/api/store#products_getproductsid).
+- Pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](!api!/store#products_getproductsid).
     - You can instead allow the customer to choose their country.
 - Display the selected variant's price by formatting its price's `calculated_amount_with_tax` property.

@@ -1400,6 +1400,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/icons@npm:rc":
+  version: 2.0.0-rc-20241003153304
+  resolution: "@medusajs/icons@npm:2.0.0-rc-20241003153304"
+  peerDependencies:
+    react: ^16.x || ^17.x || ^18.x
+  checksum: 6859af30f227ac3374e111e679fd90311e571ae72e6aedc690b3c324b42ba9082d69d675533fae9aa221b0aeccec4b51ee9535203f92d014ba82684f56a0ec7b
+  languageName: node
+  linkType: hard
+
 "@medusajs/ui-preset@npm:^1.1.2":
   version: 1.1.2
   resolution: "@medusajs/ui-preset@npm:1.1.2"
@@ -5898,6 +5907,7 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
+    "@medusajs/icons": rc
     "@next/mdx": ^14.2.14
     "@types/mdx": ^2.0.10
     "@types/node": ^20
@@ -7131,7 +7141,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs-ui@workspace:packages/docs-ui"
   dependencies:
-    "@medusajs/icons": preview
+    "@medusajs/icons": rc
     "@medusajs/ui": ^3.0.0
     "@octokit/request": ^8.1.1
     "@react-hook/resize-observer": ^1.2.6

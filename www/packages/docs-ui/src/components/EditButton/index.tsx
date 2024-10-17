@@ -13,7 +13,8 @@ export const EditButton = ({ filePath }: EditButtonProps) => {
       href={`https://github.com/medusajs/medusa/edit/develop${filePath}`}
       className={clsx(
         "flex w-fit gap-docs_0.25 my-docs_2 items-center",
-        "text-medusa-fg-muted hover:text-medusa-fg-subtle"
+        "text-medusa-fg-muted hover:text-medusa-fg-subtle",
+        "text-compact-small-plus"
       )}
     >
       <span>Edit this page</span>

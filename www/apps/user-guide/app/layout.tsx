@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
 import Providers from "@/providers"
 import "../css/globals.css"
-import { TightLayout } from "docs-ui"
+import { BareboneLayout, TightLayout } from "docs-ui"
 import { config } from "@/config"
 import clsx from "clsx"
 import Feedback from "../components/Feedback"
@@ -36,16 +36,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <TightLayout
-      ProvidersComponent={Providers}
-      sidebarProps={{
-        expandItems: true,
-      }}
-      bodyClassName={clsx(inter.variable, robotoMono.variable)}
-    >
-      {children}
-      <Feedback className="my-2" />
-      <EditButton />
-    </TightLayout>
+    <BareboneLayout htmlClassName={clsx(inter.variable, robotoMono.variable)}>
+      <TightLayout
+        sidebarProps={{
+          expandItems: true,
+        }}
+        ProvidersComponent={Providers}
+      >
+        {children}
+        <Feedback className="my-2" />
+        <EditButton />
+      </TightLayout>
+    </BareboneLayout>
   )
 }

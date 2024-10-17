@@ -61,6 +61,7 @@ export type SidebarContextType = {
   updatePersistedCategoryState: (title: string, opened: boolean) => void
   getPersistedCategoryState: (title: string) => boolean | undefined
   persistState: boolean
+  isSidebarShown: boolean
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -280,6 +281,13 @@ export const SidebarProvider = ({
   const getResolvedScrollableElement = useCallback(() => {
     return scrollableElement || window
   }, [scrollableElement])
+  const isSidebarShown = useMemo(() => {
+    if (!isBrowser) {
+      return true
+    }
+
+    return document.getElementsByTagName("aside").length > 0
+  }, [isBrowser])
 
   const isItemLoaded = useCallback(
     (path: string) => {
@@ -589,6 +597,7 @@ export const SidebarProvider = ({
         updatePersistedCategoryState,
         getPersistedCategoryState,
         persistState,
+        isSidebarShown,
       }}
     >
       {children}

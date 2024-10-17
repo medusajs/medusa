@@ -116,7 +116,7 @@ class MarketplaceModuleService extends MedusaService({
 export default MarketplaceModuleService
 ```
 
-The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/learn/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Module Definition
 
@@ -150,8 +150,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules)
-- [How to Create Data Models](!docs!/basics/modules#1-create-data-model)
+- [How to Create a Module](!docs!/learn/basics/modules)
+- [How to Create Data Models](!docs!/learn/basics/modules#1-create-data-model)
 
 ---
 
@@ -203,7 +203,7 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/module-links)
+- [How to Define Module Links](!docs!/learn/advanced-development/module-links)
 
 ---
 
@@ -338,10 +338,10 @@ You return the created vendor admin.
 
 ### Further Read
 
-- [How to Create a Workflow](!docs!/basics/workflows)
+- [How to Create a Workflow](!docs!/learn/basics/workflows)
 - [What is an Actor Type](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx)
 - [How to Create an Actor Type](../../../../commerce-modules/auth/create-actor-type/page.mdx)
-- [What is a Compensation Function](!docs!/advanced-development/workflows/compensation-function)
+- [What is a Compensation Function](!docs!/learn/advanced-development/workflows/compensation-function)
 
 ---
 
@@ -513,7 +513,7 @@ This route is available because you created the `vendor` actor type previously.
 
 <Note>
 
-Don't include a trailing slash at the end of the URL. Learn more [here](!docs!/advanced-development/api-routes/middlewares).
+Don't include a trailing slash at the end of the URL. Learn more [here](!docs!/learn/advanced-development/api-routes/middlewares).
 
 </Note>
 
@@ -549,8 +549,8 @@ Use this token in the header of later requests that require authentication.
 
 ### Further Reads
 
-- [How to Create an API route](!docs!/basics/api-routes)
-- [How to Create a Middleware](!docs!/advanced-development/api-routes/middlewares)
+- [How to Create an API route](!docs!/learn/basics/api-routes)
+- [How to Create a Middleware](!docs!/learn/advanced-development/api-routes/middlewares)
 - [Learn more about the /auth route](../../../../commerce-modules/auth/authentication-route/page.mdx)
 
 ---
@@ -778,8 +778,8 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use Query](!docs!/advanced-development/module-links/query)
-- [How to use the Remote Link](!docs!/advanced-development/module-links/remote-link)
+- [How to use Query](!docs!/learn/advanced-development/module-links/query)
+- [How to use the Remote Link](!docs!/learn/advanced-development/module-links/remote-link)
 
 ---
 
@@ -1361,7 +1361,7 @@ For example, you can link sales channels to vendors or other settings.
 
 <Note>
 
-[Learn more about module links](!docs!/advanced-development/module-links).
+[Learn more about module links](!docs!/learn/advanced-development/module-links).
 
 </Note>
 
@@ -1373,6 +1373,6 @@ You can also create a custom storefront. Check out the [Storefront Development](
 
 ### Admin Development
 
-The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages. Learn more about it in [this documentation](!docs!/advanced-development/admin).
+The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages. Learn more about it in [this documentation](!docs!/learn/advanced-development/admin).
 
 If your use case requires bigger customizations to the admin, such as showing different products and orders based on the logged-in vendor, use the [admin API routes](!api!/admin) to build a custom admin.

@@ -1,6 +1,6 @@
 import "./globals.css"
 import Providers from "../providers"
-import { WideLayout } from "docs-ui"
+import { BareboneLayout, WideLayout } from "docs-ui"
 import { Inter, Roboto_Mono } from "next/font/google"
 import clsx from "clsx"
 
@@ -26,17 +26,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <WideLayout
-      ProvidersComponent={Providers}
-      sidebarProps={{
-        expandItems: false,
-      }}
-      bodyClassName={clsx(inter.variable, robotoMono.variable)}
-      showToc={false}
-      showBanner={false}
-      showBreadcrumbs={false}
-    >
-      {children}
-    </WideLayout>
+    <BareboneLayout htmlClassName={clsx(inter.variable, robotoMono.variable)}>
+      <WideLayout
+        sidebarProps={{
+          expandItems: false,
+        }}
+        showToc={false}
+        showBanner={false}
+        showBreadcrumbs={false}
+        ProvidersComponent={Providers}
+      >
+        {children}
+      </WideLayout>
+    </BareboneLayout>
   )
 }

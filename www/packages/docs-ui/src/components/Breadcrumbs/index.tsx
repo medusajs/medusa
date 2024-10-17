@@ -93,7 +93,7 @@ export const Breadcrumbs = () => {
       className={clsx(
         "flex items-center gap-docs_0.25",
         "text-medusa-fg-muted text-compact-small",
-        "mb-docs_1"
+        "mb-docs_1 flex-wrap"
       )}
     >
       {Array.from(breadcrumbItems).map(([link, title], index) => (

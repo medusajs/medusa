@@ -16,6 +16,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
+    "@medusajs/icons": "rc",
     "@next/mdx": "^14.2.14",
     "clsx": "^2.1.0",
     "docs-ui": "*",
