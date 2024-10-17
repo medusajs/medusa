@@ -530,9 +530,9 @@ const Cost = ({
   secondaryValue,
   tooltip,
 }: {
-  label: string
+  label: ReactNode
   value: string | number
-  secondaryValue: string
+  secondaryValue?: string
   tooltip?: ReactNode
 }) => (
   <div className="grid grid-cols-3 items-center">
@@ -558,16 +558,8 @@ const CostBreakdown = ({
   order: AdminOrder & { region: AdminRegion }
 }) => {
   const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
-
-  const discountTotal = useMemo(
-    () =>
-      order.items.reduce(
-        (total, item) => total + (item.discount_total || 0),
-        0
-      ),
-    [order]
-  )
+  const [isTaxOpen, setIsTaxOpen] = useState(false)
+  const [isShippingOpen, setIsShippingOpen] = useState(false)
 
   const discountCodes = useMemo(() => {
     const codes = new Set()
@@ -598,13 +590,109 @@ const CostBreakdown = ({
     return taxCodeMap
   }, [order])
 
-  const hasTaxLines = !!Object.keys(taxCodes).length
   const automaticTaxesOn = !!order.region!.automatic_taxes
+  const hasTaxLines = !!Object.keys(taxCodes).length
+
+  // TODO: temp until BD return `order.items_total`
+  const itemsTotal = useMemo(
+    () =>
+      order.items.reduce(
+        (acc, item) =>
+          acc + (automaticTaxesOn ? item.original_total : item.subtotal),
+        0
+      ),
+    [order.items, automaticTaxesOn]
+  )
+
+  const discountTotal = useMemo(
+    () =>
+      order.items.reduce(
+        (total, item) =>
+          total +
+          ((automaticTaxesOn ? item.discount_total : item.discount_subtotal) ||
+            0),
+        0
+      ),
+    [order, automaticTaxesOn]
+  )
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
-        label={t("fields.discount")}
+        label={t(
+          automaticTaxesOn
+            ? "orders.summary.itemTotal"
+            : "orders.summary.itemSubtotal"
+        )}
+        value={getLocaleAmount(itemsTotal, order.currency_code)}
+      />
+      <Cost
+        label={
+          <div
+            onClick={() => setIsShippingOpen((o) => !o)}
+            className="flex cursor-pointer items-center gap-1"
+          >
+            <span>
+              {t(
+                automaticTaxesOn
+                  ? "orders.summary.shippingTotal"
+                  : "orders.summary.shippingSubtotal"
+              )}
+            </span>
+            <TriangleDownMini
+              style={{
+                transform: `rotate(${isShippingOpen ? 0 : -90}deg)`,
+              }}
+            />
+          </div>
+        }
+        value={getLocaleAmount(
+          automaticTaxesOn ? order.shipping_total : order.shipping_subtotal, // TODO: `shipping_subtotal` does not exists
+          order.currency_code
+        )}
+      />
+
+      {isShippingOpen && (
+        <div className="flex flex-col gap-1 pl-5">
+          {(order.shipping_methods || [])
+            .sort((m1, m2) =>
+              (m1.created_at as string).localeCompare(m2.created_at as string)
+            )
+            .map((sm, i) => {
+              return (
+                <div
+                  key={sm.id}
+                  className="flex items-center justify-between gap-x-2"
+                >
+                  <div>
+                    <span className="txt-small text-ui-fg-subtle font-medium">
+                      {sm.name}
+                      {sm.detail.return_id &&
+                        ` (${t("fields.returnShipping")})`}{" "}
+                      <ShippingInfoPopover key={i} shippingMethod={sm} />
+                    </span>
+                  </div>
+                  <div className="relative flex-1">
+                    <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                  </div>
+                  <span className="txt-small text-ui-fg-muted">
+                    {getLocaleAmount(
+                      automaticTaxesOn ? sm.total : sm.subtotal,
+                      order.currency_code
+                    )}
+                  </span>
+                </div>
+              )
+            })}
+        </div>
+      )}
+
+      <Cost
+        label={t(
+          automaticTaxesOn
+            ? "orders.summary.discountTotal"
+            : "orders.summary.discountSubtotal"
+        )}
         secondaryValue={discountCodes.join(", ")}
         value={
           discountTotal > 0
@@ -612,46 +700,29 @@ const CostBreakdown = ({
             : "-"
         }
       />
-      {(order.shipping_methods || [])
-        .sort((m1, m2) =>
-          (m1.created_at as string).localeCompare(m2.created_at as string)
-        )
-        .map((sm, i) => {
-          return (
-            <div key={sm.id}>
-              <Cost
-                label={
-                  sm.detail.return_id
-                    ? t("fields.returnShipping")
-                    : t("fields.outboundShipping")
-                }
-                secondaryValue={sm.name}
-                value={getLocaleAmount(sm.total, order.currency_code)}
-                tooltip={<ShippingInfoPopover key={i} shippingMethod={sm} />}
-              />
-            </div>
-          )
-        })}
+
       <>
-        <div
-          onClick={() => hasTaxLines && setIsOpen((o) => !o)}
-          className="flex justify-between"
-        >
+        <div className="flex justify-between">
           <div
+            onClick={() => hasTaxLines && setIsTaxOpen((o) => !o)}
             className={clx("flex items-center gap-1", {
               "cursor-pointer": hasTaxLines,
             })}
           >
+            <span className="txt-small select-none">
+              {t(
+                automaticTaxesOn
+                  ? "orders.summary.taxTotalIncl"
+                  : "orders.summary.taxTotal"
+              )}
+            </span>
             {hasTaxLines && (
               <TriangleDownMini
                 style={{
-                  transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                  transform: `rotate(${isTaxOpen ? 0 : -90}deg)`,
                 }}
               />
             )}
-            <span className="txt-small select-none">
-              {t("orders.summary.taxes")}
-            </span>
           </div>
 
           <div className="text-right">
@@ -660,8 +731,8 @@ const CostBreakdown = ({
             </Text>
           </div>
         </div>
-        {isOpen && (
-          <div className="flex flex-col gap-1 pb-4 pl-5">
+        {isTaxOpen && (
+          <div className="flex flex-col gap-1 pl-5">
             {Object.entries(taxCodes).map(([code, total]) => {
               return (
                 <div
