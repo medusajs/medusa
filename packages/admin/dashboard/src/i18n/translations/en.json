@@ -98,6 +98,8 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "copy": "Copy",
+    "copied": "Copied",
     "duplicate": "Duplicate",
     "publish": "Publish",
     "create": "Create",
@@ -117,6 +119,7 @@
     "showMore": "Show more",
     "continue": "Continue",
     "continueWithEmail": "Continue with Email",
+    "idCopiedToClipboard": "ID copied to clipboard",
     "addReason": "Add Reason",
     "addNote": "Add Note",
     "reset": "Reset",
@@ -902,7 +905,7 @@
     },
     "payment": {
       "title": "Payments",
-      "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
+      "isReadyToBeCaptured": "Payment <0/> is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
       "capture_short": "Capture",

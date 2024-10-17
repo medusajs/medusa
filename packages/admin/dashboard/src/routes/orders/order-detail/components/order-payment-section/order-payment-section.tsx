@@ -12,7 +12,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useCapturePayment } from "../../../../../hooks/api"
 import { formatCurrency } from "../../../../../lib/format-currency"
@@ -22,6 +22,7 @@ import {
 } from "../../../../../lib/money-amount-helpers"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 import { getTotalCaptured, getTotalPending } from "../../../../../lib/payment"
+import DisplayId from "../../../../../components/common/display-id/display-id"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
@@ -176,7 +177,6 @@ const Payment = ({
     payment.captured_at ? ["Captured", "green"] : ["Pending", "orange"]
   ) as [string, "green" | "orange"]
 
-  const cleanId = `#${payment.id.replace("pay_", "").slice(-7)}`
   const showCapture =
     payment.captured_at === null && payment.canceled_at === null
 
@@ -190,7 +190,7 @@ const Payment = ({
             weight="plus"
             className="truncate"
           >
-            {cleanId}
+            <DisplayId id={payment.id} />
           </Text>
           <Text size="small" leading="compact">
             {format(
@@ -234,9 +234,10 @@ const Payment = ({
           <div className="flex items-center gap-x-2">
             <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
             <Text size="small" leading="compact">
-              {t("orders.payment.isReadyToBeCaptured", {
-                id: cleanId,
-              })}
+              <Trans
+                i18nKey="orders.payment.isReadyToBeCaptured"
+                components={[<DisplayId id={payment.id} />]}
+              />
             </Text>
           </div>
 
