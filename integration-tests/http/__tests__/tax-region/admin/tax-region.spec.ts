@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -81,6 +81,24 @@ medusaIntegrationTestRunner({
               metadata: { test: "updated 2" },
             })
           )
+        })
+
+        it("should throw if tax region does not exist", async () => {
+          const {
+            response: { status, data },
+          } = await api
+            .post(
+              `/admin/tax-regions/does-not-exist`,
+              { province_code: "ny", metadata: { test: "updated" } },
+              adminHeaders
+            )
+            .catch((err) => err)
+
+          expect(status).toEqual(404)
+          expect(data).toEqual({
+            message: 'TaxRegion with id "does-not-exist" not found',
+            type: "not_found",
+          })
         })
       })
     })
