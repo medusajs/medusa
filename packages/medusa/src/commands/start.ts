@@ -17,6 +17,7 @@ import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { MedusaContainer } from "@medusajs/framework/types"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -57,8 +58,28 @@ export async function registerInstrumentation(directory: string) {
 // eslint-disable-next-line no-var
 export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
 
-function getAdminUrl(adminPath: string, port: string | number) {
-  return `http://localhost:${port}${adminPath}`
+function displayAdminUrl({
+  container,
+  port,
+}: {
+  port: string | number
+  container: MedusaContainer
+}) {
+  const isProduction = !!process.env.NODE_ENV?.toLowerCase().startsWith("prod")
+  if (isProduction) {
+    return
+  }
+
+  const logger = container.resolve("logger")
+  const {
+    admin: { path: adminPath, disable },
+  } = container.resolve("configModule")
+
+  if (disable) {
+    return
+  }
+
+  logger.info(`Admin URL → http://localhost:${port}${adminPath}`)
 }
 
 async function start(args: {
@@ -114,15 +135,7 @@ async function start(args: {
       const server = GracefulShutdownServer.create(
         http_.listen(port).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
-
-          const {
-            admin: { path: adminPath },
-          } = container.resolve("configModule")
-
-          logger.success(
-            serverActivity,
-            `Admin URL: ${getAdminUrl(adminPath, port!)}`
-          )
+          displayAdminUrl({ container, port })
           track("CLI_START_COMPLETED")
         })
       )
