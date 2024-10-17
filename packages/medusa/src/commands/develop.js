@@ -76,16 +76,28 @@ export default async function ({ port, directory }) {
   const adminCLI = resolveAdminCLI()
 
   if (adminCLI) {
-    const adminChild = fork(adminCLI, [`develop`], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-    })
 
-    adminChild.on("error", function (err) {
-      console.log("Error ", err)
-      adminChild.kill("SIGINT") // Only kill admin in case of error
-    })
+    const loadConfigPath = path.resolve(
+      require.resolve("@medusajs/admin"),
+      "../../",
+      "utils",
+      "load-config.js"
+    )
+    const { loadConfig } = require(loadConfigPath);
+    const { serve } = loadConfig(true);
+
+    if (serve) {
+      const adminChild = fork(adminCLI, [`develop`], {
+        cwd: directory,
+        env: process.env,
+        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      })
+
+      adminChild.on("error", function (err) {
+        console.log("Error ", err)
+        adminChild.kill("SIGINT") // Only kill admin in case of error
+      })
+    }
   }
 
   chokidar
