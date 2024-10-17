@@ -29,7 +29,10 @@ export async function getViteConfig(
     },
     optimizeDeps: {
       include: ["react-dom/client", "@medusajs/ui", "@medusajs/dashboard"],
-      exclude: [...VIRTUAL_MODULES],
+      exclude: [
+        ...VIRTUAL_MODULES,
+        "virtual:medusa/widget/product/details/before",
+      ],
     },
     define: {
       __BASE__: JSON.stringify(options.path),
