@@ -1,5 +1,5 @@
 import { FetchError } from "@medusajs/js-sdk"
-import { HttpTypes } from "@medusajs/types"
+import { AdminOrderLineItemsResponse, HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -19,6 +19,7 @@ const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<
 > & {
   preview: (orderId: string) => any
   changes: (orderId: string) => any
+  lineItems: (orderId: string) => any
 }
 
 _orderKeys.preview = function (id: string) {
@@ -27,6 +28,10 @@ _orderKeys.preview = function (id: string) {
 
 _orderKeys.changes = function (id: string) {
   return [this.detail(id), "changes"]
+}
+
+_orderKeys.lineItems = function (id: string) {
+  return [this.detail(id), "lineItems"]
 }
 
 export const ordersQueryKeys = _orderKeys
@@ -107,6 +112,28 @@ export const useOrderChanges = (
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.listChanges(id, query),
     queryKey: ordersQueryKeys.changes(id),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useOrderLineItems = (
+  id: string,
+  query?: HttpTypes.AdminOrderLineItemsFilters,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminOrderLineItemsResponse,
+      Error,
+      HttpTypes.AdminOrderLineItemsResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.order.listLineItems(id, query),
+    queryKey: ordersQueryKeys.lineItems(id),
     ...options,
   })
 

@@ -54,7 +54,7 @@ function ActivityItems(props: ActivityItemsProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component p-0 max-w-[200px] focus-visible:outline-none"
+        className="bg-ui-bg-component max-w-[200px] p-0 focus-visible:outline-none"
       >
         <div className="flex flex-col">
           {!!itemsToSend?.length && (
@@ -73,12 +73,10 @@ function ActivityItems(props: ActivityItemsProps) {
                         {item.quantity}x
                       </Text>
 
-                      <Thumbnail
-                        src={originalItem?.variant?.product?.thumbnail}
-                      />
+                      <Thumbnail src={originalItem?.thumbnail} />
 
                       <Text className="txt-compact-small text-ui-fg-subtle truncate">
-                        {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
+                        {`${originalItem?.variant_title} · ${originalItem?.product_title}`}
                       </Text>
                     </div>
                   )
