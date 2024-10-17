@@ -33,7 +33,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CART]: "@medusajs/medusa/cart",
   [Modules.CUSTOMER]: "@medusajs/medusa/customer",
   [Modules.EVENT_BUS]: "@medusajs/medusa/event-bus-local",
-  [Modules.INVENTORY]: "@medusajs/medusa/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
+  [Modules.INVENTORY]: "@medusajs/medusa/inventory",
   [Modules.LINK]: "@medusajs/medusa/link-modules",
   [Modules.PAYMENT]: "@medusajs/medusa/payment",
   [Modules.PRICING]: "@medusajs/medusa/pricing",
@@ -41,7 +41,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PROMOTION]: "@medusajs/medusa/promotion",
   [Modules.SALES_CHANNEL]: "@medusajs/medusa/sales-channel",
   [Modules.FULFILLMENT]: "@medusajs/medusa/fulfillment",
-  [Modules.STOCK_LOCATION]: "@medusajs/medusa/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
+  [Modules.STOCK_LOCATION]: "@medusajs/medusa/stock-location",
   [Modules.TAX]: "@medusajs/medusa/tax",
   [Modules.USER]: "@medusajs/medusa/user",
   [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflow-engine-inmemory",

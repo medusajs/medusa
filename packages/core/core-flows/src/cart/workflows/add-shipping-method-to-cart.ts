@@ -1,10 +1,11 @@
-import { MedusaError } from "@medusajs/framework/utils"
+import { CartWorkflowEvents, MedusaError } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
   transform,
   WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   addShippingMethodToCartStep,
@@ -137,6 +138,10 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
       }),
       addShippingMethodToCartStep({
         shipping_methods: shippingMethodInput,
+      }),
+      emitEventStep({
+        eventName: CartWorkflowEvents.UPDATED,
+        data: { id: input.cart_id },
       })
     )
 

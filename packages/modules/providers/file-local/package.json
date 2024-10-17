@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/file-local-next",
+  "name": "@medusajs/file-local",
   "version": "0.0.2",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",

@@ -8,6 +8,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateProductCategory } from "../../../../../hooks/api/categories"
 import { CreateCategoryDetails } from "./create-category-details"
 import { CreateCategoryNesting } from "./create-category-nesting"
@@ -121,7 +122,7 @@ export const CreateCategoryForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
@@ -198,7 +199,7 @@ export const CreateCategoryForm = ({
             </div>
           </RouteFocusModal.Footer>
         </ProgressTabs>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

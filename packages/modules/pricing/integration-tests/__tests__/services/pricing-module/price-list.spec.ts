@@ -8,7 +8,7 @@ import {
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 

@@ -10,6 +10,7 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useStockLocation } from "../../../../../hooks/api"
 import {
   useAddReceiveItems,
@@ -209,7 +210,7 @@ export function OrderReceiveReturnForm({
 
   return (
     <RouteDrawer.Form form={form} onClose={onFormClose}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
@@ -305,7 +306,7 @@ export function OrderReceiveReturnForm({
             )
           })}
 
-          {/*TOTALS*/}
+          {/* TOTALS*/}
 
           <div className="my-6 border-b border-t border-dashed py-4">
             <div className="mb-2 flex items-center justify-between">
@@ -378,7 +379,7 @@ export function OrderReceiveReturnForm({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

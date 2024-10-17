@@ -2,6 +2,7 @@ import {
   AddToCartWorkflowInputDTO,
   CreateLineItemForCartDTO,
 } from "@medusajs/framework/types"
+import { CartWorkflowEvents } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
@@ -9,6 +10,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createLineItemsStep,
@@ -120,7 +122,13 @@ export const addToCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    refreshCartShippingMethodsStep({ cart })
+    parallelize(
+      refreshCartShippingMethodsStep({ cart }),
+      emitEventStep({
+        eventName: CartWorkflowEvents.UPDATED,
+        data: { id: input.cart.id },
+      })
+    )
 
     updateTaxLinesWorkflow.runAsStep({
       input: {

@@ -18,7 +18,9 @@ export const CampaignBudgetEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("campaigns.budget.edit.header")}</Heading>
+        <RouteDrawer.Title asChild>
+          <Heading>{t("campaigns.budget.edit.header")}</Heading>
+        </RouteDrawer.Title>
       </RouteDrawer.Header>
 
       {!isLoading && campaign && <EditCampaignBudgetForm campaign={campaign} />}

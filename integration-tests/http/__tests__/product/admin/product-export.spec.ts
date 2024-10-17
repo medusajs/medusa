@@ -1,7 +1,10 @@
 import { IEventBusModuleService } from "@medusajs/types"
 import { CommonEvents, Modules } from "@medusajs/utils"
 import fs from "fs/promises"
-import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  TestEventUtils,
+  medusaIntegrationTestRunner,
+} from "@medusajs/test-utils"
 import path from "path"
 import {
   adminHeaders,

@@ -85,7 +85,7 @@ export const PromotionGeneralSection = ({
     [PromotionStatus.EXPIRED]: ["red", t("statuses.expired")],
   }[getPromotionStatus(promotion)] as [
     "grey" | "orange" | "green" | "red",
-    string
+    string,
   ]
 
   const displayValue = getDisplayValue(promotion)
@@ -130,7 +130,9 @@ export const PromotionGeneralSection = ({
         </Text>
 
         <Text size="small" leading="compact" className="text-pretty">
-          {promotion.is_automatic ? "Promotion code" : "Automatic"}
+          {promotion.is_automatic
+            ? t("promotions.form.method.automatic.title")
+            : t("promotions.form.method.code.title")}
         </Text>
       </div>
 
