@@ -66,7 +66,7 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
-    }
+    } as Partial<sendgrid.MailDataRequired> as sendgrid.MailDataRequired
 
     try {
       // Unfortunately we don't get anything useful back in the response
