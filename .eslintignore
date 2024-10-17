@@ -33,6 +33,7 @@ packages/*
 !packages/workflow-engine-inmemory
 !packages/fulfillment
 !packages/fulfillment-manual
+!packages/locking-postgres
 !packages/locking-redis
 !packages/index
 
