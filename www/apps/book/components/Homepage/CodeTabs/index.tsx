@@ -367,7 +367,7 @@ export const config = defineWidgetConfig({
         <Link
           href={tabs[selectedTabIndex].textSection.link.link}
           className="text-compact-small-plus"
-          withIcon={true}
+          withIcon
         >
           <span>{tabs[selectedTabIndex].textSection.link.title}</span>
         </Link>

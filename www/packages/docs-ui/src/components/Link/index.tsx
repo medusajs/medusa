@@ -35,7 +35,7 @@ export const Link = ({
     >
       {children}
       {withIcon && (
-        <TriangleRightMini className="group-hover:translate-x-docs_0.25 transition-transform" />
+        <TriangleRightMini className="group-hover:translate-x-docs_0.125 transition-transform" />
       )}
     </NextLink>
   )

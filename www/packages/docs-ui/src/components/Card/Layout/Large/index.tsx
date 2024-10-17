@@ -49,7 +49,9 @@ export const CardLargeLayout = ({
         <div className="flex gap-docs_0.25 items-center text-medusa-fg-base">
           {title && <span className="text-compact-small-plus">{title}</span>}
           {href && isExternal && <ArrowUpRightOnBox />}
-          {href && !isExternal && <TriangleRightMini />}
+          {href && !isExternal && (
+            <TriangleRightMini className="group-hover:translate-x-docs_0.125 transition-transform" />
+          )}
         </div>
         {text && (
           <span className="text-small-plus text-medusa-fg-subtle">{text}</span>

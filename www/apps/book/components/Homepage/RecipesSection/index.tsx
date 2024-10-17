@@ -66,9 +66,9 @@ const HomepageRecipesSection = () => {
           <Link
             href={"https://docs.medusajs.com/v2/resources/recipes"}
             className="flex gap-0.25 items-center text-compact-small-plus"
+            withIcon
           >
             <span>View All Recipes</span>
-            <TriangleRightMini />
           </Link>
         </div>
         <div
