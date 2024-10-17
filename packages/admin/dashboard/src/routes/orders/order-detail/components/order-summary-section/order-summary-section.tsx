@@ -18,6 +18,7 @@ import {
   AdminOrder,
   AdminOrderLineItem,
   AdminOrderPreview,
+  AdminRegion,
   AdminReturn,
 } from "@medusajs/types"
 import {
@@ -551,7 +552,11 @@ const Cost = ({
   </div>
 )
 
-const CostBreakdown = ({ order }: { order: AdminOrder }) => {
+const CostBreakdown = ({
+  order,
+}: {
+  order: AdminOrder & { region: AdminRegion }
+}) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -594,6 +599,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   }, [order])
 
   const hasTaxLines = !!Object.keys(taxCodes).length
+  const automaticTaxesOn = !!order.region!.automatic_taxes
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
