@@ -1,53 +1,41 @@
+import { getAllProjectFiles, getChangedFiles } from "build-scripts"
 import { slugChanges } from "../generated/slug-changes.mjs"
-import { readdirSync, statSync, writeFileSync } from "fs"
+import { existsSync, writeFileSync } from "fs"
 import path from "path"
+import { readFile } from "fs/promises"
 
-const baseAppPath = path.resolve("app")
-const baseReferencePath = path.resolve("references")
 const monoRepoPath = path.resolve("..", "..", "..")
 
 /**
  *
- * @param {string} options.dir - The directory to scan
- * @param {string} options.basePath - The path to consider as base
+ * @param {string[]} files - The files to scan
  * @returns {Promise<{ filePath: string; pathname: string; }[]>}
  */
-async function scanFiles(options = {}) {
-  const { dir = "", basePath = baseAppPath, baseSlug = baseAppPath } = options
+async function scanFiles(files = []) {
   /**
    * @type {{ filePath: string; pathname: string; }[]}
    */
   const filesMap = []
-  const fullPath = path.resolve(basePath, dir.replace(/^\//, ""))
-  const files = readdirSync(fullPath)
 
   for (const file of files) {
-    const filePath = path.join(fullPath, file)
+    const fullPath = path.join(path.resolve(), file).replace(monoRepoPath, "")
     const fileBasename = path.basename(file)
     if (fileBasename !== "page.mdx") {
-      if (statSync(filePath).isDirectory()) {
-        filesMap.push(
-          ...(await scanFiles({
-            dir: filePath.replace(basePath, ""),
-            basePath,
-            baseSlug,
-          }))
-        )
-      }
       continue
     }
+    const filePathWithoutBase = (
+      file.startsWith("references/") ? `/${file}` : file.replace(/^app/, "")
+    ).replace(`/${fileBasename}`, "")
 
     // check if it has a slug change and retrieve its new slug
     const slugChange = slugChanges.find(
-      (item) => item.origSlug === filePath.replace(basePath, "")
+      (item) => item.origSlug === filePathWithoutBase
     )
 
-    const pathname =
-      slugChange?.newSlug ||
-      filePath.replace(baseSlug, "").replace(`/${fileBasename}`, "")
+    const pathname = slugChange?.newSlug || filePathWithoutBase
 
     filesMap.push({
-      filePath: filePath.replace(monoRepoPath, ""),
+      filePath: fullPath,
       pathname: pathname.length ? pathname : "/",
     })
   }
@@ -56,17 +44,57 @@ async function scanFiles(options = {}) {
 }
 
 export async function main() {
-  const filesMap = await scanFiles()
-  filesMap.push(
-    ...(await scanFiles({
-      basePath: baseReferencePath,
-      baseSlug: path.resolve(),
-    }))
-  )
+  const generatedFilePath = path.resolve("generated", "files-map.mjs")
+  const generatedFileExists = existsSync(generatedFilePath)
+
+  let files = []
+
+  if (generatedFileExists) {
+    // only retrieve git changes
+    files = await getChangedFiles()
+  } else {
+    // scan for all files
+    files = await getAllProjectFiles({
+      includeReferences: true,
+    })
+  }
+
+  let filesMap = await scanFiles(files)
+
+  const fileContentPrefix = "export const filesMap = "
+  if (generatedFileExists) {
+    const existingFilesMap = JSON.parse(
+      (await readFile(generatedFilePath, "utf-8")).replace(
+        fileContentPrefix,
+        ""
+      )
+    )
+
+    filesMap.forEach(({ filePath, pathname }) => {
+      const existingFileMapIndex = existingFilesMap.findIndex(
+        (item) => item.filePath === filePath
+      )
+      if (existingFileMapIndex === -1) {
+        // add it
+        existingFilesMap.push({
+          filePath,
+          pathname,
+        })
+      } else {
+        // update it
+        existingFilesMap[existingFileMapIndex] = {
+          filePath,
+          pathname,
+        }
+      }
+    })
+
+    filesMap = existingFilesMap
+  }
 
   // write files map
   writeFileSync(
-    path.resolve("generated", "files-map.mjs"),
-    `export const filesMap = ${JSON.stringify(filesMap, null, 2)}`
+    generatedFilePath,
+    `${fileContentPrefix}${JSON.stringify(filesMap, null, 2)}`
   )
 }
