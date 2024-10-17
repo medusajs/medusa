@@ -157,12 +157,6 @@ const loadConfigs: Record<string, ModuleConfig> = {
     moduleGenerator: async (sources) => generateVirtualMenuItemModule(sources),
     hashKey: vmod.virtual.menuItem,
   },
-  [vmod.resolved.productDetailsBefore]: {
-    hashGenerator: async () => "",
-    moduleGenerator: async (sources) =>
-      generateVirtualWidgetModule(sources, "product.details.before"),
-    hashKey: vmod.virtual.productDetailsBefore,
-  },
 }
 
 type WatcherConfig = {

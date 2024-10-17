@@ -36,10 +36,7 @@ export async function getViteConfig(
         "@medusajs/ui",
         "@medusajs/dashboard",
       ],
-      exclude: [
-        ...VIRTUAL_MODULES,
-        "virtual:medusa/widget/product/details/before",
-      ],
+      exclude: [...VIRTUAL_MODULES],
     },
     define: {
       __BASE__: JSON.stringify(options.path),

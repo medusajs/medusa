@@ -33,9 +33,3 @@ declare module "virtual:medusa/widgets" {
   const widgetModule: WidgetModule
   export default widgetModule
 }
-
-declare module "virtual:medusa/widget/product/details/before" {
-  import type { WidgetModule } from "./extensions"
-  const widgetModule: WidgetModule
-  export default widgetModule
-}

@@ -10,7 +10,6 @@ export default defineConfig({
     "virtual:medusa/links",
     "virtual:medusa/menu-items",
     "virtual:medusa/widgets",
-    "virtual:medusa/widget/product/details/before",
   ],
   tsconfig: "tsconfig.build.json",
   clean: true,

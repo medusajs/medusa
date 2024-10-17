@@ -30,12 +30,9 @@ type ParsedWidgetConfig = {
   widget: WidgetConfig
 }
 
-export async function generateWidgets(
-  sources: Set<string>,
-  injectionZone?: InjectionZone
-) {
+export async function generateWidgets(sources: Set<string>) {
   const files = await getWidgetFilesFromSources(sources)
-  const results = await getWidgetResults(files, injectionZone)
+  const results = await getWidgetResults(files)
 
   const imports = results.map((r) => r.import)
   const code = generateCode(results)
@@ -47,14 +44,11 @@ export async function generateWidgets(
 }
 
 async function getWidgetResults(
-  files: string[],
-  injectionZone?: InjectionZone
+  files: string[]
 ): Promise<ParsedWidgetConfig[]> {
-  return (
-    await Promise.all(
-      files.map(async (file, index) => parseFile(file, index, injectionZone))
-    )
-  ).filter((r) => r !== null) as ParsedWidgetConfig[]
+  return (await Promise.all(files.map(parseFile))).filter(
+    (r) => r !== null
+  ) as ParsedWidgetConfig[]
 }
 
 function generateCode(results: ParsedWidgetConfig[]): string {
@@ -76,8 +70,7 @@ function formatWidget(widget: WidgetConfig): string {
 
 async function parseFile(
   file: string,
-  index: number,
-  injectionZone?: InjectionZone
+  index: number
 ): Promise<ParsedWidgetConfig | null> {
   const code = await fs.readFile(file, "utf-8")
   let ast: ParseResult<File>
@@ -122,10 +115,6 @@ async function parseFile(
 
   if (!zone) {
     logger.warn(`'zone' property is missing from the widget config.`, { file })
-    return null
-  }
-
-  if (injectionZone && !zone.includes(injectionZone)) {
     return null
   }
 
