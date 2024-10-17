@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The Tax Module is the `@medusajs/medusa/tax` NPM package that provides tax-related features in your Medusa and Node.js applications.
+The Tax Module provides tax-related features in your Medusa and Node.js applications.
 
 ## How to Use Tax Module's Service
 
@@ -15,18 +15,33 @@ You can use the Tax Module's main service by resolving from the Medusa container
 For example:
 
 <CodeTabs groupId="resource-type">
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const taxModuleService = container.resolve(
+    Modules.TAX
+  )
+
+  const taxRegions = await taxModuleService.listTaxRegions()
+})
+```
+
+  </CodeTab>
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ITaxModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const taxModuleService: ITaxModuleService = req.scope.resolve(
+  const taxModuleService = req.scope.resolve(
     Modules.TAX
   )
 
@@ -39,35 +54,17 @@ export async function GET(
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/framework"
-  import { ITaxModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
-  const taxModuleService: ITaxModuleService = container.resolve(
+  const taxModuleService = container.resolve(
     Modules.TAX
   )
 
   const taxRegions = await taxModuleService.listTaxRegions()
 }
-```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/framework/workflows-sdk"
-  import { ITaxModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
-
-const step1 = createStep("step-1", async (_, { container }) => {
-  const taxModuleService: ITaxModuleService = container.resolve(
-    Modules.TAX
-  )
-
-  const taxRegions = await taxModuleService.listTaxRegions()
-})
 ```
 
   </CodeTab>
@@ -116,7 +113,7 @@ const taxRates = await taxModuleService.createTaxRates([
 
 ### Retrieve Cart's Tax Lines
 
-Calculate and retrieve the tax lines of a cart's line items and shipping methods with tax providers. Use different tax providers for each region to handle tax-line retrieval differently.
+Calculate and retrieve the tax lines of a cart's line items and shipping methods with tax providers.
 
 ```ts
 const taxLines = await taxModuleService.getTaxLines(
@@ -140,6 +137,8 @@ const taxLines = await taxModuleService.getTaxLines(
   }
 )
 ```
+
+You can use different tax providers for each region to handle tax-line retrieval differently.
 
 ---
 

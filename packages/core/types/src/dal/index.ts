@@ -51,6 +51,10 @@ export interface OptionsQuery<T, P extends string = never> {
    * Filters to apply on the retrieved items.
    */
   filters?: Dictionary<boolean | Dictionary> | string[] | boolean
+  /**
+   * Load strategy (e.g for mikro orm it accept select-in or joined)
+   */
+  strategy?: 'select-in' | 'joined' | string & {}
 }
 
 /**

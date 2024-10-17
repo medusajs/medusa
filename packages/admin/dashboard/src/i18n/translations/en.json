@@ -1717,6 +1717,7 @@
       "value_type": "Value Type",
       "value": "Value",
       "campaign": "Campaign",
+      "method": "Method",
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
@@ -2376,7 +2377,7 @@
       },
       "label": { "label": "Label", "placeholder": "Wrong size" },
       "description": {
-        "label": "Descriptions",
+        "label": "Description",
         "placeholder": "Customer received the wrong size"
       }
     }

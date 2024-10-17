@@ -7,7 +7,7 @@ import {
   PromotionType,
 } from "@medusajs/framework/utils"
 import { PromotionModuleService } from "@services"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import {
   createDefaultPromotion,
