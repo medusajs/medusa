@@ -34,6 +34,8 @@ const jsSdkOptions: FormattingOptionsType = {
       typeParameters: false,
       suffix: "- JS SDK Store Reference",
     },
+    reflectionDescription:
+      "This documentation provides a reference to the `sdk.store.{{alias}}` set of methods used to send requests to Medusa's Store API routes.",
   },
   "^js_sdk/store/classes/.*Admin": {
     frontmatterData: {
@@ -55,6 +57,8 @@ const jsSdkOptions: FormattingOptionsType = {
       typeParameters: false,
       suffix: "- JS SDK Admin Reference",
     },
+    reflectionDescription:
+      "This documentation provides a reference to the `sdk.admin.{{alias}}` set of methods used to send requests to Medusa's Admin API routes.",
   },
   "^js_sdk/store/classes/.*Auth": {
     frontmatterData: {
@@ -76,6 +80,8 @@ const jsSdkOptions: FormattingOptionsType = {
       typeParameters: false,
       suffix: "- JS SDK Auth Reference",
     },
+    reflectionDescription:
+      "This documentation provides a reference to the `sdk.auth.{{alias}}` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.",
   },
 }
 
