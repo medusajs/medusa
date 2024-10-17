@@ -69,7 +69,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * @ignore
    */
-  private static PROVIDER: string
+  private static identifier: string
   /**
    * @ignore
    */
@@ -79,12 +79,22 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * @ignore
    */
   protected readonly container_: any
+
   /**
+   * @deprecated Use `identifier` instead.
    * @ignore
    */
   public get provider() {
-    return (this.constructor as typeof AbstractAuthModuleProvider).PROVIDER
+    return (this.constructor as typeof AbstractAuthModuleProvider).identifier
   }
+
+  /**
+   * @ignore
+   */
+  public get identifier() {
+    return (this.constructor as typeof AbstractAuthModuleProvider).identifier
+  }
+
   /**
    * @ignore
    */
@@ -107,7 +117,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    */
   protected constructor({}, config: { provider: string; displayName: string }) {
     this.container_ = arguments[0]
-    ;(this.constructor as typeof AbstractAuthModuleProvider).PROVIDER ??=
+    ;(this.constructor as typeof AbstractAuthModuleProvider).identifier ??=
       config.provider
     ;(this.constructor as typeof AbstractAuthModuleProvider).DISPLAY_NAME ??=
       config.displayName

@@ -18,6 +18,7 @@ import {
   defineJoinerConfig,
   DmlEntity,
   dynamicImport,
+  getProviderRegistrationKey,
   isString,
   MedusaModuleProviderType,
   MedusaModuleType,
@@ -50,17 +51,6 @@ type ResolvedModule = ModuleExports & {
 
 type ResolvedModuleProvider = ModuleProviderExports & {
   discoveryPath: string
-}
-
-export const moduleProviderRegistrationKeyPrefix = "__providers__"
-
-/**
- * Return the key used to register a module provider in the container
- * @param {string} moduleKey
- * @return {string}
- */
-export function getProviderRegistrationKey(moduleKey: string): string {
-  return moduleProviderRegistrationKeyPrefix + moduleKey
 }
 
 export async function resolveModuleExports({
@@ -326,13 +316,36 @@ export async function loadInternalModule(args: {
     for (const moduleProviderService of moduleProviderServices) {
       const modProvider_ = moduleProviderService as any
 
-      modProvider_.identifier ??= keyName
-      modProvider_.__type = MedusaModuleProviderType
-      const registrationKey = getProviderRegistrationKey(
-        modProvider_.identifier
+      const originalIdentifier = modProvider_.identifier as string
+      const providerId = keyName
+
+      if (!originalIdentifier) {
+        throw new Error(
+          `Module provider ${resolution.resolutionPath} does not have a static "identifier" property on its service class.`
+        )
+      }
+
+      const alreadyRegisteredProvider = container.hasRegistration(
+        getProviderRegistrationKey({
+          providerId,
+          providerIdentifier: originalIdentifier,
+        })
       )
+      if (alreadyRegisteredProvider) {
+        throw new Error(
+          `Module provider ${originalIdentifier} has already been registered. Please provide a different "id" in the provider options.`
+        )
+      }
+
+      modProvider_.__type = MedusaModuleProviderType
+
+      const registrationKey = getProviderRegistrationKey({
+        providerId,
+        providerIdentifier: originalIdentifier,
+      })
+
       container.register({
-        [registrationKey]: asFunction((cradle) => {
+        [registrationKey]: asFunction(() => {
           ;(moduleProviderService as any).__type = MedusaModuleType
           return new moduleProviderService(
             localContainer.cradle,
