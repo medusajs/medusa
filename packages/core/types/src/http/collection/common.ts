@@ -1,15 +1,39 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { FindParams, SelectParams } from "../common"
-import { AdminProduct } from "../product"
+import { BaseProduct } from "../product/common"
 
 export interface BaseCollection {
+  /**
+   * The collection's ID.
+   */
   id: string
+  /**
+   * The collection's title.
+   */
   title: string
+  /**
+   * The collection's handle.
+   */
   handle: string
+  /**
+   * The date the collection was created.
+   */
   created_at: string
+  /**
+   * The date the collection was updated.
+   */
   updated_at: string
+  /**
+   * The date the collection was deleted.
+   */
   deleted_at: string | null
-  products?: AdminProduct[]
+  /**
+   * The collection's products.
+   */
+  products?: BaseProduct[]
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata: Record<string, unknown> | null
 }
 

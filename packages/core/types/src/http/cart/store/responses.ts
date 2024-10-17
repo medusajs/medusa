@@ -3,6 +3,9 @@ import { StoreOrder } from "../../order"
 import { StoreCart } from "./entities"
 
 export interface StoreCartResponse {
+  /**
+   * The cart's details.
+   */
   cart: StoreCart
 }
 

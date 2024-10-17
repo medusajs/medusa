@@ -2,14 +2,41 @@ import { BaseFilterable, OperatorMap } from "../../dal"
 import { AdminPaymentProvider } from "../payment"
 
 export interface BaseRegion {
+  /**
+   * The region's ID.
+   */
   id: string
+  /**
+   * The region's name.
+   */
   name: string
+  /**
+   * The region's currency code.
+   */
   currency_code: string
+  /**
+   * Whether taxes are calculated automatically in the region.
+   */
   automatic_taxes?: boolean
+  /**
+   * The countries that belong to the region.
+   */
   countries?: BaseRegionCountry[]
+  /**
+   * The payment providers enabled in the region.
+   */
   payment_providers?: AdminPaymentProvider[]
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, any> | null
+  /**
+   * The date the region was created.
+   */
   created_at?: string
+  /**
+   * The date the region was updated.
+   */
   updated_at?: string
 }
 
