@@ -1,0 +1,395 @@
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa JS SDK`,
+}
+
+# {metadata.title}
+
+In this documentation, you'll learn how to install and use Medusa's JS SDK.
+
+## What is Medusa JS SDK?
+
+Medusa's JS SDK is a library to easily send requests to your Medusa application. You can use it in your admin customizations or custom storefronts.
+
+---
+
+## How to Install Medusa JS SDK?
+
+The Medusa JS SDK is available in your Medusa application by default. So, you don't need to install it before using it in your admin customizations.
+
+To install the Medusa JS SDK in other projects, such as a custom storefront, run the following command:
+
+```bash npm2yarn
+npm install @medusajs/js-sdk@rc @medusajs/types@rc
+```
+
+You install two libraries:
+
+- `@medusajs/js-sdk`: the Medusa JS SDK.
+- `@medusajs/types`: Medusa's types library, which is useful if you're using TypeScript in your development.
+
+---
+
+## Setup JS SDK
+
+In your project, create the following `config.ts` file:
+
+<Note>
+
+For admin customizations, create this file at `src/admin/lib/config.ts`.
+
+</Note>
+
+<CodeTabs group="sdk-project">
+  <CodeTab label="Admin" value="admin">
+
+```ts title="src/admin/lib/config.ts"
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Storefront" value="storefront">
+
+```ts title="config.ts"
+import Medusa from "@medusajs/js-sdk"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### JS SDK Configurations
+
+The `Medusa` initializer accepts as a parameter an object with the following properties:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Property</Table.HeaderCell>
+      <Table.HeaderCell className="w-2/5">Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `baseUrl`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A required string indicating the URL to the Medusa backend.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `publishableKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the publishable API key to use in the storefront. You can retrieve it from the Medusa Admin.
+
+      This is required for storefront applications. Otherwise, all requests will fail.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `auth.type`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string that specifies the user authentication method to use.
+
+      Possible types are:
+
+      - `session`: The user is authenticated with a cookie session.
+      - `jwt`: The user is authenticated with a JWT token that's passed in the Bearer authorization header.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `auth.jwtTokenStorageKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string that, when `auth.type` is `jwt`, specifies the key of the JWT token in the storage specified in the `auth.jwtTokenStorageMethod` configuration.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `medusa_auth_token`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `auth.jwtTokenStorageMethod`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string that, when `auth.type` is `jwt`, specifies where the JWT token is stored. Possible values are:
+
+      - `local` for the Local Storage.
+      - `session` for the Session Storage.
+      - `memory` to store it within the SDK for the current application's runtime.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `local`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `globalHeaders`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An object of key-value pairs indicating headers to pass in all requests, where the key indicates the name of the header field.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `apiKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the admin user's API key. If specified, it's used to send authenticated requests.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `debug`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A boolean indicating whether to show debug messages of requests sent in the console. This is useful during development.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `logger`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Replace the logger used by the JS SDK to log messages. The logger must be a class or object having the following methods:
+
+      - `error`: A function that accepts an error message to log.
+      - `warn`: A function that accepts a warning message to log.
+      - `info`: A function that accepts an info message to log.
+      - `debug`: A function that accepts a debug message to log.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      JavaScript's [console](https://developer.mozilla.org/en-US/docs/Web/API/console) is used by default.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Medusa JS SDK Tips
+
+### Use Tanstack (React) Query in Admin Customizations
+
+In admin customizations, use [Tanstack Query](https://tanstack.com/query/latest) with the JS SDK to send requests to custom or existing API routes.
+
+Tanstack Query is installed by default in your Medusa application.
+
+Use the [configured SDK](#setup-js-sdk) with the [useQuery](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery#usequery) Tanstack Query hook to send `GET` requests, and [useMutation](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation#usemutation) hook to send `POST` or `DELETE` requests.
+
+For example:
+
+<CodeTabs group="query-type">
+  <CodeTab label="Query" value="query">
+
+export const queryHighlights = [
+  ["8", "useQuery", "Use Tanstack Query's `useQuery` to send a `GET` request."],
+  ["9", "sdk.admin.product.list", "Use the SDK to send the request."],
+  ["10", "queryKey", "Specify the key used to cache data."]
+]
+
+```tsx title="src/admin/widgets/product-widget.ts"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
+
+const ProductWidget = () => {
+  const { data, isLoading } = useQuery({
+    queryFn: () => sdk.admin.product.list(),
+    queryKey: ["products"]
+  })
+  
+  return (
+    <Container className="divide-y p-0">
+      {isLoading && <span>Loading...</span>}
+      {data?.products && (
+        <ul>
+          {data.products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.list.before",
+})
+
+export default ProductWidget
+```
+
+  </CodeTab>
+  <CodeTab label="Mutation" value="mutation">
+
+```tsx title="src/admin/widgets/product-widget.ts"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
+
+const ProductWidget = ({ 
+  data: productData
+}: DetailWidgetProps<HttpTypes.AdminProduct>) => {
+  const { mutateAsync } = useMutation({
+    mutationFn: (payload: HttpTypes.AdminUpdateProduct) => 
+      sdk.admin.product.update(productData.id, payload),
+    onSuccess: () => alert("updated product")
+  })
+
+  const handleUpdate = () => {
+    mutateAsync({
+      title: "New Product Title"
+    })
+  }
+  
+  return (
+    <Container className="divide-y p-0">
+      <Button onClick={handleUpdate}>Update Title</Button>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Refer to Tanstack Query's documentation to learn more about sending [Queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery#usequery) and [Mutations](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation#usemutation).
+
+### Cache in Next.js Projects
+
+Every method of the SDK that sends requests accepts as a last parameter an object of key-value headers to pass in the request.
+
+In Next.js storefronts or projects, pass the `next.tags` header in the last parameter for data caching.
+
+For example:
+
+```ts highlights={[["2", "next"], ["3", "tags", "An array of tags to cache the data under."]]}
+sdk.store.product.list({}, {
+  next: {
+    tags: ["products"]
+  }
+})
+```
+
+The `tags` property accepts an array of tags that the data is cached under.
+
+Then, to purge the cache later, use Next.js's `revalidateTag` utility:
+
+```ts
+import { revalidateTag } from "next/cache";
+
+// ...
+
+revalidateTag("products")
+```
+
+Learn more in the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).

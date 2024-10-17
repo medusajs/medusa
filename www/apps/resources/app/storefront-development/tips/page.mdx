@@ -8,17 +8,10 @@ In this document, you’ll find tips useful when building a storefront.
 
 ## Connect to the Medusa Application
 
-<Note type="soon">
-
-Support for Medusa v2 in Medusa React and the JS Client is coming soon.
-
-</Note>
-
 To send requests from the storefront to the Medusa application’s Store API Routes, you have three options:
 
+- **For JavaScript frameworks**: use Medusa’s [JS SDK](../../js-sdk/page.mdx) in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs.
 - **For other frontend technologies**: interact directly with the Medusa application by sending requests to its [Store REST APIs](https://docs.medusajs.com/api/store).
-- **For React-based storefronts**: use Medusa React. It provides you with the necessary hooks to retrieve or manipulate data from your Medusa application.
-- **For JavaScript frameworks**: use Medusa’s JavaScript Client in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs.
 
 ---
 
@@ -26,7 +19,7 @@ To send requests from the storefront to the Medusa application’s Store API Rou
 
 The `@medusajs/types` package provide API routes' request and response types.
 
-If you're not using the JS Client or Medusa React, install `@medusajs/types` to use the correct request and response types:
+If you're not using the JS SDK, install `@medusajs/types` to use the correct request and response types:
 
 ```bash npm2yarn
 npm install @medusajs/types@rc
