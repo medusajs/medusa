@@ -121,7 +121,9 @@ export function applyStep<
   TInvokeResultCompensateInput
 >): StepFunctionResult<TInvokeResultOutput> {
   return function (this: CreateWorkflowComposerContext) {
-    if (!this.workflowId) {
+    if (
+      this.__type !== OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+    ) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
@@ -403,26 +405,18 @@ export function createStep<
       OrchestrationUtils.SymbolMedusaWorkflowComposerContext
     ] as CreateWorkflowComposerContext
 
-    if (!context) {
-      throw new Error(
-        "createStep must be used inside a createWorkflow definition"
-      )
-    }
-
-    return context.stepBinder<TInvokeResultOutput>(
-      applyStep<
-        TInvokeInput,
-        { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },
-        TInvokeResultOutput,
-        TInvokeResultCompensateInput
-      >({
-        stepName,
-        stepConfig: config,
-        input,
-        invokeFn,
-        compensateFn,
-      })
-    )
+    return applyStep<
+      TInvokeInput,
+      { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },
+      TInvokeResultOutput,
+      TInvokeResultCompensateInput
+    >({
+      stepName,
+      stepConfig: config,
+      input,
+      invokeFn,
+      compensateFn,
+    }).bind(context)()
   } as StepFunction<TInvokeInput, TInvokeResultOutput>
 
   returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
