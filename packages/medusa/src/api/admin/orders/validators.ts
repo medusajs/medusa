@@ -10,6 +10,7 @@ export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     status: z.union([z.string(), z.array(z.string())]).optional(),
+    version: z.number().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
