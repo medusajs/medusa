@@ -65,7 +65,10 @@ function displayAdminUrl({
   port: string | number
   container: MedusaContainer
 }) {
-  const isProduction = !!process.env.NODE_ENV?.toLowerCase().startsWith("prod")
+  const isProduction = ["production", "prod"].includes(
+    process.env.NODE_ENV || ""
+  )
+
   if (isProduction) {
     return
   }
