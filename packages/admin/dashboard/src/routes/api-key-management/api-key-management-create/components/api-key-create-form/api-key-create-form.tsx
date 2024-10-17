@@ -12,6 +12,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
 import { ApiKeyType } from "../../../common/constants"
 
@@ -97,36 +98,29 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
   return (
     <Fragment>
       <RouteFocusModal.Form form={form}>
-        <form
+        <KeyboundForm
           className="flex h-full flex-col overflow-hidden"
           onSubmit={handleSubmit}
         >
-          <RouteFocusModal.Header>
-            <div className="flex items-center justify-end gap-x-2">
-              <RouteFocusModal.Close asChild>
-                <Button size="small" variant="secondary">
-                  {t("actions.cancel")}
-                </Button>
-              </RouteFocusModal.Close>
-              <Button size="small" type="submit" isLoading={isPending}>
-                {t("actions.save")}
-              </Button>
-            </div>
-          </RouteFocusModal.Header>
+          <RouteFocusModal.Header />
           <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
             <div className="flex flex-1 flex-col items-center overflow-y-auto">
               <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
                 <div>
-                  <Heading>
-                    {keyType === ApiKeyType.PUBLISHABLE
-                      ? t("apiKeyManagement.create.createPublishableHeader")
-                      : t("apiKeyManagement.create.createSecretHeader")}
-                  </Heading>
-                  <Text size="small" className="text-ui-fg-subtle">
-                    {keyType === ApiKeyType.PUBLISHABLE
-                      ? t("apiKeyManagement.create.createPublishableHint")
-                      : t("apiKeyManagement.create.createSecretHint")}
-                  </Text>
+                  <RouteFocusModal.Title asChild>
+                    <Heading>
+                      {keyType === ApiKeyType.PUBLISHABLE
+                        ? t("apiKeyManagement.create.createPublishableHeader")
+                        : t("apiKeyManagement.create.createSecretHeader")}
+                    </Heading>
+                  </RouteFocusModal.Title>
+                  <RouteFocusModal.Description asChild>
+                    <Text size="small" className="text-ui-fg-subtle">
+                      {keyType === ApiKeyType.PUBLISHABLE
+                        ? t("apiKeyManagement.create.createPublishableHint")
+                        : t("apiKeyManagement.create.createSecretHint")}
+                    </Text>
+                  </RouteFocusModal.Description>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <Form.Field
@@ -148,7 +142,19 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
               </div>
             </div>
           </RouteFocusModal.Body>
-        </form>
+          <RouteFocusModal.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteFocusModal.Close asChild>
+                <Button size="small" variant="secondary">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteFocusModal.Close>
+              <Button size="small" type="submit" isLoading={isPending}>
+                {t("actions.save")}
+              </Button>
+            </div>
+          </RouteFocusModal.Footer>
+        </KeyboundForm>
       </RouteFocusModal.Form>
       <Prompt variant="confirmation" open={!!createdKey}>
         <Prompt.Content className="w-fit max-w-[42.5%]">

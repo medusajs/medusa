@@ -8,6 +8,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateProductType } from "../../../../../hooks/api/product-types"
 
 const CreateProductTypeSchema = z.object({
@@ -48,7 +49,10 @@ export const CreateProductTypeForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
+      <KeyboundForm
+        onSubmit={handleSubmit}
+        className="flex flex-col overflow-hidden"
+      >
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
@@ -93,7 +97,7 @@ export const CreateProductTypeForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

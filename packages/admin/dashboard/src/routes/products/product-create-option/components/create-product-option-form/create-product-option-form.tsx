@@ -8,6 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { ChipInput } from "../../../../../components/inputs/chip-input"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateProductOption } from "../../../../../hooks/api/products"
 
 type EditProductOptionsFormProps = {
@@ -53,7 +54,7 @@ export const CreateProductOptionForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -115,7 +116,7 @@ export const CreateProductOptionForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

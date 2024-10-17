@@ -14,7 +14,10 @@ import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../components/common/form"
 import { useStore } from "../../../../../hooks/api/store"
-import { currencies, getCurrencySymbol } from "../../../../../lib/data/currencies"
+import {
+  currencies,
+  getCurrencySymbol,
+} from "../../../../../lib/data/currencies"
 
 export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
   const { t } = useTranslation()
@@ -118,7 +121,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label>{t("fields.description")}</Form.Label>
+                <Form.Label optional>{t("fields.description")}</Form.Label>
 
                 <Form.Control>
                   <Textarea {...field} />
@@ -138,7 +141,9 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label>{t("campaigns.fields.start_date")}</Form.Label>
+                <Form.Label optional>
+                  {t("campaigns.fields.start_date")}
+                </Form.Label>
 
                 <Form.Control>
                   <DatePicker
@@ -160,7 +165,9 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label>{t("campaigns.fields.end_date")}</Form.Label>
+                <Form.Label optional>
+                  {t("campaigns.fields.end_date")}
+                </Form.Label>
 
                 <Form.Control>
                   <DatePicker

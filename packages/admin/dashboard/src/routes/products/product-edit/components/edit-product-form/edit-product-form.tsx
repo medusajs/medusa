@@ -10,6 +10,7 @@ import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
 
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   FormExtensionZone,
   useDashboardExtension,
@@ -77,7 +78,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -230,7 +231,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

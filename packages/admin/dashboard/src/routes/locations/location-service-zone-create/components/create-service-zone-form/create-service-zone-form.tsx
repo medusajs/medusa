@@ -8,14 +8,18 @@ import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { InlineTip } from "../../../../../components/common/inline-tip"
-import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
+  StackedFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
-import { FulfillmentSetType } from "../../../common/constants"
+import {
+  FulfillmentSetType,
+  GEO_ZONE_STACKED_MODAL_ID,
+} from "../../../common/constants"
 
 const CreateServiceZoneSchema = z.object({
   name: z.string().min(1),
@@ -80,11 +84,55 @@ export function CreateServiceZoneForm({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <RouteFocusModal.Header>
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex flex-1 flex-col items-center overflow-auto">
+          <StackedFocusModal id={GEO_ZONE_STACKED_MODAL_ID}>
+            <div className="flex flex-1 flex-col items-center">
+              <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+                <Heading>
+                  {type === FulfillmentSetType.Pickup
+                    ? t("stockLocations.serviceZones.create.headerPickup", {
+                        location: location.name,
+                      })
+                    : t("stockLocations.serviceZones.create.headerShipping", {
+                        location: location.name,
+                      })}
+                </Heading>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Form.Field
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>{t("fields.name")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+
+                <InlineTip>
+                  {t("stockLocations.serviceZones.fields.tip")}
+                </InlineTip>
+
+                <GeoZoneForm form={form} />
+              </div>
+            </div>
+            <GeoZoneForm.AreaDrawer form={form} />
+          </StackedFocusModal>
+        </RouteFocusModal.Body>
+
+        <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
@@ -95,57 +143,8 @@ export function CreateServiceZoneForm({
               {t("actions.save")}
             </Button>
           </div>
-        </RouteFocusModal.Header>
-
-        <RouteFocusModal.Body className="m-auto flex h-full w-full  flex-col items-center divide-y overflow-hidden">
-          <SplitView open={open} onOpenChange={setOpen}>
-            <SplitView.Content>
-              <div className="flex flex-1 flex-col items-center overflow-y-auto">
-                <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
-                  <Heading>
-                    {type === FulfillmentSetType.Pickup
-                      ? t("stockLocations.serviceZones.create.headerPickup", {
-                          location: location.name,
-                        })
-                      : t("stockLocations.serviceZones.create.headerShipping", {
-                          location: location.name,
-                        })}
-                  </Heading>
-
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.name")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                  </div>
-
-                  <InlineTip>
-                    {t("stockLocations.serviceZones.fields.tip")}
-                  </InlineTip>
-
-                  <GeoZoneForm form={form} onOpenChange={setOpen} />
-                </div>
-              </div>
-            </SplitView.Content>
-            <GeoZoneForm.AreaDrawer
-              form={form}
-              open={open}
-              onOpenChange={setOpen}
-            />
-          </SplitView>
-        </RouteFocusModal.Body>
-      </form>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

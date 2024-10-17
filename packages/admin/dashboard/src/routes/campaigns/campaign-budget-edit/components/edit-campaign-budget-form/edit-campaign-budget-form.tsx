@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
@@ -58,7 +59,7 @@ export const EditCampaignBudgetForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
@@ -131,7 +132,7 @@ export const EditCampaignBudgetForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }
