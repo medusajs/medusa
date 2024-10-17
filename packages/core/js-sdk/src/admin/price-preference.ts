@@ -3,8 +3,14 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class PricePreference {
+  /**
+   * @ignore
+   */
   private client: Client
 
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
