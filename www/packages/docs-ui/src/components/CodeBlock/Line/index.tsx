@@ -96,6 +96,16 @@ export const CodeBlockLine = ({
         if (currentPositionInHighlightedText === highlight.text!.length) {
           // matching text was found, break loop
           endIndex = tokenIndex
+          const trimmedContent = token.content.trimEnd()
+          const endingSpacesLength =
+            token.content.length - trimmedContent.length
+          if (endingSpacesLength) {
+            line.splice(tokenIndex + 1, 0, {
+              content: new Array(endingSpacesLength).fill(" ").join(""),
+              types: ["plain"],
+            })
+            token.content = trimmedContent
+          }
           return true
         }
       })
