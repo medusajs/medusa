@@ -14,6 +14,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
@@ -46,13 +47,10 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce(
-        (acc, item) => {
-          acc[item.id] = getFulfillableQuantity(item)
-          return acc
-        },
-        {} as Record<string, number>
-      ),
+      quantity: fulfillableItems.reduce((acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      }, {} as Record<string, number>),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
@@ -117,20 +115,17 @@ export function OrderCreateFulfillmentForm({
       })
     }
 
-    const quantityMap = itemsToFulfill.reduce(
-      (acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
-        return acc
-      },
-      {} as Record<string, number>
-    )
+    const quantityMap = itemsToFulfill.reduce((acc, item) => {
+      acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
+      return acc
+    }, {} as Record<string, number>)
 
     form.setValue("quantity", quantityMap)
   }, [...fulfilledQuantityArray, requiresShipping])
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
@@ -192,7 +187,7 @@ export function OrderCreateFulfillmentForm({
                   />
                 </div>
 
-                {/*<div className="py-8">*/}
+                {/* <div className="py-8">*/}
                 {/*  <Form.Field*/}
                 {/*    control={form.control}*/}
                 {/*    name="shipping_option_id"*/}
@@ -233,7 +228,7 @@ export function OrderCreateFulfillmentForm({
                 {/*      )*/}
                 {/*    }}*/}
                 {/*  />*/}
-                {/*</div>*/}
+                {/* </div>*/}
                 <div>
                   <Form.Item className="mt-8">
                     <Form.Label>
@@ -302,7 +297,7 @@ export function OrderCreateFulfillmentForm({
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

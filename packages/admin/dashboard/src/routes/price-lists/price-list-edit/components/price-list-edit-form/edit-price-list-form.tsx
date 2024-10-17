@@ -14,6 +14,7 @@ import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdatePriceList } from "../../../../../hooks/api/price-lists"
 import { PriceListStatus, PriceListType } from "../../../common/constants"
 
@@ -63,7 +64,7 @@ export const PriceListEditForm = ({ priceList }: PriceListEditFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex flex-1 flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -177,7 +178,7 @@ export const PriceListEditForm = ({ priceList }: PriceListEditFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

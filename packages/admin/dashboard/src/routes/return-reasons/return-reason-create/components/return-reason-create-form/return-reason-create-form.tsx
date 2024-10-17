@@ -8,6 +8,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateReturnReason } from "../../../../../hooks/api/return-reasons"
 
 const ReturnReasonCreateSchema = z.object({
@@ -49,7 +50,7 @@ export const ReturnReasonCreateForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex size-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -150,7 +151,7 @@ export const ReturnReasonCreateForm = () => {
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

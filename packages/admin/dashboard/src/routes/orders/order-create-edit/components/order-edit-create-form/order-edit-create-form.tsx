@@ -10,6 +10,7 @@ import {
 } from "../../../../../components/modals"
 
 import { Form } from "../../../../../components/common/form"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useCancelOrderEdit,
   useRequestOrderEdit,
@@ -98,7 +99,7 @@ export const OrderEditCreateForm = ({
         }
       }}
     >
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
@@ -107,7 +108,7 @@ export const OrderEditCreateForm = ({
 
             <OrderEditItemsSection preview={preview} order={order} />
 
-            {/*TOTALS SECTION*/}
+            {/* TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
                 <span className="txt-small text-ui-fg-subtle">
@@ -142,7 +143,7 @@ export const OrderEditCreateForm = ({
               </div>
             </div>
 
-            {/*NOTE*/}
+            {/* NOTE*/}
             <Form.Field
               control={form.control}
               name="note"
@@ -167,7 +168,7 @@ export const OrderEditCreateForm = ({
               }}
             />
 
-            {/*SEND NOTIFICATION*/}
+            {/* SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
@@ -223,7 +224,7 @@ export const OrderEditCreateForm = ({
             </div>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

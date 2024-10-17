@@ -6,6 +6,7 @@ import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
@@ -69,7 +70,7 @@ export const EditSalesChannelsForm = ({
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -90,7 +91,7 @@ export const EditSalesChannelsForm = ({
     pageSize: PAGE_SIZE,
   })
 
-  const { mutateAsync, isLoading: isMutating } = useUpdateProduct(product.id)
+  const { mutateAsync, isPending: isMutating } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const arr = data.sales_channels ?? []
@@ -120,19 +121,8 @@ export const EditSalesChannelsForm = ({
   return (
     <RouteFocusModal.Form form={form}>
       <div className="flex h-full flex-col overflow-hidden">
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex-1 overflow-hidden">
           <DataTable
             table={table}
             columns={columns}
@@ -147,6 +137,18 @@ export const EditSalesChannelsForm = ({
             layout="fill"
           />
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
       </div>
     </RouteFocusModal.Form>
   )

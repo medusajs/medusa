@@ -7,6 +7,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useDashboardExtension,
   useExtendableForm,
@@ -211,14 +212,22 @@ export const ProductCreateForm = ({
   return (
     <RouteFocusModal>
       <RouteFocusModal.Form form={form}>
-        <form
+        <KeyboundForm
           onKeyDown={(e) => {
             // We want to continue to the next tab on enter instead of saving as draft immediately
             if (e.key === "Enter") {
-              if (tab !== Tab.VARIANTS) {
-                e.preventDefault()
-                e.stopPropagation()
-                onNext(tab)
+              e.preventDefault()
+
+              if (e.metaKey || e.ctrlKey) {
+                if (tab !== Tab.VARIANTS) {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onNext(tab)
+
+                  return
+                }
+
+                handleSubmit()
               }
             }
           }}
@@ -332,7 +341,7 @@ export const ProductCreateForm = ({
               />
             </div>
           </RouteFocusModal.Footer>
-        </form>
+        </KeyboundForm>
       </RouteFocusModal.Form>
     </RouteFocusModal>
   )
