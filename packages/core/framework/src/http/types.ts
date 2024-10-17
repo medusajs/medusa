@@ -116,7 +116,7 @@ export interface MedusaRequest<Body = unknown>
    */
   remoteQueryConfig: {
     fields: string[]
-    pagination: { order?: Record<string, string>; skip?: number; take?: number }
+    pagination: { order?: Record<string, string>; skip: number; take?: number }
   }
   /**
    * An object containing the fields that are filterable e.g `{ id: Any<String> }`

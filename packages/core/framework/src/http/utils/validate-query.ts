@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { omit } from "lodash"
-import { NextFunction } from "express"
-import { MedusaError, removeUndefinedProperties } from "@medusajs/utils"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import { MedusaError, removeUndefinedProperties } from "@medusajs/utils"
+import { NextFunction } from "express"
+import { omit } from "lodash"
+import { z } from "zod"
 
 import { zodValidator } from "../../zod/zod-helpers"
 import { MedusaRequest, MedusaResponse } from "../types"
@@ -79,7 +79,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
 
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(req.validatedQuery)
-      req.remoteQueryConfig = cnf.remoteQueryConfig
+      req.remoteQueryConfig = cnf.remoteQueryConfig as any
       req.listConfig = (cnf as any).listConfig
       req.retrieveConfig = (cnf as any).retrieveConfig
 

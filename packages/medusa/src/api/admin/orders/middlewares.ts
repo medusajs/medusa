@@ -1,11 +1,12 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import * as QueryConfig from "./query-config"
 import {
   AdminCompleteOrder,
+  AdminGetOrdersOrderItemsParams,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
   AdminMarkOrderFulfillmentDelivered,
@@ -33,6 +34,16 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/orders/:id/line-items",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetOrdersOrderItemsParams,
+        QueryConfig.listOrderItemsQueryConfig
       ),
     ],
   },

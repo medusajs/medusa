@@ -1,3 +1,4 @@
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ClaimReason,
   ClaimType,
@@ -5,7 +6,6 @@ import {
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -1372,6 +1372,33 @@ medusaIntegrationTestRunner({
         )
         // additional items is one of the props that should be undefined
         expect(res.data.claim.additional_items).toBeUndefined()
+
+        const resLineItems = await api.get(
+          `/admin/orders/${order.id}/line-items`,
+          adminHeaders
+        )
+
+        expect(resLineItems.data).toEqual(
+          expect.objectContaining({
+            order_items: [
+              expect.objectContaining({
+                order_id: order.id,
+                item_id: item.id,
+                version: 3,
+                item: expect.objectContaining({
+                  title: "Custom Item 2",
+                  unit_price: 25,
+                }),
+                history: {
+                  version: {
+                    from: 1,
+                    to: 3,
+                  },
+                },
+              }),
+            ],
+          })
+        )
       })
     })
   },

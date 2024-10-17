@@ -32,7 +32,7 @@ declare global {
         fields: string[]
         pagination: {
           order?: Record<string, string>
-          skip?: number
+          skip: number
           take?: number
         }
       }
