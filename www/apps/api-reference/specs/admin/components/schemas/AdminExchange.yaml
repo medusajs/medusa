@@ -95,7 +95,7 @@ properties:
     title: deleted_at
     description: The date the exchange was deleted.
   order:
-    $ref: ./AdminOrder.yaml
+    $ref: ./BaseOrder.yaml
   allow_backorder:
     type: boolean
     title: allow_backorder

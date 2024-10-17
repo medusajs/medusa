@@ -93,7 +93,7 @@
  *     title: deleted_at
  *     description: The date the exchange was deleted.
  *   order:
- *     $ref: "#/components/schemas/AdminOrder"
+ *     $ref: "#/components/schemas/BaseOrder"
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder

@@ -1,5 +1,5 @@
 type: object
-description: An order address
+description: An order address.
 x-schemaName: BaseOrderAddress
 required:
   - id
@@ -48,8 +48,6 @@ properties:
     title: country_code
     description: The address's country code.
     example: us
-  country:
-    $ref: ./AdminRegionCountry.yaml
   province:
     type: string
     title: province

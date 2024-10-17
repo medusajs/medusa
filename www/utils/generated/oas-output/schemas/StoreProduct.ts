@@ -12,10 +12,12 @@
  *   - status
  *   - description
  *   - id
- *   - handle
+ *   - created_at
+ *   - updated_at
  *   - subtitle
- *   - is_giftcard
  *   - thumbnail
+ *   - handle
+ *   - is_giftcard
  *   - width
  *   - weight
  *   - height
@@ -27,8 +29,6 @@
  *   - type_id
  *   - discountable
  *   - external_id
- *   - created_at
- *   - updated_at
  *   - deleted_at
  * properties:
  *   categories:

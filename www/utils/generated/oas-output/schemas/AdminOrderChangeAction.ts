@@ -6,11 +6,11 @@
  * required:
  *   - order_change
  *   - order
- *   - order_id
- *   - internal_note
  *   - id
  *   - created_at
  *   - updated_at
+ *   - order_id
+ *   - internal_note
  *   - return_id
  *   - exchange_id
  *   - claim_id
@@ -47,11 +47,7 @@
  *     title: exchange_id
  *     description: The ID of the associated exchange.
  *   order:
- *     type: string
- *     title: order
- *     description: The order change's order.
- *     externalDocs:
- *       url: "#pagination"
+ *     $ref: "#/components/schemas/AdminOrder"
  *   reference:
  *     type: string
  *     title: reference

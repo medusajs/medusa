@@ -1,7 +1,7 @@
 /**
  * @schema BaseOrderAddress
  * type: object
- * description: An order address
+ * description: An order address.
  * x-schemaName: BaseOrderAddress
  * required:
  *   - id
@@ -50,8 +50,6 @@
  *     title: country_code
  *     description: The address's country code.
  *     example: us
- *   country:
- *     $ref: "#/components/schemas/AdminRegionCountry"
  *   province:
  *     type: string
  *     title: province

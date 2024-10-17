@@ -6,7 +6,6 @@ required:
   - order_id
   - name
   - amount
-  - raw_amount
   - is_tax_inclusive
   - created_at
   - updated_at
@@ -18,14 +17,6 @@ required:
   - tax_total
   - discount_total
   - discount_tax_total
-  - raw_original_total
-  - raw_original_subtotal
-  - raw_original_tax_total
-  - raw_total
-  - raw_subtotal
-  - raw_tax_total
-  - raw_discount_total
-  - raw_discount_tax_total
 properties:
   id:
     type: string
@@ -47,20 +38,6 @@ properties:
     type: number
     title: amount
     description: The shipping method's amount.
-  raw_amount:
-    type: object
-    description: The shipping method's raw amount.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw amount's value.
-          - type: number
-            title: value
-            description: The raw amount's value.
   is_tax_inclusive:
     type: boolean
     title: is_tax_inclusive
@@ -132,115 +109,3 @@ properties:
     type: number
     title: discount_tax_total
     description: The total taxes of the discount amount.
-  raw_original_total:
-    type: object
-    description: The shipping method's raw original total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw original total's value.
-          - type: number
-            title: value
-            description: The raw original total's value.
-  raw_original_subtotal:
-    type: object
-    description: The shipping method's raw original subtotal.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw original subtotal's value.
-          - type: number
-            title: value
-            description: The raw original subtotal's value.
-  raw_original_tax_total:
-    type: object
-    description: The shipping method's raw original tax total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw original tax total's value.
-          - type: number
-            title: value
-            description: The raw original tax total's value.
-  raw_total:
-    type: object
-    description: The shipping method's raw total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw total's value.
-          - type: number
-            title: value
-            description: The raw total's value.
-  raw_subtotal:
-    type: object
-    description: The shipping method's raw subtotal.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw subtotal's value.
-          - type: number
-            title: value
-            description: The raw subtotal's value.
-  raw_tax_total:
-    type: object
-    description: The shipping method's raw tax total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw tax total's value.
-          - type: number
-            title: value
-            description: The raw tax total's value.
-  raw_discount_total:
-    type: object
-    description: The shipping method's raw discount total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw discount total's value.
-          - type: number
-            title: value
-            description: The raw discount total's value.
-  raw_discount_tax_total:
-    type: object
-    description: The shipping method's raw discount tax total.
-    required:
-      - value
-    properties:
-      value:
-        oneOf:
-          - type: string
-            title: value
-            description: The raw discount tax total's value.
-          - type: number
-            title: value
-            description: The raw discount tax total's value.

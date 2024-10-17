@@ -24,16 +24,6 @@ post:
       required: true
       schema:
         type: string
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
@@ -116,16 +106,6 @@ delete:
       required: true
       schema:
         type: string
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-

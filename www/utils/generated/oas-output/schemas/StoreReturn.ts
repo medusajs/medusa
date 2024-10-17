@@ -5,10 +5,10 @@
  * x-schemaName: StoreReturn
  * required:
  *   - items
- *   - order_id
  *   - id
- *   - created_at
  *   - display_id
+ *   - created_at
+ *   - order_id
  *   - canceled_at
  *   - received_at
  * properties:

@@ -10,16 +10,6 @@ get:
       https://docs.medusajs.com/v2/resources/storefront-development/products/price
     description: 'Storefront guide: How to retrieve a product variants'' prices.'
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-

@@ -8,8 +8,6 @@
  *   - item_id
  *   - total
  *   - subtotal
- *   - raw_total
- *   - raw_subtotal
  *   - id
  *   - code
  *   - rate
@@ -30,12 +28,6 @@
  *     type: number
  *     title: subtotal
  *     description: The item's total excluding taxes, including promotions.
- *   raw_total:
- *     type: object
- *     description: The tax line's raw total.
- *   raw_subtotal:
- *     type: object
- *     description: The tax line's raw subtotal.
  *   id:
  *     type: string
  *     title: id

@@ -4,19 +4,17 @@
  * description: The order's details.
  * x-schemaName: StoreOrder
  * required:
+ *   - items
+ *   - shipping_methods
+ *   - currency_code
  *   - id
- *   - version
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
  *   - email
- *   - currency_code
- *   - items
- *   - shipping_methods
  *   - payment_status
  *   - fulfillment_status
  *   - summary
- *   - metadata
  *   - created_at
  *   - updated_at
  *   - original_item_total
@@ -46,10 +44,6 @@
  *     type: string
  *     title: id
  *     description: The order's ID.
- *   version:
- *     type: number
- *     title: version
- *     description: The order's version.
  *   region_id:
  *     type: string
  *     title: region_id
@@ -77,24 +71,24 @@
  *     title: display_id
  *     description: The order's display ID.
  *   shipping_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
+ *     $ref: "#/components/schemas/StoreOrderAddress"
  *   billing_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
+ *     $ref: "#/components/schemas/StoreOrderAddress"
  *   items:
  *     type: array
  *     description: The order's items.
  *     items:
- *       $ref: "#/components/schemas/BaseOrderLineItem"
+ *       $ref: "#/components/schemas/StoreOrderLineItem"
  *   shipping_methods:
  *     type: array
  *     description: The order's shipping methods.
  *     items:
- *       $ref: "#/components/schemas/BaseOrderShippingMethod"
+ *       $ref: "#/components/schemas/StoreOrderShippingMethod"
  *   payment_collections:
  *     type: array
  *     description: The order's payment collections.
  *     items:
- *       $ref: "#/components/schemas/BasePaymentCollection"
+ *       $ref: "#/components/schemas/StorePaymentCollection"
  *   payment_status:
  *     type: string
  *     description: The order's payment status.
@@ -113,7 +107,7 @@
  *     type: array
  *     description: The order's fulfillments.
  *     items:
- *       $ref: "#/components/schemas/BaseOrderFulfillment"
+ *       $ref: "#/components/schemas/StoreOrderFulfillment"
  *   fulfillment_status:
  *     type: string
  *     description: The order's fulfillment status.
@@ -229,6 +223,13 @@
  *     type: number
  *     title: original_shipping_tax_total
  *     description: The total taxes of the order's shipping excluding promotions.
+ *   customer:
+ *     $ref: "#/components/schemas/StoreCustomer"
+ *   transactions:
+ *     type: array
+ *     description: The order's transactions.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderTransaction"
  * 
 */
 
