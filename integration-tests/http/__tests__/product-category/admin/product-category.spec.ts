@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -313,12 +313,12 @@ medusaIntegrationTestRunner({
         ).data.product_category
 
         await api.post(
-            "/admin/product-categories",
-            {
-              name: "Something different",
-            },
-            adminHeaders
-          )
+          "/admin/product-categories",
+          {
+            name: "Something different",
+          },
+          adminHeaders
+        )
 
         const response = await api.get(
           "/admin/product-categories?q=Category",

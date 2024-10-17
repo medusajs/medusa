@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { createRegionsWorkflow } from "@medusajs/core-flows"
 import { MedusaContainer, RegionDTO } from "@medusajs/types"
 import { createAdminUser } from "../../../../helpers/create-admin-user"

@@ -13,7 +13,7 @@ import {
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
