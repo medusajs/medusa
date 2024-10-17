@@ -11,10 +11,10 @@ import {
   ModuleWithJoinerConfigFixtures,
   ModuleWithoutJoinerConfigFixtures,
 } from "../__fixtures__"
-import { loadInternalModule, loadResources } from "../load-internal"
+import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
 import { ModuleProviderService as ModuleServiceWithProviderProvider1 } from "../__fixtures__/module-with-providers/provider-1"
 import { ModuleProvider2Service as ModuleServiceWithProviderProvider2 } from "../__fixtures__/module-with-providers/provider-2"
-import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
+import { loadInternalModule, loadResources } from "../load-internal"
 
 describe("load internal", () => {
   describe("loadResources", () => {
@@ -438,6 +438,7 @@ describe("load internal", () => {
       const provider = (moduleService as any).container[
         getProviderRegistrationKey({
           providerId: moduleResolution.options!.providers![0].id,
+          providerIdentifier: ModuleServiceWithProviderProvider2.identifier,
         })
       ]
 
