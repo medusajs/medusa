@@ -7,7 +7,7 @@ import {
 import { createStep, StepFunction, StepResponse } from "@medusajs/workflows-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
-type EntryStepInput<TEntry extends string> = RemoteQueryInput<TEntry> & {
+export type EntryStepInput<TEntry extends string> = RemoteQueryInput<TEntry> & {
   options?: RemoteJoinerOptions
 }
 
