@@ -23,11 +23,29 @@ export interface BaseRegionCountry {
 }
 
 export interface BaseRegionFilters extends BaseFilterable<BaseRegionFilters> {
+  /**
+   * A query or keywords to search a region's searchable fields by.
+   */
   q?: string
+  /**
+   * Filter by region ID(s).
+   */
   id?: string[] | string | OperatorMap<string | string[]>
+  /**
+   * Filter by region name(s).
+   */
   name?: string | string[]
+  /**
+   * Filter by currency code(s).
+   */
   currency_code?: string | string[]
+  /**
+   * Apply filters on the region's creation date.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Apply filters on the region's update date.
+   */
   updated_at?: OperatorMap<string>
 }
 

@@ -18,10 +18,28 @@ export interface BaseCollectionParams extends SelectParams {}
 export interface BaseCollectionListParams
   extends FindParams,
     BaseFilterable<BaseCollectionListParams> {
+  /**
+   * A query or keywords to search the collection's searchable fields by.
+   */
   q?: string
+  /**
+   * Filter by collection ID(s).
+   */
   id?: string | string[]
+  /**
+   * Filter by collection handle(s).
+   */
   handle?: string | string[]
+  /**
+   * Filter by collection title(s).
+   */
   title?: string | string[]
+  /**
+   * Apply filters on collection creation dates.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Apply filters on collection update dates.
+   */
   updated_at?: OperatorMap<string>
 }

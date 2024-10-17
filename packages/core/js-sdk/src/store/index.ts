@@ -8,13 +8,67 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Store {
+  /**
+   * @ignore
+   */
   private client: Client
 
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
 
   public region = {
+    /**
+     * This method retrieves the paginated list of regions in the store. It sends a request to the 
+     * [List Regions API route](https://docs.medusajs.com/v2/api/store#regions_getregions).
+     * 
+     * Related guide: [How to list regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/list).
+     * 
+     * @param query - Filters and pagination configurations.
+     * @param headers - Headers to pass in the request
+     * @returns The paginated list of regions.
+     * 
+     * @example
+     * To retrieve the list of regions:
+     * 
+     * ```ts
+     * sdk.store.region.list()
+     * .then(({ regions, count, limit, offset }) => {
+     *   console.log(regions)
+     * })
+     * ```
+     * 
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     * 
+     * For example, to retrieve only 10 items and skip 10 items:
+     * 
+     * ```ts
+     * sdk.store.region.list({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ regions, count, limit, offset }) => {
+     *   console.log(regions)
+     * })
+     * ```
+     * 
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each region:
+     * 
+     * ```ts
+     * sdk.store.region.list({
+     *   fields: "id,*countries"
+     * })
+     * .then(({ regions, count, limit, offset }) => {
+     *   console.log(regions)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     list: async (
       query?: FindParams & HttpTypes.StoreRegionFilters,
       headers?: ClientHeaders
@@ -26,6 +80,43 @@ export class Store {
         headers,
       })
     },
+    /**
+     * This method retrieves a region by its ID. It sends a request to the [Get Region](https://docs.medusajs.com/v2/api/store#regions_getregionsid)
+     * API route.
+     * 
+     * Related guide: [Store and retrieve regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/store-retrieve-region).
+     * 
+     * @param id - The region's ID.
+     * @param query - Configure the fields to retrieve in the region.
+     * @param headers - Headers to pass in the request
+     * @returns The region.
+     * 
+     * @example
+     * To retrieve a region by its ID:
+     * 
+     * ```ts
+     * sdk.store.region.retrieve("reg_123")
+     * .then(({ region }) => {
+     *   console.log(region)
+     * })
+     * ```
+     * 
+     * To specify the fields and relations to retrieve:
+     * 
+     * ```ts
+     * sdk.store.region.retrieve(
+     *   "reg_123",
+     *   {
+     *     fields: "id,*countries"
+     *   }
+     * )
+     * .then(({ region }) => {
+     *   console.log(region)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     retrieve: async (
       id: string,
       query?: SelectParams,
@@ -42,6 +133,52 @@ export class Store {
   }
 
   public collection = {
+    /**
+     * This method retrieves a paginated list of product collections. It sends a request to the
+     * [List Collections](https://docs.medusajs.com/v2/api/store#collections_getcollections) API route.
+     * 
+     * @param query - Filters and pagination configurations.
+     * @param headers - Headers to pass in the request
+     * @returns The paginated list of collections.
+     * 
+     * @example
+     * To retrieve the list of collections:
+     * 
+     * ```ts
+     * sdk.store.collection.list()
+     * .then(({ collections, count, limit, offset }) => {
+     *   console.log(collections)
+     * })
+     * ```
+     * 
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     * 
+     * For example, to retrieve only 10 items and skip 10 items:
+     * 
+     * ```ts
+     * sdk.store.collection.list({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ collections, count, limit, offset }) => {
+     *   console.log(collections)
+     * })
+     * ```
+     * 
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each region:
+     * 
+     * ```ts
+     * sdk.store.collection.list({
+     *   fields: "id,handle"
+     * })
+     * .then(({ collections, count, limit, offset }) => {
+     *   console.log(collections)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     list: async (
       query?: FindParams & HttpTypes.StoreCollectionFilters,
       headers?: ClientHeaders
@@ -53,6 +190,13 @@ export class Store {
         headers,
       })
     },
+    /**
+     * 
+     * @param id 
+     * @param query 
+     * @param headers 
+     * @returns 
+     */
     retrieve: async (
       id: string,
       query?: SelectParams,
