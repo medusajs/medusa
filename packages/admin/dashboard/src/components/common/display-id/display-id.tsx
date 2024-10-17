@@ -20,7 +20,7 @@ function DisplayId({ id, className }: DisplayIdProps) {
 
   return (
     <Tooltip maxWidth={260} content={id} open={open} onOpenChange={setOpen}>
-      <span onClick={onClick} className={clx("", className)}>
+      <span onClick={onClick} className={clx("cursor-pointer", className)}>
         #{id.slice(-7)}
       </span>
     </Tooltip>
