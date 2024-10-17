@@ -59,14 +59,28 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
 
     const from = notification.from?.trim() || this.config_.from
 
+    let mailContent
+
+    if ("providerContext" in notification) {
+      mailContent = {
+        subject: notification.providerContext?.subject,
+        html: notification.providerContext?.html,
+      }
+    } else {
+      // we can't mix html and templates for sendgrid
+      mailContent = {
+        templateId: notification.template,
+      }
+    }
+
     const message: sendgrid.MailDataRequired = {
       to: notification.to,
       from: from,
-      templateId: notification.template,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
+      ...mailContent,
     }
 
     try {
