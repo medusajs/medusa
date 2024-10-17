@@ -1,5 +1,10 @@
 import { PaginatedResponse } from "../../common"
-import { AdminOrder, AdminOrderChange, AdminOrderPreview } from "./entities"
+import {
+  AdminOrder,
+  AdminOrderChange,
+  AdminOrderLineItem,
+  AdminOrderPreview,
+} from "./entities"
 
 export interface AdminOrderResponse {
   order: AdminOrder
@@ -11,6 +16,10 @@ export interface AdminOrderChangesResponse {
 
 export type AdminOrderListResponse = PaginatedResponse<{
   orders: AdminOrder[]
+}>
+
+export type AdminOrderLineItemsListResponse = PaginatedResponse<{
+  line_items: AdminOrderLineItem[]
 }>
 
 export interface AdminOrderPreviewResponse {
