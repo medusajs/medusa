@@ -25,7 +25,7 @@ export type ProviderSendNotificationDTO = {
   /**
    * The template name in the provider's system.
    */
-  template: string
+  template?: string
   /**
    * The data that gets passed over to the provider for rendering the notification.
    */
