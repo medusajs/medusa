@@ -8,10 +8,10 @@ import { scheduleJob } from "node-schedule"
 
 import {
   dynamicImport,
-  isPresent,
   FileSystem,
   gqlSchemaToTypes,
   GracefulShutdownServer,
+  isPresent,
 } from "@medusajs/framework/utils"
 import { logger } from "@medusajs/framework/logger"
 
@@ -57,13 +57,18 @@ export async function registerInstrumentation(directory: string) {
 // eslint-disable-next-line no-var
 export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
 
+function getAdminUrl(adminPath: string, port: string | number) {
+  return `http://localhost:${port}${adminPath}`
+}
+
 async function start(args: {
   directory: string
   port?: number
   types?: boolean
   cluster?: number
 }) {
-  const { port, directory, types } = args
+  const { port = 9000, directory, types } = args
+
   async function internalStart(generateTypes: boolean) {
     track("CLI_START")
     await registerInstrumentation(directory)
@@ -88,7 +93,7 @@ async function start(args: {
     })
 
     try {
-      const { shutdown, gqlSchema } = await loaders({
+      const { shutdown, gqlSchema, container } = await loaders({
         directory,
         expressApp: app,
       })
@@ -109,6 +114,15 @@ async function start(args: {
       const server = GracefulShutdownServer.create(
         http_.listen(port).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
+
+          const {
+            admin: { path: adminPath },
+          } = container.resolve("configModule")
+
+          logger.success(
+            serverActivity,
+            `Admin URL: ${getAdminUrl(adminPath, port!)}`
+          )
           track("CLI_START_COMPLETED")
         })
       )
