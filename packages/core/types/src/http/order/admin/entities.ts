@@ -51,6 +51,12 @@ export interface AdminOrderItem {
   order_id: string
   item_id: string
   version: number
+  history: {
+    version: {
+      from: number
+      to: number
+    }
+  }
   item: AdminOrderLineItem
 }
 

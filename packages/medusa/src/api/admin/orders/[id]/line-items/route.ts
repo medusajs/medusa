@@ -3,7 +3,10 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  deduplicate,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminOrderItemsFilters>,
@@ -19,15 +22,50 @@ export const GET = async (
       ...req.filterableFields,
       order_id: id,
     },
-    fields: req.remoteQueryConfig.fields,
-    pagination: req.remoteQueryConfig.pagination,
+    fields: deduplicate(
+      req.remoteQueryConfig.fields.concat(["item_id", "version"])
+    ),
   })
 
-  const { data, metadata } = result
+  const data = result.data
+  const deduplicatedItems = {}
+
+  for (const item of data) {
+    const itemId = item.item_id
+    const version = item.version
+
+    if (!deduplicatedItems[itemId]) {
+      deduplicatedItems[itemId] = {
+        ...item,
+        history: {
+          version: {
+            from: version,
+            to: version,
+          },
+        },
+      }
+      continue
+    }
+
+    deduplicatedItems[itemId].history.version.to = Math.max(
+      version,
+      deduplicatedItems[itemId].history.version.to
+    )
+
+    deduplicatedItems[itemId].history.version.from = Math.min(
+      version,
+      deduplicatedItems[itemId].history.version.from
+    )
+
+    if (version > deduplicatedItems[itemId].version) {
+      deduplicatedItems[itemId] = {
+        ...item,
+        history: deduplicatedItems[itemId].history,
+      }
+    }
+  }
+
   res.json({
-    order_items: data,
-    count: metadata!.count,
-    offset: metadata!.skip,
-    limit: metadata!.take,
+    order_items: Object.values(deduplicatedItems),
   })
 }

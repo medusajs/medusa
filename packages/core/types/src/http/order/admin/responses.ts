@@ -18,9 +18,9 @@ export type AdminOrderListResponse = PaginatedResponse<{
   orders: AdminOrder[]
 }>
 
-export type AdminOrderLineItemsListResponse = PaginatedResponse<{
+export type AdminOrderLineItemsListResponse = {
   order_items: AdminOrderItem[]
-}>
+}
 
 export interface AdminOrderPreviewResponse {
   order: AdminOrderPreview
