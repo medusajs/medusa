@@ -174,20 +174,17 @@ export class Composer {
 
     delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
 
+    const workflowArgs = [
+      config.name,
+      this.context.flow,
+      this.context.handlers,
+      config,
+    ]
+
     if (newWorkflow) {
-      WorkflowManager.update(
-        config.name,
-        this.context.flow,
-        this.context.handlers,
-        config
-      )
+      WorkflowManager.update(...workflowArgs)
     } else {
-      WorkflowManager.register(
-        config.name,
-        this.context.flow,
-        this.context.handlers,
-        config
-      )
+      WorkflowManager.register(...workflowArgs)
     }
 
     const fileSourcePath = getCallerFilePath() as string
