@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about promotion actions and how they’re computed and used.
+In this document, you’ll learn about promotion actions and how they’re computed using the [computeActions method](/references/promotion/computeActions).
 
 ## computeActions Method
 
@@ -32,7 +32,7 @@ export interface AddItemAdjustmentAction {
 }
 ```
 
-This action means that a new record should be created of the `LineItemAdjustment` data model in the Cart Module.
+This action means that a new record should be created of the `LineItemAdjustment` data model in the Cart Module, or `OrderLineItemAdjustment` data model in the Order Module.
 
 <Note>
 
@@ -57,7 +57,7 @@ export interface RemoveItemAdjustmentAction {
 }
 ```
 
-This action means that a new record should be removed of the `LineItemAdjustment` with the specified ID in the `adjustment_id` property.
+This action means that a new record should be removed of the `LineItemAdjustment` (or `OrderLineItemAdjustment`) with the specified ID in the `adjustment_id` property.
 
 <Note>
 
@@ -81,7 +81,7 @@ export interface AddShippingMethodAdjustment {
 }
 ```
 
-This action means that a new record should be created of the `ShippingMethodAdjustment` data model in the Cart Module.
+This action means that a new record should be created of the `ShippingMethodAdjustment` data model in the Cart Module, or `OrderShippingMethodAdjustment` data model in the Order Module.
 
 <Note>
 
@@ -105,7 +105,7 @@ export interface RemoveShippingMethodAdjustment {
 }
 ```
 
-When the Medusa application receives this action type, it removes the `ShippingMethodAdjustment` with the specified ID in the `adjustment_id` property.
+When the Medusa application receives this action type, it removes the `ShippingMethodAdjustment` (or `OrderShippingMethodAdjustment`) with the specified ID in the `adjustment_id` property.
 
 <Note>
 

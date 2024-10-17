@@ -74,6 +74,36 @@ const nextConfig = {
         destination: "/commerce-modules/inventory/links-to-other-modules",
         permanent: true,
       },
+      {
+        source: "/commerce-modules/region/relations-to-other-modules",
+        destination: "/commerce-modules/region/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/sales-channel/relations-to-other-modules",
+        destination: "/commerce-modules/sales-channel/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/stock-location/relations-to-other-modules",
+        destination: "/commerce-modules/stock-location/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/pricing/relations-to-other-modules",
+        destination: "/commerce-modules/pricing/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/product/relations-to-other-modules",
+        destination: "/commerce-modules/product/links-to-other-modules",
+        permanent: true,
+      },
+      {
+        source: "/commerce-modules/promotion/relations-to-other-modules",
+        destination: "/commerce-modules/promotion/links-to-other-modules",
+        permanent: true,
+      },
     ]
   },
   // Redirects shouldn't be necessary anymore since we have remark / rehype

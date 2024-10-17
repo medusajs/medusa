@@ -52,11 +52,11 @@ module.exports = {
       options: { ttl: 0 }, // Cache disabled
     },
     [Modules.STOCK_LOCATION]: {
-      resolve: "@medusajs/stock-location-next",
+      resolve: "@medusajs/stock-location",
       options: {},
     },
     [Modules.INVENTORY]: {
-      resolve: "@medusajs/inventory-next",
+      resolve: "@medusajs/inventory",
       options: {},
     },
     [Modules.FILE]: {
@@ -64,7 +64,7 @@ module.exports = {
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-local-next",
+            resolve: "@medusajs/file-local",
             id: "local",
           },
         ],

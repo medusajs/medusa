@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import * as z from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type EditCustomerGroupFormProps = {
@@ -50,7 +51,7 @@ export const EditCustomerGroupForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -83,7 +84,7 @@ export const EditCustomerGroupForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

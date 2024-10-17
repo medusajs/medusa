@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The Pricing Module is the `@medusajs/medusa/pricing` NPM package that provides pricing-related features in your Medusa and Node.js applications.
+The Pricing Module provides pricing-related features in your Medusa and Node.js applications.
 
 ## How to Use Pricing Module's Service
 
@@ -15,18 +15,33 @@ You can use the Pricing Module's main service by resolving from the Medusa conta
 For example:
 
 <CodeTabs groupId="resource-type">
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const pricingModuleService = container.resolve(
+    Modules.PRICING
+  )
+
+  const priceSets = await pricingModuleService.listPriceSets()
+})
+```
+
+  </CodeTab>
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+  const pricingModuleService = request.scope.resolve(
     Modules.PRICING
   )
 
@@ -39,35 +54,17 @@ export async function GET(
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/framework"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
-  const pricingModuleService: IPricingModuleService = container.resolve(
+  const pricingModuleService = container.resolve(
     Modules.PRICING
   )
 
   const priceSets = await pricingModuleService.listPriceSets()
 }
-```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/framework/workflows-sdk"
-  import { IPricingModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
-
-const step1 = createStep("step-1", async (_, { container }) => {
-  const pricingModuleService: IPricingModuleService = container.resolve(
-    Modules.PRICING
-  )
-
-  const priceSets = await pricingModuleService.listPriceSets()
-})
 ```
 
   </CodeTab>
@@ -79,7 +76,7 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
 ### Price Management
 
-With the Pricing Module, store the prices of a resource and manage them through the main service's methods.
+Store the prices of a resource and manage them through the main service's methods.
 
 Prices are grouped in a price set, allowing you to add more than one price for a resource based on different conditions, such as currency code.
 
@@ -122,7 +119,9 @@ const priceSet = await pricingModuleService.addPrices({
 
 ### Price Lists
 
-Price lists allow you to group prices and apply them only in specific conditions. You can also use them to override existing prices for the specified conditions.
+Group prices and apply them only in specific conditions with price lists.
+
+You can also use them to override existing prices for specified conditions, or create a sale.
 
 ```ts
 const priceList = await pricingModuleService.createPriceLists([

@@ -16,9 +16,12 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { VisuallyHidden } from "../../../../../components/utilities/visually-hidden"
 import { useBatchAddSalesChannelsToApiKey } from "../../../../../hooks/api/api-keys"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
+import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
@@ -58,6 +61,7 @@ export const ApiKeySalesChannelsForm = ({
   })
 
   const columns = useColumns()
+  const filters = useSalesChannelTableFilters()
 
   const { sales_channels, count, isLoading } = useSalesChannels(
     { ...searchParams },
@@ -114,33 +118,33 @@ export const ApiKeySalesChannelsForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
-        onSubmit={handleSubmit}
-        className="flex h-full flex-col overflow-hidden"
-      >
+      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header>
+          <RouteFocusModal.Title asChild>
+            <VisuallyHidden>
+              {t("apiKeyManagement.salesChannels.title")}
+            </VisuallyHidden>
+          </RouteFocusModal.Title>
+          <RouteFocusModal.Description asChild>
+            <VisuallyHidden>
+              {t("apiKeyManagement.salesChannels.description")}
+            </VisuallyHidden>
+          </RouteFocusModal.Description>
           <div className="flex items-center justify-end gap-x-2">
             {form.formState.errors.sales_channel_ids && (
               <Hint variant="error">
                 {form.formState.errors.sales_channel_ids.message}
               </Hint>
             )}
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
-            </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-auto">
           <DataTable
             table={table}
             columns={columns}
             count={count}
             pageSize={PAGE_SIZE}
+            filters={filters}
             pagination
             search="autofocus"
             isLoading={isLoading}
@@ -154,7 +158,19 @@ export const ApiKeySalesChannelsForm = ({
             }}
           />
         </RouteFocusModal.Body>
-      </form>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

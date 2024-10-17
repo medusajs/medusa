@@ -12,6 +12,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals/index"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
@@ -225,7 +226,7 @@ export function EditShippingOptionsPricingForm({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -260,7 +261,7 @@ export function EditShippingOptionsPricingForm({
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

@@ -1,10 +1,10 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -327,6 +327,90 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
+      })
+
+      it("lists reservation items with free text search on SKU on inventory item", async () => {
+        const reservationsRes = await api
+          .get(`/admin/reservations?q=second`, adminHeaders)
+          .catch(console.warn)
+
+        expect(reservationsRes.data.reservations.length).toBe(1)
+        expect(reservationsRes.data.reservations).toEqual([
+          {
+            id: reservation2.id,
+            created_at: expect.any(String),
+            description: "test description",
+            inventory_item: {
+              created_at: expect.any(String),
+              description: null,
+              height: null,
+              hs_code: "hs001",
+              id: inventoryItem2.id,
+              length: null,
+              material: null,
+              metadata: null,
+              mid_code: null,
+              origin_country: "UK",
+              requires_shipping: true,
+              reserved_quantity: 1,
+              sku: "second",
+              stocked_quantity: 100,
+              thumbnail: null,
+              title: null,
+              updated_at: expect.any(String),
+              weight: null,
+              width: null,
+            },
+            inventory_item_id: inventoryItem2.id,
+            line_item_id: "line-item-id-2",
+            location_id: stockLocation1.id,
+            metadata: null,
+            quantity: 1,
+            updated_at: expect.any(String),
+          },
+        ])
+      })
+
+      it("lists reservation items with free text search on descroption", async () => {
+        const reservationsRes = await api
+          .get(`/admin/reservations?q=test`, adminHeaders)
+          .catch(console.warn)
+
+        expect(reservationsRes.data.reservations.length).toBe(1)
+        expect(reservationsRes.data.reservations).toEqual([
+          {
+            id: reservation2.id,
+            created_at: expect.any(String),
+            description: "test description",
+            inventory_item: {
+              created_at: expect.any(String),
+              description: null,
+              height: null,
+              hs_code: "hs001",
+              id: inventoryItem2.id,
+              length: null,
+              material: null,
+              metadata: null,
+              mid_code: null,
+              origin_country: "UK",
+              requires_shipping: true,
+              reserved_quantity: 1,
+              sku: "second",
+              stocked_quantity: 100,
+              thumbnail: null,
+              title: null,
+              updated_at: expect.any(String),
+              weight: null,
+              width: null,
+            },
+            inventory_item_id: inventoryItem2.id,
+            line_item_id: "line-item-id-2",
+            location_id: stockLocation1.id,
+            metadata: null,
+            quantity: 1,
+            updated_at: expect.any(String),
+          },
+        ])
       })
 
       it("lists reservations with inventory_items", async () => {

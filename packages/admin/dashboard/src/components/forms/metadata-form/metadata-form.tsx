@@ -24,6 +24,7 @@ import { Form } from "../../common/form"
 import { InlineTip } from "../../common/inline-tip"
 import { Skeleton } from "../../common/skeleton"
 import { RouteDrawer, useRouteModal } from "../../modals"
+import { KeyboundForm } from "../../utilities/keybound-form"
 
 type MetaDataSubmitHook<TRes> = (
   params: { metadata?: Record<string, any> | null },
@@ -125,7 +126,7 @@ const InnerForm = <TRes,>({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -277,7 +278,7 @@ const InnerForm = <TRes,>({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

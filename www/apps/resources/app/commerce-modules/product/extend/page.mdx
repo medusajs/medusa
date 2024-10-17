@@ -1,0 +1,684 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Extend Product Data Model`,
+}
+
+# {metadata.title}
+
+In this documentation, you'll learn how to extend a data model of the Product Module to add a custom property.
+
+You'll create a `Custom` data model in a module. This data model will have a `custom_name` property, which is the property you want to add to the [Product data model](/references/product/models/Product) defined in the Product Module.
+
+You'll then learn how to:
+
+- Link the `Custom` data model to the `Product` data model.
+- Set the `custom_name` property when a product is created or updated using Medusa's API routes.
+- Retrieve the `custom_name` property with the product's details, in custom or existing API routes.
+
+<Note title="Tip">
+
+Similar steps can be applied to the `ProductVariant` or `ProductOption` data models.
+
+</Note>
+
+## Step 1: Define Custom Data Model
+
+Consider you have a Hello Module defined in the `/src/modules/hello` directory.
+
+<Note title="Tip">
+
+If you don't have a module, follow [this guide](!docs!/basics/modules) to create one.
+
+</Note>
+
+To add the `custom_name` property to the `Product` data model, you'll create in the Hello Module a data model that has the `custom_name` property.
+
+Create the file `src/modules/hello/models/custom.ts` with the following content:
+
+```ts title="src/modules/hello/models/custom.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Custom = model.define("custom", {
+  id: model.id().primaryKey(),
+  custom_name: model.text(),
+})
+```
+
+This creates a `Custom` data model that has the `id` and `custom_name` properties.
+
+<Note title="Tip">
+
+Learn more about data models in [this guide](!docs!/data-models).
+
+</Note>
+
+---
+
+## Step 2: Define Link to Product Data Model
+
+Next, you'll define a module link between the `Custom` and `Product` data model. A module link allows you to form a relation between two data models of separate modules while maintaining module isolation.
+
+<Note title="Tip">
+
+Learn more about module links in [this guide](!docs!/module-links).
+
+</Note>
+
+Create the file `src/links/product-custom.ts` with the following content:
+
+```ts title="src/links/product-custom.ts"
+import { defineLink } from "@medusajs/framework/utils";
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  HelloModule.linkable.custom,
+)
+```
+
+This defines a link between the `Product` and `Custom` data models. Using this link, you'll later query data across the modules, and link records of each data model.
+
+---
+
+## Step 3: Generate and Run Migrations
+
+<Prerequisites
+  items={[
+    {
+      text: "Module must be registered in medusa-config.js",
+      link: "!docs!/basics/modules#4-add-module-to-configurations"
+    }
+  ]}
+/>
+
+To reflect the `Custom` data model in the database, generate a migration that defines the table to be created for it.
+
+Run the following command in your Medusa project's root:
+
+```bash
+npx medusa db:generate helloModuleService
+```
+
+Where `helloModuleService` is your module's name.
+
+Then, run the `db:migrate` command to run the migrations and create a table in the database for the link between the `Product` and `Custom` data models:
+
+```bash
+npx medusa db:migrate
+```
+
+A table for the link is now created in the database. You can now retrieve and manage the link between records of the data models.
+
+---
+
+## Step 4: Consume productsCreated Workflow Hook
+
+When a product is created, you also want to create a `Custom` record and set the `custom_name` property, then create a link between the `Product` and `Custom` records.
+
+To do that, you'll consume the [productsCreated](/references/medusa-workflows/createProductsWorkflow#productscreated) hook of the [createProductsWorkflow](/references/medusa-workflows/createProductsWorkflow). This workflow is executed in the [Create Product Admin API route](!api!/admin#products_postproducts)
+
+<Note title="Tip">
+
+Learn more about workflow hooks in [this guide](!docs!/advanced-development/workflows/workflow-hooks).
+
+</Note>
+
+The API route accepts in its request body an `additional_data` parameter. You can pass in it custom data, which is passed to the workflow hook handler.
+
+### Add custom_name to Additional Data Validation
+
+To pass the `custom_name` in the `additional_data` parameter, you must add a validation rule that tells the Medusa application about this custom property.
+
+Create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/medusa"
+import { z } from "zod"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      method: "POST",
+      matcher: "/admin/products",
+      additionalDataValidator: {
+        custom_name: z.string().optional(),
+      },
+    },
+  ],
+})
+```
+
+The `additional_data` parameter validation is customized using the `defineMiddlewares` utility function. In the routes middleware configuration object, the `additionalDataValidator` property accepts [Zod](https://zod.dev/) validaiton rules.
+
+In the snippet above, you add a validation rule indicating that `custom_name` is a string that can be passed in the `additional_data` object.
+
+<Note title="Tip">
+
+Learn more about additional data validation in [this guide](!docs!/advanced-development/api-routes/additional-data).
+
+</Note>
+
+### Create Workflow to Create Custom Record
+
+You'll now create a workflow that will be used in the hook handler.
+
+This workflow will create a `Custom` record, then link it to the product.
+
+Start by creating the step that creates the `Custom` record. Create the file `src/workflows/create-custom-from-product/steps/create-custom.ts` with the following content:
+
+```ts title="src/workflows/create-custom-from-product/steps/create-custom.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import HelloModuleService from "../../../modules/hello/service"
+import { HELLO_MODULE } from "../../../modules/hello"
+
+type CreateCustomStepInput = {
+  custom_name?: string
+}
+
+export const createCustomStep = createStep(
+  "create-custom",
+  async (data: CreateCustomStepInput, { container }) => {
+    if (!data.custom_name) {
+      return
+    }
+
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    const custom = await helloModuleService.createCustoms(data)
+
+    return new StepResponse(custom, custom)
+  },
+  async (custom, { container }) => {
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    await helloModuleService.deleteCustoms(custom.id)
+  }
+)
+```
+
+In the step, you resolve the Hello Module's main service and create a `Custom` record.
+
+In the compensation function that undoes the step's actions in case of an error, you delete the created record.
+
+<Note title="Tip">
+
+Learn more about compensation functions in [this guide](!docs!/advanced-development/workflows/compensation-function).
+
+</Note>
+
+Then, create the workflow at `src/workflows/create-custom-from-product/index.ts` with the following content:
+
+```ts title="src/workflows/create-custom-from-product/index.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { ProductDTO } from "@medusajs/framework/types"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
+import { HELLO_MODULE } from "../../modules/hello"
+import { createCustomStep } from "./steps/create-custom"
+
+export type CreateCustomFromProductWorkflowInput = {
+  product: ProductDTO
+  additional_data?: {
+    custom_name?: string
+  }
+}
+
+export const createCustomFromProductWorkflow = createWorkflow(
+  "create-custom-from-product",
+  (input: CreateCustomFromProductWorkflowInput) => {
+    const customName = transform(
+      {
+        input
+      },
+      (data) => data.input.additional_data.custom_name || ""
+    )
+
+    const custom = createCustomStep({
+      custom_name: customName
+    })
+
+    when(({ custom }), ({ custom }) => custom !== undefined)
+      .then(() => {
+        createRemoteLinkStep([{
+          [Modules.PRODUCT]: {
+            product_id: input.product.id
+          },
+          [HELLO_MODULE]: {
+            custom_id: custom.id
+          }
+        }])
+      })
+
+    return new WorkflowResponse({
+      custom
+    })
+  }
+)
+```
+
+The workflow accepts as an input the created product and the `additional_data` parameter passed in the request. This is the same input that the `productsCreated` hook accepts.
+
+In the workflow, you:
+
+1. Use the `transform` utility to get the value of `custom_name` based on whether it's set in `additional_data`. Learn more about why you can't use conditional operators in a workflow without using `transform` in [this guide](!docs!/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
+2. Create the `Custom` record using the `createCustomStep`.
+3. Use the `when-then` utility to link the product to the `Custom` record if it was created. Learn more about why you can't use if-then conditions in a workflow without using `when-then` in [this guide](!docs!/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
+
+You'll next execute the workflow in the hook handler.
+
+### Consume Workflow Hook
+
+You can now consume the `productsCreated` hook, which is executed in the `createProductsWorkflow` after the product is created.
+
+To consume the hook, create the file `src/workflow/hooks/product-created.ts` with the following content:
+
+```ts title="src/workflow/hooks/product-created.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
+import { 
+  createCustomFromProductWorkflow, 
+  CreateCustomFromProductWorkflowInput
+} from "../create-custom-from-product"
+
+createProductsWorkflow.hooks.productsCreated(
+	async ({ products, additional_data }, { container }) => {
+    const workflow = createCustomFromProductWorkflow(container)
+    
+    for (let product of products) {
+      await workflow.run({
+        input: {
+          product,
+          additional_data
+        } as CreateCustomFromProductWorkflowInput
+      })
+    }
+	}
+)
+```
+
+The hook handler executes the `createCustomFromProductWorkflow`, passing it its input.
+
+### Test it Out
+
+To test it out, send a `POST` request to `/admin/products` to create a product, passing `custom_name` in `additional_data`:
+
+```bash
+curl -X POST 'localhost:9000/admin/products' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "title": "Shoes",
+    "additional_data": {
+        "custom_name": "test"
+    }
+}'
+```
+
+Make sure to replace `{token}` with an admin user's JWT token. Learn how to retrieve it in the [API reference](!api!/admin#1-bearer-authorization-with-jwt-tokens).
+
+The request will return the product's details. You'll learn how to retrive the `custom_name` property with the product's details in the next section.
+
+---
+
+## Step 5: Retrieve custom_name with Product Details
+
+When you extend an existing data model through links, you also want to retrieve the custom properties with the data model.
+
+### Retrieve in API Routes
+
+To retrieve the `custom_name` property when you're retrieving the product through API routes, such as the [Get Product API Route](!api!/admin#products_getproductsid), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
+
+<Note title="Tip">
+
+The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default product fields. Learn more about selecting fields and relations in the [API reference](!api!/admin#select-fields-and-relations).
+
+</Note>
+
+For example:
+
+```bash
+curl 'localhost:9000/admin/products/{product_id}?fields=+custom.*' \
+-H 'Authorization: Bearer {token}'
+```
+
+Make sure to replace `{product_id}` with the product's ID, and `{token}` with an admin user's JWT token.
+
+Among the returned `product` object, you'll find a `custom` property which holds the details of the linked `Custom` record:
+
+```json
+{
+  "product": {
+    // ...
+    "custom": {
+      "id": "01J9NP7ANXDZ0EAYF0956ZE1ZA",
+      "custom_name": "test",
+      "created_at": "2024-10-08T09:09:06.877Z",
+      "updated_at": "2024-10-08T09:09:06.877Z",
+      "deleted_at": null
+    }
+  }
+}
+```
+
+### Retrieve using Query
+
+You can also retrieve the `Custom` record linked to a product in your code using [Query](!docs!/advanced-development/module-links/query).
+
+For example:
+
+```ts
+const { data: [product] } = await query.graph({
+  entity: "product",
+  fields: ["*", "custom.*"],
+  filters: {
+    id: product_id,
+  },
+})
+```
+
+Learn more about how to use Query in [this guide](!docs!/advanced-development/module-links/query).
+
+---
+
+## Step 6: Consume productsUpdated Workflow Hook
+
+Similar to the `productsCreated` hook, you'll consume the [productsUpdated](/references/medusa-workflows/updateProductsWorkflow#productsUpdated) hook of the [updateProductsWorkflow](/references/medusa-workflows/updateProductsWorkflow) to update `custom_name` when the product is updated.
+
+The `updateProductsWorkflow` is executed by the [Update Product API route](!api!/admin#products_postproductsid), which accepts the `additional_data` parameter to pass custom data to the hook.
+
+### Add custom_name to Additional Data Validation
+
+To allow passing `custom_name` in the `additional_data` parameter of the update product route, add in `src/api/middlewares.ts` a new route middleware configuration object:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/medusa"
+import { z } from "zod"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      method: "POST",
+      matcher: "/admin/products/:id",
+      additionalDataValidator: {
+        custom_name: z.string().nullish(),
+      },
+    },
+  ],
+})
+```
+
+The validation schema is the similar to that of the Create Product API route, except you can pass a `null` value for `custom_name` to remove or unset the `custom_name`'s value.
+
+### Create Workflow to Update Custom Record
+
+Next, you'll create a workflow that creates, updates, or deletes `Custom` records based on the provided `additional_data` parameter:
+
+1. If `additional_data.custom_name` is set and it's `null`, the `Custom` record linked to the product is deleted.
+2. If `additional_data.custom_name` is set and the product doesn't have a linked `Custom` record, a new record is created and linked to the product.
+3. If `additional_data.custom_name` is set and the product has a linked `Custom` record, the `custom_name` property of the `Custom` record is updated.
+
+Start by creating the step that updates a `Custom` record. Create the file `src/workflows/update-custom-from-product/steps/update-custom.ts` with the following content:
+
+```ts title="src/workflows/update-custom-from-product/steps/update-custom.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { HELLO_MODULE } from "../../../modules/hello"
+import HelloModuleService from "../../../modules/hello/service"
+
+type UpdateCustomStepInput = {
+  id: string
+  custom_name: string
+}
+
+export const updateCustomStep = createStep(
+  "update-custom",
+  async ({ id, custom_name }: UpdateCustomStepInput, { container }) => {
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    const prevData = await helloModuleService.retrieveCustom(id)
+
+    const custom = await helloModuleService.updateCustoms({
+      id,
+      custom_name,
+    })
+
+    return new StepResponse(custom, prevData)
+  },
+  async (prevData, { container }) => {
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    await helloModuleService.updateCustoms(prevData)
+  }
+)
+```
+
+In this step, you update a `Custom` record. In the compensation function, you revert the update.
+
+Next, you'll create the step that deletes a `Custom` record. Create the file `src/workflows/update-custom-from-product/steps/delete-custom.ts` with the following content:
+
+```ts title="src/workflows/update-custom-from-product/steps/delete-custom.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Custom } from "../../../modules/hello/models/custom"
+import { InferTypeOf } from "@medusajs/framework/types"
+import HelloModuleService from "../../../modules/hello/service"
+import { HELLO_MODULE } from "../../../modules/hello"
+
+type DeleteCustomStepInput = {
+  custom: InferTypeOf<typeof Custom>
+}
+
+export const deleteCustomStep = createStep(
+  "delete-custom",
+  async ({ custom }: DeleteCustomStepInput, { container }) => {
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    await helloModuleService.deleteCustoms(custom.id)
+
+    return new StepResponse(custom, custom)
+  },
+  async (custom, { container }) => {
+    const helloModuleService: HelloModuleService = container.resolve(
+      HELLO_MODULE
+    )
+
+    await helloModuleService.createCustoms(custom)
+  }
+)
+```
+
+In this step, you delete a `Custom` record. In the compensation function, you create it again.
+
+Finally, you'll create the workflow. Create the file `src/workflows/update-custom-from-product/index.ts` with the following content:
+
+```ts title="src/workflows/update-custom-from-product/index.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { ProductDTO } from "@medusajs/framework/types"
+import { createWorkflow, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { createRemoteLinkStep, dismissRemoteLinkStep, useRemoteQueryStep } from "@medusajs/medusa/core-flows"
+import { createCustomStep } from "../create-custom-from-cart/steps/create-custom"
+import { Modules } from "@medusajs/framework/utils"
+import { HELLO_MODULE } from "../../modules/hello"
+import { deleteCustomStep } from "./steps/delete-custom"
+import { updateCustomStep } from "./steps/update-custom"
+
+export type UpdateCustomFromProductStepInput = {
+  product: ProductDTO
+  additional_data?: {
+    custom_name?: string | null
+  }
+}
+
+export const updateCustomFromProductWorkflow = createWorkflow(
+  "update-custom-from-product",
+  (input: UpdateCustomFromProductStepInput) => {
+    const productData = useRemoteQueryStep({
+      entry_point: "product",
+      fields: ["custom.*"],
+      variables: {
+        filters: {
+          id: input.product.id
+        }
+      },
+      list: false
+    })
+
+    // TODO create, update, or delete Custom record
+  }
+)
+```
+
+The workflow accepts the same input as the `productsUpdated` workflow hook handler would.
+
+In the workflow, you retrieve the product's linked `Custom` record using Query.
+
+Next, replace the `TODO` with the following:
+
+```ts title="src/workflows/update-custom-from-product/index.ts"
+const created = when({
+  input,
+  productData
+}, (data) => 
+  !data.productData.custom && 
+  data.input.additional_data?.custom_name?.length > 0
+)
+.then(() => {
+  const custom = createCustomStep({
+    custom_name: input.additional_data.custom_name
+  })
+
+  createRemoteLinkStep([{
+    [Modules.PRODUCT]: {
+      product_id: input.product.id
+    },
+    [HELLO_MODULE]: {
+      custom_id: custom.id
+    }
+  }])
+
+  return custom
+})
+
+// TODO update, or delete Custom record
+```
+
+Using the `when-then` utility, you check if the product doesn't have a linked `Custom` record and the `custom_name` property is set. If so, you create a `Custom` record and link it to the product.
+
+To create the `Custom` record, you use the `createCustomStep` you created in an earlier section.
+
+Next, replace the new `TODO` with the following:
+
+```ts title="src/workflows/update-custom-from-product/index.ts"
+const deleted = when({
+  input,
+  productData
+}, (data) => 
+  data.productData.custom && (
+    data.input.additional_data?.custom_name === null || 
+    data.input.additional_data?.custom_name.length === 0
+  )
+)
+.then(() => {
+  deleteCustomStep({
+    custom: productData.custom
+  })
+
+  dismissRemoteLinkStep({
+    [HELLO_MODULE]: {
+      custom_id: productData.custom.id
+    }
+  })
+
+  return productData.custom.id
+})
+
+// TODO delete Custom record
+```
+
+Using the `when-then` utility, you check if the product has a linked `Custom` record and `custom_name` is `null` or an empty string. If so, you delete the linked `Custom` record and dismiss its links.
+
+Finally, replace the new `TODO` with the following:
+
+```ts title="src/workflows/update-custom-from-product/index.ts"
+const updated = when({
+  input,
+  productData
+}, (data) => data.productData.custom && data.input.additional_data?.custom_name?.length > 0)
+.then(() => {
+  const custom = updateCustomStep({
+    id: productData.custom.id,
+    custom_name: input.additional_data.custom_name
+  })
+
+  return custom
+})
+
+return new WorkflowResponse({
+  created,
+  updated,
+  deleted
+})
+```
+
+Using the `when-then` utility, you check if the product has a linked `Custom` record and `custom_name` is passed in the `additional_data`. If so, you update the linked `Custom` recod.
+
+You return in the workflow response the created, updated, and deleted `Custom` record.
+
+### Consume productsUpdated Workflow Hook
+
+You can now consume the `productsUpdated` and execute the workflow you created.
+
+Create the file `src/workflows/hooks/product-updated.ts` with the following content:
+
+```ts title="src/workflows/hooks/product-updated.ts"
+import { updateProductsWorkflow } from "@medusajs/medusa/core-flows"
+import { 
+  UpdateCustomFromProductStepInput, 
+  updateCustomFromProductWorkflow
+} from "../update-custom-from-product"
+
+updateProductsWorkflow.hooks.productsUpdated(
+	async ({ products, additional_data }, { container }) => {
+    const workflow = updateCustomFromProductWorkflow(container)
+    
+    for (let product of products) {
+      await workflow.run({
+        input: {
+          product,
+          additional_data
+        } as UpdateCustomFromProductStepInput
+      })
+    }
+	}
+)
+```
+
+In the workflow hook handler, you execute the workflow, passing it the hook's input.
+
+### Test it Out
+
+To test it out, send a `POST` request to `/admin/products/:id` to update a product, passing `custom_name` in `additional_data`:
+
+```bash
+curl -X POST 'localhost:9000/admin/products/{product_id}?fields=+custom.*' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "additional_data": {
+        "custom_name": "test 2"
+    }
+}'
+```
+
+Make sure to replace `{product_id}` with the product's ID, and `{token}` with the JWT token of an admin user.
+
+The request will return the product's details with the updated `custom` linked record.

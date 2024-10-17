@@ -9,7 +9,7 @@ import {
   initModules,
   moduleIntegrationTestRunner,
   SuiteOptions,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"

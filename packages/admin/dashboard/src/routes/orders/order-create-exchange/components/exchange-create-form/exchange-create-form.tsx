@@ -24,6 +24,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateExchangeSchemaType, ExchangeCreateSchema } from "./schema"
 
 import { AdminReturn } from "@medusajs/types"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form/keybound-form.tsx"
 import {
   useCancelExchangeRequest,
   useExchangeConfirmRequest,
@@ -253,7 +254,7 @@ export const ExchangeCreateForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
@@ -275,7 +276,7 @@ export const ExchangeCreateForm = ({
               exchange={exchange}
             />
 
-            {/*TOTALS SECTION*/}
+            {/* TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
                 <span className="txt-small text-ui-fg-subtle">
@@ -476,7 +477,7 @@ export const ExchangeCreateForm = ({
                 </span>
               </div>
             </div>
-            {/*SEND NOTIFICATION*/}
+            {/* SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
@@ -538,7 +539,7 @@ export const ExchangeCreateForm = ({
             </div>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

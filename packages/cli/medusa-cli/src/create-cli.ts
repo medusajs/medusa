@@ -1,5 +1,5 @@
 import { sync as existsSync } from "fs-exists-cached"
-import { setTelemetryEnabled } from "medusa-telemetry"
+import { setTelemetryEnabled } from "@medusajs/telemetry"
 import path from "path"
 import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"

@@ -63,11 +63,11 @@ module.exports = {
     },
     [Modules.LOCKING]: true,
     [Modules.STOCK_LOCATION]: {
-      resolve: "@medusajs/stock-location-next",
+      resolve: "@medusajs/stock-location",
       options: {},
     },
     [Modules.INVENTORY]: {
-      resolve: "@medusajs/inventory-next",
+      resolve: "@medusajs/inventory",
       options: {},
     },
     [Modules.PRODUCT]: true,
