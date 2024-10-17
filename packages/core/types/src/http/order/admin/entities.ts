@@ -47,6 +47,13 @@ export interface AdminOrderChangeAction
 
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
+export interface AdminOrderItem {
+  order_id: string
+  item_id: string
+  version: number
+  item: AdminOrderLineItem
+}
+
 export interface AdminOrderLineItem
   extends Omit<BaseOrderLineItem, "variant" | "product"> {
   variant?: AdminProductVariant

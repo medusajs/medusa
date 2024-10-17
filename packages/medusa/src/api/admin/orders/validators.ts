@@ -21,6 +21,18 @@ export type AdminGetOrdersOrderParamsType = z.infer<
   typeof AdminGetOrdersOrderParams
 >
 
+export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
+  z.object({
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    item_id: z.union([z.string(), z.array(z.string())]).optional(),
+    version: z.number().optional(),
+  })
+)
+
+export type AdminGetOrdersOrderItemsParamsType = z.infer<
+  typeof AdminGetOrdersOrderParams
+>
+
 /**
  * Parameters used to filter and configure the pagination of the retrieved order.
  */
