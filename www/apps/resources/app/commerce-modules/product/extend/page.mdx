@@ -313,6 +313,12 @@ curl -X POST 'localhost:9000/admin/products' \
 -H 'Authorization: Bearer {token}' \
 --data '{
     "title": "Shoes",
+    "options": [
+      {
+        "title": "Default option",
+        "values": ["Default option value"]
+      }
+    ],
     "additional_data": {
         "custom_name": "test"
     }
