@@ -3,7 +3,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Notification {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }

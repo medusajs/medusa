@@ -4,7 +4,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class ReturnReason {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
