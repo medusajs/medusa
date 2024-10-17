@@ -1,6 +1,7 @@
 import { Controller, useFieldArray } from "react-hook-form"
 import { NestedForm } from "../../../../../utils/nested-form"
 import { NextCreateableSelect } from "../../../../molecules/select/next-select"
+import { useTranslation } from "react-i18next"
 
 export type VariantOptionValueType = {
   option_id: string
@@ -24,6 +25,7 @@ type Props = {
 }
 
 const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   const { fields } = useFieldArray({
@@ -48,7 +50,10 @@ const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
                   onChange={onChange}
                   onBlur={onBlur}
                   label={field.title}
-                  placeholder="Choose an option"
+                  placeholder={t(
+                    "variant-select-options-form",
+                    "Choose an option"
+                  )}
                   required
                   options={
                     options.filter((o) => o.option_id === field.option_id) || []

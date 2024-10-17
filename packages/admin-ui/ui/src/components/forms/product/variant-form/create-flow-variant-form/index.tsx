@@ -14,6 +14,7 @@ import IconTooltip from "../../../../molecules/icon-tooltip"
 import InputError from "../../../../atoms/input-error"
 import { UseFormReturn } from "react-hook-form"
 import { nestedForm } from "../../../../../utils/nested-form"
+import { useTranslation } from "react-i18next"
 
 export type CreateFlowVariantFormType = {
   /**
@@ -53,17 +54,27 @@ type Props = {
  * }
  */
 const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
+  const { t } = useTranslation()
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
-      <Accordion.Item title="General" value="general" required>
+      <Accordion.Item
+        title={t("create-flow-variant-form-general-title", "General")}
+        value="general"
+        required
+      >
         <div>
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
             <div className="gap-x-2xsmall mb-base flex items-center">
-              <h3 className="inter-base-semibold">Options</h3>
+              <h3 className="inter-base-semibold">
+                {t("create-flow-variant-form-options-title", "Options")}
+              </h3>
               <IconTooltip
                 type="info"
-                content="Options are used to define the color, size, etc. of the variant."
+                content={t(
+                  "create-flow-variant-form-options-tooltip",
+                  "Options are used to define the color, size, etc. of the variant."
+                )}
               />
             </div>
             <VariantSelectOptionsForm
@@ -75,25 +86,46 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
           </div>
         </div>
       </Accordion.Item>
-      <Accordion.Item title="Stock & Inventory" value="stock">
+      <Accordion.Item
+        title={t(
+          "create-flow-variant-form-stock-inventory-title",
+          "Stock & Inventory"
+        )}
+        value="stock"
+      >
         <VariantStockForm form={nestedForm(form, "stock")} />
       </Accordion.Item>
-      <Accordion.Item title="Shipping" value="shipping">
+      <Accordion.Item
+        title={t("create-flow-variant-form-shipping-title", "Shipping")}
+        value="shipping"
+      >
         <p className="inter-base-regular text-grey-50">
-          Shipping information can be required depending on your shipping
-          provider, and whether or not you are shipping internationally.
+          {t(
+            "create-flow-variant-form-shipping-description",
+            "Shipping information can be required depending on your shipping provider, and whether or not you are shipping internationally."
+          )}
         </p>
         <div className="mt-large">
-          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">
+            {t("create-flow-variant-form-dimensions-title", "Dimensions")}
+          </h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure to calculate the most accurate shipping rates.
+            {t(
+              "create-flow-variant-form-dimensions-description",
+              "Configure to calculate the most accurate shipping rates."
+            )}
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
         <div className="mt-xlarge">
-          <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">
+            {t("create-flow-variant-form-customs-title", "Customs")}
+          </h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure if you are shipping internationally.
+            {t(
+              "create-flow-variant-form-customs-description",
+              "Configure if you are shipping internationally."
+            )}
           </p>
           <CustomsForm form={nestedForm(form, "customs")} />
         </div>

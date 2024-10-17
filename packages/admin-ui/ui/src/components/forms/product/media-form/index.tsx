@@ -13,6 +13,7 @@ import Button from "../../../fundamentals/button"
 import CheckCircleFillIcon from "../../../fundamentals/icons/check-circle-fill-icon"
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
 import Actionables, { ActionType } from "../../../molecules/actionables"
+import { useTranslation } from "react-i18next"
 
 type ImageType = { selected: boolean } & FormImage
 
@@ -25,6 +26,8 @@ type Props = {
 }
 
 const MediaForm = ({ form }: Props) => {
+  const { t } = useTranslation()
+
   const { control, path, setValue } = form
 
   const { fields, append, remove } = useFieldArray({
@@ -80,7 +83,10 @@ const MediaForm = ({ form }: Props) => {
         <div>
           <FileUploadField
             onFileChosen={handleFilesChosen}
-            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+            placeholder={t(
+              "media-form-image-size-recommended",
+              "1200 x 1600 (3:4) recommended, up to 10MB each"
+            )}
             multiple
             filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
             className="py-large"
@@ -90,7 +96,9 @@ const MediaForm = ({ form }: Props) => {
       {fields.length > 0 && (
         <div className="mt-large">
           <div className="mb-small flex items-center justify-between">
-            <h2 className="inter-large-semibold">Uploads</h2>
+            <h2 className="inter-large-semibold">
+              {t("media-form-uploads", "Uploads")}
+            </h2>
             <ModalActions
               number={selected.length}
               onDeselect={handleDeselect}
@@ -177,7 +185,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
                 </span>
               </div>
             </button>
-            <div className="right-base absolute top-0 bottom-0 flex items-center">
+            <div className="right-base absolute bottom-0 top-0 flex items-center">
               <Actionables actions={actions} forceDropdown />
             </div>
           </div>
