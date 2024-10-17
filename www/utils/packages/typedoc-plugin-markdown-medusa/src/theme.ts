@@ -30,6 +30,7 @@ import { Mapping } from "./types"
 
 export class MarkdownTheme extends Theme {
   allReflectionsHaveOwnDocument!: string[]
+  allPropertyReflectionsHaveOwnDocument!: string[]
   allReflectionsHaveOwnDocumentInNamespace: string[]
   entryDocument: string
   entryPoints!: string[]
@@ -65,6 +66,9 @@ export class MarkdownTheme extends Theme {
 
     // prettier-ignore
     this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as string[]
+    this.allPropertyReflectionsHaveOwnDocument = this.getOption(
+      "allPropertyReflectionsHaveOwnDocument"
+    ) as string[]
     this.allReflectionsHaveOwnDocumentInNamespace = this.getOption(
       "allReflectionsHaveOwnDocumentInNamespace"
     ) as string[]
@@ -334,7 +338,10 @@ export class MarkdownTheme extends Theme {
     return parents
   }
 
-  getAllReflectionsHaveOwnDocument(reflection: DeclarationReflection): boolean {
+  getAllReflectionsHaveOwnDocument(
+    reflection: DeclarationReflection,
+    checkProperties?: boolean
+  ): boolean {
     const moduleParents = this.getParentsOfKind(
       reflection,
       ReflectionKind.Module
@@ -343,6 +350,12 @@ export class MarkdownTheme extends Theme {
       reflection,
       ReflectionKind.Namespace
     )
+
+    if (checkProperties) {
+      return moduleParents.some((parent) =>
+        this.allPropertyReflectionsHaveOwnDocument.includes(parent.name)
+      )
+    }
 
     return (
       moduleParents.some((parent) =>
@@ -454,6 +467,20 @@ export class MarkdownTheme extends Theme {
               },
               isLeaf: true,
               directory: path.join(directoryPrefix || "", "methods"),
+              template: this.getReflectionMemberTemplate(),
+            },
+          ]
+        : []),
+      ...(this.getAllReflectionsHaveOwnDocument(reflection, true)
+        ? [
+            {
+              kind: [ReflectionKind.Property],
+              modifiers: {
+                has: [],
+                not: [],
+              },
+              isLeaf: true,
+              directory: path.join(directoryPrefix || "", "properties"),
               template: this.getReflectionMemberTemplate(),
             },
           ]
