@@ -14,13 +14,13 @@ import {
   WorkflowData,
 } from "../utils/composer/type"
 import { proxify } from "../utils/composer/helpers/proxy"
-import {
-  ExportedWorkflow,
-  exportWorkflow,
-  MainExportedWorkflow,
-} from "../helper"
+import { ExportedWorkflow } from "../helper"
 import { createStep, StepResponse, WorkflowResponse } from "../utils/composer"
 import { ulid } from "ulid"
+import {
+  LocalWorkflowExecutionOptions,
+  WorkflowExporter,
+} from "./workflow-exporter"
 
 type WorkflowComposerConfig = { name: string } & TransactionModelOptions
 type ComposerFunction<TData, TResult, THooks> = (
@@ -29,16 +29,25 @@ type ComposerFunction<TData, TResult, THooks> = (
 
 export class WorkflowRunner<TData, TResult, THooks extends any[]> {
   #composer: Composer
-  #exportedWorkflow: MainExportedWorkflow<TData, TResult>
+  #exportedWorkflow: WorkflowExporter<TData, TResult>
 
   hooks = {} as ReturnWorkflow<TData, TResult, THooks>["hooks"]
 
   constructor(
     composer: Composer,
-    exportedWorkflow: MainExportedWorkflow<TData, TResult>
+    {
+      workflowId,
+      options,
+    }: {
+      workflowId: string
+      options: LocalWorkflowExecutionOptions
+    }
   ) {
     this.#composer = composer
-    this.#exportedWorkflow = exportedWorkflow
+    this.#exportedWorkflow = new WorkflowExporter<TData, TResult>({
+      workflowId,
+      options,
+    })
 
     this.#applyRegisteredDynamicHooks()
   }
@@ -76,7 +85,6 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
 
         const transaction = await this.#exportedWorkflow.run({
           input: stepInput as any,
-          container,
           context: {
             transactionId: ulid(),
             ...sharedContext,
@@ -86,7 +94,7 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
 
         const { result, transaction: flowTransaction } = transaction
 
-        if (!context.isAsync || flowTransaction.hasFinished()) {
+        if (!context.isAsync || flowTransaction!.hasFinished()) {
           return new StepResponse(result, transaction)
         }
 
@@ -97,19 +105,22 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
           return
         }
 
-        await this.#exportedWorkflow(container).cancel(transaction)
+        await this.#exportedWorkflow.cancel(transaction)
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
   }
 
-  run<TDataOverride = undefined, TResultOverride = undefined>(
-    ...args: Parameters<
-      ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+  async run<TDataOverride = undefined, TResultOverride = undefined>(
+    ...args: Omit<
+      Parameters<
+        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+      >,
+      "container"
     >
   ): ReturnType<
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
   > {
-    return this.#exportedWorkflow.run(...args)
+    return await this.#exportedWorkflow.run(...args)
   }
 
   getName(): string {
@@ -188,12 +199,17 @@ export class Composer {
     }
 
     const fileSourcePath = getCallerFilePath() as string
-    const workflow = exportWorkflow(config.name, returnedStep, undefined, {
-      wrappedInput: true,
-      sourcePath: fileSourcePath,
-    })
 
-    this.#workflowRunner = new WorkflowRunner(this, workflow)
+    this.#workflowRunner = new WorkflowRunner(this, {
+      workflowId: config.name,
+      options: {
+        defaultResult: returnedStep,
+        options: {
+          sourcePath: fileSourcePath,
+          wrappedInput: true,
+        },
+      },
+    })
   }
 
   #initializeContext(config: WorkflowComposerConfig) {
