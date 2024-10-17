@@ -1,4 +1,5 @@
 import {
+  AdminOrderLineItemsListResponse,
   FindParams,
   HttpTypes,
   PaginatedResponse,
@@ -138,6 +139,19 @@ export class Order {
     return await this.client.fetch<
       PaginatedResponse<AdminOrderChangesResponse>
     >(`/admin/orders/${id}/changes`, {
+      query: queryParams,
+      headers,
+    })
+  }
+
+  async listLineItems(
+    id: string,
+    queryParams?: FindParams & HttpTypes.AdminOrderItemsFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<
+      PaginatedResponse<AdminOrderLineItemsListResponse>
+    >(`/admin/orders/${id}/line-items`, {
       query: queryParams,
       headers,
     })
