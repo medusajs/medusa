@@ -75,6 +75,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     entryPointPath: "packages/core/framework/src/config/types.ts",
     tsConfigName: "framework.json",
     name: "medusa-config",
+    exclude: [...(baseOptions.exclude || []), "**/dist/**"],
   }),
   medusa: getOptions({
     entryPointPath: "packages/medusa/src/index.ts",
@@ -150,6 +151,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     enableInternalResolve: true,
     exclude: [
       ...(baseOptions.exclude || []),
+      "**/dist/**",
       "**/api-key/**",
       "**/auth/**",
       "**/bundles/**",

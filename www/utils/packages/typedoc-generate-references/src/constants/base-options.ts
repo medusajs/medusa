@@ -12,7 +12,7 @@ export const baseOptions: Partial<TypeDocOptions> = {
     "www/packages/eslint-config-docs/content.js"
   ),
   pluginsResolvePath: path.join(rootPathPrefix, "www"),
-  exclude: ["**/node_modules/**", "**/dist/**"],
+  exclude: ["**/node_modules/**"],
   excludeInternal: true,
   excludeExternals: true,
   excludeReferences: true,
