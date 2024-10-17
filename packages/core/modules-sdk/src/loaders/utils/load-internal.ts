@@ -320,8 +320,11 @@ export async function loadInternalModule(args: {
       const providerId = keyName
 
       if (!originalIdentifier) {
+        const providerResolutionName =
+          modProvider_.DISPLAY_NAME ?? resolution.resolutionPath
+
         throw new Error(
-          `Module provider ${resolution.resolutionPath} does not have a static "identifier" property on its service class.`
+          `Module provider ${providerResolutionName} does not have a static "identifier" property on its service class.`
         )
       }
 
