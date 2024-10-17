@@ -39,7 +39,7 @@ export default HelloModuleService
 To create an integration test for the method, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
 
 ```ts title="src/modules/hello/__tests__/service.spec.ts"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { HELLO_MODULE } from ".."
 import HelloModuleService from "../service"
 import MyCustom from "../models/my-custom"

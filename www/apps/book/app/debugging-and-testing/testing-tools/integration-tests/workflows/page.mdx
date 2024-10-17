@@ -46,7 +46,7 @@ export const helloWorldWorkflow = createWorkflow(
 To write a test for this workflow, create the file `integration-tests/http/workflow.spec.ts` with the following content:
 
 ```ts title="integration-tests/http/workflow.spec.ts"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { helloWorldWorkflow } from "../../src/workflows/hello-world"
 
 medusaIntegrationTestRunner({
