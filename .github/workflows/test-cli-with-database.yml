@@ -47,7 +47,7 @@ jobs:
           node-version: 20
 
       - name: Install Medusa cli
-        run: npm i -g @medusajs/medusa-cli@preview
+        run: npm i -g @medusajs/cli@preview
 
       - name: Create Medusa project
         run: |
@@ -59,7 +59,7 @@ jobs:
         working-directory: ../cli-test
 
       - name: Run migrations
-        run: medusa migrations run && medusa links sync
+        run: medusa db:migrate
         working-directory: ../cli-test
 
       - name: Create admin user

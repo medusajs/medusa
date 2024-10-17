@@ -1,5 +1,5 @@
 import {
-  addShippingMethodToWorkflow,
+  addShippingMethodToCartWorkflow,
   addToCartWorkflow,
   createCartWorkflow,
   createPaymentCollectionForCartWorkflow,
@@ -29,7 +29,7 @@ import {
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -1638,22 +1638,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await addShippingMethodToWorkflow(appContainer).run({
-            input: {
-              options: [{ id: shippingOption.id }],
-              cart_id: cart.id,
-            },
-          })
-
-          await addShippingMethodToWorkflow(appContainer).run({
-            input: {
-              options: [{ id: shippingOption.id }],
-              cart_id: cart.id,
-            },
-          })
-
-          // should remove the previous shipping method
-          await addShippingMethodToWorkflow(appContainer).run({
+          await addShippingMethodToCartWorkflow(appContainer).run({
             input: {
               options: [{ id: shippingOption.id }],
               cart_id: cart.id,
@@ -1707,7 +1692,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const { errors } = await addShippingMethodToWorkflow(
+          const { errors } = await addShippingMethodToCartWorkflow(
             appContainer
           ).run({
             input: {
@@ -1729,7 +1714,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw error when shipping option is not present in the db", async () => {
-          const { errors } = await addShippingMethodToWorkflow(
+          const { errors } = await addShippingMethodToCartWorkflow(
             appContainer
           ).run({
             input: {
@@ -1748,6 +1733,103 @@ medusaIntegrationTestRunner({
               }),
             }),
           ])
+        })
+
+        it("should add shipping method with custom data", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "test location" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: stockLocation.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+            },
+          ])
+
+          await api.post(
+            `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+            { add: ["manual_test-provider"] },
+            adminHeaders
+          )
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "is_return",
+                value: "false",
+              },
+              {
+                operator: RuleOperator.EQ,
+                attribute: "enabled_in_store",
+                value: "true",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
+            },
+          ])
+
+          await addShippingMethodToCartWorkflow(appContainer).run({
+            input: {
+              options: [{ id: shippingOption.id, data: { test: "test" } }],
+              cart_id: cart.id,
+            },
+          })
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            select: ["id"],
+            relations: ["shipping_methods"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_methods: [
+                {
+                  id: expect.any(String),
+                  cart_id: cart.id,
+                  description: null,
+                  amount: 3000,
+                  raw_amount: {
+                    value: "3000",
+                    precision: 20,
+                  },
+                  metadata: null,
+                  is_tax_inclusive: true,
+                  name: "Test shipping option",
+                  data: { test: "test" },
+                  shipping_option_id: shippingOption.id,
+                  deleted_at: null,
+                  updated_at: expect.any(Date),
+                  created_at: expect.any(Date),
+                },
+              ],
+            })
+          )
         })
       })
 

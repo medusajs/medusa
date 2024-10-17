@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -327,6 +327,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "test name",
+              options: [{ title: "size", values: ["large"] }],
             },
             adminHeaders
           )

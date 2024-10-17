@@ -1350,10 +1350,6 @@
       "shippingProfiles": {
         "label": "Shipping Profiles",
         "description": "Group products by shipping requirements"
-      },
-      "shippingOptionTypes": {
-        "label": "Shipping Option Types",
-        "description": "Group options based on characteristic"
       }
     },
     "salesChannels": {
@@ -1720,6 +1716,7 @@
       "value_type": "Value Type",
       "value": "Value",
       "campaign": "Campaign",
+      "method": "Method",
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
@@ -1803,6 +1800,7 @@
         "title": "Status"
       },
       "method": {
+        "label": "Method",
         "code": {
           "title": "Promotion code",
           "description": "Customers must enter this code at checkout"
@@ -2378,7 +2376,7 @@
       },
       "label": { "label": "Label", "placeholder": "Wrong size" },
       "description": {
-        "label": "Descriptions",
+        "label": "Description",
         "placeholder": "Customer received the wrong size"
       }
     }

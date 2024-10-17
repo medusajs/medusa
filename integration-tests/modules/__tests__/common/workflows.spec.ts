@@ -7,7 +7,7 @@ import {
   updateLinksWorkflowId,
 } from "@medusajs/core-flows"
 import { Modules } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -35,9 +35,11 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "product 1",
+              options: [{ title: "size", values: ["x", "l"] }],
               variants: [
                 {
                   title: "variant 1",
+                  options: { size: "x" },
                   prices: [{ currency_code: "usd", amount: 100 }],
                 },
               ],

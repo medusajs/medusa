@@ -1,17 +1,17 @@
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { ILinkModule, ModuleJoinerConfig } from "@medusajs/framework/types"
-import { Modules, defineLink, isObject } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { defineLink, isObject, Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { MigrationsExecutionPlanner } from "../../src"
 import {
   Car,
+  carJoinerConfig,
   CarModule,
   CustomModuleImplementationContainingAReallyBigNameThatExceedsPosgresLimitToNameATableModule,
-  User,
-  UserModule,
-  carJoinerConfig,
   longNameJoinerConfig,
+  User,
   userJoinerConfig,
+  UserModule,
 } from "../__fixtures__/migrations"
 
 jest.setTimeout(30000)
@@ -63,13 +63,13 @@ moduleIntegrationTestRunner<ILinkModule>({
         expect(actionPlan[0]).toEqual({
           action: "create",
           linkDescriptor: {
-            fromModule: "User",
-            toModule: "Car",
+            fromModule: "user",
+            toModule: "car",
             fromModel: "user",
             toModel: "car",
           },
           tableName: "user_user_car_car",
-          sql: 'create table "user_user_car_car" ("user_id" varchar(255) not null, "car_id" varchar(255) not null, "id" varchar(255) not null, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "deleted_at" timestamptz(0) null, constraint "user_user_car_car_pkey" primary key ("user_id", "car_id"));\ncreate index "IDX_car_id_-8c9667b4" on "user_user_car_car" ("car_id");\ncreate index "IDX_id_-8c9667b4" on "user_user_car_car" ("id");\ncreate index "IDX_user_id_-8c9667b4" on "user_user_car_car" ("user_id");\ncreate index "IDX_deleted_at_-8c9667b4" on "user_user_car_car" ("deleted_at");\n\n',
+          sql: 'create table if not exists "user_user_car_car" ("user_id" varchar(255) not null, "car_id" varchar(255) not null, "id" varchar(255) not null, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "deleted_at" timestamptz(0) null, constraint "user_user_car_car_pkey" primary key ("user_id", "car_id"));\ncreate index if not exists "IDX_car_id_-92128f74" on "user_user_car_car" ("car_id");\ncreate index if not exists "IDX_id_-92128f74" on "user_user_car_car" ("id");\ncreate index if not exists "IDX_user_id_-92128f74" on "user_user_car_car" ("user_id");\ncreate index if not exists "IDX_deleted_at_-92128f74" on "user_user_car_car" ("deleted_at");\n\n',
         })
 
         /**
@@ -108,13 +108,13 @@ moduleIntegrationTestRunner<ILinkModule>({
         expect(actionPlan[0]).toEqual({
           action: "update",
           linkDescriptor: {
-            fromModule: "User",
-            toModule: "Car",
+            fromModule: "user",
+            toModule: "car",
             fromModel: "user",
             toModel: "car",
           },
           tableName: "user_user_car_car",
-          sql: 'alter table "user_user_car_car" add column "data" jsonb not null;\n\n',
+          sql: 'alter table if exists "user_user_car_car" add column if not exists "data" jsonb not null;\n\n',
         })
 
         /**
@@ -128,8 +128,8 @@ moduleIntegrationTestRunner<ILinkModule>({
         expect(actionPlan[0]).toEqual({
           action: "noop",
           linkDescriptor: {
-            fromModule: "User",
-            toModule: "Car",
+            fromModule: "user",
+            toModule: "car",
             fromModel: "user",
             toModel: "car",
           },
@@ -154,9 +154,9 @@ moduleIntegrationTestRunner<ILinkModule>({
           tableName: "user_user_car_car",
           linkDescriptor: {
             toModel: "car",
-            toModule: "Car",
+            toModule: "car",
             fromModel: "user",
-            fromModule: "User",
+            fromModule: "user",
           },
         })
       })

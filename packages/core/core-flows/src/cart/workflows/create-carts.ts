@@ -2,7 +2,7 @@ import {
   AdditionalData,
   CreateCartWorkflowInputDTO,
 } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import { CartWorkflowEvents, MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -11,6 +11,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createCartsStep,
@@ -173,11 +174,17 @@ export const createCartWorkflow = createWorkflow(
       },
     })
 
-    refreshPaymentCollectionForCartWorkflow.runAsStep({
-      input: {
-        cart_id: cart.id,
-      },
-    })
+    parallelize(
+      refreshPaymentCollectionForCartWorkflow.runAsStep({
+        input: {
+          cart_id: cart.id,
+        },
+      }),
+      emitEventStep({
+        eventName: CartWorkflowEvents.CREATED,
+        data: { id: cart.id },
+      })
+    )
 
     const cartCreated = createHook("cartCreated", {
       cart,

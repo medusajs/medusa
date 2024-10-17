@@ -4,7 +4,8 @@ import { BigNumberInput } from "../../totals"
 interface NewItem {
   variant_id: string
   quantity: BigNumberInput
-  unit_price?: BigNumberInput
+  unit_price?: BigNumberInput | null
+  compare_at_unit_price?: BigNumberInput | null
   internal_note?: string | null
   metadata?: Record<string, any> | null
 }
@@ -12,7 +13,8 @@ interface NewItem {
 interface ExistingItem {
   id: string
   quantity: BigNumberInput
-  unit_price?: BigNumberInput
+  unit_price?: BigNumberInput | null
+  compare_at_unit_price?: BigNumberInput | null
   internal_note?: string | null
 }
 
@@ -60,7 +62,8 @@ export interface UpdateOrderEditAddNewItemWorkflowInput {
   action_id: string
   data: {
     quantity?: BigNumberInput
-    unit_price?: BigNumberInput
+    unit_price?: BigNumberInput | null
+    compare_at_unit_price?: BigNumberInput | null
     internal_note?: string | null
   }
 }

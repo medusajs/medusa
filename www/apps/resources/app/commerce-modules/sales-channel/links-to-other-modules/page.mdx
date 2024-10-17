@@ -1,0 +1,35 @@
+export const metadata = {
+  title: `Links between Sales Channel Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Sales Channel Module and other commerce modules.
+
+## API Key Module
+
+A publishable API key allows you to easily specify the sales channel scope in a client request.
+
+Medusa defines a link between the `ApiKey` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and API Key modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1709812064/Medusa%20Resources/sales-channel-api-key_zmqi2l.jpg)
+
+---
+
+## Product Module
+
+A product has different availability for different sales channels. Medusa defines a link between the `Product` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Product modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1709809833/Medusa%20Resources/product-sales-channel_t848ik.jpg)
+
+A product can be available in more than one sales channel. You can retrieve only the products of a sales channel.
+
+---
+
+## Stock Location Module
+
+A stock location is associated with a sales channel. This scopes inventory quantities associated with that stock location by the associated sales channel.
+
+Medusa defines a link between the `SalesChannel` and `StockLocation` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716796872/Medusa%20Resources/sales-channel-location_cqrih1.jpg)

@@ -1,5 +1,5 @@
 import { PromotionType } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -1331,7 +1331,10 @@ medusaIntegrationTestRunner({
           const product1 = (
             await api.post(
               "/admin/products",
-              { title: "Test product 1" },
+              {
+                title: "Test product 1",
+                options: [{ title: "size", values: ["large", "small"] }],
+              },
               adminHeaders
             )
           ).data.product
@@ -1339,7 +1342,10 @@ medusaIntegrationTestRunner({
           const product2 = (
             await api.post(
               "/admin/products",
-              { title: "Test product 2" },
+              {
+                title: "Test product 2",
+                options: [{ title: "size", values: ["large", "small"] }],
+              },
               adminHeaders
             )
           ).data.product

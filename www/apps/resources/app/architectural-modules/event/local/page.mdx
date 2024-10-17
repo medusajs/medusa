@@ -20,18 +20,20 @@ The Local Event Bus Module is registered by default in your application.
 
 </Note>
 
-Add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.ts`:
 
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/framework/utils")
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
 module.exports = defineConfig({
   // ...
-  modules: {
-    [Modules.EVENT_BUS]: true,
-  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/event-bus-local"
+    }
+  ]
 })
 ```
 

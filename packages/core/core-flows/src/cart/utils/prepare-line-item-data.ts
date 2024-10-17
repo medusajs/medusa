@@ -6,16 +6,24 @@ import {
   InventoryItemDTO,
   ProductVariantDTO,
 } from "@medusajs/framework/types"
-import { isDefined } from "@medusajs/framework/utils"
+import { isDefined, MathBN, PriceListType } from "@medusajs/framework/utils"
 
 interface Input {
   item?: CartLineItemDTO
   quantity: BigNumberInput
   metadata?: Record<string, any>
   unitPrice: BigNumberInput
+  compareAtUnitPrice?: BigNumberInput | null
   isTaxInclusive?: boolean
   variant: ProductVariantDTO & {
     inventory_items: { inventory: InventoryItemDTO }[]
+    calculated_price: {
+      calculated_price: {
+        price_list_type: string
+      }
+      original_amount: BigNumberInput
+      calculated_amount: BigNumberInput
+    }
   }
   taxLines?: CreateOrderLineItemTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -37,6 +45,20 @@ export function prepareLineItemData(data: Input) {
 
   if (!variant.product) {
     throw new Error("Variant does not have a product")
+  }
+
+  let compareAtUnitPrice = data.compareAtUnitPrice
+
+  if (
+    !isDefined(compareAtUnitPrice) &&
+    variant.calculated_price.calculated_price.price_list_type ===
+      PriceListType.SALE &&
+    !MathBN.eq(
+      variant.calculated_price.original_amount,
+      variant.calculated_price.calculated_amount
+    )
+  ) {
+    compareAtUnitPrice = variant.calculated_price.original_amount
   }
 
   // Note: If any of the items require shipping, we enable fulfillment
@@ -78,7 +100,9 @@ export function prepareLineItemData(data: Input) {
     requires_shipping: requiresShipping,
 
     unit_price: unitPrice,
+    compare_at_unit_price: compareAtUnitPrice,
     is_tax_inclusive: !!isTaxInclusive,
+
     metadata,
   }
 

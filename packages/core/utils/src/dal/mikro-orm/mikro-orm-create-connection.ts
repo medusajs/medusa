@@ -1,40 +1,15 @@
+import { ModuleServiceInitializeOptions } from "@medusajs/types"
 import { Filter as MikroORMFilter } from "@mikro-orm/core"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
-import { ModuleServiceInitializeOptions } from "@medusajs/types"
 import { isString } from "../../common"
+import { normalizeMigrationSQL } from "../utils"
 
 type FilterDef = Parameters<typeof MikroORMFilter>[0]
 
 export class CustomTsMigrationGenerator extends TSMigrationGenerator {
   createStatement(sql: string, padLeft: number): string {
     if (isString(sql)) {
-      sql = sql.replace(
-        /create table (?!if not exists)/g,
-        "create table if not exists "
-      )
-      sql = sql.replace(/alter table (?!if exists)/g, "alter table if exists ")
-      sql = sql.replace(
-        /create index (?!if not exists)/g,
-        "create index if not exists "
-      )
-      sql = sql.replace(/drop index (?!if exists)/g, "drop index if exists ")
-      sql = sql.replace(
-        /create unique index (?!if not exists)/g,
-        "create unique index if not exists "
-      )
-      sql = sql.replace(
-        /drop unique index (?!if exists)/g,
-        "drop unique index if exists "
-      )
-      sql = sql.replace(
-        /add column (?!if not exists)/g,
-        "add column if not exists "
-      )
-      sql = sql.replace(/drop column (?!if exists)/g, "drop column if exists ")
-      sql = sql.replace(
-        /drop constraint (?!if exists)/g,
-        "drop constraint if exists "
-      )
+      sql = normalizeMigrationSQL(sql)
     }
 
     return super.createStatement(sql, padLeft)

@@ -3,7 +3,7 @@ import {
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -30,10 +30,12 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Test product",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 sku: "test-variant",
+                options: { size: "l" },
                 prices: [
                   {
                     currency_code: "usd",

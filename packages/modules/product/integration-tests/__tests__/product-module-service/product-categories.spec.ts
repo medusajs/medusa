@@ -10,7 +10,7 @@ import { Product, ProductCategory } from "@models"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { productCategoriesRankData } from "../../__fixtures__/product-category/data"
 
 jest.setTimeout(30000)
@@ -680,7 +680,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productCategoryTwo = categories[2]
         })
 
-        // TODO: Normalize delete events as well
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           eventBusSpy.mockClear()

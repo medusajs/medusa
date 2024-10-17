@@ -18,7 +18,7 @@ You'll then learn how to:
 
 <Note title="Tip">
 
-Similar steps can bee applied to the `CustomerAddress` data model.
+Similar steps can be applied to the `CustomerAddress` data model.
 
 </Note>
 
@@ -87,7 +87,7 @@ This defines a link between the `Customer` and `Custom` data models. Using this 
 <Prerequisites
   items={[
     {
-      text: "Module must be registered in medusa-config.js",
+      text: "Module must be registered in medusa-config.ts",
       link: "!docs!/basics/modules#4-add-module-to-configurations"
     }
   ]}
@@ -270,7 +270,7 @@ In the workflow, you:
 2. Create the `Custom` record using the `createCustomStep`.
 3. Use the `when-then` utility to link the customer to the `Custom` record if it was created. Learn more about why you can't use if-then conditions in a workflow without using `when-then` in [this guide](!docs!/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
 
-You'll next call the workflow in the hook handler.
+You'll next execute the workflow in the hook handler.
 
 ### Consume Workflow Hook
 
@@ -308,9 +308,9 @@ The hook handler executes the `createCustomFromCustomerWorkflow`, passing it its
 To test it out, send a `POST` request to `/admin/customers` to create a customer, passing `custom_name` in `additional_data`:
 
 ```bash
-curl --location 'localhost:9000/admin/customers' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer {token}' \
+curl -X POST 'localhost:9000/admin/customers' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
 --data-raw '{
     "email": "customer@gmail.com",
     "additional_data": {
@@ -342,7 +342,7 @@ The `+` prefix in `+custom.*` indicates that the relation should be retrieved wi
 For example:
 
 ```bash
-curl -X POST 'localhost:9000/admin/customers/{customer_id}?fields=+custom.*' \
+curl 'localhost:9000/admin/customers/{customer_id}?fields=+custom.*' \
 -H 'Authorization: Bearer {token}'
 ```
 
@@ -670,8 +670,8 @@ To test it out, send a `POST` request to `/admin/customers/:id` to update a cust
 
 ```bash
 curl -X POST 'localhost:9000/admin/customers/{customer_id}' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer {token}' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
 --data '{
     "additional_data": {
         "custom_name": "test3"

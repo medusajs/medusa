@@ -35,7 +35,7 @@
  *     type: array
  *     description: The rule's values.
  *     example:
- *       - "cusgroup_123"
+ *       - cusgroup_123
  *     items:
  *       $ref: "#/components/schemas/BasePromotionRuleValue"
  * 

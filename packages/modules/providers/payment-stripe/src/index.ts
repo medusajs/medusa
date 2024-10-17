@@ -1,4 +1,4 @@
-import { ModuleProviderExports } from "@medusajs/framework/types"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import {
   StripeBancontactService,
   StripeBlikService,
@@ -17,8 +17,6 @@ const services = [
   StripePrzelewy24Service,
 ]
 
-const providerExport: ModuleProviderExports = {
+export default ModuleProvider(Modules.PAYMENT, {
   services,
-}
-
-export default providerExport
+})

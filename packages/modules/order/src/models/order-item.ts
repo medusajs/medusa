@@ -90,6 +90,12 @@ export default class OrderItem {
   @Property({ columnType: "jsonb", nullable: true })
   raw_unit_price: BigNumberRawValue | null = null
 
+  @MikroOrmBigNumberProperty({ nullable: true })
+  compare_at_unit_price: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_compare_at_unit_price: BigNumberRawValue | null = null
+
   @MikroOrmBigNumberProperty()
   quantity: BigNumber | number
 

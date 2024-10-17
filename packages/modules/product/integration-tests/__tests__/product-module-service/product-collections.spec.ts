@@ -1,10 +1,16 @@
 import { IProductModuleService } from "@medusajs/framework/types"
-import { CommonEvents, Modules, ProductStatus } from "@medusajs/framework/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  Modules,
+  ProductEvents,
+  ProductStatus,
+} from "@medusajs/framework/utils"
 import { Product, ProductCollection } from "@models"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { createCollections } from "../../__fixtures__/product"
 
 jest.setTimeout(30000)
@@ -313,10 +319,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
+              composeMessage(ProductEvents.PRODUCT_COLLECTION_UPDATED, {
                 data: { id: collectionId },
-                name: "product-collection.updated",
-              },
+                object: "product_collection",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
             ],
             {
               internal: true,
@@ -514,10 +522,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
-              {
+              composeMessage(ProductEvents.PRODUCT_COLLECTION_CREATED, {
                 data: { id: collections[0].id },
-                name: "product-collection.created",
-              },
+                object: "product_collection",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
             ],
             {
               internal: true,
