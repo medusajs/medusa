@@ -44,9 +44,14 @@ function generateCode(results: RouteResult[]): string {
 }
 
 function formatRoute(route: Route): string {
+  // return `{
+  //   Component: ${route.Component},
+  //   loader: ${route.loader ? route.loader : "undefined"},
+  //   path: "${route.path}",
+  // }`
+
   return `{
     Component: ${route.Component},
-    loader: ${route.loader ? route.loader : "undefined"},
     path: "${route.path}",
   }`
 }
