@@ -12,6 +12,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateTaxRegion } from "../../../../../hooks/api"
 
 type TaxRegionCreateFormProps = {
@@ -78,7 +79,7 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
@@ -209,7 +210,7 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

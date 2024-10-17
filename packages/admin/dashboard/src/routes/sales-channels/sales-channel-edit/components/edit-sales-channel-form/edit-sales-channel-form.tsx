@@ -7,6 +7,7 @@ import * as zod from "zod"
 import { SalesChannelDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateSalesChannel } from "../../../../../hooks/api/sales-channels"
 
 type EditSalesChannelFormProps = {
@@ -57,7 +58,7 @@ export const EditSalesChannelForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -127,7 +128,7 @@ export const EditSalesChannelForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

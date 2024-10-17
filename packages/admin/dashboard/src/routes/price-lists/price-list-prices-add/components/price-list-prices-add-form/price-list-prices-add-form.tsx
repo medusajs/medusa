@@ -10,6 +10,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
 import { exctractPricesFromProducts } from "../../../common/utils"
 import { PriceListPricesAddPricesForm } from "./price-list-prices-add-prices-form"
@@ -199,7 +200,7 @@ export const PriceListPricesAddForm = ({
         onValueChange={(tab) => handleChangeTab(tab as Tab)}
         className="flex h-full flex-col overflow-hidden"
       >
-        <form onSubmit={handleSubmit} className="flex h-full flex-col">
+        <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
           <RouteFocusModal.Header>
             <div className="flex w-full items-center justify-between gap-x-4">
               <div className="-my-2 w-full max-w-[600px] border-l">
@@ -256,7 +257,7 @@ export const PriceListPricesAddForm = ({
               />
             </div>
           </RouteFocusModal.Footer>
-        </form>
+        </KeyboundForm>
       </ProgressTabs>
     </RouteFocusModal.Form>
   )

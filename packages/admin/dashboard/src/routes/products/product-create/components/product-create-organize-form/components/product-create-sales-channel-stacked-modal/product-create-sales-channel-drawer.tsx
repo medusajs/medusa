@@ -9,7 +9,10 @@ import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { SplitView } from "../../../../../../../components/layout/split-view"
+import {
+  StackedFocusModal,
+  useStackedModal,
+} from "../../../../../../../components/modals"
 import { DataTable } from "../../../../../../../components/table/data-table"
 import { useSalesChannels } from "../../../../../../../hooks/api/sales-channels"
 import { useSalesChannelTableColumns } from "../../../../../../../hooks/table/columns/use-sales-channel-table-columns"
@@ -17,34 +20,35 @@ import { useSalesChannelTableFilters } from "../../../../../../../hooks/table/fi
 import { useSalesChannelTableQuery } from "../../../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../../../hooks/use-data-table"
 import { ProductCreateSchemaType } from "../../../../types"
-import { useProductCreateDetailsContext } from "../product-create-organize-context"
+import { SC_STACKED_MODAL_ID } from "../../constants"
 
-type ProductCreateSalesChannelDrawerProps = {
+type ProductCreateSalesChannelStackedModalProps = {
   form: UseFormReturn<ProductCreateSchemaType>
 }
 
 const PAGE_SIZE = 50
-const PREFIX = "sc"
 
-export const ProductCreateSalesChannelDrawer = ({
+export const ProductCreateSalesChannelStackedModal = ({
   form,
-}: ProductCreateSalesChannelDrawerProps) => {
+}: ProductCreateSalesChannelStackedModalProps) => {
   const { t } = useTranslation()
-  const { open, onOpenChange } = useProductCreateDetailsContext()
   const { getValues, setValue } = form
+  const { setIsOpen, getIsOpen } = useStackedModal()
 
   const [selection, setSelection] = useState<RowSelectionState>({})
   const [state, setState] = useState<{ id: string; name: string }[]>([])
 
   const { searchParams, raw } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
-    prefix: PREFIX,
+    prefix: SC_STACKED_MODAL_ID,
   })
   const { sales_channels, count, isLoading, isError, error } = useSalesChannels(
     {
       ...searchParams,
     }
   )
+
+  const open = getIsOpen(SC_STACKED_MODAL_ID)
 
   useEffect(() => {
     if (!open) {
@@ -98,7 +102,7 @@ export const ProductCreateSalesChannelDrawer = ({
       shouldDirty: true,
       shouldTouch: true,
     })
-    onOpenChange(false)
+    setIsOpen(SC_STACKED_MODAL_ID, false)
   }
 
   const filters = useSalesChannelTableFilters()
@@ -116,7 +120,7 @@ export const ProductCreateSalesChannelDrawer = ({
       state: selection,
       updater,
     },
-    prefix: PREFIX,
+    prefix: SC_STACKED_MODAL_ID,
   })
 
   if (isError) {
@@ -124,8 +128,9 @@ export const ProductCreateSalesChannelDrawer = ({
   }
 
   return (
-    <div className="flex h-full flex-1 flex-col overflow-hidden">
-      <div className="flex-1">
+    <StackedFocusModal.Content className="flex flex-col overflow-hidden">
+      <StackedFocusModal.Header />
+      <StackedFocusModal.Body className="flex-1 overflow-hidden">
         <DataTable
           table={table}
           columns={columns}
@@ -138,20 +143,22 @@ export const ProductCreateSalesChannelDrawer = ({
           search
           pagination
           count={count}
-          prefix={PREFIX}
+          prefix={SC_STACKED_MODAL_ID}
         />
-      </div>
-      <div className="flex items-center justify-end gap-x-2 border-t px-6 py-4">
-        <SplitView.Close asChild>
-          <Button size="small" variant="secondary" type="button">
-            {t("actions.cancel")}
+      </StackedFocusModal.Body>
+      <StackedFocusModal.Footer>
+        <div className="flex items-center justify-end gap-x-2">
+          <StackedFocusModal.Close asChild>
+            <Button size="small" variant="secondary" type="button">
+              {t("actions.cancel")}
+            </Button>
+          </StackedFocusModal.Close>
+          <Button size="small" onClick={handleAdd} type="button">
+            {t("actions.save")}
           </Button>
-        </SplitView.Close>
-        <Button size="small" onClick={handleAdd} type="button">
-          {t("actions.add")}
-        </Button>
-      </div>
-    </div>
+        </div>
+      </StackedFocusModal.Footer>
+    </StackedFocusModal.Content>
   )
 }
 

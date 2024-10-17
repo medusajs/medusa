@@ -21,12 +21,14 @@ import { PaymentProviderDTO, RegionCountryDTO } from "@medusajs/types"
 
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
+  StackedFocusModal,
   useRouteModal,
+  useStackedModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { countries as staticCountries } from "../../../../../lib/data/countries"
@@ -53,11 +55,13 @@ const CreateRegionSchema = zod.object({
 const PREFIX = "cr"
 const PAGE_SIZE = 50
 
+const STACKED_MODAL_ID = "countries-modal"
+
 export const CreateRegionForm = ({
   currencies,
   paymentProviders,
 }: CreateRegionFormProps) => {
-  const [open, setOpen] = useState(false)
+  const { setIsOpen } = useStackedModal()
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { handleSuccess } = useRouteModal()
 
@@ -155,22 +159,7 @@ export const CreateRegionForm = ({
       { shouldDirty: true, shouldTouch: true }
     )
 
-    setOpen(false)
-  }
-
-  const onOpenChange = (open: boolean) => {
-    setOpen(open)
-
-    if (!open) {
-      const ids = selectedCountries.reduce((acc, c) => {
-        acc[c.code] = true
-        return acc
-      }, {} as RowSelectionState)
-
-      requestAnimationFrame(() => {
-        setRowSelection(ids)
-      })
-    }
+    setIsOpen(STACKED_MODAL_ID, false)
   }
 
   const removeCountry = (code: string) => {
@@ -193,7 +182,7 @@ export const CreateRegionForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -210,233 +199,239 @@ export const CreateRegionForm = ({
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex overflow-hidden">
-          <SplitView open={open} onOpenChange={onOpenChange}>
-            <SplitView.Content>
-              <div
-                className={clx(
-                  "flex h-full w-full flex-col items-center overflow-y-auto p-16"
-                )}
-                id="form-section"
-              >
-                <div className="flex w-full max-w-[720px] flex-col gap-y-8">
-                  <div>
-                    <Heading>{t("regions.createRegion")}</Heading>
-                    <Text size="small" className="text-ui-fg-subtle">
-                      {t("regions.createRegionHint")}
-                    </Text>
-                  </div>
-                  <div className="flex flex-col gap-y-4">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <Form.Field
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => {
-                          return (
-                            <Form.Item>
-                              <Form.Label>{t("fields.name")}</Form.Label>
-                              <Form.Control>
-                                <Input {...field} />
-                              </Form.Control>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                      <Form.Field
-                        control={form.control}
-                        name="currency_code"
-                        render={({ field: { onChange, ref, ...field } }) => {
-                          return (
-                            <Form.Item>
-                              <Form.Label>{t("fields.currency")}</Form.Label>
-                              <Form.Control>
-                                <Select {...field} onValueChange={onChange}>
-                                  <Select.Trigger ref={ref}>
-                                    <Select.Value />
-                                  </Select.Trigger>
-                                  <Select.Content>
-                                    {currencies.map((currency) => (
-                                      <Select.Item
-                                        value={currency.code}
-                                        key={currency.code}
-                                      >
-                                        {currency.name}
-                                      </Select.Item>
-                                    ))}
-                                  </Select.Content>
-                                </Select>
-                              </Form.Control>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                    </div>
-                  </div>
+          <div
+            className={clx(
+              "flex h-full w-full flex-col items-center overflow-y-auto p-16"
+            )}
+            id="form-section"
+          >
+            <div className="flex w-full max-w-[720px] flex-col gap-y-8">
+              <div>
+                <Heading>{t("regions.createRegion")}</Heading>
+                <Text size="small" className="text-ui-fg-subtle">
+                  {t("regions.createRegionHint")}
+                </Text>
+              </div>
+              <div className="flex flex-col gap-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Form.Field
                     control={form.control}
-                    name="automatic_taxes"
-                    render={({ field: { value, onChange, ...field } }) => {
+                    name="name"
+                    render={({ field }) => {
                       return (
                         <Form.Item>
-                          <div>
-                            <div className="flex items-start justify-between">
-                              <Form.Label>
-                                {t("fields.automaticTaxes")}
-                              </Form.Label>
-                              <Form.Control>
-                                <Switch
-                                  {...field}
-                                  checked={value}
-                                  onCheckedChange={onChange}
-                                />
-                              </Form.Control>
-                            </div>
-                            <Form.Hint>
-                              {t("regions.automaticTaxesHint")}
-                            </Form.Hint>
-                            <Form.ErrorMessage />
-                          </div>
+                          <Form.Label>{t("fields.name")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
                         </Form.Item>
                       )
                     }}
                   />
-
                   <Form.Field
                     control={form.control}
-                    name="is_tax_inclusive"
-                    render={({ field: { value, onChange, ...field } }) => {
+                    name="currency_code"
+                    render={({ field: { onChange, ref, ...field } }) => {
                       return (
                         <Form.Item>
-                          <div>
-                            <div className="flex items-start justify-between">
-                              <Form.Label>
-                                {t("fields.taxInclusivePricing")}
-                              </Form.Label>
-                              <Form.Control>
-                                <Switch
-                                  {...field}
-                                  checked={value}
-                                  onCheckedChange={onChange}
-                                />
-                              </Form.Control>
-                            </div>
-                            <Form.Hint>
-                              {t("regions.taxInclusiveHint")}
-                            </Form.Hint>
-                            <Form.ErrorMessage />
-                          </div>
+                          <Form.Label>{t("fields.currency")}</Form.Label>
+                          <Form.Control>
+                            <Select {...field} onValueChange={onChange}>
+                              <Select.Trigger ref={ref}>
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                {currencies.map((currency) => (
+                                  <Select.Item
+                                    value={currency.code}
+                                    key={currency.code}
+                                  >
+                                    {currency.name}
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                          <Form.ErrorMessage />
                         </Form.Item>
                       )
                     }}
                   />
-
-                  <div className="bg-ui-border-base h-px w-full" />
-                  <div className="flex flex-col gap-y-4">
-                    <div>
-                      <Text size="small" leading="compact" weight="plus">
-                        {t("fields.countries")}
-                      </Text>
-                      <Text size="small" className="text-ui-fg-subtle">
-                        {t("regions.countriesHint")}
-                      </Text>
-                    </div>
-                    {selectedCountries.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {selectedCountries.map((country) => (
-                          <CountryTag
-                            key={country.code}
-                            country={country}
-                            onRemove={removeCountry}
-                          />
-                        ))}
-                        <Button
-                          variant="transparent"
-                          size="small"
-                          className="text-ui-fg-muted hover:text-ui-fg-subtle"
-                          onClick={clearCountries}
-                        >
-                          {t("actions.clearAll")}
-                        </Button>
+                </div>
+              </div>
+              <Form.Field
+                control={form.control}
+                name="automatic_taxes"
+                render={({ field: { value, onChange, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <Form.Label>{t("fields.automaticTaxes")}</Form.Label>
+                          <Form.Control>
+                            <Switch
+                              {...field}
+                              checked={value}
+                              onCheckedChange={onChange}
+                            />
+                          </Form.Control>
+                        </div>
+                        <Form.Hint>{t("regions.automaticTaxesHint")}</Form.Hint>
+                        <Form.ErrorMessage />
                       </div>
-                    )}
-                    <div className="flex items-center justify-end">
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        onClick={() => setOpen(true)}
-                        type="button"
-                      >
+                    </Form.Item>
+                  )
+                }}
+              />
+
+              <Form.Field
+                control={form.control}
+                name="is_tax_inclusive"
+                render={({ field: { value, onChange, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <Form.Label>
+                            {t("fields.taxInclusivePricing")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Switch
+                              {...field}
+                              checked={value}
+                              onCheckedChange={onChange}
+                            />
+                          </Form.Control>
+                        </div>
+                        <Form.Hint>{t("regions.taxInclusiveHint")}</Form.Hint>
+                        <Form.ErrorMessage />
+                      </div>
+                    </Form.Item>
+                  )
+                }}
+              />
+
+              <div className="bg-ui-border-base h-px w-full" />
+              <div className="flex flex-col gap-y-4">
+                <div>
+                  <Text size="small" leading="compact" weight="plus">
+                    {t("fields.countries")}
+                  </Text>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {t("regions.countriesHint")}
+                  </Text>
+                </div>
+                {selectedCountries.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {selectedCountries.map((country) => (
+                      <CountryTag
+                        key={country.code}
+                        country={country}
+                        onRemove={removeCountry}
+                      />
+                    ))}
+                    <Button
+                      variant="transparent"
+                      size="small"
+                      className="text-ui-fg-muted hover:text-ui-fg-subtle"
+                      onClick={clearCountries}
+                    >
+                      {t("actions.clearAll")}
+                    </Button>
+                  </div>
+                )}
+                <StackedFocusModal id={STACKED_MODAL_ID}>
+                  <div className="flex items-center justify-end">
+                    <StackedFocusModal.Trigger asChild>
+                      <Button variant="secondary" size="small">
                         {t("regions.addCountries")}
                       </Button>
-                    </div>
+                    </StackedFocusModal.Trigger>
                   </div>
-                  <div className="bg-ui-border-base h-px w-full" />
-                  <div className="flex flex-col gap-y-4">
-                    <div>
-                      <Text size="small" leading="compact" weight="plus">
-                        {t("fields.providers")}
-                      </Text>
-                      <Text size="small" className="text-ui-fg-subtle">
-                        {t("regions.providersHint")}
-                      </Text>
+                  <StackedFocusModal.Content>
+                    <div className="flex size-full flex-col overflow-hidden">
+                      <StackedFocusModal.Header>
+                        <StackedFocusModal.Title asChild>
+                          <span className="sr-only">
+                            {t("regions.addCountries")}
+                          </span>
+                        </StackedFocusModal.Title>
+                      </StackedFocusModal.Header>
+                      <StackedFocusModal.Body className="overflow-hidden">
+                        <DataTable
+                          table={table}
+                          columns={columns}
+                          count={count}
+                          pageSize={PAGE_SIZE}
+                          orderBy={["name", "code"]}
+                          pagination
+                          search="autofocus"
+                          layout="fill"
+                          queryObject={raw}
+                          prefix={PREFIX}
+                        />
+                      </StackedFocusModal.Body>
+                      <StackedFocusModal.Footer>
+                        <div className="flex items-center justify-end gap-x-2">
+                          <StackedFocusModal.Close asChild>
+                            <Button variant="secondary" size="small">
+                              {t("actions.cancel")}
+                            </Button>
+                          </StackedFocusModal.Close>
+                          <Button
+                            size="small"
+                            type="button"
+                            onClick={saveCountries}
+                          >
+                            {t("actions.save")}
+                          </Button>
+                        </div>
+                      </StackedFocusModal.Footer>
                     </div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <Form.Field
-                        control={form.control}
-                        name="payment_providers"
-                        render={({ field }) => {
-                          return (
-                            <Form.Item>
-                              <Form.Label>
-                                {t("fields.paymentProviders")}
-                              </Form.Label>
-                              <Form.Control>
-                                <Combobox
-                                  options={paymentProviders.map((pp) => ({
-                                    label: formatProvider(pp.id),
-                                    value: pp.id,
-                                  }))}
-                                  {...field}
-                                />
-                              </Form.Control>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                    </div>
-                  </div>
+                  </StackedFocusModal.Content>
+                </StackedFocusModal>
+              </div>
+              <div className="bg-ui-border-base h-px w-full" />
+              <div className="flex flex-col gap-y-4">
+                <div>
+                  <Text size="small" leading="compact" weight="plus">
+                    {t("fields.providers")}
+                  </Text>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {t("regions.providersHint")}
+                  </Text>
+                </div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Form.Field
+                    control={form.control}
+                    name="payment_providers"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>
+                            {t("fields.paymentProviders")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Combobox
+                              options={paymentProviders.map((pp) => ({
+                                label: formatProvider(pp.id),
+                                value: pp.id,
+                              }))}
+                              {...field}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
                 </div>
               </div>
-            </SplitView.Content>
-            <SplitView.Drawer>
-              <div className="flex size-full flex-col overflow-hidden">
-                <DataTable
-                  table={table}
-                  columns={columns}
-                  count={count}
-                  pageSize={PAGE_SIZE}
-                  orderBy={["name", "code"]}
-                  pagination
-                  search="autofocus"
-                  layout="fill"
-                  queryObject={raw}
-                  prefix={PREFIX}
-                />
-                <div className="flex items-center justify-end gap-x-2 border-t p-4">
-                  <SplitView.Close type="button">
-                    {t("actions.cancel")}
-                  </SplitView.Close>
-                  <Button size="small" type="button" onClick={saveCountries}>
-                    {t("actions.save")}
-                  </Button>
-                </div>
-              </div>
-            </SplitView.Drawer>
-          </SplitView>
+            </div>
+          </div>
         </RouteFocusModal.Body>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

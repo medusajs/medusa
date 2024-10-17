@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { RouteDrawer } from "../../../../../../components/modals"
+import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { RuleTypeValues } from "../../edit-rules"
 import { RulesFormField } from "../rules-form-field"
 import { EditRules, EditRulesType } from "./form-schema"
@@ -35,7 +36,10 @@ export const EditRulesForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleFormSubmit} className="flex h-full flex-col">
+      <KeyboundForm
+        onSubmit={handleFormSubmit}
+        className="flex h-full flex-col"
+      >
         <RouteDrawer.Body>
           <RulesFormField
             form={form as any}
@@ -59,7 +63,7 @@ export const EditRulesForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }
