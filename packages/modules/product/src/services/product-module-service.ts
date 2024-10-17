@@ -380,10 +380,12 @@ export default class ProductModuleService
         productOptions
       )
 
-    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
-      productVariantsWithOptions as any,
-      allVariants
-    )
+    if (data.some((d) => !!d.options)) {
+      ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
+        productVariantsWithOptions as any,
+        allVariants
+      )
+    }
 
     const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
@@ -1819,7 +1821,7 @@ export default class ProductModuleService
   protected static checkIfVariantWithOptionsAlreadyExists(
     data: ((
       | ProductTypes.CreateProductVariantDTO
-      | ProductTypes.UpdateProductVariantDTO
+      | UpdateProductVariantInput
     ) & { options: { id: string }[]; product_id: string })[],
     variants: ProductVariant[]
   ) {
@@ -1829,6 +1831,10 @@ export default class ProductModuleService
           variantData.product_id! !== v.product_id ||
           !variantData.options?.length
         ) {
+          return false
+        }
+
+        if ((variantData as UpdateProductVariantInput)?.id === v.id) {
           return false
         }
 

@@ -17,7 +17,7 @@ import {
 } from "./babel"
 
 export function normalizePath(file: string) {
-  return path.normalize(file.replace(/\\/g, "/"))
+  return path.normalize(file).replace(/\\/g, "/")
 }
 
 /**

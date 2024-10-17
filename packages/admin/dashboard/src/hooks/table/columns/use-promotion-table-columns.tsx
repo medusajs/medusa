@@ -28,11 +28,11 @@ export const usePromotionTableColumns = () => {
 
       columnHelper.display({
         id: "method",
-        header: () => <TextHeader text={t("promotions.fields.campaign")} />,
+        header: () => <TextHeader text={t("promotions.fields.method")} />,
         cell: ({ row }) => {
           const text = row.original.is_automatic
-            ? "Automatic"
-            : "Promotion Code"
+            ? t("promotions.form.method.automatic.title")
+            : t("promotions.form.method.code.title")
 
           return <TextCell text={text} />
         },

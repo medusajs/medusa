@@ -39,10 +39,14 @@ Create the file \`src/modules/my-auth/index.ts\` with the following content:
 
 \`\`\`ts title="src/modules/my-auth/index.ts"
 import MyAuthProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
 
-export default {
+export default ModuleProvider(Modules.AUTH, {
   services: [MyAuthProviderService],
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyAuthProviderService\` is the module's service.`,
@@ -63,7 +67,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-auth",
+            resolve: "./src/modules/my-auth",
             id: "my-auth",
             options: {
               // provider options...

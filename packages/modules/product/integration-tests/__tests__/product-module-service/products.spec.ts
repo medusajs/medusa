@@ -22,7 +22,7 @@ import { UpdateProductInput } from "@types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import {
   buildProductAndRelationsData,
   createCollections,
@@ -297,6 +297,169 @@ moduleIntegrationTestRunner<IProductModuleService>({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should upsert variants (update one and create one)", async () => {
+          let [product] = await service.createProducts([
+            {
+              title: "New product",
+              description: "New description",
+              options: [
+                { title: "size", values: ["x", "l"] },
+                { title: "color", values: ["red", "green"] },
+              ],
+              variants: [
+                {
+                  title: "new variant 1",
+                  options: { size: "l", color: "red" },
+                },
+                {
+                  title: "new variant 2",
+                  options: { size: "l", color: "green" },
+                },
+              ],
+            },
+          ])
+
+          product = await service.retrieveProduct(product.id, {
+            relations: [
+              "options",
+              "options.values",
+              "variants",
+              "variants.options",
+            ],
+          })
+
+          expect(product).toEqual(
+            expect.objectContaining({
+              title: "New product",
+              description: "New description",
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  title: "size",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "x",
+                    }),
+                    expect.objectContaining({
+                      value: "l",
+                    }),
+                  ]),
+                }),
+                expect.objectContaining({
+                  title: "color",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "red",
+                    }),
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ]),
+                }),
+              ]),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  title: "new variant 1",
+                  options: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "l",
+                    }),
+                    expect.objectContaining({
+                      value: "red",
+                    }),
+                  ]),
+                }),
+                expect.objectContaining({
+                  title: "new variant 2",
+                  options: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "l",
+                    }),
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+
+          const existingVariant1 = product.variants.find(
+            (v) => v.title === "new variant 1"
+          )
+
+          const existingVariant2 = product.variants.find(
+            (v) => v.title === "new variant 2"
+          )
+
+          await service.upsertProductVariants([
+            {
+              id: existingVariant1.id,
+              product_id: product.id,
+              title: "updated variant 1",
+              options: { size: "x", color: "red" }, // update options
+            },
+            {
+              id: existingVariant2.id,
+              title: "new variant 2",
+              options: { size: "l", color: "green" }, // just preserve old one
+            },
+            {
+              product_id: product.id,
+              title: "created variant 3",
+              options: { size: "x", color: "green" }, // create a new variant
+            },
+          ])
+
+          product = await service.retrieveProduct(product.id, {
+            relations: [
+              "options",
+              "options.values",
+              "variants",
+              "variants.options",
+            ],
+          })
+
+          expect(product.variants).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: existingVariant1.id,
+                title: "updated variant 1",
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    value: "x",
+                  }),
+                  expect.objectContaining({
+                    value: "red",
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                id: existingVariant2.id,
+                title: "new variant 2",
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    value: "l",
+                  }),
+                  expect.objectContaining({
+                    value: "green",
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                title: "created variant 3",
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    value: "x",
+                  }),
+                  expect.objectContaining({
+                    value: "green",
+                  }),
+                ]),
+              }),
+            ])
           )
         })
 

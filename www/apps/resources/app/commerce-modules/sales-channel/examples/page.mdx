@@ -8,21 +8,26 @@ export const metadata = {
 
 In this guide, you’ll find common examples of how you can use the Sales Channel Module in your application.
 
+<Note>
+
+You should only use the Sales Channel Module's main service when implementing complex customizations. For common cases, check out [available workflows instead](../../../medusa-workflows-reference/page.mdx).
+
+</Note>
+
 ## Create a Sales Channel
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ISalesChannelModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const salesChannelModuleService: ISalesChannelModuleService =
+  const salesChannelModuleService =
     request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.createSalesChannels({
@@ -64,16 +69,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ISalesChannelModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const salesChannelModuleService: ISalesChannelModuleService =
+  const salesChannelModuleService =
     request.scope.resolve(Modules.SALES_CHANNEL)
 
   res.json({
@@ -109,16 +113,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ISalesChannelModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const salesChannelModuleService: ISalesChannelModuleService =
+  const salesChannelModuleService =
     request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.retrieveSalesChannel(
@@ -160,16 +163,15 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ISalesChannelModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const salesChannelModuleService: ISalesChannelModuleService =
+  const salesChannelModuleService =
     request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.updateSalesChannels({
@@ -213,16 +215,15 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ISalesChannelModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const salesChannelModuleService: ISalesChannelModuleService =
+  const salesChannelModuleService =
     request.scope.resolve(Modules.SALES_CHANNEL)
 
   await salesChannelModuleService.deleteSalesChannels("sc_123")

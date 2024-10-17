@@ -6,7 +6,7 @@ import {
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import {
   buildExpectedEventMessageShape,
   generateCreateFulfillmentData,
