@@ -6,7 +6,7 @@ import {
 
 import { ICustomerModuleService } from "@medusajs/types"
 
-const { medusaIntegrationTestRunner } = require("medusa-test-utils")
+const { medusaIntegrationTestRunner } = require("@medusajs/test-utils")
 
 jest.setTimeout(50000)
 

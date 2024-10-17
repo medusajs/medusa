@@ -1,10 +1,13 @@
 import { UpdateLineItemInCartWorkflowInputDTO } from "@medusajs/framework/types"
+import { CartWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
@@ -103,9 +106,15 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       },
     })
 
-    refreshPaymentCollectionForCartWorkflow.runAsStep({
-      input: { cart_id: input.cart.id },
-    })
+    parallelize(
+      refreshPaymentCollectionForCartWorkflow.runAsStep({
+        input: { cart_id: input.cart.id },
+      }),
+      emitEventStep({
+        eventName: CartWorkflowEvents.UPDATED,
+        data: { id: input.cart.id },
+      })
+    )
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 
