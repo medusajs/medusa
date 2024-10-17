@@ -90,7 +90,7 @@ export class DashboardExtensionManager {
       if (item.path.includes("/:")) {
         if (process.env.NODE_ENV === "development") {
           console.warn(
-            `Menu item for path "${item.path}" can't be added to the sidebar as it contains a parameter.`
+            `[@medusajs/dashboard] Menu item for path "${item.path}" can't be added to the sidebar as it contains a parameter.`
           )
         }
         return
@@ -99,15 +99,25 @@ export class DashboardExtensionManager {
       const isSettingsPath = item.path.startsWith("/settings")
       const key = isSettingsPath ? "settingsExtensions" : "coreExtensions"
 
+      const pathParts = item.path.split("/").filter(Boolean)
+      const parentPath = "/" + pathParts.slice(0, -1).join("/")
+
+      // Check if this is a nested settings path
+      if (isSettingsPath && pathParts.length > 2) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `[@medusajs/dashboard] Nested settings menu item "${item.path}" can't be added to the sidebar. Only top-level settings items are allowed.`
+          )
+        }
+        return // Skip this item entirely
+      }
+
       const navItem: INavItem = {
         label: item.label,
         to: item.path,
         icon: item.icon ? <item.icon /> : undefined,
         items: [],
       }
-
-      const pathParts = item.path.split("/").filter(Boolean)
-      const parentPath = "/" + pathParts.slice(0, -1).join("/")
 
       if (parentPath !== "/" && tempRegistry[parentPath]) {
         if (!tempRegistry[parentPath].items) {
