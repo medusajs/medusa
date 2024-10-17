@@ -636,7 +636,7 @@ const CostBreakdown = ({
           </div>
         }
         value={getLocaleAmount(
-          automaticTaxesOn ? order.shipping_total : order.shipping_subtotal, // TODO: `shipping_subtotal` does not exists
+          automaticTaxesOn ? order.shipping_total : order.shipping_subtotal,
           order.currency_code
         )}
       />
