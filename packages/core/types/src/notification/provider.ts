@@ -30,6 +30,10 @@ export type ProviderSendNotificationDTO = {
    * The data that gets passed over to the provider for rendering the notification.
    */
   data?: Record<string, unknown> | null
+  /**
+   * The metadata that gets passed to the provider.
+   */
+  providerContext?: Record<string, unknown> | null
 }
 
 /**

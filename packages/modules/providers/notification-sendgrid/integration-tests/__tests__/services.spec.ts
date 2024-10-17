@@ -6,6 +6,7 @@ jest.setTimeout(100000)
 describe.skip("Sendgrid notification provider", () => {
   let sendgridService: SendgridNotificationService
   let emailTemplate = ""
+  let emailContent = ""
   let to = ""
   beforeAll(() => {
     sendgridService = new SendgridNotificationService(
@@ -19,6 +20,7 @@ describe.skip("Sendgrid notification provider", () => {
     )
 
     emailTemplate = process.env.SENDGRID_TEST_TEMPLATE ?? ""
+    emailContent = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8"></head><body></body></html>`
     to = process.env.SENDGRID_TEST_TO ?? ""
   })
 
@@ -33,6 +35,41 @@ describe.skip("Sendgrid notification provider", () => {
     })
 
     expect(resp).toEqual({})
+  })
+
+  it("sends an email with the specified email body", async () => {
+    const resp = await sendgridService.send({
+      to,
+      channel: "email",
+      template: "signup-template",
+      providerContext: {
+        subject: "It's a test",
+        html: emailContent,
+      },
+      data: {
+        username: "john-doe",
+      },
+    })
+
+    expect(resp).toEqual({})
+  })
+
+  it("throws an exception if the subject is not present for html content", async () => {
+    const error = await sendgridService
+      .send({
+        to,
+        template: "signup-template",
+        channel: "email",
+        providerContext: { html: emailContent },
+        data: {
+          username: "john-doe",
+        },
+      })
+      .catch((e) => e)
+
+    expect(error.message).toEqual(
+      "Failed to send email: 400 - The subject is required. You can get around this requirement if you use a template with a subject defined or if every personalization has a subject defined."
+    )
   })
 
   it("throws an exception if the template does not exist", async () => {

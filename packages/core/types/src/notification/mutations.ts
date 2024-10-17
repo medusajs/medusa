@@ -22,6 +22,10 @@ export interface CreateNotificationDTO {
    */
   data?: Record<string, unknown> | null
   /**
+   * The metadata that gets passed over to the provider.
+   */
+  providerContext?: Record<string, unknown> | null
+  /**
    * The event name, the workflow, or anything else that can help to identify what triggered the notification.
    */
   trigger_type?: string | null
