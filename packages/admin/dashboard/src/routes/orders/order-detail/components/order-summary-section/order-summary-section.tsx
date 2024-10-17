@@ -593,17 +593,6 @@ const CostBreakdown = ({
   const automaticTaxesOn = !!order.region!.automatic_taxes
   const hasTaxLines = !!Object.keys(taxCodes).length
 
-  // TODO: temp until BD return `order.items_total`
-  const itemsTotal = useMemo(
-    () =>
-      order.items.reduce(
-        (acc, item) =>
-          acc + (automaticTaxesOn ? item.original_total : item.subtotal),
-        0
-      ),
-    [order.items, automaticTaxesOn]
-  )
-
   const discountTotal = useMemo(
     () =>
       order.items.reduce(
@@ -624,7 +613,7 @@ const CostBreakdown = ({
             ? "orders.summary.itemTotal"
             : "orders.summary.itemSubtotal"
         )}
-        value={getLocaleAmount(itemsTotal, order.currency_code)}
+        value={getLocaleAmount(order.item_total, order.currency_code)}
       />
       <Cost
         label={

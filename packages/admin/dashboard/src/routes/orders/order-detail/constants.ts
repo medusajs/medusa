@@ -8,6 +8,8 @@ const DEFAULT_PROPERTIES = [
   "currency_code",
   // --- TOTALS ---
   "total",
+  "item_total",
+  "shipping_subtotal",
   "subtotal",
   "discounts_total",
   "shipping_total",
