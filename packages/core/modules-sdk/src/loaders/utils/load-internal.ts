@@ -28,7 +28,6 @@ import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
 import { dirname, join, resolve } from "path"
-import { MODULE_RESOURCE_TYPE } from "../../types"
 
 type ModuleResource = {
   services: Function[]
@@ -192,9 +191,6 @@ export async function loadInternalModule(args: {
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
 
-  const { resources } =
-    resolution.moduleDeclaration as InternalModuleDeclaration
-
   const loadedModule = await resolveModuleExports({ resolution })
 
   if ("error" in loadedModule) {
@@ -232,14 +228,13 @@ export async function loadInternalModule(args: {
   const localContainer = createMedusaContainer()
 
   const dependencies = resolution?.dependencies ?? []
-  if (resources === MODULE_RESOURCE_TYPE.SHARED) {
-    dependencies.push(
-      ContainerRegistrationKeys.MANAGER,
-      ContainerRegistrationKeys.CONFIG_MODULE,
-      ContainerRegistrationKeys.LOGGER,
-      ContainerRegistrationKeys.PG_CONNECTION
-    )
-  }
+
+  dependencies.push(
+    ContainerRegistrationKeys.MANAGER,
+    ContainerRegistrationKeys.CONFIG_MODULE,
+    ContainerRegistrationKeys.LOGGER,
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
 
   for (const dependency of dependencies) {
     localContainer.register(

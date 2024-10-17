@@ -7,14 +7,14 @@ import {
   ModuleWithJoinerConfigFixtures,
   ModuleWithoutJoinerConfigFixtures,
 } from "../__fixtures__"
+import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
+import { ModuleProviderService as ModuleServiceWithProviderProvider1 } from "../__fixtures__/module-with-providers/provider-1"
+import { ModuleProvider2Service as ModuleServiceWithProviderProvider2 } from "../__fixtures__/module-with-providers/provider-2"
 import {
   getProviderRegistrationKey,
   loadInternalModule,
   loadResources,
 } from "../load-internal"
-import { ModuleProviderService as ModuleServiceWithProviderProvider1 } from "../__fixtures__/module-with-providers/provider-1"
-import { ModuleProvider2Service as ModuleServiceWithProviderProvider2 } from "../__fixtures__/module-with-providers/provider-2"
-import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
 
 describe("load internal", () => {
   describe("loadResources", () => {
@@ -34,7 +34,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -117,7 +116,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -200,7 +198,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -282,7 +279,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -346,7 +342,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -354,7 +349,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
@@ -399,7 +393,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -407,7 +400,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
