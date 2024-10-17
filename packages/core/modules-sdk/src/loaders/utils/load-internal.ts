@@ -131,7 +131,7 @@ async function loadInternalProvider(
         moduleExports: !isString(providerRes) ? providerRes : undefined,
         definition: {
           ...resolution.definition,
-          key: provider.id,
+          key: provider.id!,
         },
         resolutionPath: isString(provider.resolve)
           ? require.resolve(provider.resolve, {
