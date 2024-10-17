@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-local",
-  "version": "1.9.8",
+  "version": "1.9.9",
   "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -23,7 +23,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
@@ -39,6 +39,6 @@
     "ulid": "^2.3.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1"
+    "@medusajs/framework": "^0.0.2"
   }
 }

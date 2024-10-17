@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -35,7 +35,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/types": "^1.11.16",
+    "@medusajs/types": "^1.11.17",
     "fetch-event-stream": "^0.1.5",
     "qs": "^6.12.1"
   },

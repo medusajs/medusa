@@ -1,5 +1,57 @@
 # Change Log
 
+## 1.20.6
+
+### Patch Changes
+
+- [#7341](https://github.com/medusajs/medusa/pull/7341) [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Medusa 2.0
+
+- Updated dependencies [[`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e), [`e9a06f4b4dab91b0f1046324795b4ed35e4e295f`](https://github.com/medusajs/medusa/commit/e9a06f4b4dab91b0f1046324795b4ed35e4e295f)]:
+  - @medusajs/core-flows@0.0.10
+  - @medusajs/telemetry@0.0.18
+  - @medusajs/api-key@0.1.3
+  - @medusajs/auth@0.0.4
+  - @medusajs/auth-emailpass@0.0.2
+  - @medusajs/auth-google@0.0.2
+  - @medusajs/cache-inmemory@1.8.11
+  - @medusajs/cache-redis@1.9.2
+  - @medusajs/cart@0.0.4
+  - @medusajs/currency@0.1.3
+  - @medusajs/customer@0.0.4
+  - @medusajs/event-bus-local@1.9.9
+  - @medusajs/event-bus-redis@1.8.14
+  - @medusajs/file@0.0.2
+  - @medusajs/fulfillment@0.1.3
+  - @medusajs/inventory@0.0.4
+  - @medusajs/link-modules@0.2.12
+  - @medusajs/notification@0.1.3
+  - @medusajs/order@0.1.3
+  - @medusajs/payment@0.0.4
+  - @medusajs/pricing@0.1.13
+  - @medusajs/product@0.3.13
+  - @medusajs/promotion@0.0.5
+  - @medusajs/file-local@0.0.3
+  - @medusajs/file-s3@0.0.3
+  - @medusajs/fulfillment-manual@0.0.3
+  - @medusajs/notification-local@0.0.2
+  - @medusajs/notification-sendgrid@0.0.2
+  - @medusajs/payment-stripe@0.0.3
+  - @medusajs/region@0.1.2
+  - @medusajs/sales-channel@0.1.2
+  - @medusajs/stock-location@0.0.4
+  - @medusajs/store@0.1.2
+  - @medusajs/tax@0.1.2
+  - @medusajs/user@0.0.4
+  - @medusajs/workflow-engine-inmemory@0.0.5
+  - @medusajs/workflow-engine-redis@0.0.5
+  - @medusajs/admin-bundler@0.0.2
+  - @medusajs/framework@0.0.2
+  - @medusajs/index@0.0.2
+  - @medusajs/locking@0.0.2
+  - @medusajs/locking-redis@0.0.2
+  - @medusajs/locking-postgres@0.0.2
+  - @medusajs/auth-github@0.0.2
+
 ## 1.20.5
 
 ### Patch Changes
