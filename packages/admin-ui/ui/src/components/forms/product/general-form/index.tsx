@@ -2,6 +2,7 @@ import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
 import TextArea from "../../../molecules/textarea"
+import { useTranslation } from "react-i18next"
 
 export type GeneralFormType = {
   title: string
@@ -18,6 +19,7 @@ type Props = {
 }
 
 const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -28,22 +30,35 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
     <div>
       <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
-          label="Title"
-          placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
+          label={t("general-form-title", "Title")}
+          placeholder={
+            isGiftCard
+              ? t("general-form-title-placeholder-gift-card", "Gift Card")
+              : t(
+                  "general-form-title-placeholder-winter-jacket",
+                  "Winter Jacket"
+                )
+          }
           required
           {...register(path("title"), {
-            required: "Title is required",
+            required: t("general-form-title-is-required", "Title is required"),
             minLength: {
               value: 1,
-              message: "Title must be at least 1 character",
+              message: t(
+                "general-form-title-min-length",
+                "Title must be at least 1 character"
+              ),
             },
             pattern: FormValidator.whiteSpaceRule("Title"),
           })}
           errors={errors}
         />
         <InputField
-          label="Subtitle"
-          placeholder="Warm and cozy..."
+          label={t("general-form-subtitle", "Subtitle")}
+          placeholder={t(
+            "general-form-subtitle-placeholder",
+            "Warm and cozy..."
+          )}
           {...register(path("subtitle"), {
             pattern: FormValidator.whiteSpaceRule("Subtitle"),
           })}
@@ -51,22 +66,45 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
       </div>
       <p className="inter-base-regular text-grey-50 mb-large">
-        Give your {isGiftCard ? "gift card" : "product"} a short and clear
-        title.
+        {isGiftCard
+          ? t(
+              "general-form-title-hint-0-gift-card",
+              "Give your gift card a short and clear title."
+            )
+          : t(
+              "general-form-title-hint-0-product",
+              "Give your product a short and clear title."
+            )}
         <br />
-        50-60 characters is the recommended length for search engines.
+        {t(
+          "general-form-title-hint-1",
+          "50-60 characters is the recommended length for search engines."
+        )}
       </p>
       <div className="gap-x-large mb-large grid grid-cols-2">
         <InputField
-          label="Handle"
+          label={t("general-form-handle", "Handle")}
           tooltipContent={
             !requireHandle
-              ? `The handle is the part of the URL that identifies the ${
-                  isGiftCard ? "gift card" : "product"
-                }. If not specified, it will be generated from the title.`
+              ? isGiftCard
+                ? t(
+                    "general-form-handle-tooltip-gift-card",
+                    "The handle is the part of the URL that identifies the gift card. If not specified, it will be generated from the title."
+                  )
+                : t(
+                    "general-form-handle-tooltip-product",
+                    "The handle is the part of the URL that identifies the product. If not specified, it will be generated from the title."
+                  )
               : undefined
           }
-          placeholder={isGiftCard ? "gift-card" : "winter-jacket"}
+          placeholder={
+            isGiftCard
+              ? t("general-form-handle-placeholder-gift-card", "gift-card")
+              : t(
+                  "general-form-handle-placeholder-winter-jacket",
+                  "winter-jacket"
+                )
+          }
           required={requireHandle}
           {...register(path("handle"), {
             required: requireHandle ? "Handle is required" : undefined,
@@ -77,8 +115,12 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
         <InputField
-          label="Material"
-          placeholder={isGiftCard ? "Paper" : "100% Cotton"}
+          label={t("general-form-material", "Material")}
+          placeholder={
+            isGiftCard
+              ? t("general-form-material-placeholder-paper", "Paper")
+              : t("general-form-material-placeholder-cotton", "100% Cotton")
+          }
           {...register(path("material"), {
             minLength: FormValidator.minOneCharRule("Material"),
             pattern: FormValidator.whiteSpaceRule("Material"),
@@ -87,9 +129,17 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
       </div>
       <TextArea
-        label="Description"
+        label={t("general-form-description", "Description")}
         placeholder={
-          isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
+          isGiftCard
+            ? t(
+                "general-form-description-placeholder-gift-card",
+                "The gift card is..."
+              )
+            : t(
+                "general-form-description-placeholder-product",
+                "A warm and cozy jacket..."
+              )
         }
         rows={3}
         className="mb-small"
@@ -97,10 +147,20 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         errors={errors}
       />
       <p className="inter-base-regular text-grey-50">
-        Give your {isGiftCard ? "gift card" : "product"} a short and clear
-        description.
+        {isGiftCard
+          ? t(
+              "general-form-description-hint-0-gift-card",
+              "Give your product a short and clear description."
+            )
+          : t(
+              "general-form-description-hint-0-product",
+              "Give your product a short and clear description."
+            )}
         <br />
-        120-160 characters is the recommended length for search engines.
+        {t(
+          "general-form-description-hint-1",
+          "120-160 characters is the recommended length for search engines."
+        )}
       </p>
     </div>
   )
