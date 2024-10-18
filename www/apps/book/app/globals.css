@@ -16,8 +16,12 @@
     @apply bg-medusa-bg-highlight;
   }
 
-  * {
+  *:not(.code-block-elm) {
     scrollbar-color: var(--docs-border-base) var(--docs-bg-base);
+  }
+
+  .code-block-elm {
+    scrollbar-color: var(--docs-contrast-border-base) transparent;
   }
 
   aside * {

@@ -6,11 +6,11 @@ import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
 import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
+import { StackedFocusModal } from "../../../../../../../components/modals"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../../../lib/client"
 import { CategoryCombobox } from "../../../../../common/components/category-combobox"
 import { ProductCreateSchemaType } from "../../../../types"
-import { useProductCreateDetailsContext } from "../product-create-organize-context"
 
 type ProductCreateOrganizationSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -20,7 +20,6 @@ export const ProductCreateOrganizationSection = ({
   form,
 }: ProductCreateOrganizationSectionProps) => {
   const { t } = useTranslation()
-  const { onOpenChange } = useProductCreateDetailsContext()
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
@@ -178,14 +177,11 @@ export const ProductCreateOrganizationSection = ({
                       <Trans i18nKey={"products.fields.sales_channels.hint"} />
                     </Form.Hint>
                   </div>
-                  <Button
-                    size="small"
-                    variant="secondary"
-                    type="button"
-                    onClick={() => onOpenChange(true)}
-                  >
-                    {t("actions.add")}
-                  </Button>
+                  <StackedFocusModal.Trigger asChild>
+                    <Button size="small" variant="secondary" type="button">
+                      {t("actions.add")}
+                    </Button>
+                  </StackedFocusModal.Trigger>
                 </div>
                 <Form.Control className="mt-0">
                   {fields.length > 0 && (

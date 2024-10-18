@@ -54,3 +54,9 @@ export const AdminCreateTaxRegion = z.object({
     .optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
+
+export type AdminUpdateTaxRegionType = z.infer<typeof AdminUpdateTaxRegion>
+export const AdminUpdateTaxRegion = z.object({
+  province_code: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
+})

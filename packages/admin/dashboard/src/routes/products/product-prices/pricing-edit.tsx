@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { RouteFocusModal, useRouteModal } from "../../../components/modals"
+import { KeyboundForm } from "../../../components/utilities/keybound-form"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
 import { useRegions } from "../../../hooks/api/regions"
 import { castNumber } from "../../../lib/cast-number"
@@ -120,7 +121,7 @@ export const PricingEdit = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex size-full flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex size-full flex-col">
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
           <VariantPricingForm form={form as any} />
@@ -142,7 +143,7 @@ export const PricingEdit = ({
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

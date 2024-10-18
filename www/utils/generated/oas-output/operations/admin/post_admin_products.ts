@@ -50,7 +50,13 @@
  *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "title": "{value}"
+ *         "title": "{value}",
+ *         "options": [
+ *           {
+ *             "title": "Default option",
+ *             "values": ["Default option value"]
+ *           }
+ *         ]
  *       }'
  * tags:
  *   - Products

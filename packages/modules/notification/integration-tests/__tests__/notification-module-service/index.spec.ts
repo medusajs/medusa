@@ -11,7 +11,7 @@ import { NotificationModuleService } from "@services"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { resolve } from "path"
 
 let moduleOptions = {
@@ -83,6 +83,30 @@ moduleIntegrationTestRunner<INotificationModuleService>({
             status: NotificationStatus.SUCCESS,
           })
         )
+      })
+
+      it("should send a notification and don't store the content in the database", async () => {
+        const notification = {
+          to: "admin@medusa.com",
+          template: "signup-template",
+          channel: "email",
+          data: {},
+          content: {
+            html: "<p>Welcome to medusa</p>",
+          },
+        }
+
+        const result = await service.createNotifications(notification)
+        const dbEntry = await service.retrieveNotification(result.id)
+
+        expect(dbEntry).toEqual(
+          expect.objectContaining({
+            provider_id: "test-provider",
+            external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
+          })
+        )
+        expect(dbEntry).not.toHaveProperty("content")
       })
 
       it("should emit an event when a notification is created", async () => {

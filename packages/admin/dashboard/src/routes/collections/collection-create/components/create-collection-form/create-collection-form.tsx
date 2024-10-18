@@ -10,6 +10,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateCollection } from "../../../../../hooks/api/collections"
 
 const CreateCollectionSchema = zod.object({
@@ -35,17 +36,17 @@ export const CreateCollectionForm = () => {
     await mutateAsync(data, {
       onSuccess: ({ collection }) => {
         handleSuccess(`/collections/${collection.id}`)
-        toast.success(t("general.success"), {
-          description: t("collections.createSuccess"),
-          dismissLabel: t("actions.close"),
-        })
+        toast.success(t("collections.createSuccess"))
+      },
+      onError: (error) => {
+        toast.error(error.message)
       },
     })
   })
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
+      <KeyboundForm onSubmit={handleSubmit}>
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
@@ -110,7 +111,7 @@ export const CreateCollectionForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

@@ -1,0 +1,90 @@
+export const metadata = {
+  title: `${pageNumber} Deployment Overview`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about the approach to deploy your Medusa application.
+
+<Note title="Important">
+
+As Medusa v2 is still in active development, it's highly recommended not to deploy it for production purposes.
+
+</Note>
+
+## Medusa Project Components
+
+A standard Medusa project is made up of:
+
+- Medusa application: The Medusa server and the Medusa Admin.
+- One or more storefronts
+    
+![Diagram showcasing the connection between the three deployed components](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600807/Medusa%20Book/deployment-options_ceuuvo.jpg)
+
+You can either deploy the Medusa application fully (server with the admin), or deploy the Medusa Admin separately. The storefront is always deployed separately.
+
+---
+
+## Deploying the Medusa Server
+
+You must deploy the Medusa server before the admin or storefront, as both of them connect to it and won’t work without a deployed Medusa server URL.
+
+![Diagram showcasing how the Medusa server and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600972/Medusa%20Book/backend_deployment_pgexo3.jpg)
+
+The Medusa server must be deployed to a hosting provider supporting Node.js server deployments, such as Railway, DigitalOcean, AWS, Heroku, etc…
+
+<Note title="Tip">
+
+For optimal experience, make sure that the hosting provider and plan offer at least 2GB of RAM.
+
+</Note>
+
+Your server connects to a PostgreSQL database, Redis, and other services relevant for your setup. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean).
+
+Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
+
+---
+
+## Deploying the Medusa Admin
+
+### Deploy Admin with the Server
+
+The Medusa Admin can be deployed on the same hosting with the server.
+
+In this scenario, make sure the hosting provider and plan of your choice provide at least 2GB of RAM, as the admin build requires high RAM usage.
+
+![Diagram showcasing how the admin would be deployed along with the Medusa server.](https://res.cloudinary.com/dza7lstvk/image/upload/v1708601021/Medusa%20Book/admin_deployment_1_lyg4cp.jpg)
+
+<Note title="Tip">
+
+The server deployment guides mention details on how to deploy the admin with the Medusa server.
+
+</Note>
+
+### Deploy Admin Separately
+
+You can deploy the admin into a separate hosting provider or instance. The admin can be hosted on providers that support front-end websites and frameworks, such as Vercel.
+
+<Note title="Important">
+
+Per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the Medusa Admin on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
+
+</Note>
+
+Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
+
+---
+
+## Deploying the Storefront
+
+The storefront is deployed separately from the Medusa application, and the hosting options depend on the tools and frameworks you use to create the storefront.
+
+If you’re using the Next.js Starter storefront, you may deploy the storefront to any hosting provider that supports frontend frameworks, such as Vercel.
+
+<Note title="Important">
+
+Per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the storefront on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
+
+</Note>
+
+Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.

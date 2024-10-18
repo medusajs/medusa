@@ -1,13 +1,17 @@
-import { deleteTaxRegionsWorkflow } from "@medusajs/core-flows"
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+  deleteTaxRegionsWorkflow,
+  updateTaxRegionsWorkflow,
+} from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes, RemoteQueryFunction } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/framework/utils"
+import { AdminUpdateTaxRegionType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -25,6 +29,38 @@ export const GET = async (
   )
 
   res.status(200).json({ tax_region: taxRegion })
+}
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminUpdateTaxRegionType>,
+  res: MedusaResponse<HttpTypes.AdminTaxRegionResponse>
+) => {
+  const { id } = req.params
+  const query = req.scope.resolve<RemoteQueryFunction>(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  await updateTaxRegionsWorkflow(req.scope).run({
+    input: [
+      {
+        id,
+        ...req.validatedBody,
+      },
+    ],
+  })
+
+  const {
+    data: [tax_region],
+  } = await query.graph(
+    {
+      entity: "tax_region",
+      fields: req.remoteQueryConfig.fields,
+      filters: { id },
+    },
+    { throwIfKeyNotFound: true }
+  )
+
+  return res.json({ tax_region })
 }
 
 export const DELETE = async (

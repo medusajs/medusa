@@ -136,7 +136,7 @@ class RestaurantModuleService extends MedusaService({
 export default RestaurantModuleService
 ```
 
-The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/learn/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Restaurant Module Definition
 
@@ -170,8 +170,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules)
-- [How to Create a Data Model](!docs!/basics/modules#1-create-data-model)
+- [How to Create a Module](!docs!/learn/basics/modules)
+- [How to Create a Data Model](!docs!/learn/basics/modules#1-create-data-model)
 
 ---
 
@@ -280,7 +280,7 @@ class DeliveryModuleService extends MedusaService({
 export default DeliveryModuleService
 ```
 
-The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/learn/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Delivery Module Definition
 
@@ -400,7 +400,7 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 
 ### Further Reads
 
-- [How to Define Links](!docs!/advanced-development/module-links)
+- [How to Define Links](!docs!/learn/advanced-development/module-links)
 
 ---
 
@@ -608,15 +608,15 @@ The API route creates a restaurant and returns it.
 
 <Note>
 
-If you’re calling this API route from a frontend client, make sure to set the [CORS middleware](!docs!/advanced-development/api-routes/cors) on it since it’s not under the `/store` or `/admin` route prefixes.
+If you’re calling this API route from a frontend client, make sure to set the [CORS middleware](!docs!/learn/advanced-development/api-routes/cors) on it since it’s not under the `/store` or `/admin` route prefixes.
 
 </Note>
 
 ### Further Reads
 
-- [How to Create a Workflow](!docs!/basics/workflows)
-- [What is a Compensation Function](!docs!/advanced-development/workflows/compensation-function)
-- [How to Create an API route](!docs!/basics/api-routes)
+- [How to Create a Workflow](!docs!/learn/basics/workflows)
+- [What is a Compensation Function](!docs!/learn/advanced-development/workflows/compensation-function)
+- [How to Create an API route](!docs!/learn/basics/api-routes)
 
 ---
 
@@ -687,7 +687,7 @@ This returns the list of restaurants in the response.
 
 ### Further Reads
 
-- [What is and how to use it](!docs!/advanced-development/module-links/query)
+- [What is and how to use it](!docs!/learn/advanced-development/module-links/query)
 - [How to Retrieve Prices for Product Variants](../../../../commerce-modules/product/guides/price/page.mdx)
 
 ---
@@ -1542,7 +1542,7 @@ In this step, you’ll create the workflow that handles the different stages of 
 
 For example, when a restaurant finishes preparing the order’s items, this workflow creates a fulfillment for the order.
 
-This workflow will be a [long-running workflow](!docs!/advanced-development/workflows/long-running-workflow) that runs asynchronously in the background. Its async steps only succeed once an outside action sets its status, allowing the workflow to move to the next step.
+This workflow will be a [long-running workflow](!docs!/learn/advanced-development/workflows/long-running-workflow) that runs asynchronously in the background. Its async steps only succeed once an outside action sets its status, allowing the workflow to move to the next step.
 
 API routes that perform actions related to the delivery, which you’ll create later, will trigger the workflow to move to the next step.
 
@@ -2063,7 +2063,7 @@ In the next steps, you’ll execute the workflow and see it in action as you add
 
 ### Further Reads
 
-- [Long-Running Workflows](!docs!/advanced-development/workflows/long-running-workflow)
+- [Long-Running Workflows](!docs!/learn/advanced-development/workflows/long-running-workflow)
 
 ---
 
@@ -3459,7 +3459,7 @@ The next steps of this example depend on your use case. This section provides so
 
 ### Admin Development
 
-The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages. Learn more about it in [this documentation](!docs!/advanced-development/admin).
+The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages. Learn more about it in [this documentation](!docs!/learn/advanced-development/admin).
 
 ### Storefront Development
 

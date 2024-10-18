@@ -1,4 +1,4 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 
 import CurrencyModule from "@medusajs/currency"
 import { MedusaModule } from "@medusajs/modules-sdk"

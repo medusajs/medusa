@@ -2,7 +2,7 @@ import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { ApiKeyType, Module, Modules } from "@medusajs/framework/utils"
 import { ApiKeyModuleService } from "@services"
 import crypto from "crypto"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   createPublishableKeyFixture,
   createSecretKeyFixture,

@@ -9,6 +9,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { castNumber } from "../../../../../lib/cast-number"
 import { ShippingOptionPriceType } from "../../../common/constants"
@@ -197,7 +198,7 @@ export function CreateShippingOptionsForm({
         className="flex h-full flex-col overflow-hidden"
         onValueChange={(tab) => onTabChange(tab as Tab)}
       >
-        <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+        <KeyboundForm className="flex h-full flex-col" onSubmit={handleSubmit}>
           <RouteFocusModal.Header>
             <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
@@ -221,6 +222,25 @@ export function CreateShippingOptionsForm({
                 </ProgressTabs.Trigger>
               )}
             </ProgressTabs.List>
+          </RouteFocusModal.Header>
+
+          <RouteFocusModal.Body className="size-full overflow-hidden">
+            <ProgressTabs.Content
+              value={Tab.DETAILS}
+              className="size-full overflow-y-auto"
+            >
+              <CreateShippingOptionDetailsForm
+                form={form}
+                zone={zone}
+                isReturn={isReturn}
+                locationId={locationId}
+              />
+            </ProgressTabs.Content>
+            <ProgressTabs.Content value={Tab.PRICING} className="size-full">
+              <CreateShippingOptionsPricesForm form={form} />
+            </ProgressTabs.Content>
+          </RouteFocusModal.Body>
+          <RouteFocusModal.Footer>
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
                 <Button variant="secondary" size="small">
@@ -250,25 +270,8 @@ export function CreateShippingOptionsForm({
                 </Button>
               )}
             </div>
-          </RouteFocusModal.Header>
-
-          <RouteFocusModal.Body className="size-full overflow-hidden">
-            <ProgressTabs.Content
-              value={Tab.DETAILS}
-              className="size-full overflow-y-auto"
-            >
-              <CreateShippingOptionDetailsForm
-                form={form}
-                zone={zone}
-                isReturn={isReturn}
-                locationId={locationId}
-              />
-            </ProgressTabs.Content>
-            <ProgressTabs.Content value={Tab.PRICING} className="size-full">
-              <CreateShippingOptionsPricesForm form={form} />
-            </ProgressTabs.Content>
-          </RouteFocusModal.Body>
-        </form>
+          </RouteFocusModal.Footer>
+        </KeyboundForm>
       </ProgressTabs>
     </RouteFocusModal.Form>
   )

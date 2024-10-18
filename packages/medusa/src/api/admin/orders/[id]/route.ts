@@ -1,16 +1,17 @@
 import { getOrderDetailWorkflow } from "@medusajs/core-flows"
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
-import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/framework/utils"
+import { AdminGetOrdersOrderParamsType } from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetOrdersOrderParamsType>,
   res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const workflow = getOrderDetailWorkflow(req.scope)
@@ -18,6 +19,7 @@ export const GET = async (
     input: {
       fields: req.remoteQueryConfig.fields,
       order_id: req.params.id,
+      version: req.validatedQuery.version as number,
     },
   })
 

@@ -5,7 +5,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/framework/utils"
-import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   linkRepository: any
@@ -41,7 +40,7 @@ export default class LinkService<TEntity> {
     return await this.linkRepository_.findAndCount(queryOptions, sharedContext)
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
+  @InjectTransactionManager("linkRepository_")
   async create(
     data: unknown[],
     @MedusaContext() sharedContext: Context = {}
@@ -51,7 +50,7 @@ export default class LinkService<TEntity> {
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
+  @InjectTransactionManager("linkRepository_")
   async dismiss(
     data: unknown[],
     @MedusaContext() sharedContext: Context = {}
@@ -75,7 +74,7 @@ export default class LinkService<TEntity> {
     return rows
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
+  @InjectTransactionManager("linkRepository_")
   async delete(
     data: unknown,
     @MedusaContext() sharedContext: Context = {}
@@ -85,7 +84,7 @@ export default class LinkService<TEntity> {
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
+  @InjectTransactionManager("linkRepository_")
   async softDelete(
     data: any[],
     @MedusaContext() sharedContext: Context = {}
@@ -109,7 +108,7 @@ export default class LinkService<TEntity> {
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
+  @InjectTransactionManager("linkRepository_")
   async restore(
     data: any,
     @MedusaContext() sharedContext: Context = {}

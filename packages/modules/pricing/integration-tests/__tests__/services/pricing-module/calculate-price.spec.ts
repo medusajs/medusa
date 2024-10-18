@@ -9,7 +9,7 @@ import {
   PriceListStatus,
   PriceListType,
 } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)

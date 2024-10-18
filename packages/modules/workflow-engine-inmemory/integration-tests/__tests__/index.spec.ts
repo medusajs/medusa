@@ -11,7 +11,7 @@ import {
 } from "@medusajs/framework/utils"
 import { WorkflowsModuleService } from "@services"
 import { asFunction } from "awilix"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import {

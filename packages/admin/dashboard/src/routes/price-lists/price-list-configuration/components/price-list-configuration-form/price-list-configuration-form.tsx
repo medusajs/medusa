@@ -19,6 +19,7 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { StackedDrawer } from "../../../../../components/modals/stacked-drawer"
 import { useStackedModal } from "../../../../../components/modals/stacked-modal-provider"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdatePriceList } from "../../../../../hooks/api/price-lists"
 import { PriceListCustomerGroupRuleForm } from "../../../common/components/price-list-customer-group-rule-form"
 import { PricingCustomerGroupsArrayType } from "../../../price-list-create/components/price-list-create-form/schema"
@@ -120,7 +121,7 @@ export const PriceListConfigurationForm = ({
       <RouteDrawer.Description className="sr-only">
         {t("priceLists.configuration.edit.description")}
       </RouteDrawer.Description>
-      <form
+      <KeyboundForm
         className="flex flex-1 flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -304,7 +305,7 @@ export const PriceListConfigurationForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

@@ -1,6 +1,6 @@
 import { ProductCategoryService } from "@services"
 
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   eletronicsCategoriesData,
   productCategoriesData,

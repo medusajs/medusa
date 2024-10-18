@@ -8,8 +8,11 @@ const DEFAULT_PROPERTIES = [
   "currency_code",
   // --- TOTALS ---
   "total",
+  "item_total",
+  "shipping_subtotal",
   "subtotal",
-  "discounts_total",
+  "discount_total",
+  "discount_subtotal",
   "shipping_total",
   "shipping_tax_total",
   "tax_total",
@@ -40,6 +43,7 @@ const DEFAULT_RELATIONS = [
   "*payment_collections.payments",
   "*payment_collections.payments.refunds",
   "*payment_collections.payments.refunds.refund_reason",
+  "region.automatic_taxes",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

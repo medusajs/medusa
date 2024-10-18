@@ -1,7 +1,7 @@
 import { IOrderModuleService } from "@medusajs/framework/types"
 import { Module, Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { OrderModuleService } from "@services"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
@@ -18,6 +18,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           "orderChange",
           "orderClaim",
           "orderExchange",
+          "orderItem",
           "orderLineItem",
           "orderShippingMethod",
           "orderTransaction",
@@ -87,6 +88,15 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               primaryKey: "exchange_id",
               serviceName: "order",
               field: "orderExchange",
+            },
+          },
+          orderItem: {
+            id: {
+              linkable: "order_item_id",
+              entity: "OrderItem",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderItem",
             },
           },
           orderLineItem: {

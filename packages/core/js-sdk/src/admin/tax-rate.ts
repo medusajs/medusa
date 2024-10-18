@@ -5,7 +5,13 @@ import { ClientHeaders } from "../types"
 const taxRateUrl = "/admin/tax-rates"
 
 export class TaxRate {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }

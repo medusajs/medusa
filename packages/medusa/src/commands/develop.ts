@@ -1,7 +1,7 @@
 import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"
-import { Store } from "medusa-telemetry"
+import { Store } from "@medusajs/telemetry"
 import { EOL } from "os"
 import path from "path"
 

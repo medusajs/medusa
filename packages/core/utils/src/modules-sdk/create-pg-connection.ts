@@ -31,3 +31,5 @@ export function createPgConnection(options: Options) {
     },
   })
 }
+
+export const isSharedConnectionSymbol = Symbol.for("isSharedConnection")

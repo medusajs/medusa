@@ -32,7 +32,7 @@ import {
 } from "react"
 import { useTranslation } from "react-i18next"
 
-import { genericForwardRef } from "../../common/generic-forward-ref"
+import { genericForwardRef } from "../../utilities/generic-forward-ref"
 
 type ComboboxOption = {
   value: string
@@ -256,14 +256,30 @@ const ComboboxImpl = <T extends Value = string>(
         )}
         <div className="relative flex size-full items-center">
           {showSelected && (
-            <div className="pointer-events-none absolute inset-y-0 left-[calc(var(--tag-width)+8px)] flex size-full items-center">
+            <div
+              className={clx(
+                "pointer-events-none absolute inset-y-0 flex size-full items-center",
+                {
+                  "left-[calc(var(--tag-width)+8px)]": showTag,
+                  "left-2": !showTag,
+                }
+              )}
+            >
               <Text size="small" leading="compact">
                 {t("general.selected")}
               </Text>
             </div>
           )}
           {hideInput && (
-            <div className="pointer-events-none absolute inset-y-0 left-[calc(var(--tag-width)+8px)] flex size-full items-center overflow-hidden">
+            <div
+              className={clx(
+                "pointer-events-none absolute inset-y-0 flex size-full items-center overflow-hidden",
+                {
+                  "left-[calc(var(--tag-width)+8px)]": showTag,
+                  "left-2": !showTag,
+                }
+              )}
+            >
               <Text size="small" leading="compact" className="truncate">
                 {selectedLabel}
               </Text>
