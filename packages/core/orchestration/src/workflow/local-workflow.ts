@@ -107,12 +107,9 @@ export class LocalWorkflow {
         return resolved
       }
 
-      const nonWrappable = Object.getOwnPropertyNames(resolved)
       return new Proxy(resolved, {
         get: function (target, prop) {
-          const shouldWrap = !nonWrappable.includes(prop as string)
-
-          if (!shouldWrap) {
+          if (typeof target[prop] !== "function") {
             return target[prop]
           }
 
