@@ -67,13 +67,9 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
    * and also exclude files served by vite during development
    */
   function shouldSkipHttpLog(req: MedusaRequest, res: MedusaResponse) {
-    if (isTest) {
-      return true
-    }
-    if (NOISY_ENDPOINTS_CHUNKS.some((chunk) => req.url.includes(chunk))) {
-      return true
-    }
-    return false
+    return (
+      isTest || NOISY_ENDPOINTS_CHUNKS.some((chunk) => req.url.includes(chunk))
+    )
   }
 
   /**
