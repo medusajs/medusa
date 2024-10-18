@@ -12,10 +12,6 @@ export class ModuleService implements IModuleService {
     }
   }
   async methodName(input, @MedusaContext() context) {
-    console.log({
-      input,
-      context,
-    })
     return input + " called"
   }
 }
