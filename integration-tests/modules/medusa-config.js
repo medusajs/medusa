@@ -39,6 +39,9 @@ module.exports = {
     medusa_v2: enableMedusaV2,
   },
   modules: {
+    testingModule: {
+      resolve: "__tests__/__fixtures__/testing-module",
+    },
     [Modules.AUTH]: {
       resolve: "@medusajs/auth",
       options: {
