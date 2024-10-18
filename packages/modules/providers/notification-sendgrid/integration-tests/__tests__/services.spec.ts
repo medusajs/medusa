@@ -20,7 +20,7 @@ describe.skip("Sendgrid notification provider", () => {
     )
 
     emailTemplate = process.env.SENDGRID_TEST_TEMPLATE ?? ""
-    emailContent = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8"></head><body></body></html>`
+    emailContent = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8"></head><body>Welcome to medusa</body></html>`
     to = process.env.SENDGRID_TEST_TO ?? ""
   })
 
@@ -42,7 +42,7 @@ describe.skip("Sendgrid notification provider", () => {
       to,
       channel: "email",
       template: "signup-template",
-      provider_context: {
+      content: {
         subject: "It's a test",
         html: emailContent,
       },
@@ -60,7 +60,7 @@ describe.skip("Sendgrid notification provider", () => {
         to,
         template: "signup-template",
         channel: "email",
-        provider_context: { html: emailContent },
+        content: { html: emailContent },
         data: {
           username: "john-doe",
         },

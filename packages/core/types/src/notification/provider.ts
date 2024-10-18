@@ -1,4 +1,4 @@
-import { Attachment } from "./common"
+import { Attachment, NotificationContent } from "./common"
 
 /**
  * @interface
@@ -31,9 +31,9 @@ export type ProviderSendNotificationDTO = {
    */
   data?: Record<string, unknown> | null
   /**
-   * The metadata that gets passed to the provider.
+   * The content that gets passed to the provider.
    */
-  provider_context?: Record<string, unknown> | null
+  content?: NotificationContent | null
 }
 
 /**
