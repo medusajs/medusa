@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/inventory",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -23,8 +23,8 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
-    "@medusajs/test-utils": "^1.1.44",
+    "@medusajs/framework": "^0.0.2",
+    "@medusajs/test-utils": "^1.1.45",
     "@mikro-orm/cli": "5.9.7",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
@@ -37,7 +37,7 @@
     "typescript": "^5.6.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
