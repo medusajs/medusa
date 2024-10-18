@@ -78,6 +78,11 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "JS SDK",
+        link: "/v2/resources/js-sdk",
+      },
+      {
+        type: "link",
         title: "Next.js Starter",
         link: "/v2/resources/nextjs-starter",
       },
