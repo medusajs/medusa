@@ -91,7 +91,7 @@ export const Search = ({
               setFilters(filterOptions.map((option) => option.value))
             }
           }}
-          className="px-docs_1 pt-docs_1 bg-medusa-bg-base"
+          className="px-docs_1 pt-docs_1 bg-medusa-bg-base z-10"
         />
       )}
       <InstantSearch
@@ -101,7 +101,7 @@ export const Search = ({
           preserveSharedStateOnUnmount: true,
         }}
       >
-        <div className={clsx("bg-medusa-bg-base flex")}>
+        <div className={clsx("bg-medusa-bg-base flex z-[1]")}>
           <SearchBox
             classNames={{
               root: clsx(
@@ -113,7 +113,7 @@ export const Search = ({
               input: clsx(
                 "w-full h-full px-docs_1 py-docs_0.75 text-medusa-fg-base",
                 "placeholder:text-medusa-fg-muted bg-medusa-bg-base",
-                "md:rounded-t-docs_xl text-compact-medium",
+                "md:rounded-t-docs_xl text-compact-large sm:text-compact-medium",
                 "appearance-none search-cancel:hidden border-0 active:outline-none focus:outline-none"
               ),
               submit: clsx("absolute top-[18px] left-docs_1 btn-clear p-0"),
@@ -131,18 +131,6 @@ export const Search = ({
             formRef={searchBoxRef}
             loadingIconComponent={() => <SpinnerLoading />}
           />
-          <Button
-            variant="transparent"
-            className={clsx(
-              "bg-medusa-bg-base block md:hidden",
-              "border-0 border-solid",
-              "border-medusa-border-base border-b",
-              "pr-docs_1"
-            )}
-            onClick={() => setIsOpen(false)}
-          >
-            <XMark className="text-medusa-fg-muted" />
-          </Button>
         </div>
         <div className="md:flex-initial h-[calc(100%-95px)] lg:max-h-[calc(100%-140px)] lg:min-h-[calc(100%-140px)]">
           <SearchEmptyQueryBoundary

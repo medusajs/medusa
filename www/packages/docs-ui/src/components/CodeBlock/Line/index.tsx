@@ -24,6 +24,7 @@ type CodeBlockLineProps = {
   lineNumberColorClassName: string
   lineNumberBgClassName: string
   isTerminal: boolean
+  animateTokenHighlights?: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
 export const CodeBlockLine = ({
@@ -36,6 +37,7 @@ export const CodeBlockLine = ({
   lineNumberColorClassName,
   lineNumberBgClassName,
   isTerminal,
+  animateTokenHighlights = false,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
 
@@ -94,6 +96,16 @@ export const CodeBlockLine = ({
         if (currentPositionInHighlightedText === highlight.text!.length) {
           // matching text was found, break loop
           endIndex = tokenIndex
+          const trimmedContent = token.content.trimEnd()
+          const endingSpacesLength =
+            token.content.length - trimmedContent.length
+          if (endingSpacesLength) {
+            line.splice(tokenIndex + 1, 0, {
+              content: new Array(endingSpacesLength).fill(" ").join(""),
+              types: ["plain"],
+            })
+            token.content = trimmedContent
+          }
           return true
         }
       })
@@ -197,19 +209,26 @@ export const CodeBlockLine = ({
   const getTokensElm = ({
     tokens,
     isTokenHighlighted,
-    isLineHighlighted,
     offset,
   }: {
     tokens: Token[]
     isTokenHighlighted: boolean
-    isLineHighlighted: boolean
     offset: number
   }) => (
-    <span
-      className={clsx(
-        isTokenHighlighted && "lg:bg-medusa-contrast-border-base cursor-default"
+    <span className={clsx(isTokenHighlighted && "relative")}>
+      {isTokenHighlighted && (
+        <span
+          className={clsx(
+            animateTokenHighlights && [
+              "animate-fast animate-growWidth animation-fill-forwards",
+            ],
+            !animateTokenHighlights && "w-full",
+            "absolute left-0 top-0 h-full z-0",
+            "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12",
+            "lg:rounded-docs_xs scale-x-[1.05]"
+          )}
+        />
       )}
-    >
       {tokens.map((token, key) => {
         const tokenKey = offset + key
         const { className: tokenClassName, ...rest } = getTokenProps({
@@ -221,8 +240,7 @@ export const CodeBlockLine = ({
             key={tokenKey}
             className={clsx(
               tokenClassName,
-              (isTokenHighlighted || isLineHighlighted) &&
-                "!text-medusa-contrast-fg-primary"
+              isTokenHighlighted && "relative z-[1]"
             )}
             {...rest}
           />
@@ -242,7 +260,7 @@ export const CodeBlockLine = ({
       {...lineProps}
       className={clsx(
         "table-row",
-        isHighlightedLine && "bg-medusa-contrast-border-base",
+        isHighlightedLine && "bg-medusa-alpha-white-alpha-6",
         lineProps.className
       )}
     >
@@ -287,7 +305,6 @@ export const CodeBlockLine = ({
                     tokens,
                     isTokenHighlighted: isHighlighted,
                     offset,
-                    isLineHighlighted: isHighlightedLine,
                   })}
                 </Tooltip>
               )}
@@ -296,7 +313,6 @@ export const CodeBlockLine = ({
                   tokens,
                   isTokenHighlighted: isHighlighted,
                   offset,
-                  isLineHighlighted: isHighlightedLine,
                 })}
             </React.Fragment>
           )

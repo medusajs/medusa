@@ -4,7 +4,7 @@ import { sidebarConfig } from "./sidebar"
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export const config: DocsConfig = {
-  titleSuffix: "Medusa v2 Docs",
+  titleSuffix: "Medusa v2 Documentation",
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebar: sidebarConfig,

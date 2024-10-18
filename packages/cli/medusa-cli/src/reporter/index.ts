@@ -18,7 +18,9 @@ if (!IS_DEV) {
   transports.push(
     new winston.transports.Console({
       format: winston.format.combine(
-        winston.format.cli(),
+        winston.format.cli({
+          levels: winston.config.npm.levels,
+        }),
         winston.format.splat()
       ),
     })
@@ -169,6 +171,7 @@ export class Reporter {
    * @param {String | Error} messageOrError - can either be a string with a
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
+   * Level 0
    */
   error(messageOrError: string | Error, error?: Error) {
     let message = messageOrError as string
@@ -274,8 +277,21 @@ export class Reporter {
   }
 
   /**
+   * Logs a message at the silly level.
+   * @param {string} message - the message to log
+   * Level 6
+   */
+  silly(message: string) {
+    this.loggerInstance_.log({
+      level: "silly",
+      message,
+    })
+  }
+
+  /**
    * Logs a message at the info level.
    * @param {string} message - the message to log
+   * Level 5
    */
   debug(message: string) {
     this.loggerInstance_.log({
@@ -285,8 +301,33 @@ export class Reporter {
   }
 
   /**
+   * Logs a message at the vebose level.
+   * @param {string} message - the message to log
+   * Level 4
+   */
+  verbose(message: string) {
+    this.loggerInstance_.log({
+      level: "vebose",
+      message,
+    })
+  }
+
+  /**
+   * Logs a message at the http level.
+   * @param {string} message - the message to log
+   * Level 3
+   */
+  http(message: string) {
+    this.loggerInstance_.log({
+      level: "http",
+      message,
+    })
+  }
+
+  /**
    * Logs a message at the info level.
    * @param {string} message - the message to log
+   * Level 2
    */
   info(message: string) {
     this.loggerInstance_.log({
@@ -298,8 +339,9 @@ export class Reporter {
   /**
    * Logs a message at the warn level.
    * @param {string} message - the message to log
+   * Level 1
    */
-  warn = (message: string) => {
+  warn(message: string) {
     this.loggerInstance_.warn({
       level: "warn",
       message,
