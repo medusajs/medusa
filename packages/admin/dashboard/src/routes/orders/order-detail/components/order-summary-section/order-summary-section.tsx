@@ -593,17 +593,9 @@ const CostBreakdown = ({
   const automaticTaxesOn = !!order.region!.automatic_taxes
   const hasTaxLines = !!Object.keys(taxCodes).length
 
-  const discountTotal = useMemo(
-    () =>
-      order.items.reduce(
-        (total, item) =>
-          total +
-          ((automaticTaxesOn ? item.discount_total : item.discount_subtotal) ||
-            0),
-        0
-      ),
-    [order, automaticTaxesOn]
-  )
+  const discountTotal = automaticTaxesOn
+    ? order.discount_total
+    : order.discount_subtotal
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
