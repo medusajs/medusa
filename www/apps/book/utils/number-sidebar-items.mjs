@@ -5,7 +5,6 @@
  * @returns {import("@/types").SidebarItem[]} The modified sidebar items
  */
 export default function numberSidebarItems(sidebarItems, numbering = [1]) {
-  // TODO generate chapter titles
   if (!numbering.length) {
     numbering.push(1)
   }
@@ -24,7 +23,7 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
     item.chapterTitle = `${item.number} ${
       item.chapterTitle?.trim() || item.title?.trim()
     }`
-    item.title = `${item.number} ${item.title.trim()}`
+    item.title = item.title.trim()
 
     if (isTopItems) {
       // Add chapter category
