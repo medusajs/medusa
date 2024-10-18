@@ -5,9 +5,9 @@
  * x-schemaName: AdminCreateFulfillment
  * required:
  *   - data
- *   - order_id
- *   - metadata
  *   - items
+ *   - metadata
+ *   - order_id
  *   - location_id
  *   - provider_id
  *   - delivery_address

@@ -4,6 +4,7 @@ x-schemaName: OrderTransaction
 required:
   - id
   - order_id
+  - order
   - amount
   - currency_code
   - reference
@@ -56,3 +57,5 @@ properties:
     format: date-time
     title: updated_at
     description: The date that the transaction was updated.
+  order:
+    type: object
