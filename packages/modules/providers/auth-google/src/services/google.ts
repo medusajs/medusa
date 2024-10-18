@@ -19,6 +19,9 @@ interface LocalServiceConfig extends GoogleAuthProviderOptions {}
 
 // TODO: Add state param that is stored in Redis, to prevent CSRF attacks
 export class GoogleAuthService extends AbstractAuthModuleProvider {
+  static identifier = "google"
+  static DISPLAY_NAME = "Google Authentication"
+
   protected config_: LocalServiceConfig
   protected logger_: Logger
 
@@ -40,7 +43,8 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     { logger }: InjectedDependencies,
     options: GoogleAuthProviderOptions
   ) {
-    super({}, { provider: "google", displayName: "Google Authentication" })
+    // @ts-ignore
+    super(...arguments)
     this.config_ = options
     this.logger_ = logger
   }
