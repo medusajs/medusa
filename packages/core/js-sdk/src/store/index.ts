@@ -1,7 +1,6 @@
 import {
   FindParams,
   HttpTypes,
-  PaginatedResponse,
   SelectParams,
 } from "@medusajs/types"
 import { Client } from "../client"
@@ -742,7 +741,7 @@ export class Store {
      * Related guide: [Learn how to complete cart in checkout flow](https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart).
      * 
      * @param cartId - The cart's ID.
-     * @param query - Configure the fields to retrieve in the cart.
+     * @param query - Configure the fields to retrieve in the created order.
      * @param headers - Headers to pass in the request.
      * @returns The order's details, if it was placed successfully. Otherwise, the cart is returned with an error.
      * 
@@ -774,13 +773,32 @@ export class Store {
   }
 
   public fulfillment = {
+    /**
+     * This method retrieves the list of shipping options for a cart. It sends a request to
+     * the [List Shipping Options](https://docs.medusajs.com/v2/api/store#shipping-options_getshippingoptions)
+     * API route.
+     * 
+     * Related guide: [Implement shipping step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping).
+     * 
+     * @param query - The cart's details along with configurations of the fields to retrieve in the options.
+     * @param headers - Headers to pass in the request.
+     * @returns The shipping options that can be used for the cart.
+     * 
+     * @example
+     * sdk.store.fulfillment.listCartOptions({
+     *   cart_id: "cart_123"
+     * })
+     * .then(({ shipping_options }) => {
+     *   console.log(shipping_options)
+     * })
+     */
     listCartOptions: async (
-      query?: FindParams & { cart_id: string },
+      query?: HttpTypes.StoreGetShippingOptionList,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        shipping_options: HttpTypes.StoreCartShippingOption[]
-      }>(`/store/shipping-options`, {
+      return this.client.fetch<
+        HttpTypes.StoreShippingOptionListResponse
+      >(`/store/shipping-options`, {
         headers,
         query,
       })
@@ -788,21 +806,108 @@ export class Store {
   }
 
   public payment = {
+    /**
+     * This method retrieves the payment providers available in a region, which is useful during checkout.
+     * It sends a request to the [List Payment Providers](https://docs.medusajs.com/v2/api/store#payment-providers_getpaymentproviders)
+     * API route.
+     * 
+     * Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+     * 
+     * @param query - The filters to apply on the retrieved providers, along with configurations of the 
+     * fields to retrieve in the options.
+     * @param headers - Headers to pass in the request.
+     * @returns The list of payment providers.
+     * 
+     * @example
+     * To retrieve the list of payment providers for a region:
+     * 
+     * ```ts
+     * sdk.store.payment.listPaymentProviders({
+     *   region_id: "reg_123"
+     * })
+     * .then(({ payment_providers, count, offset, limit }) => {
+     *   console.log(payment_providers)
+     * })
+     * ```
+     * 
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     * 
+     * For example, to retrieve only 10 items and skip 10 items:
+     * 
+     * ```ts
+     * sdk.store.payment.listPaymentProviders({
+     *   region_id: "reg_123",
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ payment_providers, count, offset, limit }) => {
+     *   console.log(payment_providers)
+     * })
+     * ```
+     * 
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each provider:
+     * 
+     * ```ts
+     * sdk.store.payment.listPaymentProviders({
+     *   region_id: "reg_123",
+     *   limit: 10,
+     *   offset: 10,
+     *   fields: "id"
+     * })
+     * .then(({ payment_providers, count, offset, limit }) => {
+     *   console.log(payment_providers)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     listPaymentProviders: async (
       query?: FindParams & HttpTypes.StorePaymentProviderFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        payment_providers: HttpTypes.StorePaymentProvider[]
-      }>(`/store/payment-providers`, {
+      return this.client.fetch<
+        HttpTypes.StorePaymentProviderListResponse
+      >(`/store/payment-providers`, {
         headers,
         query,
       })
     },
 
+    /**
+     * This method creates a payment session of a cart's payment collection, selecting a payment provider.
+     * It sends a request to the [Initialize Payment Session](https://docs.medusajs.com/v2/api/store#payment-collections_postpaymentcollectionsidpaymentsessions)
+     * API route.
+     * 
+     * If the cart doesn't have a payment collection, a payment collection is created for the cart by
+     * sending a request to the [Create Payment Collection](https://docs.medusajs.com/v2/api/store#payment-collections_postpaymentcollections)
+     * API route.
+     * 
+     * Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+     * 
+     * @param cart - The cart's details.
+     * @param body - The payment session's details.
+     * @param query - Configure the fields to retrieve in the payment collection.
+     * @param headers - Headers to pass in the request.
+     * @returns The payment collection's details.
+     * 
+     * @example
+     * sdk.store.payment.initiatePaymentSession(
+     *   cart, // assuming you already have the cart object.
+     *   {
+     *     provider_id: "pp_stripe_stripe",
+     *     data: {
+     *       // any data relevant for the provider.
+     *     }
+     *   }
+     * )
+     * .then(({ payment_collection }) => {
+     *   console.log(payment_collection)
+     * })
+     */
     initiatePaymentSession: async (
       cart: HttpTypes.StoreCart,
-      body: Record<string, any>,
+      body: HttpTypes.StoreInitializePaymentSession,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
@@ -812,9 +917,9 @@ export class Store {
           cart_id: cart.id,
         }
         paymentCollectionId = (
-          await this.client.fetch<{
-            payment_collection: HttpTypes.StorePaymentCollection
-          }>(`/store/payment-collections`, {
+          await this.client.fetch<
+            HttpTypes.StorePaymentCollectionResponse
+          >(`/store/payment-collections`, {
             method: "POST",
             headers,
             body: collectionBody,
@@ -822,9 +927,9 @@ export class Store {
         ).payment_collection.id
       }
 
-      return this.client.fetch<{
-        payment_collection: HttpTypes.StorePaymentCollection
-      }>(`/store/payment-collections/${paymentCollectionId}/payment-sessions`, {
+      return this.client.fetch<
+        HttpTypes.StorePaymentCollectionResponse
+      >(`/store/payment-collections/${paymentCollectionId}/payment-sessions`, {
         method: "POST",
         headers,
         body,
@@ -834,17 +939,96 @@ export class Store {
   }
 
   public order = {
+    /**
+     * This method retrieves a paginated list of orders matching the specified filters. It
+     * sends a request to the [List Orders](https://docs.medusajs.com/v2/api/store#orders_getorders)
+     * API route.
+     * 
+     * @param query - Configure the fields to retrieve in the orders.
+     * @param headers - Headers to pass in the request.
+     * @returns The paginated list of orders.
+     * 
+     * @example
+     * To retrieve the list of orders:
+     * 
+     * ```ts
+     * sdk.store.order.list()
+     * .then(({ orders, count, offset, limit }) => {
+     *   console.log(orders)
+     * })
+     * ```
+     * 
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     * 
+     * For example, to retrieve only 10 items and skip 10 items:
+     * 
+     * ```ts
+     * sdk.store.order.list({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ orders, count, offset, limit }) => {
+     *   console.log(orders)
+     * })
+     * ```
+     * 
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each order:
+     * 
+     * ```ts
+     * sdk.store.order.list({
+     *   fields: "id,*items"
+     * })
+     * .then(({ orders, count, offset, limit }) => {
+     *   console.log(orders)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     list: async (
-      query?: FindParams & HttpTypes.StoreOrderFilters,
+      query?: HttpTypes.StoreOrderFilters,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ orders: HttpTypes.StoreOrder[] }>
+        HttpTypes.StoreOrderListResponse
       >(`/store/orders`, {
         query,
         headers,
       })
     },
+    /**
+     * This method retrieves an order by its ID. It sends a request to the 
+     * [Get Order](https://docs.medusajs.com/v2/api/store#orders_getordersid) API route.
+     * 
+     * @param id - The order's ID.
+     * @param query - Configure the fields to retrieve in the order.
+     * @param headers - Headers to pass in the request.
+     * @returns The order's details.
+     * 
+     * @example
+     * To retrieve an order by its ID:
+     * 
+     * ```ts
+     * sdk.store.order.retrieve("order_123")
+     * .then(({ order }) => {
+     *   console.log(order)
+     * })
+     * ```
+     * 
+     * To specify the fields and relations to retrieve:
+     * 
+     * ```ts
+     * sdk.store.order.retrieve("order_123", {
+     *   fields: "id,*items"
+     * })
+     * .then(({ order }) => {
+     *   console.log(order)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     retrieve: async (
       id: string,
       query?: SelectParams,
@@ -861,26 +1045,83 @@ export class Store {
   }
 
   public customer = {
+    /**
+     * This method registers a customer. It sends a request to the [Register Customer](https://docs.medusajs.com/v2/api/store#customers_postcustomers)
+     * API route.
+     * 
+     * You must use the {@link Auth.register} method first to retrieve a registration token. Then, pass that
+     * registration token in the `headers` parameter of this method as an authorization bearer header. 
+     * 
+     * Related guide: [How to register customer in storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/register)
+     * 
+     * @param body - The customer's details.
+     * @param query - Configure the fields to retrieve in the customer.
+     * @param headers - Headers to pass in the request. This is where you include the authorization JWT registration token.
+     * @returns The customer's details.
+     * 
+     * @example
+     * const token = await sdk.auth.register("customer", "emailpass", {
+     *   "email": "customer@gmail.com",
+     *   "password": "supersecret"
+     * })
+     * 
+     * sdk.store.customer.create(
+     *   {
+     *     "email": "customer@gmail.com"
+     *   },
+     *   {},
+     *   {
+     *     authorization: `Bearer ${token}`
+     *   }
+     * )
+     * .then(({ customer }) => {
+     *   console.log(customer)
+     * })
+     */
     create: async (
       body: HttpTypes.StoreCreateCustomer,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        customer: HttpTypes.StoreCustomer
-      }>(`/store/customers`, {
+      return this.client.fetch<
+        HttpTypes.StoreCustomerResponse
+      >(`/store/customers`, {
         method: "POST",
         headers,
         body,
         query,
       })
     },
+    /**
+     * This method updates the logged-in customer's details. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the
+     * [Update Customer](https://docs.medusajs.com/v2/api/store#customers_postcustomersme) API route.
+     * 
+     * Related guide: [How to edit customer's profile in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/profile).
+     * 
+     * @param body - The customer's details to update.
+     * @param query - Configure the fields to retrieve in the customer.
+     * @param headers - Headers to pass in the request.
+     * @returns The customer's details.
+     * 
+     * @example
+     * sdk.store.customer.update({
+     *   first_name: "John"
+     * })
+     * .then(({ customer }) => {
+     *   console.log(customer)
+     * })
+     */
     update: async (
       body: HttpTypes.StoreUpdateCustomer,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+      return this.client.fetch<
+        HttpTypes.StoreCustomerResponse
+      >(
         `/store/customers/me`,
         {
           method: "POST",
@@ -890,8 +1131,25 @@ export class Store {
         }
       )
     },
+    /**
+     * This method retrieves the logged-in customer's details. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [Get Logged-In Customer](https://docs.medusajs.com/v2/api/store#customers_getcustomersme)
+     * API route.
+     * 
+     * @param query - Configure the fields to retrieve in the customer.
+     * @param headers - Headers to pass in the request.
+     * @returns The customer's details.
+     * 
+     * @example
+     * sdk.store.customer.retrieve()
+     * .then(({ customer }) => {
+     *   console.log(customer)
+     * })
+     */
     retrieve: async (query?: SelectParams, headers?: ClientHeaders) => {
-      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+      return this.client.fetch<HttpTypes.StoreCustomerResponse>(
         `/store/customers/me`,
         {
           query,
@@ -899,27 +1157,77 @@ export class Store {
         }
       )
     },
+    /**
+     * This method creates an address for the logged-in customer. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [Create Address](https://docs.medusajs.com/v2/api/store#customers_postcustomersmeaddresses)
+     * API route.
+     * 
+     * Related guides: [How to manage customer's addresses in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses)
+     * 
+     * @param body - The address's details.
+     * @param query - Configure the fields to retrieve in the customer.
+     * @param headers - Headers to pass in the request.
+     * @returns The customer's details.
+     * 
+     * @example
+     * sdk.store.customer.createAddress({
+     *   country_code: "us"
+     * })
+     * .then(({ customer }) => {
+     *   console.log(customer)
+     * })
+     */
     createAddress: async (
       body: HttpTypes.StoreCreateCustomerAddress,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        customer: HttpTypes.StoreCustomer
-      }>(`/store/customers/me/addresses`, {
+      return this.client.fetch<
+        HttpTypes.StoreCustomerResponse
+      >(`/store/customers/me/addresses`, {
         method: "POST",
         headers,
         body,
         query,
       })
     },
+    /**
+     * This method updates the address of the logged-in customer. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [Update Address](https://docs.medusajs.com/v2/api/store#customers_postcustomersmeaddressesaddress_id)
+     * API route.
+     * 
+     * Related guides: [How to manage customer's addresses in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses)
+     * 
+     * @param addressId - The ID of the address to update.
+     * @param body - The details to update in the address.
+     * @param query - Configure the fields to retrieve in the customer.
+     * @param headers - Headers to pass in the request.
+     * @returns The customer's details.
+     * 
+     * @example
+     * sdk.store.customer.updateAddress(
+     *   "caddr_123",
+     *   {
+     *     country_code: "us"
+     *   }
+     * )
+     * .then(({ customer }) => {
+     *   console.log(customer)
+     * })
+     */
     updateAddress: async (
       addressId: string,
       body: HttpTypes.StoreUpdateCustomerAddress,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+      return this.client.fetch<
+        HttpTypes.StoreCustomerResponse
+      >(
         `/store/customers/me/addresses/${addressId}`,
         {
           method: "POST",
@@ -929,23 +1237,118 @@ export class Store {
         }
       )
     },
+    /**
+     * This method retrieves the logged-in customer's address. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [List Customer's Address](https://docs.medusajs.com/v2/api/store#customers_getcustomersmeaddresses)
+     * API route.
+     * 
+     * Related guides: [How to manage customer's addresses in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses)
+     * 
+     * @param query - Configure the fields to retrieve in the addresses.
+     * @param headers - Headers to pass in the request.
+     * @returns The paginated list of addresses.
+     * 
+     * @example
+     * To retrieve the list of addresses:
+     * 
+     * ```ts
+     * sdk.store.customer.listAddress()
+     * .then(({ addresses, count, offset, limit }) => {
+     *   console.log(addresses)
+     * })
+     * ```
+     * 
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     * 
+     * For example, to retrieve only 10 items and skip 10 items:
+     * 
+     * ```ts
+     * sdk.store.customer.listAddress({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ addresses, count, offset, limit }) => {
+     *   console.log(addresses)
+     * })
+     * ```
+     * 
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each address:
+     * 
+     * ```ts
+     * sdk.store.customer.listAddress({
+     *   fields: "id,country_code"
+     * })
+     * .then(({ addresses, count, offset, limit }) => {
+     *   console.log(addresses)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     listAddress: async (
       query?: FindParams & HttpTypes.StoreCustomerAddressFilters,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ addresses: HttpTypes.StoreCustomerAddress[] }>
+        HttpTypes.StoreCustomerAddressListResponse
       >(`/store/customers/me/addresses`, {
         query,
         headers,
       })
     },
+    /**
+     * This method retrieves an address of the logged-in customer. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [Get Address](https://docs.medusajs.com/v2/api/store#customers_getcustomersmeaddressesaddress_id)
+     * API route.
+     * 
+     * Related guides: [How to manage customer's addresses in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses)
+     * 
+     * @param addressId - The address's ID.
+     * @param query - Configure the fields to retrieve in the address.
+     * @param headers - Headers to pass in the request.
+     * @returns The address's details.
+     * 
+     * @example
+     * To retrieve an address by its ID:
+     * 
+     * ```ts
+     * sdk.store.customer.retrieveAddress(
+     *   "caddr_123"
+     * )
+     * .then(({ address }) => {
+     *   console.log(address)
+     * })
+     * ```
+     * 
+     * To specify the fields and relations to retrieve:
+     * 
+     * ```ts
+     * sdk.store.customer.retrieveAddress(
+     *   "caddr_123",
+     *   {
+     *     fields: "id,country_code"
+     *   }
+     * )
+     * .then(({ address }) => {
+     *   console.log(address)
+     * })
+     * ```
+     * 
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+     */
     retrieveAddress: async (
       addressId: string,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ address: HttpTypes.StoreCustomerAddress }>(
+      return this.client.fetch<
+        HttpTypes.StoreCustomerAddressResponse
+      >(
         `/store/customers/me/addresses/${addressId}`,
         {
           query,
@@ -953,6 +1356,25 @@ export class Store {
         }
       )
     },
+    /**
+     * This method deletes an address of the logged-in customer. The customer must be logged in
+     * first with the {@link Auth.login} method.
+     * 
+     * It sends a request to the [Remove Address](https://docs.medusajs.com/v2/api/store#customers_deletecustomersmeaddressesaddress_id)
+     * API route.
+     * 
+     * Related guides: [How to manage customer's addresses in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses)
+     * 
+     * @param addressId - The address's ID.
+     * @param headers - Headers to pass in the request.
+     * @returns The deletion's details.
+     * 
+     * @example
+     * sdk.store.customer.deleteAddress("caddr_123")
+     * .then(({ deleted, parent: customer }) => {
+     *   console.log(customer)
+     * })
+     */
     deleteAddress: async (addressId: string, headers?: ClientHeaders) => {
       return this.client.fetch<HttpTypes.StoreCustomerAddressDeleteResponse>(
         `/store/customers/me/addresses/${addressId}`,
