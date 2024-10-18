@@ -9,7 +9,6 @@ export const StockLocationModule = {
     dependencies: ["eventBusModuleService"],
     defaultModuleDeclaration: {
       scope: "internal",
-      resources: "shared",
     },
   },
   __joinerConfig: {
