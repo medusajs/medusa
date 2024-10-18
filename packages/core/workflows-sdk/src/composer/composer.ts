@@ -52,10 +52,6 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
     this.#applyDynamicHooks()
   }
 
-  getName(): string {
-    return this.#composer.context.workflowId
-  }
-
   /**
    * Apply the dynamic hooks implemented by the consumer
    * based on the available hooks in offered by the workflow composer.
@@ -69,6 +65,10 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
       this.hooks[hook as keyof THooks & string] =
         context.hooksCallback_[hook].bind(context)
     }
+  }
+
+  getName(): string {
+    return this.#composer.context.workflowId
   }
 
   runAsStep({
