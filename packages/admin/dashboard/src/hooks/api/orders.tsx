@@ -1,5 +1,5 @@
 import { FetchError } from "@medusajs/js-sdk"
-import { HttpTypes } from "@medusajs/types"
+import { AdminOrderItemsFilters, HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -12,13 +12,10 @@ import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory, TQueryKey } from "../../lib/query-key-factory"
 
 const ORDERS_QUERY_KEY = "orders" as const
-const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<
-  "orders",
-  any,
-  string
-> & {
+const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<"orders"> & {
   preview: (orderId: string) => any
   changes: (orderId: string) => any
+  lineItems: (orderId: string) => any
 }
 
 _orderKeys.preview = function (id: string) {
@@ -27,6 +24,10 @@ _orderKeys.preview = function (id: string) {
 
 _orderKeys.changes = function (id: string) {
   return [this.detail(id), "changes"]
+}
+
+_orderKeys.lineItems = function (id: string) {
+  return [this.detail(id), "lineItems"]
 }
 
 export const ordersQueryKeys = _orderKeys
@@ -97,7 +98,7 @@ export const useOrderChanges = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminOrderChangesResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminOrderChangesResponse,
       QueryKey
     >,
@@ -107,6 +108,28 @@ export const useOrderChanges = (
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.listChanges(id, query),
     queryKey: ordersQueryKeys.changes(id),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useOrderLineItems = (
+  id: string,
+  query?: HttpTypes.AdminOrderItemsFilters,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminOrderLineItemsListResponse,
+      FetchError,
+      HttpTypes.AdminOrderLineItemsListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.order.listLineItems(id, query),
+    queryKey: ordersQueryKeys.lineItems(id),
     ...options,
   })
 

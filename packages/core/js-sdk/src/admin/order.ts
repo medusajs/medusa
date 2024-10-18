@@ -148,4 +148,17 @@ export class Order {
       headers,
     })
   }
+
+  async listLineItems(
+    id: string,
+    queryParams?: FindParams & HttpTypes.AdminOrderItemsFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<
+      PaginatedResponse<HttpTypes.AdminOrderLineItemsListResponse>
+    >(`/admin/orders/${id}/line-items`, {
+      query: queryParams,
+      headers,
+    })
+  }
 }
