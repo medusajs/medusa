@@ -15,7 +15,7 @@
     "directory": "packages/core/js-sdk"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   },
   "publishConfig": {
     "access": "public"
