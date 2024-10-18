@@ -103,12 +103,10 @@ function ActivityItems(props: ActivityItemsProps) {
                         {item.quantity}x
                       </Text>
 
-                      <Thumbnail
-                        src={originalItem?.variant?.product?.thumbnail}
-                      />
+                      <Thumbnail src={originalItem?.thumbnail} />
 
                       <Text className="txt-compact-small text-ui-fg-subtle truncate">
-                        {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
+                        {`${originalItem?.variant_title} · ${originalItem?.product_title}`}
                       </Text>
                     </div>
                   )
