@@ -2,7 +2,6 @@ type: object
 description: The order's details.
 x-schemaName: BaseOrder
 required:
-  - payment_collections
   - id
   - version
   - region_id
@@ -15,7 +14,6 @@ required:
   - payment_status
   - fulfillment_status
   - summary
-  - metadata
   - created_at
   - updated_at
   - original_item_total
@@ -45,20 +43,16 @@ properties:
     type: array
     description: The order's payment collections.
     items:
-      $ref: ./AdminPaymentCollection.yaml
+      $ref: ./BasePaymentCollection.yaml
   fulfillments:
     type: array
     description: The order's fulfillments.
     items:
       $ref: ./BaseOrderFulfillment.yaml
-  sales_channel:
-    $ref: ./AdminSalesChannel.yaml
-  customer:
-    $ref: ./AdminCustomer.yaml
   shipping_address:
-    $ref: ./AdminOrderAddress.yaml
+    $ref: ./BaseOrderAddress.yaml
   billing_address:
-    $ref: ./AdminOrderAddress.yaml
+    $ref: ./BaseOrderAddress.yaml
   id:
     type: string
     title: id

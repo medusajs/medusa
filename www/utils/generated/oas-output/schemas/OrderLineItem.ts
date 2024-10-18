@@ -10,9 +10,7 @@
  *   - is_discountable
  *   - is_tax_inclusive
  *   - unit_price
- *   - raw_unit_price
  *   - quantity
- *   - raw_quantity
  *   - detail
  *   - created_at
  *   - updated_at
@@ -29,19 +27,6 @@
  *   - discount_tax_total
  *   - refundable_total
  *   - refundable_total_per_unit
- *   - raw_original_total
- *   - raw_original_subtotal
- *   - raw_original_tax_total
- *   - raw_item_total
- *   - raw_item_subtotal
- *   - raw_item_tax_total
- *   - raw_total
- *   - raw_subtotal
- *   - raw_tax_total
- *   - raw_discount_total
- *   - raw_discount_tax_total
- *   - raw_refundable_total
- *   - raw_refundable_total_per_unit
  * properties:
  *   id:
  *     type: string
@@ -124,56 +109,14 @@
  *     type: number
  *     title: compare_at_unit_price
  *     description: The original price of the item before a promotion or sale.
- *   raw_compare_at_unit_price:
- *     type: object
- *     description: The item's raw compare at unit price.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw compare at unit price's value.
- *           - type: number
- *             title: value
- *             description: The raw compare at unit price's value.
  *   unit_price:
  *     type: number
  *     title: unit_price
  *     description: The item's price for a single quantity.
- *   raw_unit_price:
- *     type: object
- *     description: The item's raw unit price.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw unit price's value.
- *           - type: number
- *             title: value
- *             description: The raw unit price's value.
  *   quantity:
  *     type: number
  *     title: quantity
  *     description: The item's quantity.
- *   raw_quantity:
- *     type: object
- *     description: The item's raw quantity.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw quantity's value.
- *           - type: number
- *             title: value
- *             description: The raw quantity's value.
  *   tax_lines:
  *     type: array
  *     description: The item's tax lines.
@@ -251,188 +194,6 @@
  *     type: number
  *     title: refundable_total_per_unit
  *     description: The total amount that can be refunded of a single quantity of the item.
- *   raw_original_total:
- *     type: object
- *     description: The item's raw original total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw original total's value.
- *           - type: number
- *             title: value
- *             description: The raw original total's value.
- *   raw_original_subtotal:
- *     type: object
- *     description: The item's raw original subtotal.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw original subtotal's value.
- *           - type: number
- *             title: value
- *             description: The raw original subtotal's value.
- *   raw_original_tax_total:
- *     type: object
- *     description: The item's raw original tax total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw original tax total's value.
- *           - type: number
- *             title: value
- *             description: The raw original tax total's value.
- *   raw_item_total:
- *     type: object
- *     description: The item's raw item total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw item total's value.
- *           - type: number
- *             title: value
- *             description: The raw item total's value.
- *   raw_item_subtotal:
- *     type: object
- *     description: The item's raw item subtotal.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw item subtotal's value.
- *           - type: number
- *             title: value
- *             description: The raw item subtotal's value.
- *   raw_item_tax_total:
- *     type: object
- *     description: The item's raw item tax total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw item tax total's value.
- *           - type: number
- *             title: value
- *             description: The raw item tax total's value.
- *   raw_total:
- *     type: object
- *     description: The item's raw total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw total's value.
- *           - type: number
- *             title: value
- *             description: The raw total's value.
- *   raw_subtotal:
- *     type: object
- *     description: The item's raw subtotal.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw subtotal's value.
- *           - type: number
- *             title: value
- *             description: The raw subtotal's value.
- *   raw_tax_total:
- *     type: object
- *     description: The item's raw tax total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw tax total's value.
- *           - type: number
- *             title: value
- *             description: The raw tax total's value.
- *   raw_discount_total:
- *     type: object
- *     description: The item's raw discount total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw discount total's value.
- *           - type: number
- *             title: value
- *             description: The raw discount total's value.
- *   raw_discount_tax_total:
- *     type: object
- *     description: The item's raw discount tax total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw discount tax total's value.
- *           - type: number
- *             title: value
- *             description: The raw discount tax total's value.
- *   raw_refundable_total:
- *     type: object
- *     description: The item's raw refundable total.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw refundable total's value.
- *           - type: number
- *             title: value
- *             description: The raw refundable total's value.
- *   raw_refundable_total_per_unit:
- *     type: object
- *     description: The item's raw refundable total per unit.
- *     required:
- *       - value
- *     properties:
- *       value:
- *         oneOf:
- *           - type: string
- *             title: value
- *             description: The raw refundable total per unit's value.
- *           - type: number
- *             title: value
- *             description: The raw refundable total per unit's value.
  * 
 */
 

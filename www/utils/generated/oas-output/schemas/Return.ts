@@ -8,54 +8,8 @@
  *   - status
  *   - order_id
  *   - items
- *   - currency_code
- *   - created_at
- *   - updated_at
- *   - original_item_total
- *   - original_item_subtotal
- *   - original_item_tax_total
- *   - item_total
- *   - item_subtotal
- *   - item_tax_total
- *   - original_total
- *   - original_subtotal
- *   - original_tax_total
- *   - total
- *   - subtotal
- *   - tax_total
- *   - discount_total
- *   - discount_tax_total
- *   - gift_card_total
- *   - gift_card_tax_total
- *   - shipping_total
- *   - shipping_subtotal
- *   - shipping_tax_total
- *   - original_shipping_total
- *   - original_shipping_subtotal
- *   - original_shipping_tax_total
- *   - discount_subtotal
- *   - raw_original_item_total
- *   - raw_original_item_subtotal
- *   - raw_original_item_tax_total
- *   - raw_item_total
- *   - raw_item_subtotal
- *   - raw_item_tax_total
- *   - raw_original_total
- *   - raw_original_subtotal
- *   - raw_original_tax_total
- *   - raw_total
- *   - raw_subtotal
- *   - raw_tax_total
- *   - raw_discount_total
- *   - raw_discount_tax_total
- *   - raw_gift_card_total
- *   - raw_gift_card_tax_total
- *   - raw_shipping_total
- *   - raw_shipping_subtotal
- *   - raw_shipping_tax_total
- *   - raw_original_shipping_total
- *   - raw_original_shipping_subtotal
- *   - raw_original_shipping_tax_total
+ *   - display_id
+ *   - metadata
  * properties:
  *   id:
  *     type: string
@@ -70,8 +24,19 @@
  *       - received
  *       - partially_received
  *   refund_amount:
- *     type: number
- *     title: refund_amount
+ *     oneOf:
+ *       - type: string
+ *         title: refund_amount
+ *         description: The return order's refund amount.
+ *       - type: number
+ *         title: refund_amount
+ *         description: The return order's refund amount.
+ *       - type: string
+ *         title: refund_amount
+ *         description: The return order's refund amount.
+ *       - type: number
+ *         title: refund_amount
+ *         description: The return order's refund amount.
  *     description: The amount refunded by this return.
  *   order_id:
  *     type: string
@@ -82,32 +47,6 @@
  *     description: The return's items.
  *     items:
  *       $ref: "#/components/schemas/OrderReturnItem"
- *   region_id:
- *     type: string
- *     title: region_id
- *     description: The ID of the region this return belongs to.
- *   customer_id:
- *     type: string
- *     title: customer_id
- *     description: The ID of the customer that placed the order.
- *   sales_channel_id:
- *     type: string
- *     title: sales_channel_id
- *     description: The ID of the associated order's sales channel.
- *   email:
- *     type: string
- *     title: email
- *     description: The email of the customer that placed the order.
- *     format: email
- *   currency_code:
- *     type: string
- *     title: currency_code
- *     description: The return's currency code.
- *     example: usd
- *   shipping_address:
- *     $ref: "#/components/schemas/OrderAddress"
- *   billing_address:
- *     $ref: "#/components/schemas/OrderAddress"
  *   shipping_methods:
  *     type: array
  *     description: The return's shipping methods.
@@ -118,9 +57,6 @@
  *     description: The return's transactions.
  *     items:
  *       $ref: "#/components/schemas/OrderTransaction"
- *   summary:
- *     type: object
- *     description: The return's summary.
  *   metadata:
  *     type: object
  *     description: The return's metadata, can hold custom key-value pairs.
@@ -134,171 +70,70 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the return was updated.
- *   original_item_total:
- *     type: number
- *     title: original_item_total
- *     description: The return's original item total.
- *   original_item_subtotal:
- *     type: number
- *     title: original_item_subtotal
- *     description: The return's original item subtotal.
- *   original_item_tax_total:
- *     type: number
- *     title: original_item_tax_total
- *     description: The return's original item tax total.
- *   item_total:
- *     type: number
- *     title: item_total
- *     description: The return's item total.
- *   item_subtotal:
- *     type: number
- *     title: item_subtotal
- *     description: The return's item subtotal.
- *   item_tax_total:
- *     type: number
- *     title: item_tax_total
- *     description: The return's item tax total.
- *   original_total:
- *     type: number
- *     title: original_total
- *     description: The return's original total.
- *   original_subtotal:
- *     type: number
- *     title: original_subtotal
- *     description: The return's original subtotal.
- *   original_tax_total:
- *     type: number
- *     title: original_tax_total
- *     description: The return's original tax total.
- *   total:
- *     type: number
- *     title: total
- *     description: The return's total.
- *   subtotal:
- *     type: number
- *     title: subtotal
- *     description: The return's subtotal.
- *   tax_total:
- *     type: number
- *     title: tax_total
- *     description: The return's tax total.
- *   discount_total:
- *     type: number
- *     title: discount_total
- *     description: The return's discount total.
- *   discount_tax_total:
- *     type: number
- *     title: discount_tax_total
- *     description: The return's discount tax total.
- *   gift_card_total:
- *     type: number
- *     title: gift_card_total
- *     description: The return's gift card total.
- *   gift_card_tax_total:
- *     type: number
- *     title: gift_card_tax_total
- *     description: The return's gift card tax total.
- *   shipping_total:
- *     type: number
- *     title: shipping_total
- *     description: The return's shipping total.
- *   shipping_subtotal:
- *     type: number
- *     title: shipping_subtotal
- *     description: The return's shipping subtotal.
- *   shipping_tax_total:
- *     type: number
- *     title: shipping_tax_total
- *     description: The return's shipping tax total.
- *   original_shipping_total:
- *     type: number
- *     title: original_shipping_total
- *     description: The return's original shipping total.
- *   original_shipping_subtotal:
- *     type: number
- *     title: original_shipping_subtotal
- *     description: The return's original shipping subtotal.
- *   original_shipping_tax_total:
- *     type: number
- *     title: original_shipping_tax_total
- *     description: The return's original shipping tax total.
- *   order_change:
- *     $ref: "#/components/schemas/OrderChange"
  *   canceled_at:
  *     type: string
  *     title: canceled_at
  *     description: The date the return was canceled.
  *     format: date-time
- *   discount_subtotal:
+ *   raw_refund_amount:
+ *     oneOf:
+ *       - type: string
+ *         title: raw_refund_amount
+ *         description: The return order's raw refund amount.
+ *       - type: number
+ *         title: raw_refund_amount
+ *         description: The return order's raw refund amount.
+ *       - type: string
+ *         title: raw_refund_amount
+ *         description: The return order's raw refund amount.
+ *       - type: number
+ *         title: raw_refund_amount
+ *         description: The return order's raw refund amount.
+ *   order:
+ *     $ref: "#/components/schemas/Order"
+ *   exchange_id:
+ *     type: string
+ *     title: exchange_id
+ *     description: The return order's exchange id.
+ *   exchange:
+ *     $ref: "#/components/schemas/OrderExchange"
+ *   claim_id:
+ *     type: string
+ *     title: claim_id
+ *     description: The return order's claim id.
+ *   claim:
+ *     $ref: "#/components/schemas/OrderClaim"
+ *   display_id:
  *     type: number
- *     title: discount_subtotal
- *     description: The return's discount subtotal.
- *   raw_original_item_total:
- *     type: object
- *     description: The return's raw original item total.
- *   raw_original_item_subtotal:
- *     type: object
- *     description: The return's raw original item subtotal.
- *   raw_original_item_tax_total:
- *     type: object
- *     description: The return's raw original item tax total.
- *   raw_item_total:
- *     type: object
- *     description: The return's raw item total.
- *   raw_item_subtotal:
- *     type: object
- *     description: The return's raw item subtotal.
- *   raw_item_tax_total:
- *     type: object
- *     description: The return's raw item tax total.
- *   raw_original_total:
- *     type: object
- *     description: The return's raw original total.
- *   raw_original_subtotal:
- *     type: object
- *     description: The return's raw original subtotal.
- *   raw_original_tax_total:
- *     type: object
- *     description: The return's raw original tax total.
- *   raw_total:
- *     type: object
- *     description: The return's raw total.
- *   raw_subtotal:
- *     type: object
- *     description: The return's raw subtotal.
- *   raw_tax_total:
- *     type: object
- *     description: The return's raw tax total.
- *   raw_discount_total:
- *     type: object
- *     description: The return's raw discount total.
- *   raw_discount_tax_total:
- *     type: object
- *     description: The return's raw discount tax total.
- *   raw_gift_card_total:
- *     type: object
- *     description: The return's raw gift card total.
- *   raw_gift_card_tax_total:
- *     type: object
- *     description: The return's raw gift card tax total.
- *   raw_shipping_total:
- *     type: object
- *     description: The return's raw shipping total.
- *   raw_shipping_subtotal:
- *     type: object
- *     description: The return's raw shipping subtotal.
- *   raw_shipping_tax_total:
- *     type: object
- *     description: The return's raw shipping tax total.
- *   raw_original_shipping_total:
- *     type: object
- *     description: The return's raw original shipping total.
- *   raw_original_shipping_subtotal:
- *     type: object
- *     description: The return's raw original shipping subtotal.
- *   raw_original_shipping_tax_total:
- *     type: object
- *     description: The return's raw original shipping tax total.
+ *     title: display_id
+ *     description: The return order's display id.
+ *   location_id:
+ *     type: string
+ *     title: location_id
+ *     description: The return order's location id.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: The return order's no notification.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The return order's created by.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The return order's deleted at.
+ *   requested_at:
+ *     type: string
+ *     title: requested_at
+ *     description: The return order's requested at.
+ *     format: date-time
+ *   received_at:
+ *     type: string
+ *     title: received_at
+ *     description: The return order's received at.
+ *     format: date-time
  * 
 */
 
