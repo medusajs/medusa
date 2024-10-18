@@ -32,6 +32,7 @@ export type FeedbackProps = {
   extraData?: ExtraData
   vertical?: boolean
   showLongForm?: boolean
+  showDottedSeparator?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const Feedback = ({
@@ -50,6 +51,7 @@ export const Feedback = ({
   extraData = {},
   vertical = false,
   showLongForm = false,
+  showDottedSeparator = true,
 }: FeedbackProps) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
@@ -121,7 +123,9 @@ export const Feedback = ({
 
   return (
     <div className={clsx(className)}>
-      <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
+      {showDottedSeparator && (
+        <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
+      )}
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={
@@ -151,7 +155,9 @@ export const Feedback = ({
                 )}
                 ref={inlineFeedbackRef}
               >
-                <Label>{question}</Label>
+                <Label className={"text-compact-small text-medusa-fg-subtle"}>
+                  {question}
+                </Label>
                 <div
                   className={clsx(
                     "flex gap-docs_0.5",
@@ -299,7 +305,9 @@ export const Feedback = ({
           </>
         </CSSTransition>
       </SwitchTransition>
-      <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
+      {showDottedSeparator && (
+        <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
+      )}
     </div>
   )
 }
