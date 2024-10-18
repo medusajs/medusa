@@ -70,21 +70,6 @@ export class Claim {
     )
   }
 
-  async delete(
-    id: string,
-    query?: HttpTypes.SelectParams,
-    headers?: ClientHeaders
-  ) {
-    return await this.client.fetch<HttpTypes.AdminClaimDeleteResponse>(
-      `/admin/claims/${id}`,
-      {
-        method: "DELETE",
-        headers,
-        query,
-      }
-    )
-  }
-
   async addItems(
     id: string,
     body: HttpTypes.AdminAddClaimItems,
