@@ -1,11 +1,11 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
-    "../../../../packages/modules/inventory-next/tsconfig.json"
+    "../../../../packages/modules/inventory/tsconfig.json"
   ],
-  "include": ["../../../../packages/modules/inventory-next/src"],
+  "include": ["../../../../packages/modules/inventory/src"],
   "exclude": [
-    "../../../../packages/modules/inventory-next/dist", 
-    "../../../../packages/modules/inventory-next/node_modules"
+    "../../../../packages/modules/inventory/dist", 
+    "../../../../packages/modules/inventory/node_modules"
   ]
 }

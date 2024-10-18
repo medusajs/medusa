@@ -22,6 +22,16 @@ export const customModulesOptions: Record<string, Partial<TypeDocOptions>> = {
       "packages/core/types/src/stock-location/service.ts"
     ),
   },
+  "inventory-next-models": {
+    entryPoints: getEntryPoints(
+      "packages/modules/inventory/src/models/index.ts"
+    ),
+  },
+  "stock-location-next-models": {
+    entryPoints: getEntryPoints(
+      "packages/modules/stock-location/src/models/index.ts"
+    ),
+  },
 }
 
 // a list of modules that now support DML

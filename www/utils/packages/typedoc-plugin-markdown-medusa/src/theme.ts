@@ -22,6 +22,7 @@ import {
 import { formatContents } from "./utils"
 
 import type {
+  AllowedProjectDocumentsOption,
   FormattingOptionType,
   FormattingOptionsType,
   ParameterStyle,
@@ -29,9 +30,8 @@ import type {
 import { Mapping } from "./types"
 
 export class MarkdownTheme extends Theme {
-  allReflectionsHaveOwnDocument!: string[]
   allPropertyReflectionsHaveOwnDocument!: string[]
-  allReflectionsHaveOwnDocumentInNamespace: string[]
+  allowedProjectDocuments: AllowedProjectDocumentsOption
   entryDocument: string
   entryPoints!: string[]
   filenameSeparator!: string
@@ -64,14 +64,12 @@ export class MarkdownTheme extends Theme {
   constructor(renderer: Renderer) {
     super(renderer)
 
-    // prettier-ignore
-    this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as string[]
     this.allPropertyReflectionsHaveOwnDocument = this.getOption(
       "allPropertyReflectionsHaveOwnDocument"
     ) as string[]
-    this.allReflectionsHaveOwnDocumentInNamespace = this.getOption(
-      "allReflectionsHaveOwnDocumentInNamespace"
-    ) as string[]
+    this.allowedProjectDocuments = this.getOption(
+      "allowedProjectDocuments"
+    ) as AllowedProjectDocumentsOption
     this.entryDocument = this.getOption("entryDocument") as string
     this.entryPoints = this.getOption("entryPoints") as string[]
     this.filenameSeparator = this.getOption("filenameSeparator") as string
@@ -338,33 +336,52 @@ export class MarkdownTheme extends Theme {
     return parents
   }
 
-  getAllReflectionsHaveOwnDocument(
-    reflection: DeclarationReflection,
-    checkProperties?: boolean
-  ): boolean {
+  getAllowedReflectionDocuments(reflection: DeclarationReflection) {
+    const documents = {
+      [ReflectionKind.Module]: true,
+      [ReflectionKind.Namespace]: true,
+      [ReflectionKind.Enum]: true,
+      [ReflectionKind.Class]: true,
+      [ReflectionKind.Interface]: true,
+      [ReflectionKind.TypeAlias]: true,
+      [ReflectionKind.Variable]: false,
+      [ReflectionKind.Function]: false,
+      [ReflectionKind.Method]: false,
+      [ReflectionKind.Property]: false,
+    }
+
+    let options: Record<ReflectionKind, boolean> | undefined
+
     const moduleParents = this.getParentsOfKind(
       reflection,
       ReflectionKind.Module
-    )
+    ).reverse() // projects come last, this changes the direction to give projects higher priority
     const namespaceParents = this.getParentsOfKind(
       reflection,
       ReflectionKind.Namespace
     )
 
-    if (checkProperties) {
-      return moduleParents.some((parent) =>
-        this.allPropertyReflectionsHaveOwnDocument.includes(parent.name)
-      )
-    }
+    moduleParents.some((parent) => {
+      if (!Object.hasOwn(this.allowedProjectDocuments, parent.name)) {
+        return false
+      }
 
-    return (
-      moduleParents.some((parent) =>
-        this.allReflectionsHaveOwnDocument.includes(parent.name)
-      ) ||
-      namespaceParents.some((parent) =>
-        this.allReflectionsHaveOwnDocumentInNamespace.includes(parent.name)
-      )
-    )
+      options = this.allowedProjectDocuments[parent.name]
+      return true
+    }) ||
+      namespaceParents.some((parent) => {
+        if (!Object.hasOwn(this.allowedProjectDocuments, parent.name)) {
+          return false
+        }
+
+        options = this.allowedProjectDocuments[parent.name]
+        return true
+      })
+
+    return {
+      ...documents,
+      ...(options || {}),
+    }
   }
 
   getFileNameSeparator(pathPrefix: string): string {
@@ -376,8 +393,11 @@ export class MarkdownTheme extends Theme {
     reflection: DeclarationReflection,
     directoryPrefix?: string
   ): Mapping[] {
-    return [
-      {
+    const allowedDocuments = this.getAllowedReflectionDocuments(reflection)
+    const mappings: Mapping[] = []
+
+    if (allowedDocuments[ReflectionKind.Module]) {
+      mappings.push({
         kind: [ReflectionKind.Module],
         modifiers: {
           has: [],
@@ -386,8 +406,10 @@ export class MarkdownTheme extends Theme {
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "modules"),
         template: this.getReflectionTemplate(),
-      },
-      {
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Namespace]) {
+      mappings.push({
         kind: [ReflectionKind.Namespace],
         modifiers: {
           has: [],
@@ -396,8 +418,10 @@ export class MarkdownTheme extends Theme {
         isLeaf: false,
         directory: path.join(directoryPrefix || ""),
         template: this.getReflectionTemplate(),
-      },
-      {
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Enum]) {
+      mappings.push({
         kind: [ReflectionKind.Enum],
         modifiers: {
           has: [],
@@ -406,8 +430,10 @@ export class MarkdownTheme extends Theme {
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "enums"),
         template: this.getReflectionTemplate(),
-      },
-      {
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Class]) {
+      mappings.push({
         kind: [ReflectionKind.Class],
         modifiers: {
           has: [],
@@ -416,8 +442,10 @@ export class MarkdownTheme extends Theme {
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "classes"),
         template: this.getReflectionTemplate(),
-      },
-      {
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Interface]) {
+      mappings.push({
         kind: [ReflectionKind.Interface],
         modifiers: {
           has: [],
@@ -426,8 +454,11 @@ export class MarkdownTheme extends Theme {
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
-      },
-      {
+      })
+    }
+
+    if (allowedDocuments[ReflectionKind.TypeAlias]) {
+      mappings.push({
         kind: [ReflectionKind.TypeAlias],
         modifiers: {
           has: [],
@@ -436,56 +467,59 @@ export class MarkdownTheme extends Theme {
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "types"),
         template: this.getReflectionMemberTemplate(),
-      },
-      ...(this.getAllReflectionsHaveOwnDocument(reflection)
-        ? [
-            {
-              kind: [ReflectionKind.Variable],
-              modifiers: {
-                has: [],
-                not: [],
-              },
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "variables"),
-              template: this.getReflectionMemberTemplate(),
-            },
-            {
-              kind: [ReflectionKind.Function],
-              modifiers: {
-                has: [],
-                not: [],
-              },
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "functions"),
-              template: this.getReflectionMemberTemplate(),
-            },
-            {
-              kind: [ReflectionKind.Method],
-              modifiers: {
-                has: [],
-                not: [],
-              },
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "methods"),
-              template: this.getReflectionMemberTemplate(),
-            },
-          ]
-        : []),
-      ...(this.getAllReflectionsHaveOwnDocument(reflection, true)
-        ? [
-            {
-              kind: [ReflectionKind.Property],
-              modifiers: {
-                has: [],
-                not: [],
-              },
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "properties"),
-              template: this.getReflectionMemberTemplate(),
-            },
-          ]
-        : []),
-    ]
+      })
+    }
+
+    if (allowedDocuments[ReflectionKind.Variable]) {
+      mappings.push({
+        kind: [ReflectionKind.Variable],
+        modifiers: {
+          has: [],
+          not: [],
+        },
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "variables"),
+        template: this.getReflectionMemberTemplate(),
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Function]) {
+      mappings.push({
+        kind: [ReflectionKind.Function],
+        modifiers: {
+          has: [],
+          not: [],
+        },
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "functions"),
+        template: this.getReflectionMemberTemplate(),
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Method]) {
+      mappings.push({
+        kind: [ReflectionKind.Method],
+        modifiers: {
+          has: [],
+          not: [],
+        },
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "methods"),
+        template: this.getReflectionMemberTemplate(),
+      })
+    }
+    if (allowedDocuments[ReflectionKind.Property]) {
+      mappings.push({
+        kind: [ReflectionKind.Property],
+        modifiers: {
+          has: [],
+          not: [],
+        },
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "properties"),
+        template: this.getReflectionMemberTemplate(),
+      })
+    }
+
+    return mappings
   }
 
   /**

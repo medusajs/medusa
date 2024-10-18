@@ -40,14 +40,22 @@ export default async function generate(
           outputType: "json",
         })
 
+        const modelReferenceName = `${referenceName}-models`
+
         const modelOptions = getModelOptions({
           moduleName: referenceName,
+          typedocOptions: Object.hasOwn(
+            customModulesOptions,
+            modelReferenceName
+          )
+            ? customModulesOptions[modelReferenceName]
+            : undefined,
         })
 
         try {
           await generateReference({
             options: modelOptions,
-            referenceName: `${referenceName}-models`,
+            referenceName: modelReferenceName,
             outputType: "json",
           })
         } catch (e) {

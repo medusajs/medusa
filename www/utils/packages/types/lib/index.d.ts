@@ -86,6 +86,10 @@ export type FormattingOptionType = {
   workflowDiagramComponent?: string
 }
 
+export type AllowedProjectDocumentsOption = {
+  [k: string]: Record<number, boolean>
+}
+
 export declare module "typedoc" {
   declare interface TypeDocOptionMap {
     /**
@@ -136,14 +140,7 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     namedAnchors: boolean
-    /**
-     * [Markdown Plugin] Specify module names where all reflections are outputted into seperate files.
-     */
-    allReflectionsHaveOwnDocument: string[]
-    /**
-     * [Markdown Plugin] Specify module names where property reflections are outputted into seperate files.
-     */
-    allPropertyReflectionsHaveOwnDocument: string[]
+    allowedProjectDocuments: AllowedProjectDocumentsOption
     /**
      * [Markdown Plugin] Separator used to format filenames.
      * @defaultValue "."
