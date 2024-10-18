@@ -3,11 +3,10 @@
 import React, { useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
-import { DottedSeparator, Loading } from "@/components"
+import { Loading } from "@/components"
 import { SidebarItem } from "./Item"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
-import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside, useKeyboardShortcut } from "@/hooks"
 
 export type SidebarProps = {
