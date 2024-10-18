@@ -1,5 +1,5 @@
 import type { RawSidebarItem, SidebarItem } from "types"
-import { existsSync, mkdirSync, readdirSync, statSync } from "fs"
+import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from "fs"
 import path from "path"
 import { getSidebarItemLink, sidebarAttachHrefCommonOptions } from "./index.js"
 import getCoreFlowsRefSidebarChildren from "./utils/get-core-flows-ref-sidebar-children.js"
@@ -122,9 +122,6 @@ async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
 }
 
 export async function generateSidebar(sidebar: RawSidebarItem[]) {
-  const path = await import("path")
-  const { writeFileSync } = await import("fs")
-
   const normalizedSidebar = await Promise.all(
     sidebar.map(async (item) => await checkItem(item))
   )
