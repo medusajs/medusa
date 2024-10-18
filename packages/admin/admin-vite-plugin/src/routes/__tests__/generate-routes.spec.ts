@@ -55,10 +55,12 @@ const expectedRoutesWithoutLoaders = `
     routes: [
         {
             Component: RouteComponent0,
+            loader: undefined,
             path: "/one",
         },
         {
             Component: RouteComponent1,
+            loader: undefined,
             path: "/two",
         }
     ]
@@ -68,10 +70,12 @@ const expectedRoutesWithLoaders = `
     routes: [
         {
             Component: RouteComponent0,
+            loader: RouteLoader0,
             path: "/one",
         },
         {
             Component: RouteComponent1,
+            loader: RouteLoader1,
             path: "/two",
         }
     ]
