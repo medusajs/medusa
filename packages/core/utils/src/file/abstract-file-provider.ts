@@ -25,6 +25,7 @@ import { FileTypes, IFileProvider } from "@medusajs/types"
  * class MyFileProviderService extends AbstractFileProviderService {
  *   protected logger_: Logger
  *   protected options_: Options
+ *   static identifier = "my-file"
  *   // assuming you're initializing a client
  *   protected client
  *
@@ -47,13 +48,37 @@ import { FileTypes, IFileProvider } from "@medusajs/types"
  */
 export class AbstractFileProviderService implements IFileProvider {
   /**
-   * @ignore
+   * Each file provider has a unique ID used to identify it. The provider's ID
+   * will be stored as `fs_{identifier}_{id}`, where `{id}` is the provider's `id` 
+   * property in the `medusa-config.ts`.
+   * 
+   * @example
+   * class MyFileProviderService extends AbstractFileProviderService {
+   *   static identifier = "my-file"
+   *   // ...
+   * }
    */
   static identifier: string
 
   /**
-   * Override this static method in order for the loader to validate the options provided to the module provider.
-   * @param options
+   * This method validates the options of the provider set in `medusa-config.ts`.
+   * Implementing this method is optional. It's useful if your provider requires custom validation.
+   * 
+   * If the options aren't valid, throw an error.
+   * 
+   * @param options - The provider's options.
+   * 
+   * @example
+   * class MyFileProviderService extends AbstractFileProviderService {
+   *   static validateOptions(options: Record<any, any>) {
+   *     if (!options.apiKey) {
+   *       throw new MedusaError(
+   *         MedusaError.Types.INVALID_DATA,
+   *         "API key is required in the provider's options."
+   *       )
+   *     }
+   *   }
+   * }
    */
   static validateOptions(options: Record<any, any>): void | never {}
 
