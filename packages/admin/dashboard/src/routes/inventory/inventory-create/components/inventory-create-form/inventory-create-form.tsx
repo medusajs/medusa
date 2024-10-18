@@ -22,6 +22,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   inventoryItemsQueryKeys,
   useCreateInventoryItem,
@@ -204,7 +205,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
         className="h-full"
         onValueChange={(tab) => onTabChange(tab as Tab)}
       >
-        <form
+        <KeyboundForm
           className="flex h-full flex-col overflow-hidden"
           onSubmit={handleSubmit}
         >
@@ -507,7 +508,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
               </Button>
             </div>
           </RouteFocusModal.Footer>
-        </form>
+        </KeyboundForm>
       </ProgressTabs>
     </RouteFocusModal.Form>
   )

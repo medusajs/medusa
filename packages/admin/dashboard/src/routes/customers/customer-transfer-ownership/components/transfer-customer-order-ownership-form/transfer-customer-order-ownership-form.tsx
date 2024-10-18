@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { TransferOwnerShipForm } from "../../../../../components/forms/transfer-ownership-form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { TransferOwnershipSchema } from "../../../../../lib/schemas"
-import { HttpTypes } from "@medusajs/types"
 
 type TransferCustomerOrderOwnershipFormProps = {
   order: HttpTypes.AdminOrder
@@ -46,7 +47,7 @@ export const TransferCustomerOrderOwnershipForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
@@ -65,7 +66,7 @@ export const TransferCustomerOrderOwnershipForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

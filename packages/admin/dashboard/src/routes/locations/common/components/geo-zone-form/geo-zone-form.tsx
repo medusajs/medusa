@@ -11,7 +11,10 @@ import { z } from "zod"
 
 import { ChipGroup } from "../../../../../components/common/chip-group"
 import { Form } from "../../../../../components/common/form"
-import { SplitView } from "../../../../../components/layout/split-view"
+import {
+  StackedFocusModal,
+  useStackedModal,
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import {
@@ -21,6 +24,7 @@ import {
 import { useCountries } from "../../../../regions/common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
+import { GEO_ZONE_STACKED_MODAL_ID } from "../../constants"
 
 const GeoZoneSchema = z.object({
   countries: z.array(
@@ -30,12 +34,10 @@ const GeoZoneSchema = z.object({
 
 type GeoZoneFormImplProps<TForm extends UseFormReturn<any>> = {
   form: TForm
-  onOpenChange: (open: boolean) => void
 }
 
 const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
   form,
-  onOpenChange,
 }: GeoZoneFormImplProps<TForm>) => {
   const castForm = form as unknown as UseFormReturn<
     z.infer<typeof GeoZoneSchema>
@@ -71,14 +73,11 @@ const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
                   {t("stockLocations.serviceZones.manageAreas.hint")}
                 </Form.Hint>
               </div>
-              <Button
-                size="small"
-                variant="secondary"
-                type="button"
-                onClick={() => onOpenChange(true)}
-              >
-                {t("stockLocations.serviceZones.manageAreas.action")}
-              </Button>
+              <StackedFocusModal.Trigger asChild>
+                <Button size="small" variant="secondary" type="button">
+                  {t("stockLocations.serviceZones.manageAreas.action")}
+                </Button>
+              </StackedFocusModal.Trigger>
             </div>
             <Form.ErrorMessage />
             <Form.Control className="mt-0">
@@ -103,26 +102,25 @@ const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
   )
 }
 
-type AreasDrawerProps<TForm extends UseFormReturn<any>> = {
+type AreasStackedModalProps<TForm extends UseFormReturn<any>> = {
   form: TForm
-  open: boolean
-  onOpenChange: (open: boolean) => void
 }
 
 const PREFIX = "ac"
 const PAGE_SIZE = 50
 
-const AreaDrawer = <TForm extends UseFormReturn<any>>({
+const AreaStackedModal = <TForm extends UseFormReturn<any>>({
   form,
-  open,
-  onOpenChange,
-}: AreasDrawerProps<TForm>) => {
+}: AreasStackedModalProps<TForm>) => {
   const castForm = form as unknown as UseFormReturn<
     z.infer<typeof GeoZoneSchema>
   >
 
   const { t } = useTranslation()
   const { getValues, setValue } = castForm
+  const { setIsOpen, getIsOpen } = useStackedModal()
+
+  const open = getIsOpen(GEO_ZONE_STACKED_MODAL_ID)
 
   const [selection, setSelection] = useState<RowSelectionState>({})
   const [state, setState] = useState<{ iso_2: string; display_name: string }[]>(
@@ -203,7 +201,7 @@ const AreaDrawer = <TForm extends UseFormReturn<any>>({
       shouldDirty: true,
       shouldTouch: true,
     })
-    onOpenChange(false)
+    setIsOpen(GEO_ZONE_STACKED_MODAL_ID, false)
   }
 
   const columns = useColumns()
@@ -226,8 +224,20 @@ const AreaDrawer = <TForm extends UseFormReturn<any>>({
   validateForm(form)
 
   return (
-    <SplitView.Drawer>
-      <div className="flex h-full flex-col overflow-hidden">
+    <StackedFocusModal.Content className="flex flex-col overflow-hidden">
+      <StackedFocusModal.Header>
+        <StackedFocusModal.Title asChild>
+          <span className="sr-only">
+            {t("stockLocations.serviceZones.manageAreas.label")}
+          </span>
+        </StackedFocusModal.Title>
+        <StackedFocusModal.Description asChild>
+          <span className="sr-only">
+            {t("stockLocations.serviceZones.manageAreas.hint")}
+          </span>
+        </StackedFocusModal.Description>
+      </StackedFocusModal.Header>
+      <StackedFocusModal.Body className="flex-1 overflow-hidden">
         <DataTable
           table={table}
           columns={columns}
@@ -240,18 +250,20 @@ const AreaDrawer = <TForm extends UseFormReturn<any>>({
           queryObject={raw}
           prefix={PREFIX}
         />
-        <div className="flex items-center justify-end gap-x-2 border-t p-4">
-          <SplitView.Close type="button" asChild>
+      </StackedFocusModal.Body>
+      <StackedFocusModal.Footer>
+        <div className="flex items-center justify-end gap-x-2">
+          <StackedFocusModal.Close type="button" asChild>
             <Button variant="secondary" size="small">
               {t("actions.cancel")}
             </Button>
-          </SplitView.Close>
+          </StackedFocusModal.Close>
           <Button size="small" type="button" onClick={handleAdd}>
-            {t("actions.add")}
+            {t("actions.save")}
           </Button>
         </div>
-      </div>
-    </SplitView.Drawer>
+      </StackedFocusModal.Footer>
+    </StackedFocusModal.Content>
   )
 }
 
@@ -308,5 +320,5 @@ function validateForm(form: UseFormReturn) {
 }
 
 export const GeoZoneForm = Object.assign(GeoZoneFormImpl, {
-  AreaDrawer,
+  AreaDrawer: AreaStackedModal,
 })

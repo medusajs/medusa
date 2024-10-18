@@ -5,7 +5,7 @@ import {
   ModuleProvider,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
-import { Lifetime, asFunction, asValue } from "awilix"
+import { asFunction, asValue, Lifetime } from "awilix"
 import { MedusaError } from "@medusajs/framework/utils"
 
 import { PaymentProviderService } from "@services"
@@ -14,14 +14,16 @@ import * as providers from "../providers"
 const PROVIDER_REGISTRATION_KEY = "payment_providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  if (!klass?.PROVIDER) {
+  if (!klass?.identifier) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       `Trying to register a payment provider without a provider identifier.`
     )
   }
 
-  const key = `pp_${klass.PROVIDER}_${pluginOptions.id}`
+  const key = `pp_${klass.identifier}${
+    pluginOptions.id ? `_${pluginOptions.id}` : ""
+  }`
 
   container.register({
     [key]: asFunction((cradle) => new klass(cradle, pluginOptions.options), {

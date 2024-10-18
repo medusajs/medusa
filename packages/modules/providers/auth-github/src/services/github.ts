@@ -18,6 +18,9 @@ interface LocalServiceConfig extends GithubAuthProviderOptions {}
 
 // TODO: Add state param that is stored in Redis, to prevent CSRF attacks
 export class GithubAuthService extends AbstractAuthModuleProvider {
+  static identifier = "github"
+  static DISPLAY_NAME = "Github Authentication"
+
   protected config_: LocalServiceConfig
   protected logger_: Logger
 
@@ -39,7 +42,8 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
     { logger }: InjectedDependencies,
     options: GithubAuthProviderOptions
   ) {
-    super({}, { provider: "github", displayName: "Github Authentication" })
+    // @ts-ignore
+    super(...arguments)
     this.config_ = options
     this.logger_ = logger
   }

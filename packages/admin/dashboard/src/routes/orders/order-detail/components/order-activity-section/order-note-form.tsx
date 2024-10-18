@@ -8,6 +8,7 @@ import { z } from "zod"
 import { AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 
 type OrderNoteFormProps = {
   order: AdminOrder
@@ -64,7 +65,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={handleSubmit}>
+        <KeyboundForm onSubmit={handleSubmit}>
           <div className="bg-ui-bg-field shadow-borders-base flex flex-col gap-y-2 rounded-md px-2 py-1.5">
             <Form.Field
               control={form.control}
@@ -104,7 +105,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
               </IconButton>
             </div>
           </div>
-        </form>
+        </KeyboundForm>
       </Form>
     </div>
   )

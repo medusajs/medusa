@@ -185,6 +185,14 @@ module.exports = {
               hover: "#505052",
             },
           },
+          alpha: {
+            white: {
+              alpha: {
+                6: "var(--docs-alpha-white-alpha-6)",
+                12: "var(--docs-alpha-white-alpha-12)",
+              },
+            },
+          },
         },
       },
       boxShadow: {
@@ -340,7 +348,7 @@ module.exports = {
         h3: [
           "16px",
           {
-            lineHeight: "24px",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
@@ -678,6 +686,14 @@ module.exports = {
             visibility: "hidden",
           },
         },
+        growWidth: {
+          from: {
+            width: 0,
+          },
+          to: {
+            width: "100%",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -699,6 +715,7 @@ module.exports = {
         minimize: "minimize 500ms",
         maximize: "maximize 500ms",
         flash: "flash 1500ms 1",
+        growWidth: "growWidth 500ms",
       },
       scrollMargin: {
         56: "56px",

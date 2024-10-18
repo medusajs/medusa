@@ -98,6 +98,8 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "copy": "Copy",
+    "copied": "Copied",
     "duplicate": "Duplicate",
     "publish": "Publish",
     "create": "Create",
@@ -117,6 +119,7 @@
     "showMore": "Show more",
     "continue": "Continue",
     "continueWithEmail": "Continue with Email",
+    "idCopiedToClipboard": "ID copied to clipboard",
     "addReason": "Add Reason",
     "addNote": "Add Note",
     "reset": "Reset",
@@ -902,9 +905,10 @@
     },
     "payment": {
       "title": "Payments",
-      "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
+      "isReadyToBeCaptured": "Payment <0/> is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
+      "capture_short": "Capture",
       "refund": "Refund",
       "markAsPaid": "Mark as paid",
       "statusLabel": "Payment status",
@@ -1877,6 +1881,7 @@
     },
     "edit": {
       "header": "Edit Campaign",
+      "description": "Edit the details of the campaign.",
       "successToast": "Campaign '{{name}}' was successfully updated."
     },
     "configuration": {
@@ -1888,6 +1893,8 @@
       }
     },
     "create": {
+      "title": "Create Campaign",
+      "description": "Create a promotional campaign.",
       "hint": "Create a promotional campaign.",
       "header": "Create Campaign",
       "successToast": "Campaign '{{name}}' was successfully created."
@@ -2301,9 +2308,12 @@
     },
     "edit": {
       "header": "Edit API Key",
+      "description": "Edit the API key's title.",
       "successToast": "API key {{title}} was successfully updated."
     },
     "salesChannels": {
+      "title": "Add Sales Channels",
+      "description": "Add the sales channels that the API key should be limited to.",
       "successToast_one": "{{count}} sales channel was successfully added to the API key.",
       "successToast_other": "{{count}} sales channels were successfully added to the API key.",
       "alreadyAddedTooltip": "The sales channel has already been added to the API key.",

@@ -7,7 +7,7 @@ import * as React from "react"
 import { clx } from "@/utils/clx"
 
 const avatarVariants = cva({
-  base: "border-ui-border-strong flex shrink-0 items-center justify-center overflow-hidden border",
+  base: "flex shrink-0 items-center justify-center overflow-hidden shadow-borders-base bg-ui-bg-base",
   variants: {
     variant: {
       squared: "",
@@ -26,7 +26,7 @@ const avatarVariants = cva({
     {
       variant: "squared",
       size: "2xsmall",
-      className: "rounded-md",
+      className: "rounded",
     },
     {
       variant: "squared",
@@ -68,12 +68,12 @@ const innerVariants = cva({
       rounded: "rounded-full",
     },
     size: {
-      "2xsmall": "txt-compact-xsmall-plus h-4 w-4",
-      xsmall: "txt-compact-xsmall-plus h-5 w-5",
-      small: "txt-compact-small-plus h-6 w-6",
-      base: "txt-compact-small-plus h-7 w-7",
-      large: "txt-compact-medium-plus h-9 w-9",
-      xlarge: "txt-compact-large-plus h-11 w-11",
+      "2xsmall": "txt-compact-xsmall-plus size-4",
+      xsmall: "txt-compact-xsmall-plus size-5",
+      small: "txt-compact-small-plus size-6",
+      base: "txt-compact-small-plus size-7",
+      large: "txt-compact-medium-plus size-9",
+      xlarge: "txt-compact-large-plus size-11",
     },
   },
   compoundVariants: [
@@ -85,17 +85,17 @@ const innerVariants = cva({
     {
       variant: "squared",
       size: "xsmall",
-      className: "rounded-sm",
+      className: "rounded",
     },
     {
       variant: "squared",
       size: "small",
-      className: "rounded-[4px]",
+      className: "rounded",
     },
     {
       variant: "squared",
       size: "base",
-      className: "rounded-[4px]",
+      className: "rounded",
     },
     {
       variant: "squared",
@@ -158,8 +158,7 @@ const Avatar = React.forwardRef<
       <Primitives.Root
         ref={ref}
         {...props}
-        className={clx(
-          "rounded-x",
+        className={clx(         
           avatarVariants({ variant, size }),
           className
         )}
@@ -173,7 +172,7 @@ const Avatar = React.forwardRef<
         <Primitives.Fallback
           className={clx(
             innerVariants({ variant, size }),
-            "bg-ui-bg-component text-ui-fg-subtle pointer-events-none flex select-none items-center justify-center"
+            "bg-ui-bg-component-hover text-ui-fg-subtle pointer-events-none flex select-none items-center justify-center"
           )}
         >
           {fallback}

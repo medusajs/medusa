@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/types"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
+import { MODULE_SCOPE } from "../../types"
 
 import { asValue } from "awilix"
 import { MedusaModule } from "../../medusa-module"
@@ -12,7 +12,6 @@ const mockRegisterMedusaModule = jest.fn().mockImplementation(() => {
       },
       moduleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
   }
@@ -47,7 +46,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           abc: 123,
@@ -63,7 +61,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           abc: 123,
@@ -76,7 +73,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           different_options: "abc",
@@ -98,7 +94,6 @@ describe("Medusa Modules", () => {
           defaultPath: "@path",
           declaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.ISOLATED,
             resolve: "@path",
             options: {
               abc: 123,
@@ -121,7 +116,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           abc: 123,
@@ -134,7 +128,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           different_options: "abc",
@@ -151,7 +144,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         options: {
           abc: 123,
@@ -164,7 +156,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         main: true,
         options: {
@@ -182,7 +173,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         alias: "mod_A",
         options: {
@@ -196,7 +186,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         main: true,
         alias: "mod_B",
@@ -211,7 +200,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         alias: "mod_C",
         options: {
@@ -240,7 +228,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         alias: "mod_A",
         options: {
@@ -254,7 +241,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         main: true,
         alias: "mod_B",
@@ -269,7 +255,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         main: true,
         alias: "mod_C",
@@ -290,7 +275,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         alias: "module_alias",
         options: {
@@ -304,7 +288,6 @@ describe("Medusa Modules", () => {
       defaultPath: "@path",
       declaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: "@path",
         alias: "module_alias",
         options: {

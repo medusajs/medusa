@@ -1,6 +1,6 @@
-import * as zod from "zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
+import * as zod from "zod"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../../../../components/common/form"
+import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
 
 type EditReservationFormProps = {
@@ -87,7 +88,7 @@ export const EditReservationForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -206,7 +207,7 @@ export const EditReservationForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

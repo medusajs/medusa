@@ -1,5 +1,9 @@
 import { IModuleService, ModuleResolution } from "@medusajs/types"
-import { createMedusaContainer, upperCaseFirst } from "@medusajs/utils"
+import {
+  createMedusaContainer,
+  getProviderRegistrationKey,
+  upperCaseFirst,
+} from "@medusajs/utils"
 import { join } from "path"
 import {
   ModuleWithDmlMixedWithoutJoinerConfigFixtures,
@@ -7,14 +11,10 @@ import {
   ModuleWithJoinerConfigFixtures,
   ModuleWithoutJoinerConfigFixtures,
 } from "../__fixtures__"
-import {
-  getProviderRegistrationKey,
-  loadInternalModule,
-  loadResources,
-} from "../load-internal"
+import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
 import { ModuleProviderService as ModuleServiceWithProviderProvider1 } from "../__fixtures__/module-with-providers/provider-1"
 import { ModuleProvider2Service as ModuleServiceWithProviderProvider2 } from "../__fixtures__/module-with-providers/provider-2"
-import { ModuleService as ModuleServiceWithProvider } from "../__fixtures__/module-with-providers"
+import { loadInternalModule, loadResources } from "../load-internal"
 
 describe("load internal", () => {
   describe("loadResources", () => {
@@ -34,7 +34,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -117,7 +116,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -200,7 +198,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -282,7 +279,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -346,7 +342,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -354,7 +349,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
@@ -382,9 +376,10 @@ describe("load internal", () => {
 
       const moduleService = container.resolve(moduleResolution.definition.key)
       const provider = (moduleService as any).container[
-        getProviderRegistrationKey(
-          ModuleServiceWithProviderProvider1.identifier
-        )
+        getProviderRegistrationKey({
+          providerId: moduleResolution.options!.providers![0].id,
+          providerIdentifier: ModuleServiceWithProviderProvider1.identifier,
+        })
       ]
 
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
@@ -399,7 +394,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -407,7 +401,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
@@ -435,7 +428,10 @@ describe("load internal", () => {
 
       const moduleService = container.resolve(moduleResolution.definition.key)
       const provider = (moduleService as any).container[
-        getProviderRegistrationKey(moduleResolution.options!.providers![0].id)
+        getProviderRegistrationKey({
+          providerId: moduleResolution.options!.providers![0].id,
+          providerIdentifier: ModuleServiceWithProviderProvider2.identifier,
+        })
       ]
 
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)

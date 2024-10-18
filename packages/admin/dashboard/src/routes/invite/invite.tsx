@@ -9,10 +9,11 @@ import { decodeToken } from "react-jwt"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
+import AvatarBox from "../../components/common/logo-box/avatar-box"
+import { KeyboundForm } from "../../components/utilities/keybound-form"
 import { useSignUpWithEmailPass } from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
-import AvatarBox from "../../components/common/logo-box/avatar-box"
 
 const CreateAccountSchema = z
   .object({
@@ -139,7 +140,7 @@ const LoginLink = () => {
       <Link
         key="login-link"
         to="/login"
-        className="text-ui-fg-interactive txt-small !text-ui-fg-base font-medium transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+        className="text-ui-fg-interactive txt-small !text-ui-fg-base transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
       >
         {t("invite.backToLogin")}
       </Link>
@@ -250,7 +251,10 @@ const CreateView = ({
         </Text>
       </div>
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-y-6">
+        <KeyboundForm
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col gap-y-6"
+        >
           <div className="flex flex-col gap-y-2">
             <Form.Field
               control={form.control}
@@ -345,7 +349,7 @@ const CreateView = ({
               }}
             />
             {validationError && (
-              <div className="text-center mt-6">
+              <div className="mt-6 text-center">
                 <Hint className="inline-flex" variant={"error"}>
                   {validationError}
                 </Hint>
@@ -353,7 +357,7 @@ const CreateView = ({
             )}
             {serverError && (
               <Alert
-                className="p-2 bg-ui-bg-base items-center"
+                className="bg-ui-bg-base items-center p-2"
                 dismissible
                 variant="error"
               >
@@ -369,7 +373,7 @@ const CreateView = ({
           >
             {t("invite.createAccount")}
           </Button>
-        </form>
+        </KeyboundForm>
       </Form>
       <LoginLink />
     </div>
