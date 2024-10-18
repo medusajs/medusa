@@ -76,12 +76,15 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
    * The middleware to use for logging. We write the log messages
    * using winston, but rely on morgan to hook into HTTP requests
    */
-  const loggingMiddleware = morgan(IS_DEV ? "dev" : "tiny", {
-    skip: shouldSkipHttpLog,
-    stream: {
-      write: (message: string) => logger.http(message),
-    },
-  })
+  const loggingMiddleware = morgan(
+    IS_DEV ? ":method :url ← :referrer (:status)" : "combined",
+    {
+      skip: shouldSkipHttpLog,
+      stream: {
+        write: (message: string) => logger.http(message.trim()),
+      },
+    }
+  )
 
   app.use(loggingMiddleware)
   app.use(cookieParser())
