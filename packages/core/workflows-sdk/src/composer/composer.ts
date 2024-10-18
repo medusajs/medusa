@@ -49,7 +49,11 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
       options,
     })
 
-    this.#applyRegisteredDynamicHooks()
+    this.#applyDynamicHooks()
+  }
+
+  getName(): string {
+    return this.#composer.context.workflowId
   }
 
   /**
@@ -58,7 +62,7 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
    *
    * @private
    */
-  #applyRegisteredDynamicHooks() {
+  #applyDynamicHooks() {
     const context = this.#composer.context
 
     for (const hook of context.hooks_.declared) {
@@ -111,11 +115,8 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
   }
 
   async run<TDataOverride = undefined, TResultOverride = undefined>(
-    ...args: Omit<
-      Parameters<
-        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
-      >,
-      "container"
+    ...args: Parameters<
+      ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
     >
   ): ReturnType<
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
@@ -123,8 +124,60 @@ export class WorkflowRunner<TData, TResult, THooks extends any[]> {
     return await this.#exportedWorkflow.run(...args)
   }
 
-  getName(): string {
-    return this.#composer.context.workflowId
+  async registerStepSuccess<
+    TDataOverride = undefined,
+    TResultOverride = undefined
+  >(
+    ...args: Parameters<
+      ExportedWorkflow<
+        TData,
+        TResult,
+        TDataOverride,
+        TResultOverride
+      >["registerStepSuccess"]
+    >
+  ): ReturnType<
+    ExportedWorkflow<
+      TData,
+      TResult,
+      TDataOverride,
+      TResultOverride
+    >["registerStepSuccess"]
+  > {
+    return await this.#exportedWorkflow.registerStepSuccess(...args)
+  }
+
+  async registerStepFailure<
+    TDataOverride = undefined,
+    TResultOverride = undefined
+  >(
+    ...args: Parameters<
+      ExportedWorkflow<
+        TData,
+        TResult,
+        TDataOverride,
+        TResultOverride
+      >["registerStepFailure"]
+    >
+  ): ReturnType<
+    ExportedWorkflow<
+      TData,
+      TResult,
+      TDataOverride,
+      TResultOverride
+    >["registerStepFailure"]
+  > {
+    return await this.#exportedWorkflow.registerStepFailure(...args)
+  }
+
+  async cancel<TDataOverride = undefined, TResultOverride = undefined>(
+    ...args: Parameters<
+      ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["cancel"]
+    >
+  ): ReturnType<
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["cancel"]
+  > {
+    return await this.#exportedWorkflow.cancel(...args)
   }
 }
 

@@ -20,6 +20,7 @@ import {
 } from "../helper"
 import {
   ContainerRegistrationKeys,
+  isPresent,
   MedusaContextType,
   Modules,
 } from "@medusajs/utils"
@@ -27,6 +28,7 @@ import { ulid } from "ulid"
 import { EOL } from "os"
 import { resolveValue } from "../utils/composer"
 import { container } from "@medusajs/framework"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 export type LocalWorkflowExecutionOptions = {
   defaultResult?: string | Symbol
@@ -70,13 +72,33 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
 
   async #executeAction(
     method: Function,
-    { throwOnError, logOnError = false, resultFrom, isCancel = false },
+    {
+      throwOnError,
+      logOnError = false,
+      resultFrom,
+      isCancel = false,
+      container,
+    },
     transactionOrIdOrIdempotencyKey: DistributedTransactionType | string,
     input: unknown,
     context: Context,
     events: DistributedTransactionEvents | undefined = {}
   ) {
     const flow = this.#localWorkflow
+
+    if (!container) {
+      const container_ = flow.container as MedusaContainer
+
+      if (!container_ || !isPresent(container_?.registrations)) {
+        container = MedusaModule.getLoadedModules().map(
+          (mod) => Object.values(mod)[0]
+        )
+      }
+    }
+
+    if (container) {
+      flow.container = container
+    }
 
     const { eventGroupId, parentStepIdempotencyKey } = context
 
@@ -231,6 +253,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
     logOnError,
     resultFrom,
     events,
+    container,
   }: FlowRunOptions<
     TDataOverride extends undefined ? TData : TDataOverride
   > = {}): Promise<
@@ -275,6 +298,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
         throwOnError,
         resultFrom,
         logOnError,
+        container,
       },
       context.transactionId,
       input,
@@ -292,6 +316,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
       logOnError,
       resultFrom,
       events,
+      container,
     }: FlowRegisterStepSuccessOptions = {
       idempotencyKey: "",
     }
@@ -318,6 +343,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
         throwOnError,
         resultFrom,
         logOnError,
+        container,
       },
       idempotencyKey,
       response,
@@ -335,6 +361,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
       logOnError,
       resultFrom,
       events,
+      container,
     }: FlowRegisterStepFailureOptions = {
       idempotencyKey: "",
     }
@@ -361,6 +388,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
         throwOnError,
         resultFrom,
         logOnError,
+        container,
       },
       idempotencyKey,
       response,
@@ -376,6 +404,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
     throwOnError,
     logOnError,
     events,
+    container,
   }: FlowCancelOptions = {}) {
     throwOnError ??= true
     logOnError ??= false
@@ -395,6 +424,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
         resultFrom: undefined,
         isCancel: true,
         logOnError,
+        container,
       },
       transaction ?? transactionId!,
       undefined,
