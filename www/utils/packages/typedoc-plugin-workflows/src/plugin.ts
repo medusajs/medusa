@@ -92,7 +92,8 @@ class WorkflowsPlugin {
 
         const workflowId = this.helper.getStepOrWorkflowId(
           initializer,
-          context.project
+          context.project,
+          "workflow"
         )
 
         if (!workflowId) {
@@ -270,6 +271,7 @@ class WorkflowsPlugin {
         stepId = this.helper.getStepOrWorkflowId(
           originalInitializer,
           context.project,
+          "step",
           true
         )
         stepType = this.helper.getStepType(originalInitializer)

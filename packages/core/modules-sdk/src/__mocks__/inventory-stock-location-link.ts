@@ -8,7 +8,6 @@ export const InventoryStockLocationLink = {
     isQueryable: true,
     defaultModuleDeclaration: {
       scope: "internal",
-      resources: "shared",
     },
   },
   __joinerConfig: {

@@ -20,6 +20,9 @@ type InjectedDependencies = {
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
 
 export class EmailPassAuthService extends AbstractAuthModuleProvider {
+  static identifier = "emailpass"
+  static DISPLAY_NAME = "Email/Password Authentication"
+
   protected config_: LocalServiceConfig
   protected logger_: Logger
 
@@ -27,10 +30,8 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     { logger }: InjectedDependencies,
     options: EmailPassAuthProviderOptions
   ) {
-    super(
-      {},
-      { provider: "emailpass", displayName: "Email/Password Authentication" }
-    )
+    // @ts-ignore
+    super(...arguments)
     this.config_ = options
     this.logger_ = logger
   }

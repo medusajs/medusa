@@ -9,7 +9,6 @@ export const InventoryModule = {
     dependencies: [],
     defaultModuleDeclaration: {
       scope: "internal",
-      resources: "shared",
     },
   },
   __joinerConfig: {

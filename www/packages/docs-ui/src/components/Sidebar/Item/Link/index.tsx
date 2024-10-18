@@ -2,7 +2,7 @@
 
 // @refresh reset
 
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import React, { useEffect, useMemo, useRef } from "react"
 import { SidebarItemLink as SidebarItemlinkType } from "types"
 import {
   checkSidebarItemVisibility,
@@ -34,7 +34,7 @@ export const SidebarItemLink = ({
   const active = useMemo(() => isLinkActive(item, true), [isLinkActive, item])
   const ref = useRef<HTMLLIElement>(null)
 
-  const newTopCalculator = useCallback(() => {
+  const newTopCalculator = useMemo(() => {
     if (!sidebarRef.current || !ref.current) {
       return 0
     }
@@ -45,7 +45,8 @@ export const SidebarItemLink = ({
     return (
       itemBoundingRect.top -
       (sidebarBoundingRect.top + sidebarTopHeight) +
-      sidebarRef.current.scrollTop
+      sidebarRef.current.scrollTop -
+      10 // remove extra margin just in case
     )
   }, [sidebarTopHeight, sidebarRef, ref])
 
@@ -64,7 +65,7 @@ export const SidebarItemLink = ({
         })
       } else {
         sidebarRef.current.scrollTo({
-          top: newTopCalculator(),
+          top: newTopCalculator,
         })
       }
     }

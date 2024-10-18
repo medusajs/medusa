@@ -6,7 +6,13 @@ const taxRegionUrl = "/admin/tax-regions"
 
 // TODO: Add support for updating a tax region
 export class TaxRegion {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
