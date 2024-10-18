@@ -135,43 +135,149 @@ export interface BaseProduct {
 }
 
 export interface BaseProductVariant {
+  /**
+   * The variant's ID.
+   */
   id: string
+  /**
+   * The variant's title.
+   */
   title: string | null
+  /**
+   * The variant's SKU.
+   */
   sku: string | null
+  /**
+   * The variant's barcode.
+   */
   barcode: string | null
+  /**
+   * The variant's EAN.
+   */
   ean: string | null
+  /**
+   * The variant's UPC.
+   */
   upc: string | null
+  /**
+   * Whether the variant can be ordered even if it's out of stock.
+   */
   allow_backorder: boolean | null
+  /**
+   * Whether Medusa manages the variant's inventory. If disabled, the variant
+   * is always considered in stock.
+   */
   manage_inventory: boolean | null
+  /**
+   * The variant's inventory quantity if `manage_inventory` is enabled.
+   */
   inventory_quantity?: number
+  /**
+   * The variant's HS code.
+   */
   hs_code: string | null
+  /**
+   * The variant's origin country.
+   */
   origin_country: string | null
+  /**
+   * The variant's MID code.
+   */
   mid_code: string | null
+  /**
+   * The variant's material.
+   */
   material: string | null
+  /**
+   * The variant's weight.
+   */
   weight: number | null
+  /**
+   * The variant's length.
+   */
   length: number | null
+  /**
+   * The variant's height.
+   */
   height: number | null
+  /**
+   * The variant's width.
+   */
   width: number | null
+  /**
+   * The variant's ranking among its siblings.
+   */
   variant_rank?: number | null
+  /**
+   * The variant's values for the product's options.
+   */
   options: BaseProductOptionValue[] | null
+  /**
+   * The variant's product.
+   */
   product?: BaseProduct | null
+  /**
+   * The ID of the product that the variant belongs to.
+   */
   product_id?: string
+  /**
+   * The variant's calculated price for the provided context.
+   */
   calculated_price?: BaseCalculatedPriceSet
+  /**
+   * The date the variant was created.
+   */
   created_at: string
+  /**
+   * The date the variant was updated.
+   */
   updated_at: string
+  /**
+   * The date the variant was deleted.
+   */
   deleted_at: string | null
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown> | null
 }
 
 export interface BaseProductOption {
+  /**
+   * The option's ID.
+   */
   id: string
+  /**
+   * The option's title.
+   */
   title: string
+  /**
+   * The product that the option belongs to.
+   */
   product?: BaseProduct | null
+  /**
+   * The ID of the product that the option belongs to.
+   */
   product_id?: string | null
+  /**
+   * The option's values.
+   */
   values?: BaseProductOptionValue[]
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown> | null
+  /**
+   * The date the option was created.
+   */
   created_at?: string
+  /**
+   * The date the option was updated.
+   */
   updated_at?: string
+  /**
+   * The date the option was deleted.
+   */
   deleted_at?: string | null
 }
 
@@ -185,13 +291,37 @@ export interface BaseProductImage {
 }
 
 export interface BaseProductOptionValue {
+  /**
+   * The option value's ID.
+   */
   id: string
+  /**
+   * The option's value.
+   */
   value: string
+  /**
+   * The option's details.
+   */
   option?: BaseProductOption | null
+  /**
+   * The ID of the option.
+   */
   option_id?: string | null
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown> | null
+  /**
+   * The date the option value was created.
+   */
   created_at?: string
+  /**
+   * The date the option value was updated.
+   */
   updated_at?: string
+  /**
+   * The date the option value was deleted.
+   */
   deleted_at?: string | null
 }
 

@@ -47,17 +47,32 @@ export interface StoreProduct
 }
 export interface StoreProductVariant
   extends Omit<BaseProductVariant, "product" | "options"> {
+  /**
+   * The variant's values for the product's options.
+   */
   options: StoreProductOptionValue[] | null
+  /**
+   * The variant's product.
+   */
   product?: StoreProduct | null
 }
 export interface StoreProductOption
   extends Omit<BaseProductOption, "product" | "values"> {
+  /**
+   * The product the option belongs to.
+   */
   product?: StoreProduct | null
+  /**
+   * The option's values.
+   */
   values?: StoreProductOptionValue[]
 }
 export interface StoreProductImage extends BaseProductImage {}
 export interface StoreProductOptionValue
   extends Omit<BaseProductOptionValue, "option"> {
+  /**
+   * The product's option.
+   */
   option?: StoreProductOption | null
 }
 export type StoreProductStatus = ProductStatus

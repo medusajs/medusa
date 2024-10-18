@@ -734,22 +734,37 @@ export class Store {
         }
       )
     },
+    /**
+     * This method completes a cart and places the order. It's the last step of the checkout flow.
+     * The method sends a request to the [Complete Cart](https://docs.medusajs.com/v2/api/store#carts_postcartsidcomplete)
+     * API route.
+     * 
+     * Related guide: [Learn how to complete cart in checkout flow](https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart).
+     * 
+     * @param cartId - The cart's ID.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The order's details, if it was placed successfully. Otherwise, the cart is returned with an error.
+     * 
+     * @example
+     * sdk.store.cart.complete("cart_123")
+     * .then((data) => {
+     *   if(data.type === "cart") {
+     *     // an error occurred
+     *     console.log(data.error, data.cart)
+     *   } else {
+     *     // order placed successfully
+     *     console.log(data.order)
+     *   }
+     * })
+     */
     complete: async (
       cartId: string,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        | { type: "order"; order: HttpTypes.StoreOrder }
-        | {
-            type: "cart"
-            cart: HttpTypes.StoreCart
-            error: {
-              message: string
-              name: string
-              type: string
-            }
-          }
+        HttpTypes.StoreCompleteCartResponse
       >(`/store/carts/${cartId}/complete`, {
         method: "POST",
         headers,

@@ -41,11 +41,35 @@ export interface BaseRegion {
 }
 
 export interface BaseRegionCountry {
+  /**
+   * The country's ID.
+   */
   id: string
+  /**
+   * The country's ISO 2 code.
+   * 
+   * @example us
+   */
   iso_2?: string
+  /**
+   * The country's ISO 3 code.
+   * 
+   * @example usa
+   */
   iso_3?: string
+  /**
+   * The country's num code.
+   * 
+   * @example 840
+   */
   num_code?: string
+  /**
+   * The country's name.
+   */
   name?: string
+  /**
+   * The country's name used for display.
+   */
   display_name?: string
 }
 
