@@ -19,6 +19,7 @@ interface SendgridServiceConfig {
 }
 
 export class SendgridNotificationService extends AbstractNotificationProviderService {
+  static identifier = "notification-sendgrid"
   protected config_: SendgridServiceConfig
   protected logger_: Logger
 

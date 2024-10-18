@@ -42,7 +42,7 @@ export type ModuleProviderLoaderFunction = (
 
 export type ModuleProvider = {
   resolve: string | ModuleProviderExports<any>
-  id: string
+  id?: string
   options?: Record<string, unknown>
   is_default?: boolean
 }

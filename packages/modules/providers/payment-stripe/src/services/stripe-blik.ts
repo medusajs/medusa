@@ -2,7 +2,7 @@ import StripeBase from "../core/stripe-base"
 import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
 class BlikProviderService extends StripeBase {
-  static PROVIDER = PaymentProviderKeys.BLIK
+  static identifier = PaymentProviderKeys.BLIK
 
   constructor(_, options) {
     super(_, options)

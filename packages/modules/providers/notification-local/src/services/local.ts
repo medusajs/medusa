@@ -1,7 +1,7 @@
 import {
+  LocalNotificationServiceOptions,
   Logger,
   NotificationTypes,
-  LocalNotificationServiceOptions,
 } from "@medusajs/framework/types"
 import {
   AbstractNotificationProviderService,
@@ -15,6 +15,7 @@ type InjectedDependencies = {
 interface LocalServiceConfig {}
 
 export class LocalNotificationService extends AbstractNotificationProviderService {
+  static identifier = "notification-local"
   protected config_: LocalServiceConfig
   protected logger_: Logger
 

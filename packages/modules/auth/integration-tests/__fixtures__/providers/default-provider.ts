@@ -10,6 +10,8 @@ import {
 } from "@medusajs/framework/utils"
 
 export class AuthServiceFixtures extends AbstractAuthModuleProvider {
+  static identifier = "plaintextpass"
+
   constructor() {
     super(
       {},
