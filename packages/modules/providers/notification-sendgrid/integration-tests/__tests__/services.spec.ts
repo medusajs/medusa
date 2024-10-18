@@ -42,7 +42,7 @@ describe.skip("Sendgrid notification provider", () => {
       to,
       channel: "email",
       template: "signup-template",
-      providerContext: {
+      provider_context: {
         subject: "It's a test",
         html: emailContent,
       },
@@ -60,7 +60,7 @@ describe.skip("Sendgrid notification provider", () => {
         to,
         template: "signup-template",
         channel: "email",
-        providerContext: { html: emailContent },
+        provider_context: { html: emailContent },
         data: {
           username: "john-doe",
         },

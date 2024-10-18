@@ -85,13 +85,13 @@ moduleIntegrationTestRunner<INotificationModuleService>({
         )
       })
 
-      it("should send a notification and don't store the providerContext in the database", async () => {
+      it("should send a notification and don't store the provider_context in the database", async () => {
         const notification = {
           to: "admin@medusa.com",
           template: "signup-template",
           channel: "email",
           data: {},
-          providerContext: {
+          provider_context: {
             html: "<p>Welcome to medusa</p>",
           },
         }
@@ -106,7 +106,7 @@ moduleIntegrationTestRunner<INotificationModuleService>({
             status: NotificationStatus.SUCCESS,
           })
         )
-        expect(dbEntry).not.toHaveProperty("providerContext")
+        expect(dbEntry).not.toHaveProperty("provider_context")
       })
 
       it("should emit an event when a notification is created", async () => {

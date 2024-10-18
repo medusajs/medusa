@@ -13,6 +13,11 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+type MailContent = {
+  subject: string
+  html: string
+}
+
 interface SendgridServiceConfig {
   apiKey: string
   from: string
@@ -59,13 +64,17 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
 
     const from = notification.from?.trim() || this.config_.from
 
-    let mailContent
+    let mailContent:
+      | MailContent
+      | {
+          templateId: string
+        }
 
-    if ("providerContext" in notification) {
+    if ("providerContext" in notification && !!notification.provider_context) {
       mailContent = {
-        subject: notification.providerContext?.subject,
-        html: notification.providerContext?.html,
-      }
+        subject: notification.provider_context?.subject,
+        html: notification.provider_context?.html,
+      } as MailContent
     } else {
       // we can't mix html and templates for sendgrid
       mailContent = {
