@@ -77,7 +77,9 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
    * using winston, but rely on morgan to hook into HTTP requests
    */
   const loggingMiddleware = morgan(
-    IS_DEV ? ":method :url ← :referrer (:status)" : "combined",
+    IS_DEV
+      ? ":method :url ← :referrer (:status) - :response-time ms"
+      : "combined",
     {
       skip: shouldSkipHttpLog,
       stream: {
