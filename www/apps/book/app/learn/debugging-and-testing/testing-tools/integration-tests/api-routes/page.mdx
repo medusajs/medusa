@@ -41,7 +41,7 @@ export const getHighlights = [
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={getHighlights}
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
