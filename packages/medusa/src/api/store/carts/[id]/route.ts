@@ -1,11 +1,15 @@
-import { updateCartWorkflow } from "@medusajs/core-flows"
+import { updateCartWorkflowWithCustomerValidation } from "@medusajs/core-flows"
 import {
   AdditionalData,
   HttpTypes,
   UpdateCartDataDTO,
 } from "@medusajs/framework/types"
 
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import { refetchCart } from "../helpers"
 
 export const GET = async (
@@ -22,17 +26,16 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: MedusaRequest<UpdateCartDataDTO & AdditionalData>,
-  res: MedusaResponse<{
-    cart: HttpTypes.StoreCart
-  }>
+  req: AuthenticatedMedusaRequest<UpdateCartDataDTO & AdditionalData>,
+  res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
-  const workflow = updateCartWorkflow(req.scope)
-
+  const workflow = updateCartWorkflowWithCustomerValidation(req.scope)
+  console.log("req.auth_context -- ", req.auth_context)
   await workflow.run({
     input: {
       ...req.validatedBody,
       id: req.params.id,
+      auth_customer_id: req.auth_context?.actor_id,
     },
   })
 
