@@ -1,0 +1,46 @@
+{
+  "name": "@medusajs/notification-twilio",
+  "version": "0.0.1",
+  "description": "Twilio notification provider for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/modules/providers/notification-twilio"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --passWithNoTests src",
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
+    "build": "rimraf dist && tsc --build ./tsconfig.json",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@medusajs/framework": "^0.0.1",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "twilio": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "^0.0.1"
+  },
+  "keywords": [
+    "medusa-provider",
+    "medusa-provider-twilio"
+  ]
+}
