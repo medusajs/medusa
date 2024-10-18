@@ -30,7 +30,6 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const workflow = updateCartWorkflowWithCustomerValidation(req.scope)
-  console.log("req.auth_context -- ", req.auth_context)
   await workflow.run({
     input: {
       ...req.validatedBody,
