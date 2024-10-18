@@ -21,7 +21,6 @@ export const StoreGetCollectionsParams = createFindParams({
     handle: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
     $and: z.lazy(() => StoreGetCollectionsParams.array()).optional(),
     $or: z.lazy(() => StoreGetCollectionsParams.array()).optional(),
   })

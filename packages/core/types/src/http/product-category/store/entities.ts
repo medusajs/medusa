@@ -10,7 +10,16 @@ export interface StoreProductCategory
     | "parent_category"
     | "category_children"
   > {
+  /**
+   * The category's products.
+   */
   products?: StoreProduct[]
+  /**
+   * The parent category.
+   */
   parent_category: StoreProductCategory | null
+  /**
+   * The category's children.
+   */
   category_children: StoreProductCategory[]
 }

@@ -23,6 +23,9 @@ export type BasePaymentSessionStatus =
   | "canceled"
 
 export interface BasePaymentProvider {
+  /**
+   * The provider's ID.
+   */
   id: string
 }
 
