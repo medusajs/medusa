@@ -27,7 +27,6 @@ import {
 import { ulid } from "ulid"
 import { EOL } from "os"
 import { resolveValue } from "../utils/composer"
-import { container } from "@medusajs/framework"
 import { MedusaModule } from "@medusajs/modules-sdk"
 
 export type LocalWorkflowExecutionOptions = {
@@ -56,7 +55,7 @@ export class WorkflowExporter<TData = unknown, TResult = unknown> {
     workflowId: string
     options: LocalWorkflowExecutionOptions
   }) {
-    this.#localWorkflow = new LocalWorkflow(workflowId, container)
+    this.#localWorkflow = new LocalWorkflow(workflowId)
     this.#localWorkflowExecutionOptions = options
     this.#executionWrapper = {
       run: this.#localWorkflow.run.bind(this.#localWorkflow),
