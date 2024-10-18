@@ -1,11 +1,11 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
-    "../../../../packages/modules/stock-location-next/tsconfig.json"
+    "../../../../packages/modules/stock-location/tsconfig.json"
   ],
-  "include": ["../../../../packages/modules/stock-location-next/src"],
+  "include": ["../../../../packages/modules/stock-location/src"],
   "exclude": [
-    "../../../../packages/modules/stock-location-next/dist", 
-    "../../../../packages/modules/stock-location-next/node_modules"
+    "../../../../packages/modules/stock-location/dist", 
+    "../../../../packages/modules/stock-location/node_modules"
   ]
 }

@@ -37,7 +37,7 @@ const jsSdkOptions: FormattingOptionsType = {
     reflectionDescription:
       "This documentation provides a reference to the `sdk.store.{{alias}}` set of methods used to send requests to Medusa's Store API routes.",
   },
-  "^js_sdk/store/classes/.*Admin": {
+  "^js_sdk/admin/classes/.*Admin": {
     frontmatterData: {
       slug: "/references/js-sdk/admin",
     },
@@ -60,7 +60,7 @@ const jsSdkOptions: FormattingOptionsType = {
     reflectionDescription:
       "This documentation provides a reference to the `sdk.admin.{{alias}}` set of methods used to send requests to Medusa's Admin API routes.",
   },
-  "^js_sdk/store/classes/.*Auth": {
+  "^js_sdk/auth/classes/.*Auth": {
     frontmatterData: {
       slug: "/references/js-sdk/auth",
     },
