@@ -1,8 +1,4 @@
-import {
-  MedusaModule,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/framework/modules-sdk"
+import { MedusaModule, MODULE_SCOPE } from "@medusajs/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
   ILinkModule,
@@ -158,11 +154,6 @@ export const initialize = async (
       dependencies: [Modules.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: injectedDependencies?.[
-          ContainerRegistrationKeys.PG_CONNECTION
-        ]
-          ? MODULE_RESOURCE_TYPE.SHARED
-          : MODULE_RESOURCE_TYPE.ISOLATED,
       },
     }
 
