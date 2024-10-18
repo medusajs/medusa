@@ -8,6 +8,7 @@ import { SidebarItem } from "./Item"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
 import { useClickOutside, useKeyboardShortcut } from "@/hooks"
+import useResizeObserver from "@react-hook/resize-observer"
 
 export type SidebarProps = {
   className?: string
@@ -31,6 +32,7 @@ export const Sidebar = ({
     sidebarRef,
     desktopSidebarOpen,
     setDesktopSidebarOpen,
+    setSidebarTopHeight,
   } = useSidebar()
   useClickOutside({
     elmRef: sidebarWrapperRef,
@@ -52,6 +54,10 @@ export const Sidebar = ({
     () => currentItems || items,
     [items, currentItems]
   )
+
+  useResizeObserver(sidebarTopRef, () => {
+    setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
+  })
 
   return (
     <>
@@ -124,7 +130,7 @@ export const Sidebar = ({
                   {sidebarItems.mobile.length > 0 && <DottedSeparator />}
                 </div> */}
                 {/* DESKTOP SIDEBAR */}
-                <div className="mt-docs_0.75 lg:mt-0">
+                <div className="pt-docs_0.75">
                   {!sidebarItems.default.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}
