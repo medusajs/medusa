@@ -1,1 +1,3 @@
-export class ModuleProvider2Service {}
+export class ModuleProvider2Service {
+  static identifier = "provider-2"
+}

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input, Select, Switch, toast } from "@medusajs/ui"
+import { Button, Input, Select, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
-import { Trans, useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { UserDTO } from "@medusajs/types"
@@ -13,17 +13,17 @@ import { languages } from "../../../../../i18n/languages"
 
 type EditProfileProps = {
   user: Partial<Omit<UserDTO, "password_hash">>
-  usageInsights: boolean
+  // usageInsights: boolean
 }
 
 const EditProfileSchema = zod.object({
   first_name: zod.string().optional(),
   last_name: zod.string().optional(),
   language: zod.string(),
-  usage_insights: zod.boolean(),
+  // usage_insights: zod.boolean(),
 })
 
-export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
+export const EditProfileForm = ({ user }: EditProfileProps) => {
   const { t, i18n } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -32,7 +32,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
       first_name: user.first_name ?? "",
       last_name: user.last_name ?? "",
       language: i18n.language,
-      usage_insights: usageInsights,
+      // usage_insights: usageInsights,
     },
     resolver: zodResolver(EditProfileSchema),
   })
@@ -48,19 +48,23 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
   const { mutateAsync, isPending } = useUpdateUser(user.id!)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         first_name: values.first_name,
         last_name: values.last_name,
-      })
+      },
+      {
+        onError: (error) => {
+          toast.error(error.message)
+          return
+        },
+      }
+    )
 
-      await changeLanguage(values.language)
+    await changeLanguage(values.language)
 
-      toast.success(t("profile.toast.edit"))
-      handleSuccess()
-    } catch (e) {
-      toast.error(e.message)
-    }
+    toast.success(t("profile.toast.edit"))
+    handleSuccess()
   })
 
   return (
@@ -136,7 +140,8 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                 </Form.Item>
               )}
             />
-            <Form.Field
+            {/* TODO: Do we want to implement usage insights in V2? */}
+            {/* <Form.Field
               control={form.control}
               name="usage_insights"
               render={({ field: { value, onChange, ...rest } }) => (
@@ -173,7 +178,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.ErrorMessage />
                 </Form.Item>
               )}
-            />
+            /> */}
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
