@@ -170,7 +170,12 @@ const REJECTED_CHILDREN_NAMES = ["__type"]
 
 function filterChildren(children: DeclarationReflection[]) {
   return children.filter(
-    (child) => !REJECTED_CHILDREN_NAMES.includes(child.name)
+    (child) =>
+      !REJECTED_CHILDREN_NAMES.includes(child.name) &&
+      !child.comment?.modifierTags.has("@ignore") &&
+      !child.signatures?.some(
+        (signature) => signature.comment?.modifierTags.has("@ignore")
+      )
   )
 }
 

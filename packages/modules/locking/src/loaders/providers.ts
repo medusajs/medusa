@@ -4,7 +4,10 @@ import {
   ModuleProvider,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  getProviderRegistrationKey,
+} from "@medusajs/framework/utils"
 import { LockingProviderService } from "@services"
 import {
   LockingDefaultProvider,
@@ -14,10 +17,20 @@ import {
 import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
 import { InMemoryLockingProvider } from "../providers/in-memory"
 
-const registrationFn = async (klass, container) => {
+const registrationFn = async (klass, container, { id }) => {
   const key = LockingProviderService.getRegistrationIdentifier(klass)
+
+  if (!id) {
+    throw new Error(`No "id" provided for provider ${key}`)
+  }
+
+  const regKey = getProviderRegistrationKey({
+    providerId: id,
+    providerIdentifier: key,
+  })
+
   container.register({
-    [LockingProviderRegistrationPrefix + key]: aliasTo("__providers__" + key),
+    [LockingProviderRegistrationPrefix + key]: aliasTo(regKey),
   })
 
   container.registerAdd(LockingIdentifiersRegistrationName, asValue(key))

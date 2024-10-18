@@ -11,7 +11,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Order {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }

@@ -11,14 +11,12 @@ import {
 } from "@medusajs/types"
 import type { EntityClass, EntitySchema } from "@mikro-orm/core"
 import {
-  doNotForceTransaction,
   isDefined,
   isObject,
   isPresent,
   isString,
   lowerCaseFirst,
   MedusaError,
-  shouldForceTransaction,
 } from "../common"
 import { FreeTextSearchFilterKey } from "../dal"
 import { DmlEntity, toMikroORMEntity } from "../dml"
@@ -209,7 +207,7 @@ export function MedusaInternalService<
       sharedContext?: Context
     ): Promise<InferEntityType<TEntity>[]>
 
-    @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
+    @InjectTransactionManager(propertyRepositoryName)
     async create(
       data: any | any[],
       @MedusaContext() sharedContext: Context = {}
@@ -246,7 +244,7 @@ export function MedusaInternalService<
       sharedContext?: Context
     ): Promise<InferEntityType<TEntity>[]>
 
-    @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
+    @InjectTransactionManager(propertyRepositoryName)
     async update(
       input: any | any[] | SelectorAndData | SelectorAndData[],
       @MedusaContext() sharedContext: Context = {}
@@ -364,7 +362,7 @@ export function MedusaInternalService<
       sharedContext?: Context
     ): Promise<void>
 
-    @InjectTransactionManager(doNotForceTransaction, propertyRepositoryName)
+    @InjectTransactionManager(propertyRepositoryName)
     async delete(
       idOrSelector:
         | string
