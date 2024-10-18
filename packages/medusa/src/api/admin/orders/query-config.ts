@@ -81,6 +81,14 @@ export const defaultAdminRetrieveOrderChangesFields = [
   "updated_at",
 ]
 
+export const defaultAdminOrderItemsFields = [
+  "id",
+  "order_id",
+  "item_id",
+  "version",
+  "*item",
+]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRetrieveOrderFields,
   isList: false,
@@ -95,4 +103,10 @@ export const listTransformQueryConfig = {
 export const retrieveOrderChangesTransformQueryConfig = {
   defaults: defaultAdminRetrieveOrderChangesFields,
   isList: false,
+}
+
+export const listOrderItemsQueryConfig = {
+  defaults: defaultAdminOrderItemsFields,
+  defaultLimit: 100,
+  isList: true,
 }

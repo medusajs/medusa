@@ -901,7 +901,16 @@
       "allocateItems": "Allocate items",
       "editOrder": "Edit order",
       "editOrderContinue": "Continue order edit",
-      "inventoryKit": "Consists of {{count}}x inventory items"
+      "inventoryKit": "Consists of {{count}}x inventory items",
+      "itemTotal": "Item Total",
+      "shippingTotal": "Shipping Total",
+      "discountTotal": "Discount Total",
+      "taxTotalIncl": "Tax Total (included)",
+      "itemSubtotal": "Item Subtotal",
+      "shippingSubtotal": "Shipping Subtotal",
+      "discountSubtotal": "Discount Subtotal",
+      "taxTotal": "Tax Total"
+
     },
     "payment": {
       "title": "Payments",

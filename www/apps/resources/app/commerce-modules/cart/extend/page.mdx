@@ -22,7 +22,7 @@ Consider you have a Hello Module defined in the `/src/modules/hello` directory.
 
 <Note title="Tip">
 
-If you don't have a module, follow [this guide](!docs!/basics/modules) to create one.
+If you don't have a module, follow [this guide](!docs!/learn/basics/modules) to create one.
 
 </Note>
 
@@ -43,7 +43,7 @@ This creates a `Custom` data model that has the `id` and `custom_name` propertie
 
 <Note title="Tip">
 
-Learn more about data models in [this guide](!docs!/data-models).
+Learn more about data models in [this guide](!docs!/learn/data-models).
 
 </Note>
 
@@ -55,7 +55,7 @@ Next, you'll define a module link between the `Custom` and `Cart` data model. A 
 
 <Note title="Tip">
 
-Learn more about module links in [this guide](!docs!/module-links).
+Learn more about module links in [this guide](!docs!/learn/module-links).
 
 </Note>
 
@@ -82,7 +82,7 @@ This defines a link between the `Cart` and `Custom` data models. Using this link
   items={[
     {
       text: "Module must be registered in medusa-config.ts",
-      link: "!docs!/basics/modules#4-add-module-to-configurations"
+      link: "!docs!/learn/basics/modules#4-add-module-to-configurations"
     }
   ]}
 />
@@ -115,7 +115,7 @@ To do that, you'll consume the [cartCreated](/references/medusa-workflows/create
 
 <Note title="Tip">
 
-Learn more about workflow hooks in [this guide](!docs!/advanced-development/workflows/workflow-hooks).
+Learn more about workflow hooks in [this guide](!docs!/learn/advanced-development/workflows/workflow-hooks).
 
 </Note>
 
@@ -150,7 +150,7 @@ In the snippet above, you add a validation rule indicating that `custom_name` is
 
 <Note title="Tip">
 
-Learn more about additional data validation in [this guide](!docs!/advanced-development/api-routes/additional-data).
+Learn more about additional data validation in [this guide](!docs!/learn/advanced-development/api-routes/additional-data).
 
 </Note>
 
@@ -202,7 +202,7 @@ In the compensation function that undoes the step's actions in case of an error,
 
 <Note title="Tip">
 
-Learn more about compensation functions in [this guide](!docs!/advanced-development/workflows/compensation-function).
+Learn more about compensation functions in [this guide](!docs!/learn/advanced-development/workflows/compensation-function).
 
 </Note>
 
@@ -260,9 +260,9 @@ The workflow accepts as an input the created cart and the `additional_data` para
 
 In the workflow, you:
 
-1. Use the `transform` utility to get the value of `custom_name` based on whether it's set in `additional_data`. Learn more about why you can't use conditional operators in a workflow without using `transform` in [this guide](!docs!/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
+1. Use the `transform` utility to get the value of `custom_name` based on whether it's set in `additional_data`. Learn more about why you can't use conditional operators in a workflow without using `transform` in [this guide](!docs!/learn/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
 2. Create the `Custom` record using the `createCustomStep`.
-3. Use the `when-then` utility to link the cart to the `Custom` record if it was created. Learn more about why you can't use if-then conditions in a workflow without using `when-then` in [this guide](!docs!/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
+3. Use the `when-then` utility to link the cart to the `Custom` record if it was created. Learn more about why you can't use if-then conditions in a workflow without using `when-then` in [this guide](!docs!/learn/advanced-development/workflows/conditions#why-if-conditions-arent-allowed-in-workflows).
 
 You'll next call the workflow in the hook handler.
 
@@ -355,7 +355,7 @@ Among the returned `cart` object, you'll find a `custom` property which holds th
 
 ### Retrieve using Query
 
-You can also retrieve the `Custom` record linked to a cart in your code using [Query](!docs!/advanced-development/module-links/query).
+You can also retrieve the `Custom` record linked to a cart in your code using [Query](!docs!/learn/advanced-development/module-links/query).
 
 For example:
 
@@ -369,7 +369,7 @@ const { data: [cart] } = await query.graph({
 })
 ```
 
-Learn more about how to use Query in [this guide](!docs!/advanced-development/module-links/query).
+Learn more about how to use Query in [this guide](!docs!/learn/advanced-development/module-links/query).
 
 ---
 
