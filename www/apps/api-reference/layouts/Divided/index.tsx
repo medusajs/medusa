@@ -39,15 +39,17 @@ const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
         >
           {mainContent}
         </div>
-        <div
-          className={clsx(
-            "w-full flex-shrink-0 flex-grow-0 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pr-1.5",
-            "mt-2 lg:mt-0",
-            codeContentClassName
-          )}
-        >
-          {codeContent}
-        </div>
+        {codeContent && (
+          <div
+            className={clsx(
+              "w-full flex-shrink-0 flex-grow-0 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pr-1.5",
+              "mt-2 lg:mt-0",
+              codeContentClassName
+            )}
+          >
+            {codeContent}
+          </div>
+        )}
       </div>
     )
   }

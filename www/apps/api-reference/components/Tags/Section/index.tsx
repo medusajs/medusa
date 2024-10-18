@@ -123,7 +123,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
       <DividedLayout
         ref={ref}
         mainContent={
-          <SectionContainer>
+          <SectionContainer noDivider={true}>
             <h2>{tag.name}</h2>
             {tag.description && (
               <Section>
@@ -154,6 +154,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
               vertical
               question="Was this section helpful?"
             />
+            <SectionDivider className="-left-[16px] lg:!-left-[30%]" />
           </SectionContainer>
         }
         codeContent={<></>}
@@ -166,7 +167,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
           <TagPaths tag={tag} />
         </LoadingProvider>
       )}
-      {!loadPaths && <SectionDivider />}
+      {!loadPaths && <SectionDivider className="lg:!-left-1" />}
     </div>
   )
 }

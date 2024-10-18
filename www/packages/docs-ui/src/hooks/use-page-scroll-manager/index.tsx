@@ -36,7 +36,7 @@ export const usePageScrollManager = () => {
 
       targetElm?.scrollIntoView()
     }
-  }, [pathname, scrollableElement])
+  }, [pathname, scrollableElement, checkedPageReload])
 
   useEffect(() => {
     if (!scrollableElement || checkedPageReload) {
@@ -71,5 +71,5 @@ export const usePageScrollManager = () => {
         )
       }
     })
-  }, [scrollableElement])
+  }, [scrollableElement, checkedPageReload])
 }
