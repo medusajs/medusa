@@ -97,26 +97,6 @@ export const OrderTimeline = ({ order }: OrderTimelineProps) => {
   )
 }
 
-function getMissingLineItemIds(order: AdminOrder, changes: AdminOrderChange[]) {
-  if (!changes?.length) return []
-
-  const retIds = new Set<string>()
-  const loadedItems = new Map(order.items.map((item) => [item.id, item]))
-
-  changes.forEach((change) => {
-    change.actions.forEach((action) => {
-      if (
-        action.details.reference_id.startsWith("ordli_") &&
-        !loadedItems.has(action.details.reference_id)
-      ) {
-        retIds.add(action.details.reference_id)
-      }
-    })
-  })
-
-  return Array.from(retIds)
-}
-
 type Activity = {
   title: string
   timestamp: string | Date
@@ -137,7 +117,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
   })
 
   const missingLineItemIds = getMissingLineItemIds(order, orderChanges)
-  const { order_items = [] } = useOrderLineItems(
+  const { order_items: removedLineItems = [] } = useOrderLineItems(
     order.id,
 
     {
@@ -150,20 +130,18 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
   )
 
   const itemsMap = useMemo(() => {
-    const iMap = new Map(order?.items?.map((i) => [i.id, i]))
-
-    order_items.sort((a, b) => a.version - b.version) // TEMP: until BD return only latest version
+    const _itemsMap = new Map(order?.items?.map((i) => [i.id, i]))
 
     for (const id of missingLineItemIds) {
-      const i = order_items.find((i) => i.item.id === id)
+      const i = removedLineItems.find((i) => i.item.id === id)
 
       if (i) {
-        iMap.set(id, { ...i.item, quantity: i.quantity }) // add quantity from OrderItem to OrderLineItem
+        _itemsMap.set(id, { ...i.item, quantity: i.quantity }) // copy quantity from OrderItem to OrderLineItem
       }
     }
 
-    return iMap
-  }, [order.items, order_items, missingLineItemIds])
+    return _itemsMap
+  }, [order.items, removedLineItems, missingLineItemIds])
 
   const { returns = [] } = useReturns({
     order_id: order.id,
@@ -890,6 +868,9 @@ const OrderEditBody = ({
   )
 }
 
+/**
+ * Returns count of added and removed item quantity
+ */
 function countItemsChange(
   actions: AdminOrderChange["actions"],
   itemsMap: Map<string, AdminOrderLineItem>
@@ -899,12 +880,12 @@ function countItemsChange(
 
   actions.forEach((action) => {
     if (action.action === "ITEM_ADD") {
-      added += action.details.quantity
+      added += action.details!.quantity as number
     }
     if (action.action === "ITEM_UPDATE") {
-      const newQuantity: number = action.details!.quantity
+      const newQuantity = action.details!.quantity as number
       const originalQuantity: number | undefined = itemsMap.get(
-        action.details!.reference_id
+        action.details!.reference_id as string
       )?.quantity
 
       if (typeof originalQuantity === "number") {
@@ -921,4 +902,29 @@ function countItemsChange(
   })
 
   return [added, removed]
+}
+
+/**
+ * Get IDs of missing line items that were removed from the order.
+ */
+function getMissingLineItemIds(order: AdminOrder, changes: AdminOrderChange[]) {
+  if (!changes?.length) {
+    return []
+  }
+
+  const retIds = new Set<string>()
+  const existingItemsMap = new Map(order.items.map((item) => [item.id, true]))
+
+  changes.forEach((change) => {
+    change.actions.forEach((action) => {
+      if (
+        (action.details!.reference_id as string).startsWith("ordli_") &&
+        !existingItemsMap.has(action.details!.reference_id as string)
+      ) {
+        retIds.add(action.details!.reference_id as string)
+      }
+    })
+  })
+
+  return Array.from(retIds)
 }
