@@ -7,6 +7,7 @@ import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateProductTag } from "../../../../../hooks/api"
 
 type ProductTagEditFormProps = {
@@ -48,7 +49,7 @@ export const ProductTagEditForm = ({ productTag }: ProductTagEditFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex size-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
@@ -81,7 +82,7 @@ export const ProductTagEditForm = ({ productTag }: ProductTagEditFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

@@ -5,15 +5,16 @@ import { Trans, useTranslation } from "react-i18next"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 
+import { useState } from "react"
+import { decodeToken } from "react-jwt"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
+import { i18n } from "../../components/utilities/i18n"
+import { KeyboundForm } from "../../components/utilities/keybound-form"
 import {
   useResetPasswordForEmailPass,
   useUpdateProviderForEmailPass,
 } from "../../hooks/api/auth"
-import { useState } from "react"
-import { decodeToken } from "react-jwt"
-import { i18n } from "../../components/utilities/i18n"
 
 const ResetPasswordInstructionsSchema = z.object({
   email: z.string().email(),
@@ -148,7 +149,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
         </div>
         <div className="flex w-full flex-col gap-y-3">
           <Form {...form}>
-            <form
+            <KeyboundForm
               onSubmit={handleSubmit}
               className="flex w-full flex-col gap-y-6"
             >
@@ -208,7 +209,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
                   {t("resetPassword.resetPassword")}
                 </Button>
               )}
-            </form>
+            </KeyboundForm>
           </Form>
         </div>
         <span className="txt-small my-6">
@@ -272,7 +273,7 @@ export const ResetPassword = () => {
         </div>
         <div className="flex w-full flex-col gap-y-3">
           <Form {...form}>
-            <form
+            <KeyboundForm
               onSubmit={handleSubmit}
               className="flex w-full flex-col gap-y-6"
             >
@@ -309,7 +310,7 @@ export const ResetPassword = () => {
               <Button className="w-full" type="submit" isLoading={isPending}>
                 {t("resetPassword.sendResetInstructions")}
               </Button>
-            </form>
+            </KeyboundForm>
           </Form>
         </div>
         <span className="txt-small my-6">

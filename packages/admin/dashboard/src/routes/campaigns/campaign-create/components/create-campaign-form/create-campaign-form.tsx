@@ -4,20 +4,22 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { CampaignBudgetTypeValues } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { VisuallyHidden } from "../../../../../components/utilities/visually-hidden"
 import { useCreateCampaign } from "../../../../../hooks/api/campaigns"
 import { CreateCampaignFormFields } from "../../../common/components/create-campaign-form-fields"
+import { DEFAULT_CAMPAIGN_VALUES } from "../../../common/constants"
 
 export const CreateCampaignSchema = zod.object({
   name: zod.string().min(1),
   description: zod.string().optional(),
   campaign_identifier: zod.string().min(1),
-  starts_at: zod.date().optional(),
-  ends_at: zod.date().optional(),
+  starts_at: zod.date().nullable(),
+  ends_at: zod.date().nullable(),
   budget: zod.object({
     limit: zod.number().min(0).nullish(),
     type: zod.enum(["spend", "usage"]),
@@ -25,24 +27,13 @@ export const CreateCampaignSchema = zod.object({
   }),
 })
 
-export const defaultCampaignValues = {
-  name: "",
-  description: "",
-  campaign_identifier: "",
-  budget: {
-    type: "usage" as CampaignBudgetTypeValues,
-    currency_code: null,
-    limit: null,
-  },
-}
-
 export const CreateCampaignForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { mutateAsync, isPending } = useCreateCampaign()
 
   const form = useForm<zod.infer<typeof CreateCampaignSchema>>({
-    defaultValues: defaultCampaignValues,
+    defaultValues: DEFAULT_CAMPAIGN_VALUES,
     resolver: zodResolver(CreateCampaignSchema),
   })
 
@@ -78,11 +69,18 @@ export const CreateCampaignForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
-        <RouteFocusModal.Header />
+        <RouteFocusModal.Header>
+          <RouteFocusModal.Title asChild>
+            <VisuallyHidden>{t("campaigns.create.title")}</VisuallyHidden>
+          </RouteFocusModal.Title>
+          <RouteFocusModal.Description asChild>
+            <VisuallyHidden>{t("campaigns.create.description")}</VisuallyHidden>
+          </RouteFocusModal.Description>
+        </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex size-full flex-col items-center overflow-auto py-16">
           <CreateCampaignFormFields form={form} />
         </RouteFocusModal.Body>
@@ -103,7 +101,7 @@ export const CreateCampaignForm = () => {
             </Button>
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

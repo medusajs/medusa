@@ -3,8 +3,9 @@ import {
   ParameterReflection,
   ProjectReflection,
 } from "typedoc"
-import ts, { isStringLiteral } from "typescript"
+import ts from "typescript"
 import { StepModifier, StepType } from "../types"
+import { capitalize } from "utils"
 
 /**
  * A class of helper methods.
@@ -84,13 +85,22 @@ export default class Helper {
    * @returns The ID of the step or workflow.
    */
   getStepOrWorkflowId(
-    initializer: ts.CallExpression,
+    initializer: ts.CallExpression | ts.ArrowFunction,
     project: ProjectReflection,
+    type: "workflow" | "step",
     checkWorkflowStep = false
   ): string | undefined {
-    const idArg = initializer.arguments[0]
+    const callInitializer = ts.isCallExpression(initializer)
+      ? initializer
+      : this.getCallExpressionFromBody(initializer.body)
+    if (!callInitializer) {
+      throw new Error(
+        `Couldn't find initializer of a step or workflow: ${initializer.getText()}`
+      )
+    }
+    const idArg = callInitializer.arguments[0]
     const isWorkflowStep =
-      checkWorkflowStep && this.getStepType(initializer) === "workflowStep"
+      checkWorkflowStep && this.getStepType(callInitializer) === "workflowStep"
     const idArgValue = this.normalizeName(idArg.getText())
 
     let stepId: string | undefined
@@ -106,13 +116,56 @@ export default class Helper {
           ? nameValue
           : this.getValueFromReflection(nameValue, project)
       }
-    } else if (!isStringLiteral(idArg)) {
+    } else if (!ts.isStringLiteral(idArg)) {
       stepId = this.getValueFromReflection(idArgValue, project)
     } else {
       stepId = idArgValue
     }
 
+    if (!stepId && ts.isArrowFunction(initializer)) {
+      stepId = this._getStepOrWorkflowIdFromArrowFunction(initializer, type)
+    }
+
     return isWorkflowStep ? `${stepId}-as-step` : stepId
+  }
+
+  private _getStepOrWorkflowIdFromArrowFunction(
+    initializer: ts.ArrowFunction,
+    type: "workflow" | "step"
+  ) {
+    // for arrow functions, the inner workflow / step isn't exported
+    // so we have to rely on a hacky way of retrieving the ID from the source file
+    const sourceFile = initializer.getSourceFile()
+    const localMap: Map<string, ts.Symbol> =
+      "locals" in sourceFile
+        ? (sourceFile.locals as Map<string, ts.Symbol>)
+        : new Map()
+
+    if (!localMap.size) {
+      throw new Error(`Couldn't find ID of ${type}: ${initializer.getText()}`)
+    }
+
+    let id = ""
+    const capitalizedType = capitalize(type)
+
+    localMap.forEach((value, key) => {
+      if (
+        !key.endsWith(`${capitalizedType}Id`) ||
+        id.length ||
+        !value.declarations?.length ||
+        !ts.isVariableDeclaration(value.declarations[0])
+      ) {
+        return
+      }
+
+      id = value.declarations[0].initializer?.getText() || ""
+    })
+
+    if (!id.length) {
+      throw new Error(`Couldn't find ID of ${type}: ${initializer.getText()}`)
+    }
+
+    return this.normalizeName(id)
   }
 
   private getValueFromReflection(
@@ -139,8 +192,9 @@ export default class Helper {
    * @param initializer - The initializer of the step.
    * @returns The step's type.
    */
-  getStepType(initializer: ts.CallExpression): StepType {
-    switch (initializer.expression.getText()) {
+  getStepType(initializer: ts.CallExpression | ts.ArrowFunction): StepType {
+    const stepText = this._getStepText(initializer)
+    switch (stepText) {
       case "createWorkflow":
         return "workflowStep"
       case "createHook":
@@ -150,6 +204,57 @@ export default class Helper {
       default:
         return "step"
     }
+  }
+
+  private _getStepText(
+    initializer: ts.CallExpression | ts.ArrowFunction
+  ): string {
+    if (ts.isCallExpression(initializer)) {
+      return initializer.expression.getText()
+    }
+
+    const callExpression = this.getCallExpressionFromBody(initializer.body)
+
+    if (
+      callExpression &&
+      (!("symbol" in callExpression) || !callExpression.symbol)
+    ) {
+      // for arrow functions, the inner workflow / step isn't exported
+      // so we have to rely on a hacky way of retrieving the text from the source file
+
+      const sourceFile = initializer.getSourceFile()
+      const localMap: Map<string, ts.Symbol> =
+        "locals" in sourceFile
+          ? (sourceFile.locals as Map<string, ts.Symbol>)
+          : new Map()
+
+      let text = ""
+      const fnName = callExpression.expression.getText()
+      localMap.forEach((value, key) => {
+        if (text.length) {
+          return
+        }
+
+        if (
+          key === fnName &&
+          value.declarations?.length &&
+          "initializer" in value.declarations[0] &&
+          ts.isCallExpression(value.declarations[0].initializer as ts.Node)
+        ) {
+          text = this._getStepText(
+            value.declarations[0].initializer as ts.CallExpression
+          )
+        }
+      })
+
+      return text
+    } else if (callExpression?.symbol) {
+      return (
+        (callExpression.symbol as ts.Symbol).declarations?.[0].getText() || ""
+      )
+    }
+
+    return ""
   }
 
   /**
@@ -192,5 +297,40 @@ export default class Helper {
     str += ` }, { container }) => {\n\t\t//TODO\n\t})\n)`
 
     return str
+  }
+
+  getCallExpressionFromBody(
+    body: ts.ConciseBody
+  ): ts.CallExpression | undefined {
+    let callExpression: ts.CallExpression | undefined
+
+    const checkChildren = (child: ts.Node) => {
+      if (callExpression) {
+        return
+      } else if (ts.isCallExpression(child)) {
+        callExpression = child
+        return
+      }
+
+      if ("expression" in child) {
+        checkChildren(child.expression as ts.Node)
+      }
+    }
+
+    body.forEachChild(checkChildren)
+
+    return callExpression
+  }
+
+  getIdentifierExpression(node: ts.Node): ts.Identifier | undefined {
+    if (ts.isIdentifier(node)) {
+      return node
+    }
+
+    if ("expression" in node) {
+      return this.getIdentifierExpression(node.expression as ts.Node)
+    }
+
+    return
   }
 }

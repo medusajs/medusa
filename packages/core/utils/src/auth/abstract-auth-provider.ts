@@ -69,22 +69,32 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * @ignore
    */
-  private static PROVIDER: string
+  static identifier: string
   /**
    * @ignore
    */
-  private static DISPLAY_NAME: string
+  static DISPLAY_NAME: string
 
   /**
    * @ignore
    */
   protected readonly container_: any
+
   /**
+   * @deprecated Use `identifier` instead.
    * @ignore
    */
   public get provider() {
-    return (this.constructor as typeof AbstractAuthModuleProvider).PROVIDER
+    return (this.constructor as typeof AbstractAuthModuleProvider).identifier
   }
+
+  /**
+   * @ignore
+   */
+  public get identifier() {
+    return (this.constructor as typeof AbstractAuthModuleProvider).identifier
+  }
+
   /**
    * @ignore
    */
@@ -97,21 +107,6 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * @param options
    */
   static validateOptions(options: Record<any, any>): void | never {}
-
-  /**
-   * @ignore
-   *
-   * @privateRemarks
-   * Documenting the constructor in the class's TSDocs as it's difficult to relay
-   * the necessary information with this constructor's signature.
-   */
-  protected constructor({}, config: { provider: string; displayName: string }) {
-    this.container_ = arguments[0]
-    ;(this.constructor as typeof AbstractAuthModuleProvider).PROVIDER ??=
-      config.provider
-    ;(this.constructor as typeof AbstractAuthModuleProvider).DISPLAY_NAME ??=
-      config.displayName
-  }
 
   /**
    * This method authenticates the user.

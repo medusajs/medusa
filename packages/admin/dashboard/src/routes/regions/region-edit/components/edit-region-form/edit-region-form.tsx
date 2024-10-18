@@ -10,6 +10,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/modals/index.ts"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form/keybound-form.tsx"
 import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
 import { CurrencyInfo } from "../../../../../lib/data/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
@@ -79,7 +80,7 @@ export const EditRegionForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+      <KeyboundForm onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
@@ -223,7 +224,7 @@ export const EditRegionForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
+import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useEffect, useMemo, useState } from "react"
 import { z } from "zod"
 
 import { AdminCreateProductVariantPrice, HttpTypes } from "@medusajs/types"
@@ -11,7 +11,11 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { useRegions } from "../../../../../hooks/api"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
+import { castNumber } from "../../../../../lib/cast-number"
+import { partialFormValidation } from "../../../../../lib/validation"
 import {
   CreateProductVariantSchema,
   CreateVariantDetailsFields,
@@ -20,11 +24,8 @@ import {
   CreateVariantPriceSchema,
 } from "./constants"
 import DetailsTab from "./details-tab"
-import PricingTab from "./pricing-tab"
 import InventoryKitTab from "./inventory-kit-tab"
-import { castNumber } from "../../../../../lib/cast-number"
-import { useRegions } from "../../../../../hooks/api"
-import { partialFormValidation } from "../../../../../lib/validation"
+import PricingTab from "./pricing-tab"
 
 enum Tab {
   DETAIL = "detail",
@@ -74,13 +75,10 @@ export const CreateProductVariantForm = ({
       return {}
     }
 
-    return regions.reduce(
-      (acc, reg) => {
-        acc[reg.id] = reg.currency_code
-        return acc
-      },
-      {} as Record<string, string>
-    )
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {} as Record<string, string>)
   }, [regions])
 
   const isManageInventoryEnabled = useWatch({
@@ -263,7 +261,7 @@ export const CreateProductVariantForm = ({
         onValueChange={(tab) => handleChangeTab(tab as Tab)}
         className="flex h-full flex-col overflow-hidden"
       >
-        <form
+        <KeyboundForm
           onSubmit={handleSubmit}
           className="flex h-full flex-col overflow-hidden"
         >
@@ -332,7 +330,7 @@ export const CreateProductVariantForm = ({
               />
             </div>
           </RouteFocusModal.Footer>
-        </form>
+        </KeyboundForm>
       </ProgressTabs>
     </RouteFocusModal.Form>
   )

@@ -42,7 +42,6 @@ module.exports = {
     [Modules.AUTH]: true,
     [Modules.USER]: {
       scope: "internal",
-      resources: "shared",
       resolve: "@medusajs/user",
       options: {
         jwt_secret: "test",

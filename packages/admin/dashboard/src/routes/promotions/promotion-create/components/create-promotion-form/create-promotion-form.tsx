@@ -32,10 +32,11 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
-import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
+import { DEFAULT_CAMPAIGN_VALUES } from "../../../../campaigns/common/constants"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
@@ -319,9 +320,9 @@ export const CreatePromotionForm = () => {
     if (watchCampaignChoice === "new") {
       if (!formData.campaign || !formData.campaign?.budget?.type) {
         form.setValue("campaign", {
-          ...defaultCampaignValues,
+          ...DEFAULT_CAMPAIGN_VALUES,
           budget: {
-            ...defaultCampaignValues.budget,
+            ...DEFAULT_CAMPAIGN_VALUES.budget,
             currency_code: formData.application_method.currency_code,
           },
         })
@@ -350,7 +351,7 @@ export const CreatePromotionForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+      <KeyboundForm className="flex h-full flex-col" onSubmit={handleSubmit}>
         <ProgressTabs
           value={tab}
           onValueChange={(tab) => handleTabChange(tab as Tab)}
@@ -875,7 +876,7 @@ export const CreatePromotionForm = () => {
             )}
           </div>
         </RouteFocusModal.Footer>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

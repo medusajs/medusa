@@ -22,7 +22,6 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/framework/utils"
 import { LinkService } from "@services"
-import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -173,7 +172,7 @@ export default class LinkModuleService implements ILinkModule {
     return [rows.map((row) => row.toJSON()), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager()
   async create(
     primaryKeyOrBulkData:
       | string
@@ -222,7 +221,7 @@ export default class LinkModuleService implements ILinkModule {
     return links.map((row) => row.toJSON())
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager()
   async dismiss(
     primaryKeyOrBulkData: string | string[] | [string | string[], string][],
     foreignKeyData?: string,
@@ -247,7 +246,7 @@ export default class LinkModuleService implements ILinkModule {
     return links.map((row) => row.toJSON())
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager()
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -322,7 +321,7 @@ export default class LinkModuleService implements ILinkModule {
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager()
   protected async softDelete_(
     data: any[],
     @MedusaContext() sharedContext: Context = {}
@@ -380,7 +379,7 @@ export default class LinkModuleService implements ILinkModule {
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager()
   async restore_(
     data: any,
     @MedusaContext() sharedContext: Context = {}
