@@ -5,11 +5,11 @@
  * x-schemaName: StoreCollection
  * required:
  *   - title
- *   - metadata
  *   - id
- *   - handle
+ *   - metadata
  *   - created_at
  *   - updated_at
+ *   - handle
  *   - deleted_at
  * properties:
  *   id:

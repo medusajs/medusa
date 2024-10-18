@@ -11,14 +11,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -31,6 +23,54 @@
  *         fields. without prefix it will replace the entire default fields.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: The order's ID.
+ *         - type: array
+ *           description: The order's ID.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The id's ID.
+ *   - name: status
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: array
+ *           description: The order's status.
+ *           items:
+ *             type: string
+ *             title: status
+ *             description: The status's details.
+ *   - name: version
+ *     in: query
+ *     description: The order's version.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: version
+ *       description: The order's version.
+ *   - name: created_at
+ *     in: query
+ *     required: false
+ *     schema: {}
+ *   - name: updated_at
+ *     in: query
+ *     required: false
+ *     schema: {}
+ *   - name: deleted_at
+ *     in: query
+ *     required: false
+ *     schema: {}
  * security:
  *   - api_token: []
  *   - cookie_auth: []

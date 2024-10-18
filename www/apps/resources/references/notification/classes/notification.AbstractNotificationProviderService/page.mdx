@@ -82,15 +82,33 @@ export default MyNotificationProviderService
 
 ### validateOptions
 
-Override this static method in order for the loader to validate the options provided to the module provider.
+This method validates the options of the provider set in `medusa-config.ts`.
+Implementing this method is optional. It's useful if your provider requires custom validation.
+
+If the options aren't valid, throw an error.
+
+#### Example
+
+```ts
+class MyNotificationProviderService extends AbstractNotificationProviderService {
+  static validateOptions(options: Record<any, any>) {
+    if (!options.apiKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "API key is required in the provider's options."
+      )
+    }
+  }
+}
+```
 
 #### Parameters
 
-<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"The provider's options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
 
 #### Returns
 
-<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"This method validates the options of the provider set in `medusa-config.ts`.\nImplementing this method is optional. It's useful if your provider requires custom validation.\n\nIf the options aren't valid, throw an error.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
 
 ### send
 
@@ -124,7 +142,7 @@ class MyNotificationProviderService extends AbstractNotificationProviderService 
 
 #### Parameters
 
-<TypeList types={[{"name":"notification","type":"[ProviderSendNotificationDTO](../../../types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationDTO/page.mdx)","description":"The details of the\nnotification to send.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"to","type":"`string`","description":"The recipient of the notification. It can be email, phone number, or username, depending on the channel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel","type":"`string`","description":"The channel through which the notification is sent, such as 'email' or 'sms'","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"template","type":"`string`","description":"The template name in the provider's system.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"from","type":"`null` \\| `string`","description":"The sender of the notification. It can be email, phone number, or username, depending on the channel.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attachments","type":"`null` \\| [Attachment](../../../types/NotificationTypes/interfaces/types.NotificationTypes.Attachment/page.mdx)[]","description":"Optional attachments for the notification.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"content","type":"`string`","description":"The content of the attachment, encoded as a base64 string.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filename","type":"`string`","description":"The filename of the attachment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content_type","type":"`string`","description":"The MIME type of the attachment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"disposition","type":"`string`","description":"The disposition of the attachment, e.g., \"inline\" or \"attachment\".","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID, if the attachment is meant to be referenced within the body of the message.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"The data that gets passed over to the provider for rendering the notification.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="send"/>
+<TypeList types={[{"name":"notification","type":"[ProviderSendNotificationDTO](../../../types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationDTO/page.mdx)","description":"The details of the\nnotification to send.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"to","type":"`string`","description":"The recipient of the notification. It can be email, phone number, or username, depending on the channel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel","type":"`string`","description":"The channel through which the notification is sent, such as 'email' or 'sms'","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"template","type":"`string`","description":"The template name in the provider's system.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"from","type":"`null` \\| `string`","description":"The sender of the notification. It can be email, phone number, or username, depending on the channel.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attachments","type":"`null` \\| [Attachment](../../../types/NotificationTypes/interfaces/types.NotificationTypes.Attachment/page.mdx)[]","description":"Optional attachments for the notification.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"content","type":"`string`","description":"The content of the attachment, encoded as a base64 string.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filename","type":"`string`","description":"The filename of the attachment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content_type","type":"`string`","description":"The MIME type of the attachment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"disposition","type":"`string`","description":"The disposition of the attachment, e.g., \"inline\" or \"attachment\".","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID, if the attachment is meant to be referenced within the body of the message.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"The data that gets passed over to the provider for rendering the notification.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`null` \\| [NotificationContent](../../../types/NotificationTypes/interfaces/types.NotificationTypes.NotificationContent/page.mdx)","description":"The content that gets passed to the provider.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"subject","type":"`string`","description":"the subject of the notification","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"text","type":"`string`","description":"the text content of the notification","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"html","type":"`string`","description":"the html content of the notification","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="send"/>
 
 #### Returns
 
@@ -138,10 +156,14 @@ Create the file `src/modules/my-notification/index.ts` with the following conten
 
 ```ts title="src/modules/my-notification/index.ts"
 import MyNotificationProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
 
-export default {
+export default ModuleProvider(Modules.NOTIFICATION, {
   services: [MyNotificationProviderService],
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyNotificationProviderService` is the module's service.
@@ -171,7 +193,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-notification",
+            resolve: "./src/modules/my-notification",
             id: "my-notification",
             options: {
               channels: ["email"],

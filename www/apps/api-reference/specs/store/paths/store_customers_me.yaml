@@ -11,16 +11,6 @@ get:
       https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
     description: 'Storefront guide: How to retrieve the logged-in customer.'
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
@@ -78,16 +68,6 @@ post:
     description: 'Storefront guide: How to edit a customer''s profile.'
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
