@@ -6,12 +6,12 @@ import {
   Subscriber,
 } from "@medusajs/framework/types"
 import {
+  MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
   InjectManager,
   InjectTransactionManager,
   isDefined,
   MedusaContext,
-  MikroOrmBaseRepository as BaseRepository,
 } from "@medusajs/framework/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
@@ -227,7 +227,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
     }
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async query<const TEntry extends string>(
     config: IndexTypes.IndexQueryConfig<TEntry>,
     @MedusaContext() sharedContext: Context = {}
@@ -320,7 +320,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
    * @param sharedContext
    * @protected
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async onCreate<
     TData extends { id: string; [key: string]: unknown }
   >(
@@ -414,7 +414,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
    * @param sharedContext
    * @protected
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async onUpdate<
     TData extends { id: string; [key: string]: unknown }
   >(
@@ -461,7 +461,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
    * @param sharedContext
    * @protected
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async onDelete<
     TData extends { id: string; [key: string]: unknown }
   >(
@@ -515,7 +515,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
    * @param schemaEntityObjectRepresentation
    * @protected
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async onAttach<
     TData extends { id: string; [key: string]: unknown }
   >(
@@ -636,7 +636,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
    * @param sharedContext
    * @protected
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async onDetach<
     TData extends { id: string; [key: string]: unknown }
   >(
