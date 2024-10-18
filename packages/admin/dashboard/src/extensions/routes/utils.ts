@@ -1,5 +1,5 @@
 import { ComponentType } from "react"
-import { RouteObject } from "react-router-dom"
+import { LoaderFunction, RouteObject } from "react-router-dom"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { RouteExtension, RouteModule } from "../types"
 
@@ -30,7 +30,8 @@ export const createRouteMap = (
   const addRoute = (
     pathSegments: string[],
     Component: ComponentType,
-    currentLevel: RouteObject[]
+    currentLevel: RouteObject[],
+    loader?: LoaderFunction
   ) => {
     if (!pathSegments.length) {
       return
@@ -50,22 +51,26 @@ export const createRouteMap = (
         path: "",
         ErrorBoundary: ErrorBoundary,
         async lazy() {
+          if (loader) {
+            return { Component, loader }
+          }
+
           return { Component }
         },
       })
     } else {
       route.children ||= []
-      addRoute(remainingSegments, Component, route.children)
+      addRoute(remainingSegments, Component, route.children, loader)
     }
   }
 
-  routes.forEach(({ path, Component }) => {
+  routes.forEach(({ path, Component, loader }) => {
     // Remove the ignore segment from the path if it is provided
     const cleanedPath = ignore
       ? path.replace(ignore, "").replace(/^\/+/, "")
       : path.replace(/^\/+/, "")
     const pathSegments = cleanedPath.split("/").filter(Boolean)
-    addRoute(pathSegments, Component, root)
+    addRoute(pathSegments, Component, root, loader)
   })
 
   return root
