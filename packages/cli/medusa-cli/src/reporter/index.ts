@@ -18,7 +18,9 @@ if (!IS_DEV) {
   transports.push(
     new winston.transports.Console({
       format: winston.format.combine(
-        winston.format.cli(),
+        winston.format.cli({
+          levels: winston.config.npm.levels,
+        }),
         winston.format.splat()
       ),
     })
