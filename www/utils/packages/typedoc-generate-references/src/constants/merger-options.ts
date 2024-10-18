@@ -40,6 +40,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
     "helper-steps",
     "workflows",
   ],
+  allPropertyReflectionsHaveOwnDocument: ["js-sdk"],
   allReflectionsHaveOwnDocumentInNamespace: [
     ...getNamespaceNames(getCoreFlowNamespaces()),
   ],

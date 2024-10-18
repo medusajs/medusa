@@ -72,7 +72,7 @@ export interface AdminCreateProduct {
   collection_id?: string
   categories?: { id: string }[]
   tags?: { id: string }[]
-  options?: AdminCreateProductOption[]
+  options: AdminCreateProductOption[]
   variants?: AdminCreateProductVariant[]
   sales_channels?: { id: string }[]
   weight?: number

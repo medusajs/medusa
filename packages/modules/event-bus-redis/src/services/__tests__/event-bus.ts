@@ -46,7 +46,6 @@ describe("RedisEventBusService", () => {
 
       eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
         scope: "internal",
-        resources: "shared",
       })
     })
 
@@ -71,7 +70,6 @@ describe("RedisEventBusService", () => {
     it("Throws on isolated module declaration", () => {
       try {
         eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
-          resources: "isolated",
           scope: "internal",
         })
       } catch (error) {
@@ -89,7 +87,6 @@ describe("RedisEventBusService", () => {
 
         eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
           scope: "internal",
-          resources: "shared",
         })
 
         queue = (eventBus as any).queue_
@@ -154,7 +151,6 @@ describe("RedisEventBusService", () => {
             },
           },
           {
-            resources: "shared",
             scope: "internal",
           }
         )
@@ -199,7 +195,6 @@ describe("RedisEventBusService", () => {
             },
           },
           {
-            resources: "shared",
             scope: "internal",
           }
         )
@@ -344,7 +339,6 @@ describe("RedisEventBusService", () => {
         jest.clearAllMocks()
 
         eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
-          resources: "shared",
           scope: "internal",
         })
       })
