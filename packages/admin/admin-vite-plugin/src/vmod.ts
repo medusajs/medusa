@@ -55,7 +55,6 @@ export type VirtualModule =
   | typeof ROUTE_VIRTUAL_MODULE
   | typeof MENU_ITEM_VIRTUAL_MODULE
   | typeof WIDGET_VIRTUAL_MODULE
-
 const resolvedVirtualModuleIds = {
   link: RESOLVED_LINK_VIRTUAL_MODULE,
   form: RESOLVED_FORM_VIRTUAL_MODULE,
