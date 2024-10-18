@@ -38,6 +38,10 @@ medusaIntegrationTestRunner({
             trigger_type: "order-created",
             resource_id: "order-id",
             resource_type: "order",
+            content: {
+              subject: "We received you order",
+              html: "<p>Thank you<p>",
+            },
           } as CreateNotificationDTO
 
           const result = await service.createNotifications(notification)
@@ -67,6 +71,8 @@ medusaIntegrationTestRunner({
             })
           )
 
+          expect(result).toHaveProperty("content")
+
           expect(fromDB).toEqual(
             expect.objectContaining({
               to: "test@medusajs.com",
@@ -82,6 +88,8 @@ medusaIntegrationTestRunner({
               trigger_type: "order-created",
             })
           )
+
+          expect(fromDB).not.toHaveProperty("content")
 
           expect(logSpy).toHaveBeenCalledWith(
             `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created' and data: '{\"username\":\"john-doe\"}'`

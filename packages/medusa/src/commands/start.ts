@@ -8,15 +8,16 @@ import { scheduleJob } from "node-schedule"
 
 import {
   dynamicImport,
-  isPresent,
   FileSystem,
   gqlSchemaToTypes,
   GracefulShutdownServer,
+  isPresent,
 } from "@medusajs/framework/utils"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { MedusaContainer } from "@medusajs/framework/types"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -57,13 +58,41 @@ export async function registerInstrumentation(directory: string) {
 // eslint-disable-next-line no-var
 export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
 
+function displayAdminUrl({
+  container,
+  port,
+}: {
+  port: string | number
+  container: MedusaContainer
+}) {
+  const isProduction = ["production", "prod"].includes(
+    process.env.NODE_ENV || ""
+  )
+
+  if (isProduction) {
+    return
+  }
+
+  const logger = container.resolve("logger")
+  const {
+    admin: { path: adminPath, disable },
+  } = container.resolve("configModule")
+
+  if (disable) {
+    return
+  }
+
+  logger.info(`Admin URL → http://localhost:${port}${adminPath}`)
+}
+
 async function start(args: {
   directory: string
   port?: number
   types?: boolean
   cluster?: number
 }) {
-  const { port, directory, types } = args
+  const { port = 9000, directory, types } = args
+
   async function internalStart(generateTypes: boolean) {
     track("CLI_START")
     await registerInstrumentation(directory)
@@ -88,7 +117,7 @@ async function start(args: {
     })
 
     try {
-      const { shutdown, gqlSchema } = await loaders({
+      const { shutdown, gqlSchema, container } = await loaders({
         directory,
         expressApp: app,
       })
@@ -109,6 +138,7 @@ async function start(args: {
       const server = GracefulShutdownServer.create(
         http_.listen(port).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
+          displayAdminUrl({ container, port })
           track("CLI_START_COMPLETED")
         })
       )

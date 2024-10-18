@@ -3,7 +3,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class ProductVariant {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }

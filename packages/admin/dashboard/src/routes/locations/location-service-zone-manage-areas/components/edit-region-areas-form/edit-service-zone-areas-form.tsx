@@ -1,19 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Heading, toast } from "@medusajs/ui"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
+  StackedFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 import { countries } from "../../../../../lib/data/countries"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
+import { GEO_ZONE_STACKED_MODAL_ID } from "../../../common/constants"
 
 const EditeServiceZoneSchema = z.object({
   countries: z
@@ -34,7 +35,6 @@ export function EditServiceZoneAreasForm({
 }: EditServiceZoneAreasFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [open, setOpen] = useState(false)
 
   const form = useForm<z.infer<typeof EditeServiceZoneSchema>>({
     defaultValues: {
@@ -80,11 +80,29 @@ export function EditServiceZoneAreasForm({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <RouteFocusModal.Header>
+        <RouteFocusModal.Header />
+
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-auto">
+          <StackedFocusModal id={GEO_ZONE_STACKED_MODAL_ID}>
+            <div className="flex flex-col items-center p-16">
+              <div className="flex w-full max-w-[720px] flex-col gap-y-8">
+                <Heading>
+                  {t("stockLocations.serviceZones.manageAreas.header", {
+                    name: zone.name,
+                  })}
+                </Heading>
+                <GeoZoneForm form={form} />
+              </div>
+            </div>
+
+            <GeoZoneForm.AreaDrawer form={form} />
+          </StackedFocusModal>
+        </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
@@ -95,30 +113,8 @@ export function EditServiceZoneAreasForm({
               {t("actions.save")}
             </Button>
           </div>
-        </RouteFocusModal.Header>
-
-        <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <SplitView open={open} onOpenChange={setOpen}>
-            <SplitView.Content>
-              <div className="flex flex-col items-center p-16">
-                <div className="flex w-full max-w-[720px] flex-col gap-y-8">
-                  <Heading>
-                    {t("stockLocations.serviceZones.manageAreas.header", {
-                      name: zone.name,
-                    })}
-                  </Heading>
-                  <GeoZoneForm form={form} onOpenChange={setOpen} />
-                </div>
-              </div>
-            </SplitView.Content>
-            <GeoZoneForm.AreaDrawer
-              form={form}
-              open={open}
-              onOpenChange={setOpen}
-            />
-          </SplitView>
-        </RouteFocusModal.Body>
-      </form>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

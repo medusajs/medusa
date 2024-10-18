@@ -56,23 +56,9 @@
 
 {{#if type.declaration.signatures}}
 
-{{#if type.declaration.children}}
-
-{{{titleLevel}}} Call signature
-
-{{else}}
-
-{{{titleLevel}}} Type declaration
-
-{{/if}}
-
 {{#each type.declaration.signatures}}
 
-{{incrementCurrentTitleLevel}}
-
 {{> member.signature-wrapper showSources=false parent=../type.declaration }}
-
-{{decrementCurrentTitleLevel}}
 
 {{/each}}
 
@@ -84,17 +70,37 @@
 
 {{#if type.declaration.children}}
 
-{{#with type.declaration}}
+{{#unless (getFormattingOption "expandMembers")}}
 
 {{{titleLevel}}} Properties
 
-{{/with}}
+{{incrementCurrentTitleLevel}}
+
+{{/unless}}
+
+{{#if (shouldExpandProperties "Properties")}}
+
+{{#each type.declaration.children}}
+
+{{> member }}
+
+{{/each}}
+
+{{else}}
 
 {{#with type.declaration.children}}
 
 {{{typeDeclarationMembers sectionTitle=../name}}}
 
 {{/with}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/unless}}
 
 {{/if}}
 

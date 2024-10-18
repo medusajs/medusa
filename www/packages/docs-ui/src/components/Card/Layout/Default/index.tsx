@@ -42,10 +42,7 @@ export const CardDefaultLayout = ({
       )}
       {image && (
         <BorderedIcon
-          wrapperClassName={clsx(
-            "p-[4.5px] bg-medusa-bg-component-hover",
-            iconClassName
-          )}
+          wrapperClassName={clsx("bg-medusa-bg-base", iconClassName)}
           icon={image}
         />
       )}
@@ -53,19 +50,17 @@ export const CardDefaultLayout = ({
         className={clsx("flex flex-col flex-1 overflow-auto", contentClassName)}
       >
         {title && (
-          <div className="text-compact-small-plus text-medusa-fg-base truncate">
+          <div className="text-small-plus text-medusa-fg-base truncate">
             {title}
           </div>
         )}
         {text && (
-          <span className="text-compact-small text-medusa-fg-subtle">
-            {text}
-          </span>
+          <span className="text-small-plus text-medusa-fg-subtle">{text}</span>
         )}
         {children}
       </div>
       {badge && <Badge {...badge} />}
-      <span className="text-medusa-fg-muted">
+      <span className="text-medusa-fg-subtle">
         {isExternal ? <ArrowUpRightOnBox /> : <TriangleRightMini />}
       </span>
 

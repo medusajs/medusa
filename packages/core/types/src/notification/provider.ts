@@ -1,4 +1,4 @@
-import { Attachment } from "./common"
+import { Attachment, NotificationContent } from "./common"
 
 /**
  * @interface
@@ -30,6 +30,10 @@ export type ProviderSendNotificationDTO = {
    * The data that gets passed over to the provider for rendering the notification.
    */
   data?: Record<string, unknown> | null
+  /**
+   * The content that gets passed to the provider.
+   */
+  content?: NotificationContent | null
 }
 
 /**

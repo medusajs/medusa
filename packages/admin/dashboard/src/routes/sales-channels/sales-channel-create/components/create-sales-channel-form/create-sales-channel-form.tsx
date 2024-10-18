@@ -17,6 +17,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateSalesChannel } from "../../../../../hooks/api/sales-channels"
 
 const CreateSalesChannelSchema = zod.object({
@@ -58,22 +59,11 @@ export const CreateSalesChannelForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
+        <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
@@ -144,7 +134,19 @@ export const CreateSalesChannelForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

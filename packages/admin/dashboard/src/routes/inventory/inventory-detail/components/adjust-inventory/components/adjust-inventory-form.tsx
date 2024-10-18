@@ -8,6 +8,7 @@ import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../../components/common/form"
+import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { useUpdateInventoryLevel } from "../../../../../../hooks/api/inventory"
 
 type AdjustInventoryFormProps = {
@@ -84,7 +85,7 @@ export const AdjustInventoryForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -150,7 +151,7 @@ export const AdjustInventoryForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

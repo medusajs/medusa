@@ -7,7 +7,7 @@ export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/ne
 export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
-    path: `/v2`,
+    path: `/v2/learn`,
     title: "Get Started",
     project: "book",
   },
@@ -57,6 +57,11 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Admin Components",
+        link: "/v2/resources/admin-components",
+      },
+      {
+        type: "link",
         title: "Storefront Development",
         link: "/v2/resources/storefront-development",
       },
@@ -70,6 +75,11 @@ export const navDropdownItems: NavigationItem[] = [
         type: "link",
         title: "Medusa CLI",
         link: "/v2/resources/medusa-cli",
+      },
+      {
+        type: "link",
+        title: "JS SDK",
+        link: "/v2/resources/js-sdk",
       },
       {
         type: "link",

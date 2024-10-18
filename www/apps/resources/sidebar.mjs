@@ -2047,6 +2047,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "link",
+        path: "/js-sdk",
+        title: "JS SDK",
+      },
+      {
+        type: "link",
         path: "/nextjs-starter",
         title: "Next.js Starter",
       },

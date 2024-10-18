@@ -9,6 +9,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 export const CreateCustomerGroupSchema = zod.object({
@@ -52,31 +53,19 @@ export const CreateCustomerGroupForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              isLoading={isPending}
-            >
-              {t("actions.create")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
+      <KeyboundForm onSubmit={handleSubmit}>
+        <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
-              <Heading>{t("customerGroups.create.header")}</Heading>
-              <Text size="small" className="text-ui-fg-subtle">
-                {t("customerGroups.create.hint")}
-              </Text>
+              <RouteFocusModal.Title asChild>
+                <Heading>{t("customerGroups.create.header")}</Heading>
+              </RouteFocusModal.Title>
+              <RouteFocusModal.Description asChild>
+                <Text size="small" className="text-ui-fg-subtle">
+                  {t("customerGroups.create.hint")}
+                </Text>
+              </RouteFocusModal.Description>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Form.Field
@@ -97,7 +86,22 @@ export const CreateCustomerGroupForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+        <RouteFocusModal.Footer>
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              {t("actions.cancel")}
+            </Button>
+          </RouteFocusModal.Close>
+          <Button
+            type="submit"
+            variant="primary"
+            size="small"
+            isLoading={isPending}
+          >
+            {t("actions.create")}
+          </Button>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

@@ -8525,6 +8525,14 @@ export const generatedSidebar = [
         "loaded": true,
         "isPathHref": true,
         "type": "link",
+        "path": "/js-sdk",
+        "title": "JS SDK",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
         "path": "/nextjs-starter",
         "title": "Next.js Starter",
         "children": []

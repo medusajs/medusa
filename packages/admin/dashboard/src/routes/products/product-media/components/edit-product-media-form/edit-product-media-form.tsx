@@ -11,6 +11,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/client"
 import { MediaGrid } from "../../../common/components/media-grid-view"
@@ -142,24 +143,16 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
 
   return (
     <RouteFocusModal.Form blockSearch form={form}>
-      <form
+      <KeyboundForm
         className="flex size-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
             <Button variant="secondary" size="small" asChild>
               <Link to={{ pathname: ".", search: undefined }}>
                 {t("products.media.galleryLabel")}
               </Link>
-            </Button>
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
             </Button>
           </div>
         </RouteFocusModal.Header>
@@ -170,7 +163,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
               onCheckedChange={handleCheckedChange}
               selection={selection}
             />
-            <div className="bg-ui-bg-base border-b px-6 py-4 lg:border-b-0 lg:border-l">
+            <div className="bg-ui-bg-base overflow-auto border-b px-6 py-4 lg:border-b-0 lg:border-l">
               <UploadMediaFormItem form={form} append={append} />
             </div>
           </div>
@@ -200,7 +193,19 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
             />
           </CommandBar.Bar>
         </CommandBar>
-      </form>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

@@ -193,7 +193,7 @@ export const generatedEditDates = {
   "app/storefront-development/regions/list/page.mdx": "2024-09-11T10:07:34.742Z",
   "app/storefront-development/regions/store-retrieve-region/page.mdx": "2024-09-11T10:07:42.887Z",
   "app/storefront-development/regions/page.mdx": "2024-06-09T15:19:09+02:00",
-  "app/storefront-development/tips/page.mdx": "2024-09-11T09:25:17.014Z",
+  "app/storefront-development/tips/page.mdx": "2024-10-16T12:44:31.781Z",
   "app/storefront-development/page.mdx": "2024-06-09T15:19:09+02:00",
   "app/troubleshooting/cors-errors/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/create-medusa-app-errors/page.mdx": "2024-07-11T10:29:13+03:00",
@@ -206,7 +206,7 @@ export const generatedEditDates = {
   "app/troubleshooting/page.mdx": "2024-07-18T08:57:11+02:00",
   "app/upgrade-guides/page.mdx": "2024-07-18T08:57:11+02:00",
   "app/usage/page.mdx": "2024-05-13T18:55:11+03:00",
-  "app/page.mdx": "2024-08-13T08:51:20+02:00",
+  "app/page.mdx": "2024-10-16T11:40:59.669Z",
   "app/commerce-modules/auth/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/auth/auth-flows/page.mdx": "2024-09-05T08:50:11.671Z",
   "app/commerce-modules/auth/_events/page.mdx": "2024-07-03T19:27:13+03:00",
@@ -2291,5 +2291,6 @@ export const generatedEditDates = {
   "app/commerce-modules/stock-location/links-to-other-modules/page.mdx": "2024-10-15T14:33:11.483Z",
   "app/commerce-modules/store/links-to-other-modules/page.mdx": "2024-06-26T07:19:49.931Z",
   "app/examples/page.mdx": "2024-10-16T15:47:38.345Z",
-  "app/medusa-cli/commands/build/page.mdx": "2024-10-16T08:16:27.618Z"
+  "app/medusa-cli/commands/build/page.mdx": "2024-10-16T08:16:27.618Z",
+  "app/js-sdk/page.mdx": "2024-10-16T12:12:34.512Z"
 }

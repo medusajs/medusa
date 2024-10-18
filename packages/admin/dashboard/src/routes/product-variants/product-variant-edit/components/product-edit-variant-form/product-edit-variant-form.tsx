@@ -10,6 +10,7 @@ import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 import {
   transformNullableFormData,
@@ -48,23 +49,23 @@ export const ProductEditVariantForm = ({
 }: ProductEditVariantFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const defaultOptions = product.options.reduce((acc: any, option: any) => {
-    const varOpt = variant.options.find((o: any) => o.option_id === option.id)
+  const defaultOptions = product.options?.reduce((acc: any, option: any) => {
+    const varOpt = variant.options?.find((o: any) => o.option_id === option.id)
     acc[option.title] = varOpt?.value
     return acc
   }, {})
 
   const form = useForm<z.infer<typeof ProductEditVariantSchema>>({
     defaultValues: {
-      title: variant.title,
+      title: variant.title || "",
       material: variant.material || "",
       sku: variant.sku || "",
       ean: variant.ean || "",
       upc: variant.upc || "",
       barcode: variant.barcode || "",
       inventory_quantity: variant.inventory_quantity || "",
-      manage_inventory: variant.manage_inventory,
-      allow_backorder: variant.allow_backorder,
+      manage_inventory: variant.manage_inventory || false,
+      allow_backorder: variant.allow_backorder || false,
       weight: variant.weight || "",
       height: variant.height || "",
       width: variant.width || "",
@@ -124,7 +125,7 @@ export const ProductEditVariantForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
@@ -160,7 +161,7 @@ export const ProductEditVariantForm = ({
                 )
               }}
             />
-            {product.options.map((option: any) => {
+            {product.options?.map((option: any) => {
               return (
                 <Form.Field
                   key={option.id}
@@ -438,7 +439,7 @@ export const ProductEditVariantForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

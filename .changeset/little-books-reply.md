@@ -1,11 +1,11 @@
 ---
 "create-medusa-app": patch
-"@medusajs/medusa-cli": patch
+"@medusajs/cli": patch
 "medusa-dev-cli": patch
 "@medusajs/medusa-oas-cli": patch
 "@medusajs/oas-github-ci": patch
 "@medusajs/core-flows": patch
-"medusa-test-utils": patch
+"@medusajs/test-utils": patch
 "@medusajs/modules-sdk": patch
 "@medusajs/orchestration": patch
 "@medusajs/types": patch
@@ -16,7 +16,7 @@
 "@medusajs/ui": patch
 "@medusajs/ui-preset": patch
 "@medusajs/medusa": patch
-"medusa-telemetry": patch
+"@medusajs/telemetry": patch
 "@medusajs/api-key": patch
 "@medusajs/auth": patch
 "@medusajs/auth-emailpass": patch
@@ -31,7 +31,7 @@
 "@medusajs/event-bus-redis": patch
 "@medusajs/file": patch
 "@medusajs/fulfillment": patch
-"@medusajs/inventory-next": patch
+"@medusajs/inventory": patch
 "@medusajs/link-modules": patch
 "@medusajs/notification": patch
 "@medusajs/order": patch
@@ -39,7 +39,7 @@
 "@medusajs/pricing": patch
 "@medusajs/product": patch
 "@medusajs/promotion": patch
-"@medusajs/file-local-next": patch
+"@medusajs/file-local": patch
 "@medusajs/file-s3": patch
 "@medusajs/fulfillment-manual": patch
 "@medusajs/notification-local": patch
@@ -47,7 +47,7 @@
 "@medusajs/payment-stripe": patch
 "@medusajs/region": patch
 "@medusajs/sales-channel": patch
-"@medusajs/stock-location-next": patch
+"@medusajs/stock-location": patch
 "@medusajs/store": patch
 "@medusajs/tax": patch
 "@medusajs/user": patch
@@ -61,6 +61,7 @@
 "@medusajs/framework": patch
 "@medusajs/index": patch
 "@medusajs/locking": patch
+"@medusajs/locking-redis": patch
 ---
 
-chore: Preview release changeset
+chore: Medusa 2.0

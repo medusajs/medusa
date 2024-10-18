@@ -8,6 +8,7 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type EditLocationFormProps = {
@@ -73,7 +74,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -228,7 +229,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

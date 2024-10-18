@@ -14,6 +14,7 @@ import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/framework/utils"
@@ -87,6 +88,7 @@ export class ReservationItem {
   @Property({ type: "text", nullable: true })
   external_id: string | null = null
 
+  @Searchable()
   @Property({ type: "text", nullable: true })
   description: string | null = null
 
@@ -105,6 +107,7 @@ export class ReservationItem {
   })
   inventory_item_id: string
 
+  @Searchable()
   @ManyToOne(() => InventoryItem, {
     persist: false,
   })

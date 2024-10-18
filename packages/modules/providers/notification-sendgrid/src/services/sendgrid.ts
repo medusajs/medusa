@@ -13,12 +13,15 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+type MailContent = Required<Omit<NotificationTypes.NotificationContent, "text">>
+
 interface SendgridServiceConfig {
   apiKey: string
   from: string
 }
 
 export class SendgridNotificationService extends AbstractNotificationProviderService {
+  static identifier = "notification-sendgrid"
   protected config_: SendgridServiceConfig
   protected logger_: Logger
 
@@ -58,14 +61,32 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
 
     const from = notification.from?.trim() || this.config_.from
 
+    let mailContent:
+      | MailContent
+      | {
+          templateId: string
+        }
+
+    if ("content" in notification && !!notification.content) {
+      mailContent = {
+        subject: notification.content?.subject,
+        html: notification.content?.html,
+      } as MailContent
+    } else {
+      // we can't mix html and templates for sendgrid
+      mailContent = {
+        templateId: notification.template,
+      }
+    }
+
     const message: sendgrid.MailDataRequired = {
       to: notification.to,
       from: from,
-      templateId: notification.template,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
+      ...mailContent,
     }
 
     try {

@@ -141,6 +141,10 @@ export declare module "typedoc" {
      */
     allReflectionsHaveOwnDocument: string[]
     /**
+     * [Markdown Plugin] Specify module names where property reflections are outputted into seperate files.
+     */
+    allPropertyReflectionsHaveOwnDocument: string[]
+    /**
      * [Markdown Plugin] Separator used to format filenames.
      * @defaultValue "."
      */

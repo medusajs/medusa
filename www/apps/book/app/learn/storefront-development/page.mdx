@@ -1,0 +1,27 @@
+export const metadata = {
+  title: `${pageNumber} Storefront Development`,
+}
+
+# {metadata.title}
+
+Storefronts are built separately from the Medusa application. They interact with the Medusa application through the Store API routes.
+
+You're free to choose how to build your storefront. You can start with our Next.js starter storefront, as explained in the next chapter, or build a storefront from scratch using your preferred framework or tech stack.
+
+<Note title="Tip">
+
+To learn how to build a storefront from scratch, check out the [Storefront Development guides](!resources!/storefront-development).
+
+</Note>
+
+---
+
+## Passing a Publishable API Key in Storefront Requests
+
+When sending a request to an API route starting with `/store`, you must include a publishable API key in the header of your request.
+
+A publishable API key sets the scope of your request to one or more sales channels.
+
+Then, when you retrieve products, only products of those sales channels are retrieved. This also ensures you retrieve correct inventory data, and associate created orders with the scoped sales channel.
+
+Learn more about passing the publishable API key in [this storefront development guide](!resources!/storefront-development/publishable-api-keys).
