@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderItem
  * type: object
- * description: The order item's order items.
+ * description: The order item's details.
  * x-schemaName: AdminOrderItem
  * required:
  *   - order_id
@@ -13,11 +13,11 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The order item's order id.
+ *     description: The ID of the order this item belongs to.
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The order item's item id.
+ *     description: The ID of the associated line item.
  *   version:
  *     type: number
  *     title: version
@@ -30,7 +30,7 @@
  *     properties:
  *       version:
  *         type: object
- *         description: The history's version.
+ *         description: The version changes of the item.
  *         required:
  *           - from
  *           - to
@@ -38,11 +38,11 @@
  *           from:
  *             type: number
  *             title: from
- *             description: The version's from.
+ *             description: The original version.
  *           to:
  *             type: number
  *             title: to
- *             description: The version's to.
+ *             description: The new version.
  *   item:
  *     $ref: "#/components/schemas/AdminOrderLineItem"
  * 

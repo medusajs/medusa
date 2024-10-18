@@ -21,7 +21,7 @@
  *   compare_at_unit_price:
  *     type: number
  *     title: compare_at_unit_price
- *     description: The order edit's compare at unit price.
+ *     description: The original price of the item before a promotion or sale.
  * 
 */
 

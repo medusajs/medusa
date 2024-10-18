@@ -1,7 +1,7 @@
 /**
  * @schema StoreOrderFulfillment
  * type: object
- * description: The fulfillment's fulfillments.
+ * description: The fulfillment's details.
  * x-schemaName: StoreOrderFulfillment
  * required:
  *   - id

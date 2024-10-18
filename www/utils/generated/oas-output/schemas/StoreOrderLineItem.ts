@@ -1,7 +1,7 @@
 /**
  * @schema StoreOrderLineItem
  * type: object
- * description: The item's items.
+ * description: The item's details.
  * x-schemaName: StoreOrderLineItem
  * required:
  *   - detail

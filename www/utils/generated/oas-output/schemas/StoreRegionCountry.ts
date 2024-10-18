@@ -13,12 +13,12 @@
  *   iso_2:
  *     type: string
  *     title: iso_2
- *     description: The country's iso 2.
+ *     description: The country's ISO 2.
  *     example: us
  *   iso_3:
  *     type: string
  *     title: iso_3
- *     description: The country's iso 3.
+ *     description: The country's ISO 3.
  *     example: usa
  *   num_code:
  *     type: string
