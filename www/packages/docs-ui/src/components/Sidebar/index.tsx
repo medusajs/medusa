@@ -30,8 +30,6 @@ export const Sidebar = ({
     setMobileSidebarOpen,
     staticSidebarItems,
     sidebarRef,
-    sidebarTopHeight,
-    setSidebarTopHeight,
     desktopSidebarOpen,
     setDesktopSidebarOpen,
   } = useSidebar()
@@ -55,10 +53,6 @@ export const Sidebar = ({
     () => currentItems || items,
     [items, currentItems]
   )
-
-  useResizeObserver(sidebarTopRef, () => {
-    setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
-  })
 
   return (
     <>
@@ -92,11 +86,6 @@ export const Sidebar = ({
         ref={sidebarWrapperRef}
       >
         <ul className={clsx("h-full w-full", "flex flex-col")}>
-          <SidebarTop
-            {...sidebarTopProps}
-            parentItem={sidebarItems.parentItem}
-            ref={sidebarTopRef}
-          />
           <SwitchTransition>
             <CSSTransition
               key={sidebarItems.parentItem?.title || "home"}
@@ -110,14 +99,16 @@ export const Sidebar = ({
               <div
                 className={clsx(
                   "overflow-y-scroll clip",
-                  "py-docs_0.75 flex-1"
+                  "pb-docs_0.75 flex-1 max-h-screen"
                 )}
                 ref={sidebarRef}
-                style={{
-                  maxHeight: `calc(100vh - ${sidebarTopHeight}px)`,
-                }}
                 id="sidebar"
               >
+                <SidebarTop
+                  {...sidebarTopProps}
+                  parentItem={sidebarItems.parentItem}
+                  ref={sidebarTopRef}
+                />
                 {/* MOBILE SIDEBAR - keeping this in case we need it in the future */}
                 {/* <div className={clsx("lg:hidden")}>
                   {!sidebarItems.mobile.length && !staticSidebarItems && (
