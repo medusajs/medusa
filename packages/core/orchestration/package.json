@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "exports": {
@@ -39,8 +39,8 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/types": "^1.11.16",
-    "@medusajs/utils": "^1.11.9"
+    "@medusajs/types": "^1.11.17",
+    "@medusajs/utils": "^1.11.10"
   },
   "peerDependencies": {
     "@mikro-orm/core": "5.9.7",

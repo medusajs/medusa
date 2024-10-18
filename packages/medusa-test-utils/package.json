@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/test-utils",
-  "version": "1.1.44",
+  "version": "1.1.45",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -25,7 +25,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/knex": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
@@ -45,7 +45,7 @@
     "randomatic": "^3.1.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@medusajs/medusa": "^1.20.5",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.1"
