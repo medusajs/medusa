@@ -8,7 +8,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Customer {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }

@@ -42,11 +42,55 @@ export const WithImage: Story = {
   args: {
     src: "https://avatars.githubusercontent.com/u/10656202?v=4",
     fallback: "J",
+    size: "base",
   },
 }
 
 export const WithFallback: Story = {
   args: {
     fallback: "J",
+    size: "large",
+  },
+}
+
+export const TwoXSmall: Story = {
+  args: {
+    fallback: "J",
+    size: "2xsmall",
+  },
+}
+
+export const XSmall: Story = {
+  args: {
+    fallback: "J",
+    size: "xsmall",
+  },
+}
+
+export const Small: Story = {
+  args: {
+    fallback: "J",
+    size: "small",
+  },
+}
+
+export  const Base: Story = {
+  args: {
+    fallback: "J",
+    size: "base",
+  },
+}
+
+export const Large: Story = {
+  args: {
+    fallback: "J",
+    size: "large",
+  },
+}
+
+export const XLarge: Story = {
+  args: {
+    fallback: "J",
+    size: "xlarge",
   },
 }

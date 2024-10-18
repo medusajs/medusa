@@ -260,7 +260,7 @@ moduleIntegrationTestRunner({
             [Modules.FULFILLMENT]: {
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
-                databaseConfig,
+                database: databaseConfig,
                 providers: Object.keys(providersConfig).map((id) => ({
                   resolve: resolve(
                     process.cwd() +
@@ -310,7 +310,7 @@ moduleIntegrationTestRunner({
             [Modules.FULFILLMENT]: {
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
-                databaseConfig,
+                database: databaseConfig,
                 providers: Object.keys(providersConfig2).map((id) => ({
                   resolve: resolve(
                     process.cwd() +

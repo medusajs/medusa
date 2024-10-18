@@ -34,7 +34,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -117,7 +116,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -200,7 +198,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -282,7 +279,6 @@ describe("load internal", () => {
             defaultPackage: false,
             defaultModuleDeclaration: {
               scope: "internal",
-              resources: "shared",
             },
           },
         }
@@ -346,7 +342,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -354,7 +349,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
@@ -400,7 +394,6 @@ describe("load internal", () => {
         ),
         moduleDeclaration: {
           scope: "internal",
-          resources: "shared",
         },
         definition: {
           key: "module-with-providers",
@@ -408,7 +401,6 @@ describe("load internal", () => {
           defaultPackage: false,
           defaultModuleDeclaration: {
             scope: "internal",
-            resources: "shared",
           },
         },
         options: {
