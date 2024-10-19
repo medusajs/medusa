@@ -13,6 +13,10 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+type SmsContent = Required<
+  Omit<NotificationTypes.NotificationContent, "subject" | "html">
+>
+
 interface TwilioServiceConfig {
   accountSid: string
   authToken: string
@@ -21,6 +25,7 @@ interface TwilioServiceConfig {
 }
 
 export class TwilioNotificationService extends AbstractNotificationProviderService {
+  static identifier = "notification-twilio"
   protected config_: TwilioServiceConfig
   protected logger_: Logger
   protected client_: Twilio.Twilio
@@ -41,7 +46,7 @@ export class TwilioNotificationService extends AbstractNotificationProviderServi
     this.client_ = Twilio(this.config_.accountSid, this.config_.authToken)
   }
   /**
-   * Sends a notification via Twilio SMS (or MMS if attachments are provided)
+   * Sends a notification via Twilio SMS (or MMS if mediaUrls are provided)
    * @param notification the notification data
    * @returns a promise that resolves when the message is sent
    */
@@ -55,30 +60,27 @@ export class TwilioNotificationService extends AbstractNotificationProviderServi
         "No notification information provided"
       )
     }
-    const data = notification.data || {}
-    const body = data.body as string
-    const mediaUrls = data.mediaUrls as string[]
-    const messagingServiceSid = data.messagingServiceSid as string
+    const content = notification.content as SmsContent
 
-    const { to, from } = notification
+    if (!content?.text) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Message body (content.text) is required for SMS`
+      )
+    }
 
-    if (!to) {
+    const mediaUrls = notification.data?.mediaUrls as string[] | undefined
+    const fromNumber = notification.from?.trim() || this.config_.from
+    const messagingService =
+      (notification.data?.messagingServiceSid as string) ||
+      this.config_.messagingServiceSid
+
+    if (!notification.to) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Recipient to (#) is required"
       )
     }
-
-    if (!body) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Message body is required`
-      )
-    }
-
-    const fromNumber = from?.trim() || this.config_.from
-    const messagingService =
-      messagingServiceSid?.trim() || this.config_.messagingServiceSid
 
     if (!fromNumber && !messagingService) {
       throw new MedusaError(
@@ -87,8 +89,8 @@ export class TwilioNotificationService extends AbstractNotificationProviderServi
       )
     }
     const smsData = {
-      to: to,
-      body: body,
+      to: notification.to,
+      body: content.text,
       from: fromNumber || undefined,
       messagingServiceSid: messagingService || undefined,
       mediaUrl: mediaUrls && mediaUrls.length > 0 ? mediaUrls : undefined,
@@ -96,18 +98,26 @@ export class TwilioNotificationService extends AbstractNotificationProviderServi
 
     try {
       const message = await this.client_.messages.create(smsData)
-      this.logger_.info(`Message sent: SID ${message.sid}`)
+      const messageBody =
+        typeof message.body === "string"
+          ? JSON.parse(message.body)
+          : message.body
+      if (messageBody.error_code) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `Failed to send SMS: ${messageBody.error_code} - ${messageBody.error_message}`
+        )
+      }
+
       return { id: message.sid }
     } catch (error: any) {
-      const errorCode = error.code || "UNKNOWN_ERROR"
-      const errorMessage = error.message || "An unknown error occurred"
-
-      this.logger_.error(`Failed to send SMS: ${error}`)
-      this.logger_.error(`Failed to send SMS: ${errorCode} - ${errorMessage}`)
-
+      const errorCode = error.code
+      const responseError = error.response?.body?.errors?.[0]
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
-        `Failed to send SMS: ${errorCode} - ${errorMessage}`
+        `Failed to send SMS: ${errorCode} - ${
+          responseError?.message ?? "unknown error"
+        }`
       )
     }
   }
