@@ -1,6 +1,6 @@
 import { ModuleResolution } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
+import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
 const logger = {
@@ -29,12 +29,10 @@ describe("modules loader", () => {
           label: "TestService",
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -50,19 +48,17 @@ describe("modules loader", () => {
   it("should register the service ", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/default",
+        resolutionPath: require.resolve("../__mocks__/@modules/default"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -90,19 +86,17 @@ describe("modules loader", () => {
   it("should run the defined loaders and logs the errors if something fails", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/brokenloader",
+        resolutionPath: require.resolve("../__mocks__/@modules/brokenloader"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -115,19 +109,17 @@ describe("modules loader", () => {
   it("should log the errors if no service is defined", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/no-service",
+        resolutionPath: require.resolve("../__mocks__/@modules/no-service"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -142,7 +134,7 @@ describe("modules loader", () => {
   it("should throw an error if no service is defined and the module is required", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/no-service",
+        resolutionPath: require.resolve("../__mocks__/@modules/no-service"),
         definition: {
           key: "testService",
           defaultPackage: "testService",
@@ -150,12 +142,10 @@ describe("modules loader", () => {
           isRequired: true,
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -179,12 +169,10 @@ describe("modules loader", () => {
           isRequired: true,
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
-          resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
     }
@@ -210,13 +198,10 @@ describe("modules loader", () => {
           isRequired: true,
           defaultModuleDeclaration: {
             scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
           },
         },
         // @ts-ignore
-        moduleDeclaration: {
-          resources: MODULE_RESOURCE_TYPE.SHARED,
-        },
+        moduleDeclaration: {},
       },
     }
 
@@ -225,37 +210,6 @@ describe("modules loader", () => {
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService has to define its scope (internal | external)"
-      )
-    }
-  })
-
-  it("should throw an error if the resources is not set when scope is defined as internal", async () => {
-    expect.assertions(1)
-    const moduleResolutions: Record<string, ModuleResolution> = {
-      testService: {
-        resolutionPath: "@modules/no-service",
-        definition: {
-          key: "testService",
-          defaultPackage: "testService",
-          label: "TestService",
-          isRequired: true,
-          defaultModuleDeclaration: {
-            scope: MODULE_SCOPE.INTERNAL,
-            resources: MODULE_RESOURCE_TYPE.SHARED,
-          },
-        },
-        // @ts-ignore
-        moduleDeclaration: {
-          scope: MODULE_SCOPE.INTERNAL,
-        },
-      } as any,
-    }
-
-    try {
-      await moduleLoader({ container, moduleResolutions, logger })
-    } catch (err) {
-      expect(err.message).toEqual(
-        "The module TestService is missing its resources config"
       )
     }
   })

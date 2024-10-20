@@ -122,6 +122,7 @@ export const NavItem = ({
       <NavItemTooltip to={to}>
         <NavLink
           to={to}
+          end
           state={
             from
               ? {
@@ -167,6 +168,7 @@ export const NavItem = ({
                   <NavItemTooltip to={to}>
                     <NavLink
                       to={to}
+                      end
                       className={(props) =>
                         clx(
                           navLinkClassNames({
@@ -189,6 +191,7 @@ export const NavItem = ({
                       <NavItemTooltip to={item.to}>
                         <NavLink
                           to={item.to}
+                          end
                           className={(props) =>
                             clx(
                               navLinkClassNames({

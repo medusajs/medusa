@@ -43,7 +43,7 @@ export type SchemaObjectEntityRepresentation = {
   fields: string[]
 
   /**
-   * @Listerners directive is required and all listeners found
+   * `@Listerners` directive is required and all listeners found
    * for the type will be stored here
    */
   listeners: string[]

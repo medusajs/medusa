@@ -10,7 +10,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Order {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
@@ -138,6 +144,19 @@ export class Order {
     return await this.client.fetch<
       PaginatedResponse<AdminOrderChangesResponse>
     >(`/admin/orders/${id}/changes`, {
+      query: queryParams,
+      headers,
+    })
+  }
+
+  async listLineItems(
+    id: string,
+    queryParams?: FindParams & HttpTypes.AdminOrderItemsFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<
+      PaginatedResponse<HttpTypes.AdminOrderLineItemsListResponse>
+    >(`/admin/orders/${id}/line-items`, {
       query: queryParams,
       headers,
     })

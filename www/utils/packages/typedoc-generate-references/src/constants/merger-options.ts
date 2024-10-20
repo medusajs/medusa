@@ -40,6 +40,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
     "helper-steps",
     "workflows",
   ],
+  allPropertyReflectionsHaveOwnDocument: ["js-sdk"],
   allReflectionsHaveOwnDocumentInNamespace: [
     ...getNamespaceNames(getCoreFlowNamespaces()),
   ],
@@ -88,7 +89,13 @@ const mergerOptions: Partial<TypeDocOptions> = {
           },
         },
         [`^${snakeCaseModuleName}/${moduleServiceName}/methods`]: {
-          reflectionDescription: `This documentation provides a reference to the \`{{alias}}\` {{kind}}. This belongs to the ${titleModuleName} Module.`,
+          reflectionDescription: `This documentation provides a reference to the \`{{alias}}\` {{kind}}. This belongs to the ${titleModuleName} Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>`,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}Reference`,
             slug: `/references/${moduleName}/{{alias}}`,
@@ -101,7 +108,13 @@ const mergerOptions: Partial<TypeDocOptions> = {
           },
         },
         [`^${snakeCaseModuleName}/.*${moduleServiceName}/page\\.mdx`]: {
-          reflectionDescription: `This section of the documentation provides a reference to the \`${moduleServiceName}\` interface’s methods. This is the interface developers use to use the functionalities provided by the ${titleModuleName} Module.`,
+          reflectionDescription: `This section of the documentation provides a reference to the \`${moduleServiceName}\` interface’s methods. This is the interface developers use to use the functionalities provided by the ${titleModuleName} Module.
+
+<Note>
+
+You should only use the methods in this reference when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>`,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}Reference`,
             slug: `/references/${moduleName}`,

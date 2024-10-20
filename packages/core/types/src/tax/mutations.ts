@@ -207,6 +207,26 @@ export interface CreateTaxRegionDTO {
 }
 
 /**
+ * The tax region to be updated.
+ */
+export interface UpdateTaxRegionDTO {
+  /**
+   * The id of the tax region to update
+   */
+  id: string
+
+  /**
+   * The province code of the tax region.
+   */
+  province_code?: string | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: MetadataType
+}
+
+/**
  * The tax rate rule to be created.
  */
 export interface CreateTaxRateRuleDTO {

@@ -43,10 +43,14 @@ Create the file \`src/modules/my-notification/index.ts\` with the following cont
 
 \`\`\`ts title="src/modules/my-notification/index.ts"
 import MyNotificationProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
 
-export default {
+export default ModuleProvider(Modules.NOTIFICATION, {
   services: [MyNotificationProviderService],
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the module's service.`,
@@ -69,11 +73,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "./modules/my-notification",
+            resolve: "./src/modules/my-notification",
             id: "my-notification",
             options: {
               channels: ["email"],

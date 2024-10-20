@@ -1,0 +1,170 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Admin Development Tips`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll find some tips for your admin development.
+
+## Send Requests to API Routes
+
+To send a request to an API route in the Medusa Application, use Medusa's [JS SDK](!resources!/js-sdk) with [Tanstack Query](https://tanstack.com/query/latest). Both of these tools are installed in your project by default.
+
+First, create the file `src/admin/lib/config.ts` to setup the SDK for use in your customizations:
+
+```ts
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+```
+
+<Note>
+
+Learn more about the JS SDK's configurations [this documentation](!resources!/js-sdk#js-sdk-configurations).
+
+</Note>
+
+Then, use the configured SDK with the `useQuery` Tanstack Query hook to send `GET` requests, and `useMutation` hook to send `POST` or `DELETE` requests.
+
+For example:
+
+<CodeTabs group="query-type">
+  <CodeTab label="Query" value="query">
+
+export const queryHighlights = [
+  ["8", "useQuery", "Use Tanstack Query's `useQuery` to send a `GET` request."],
+  ["9", "sdk.admin.product.list", "Use the SDK to send the request."],
+  ["10", "queryKey", "Specify the key used to cache data."]
+]
+
+```tsx title="src/admin/widgets/product-widget.ts" highlights={queryHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
+
+const ProductWidget = () => {
+  const { data, isLoading } = useQuery({
+    queryFn: () => sdk.admin.product.list(),
+    queryKey: ["products"]
+  })
+  
+  return (
+    <Container className="divide-y p-0">
+      {isLoading && <span>Loading...</span>}
+      {data?.products && (
+        <ul>
+          {data.products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.list.before",
+})
+
+export default ProductWidget
+```
+
+  </CodeTab>
+  <CodeTab label="Mutation" value="mutation">
+
+export const mutationHighlights = [
+  ["10", "useMutation", "Use Tanstack Query's `useMutation` to send `POST` or `DELETE` requests."],
+  ["12", "sdk.admin.product.update", "Use the configured SDK to send the request."],
+]
+
+```tsx title="src/admin/widgets/product-widget.ts" highlights={mutationHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/config"
+import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
+
+const ProductWidget = ({ 
+  data: productData
+}: DetailWidgetProps<HttpTypes.AdminProduct>) => {
+  const { mutateAsync } = useMutation({
+    mutationFn: (payload: HttpTypes.AdminUpdateProduct) => 
+      sdk.admin.product.update(productData.id, payload),
+    onSuccess: () => alert("updated product")
+  })
+
+  const handleUpdate = () => {
+    mutateAsync({
+      title: "New Product Title"
+    })
+  }
+  
+  return (
+    <Container className="divide-y p-0">
+      <Button onClick={handleUpdate}>Update Title</Button>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Routing Functionalities
+
+To navigate or link to other pages, or perform other routing functionalities, use the [react-router-dom](https://reactrouter.com/en/main) package. It's installed in your project through the Medusa Admin.
+
+For example:
+
+export const highlights = [
+  ["9", "Link", "Add a link to another page"],
+  ["9", '"/orders', "Add the path without the `/app` prefix."]
+]
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={highlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+
+// The widget
+const ProductWidget = () => {
+  return (
+    <Container className="divide-y p-0">
+      <Link to={"/orders"}>View Orders</Link>
+    </Container>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+This adds a widget in a product's details page with a link to the Orders page. The link's path must be without the `/app` prefix.
+
+<Note title="Learn more">
+
+Refer to [react-router-dom’s documentation](https://reactrouter.com/en/main) for other available components and hooks.
+
+</Note>

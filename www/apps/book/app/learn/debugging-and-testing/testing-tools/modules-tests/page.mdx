@@ -1,0 +1,132 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Write Tests for Modules`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the `moduleIntegrationTestRunner` utility function and how to use it to write integration tests for a module's main service.
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
+
+## moduleIntegrationTestRunner Utility
+
+The `moduleIntegrationTestRunner` utility function is provided by the `@medusajs/test-utils` package to create integration tests for a module. The integration tests run on a test Medusa application with only the specified module enabled.
+
+For example, assuming you have a `hello` module, create a test file at `src/modules/hello/__tests__/service.spec.ts`:
+
+```ts title="src/modules/hello/__tests__/service.spec.ts"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { HELLO_MODULE } from ".."
+import HelloModuleService from "../service"
+import MyCustom from "../models/my-custom"
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleName: HELLO_MODULE,
+  moduleModels: [MyCustom],
+  resolve: "./src/modules/hello",
+  testSuite: ({ service }) => {
+    // TODO write tests
+  },
+})
+```
+
+The `moduleIntegrationTestRunner` function accepts as a parameter an object with the following properties:
+
+- `moduleName`: The name of the module.
+- `moduleModels`: An array of models in the module. Refer to [this section](#write-tests-for-modules-without-data-models) if your module doesn't have data models.
+- `resolve`: The path to the model.
+- `testSuite`: A function that defines the tests to run.
+
+The `testSuite` function accepts as a parameter an object having the `service` property, which is an instance of the module's main service.
+
+<Note title="Tip">
+
+The type argument provided to the `moduleIntegrationTestRunner` function is used as the type of the `service` property.
+
+</Note>
+
+The tests in the `testSuite` function are written using [Jest](https://jestjs.io/).
+
+---
+
+## Run Tests
+
+Run the following command to run your module integration tests:
+
+```bash npm2yarn
+npm run test:modules
+```
+
+<Note title="Tip">
+
+If you don't have a `test:modules` script in `package.json`, refer to the [Medusa Testing Tools chapter](../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src/modules` directory.
+
+---
+
+## Pass Module Options
+
+If your module accepts options, you can set them using the `moduleOptions` property of the `moduleIntegrationTestRunner`'s parameter.
+
+For example:
+
+```ts
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import HelloModuleService from "../service"
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleOptions: {
+    apiKey: "123",
+  },
+  // ...
+})
+```
+
+---
+
+## Write Tests for Modules without Data Models
+
+If your module doesn't have a data model, pass a dummy model in the `moduleModels` property.
+
+For example:
+
+```ts
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import HelloModuleService from "../service"
+import { model } from "@medusajs/framework/utils"
+
+const DummyModel = model.define("dummy_model", {
+  id: model.id().primaryKey(),
+})
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleModels: [DummyModel],
+  // ...
+})
+```
+
+---
+
+### Other Options and Inputs
+
+Refer to [this reference in the Development Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner) for other available parameter options and inputs of the `testSuite` function.
+
+---
+
+## Database Used in Tests
+
+The `moduleIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+
+To manage that database, such as changing its name or perform operations on it in your tests, refer to the [references in the Development Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner).

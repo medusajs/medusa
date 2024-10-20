@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../components/utilities/keybound-form"
 import { useProducts } from "../../../../hooks/api/products"
 import { useSalesChannelAddProducts } from "../../../../hooks/api/sales-channels"
 import { useProductTableColumns } from "../../../../hooks/table/columns/use-product-table-columns"
@@ -119,7 +120,7 @@ export const AddProductsToSalesChannelForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
@@ -130,14 +131,6 @@ export const AddProductsToSalesChannelForm = ({
                 {form.formState.errors.product_ids.message}
               </Hint>
             )}
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
-            </Button>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex size-full flex-col overflow-y-auto">
@@ -158,7 +151,19 @@ export const AddProductsToSalesChannelForm = ({
             }}
           />
         </RouteFocusModal.Body>
-      </form>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

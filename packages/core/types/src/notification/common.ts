@@ -176,3 +176,23 @@ export interface FilterableNotificationProps
    */
   created_at?: OperatorMap<string>
 }
+
+/**
+ * @interface
+ *
+ * The structure for content passed to the notification provider.
+ */
+export interface NotificationContent {
+  /**
+   * the subject of the notification
+   */
+  subject?: string
+  /**
+   * the text content of the notification
+   */
+  text?: string
+  /**
+   * the html content of the notification
+   */
+  html?: string
+}

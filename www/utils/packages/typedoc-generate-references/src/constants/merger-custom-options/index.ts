@@ -12,6 +12,7 @@ import taxProviderOptions from "./tax-provider.js"
 import workflowsOptions from "./workflows.js"
 import dmlOptions from "./dml.js"
 import coreFlowsOptions from "./core-flows.js"
+import jsSdkOptions from "./js-sdk.js"
 
 const mergerCustomOptions: FormattingOptionsType = {
   ...authProviderOptions,
@@ -20,6 +21,7 @@ const mergerCustomOptions: FormattingOptionsType = {
   ...fileOptions,
   ...fulfillmentProviderOptions,
   ...helperStepsOptions,
+  ...jsSdkOptions,
   ...medusaConfigOptions,
   ...medusaOptions,
   ...notificationOptions,

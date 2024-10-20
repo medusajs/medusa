@@ -6,14 +6,19 @@ import clsx from "clsx"
 import { MainNavItemLink } from "./Link"
 import { MainNavItemDropdown } from "./Dropdown"
 
-export const MainNavItems = () => {
+type MainNavItemsProps = {
+  className?: string
+}
+
+export const MainNavItems = ({ className }: MainNavItemsProps) => {
   const { navItems, activeItemIndex } = useMainNav()
 
   return (
     <ul
       className={clsx(
         "hidden lg:flex justify-start gap-docs_1 items-center",
-        "my-docs_0.75"
+        "my-docs_0.75",
+        className
       )}
     >
       {navItems.map((item, index) => {

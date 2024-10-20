@@ -54,6 +54,7 @@ type Options = {
 class MyFileProviderService extends AbstractFileProviderService {
   protected logger_: Logger
   protected options_: Options
+  static identifier = "my-file"
   // assuming you're initializing a client
   protected client
 
@@ -78,15 +79,33 @@ export default MyFileProviderService
 
 ### validateOptions
 
-Override this static method in order for the loader to validate the options provided to the module provider.
+This method validates the options of the provider set in `medusa-config.ts`.
+Implementing this method is optional. It's useful if your provider requires custom validation.
+
+If the options aren't valid, throw an error.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  static validateOptions(options: Record<any, any>) {
+    if (!options.apiKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "API key is required in the provider's options."
+      )
+    }
+  }
+}
+```
 
 #### Parameters
 
-<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"The provider's options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
 
 #### Returns
 
-<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"This method validates the options of the provider set in `medusa-config.ts`.\nImplementing this method is optional. It's useful if your provider requires custom validation.\n\nIf the options aren't valid, throw an error.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
 
 ### upload
 
@@ -185,10 +204,14 @@ Create the file `src/modules/my-file/index.ts` with the following content:
 
 ```ts title="src/modules/my-file/index.ts"
 import MyFileProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
 
-export default {
+export default ModuleProvider(Modules.FILE, {
   services: [MyFileProviderService],
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyFileProviderService` is the module's service.
@@ -218,7 +241,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./modules/my-file",
+            resolve: "./src/modules/my-file",
             id: "my-file",
             options: {
               // provider options...

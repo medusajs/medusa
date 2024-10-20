@@ -1,0 +1,81 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Example: Integration Tests for a Module`,
+}
+
+# {metadata.title}
+
+In this chapter, find an example of writing an integration test for a module using the [moduleIntegrationTestRunner utility function](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
+
+## Write Integration Test for Module
+
+Consider a `hello` module with a `HelloModuleService` that has a `getMessage` method:
+
+```ts title="src/modules/hello/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  getMessage(): string {
+    return "Hello, World!"
+  }
+}
+
+export default HelloModuleService
+```
+
+To create an integration test for the method, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
+
+```ts title="src/modules/hello/__tests__/service.spec.ts"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { HELLO_MODULE } from ".."
+import HelloModuleService from "../service"
+import MyCustom from "../models/my-custom"
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleName: HELLO_MODULE,
+  moduleModels: [MyCustom],
+  resolve: "./src/modules/hello",
+  testSuite: ({ service }) => {
+    describe("HelloModuleService", () => {
+      it("says hello world", () => {
+        const message = service.getMessage()
+
+        expect(message).toEqual("Hello, World!")
+      })
+    })
+  },
+})
+```
+
+You use the `moduleIntegrationTestRunner` function to add tests for the `hello` module. You have one test that passes if the `getMessage` method returns the `"Hello, World!"` string.
+
+---
+
+## Run Test
+
+Run the following command to run your module integration tests:
+
+```bash npm2yarn
+npm run test:modules
+```
+
+<Note title="Tip">
+
+If you don't have a `test:modules` script in `package.json`, refer to the [Medusa Testing Tools chapter](../../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src/modules` directory.

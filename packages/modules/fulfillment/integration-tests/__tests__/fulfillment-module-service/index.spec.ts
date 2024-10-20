@@ -9,7 +9,7 @@ import {
   initModules,
   moduleIntegrationTestRunner,
   SuiteOptions,
-} from "medusa-test-utils"
+} from "@medusajs/test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
@@ -260,7 +260,7 @@ moduleIntegrationTestRunner({
             [Modules.FULFILLMENT]: {
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
-                databaseConfig,
+                database: databaseConfig,
                 providers: Object.keys(providersConfig).map((id) => ({
                   resolve: resolve(
                     process.cwd() +
@@ -310,7 +310,7 @@ moduleIntegrationTestRunner({
             [Modules.FULFILLMENT]: {
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
-                databaseConfig,
+                database: databaseConfig,
                 providers: Object.keys(providersConfig2).map((id) => ({
                   resolve: resolve(
                     process.cwd() +

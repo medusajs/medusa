@@ -5,11 +5,17 @@
 @layer base {
 
   html {
-    -webkit-font-smoothing: antialiased;
+    --webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
   }
 
   body {
     @apply overflow-x-hidden;
+    overscroll-behavior-y: none;
+  }
+
+  #main {
+    overscroll-behavior-y: contain;
   }
 
   *::selection {
@@ -22,6 +28,7 @@
 
   aside * {
     scrollbar-color: var(--docs-border-base) var(--docs-bg-subtle);
+    overscroll-behavior-y: contain;
   }
 
   body[data-modal="opened"] {

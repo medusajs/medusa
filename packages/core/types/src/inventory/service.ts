@@ -796,7 +796,7 @@ export interface IInventoryService extends IModuleService {
   /**
    * This method soft deletes reservations by their IDs.
    *
-   * @param {string[]} inventoryLevelIds - The reservations' IDs.
+   * @param {string[]} reservationItemIds - The reservations' IDs.
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted.
@@ -808,7 +808,7 @@ export interface IInventoryService extends IModuleService {
    * ])
    */
   softDeleteReservationItems<TReturnableLinkableKeys extends string = string>(
-    ReservationItemIds: string[],
+    reservationItemIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
@@ -816,7 +816,7 @@ export interface IInventoryService extends IModuleService {
   /**
    * This method restores soft deleted reservations by their IDs.
    *
-   * @param {string[]} ReservationItemIds - The reservations' IDs.
+   * @param {string[]} reservationItemIds - The reservations' IDs.
    * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the reservation. You can pass to its `returnLinkableKeys`
    * property any of the reservation's relation attribute names, such as `{type relation name}`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -829,7 +829,7 @@ export interface IInventoryService extends IModuleService {
    * ])
    */
   restoreReservationItems<TReturnableLinkableKeys extends string = string>(
-    ReservationItemIds: string[],
+    reservationItemIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
@@ -1017,6 +1017,48 @@ export interface IInventoryService extends IModuleService {
   /**
    * This method adjusts the inventory quantity of an item in a location.
    *
+   * @param data - The adjustments to make.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<InventoryLevelDTO>} The updated inventory level.
+   *
+   * @example
+   * const inventoryLevel1 =
+   *   await inventoryModuleService.adjustInventory([
+   *     // add to the inventory quantity
+   *     {
+   *       inventoryItemId: "iitem_123",
+   *       locationId: "loc_123",
+   *       adjustment: 5
+   *     },
+   *     // subtract from the inventory quantity
+   *     {
+   *       inventoryItemId: "iitem_321",
+   *       locationId: "loc_321",
+   *       adjustment: -5
+   *     }
+   *   ])
+   */
+
+  adjustInventory(
+    data: {
+      /**
+       * The inventory item's ID.
+       */
+      inventoryItemId: string
+      /**
+       * The location's ID.
+       */
+      locationId: string
+      /**
+       * The adjustment to make to the quantity.
+       */
+      adjustment: BigNumberInput
+    }[],
+    context?: Context
+  ): Promise<InventoryLevelDTO[]>
+
+  /**
+   * 
    * @param {string} inventoryItemId - The inventory item's ID.
    * @param {string} locationId - The location's ID.
    * @param {number} adjustment - the adjustment to make to the quantity.
@@ -1040,16 +1082,6 @@ export interface IInventoryService extends IModuleService {
    *     -5
    *   )
    */
-
-  adjustInventory(
-    data: {
-      inventoryItemId: string
-      locationId: string
-      adjustment: BigNumberInput
-    }[],
-    context?: Context
-  ): Promise<InventoryLevelDTO[]>
-
   adjustInventory(
     inventoryItemId: string,
     locationId: string,

@@ -4,7 +4,13 @@ import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
 export class Claim {
+  /**
+   * @ignore
+   */
   private client: Client
+  /**
+   * @ignore
+   */
   constructor(client: Client) {
     this.client = client
   }
@@ -58,21 +64,6 @@ export class Claim {
       `/admin/claims/${id}/cancel`,
       {
         method: "POST",
-        headers,
-        query,
-      }
-    )
-  }
-
-  async delete(
-    id: string,
-    query?: HttpTypes.SelectParams,
-    headers?: ClientHeaders
-  ) {
-    return await this.client.fetch<HttpTypes.AdminClaimDeleteResponse>(
-      `/admin/claims/${id}`,
-      {
-        method: "DELETE",
         headers,
         query,
       }

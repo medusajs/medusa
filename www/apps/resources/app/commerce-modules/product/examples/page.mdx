@@ -8,18 +8,23 @@ export const metadata = {
 
 In this guide, you’ll find common examples of how you can use the Product Module in your application.
 
+<Note>
+
+You should only use the Product Module's main service when implementing complex customizations. For common cases, check out [available workflows instead](../../../medusa-workflows-reference/page.mdx).
+
+</Note>
+
 ## Create Product
 
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 
@@ -94,13 +99,12 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 
@@ -137,13 +141,12 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 
@@ -184,13 +187,12 @@ export async function GET(
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 
@@ -231,13 +233,12 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 
@@ -274,13 +275,12 @@ export async function GET(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab value="medusa" label="Medusa API Router">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { IProductModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
-  const productModuleService: IProductModuleService = request.scope.resolve(
+  const productModuleService = request.scope.resolve(
     Modules.PRODUCT
   )
 

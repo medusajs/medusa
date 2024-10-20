@@ -4,7 +4,6 @@
  * description: The order's details.
  * x-schemaName: BaseOrder
  * required:
- *   - payment_collections
  *   - id
  *   - version
  *   - region_id
@@ -17,7 +16,6 @@
  *   - payment_status
  *   - fulfillment_status
  *   - summary
- *   - metadata
  *   - created_at
  *   - updated_at
  *   - original_item_total
@@ -47,20 +45,16 @@
  *     type: array
  *     description: The order's payment collections.
  *     items:
- *       $ref: "#/components/schemas/AdminPaymentCollection"
+ *       $ref: "#/components/schemas/BasePaymentCollection"
  *   fulfillments:
  *     type: array
  *     description: The order's fulfillments.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
- *   sales_channel:
- *     $ref: "#/components/schemas/AdminSalesChannel"
- *   customer:
- *     $ref: "#/components/schemas/AdminCustomer"
  *   shipping_address:
- *     $ref: "#/components/schemas/AdminOrderAddress"
+ *     $ref: "#/components/schemas/BaseOrderAddress"
  *   billing_address:
- *     $ref: "#/components/schemas/AdminOrderAddress"
+ *     $ref: "#/components/schemas/BaseOrderAddress"
  *   id:
  *     type: string
  *     title: id
@@ -240,3 +234,4 @@
  *     description: The tax total of the order's shipping excluding promotions.
  * 
 */
+

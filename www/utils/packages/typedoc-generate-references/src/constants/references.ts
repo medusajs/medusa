@@ -27,6 +27,7 @@ const allReferences = [
   "file",
   "fulfillment-provider",
   "helper-steps",
+  "js-sdk",
   "medusa-config",
   "medusa",
   "modules-sdk",

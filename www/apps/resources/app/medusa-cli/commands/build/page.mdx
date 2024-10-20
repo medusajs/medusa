@@ -1,0 +1,84 @@
+---
+sidebar_label: "build"
+sidebar_position: 5
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `build Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Create a standalone build of the Medusa application.
+
+This creates a build that:
+
+- Doesn't rely on the source TypeScript files.
+- Can be copied to a production server reliably.
+
+The build is outputted to a new `.medusa/server` directory.
+
+```bash
+npx medusa build
+```
+
+Refer to [this section](#run-built-medusa-application) for next steps.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--admin-only`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether to only build the admin to host it separately. If this option is not passed, the admin is built to the `.medusa/server/public/admin`. When this option is passed, the admin is built to the `.medusa/admin` directory instead.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Run Built Medusa Application
+
+After running the `build` command, use the following step to run the built Medusa application:
+
+- Change to the `.medusa/server` directory and install the dependencies:
+
+```bash npm2yarn
+cd .medusa/server && npm install
+```
+
+- When running the application locally, make sure to copy the `.env` file from the root project's directory. In production, use system environment variables instead.
+
+```bash npm2yarn
+cp .env .medusa/server
+```
+
+- Use the `start` command to run the application:
+
+```bash npm2yarn
+cd .medusa/server && npm run start
+```
+
+---
+
+## Build Medusa Admin
+
+By default, the Medusa Admin is built to the `.medusa/server/public/admin` directory.
+
+If you want a separate build to host the admin standalone, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.

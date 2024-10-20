@@ -10,6 +10,7 @@ import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
 
 import { useEffect, useMemo } from "react"
+import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { LocationItem } from "./location-item"
 
 type EditInventoryItemAttributeFormProps = {
@@ -120,7 +121,7 @@ export const ManageLocationsForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -189,7 +190,7 @@ export const ManageLocationsForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

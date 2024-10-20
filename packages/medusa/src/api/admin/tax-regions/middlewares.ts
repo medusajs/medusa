@@ -4,13 +4,14 @@ import {
   AdminCreateTaxRegion,
   AdminGetTaxRegionParams,
   AdminGetTaxRegionsParams,
+  AdminUpdateTaxRegion,
 } from "./validators"
 
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 
 export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -20,7 +21,18 @@ export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminCreateTaxRegion),
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
-        QueryConfig.listTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/tax-regions/:id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateTaxRegion),
+      validateAndTransformQuery(
+        AdminGetTaxRegionsParams,
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
