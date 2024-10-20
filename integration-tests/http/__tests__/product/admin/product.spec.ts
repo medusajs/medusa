@@ -1984,6 +1984,62 @@ medusaIntegrationTestRunner({
           ])
         })
 
+        it.only("should update manage inventory and allow backorder on variants", async () => {
+          const variantId = baseProduct.variants[0].id
+
+          let payload = {
+            variants: [
+              {
+                id: variantId,
+                manage_inventory: true,
+                allow_backorder: true,
+              },
+            ],
+          }
+
+          await api.post(
+            `/admin/products/${baseProduct.id}`,
+            payload,
+            adminHeaders
+          )
+
+          let variant = (
+            await api.get(
+              `/admin/product-variants?id=${variantId}`,
+              adminHeaders
+            )
+          ).data.variants[0]
+
+          expect(variant.manage_inventory).toEqual(true)
+          expect(variant.allow_backorder).toEqual(true)
+
+          payload = {
+            variants: [
+              {
+                id: variantId,
+                manage_inventory: false,
+                allow_backorder: false,
+              },
+            ],
+          }
+
+          await api.post(
+            `/admin/products/${baseProduct.id}`,
+            payload,
+            adminHeaders
+          )
+
+          variant = (
+            await api.get(
+              `/admin/product-variants?id=${variantId}`,
+              adminHeaders
+            )
+          ).data.variants[0]
+
+          expect(variant.manage_inventory).toEqual(false)
+          expect(variant.allow_backorder).toEqual(false)
+        })
+
         it("fails to update product with invalid status", async () => {
           const payload = {
             status: null,
@@ -1991,7 +2047,7 @@ medusaIntegrationTestRunner({
 
           try {
             await api.post(
-              `/admin/products/${baseProduct}`,
+              `/admin/products/${baseProduct.id}`,
               payload,
               adminHeaders
             )

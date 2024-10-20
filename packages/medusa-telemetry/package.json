@@ -45,7 +45,7 @@
     "global": "^4.4.0",
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.1"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }
