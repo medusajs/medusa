@@ -44,9 +44,6 @@ export interface AdminCreateExchange {
   metadata?: Record<string, unknown> | null
 }
 
-export interface AdminAddExchangeItems extends AdminExchangeAddItems {}
-export interface AdminUpdateExchangeItem extends AdminExchangeUpdateItem {}
-
 export interface AdminAddExchangeInboundItems extends AdminExchangeAddItems {}
 export interface AdminUpdateExchangeInboundItem
   extends AdminExchangeUpdateItem {}
