@@ -1,7 +1,6 @@
 export * from "./AiAssistant"
 export * from "./ApiRunner"
 export * from "./Badge"
-export * from "./Bannerv2"
 export * from "./BetaBadge"
 export * from "./Bordered"
 export * from "./BorderedIcon"

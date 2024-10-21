@@ -38,7 +38,6 @@ export default function RootLayout({
         sidebarProps={{
           expandItems: true,
         }}
-        showBanner={false}
         ProvidersComponent={Providers}
       >
         {children}

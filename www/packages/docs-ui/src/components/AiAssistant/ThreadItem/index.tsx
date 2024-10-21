@@ -17,7 +17,11 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
         item.type === "answer" && "!pr-[20px]"
       )}
     >
-      {item.type !== "question" && <AiAssistantIcon />}
+      {item.type !== "question" && (
+        <span className="w-[20px] block">
+          <AiAssistantIcon />
+        </span>
+      )}
       <div
         className={clsx(
           "txt-small text-medusa-fg-subtle",
@@ -26,7 +30,7 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
             "px-docs_0.75 py-docs_0.5",
           ],
           item.type !== "question" && "flex-1",
-          item.type === "answer" && "text-pretty"
+          item.type === "answer" && "text-pretty flex-1"
         )}
       >
         {item.type === "question" && <>{item.content}</>}
