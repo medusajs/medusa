@@ -28,7 +28,7 @@ export interface BaseCustomerAddress {
    */
   is_default_billing: boolean
   /**
-   * The ID of the customer that the address belongs to.
+   * The ID of the customer this address belongs to.
    */
   customer_id: string
   /**
@@ -71,7 +71,7 @@ export interface BaseCustomerAddress {
    */
   postal_code: string | null
   /**
-   * The address's phone.
+   * The address's phone number.
    */
   phone: string | null
   /**
@@ -148,25 +148,70 @@ export interface BaseCustomer {
 }
 
 export interface CustomerGroupInCustomerFilters {
+  /**
+   * Filter by customer group ID(s).
+   */
   id: string[] | string
+  /**
+   * Filter by name(s).
+   */
   name: string[] | string
+  /**
+   * Apply filters on the group's creation date.
+   */
   created_at: OperatorMap<string>
+  /**
+   * Apply filters on the group's update date.
+   */
   updated_at: OperatorMap<string>
+  /**
+   * Apply filters on the group's deletion date.
+   */
   deleted_at: OperatorMap<string>
 }
 
 export interface BaseCustomerFilters
   extends FindParams,
     BaseFilterable<BaseCustomerFilters> {
+  /**
+   * Query or keywords to apply on the customer's searchable fields.
+   */
   q?: string
+  /**
+   * Filter by customer ID(s).
+   */
   id?: string[] | string | OperatorMap<string | string[]>
+  /**
+   * Filter by email(s).
+   */
   email?: string[] | string | OperatorMap<string>
+  /**
+   * Filter by company name(s).
+   */
   company_name?: string[] | string | OperatorMap<string>
+  /**
+   * Filter by first name(s).
+   */
   first_name?: string[] | string | OperatorMap<string>
+  /**
+   * Filter by last name(s).
+   */
   last_name?: string[] | string | OperatorMap<string>
+  /**
+   * Filter by user ID(s) to retrieve the customers they created.
+   */
   created_by?: string[] | string | OperatorMap<string>
+  /**
+   * Apply filters on the customer's creation date.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Apply filters on the customer's update date.
+   */
   updated_at?: OperatorMap<string>
+  /**
+   * Apply filters on the customer's deletion date.
+   */
   deleted_at?: OperatorMap<string>
 }
 
@@ -216,7 +261,7 @@ export interface BaseCreateCustomer {
    */
   last_name?: string
   /**
-   * The customer's phone.
+   * The customer's phone number.
    */
   phone?: string
   /**
@@ -239,7 +284,7 @@ export interface BaseUpdateCustomer {
    */
   last_name?: string
   /**
-   * The customer's phone.
+   * The customer's phone number.
    */
   phone?: string
   /**
