@@ -2,6 +2,7 @@ import { z } from "zod"
 import {
   GetProductsParams,
   recursivelyNormalizeSchema,
+  StoreGetProductParamsDirectFields,
   transformProductParams,
 } from "../../utils/common-validators"
 import {
@@ -81,8 +82,12 @@ export const StoreGetProductsParams = createFindParams({
               .optional(),
           })
           .optional(),
-        $and: z.lazy(() => StoreGetProductsParamsFields.array()).optional(),
-        $or: z.lazy(() => StoreGetProductsParamsFields.array()).optional(),
+        $and: z
+          .lazy(() => StoreGetProductParamsDirectFields.strict().array())
+          .optional(),
+        $or: z
+          .lazy(() => StoreGetProductParamsDirectFields.strict().array())
+          .optional(),
       })
       .strict()
   )

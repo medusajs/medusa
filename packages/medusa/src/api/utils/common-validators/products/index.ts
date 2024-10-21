@@ -6,14 +6,13 @@ import { booleanString } from "../common"
 
 export const ProductStatusEnum = z.nativeEnum(ProductStatus)
 
-export const GetProductsParams = z.object({
+export const StoreGetProductParamsDirectFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   title: z.string().optional(),
   handle: z.string().optional(),
   is_giftcard: booleanString().optional(),
   category_id: z.union([z.string(), z.array(z.string())]).optional(),
-  sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
   collection_id: z.union([z.string(), z.array(z.string())]).optional(),
   tag_id: z.union([z.string(), z.array(z.string())]).optional(),
   type_id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -21,6 +20,12 @@ export const GetProductsParams = z.object({
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
 })
+
+export const GetProductsParams = z
+  .object({
+    sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+  .merge(StoreGetProductParamsDirectFields)
 
 type HttpProductFilters = FilterableProductProps & {
   tag_id?: string | string[]
