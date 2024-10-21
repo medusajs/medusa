@@ -346,14 +346,14 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
           order_id: order.id,
           return_id: returnCreated.id,
         },
-      }),
+      }).config({ name: "emit-return-requested-event" }),
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_RECEIVED,
         data: {
           order_id: order.id,
           return_id: returnCreated.id,
         },
-      })
+      }).config({ name: "emit-return-received-event" })
     )
   }
 )
