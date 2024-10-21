@@ -1,5 +1,5 @@
-import qs from "qs"
 import { events } from "fetch-event-stream"
+import qs from "qs"
 import {
   ClientFetch,
   Config,
@@ -175,6 +175,10 @@ export class Client {
         this.token = ""
         break
       }
+      case "nostore": {
+        this.token = ""
+        break
+      }
     }
   }
 
@@ -276,6 +280,9 @@ export class Client {
         this.token = token
         break
       }
+      case "nostore": {
+        break
+      }
     }
   }
 
@@ -291,9 +298,10 @@ export class Client {
       case "memory": {
         return this.token
       }
+      case "nostore": {
+        return
+      }
     }
-
-    return
   }
 
   protected getTokenStorageInfo_ = () => {
@@ -301,7 +309,8 @@ export class Client {
     const hasSession = hasStorage("sessionStorage")
 
     const storageMethod =
-      this.config.auth?.jwtTokenStorageMethod || (hasLocal ? "local" : "memory")
+      this.config.auth?.jwtTokenStorageMethod ||
+      (hasLocal ? "local" : "nostore")
     const storageKey =
       this.config.auth?.jwtTokenStorageKey || this.DEFAULT_JWT_STORAGE_KEY
 
