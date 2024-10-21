@@ -1,18 +1,19 @@
 import { z } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type ReturnParamsType = z.infer<typeof ReturnParams>
 export const ReturnParams = createSelectParams()
 
+export const ReturnsParamsFields = z.object({
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  order_id: z.union([z.string(), z.array(z.string())]).optional(),
+})
+
 export type ReturnsParamsType = z.infer<typeof ReturnsParams>
-export const ReturnsParams = createFindParams().merge(
-  z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    order_id: z.union([z.string(), z.array(z.string())]).optional(),
-    $and: z.lazy(() => ReturnsParams.array()).optional(),
-    $or: z.lazy(() => ReturnsParams.array()).optional(),
-  })
-)
+export const ReturnsParams = createFindParams()
+  .merge(ReturnsParamsFields)
+  .merge(applyAndAndOrOperators(ReturnsParamsFields))
 
 const ReturnShippingSchema = z.object({
   option_id: z.string(),
