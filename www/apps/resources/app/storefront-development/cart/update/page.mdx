@@ -53,6 +53,12 @@ The Update Cart API route accepts a `region_id` request body parameter, whose va
 
 If a guest customer logs in, you must update the cart to be associated with the logged-in customer.
 
+<Note>
+
+You can't change the `customer_id` if the cart was associated with a customer previously.
+
+</Note>
+
 For example:
 
 export const updateCustomerHighlights = [
