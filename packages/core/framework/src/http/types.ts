@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { ZodObject } from "zod"
+import { ZodNullable, ZodObject, ZodOptional } from "zod"
 
 import {
   FindConfig,
@@ -148,7 +148,7 @@ export interface MedusaRequest<Body = unknown>
    * Custom validator to validate the `additional_data` property in
    * requests that allows for additional_data
    */
-  additionalDataValidator?: ZodObject<any, any>
+  additionalDataValidator?: ZodOptional<ZodNullable<ZodObject<any, any>>>
 }
 
 export interface AuthContext {
