@@ -68,7 +68,8 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
     next: NextFunction
   ) {
     try {
-      const allowed = (req.allowed ?? queryConfig.allowed ?? []) as string[]
+      req.allowed.push(queryConfig.allowed)
+      const allowed = req.allowed as string[]
       delete req.allowed
       const query = normalizeQuery(req)
 

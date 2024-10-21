@@ -948,6 +948,10 @@ export class RoutesLoader {
       ? this.#sourceDir
       : [this.#sourceDir]
 
+    this.#app.use((req, res) => {
+      req.allowed = new AllowedFields()
+    })
+
     const promises = normalizedSourcePath.map(async (sourcePath) => {
       const apiRoutesLoader = new ApiRoutesLoader({
         app: this.#app,
