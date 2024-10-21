@@ -1,6 +1,10 @@
 "use client"
 
-import { CalendarDate, CalendarDateTime, getLocalTimeZone } from "@internationalized/date"
+import {
+  CalendarDate,
+  CalendarDateTime,
+  getLocalTimeZone,
+} from "@internationalized/date"
 import { CalendarMini, Clock, XMarkMini } from "@medusajs/icons"
 import { cva } from "cva"
 import * as React from "react"
@@ -41,7 +45,10 @@ type DatePickerValueProps = {
 }
 
 interface DatePickerProps
-  extends Omit<BaseDatePickerProps<CalendarDateTime | CalendarDate>, keyof DatePickerValueProps>,
+  extends Omit<
+      BaseDatePickerProps<CalendarDateTime | CalendarDate>,
+      keyof DatePickerValueProps
+    >,
     DatePickerValueProps {}
 
 const datePickerStyles = (
@@ -72,103 +79,115 @@ const datePickerStyles = (
     },
   })
 
-const HAS_TIME = new Set<Granularity>(["hour","minute", "second"])
+const HAS_TIME = new Set<Granularity>(["hour", "minute", "second"])
 
-const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({
-  size = "base",
-  shouldCloseOnSelect = true,
-  className,
-  ...props
-}, ref) => {
-  const [value, setValue] = React.useState<CalendarDateTime | CalendarDate | null | undefined>(
-    getDefaultCalendarDateFromDate(props.value, props.defaultValue, props.granularity)
-  )
+const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
+  ({ size = "base", shouldCloseOnSelect = true, className, ...props }, ref) => {
+    const [value, setValue] = React.useState<
+      CalendarDateTime | CalendarDate | null | undefined
+    >(
+      getDefaultCalendarDateFromDate(
+        props.value,
+        props.defaultValue,
+        props.granularity
+      )
+    )
 
-  const innerRef = React.useRef<HTMLDivElement>(null)
-  React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement)
+    const innerRef = React.useRef<HTMLDivElement>(null)
+    React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement)
 
-  const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentRef = React.useRef<HTMLDivElement>(null)
 
-  const _props = convertProps(props, setValue)
+    const _props = convertProps(props, setValue)
 
-  const state = useDatePickerState({
-    ..._props,
-    shouldCloseOnSelect,
-  })
+    const state = useDatePickerState({
+      ..._props,
+      shouldCloseOnSelect,
+    })
 
-  const { groupProps, fieldProps, buttonProps, dialogProps, calendarProps } =
-    useDatePicker(_props, state, innerRef)
+    const { groupProps, fieldProps, buttonProps, dialogProps, calendarProps } =
+      useDatePicker(_props, state, innerRef)
 
-  React.useEffect(() => {
-    setValue(props.value ? updateCalendarDateFromDate(value, props.value, props.granularity) : null)
-    state.setValue(props.value ? updateCalendarDateFromDate(value, props.value, props.granularity) : null)
-  }, [props.value])
+    React.useEffect(() => {
+      setValue(
+        props.value
+          ? updateCalendarDateFromDate(value, props.value, props.granularity)
+          : null
+      )
+      state.setValue(
+        props.value
+          ? updateCalendarDateFromDate(value, props.value, props.granularity)
+          : null
+      )
+    }, [props.value])
 
-  function clear(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    e.stopPropagation()
+    function clear(e: React.MouseEvent<HTMLButtonElement>) {
+      e.preventDefault()
+      e.stopPropagation()
 
-    props.onChange?.(null)
-    state.setValue(null)
-  }
+      props.onChange?.(null)
+      state.setValue(null)
+    }
 
-  useInteractOutside({
-    ref: contentRef,
-    onInteractOutside: () => {
-      state.setOpen(false)
-    },
-  })
+    useInteractOutside({
+      ref: contentRef,
+      onInteractOutside: () => {
+        state.setOpen(false)
+      },
+    })
 
-  const hasTime = props.granularity && HAS_TIME.has(props.granularity)
-  const Icon = hasTime ? Clock : CalendarMini
+    const hasTime = props.granularity && HAS_TIME.has(props.granularity)
+    const Icon = hasTime ? Clock : CalendarMini
 
-  return (
-    <Popover open={state.isOpen} onOpenChange={state.setOpen}>
-      <Popover.Anchor asChild>
-        <div
-          ref={ref}
-          className={clx(
-            datePickerStyles(
-              state.isOpen,
-              state.isInvalid,
-              state.value
-            )({ size }),
-            className
-          )}
-          {...groupProps}
-        >
-          <DatePickerButton {...buttonProps} size={size}>
-            <Icon />
-          </DatePickerButton>
-          <DatePickerField {...fieldProps} size={size} />
-          {!!state.value && (
-            <DatePickerClearButton onClick={clear}>
-              <XMarkMini />
-            </DatePickerClearButton>
-          )}
-        </div>
-      </Popover.Anchor>
-      <Popover.Content
-        ref={contentRef}
-        {...dialogProps}
-        className="flex flex-col divide-y p-0"
-      >
-        <div className="p-3">
-          <InternalCalendar autoFocus {...calendarProps} />
-        </div>
-        {state.hasTime && (
-          <div className="p-3">
-            <TimeInput
-              value={state.timeValue}
-              onChange={state.setTimeValue}
-              hourCycle={props.hourCycle}
-            />
+    return (
+      <Popover open={state.isOpen} onOpenChange={state.setOpen}>
+        <Popover.Anchor asChild>
+          <div
+            ref={ref}
+            className={clx(
+              datePickerStyles(
+                state.isOpen,
+                state.isInvalid,
+                state.value
+              )({ size }),
+              className
+            )}
+            {...groupProps}
+          >
+            <DatePickerButton {...buttonProps} size={size}>
+              <Icon />
+            </DatePickerButton>
+            <DatePickerField {...fieldProps} size={size} />
+            {!!state.value && (
+              <DatePickerClearButton onClick={clear}>
+                <XMarkMini />
+              </DatePickerClearButton>
+            )}
           </div>
-        )}
-      </Popover.Content>
-    </Popover>
-  )
-})
+        </Popover.Anchor>
+        <Popover.Content
+          ref={contentRef}
+          {...dialogProps}
+          className="flex flex-col divide-y p-0"
+        >
+          <div className="p-3">
+            <InternalCalendar autoFocus {...calendarProps} />
+          </div>
+          {state.hasTime && (
+            <div className="p-3">
+              <TimeInput
+                value={state.timeValue}
+                onChange={state.setTimeValue}
+                hourCycle={props.hourCycle}
+                aria-label="Select time"
+              />
+            </div>
+          )}
+        </Popover.Content>
+      </Popover>
+    )
+  }
+)
 DatePicker.displayName = "DatePicker"
 
 function convertProps(
@@ -200,10 +219,16 @@ function convertProps(
 
   return {
     ...rest,
-    onChange: onChange as BaseDatePickerProps<CalendarDateTime | CalendarDate>["onChange"],
+    onChange: onChange as BaseDatePickerProps<
+      CalendarDateTime | CalendarDate
+    >["onChange"],
     isDateUnavailable,
-    minValue: minValue ? createCalendarDateFromDate(minValue, props.granularity) : minValue,
-    maxValue: maxValue ? createCalendarDateFromDate(maxValue, props.granularity) : maxValue,
+    minValue: minValue
+      ? createCalendarDateFromDate(minValue, props.granularity)
+      : minValue,
+    maxValue: maxValue
+      ? createCalendarDateFromDate(maxValue, props.granularity)
+      : maxValue,
   }
 }
 
