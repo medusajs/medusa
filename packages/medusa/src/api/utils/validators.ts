@@ -44,6 +44,17 @@ export const createLinkBody = () => {
   })
 }
 
+export function omitFindParams(schema: z.ZodObject<any>) {
+  const findParams = {
+    fields: true,
+    limit: true,
+    offset: true,
+    order: true,
+  } as const
+
+  return schema.omit(findParams)
+}
+
 export const createSelectParams = () => {
   return z.object({
     fields: z.string().optional(),

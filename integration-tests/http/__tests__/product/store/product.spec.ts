@@ -8,6 +8,7 @@ import {
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
+import qs from "qs"
 
 jest.setTimeout(30000)
 
@@ -627,6 +628,35 @@ medusaIntegrationTestRunner({
 
         const response = await api.get(
           `/store/products?category_id[]=${category.id}&category_id[]=${category2.id}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: product.id,
+          }),
+        ])
+      })
+
+      it.only("should list all products for a category using $and filters", async () => {
+        const category = await createCategory(
+          { name: "test", is_internal: false, is_active: true },
+          [product.id]
+        )
+
+        const category2 = await createCategory(
+          { name: "test2", is_internal: true, is_active: true },
+          [product4.id]
+        )
+
+        const searchParam = qs.stringify({
+          $and: [{ category_id: [category.id, category2.id] }],
+        })
+
+        const response = await api.get(
+          `/store/products?${searchParam}`,
           storeHeaders
         )
 

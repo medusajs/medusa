@@ -32,28 +32,12 @@ export const transformProductParams = (
 ): FilterableProductProps => {
   const res = {
     ...data,
-    tags: normalizeArray(data, "tag_id"),
-    categories: normalizeArray(data, "category_id"),
+    tags: { id: data.tag_id },
+    categories: { id: data.category_id },
   }
 
   delete res.tag_id
   delete res.category_id
 
   return res as FilterableProductProps
-}
-
-const normalizeArray = (filters: HttpProductFilters, key: string) => {
-  if (filters[key]) {
-    if (Array.isArray(filters[key])) {
-      return {
-        id: { $in: filters[key] },
-      }
-    } else {
-      return {
-        id: filters[key] as string,
-      }
-    }
-  }
-
-  return undefined
 }
