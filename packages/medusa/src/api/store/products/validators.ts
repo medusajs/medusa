@@ -1,5 +1,6 @@
 import { z } from "zod"
 import {
+  applyAndAndOrOperators,
   GetProductsParams,
   recursivelyNormalizeSchema,
   StoreGetProductParamsDirectFields,
@@ -11,7 +12,7 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
-const StoreGetProductParamsFields = z.object({
+export const StoreGetProductParamsFields = z.object({
   region_id: z.string().optional(),
   country_code: z.string().optional(),
   province: z.string().optional(),
@@ -24,7 +25,7 @@ export const StoreGetProductParams = createSelectParams().merge(
   StoreGetProductParamsFields
 )
 
-const StoreGetProductVariantsParamsFields = z.object({
+export const StoreGetProductVariantsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   options: z.object({ value: z.string(), option_id: z.string() }).optional(),
@@ -41,16 +42,9 @@ export const StoreGetProductVariantsParams = createFindParams({
   limit: 50,
 })
   .merge(StoreGetProductVariantsParamsFields)
-  .merge(
-    z.object({
-      $and: z
-        .lazy(() => StoreGetProductVariantsParamsFields.array())
-        .optional(),
-      $or: z.lazy(() => StoreGetProductVariantsParamsFields.array()).optional(),
-    })
-  )
+  .merge(applyAndAndOrOperators(StoreGetProductVariantsParamsFields))
 
-const StoreGetProductsParamsFields = z
+export const StoreGetProductsParamsFields = z
   .object({
     region_id: z.string().optional(),
     country_code: z.string().optional(),
@@ -70,25 +64,16 @@ export const StoreGetProductsParams = createFindParams({
     z
       .object({
         variants: z
+
           .object({
             options: z
               .object({ value: z.string(), option_id: z.string() })
               .optional(),
-            $and: z
-              .lazy(() => StoreGetProductVariantsParamsFields.array())
-              .optional(),
-            $or: z
-              .lazy(() => StoreGetProductVariantsParamsFields.array())
-              .optional(),
           })
-          .optional(),
-        $and: z
-          .lazy(() => StoreGetProductParamsDirectFields.strict().array())
-          .optional(),
-        $or: z
-          .lazy(() => StoreGetProductParamsDirectFields.strict().array())
+          .merge(applyAndAndOrOperators(StoreGetProductVariantsParamsFields))
           .optional(),
       })
+      .merge(applyAndAndOrOperators(StoreGetProductParamsDirectFields))
       .strict()
   )
   .transform(recursivelyNormalizeSchema(transformProductParams))

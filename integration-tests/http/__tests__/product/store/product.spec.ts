@@ -640,7 +640,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it.only("should list all products for a category using $and filters", async () => {
+      it("should list all products for a category using $and filters", async () => {
         const category = await createCategory(
           { name: "test", is_internal: false, is_active: true },
           [product.id]
