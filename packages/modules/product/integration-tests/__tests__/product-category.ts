@@ -457,7 +457,7 @@ moduleIntegrationTestRunner<Service>({
           ])
         })
 
-        it.only("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
           const productCategoryResults = await service.list(
             {
               parent_category_id: "category-1",
