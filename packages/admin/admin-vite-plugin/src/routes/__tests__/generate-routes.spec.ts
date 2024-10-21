@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
 
-import { Stats } from "fs"
 import fs from "fs/promises"
 import * as utils from "../../utils"
 import { generateRoutes } from "../generate-routes"
@@ -55,27 +54,10 @@ const expectedRoutesWithoutLoaders = `
     routes: [
         {
             Component: RouteComponent0,
-            loader: undefined,
             path: "/one",
         },
         {
             Component: RouteComponent1,
-            loader: undefined,
-            path: "/two",
-        }
-    ]
-`
-
-const expectedRoutesWithLoaders = `
-    routes: [
-        {
-            Component: RouteComponent0,
-            loader: RouteLoader0,
-            path: "/one",
-        },
-        {
-            Component: RouteComponent1,
-            loader: RouteLoader1,
             path: "/two",
         }
     ]
@@ -100,26 +82,6 @@ describe("generateRoutes", () => {
     )
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(expectedRoutesWithoutLoaders)
-    )
-  })
-  it("should generate routes with loaders", async () => {
-    const mockFiles = [
-      "Users/user/medusa/src/admin/routes/one/page.tsx",
-      "Users/user/medusa/src/admin/routes/two/page.tsx",
-    ]
-    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
-
-    vi.mocked(fs.readFile).mockImplementation(async (file) =>
-      Promise.resolve(mockFileContents[mockFiles.indexOf(file as string)])
-    )
-
-    vi.mocked(fs.stat).mockResolvedValue({} as Stats) // We just want to mock that the check passes
-
-    const result = await generateRoutes(
-      new Set(["Users/user/medusa/src/admin"])
-    )
-    expect(utils.normalizeString(result.code)).toEqual(
-      utils.normalizeString(expectedRoutesWithLoaders)
     )
   })
   it("should handle windows paths", async () => {

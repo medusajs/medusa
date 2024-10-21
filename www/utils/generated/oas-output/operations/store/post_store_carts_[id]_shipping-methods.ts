@@ -15,14 +15,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -85,7 +77,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-workflow: addShippingMethodToWorkflow
+ * x-workflow: addShippingMethodToCartWorkflow
  * 
 */
 

@@ -100,7 +100,9 @@ function resolvePlugin(pluginName: string): {
   try {
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
-    const resolvedPath = require.resolve(pluginName)
+    const resolvedPath = require.resolve(pluginName, {
+      paths: [process.cwd()],
+    })
 
     const packageJSON = JSON.parse(
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)

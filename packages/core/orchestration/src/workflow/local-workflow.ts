@@ -107,17 +107,9 @@ export class LocalWorkflow {
         return resolved
       }
 
-      const wrappableMethods = Object.getOwnPropertyNames(resolved).filter(
-        (key) => key !== "constructor"
-      )
-
       return new Proxy(resolved, {
         get: function (target, prop) {
-          const shouldWrap =
-            wrappableMethods.includes(prop as string) &&
-            typeof target[prop] === "function"
-
-          if (!shouldWrap) {
+          if (typeof target[prop] !== "function") {
             return target[prop]
           }
 

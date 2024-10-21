@@ -37,3 +37,7 @@ properties:
         metadata:
           type: object
           description: The item's metadata, can hold custom key-value pairs.
+        compare_at_unit_price:
+          type: number
+          title: compare_at_unit_price
+          description: The original price of the item before a promotion or sale.

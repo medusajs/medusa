@@ -5,7 +5,11 @@ import session from "express-session"
 import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
+import { logger } from "../logger"
 import { configManager } from "../config"
+import { MedusaRequest, MedusaResponse } from "./types"
+
+const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
 export async function expressLoader({ app }: { app: Express }): Promise<{
   app: Express
@@ -14,8 +18,10 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
   const baseDir = configManager.baseDir
   const configModule = configManager.config
   const isProduction = configManager.isProduction
-  const isStaging = process.env.NODE_ENV === "staging"
-  const isTest = process.env.NODE_ENV === "test"
+  const NODE_ENV = process.env.NODE_ENV || "development"
+  const IS_DEV = NODE_ENV.startsWith("dev")
+  const isStaging = NODE_ENV === "staging"
+  const isTest = NODE_ENV === "test"
 
   let sameSite: string | boolean = false
   let secure = false
@@ -40,7 +46,7 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
     store: null,
   }
 
-  let redisClient
+  let redisClient: Redis
 
   if (configModule?.projectConfig?.redisUrl) {
     const RedisStore = createStore(session)
@@ -55,11 +61,34 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
   }
 
   app.set("trust proxy", 1)
-  app.use(
-    morgan("combined", {
-      skip: () => isTest,
-    })
+
+  /**
+   * Method to skip logging HTTP requests. We skip in test environment
+   * and also exclude files served by vite during development
+   */
+  function shouldSkipHttpLog(req: MedusaRequest, res: MedusaResponse) {
+    return (
+      isTest || NOISY_ENDPOINTS_CHUNKS.some((chunk) => req.url.includes(chunk))
+    )
+  }
+
+  /**
+   * The middleware to use for logging. We write the log messages
+   * using winston, but rely on morgan to hook into HTTP requests
+   */
+  const loggingMiddleware = morgan(
+    IS_DEV
+      ? ":method :url ← :referrer (:status) - :response-time ms"
+      : "combined",
+    {
+      skip: shouldSkipHttpLog,
+      stream: {
+        write: (message: string) => logger.http(message.trim()),
+      },
+    }
   )
+
+  app.use(loggingMiddleware)
   app.use(cookieParser())
   app.use(session(sessionOpts))
 
