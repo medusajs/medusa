@@ -73,8 +73,12 @@ export const StoreGetProductsParams = createFindParams({
             options: z
               .object({ value: z.string(), option_id: z.string() })
               .optional(),
-            $and: z.lazy(() => StoreGetProductsParamsFields.array()).optional(),
-            $or: z.lazy(() => StoreGetProductsParamsFields.array()).optional(),
+            $and: z
+              .lazy(() => StoreGetProductVariantsParamsFields.array())
+              .optional(),
+            $or: z
+              .lazy(() => StoreGetProductVariantsParamsFields.array())
+              .optional(),
           })
           .optional(),
         $and: z.lazy(() => StoreGetProductsParamsFields.array()).optional(),
