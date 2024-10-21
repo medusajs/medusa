@@ -49,17 +49,13 @@ export function parallelize<TResult extends WorkflowData[]>(
     )
   }
 
-  const parallelizeBinder = (
-    global[
-      OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-    ] as CreateWorkflowComposerContext
-  ).parallelizeBinder
+  const context = global[
+    OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+  ] as CreateWorkflowComposerContext
 
   const resultSteps = steps.map((step) => step)
 
-  return parallelizeBinder<TResult>(function (
-    this: CreateWorkflowComposerContext
-  ) {
+  return function (this: CreateWorkflowComposerContext) {
     const stepOntoMerge = steps.shift()!
     this.flow.mergeActions(
       stepOntoMerge.__step__,
@@ -67,5 +63,5 @@ export function parallelize<TResult extends WorkflowData[]>(
     )
 
     return resultSteps as unknown as TResult
-  })
+  }.bind(context)()
 }

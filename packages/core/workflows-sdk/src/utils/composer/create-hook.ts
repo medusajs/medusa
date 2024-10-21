@@ -61,7 +61,10 @@ export function createHook<Name extends string, TInvokeInput>(
     OrchestrationUtils.SymbolMedusaWorkflowComposerContext
   ] as CreateWorkflowComposerContext
 
-  context.hookBinder(name, function (this: CreateWorkflowComposerContext) {
+  context.hooks_.declared.push(name)
+  context.hooksCallback_[name] = function (
+    this: CreateWorkflowComposerContext
+  ) {
     /**
      * We start by registering a new step within the workflow. This will be a noop
      * step that can be replaced (optionally) by the workflow consumer.
@@ -72,9 +75,11 @@ export function createHook<Name extends string, TInvokeInput>(
       () => void 0
     )(input)
 
-    function hook<
-      TInvokeResultCompensateInput
-    >(this: CreateWorkflowComposerContext, invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>, compensateFn?: CompensateFn<TInvokeResultCompensateInput>) {
+    function hook<TInvokeResultCompensateInput>(
+      this: CreateWorkflowComposerContext,
+      invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>,
+      compensateFn?: CompensateFn<TInvokeResultCompensateInput>
+    ) {
       const handlers = createStepHandler.bind(this)({
         stepName: name,
         input,
@@ -93,7 +98,7 @@ export function createHook<Name extends string, TInvokeInput>(
     }
 
     return hook
-  })
+  }.bind(context)()
 
   return {
     __type: OrchestrationUtils.SymbolWorkflowHook,

@@ -119,16 +119,6 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
       registered: [],
     },
     hooksCallback_: {},
-    hookBinder: (name, fn) => {
-      context.hooks_.declared.push(name)
-      context.hooksCallback_[name] = fn.bind(context)()
-    },
-    stepBinder: (fn) => {
-      return fn.bind(context)()
-    },
-    parallelizeBinder: (fn) => {
-      return fn.bind(context)()
-    },
   }
 
   global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = context
