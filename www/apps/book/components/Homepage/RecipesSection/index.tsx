@@ -1,4 +1,3 @@
-import { TriangleRightMini } from "@medusajs/icons"
 import clsx from "clsx"
 import {
   CalendarRefreshIcon,

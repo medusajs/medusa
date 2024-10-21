@@ -8,7 +8,7 @@ This chapter lists constraints to keep in mind when creating a service.
 
 ## Use Async Methods
 
-Medusa wraps service method executions to inject useful context or transactions. However, since Medusa can't detect whether the method is asynchronus, it always executes methods in the wrapper with the `await` keyword.
+Medusa wraps service method executions to inject useful context or transactions. However, since Medusa can't detect whether the method is asynchronous, it always executes methods in the wrapper with the `await` keyword.
 
 For example, if you have a synchronous `getMessage` method, and you use it other resources like workflows, Medusa executes it as an async method:
 

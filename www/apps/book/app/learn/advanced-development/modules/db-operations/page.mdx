@@ -161,9 +161,9 @@ Refer to [MikroORM's reference](https://mikro-orm.io/api/5.9/knex/class/EntityMa
 
 ### Why Wrap a Transactional Method
 
-The variables in the transactional method (for example, `update_`) hold values that are uncomitted to the database. They're only committed once the method finishes execution.
+The variables in the transactional method (for example, `update_`) hold values that are uncommitted to the database. They're only committed once the method finishes execution.
 
-So, if in your method you perform database operations, then use their result to perform other actions, such as connect to a third-party service, you'll be working with uncommitted data.
+So, if in your method you perform database operations, then use their result to perform other actions, such as connecting to a third-party service, you'll be working with uncommitted data.
 
 By placing only the database operations in a method that has the `InjectTransactionManager` and using it in a wrapper method, the wrapper method receives the committed result of the transactional method.
 
@@ -201,7 +201,7 @@ In this case, only the `update_` method is wrapped in a transaction. The returne
 
 ### Using Methods in Transactional Methods
 
-If your transactional method uses other methods that accept a Medusa context, pass the shared context to those method.
+If your transactional method uses other methods that accept a Medusa context, pass the shared context to those methods.
 
 For example:
 

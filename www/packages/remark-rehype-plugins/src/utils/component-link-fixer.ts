@@ -15,7 +15,7 @@ import {
 } from "../utils/expression-is-utils.js"
 import { ComponentLinkFixerOptions } from "../types/index.js"
 
-const MD_LINK_REGEX = /\[(.*?)\]\((?<link>.*?)\)/gm
+const MD_LINK_REGEX = /\[(.*?)\]\((?<link>(![a-z]+!|\.).*?)\)/gm
 const VALUE_LINK_REGEX = /^(![a-z]+!|\.)/gm
 
 function matchMdLinks(
@@ -23,8 +23,10 @@ function matchMdLinks(
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
   let linkMatches
+  // reset regex
+  MD_LINK_REGEX.lastIndex = 0
   while ((linkMatches = MD_LINK_REGEX.exec(str)) !== null) {
-    if (!linkMatches.groups?.link || linkMatches.groups?.link.startsWith("http")) {
+    if (!linkMatches.groups?.link) {
       return
     }
 
@@ -34,6 +36,8 @@ function matchMdLinks(
     })
 
     str = str.replace(linkMatches.groups.link, newUrl)
+    // reset regex
+    MD_LINK_REGEX.lastIndex = 0
   }
 
   return str
@@ -43,7 +47,9 @@ function matchValueLink(
   str: string,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
-  if (!VALUE_LINK_REGEX.exec(str) || str.startsWith("http")) {
+  // reset index
+  VALUE_LINK_REGEX.lastIndex = 0
+  if (!VALUE_LINK_REGEX.exec(str)) {
     return str
   }
 
