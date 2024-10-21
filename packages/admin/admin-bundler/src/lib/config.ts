@@ -28,7 +28,14 @@ export async function getViteConfig(
       outDir: path.resolve(process.cwd(), options.outDir),
     },
     optimizeDeps: {
-      include: ["react-dom/client", "@medusajs/ui", "@medusajs/dashboard"],
+      include: [
+        "react",
+        "react/jsx-runtime",
+        "react-dom/client",
+        "react-router-dom",
+        "@medusajs/ui",
+        "@medusajs/dashboard",
+      ],
       exclude: [...VIRTUAL_MODULES],
     },
     define: {

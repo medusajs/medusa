@@ -48,10 +48,14 @@ Create the file \`src/modules/my-payment/index.ts\` with the following content:
 
 \`\`\`ts title="src/modules/my-payment/index.ts"
 import MyPaymentProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
 
-export default {
+export default ModuleProvider(Modules.PAYMENT, {
   services: [MyPaymentProviderService],
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyPaymentProviderService\` is the module's service.`,
@@ -68,11 +72,11 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/framework/payment",
+      resolve: "@medusajs/medusa/payment",
       options: {
         providers: [
           {
-            resolve: "./modules/my-payment",
+            resolve: "./src/modules/my-payment",
             id: "my-payment",
             options: {
               // provider options...

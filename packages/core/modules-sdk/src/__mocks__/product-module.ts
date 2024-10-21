@@ -9,7 +9,6 @@ export const ProductModule = {
     dependencies: ["eventBusModuleService"],
     defaultModuleDeclaration: {
       scope: "internal",
-      resources: "shared",
     },
   },
   __joinerConfig: {

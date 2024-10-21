@@ -134,7 +134,7 @@ const TagOperation = ({
           }
         />
       </div>
-      <SectionDivider />
+      <SectionDivider className="-left-[16px] lg:!-left-1/4" />
     </div>
   )
 }

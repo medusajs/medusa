@@ -116,3 +116,5 @@ jobs:
           branch: "chore/generate-dml-json"
           branch-suffix: "timestamp"
           add-paths: www/utils/generated/dml-output/**
+          base: "develop"
+          labels: "type: chore"

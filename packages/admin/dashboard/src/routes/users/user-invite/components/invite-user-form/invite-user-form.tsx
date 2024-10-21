@@ -23,6 +23,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 import { RouteFocusModal } from "../../../../../components/modals/index.ts"
 import { DataTable } from "../../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form/keybound-form.tsx"
 import {
   useCreateInvite,
   useDeleteInvite,
@@ -101,7 +102,7 @@ export const InviteUserForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
@@ -174,7 +175,7 @@ export const InviteUserForm = () => {
             </div>
           </div>
         </RouteFocusModal.Body>
-      </form>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

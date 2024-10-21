@@ -2,7 +2,7 @@ import StripeBase from "../core/stripe-base"
 import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
 class BancontactProviderService extends StripeBase {
-  static PROVIDER = PaymentProviderKeys.BAN_CONTACT
+  static identifier = PaymentProviderKeys.BAN_CONTACT
 
   constructor(_, options) {
     super(_, options)

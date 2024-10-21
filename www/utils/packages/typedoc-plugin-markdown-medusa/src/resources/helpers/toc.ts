@@ -14,13 +14,15 @@ export default function (theme: MarkdownTheme) {
     function (this: ProjectReflection | DeclarationReflection) {
       const md: string[] = []
 
-      const { hideInPageTOC, allReflectionsHaveOwnDocumentInNamespace } = theme
+      const { hideInPageTOC } = theme
       const { hideTocHeaders, reflectionGroupRename = {} } =
         theme.getFormattingOptionsForLocation()
 
       const isNamespaceVisible =
         this.kind === ReflectionKind.Namespace &&
-        allReflectionsHaveOwnDocumentInNamespace.includes(this.name)
+        theme.getMappings(this as DeclarationReflection)[
+          ReflectionKind.Namespace
+        ]
       const isVisible =
         isNamespaceVisible ||
         this.groups?.some((group) => {

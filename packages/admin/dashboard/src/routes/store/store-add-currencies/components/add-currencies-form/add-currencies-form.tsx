@@ -17,6 +17,7 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { pricePreferencesQueryKeys } from "../../../../../hooks/api/price-preferences"
 import { useUpdateStore } from "../../../../../hooks/api/store"
@@ -166,7 +167,7 @@ export const AddCurrenciesForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
@@ -178,16 +179,6 @@ export const AddCurrenciesForm = ({
                   {form.formState.errors.currencies.message}
                 </Hint>
               )}
-            </div>
-            <div className="flex items-center justify-end gap-x-2">
-              <RouteFocusModal.Close asChild>
-                <Button size="small" variant="secondary">
-                  {t("actions.cancel")}
-                </Button>
-              </RouteFocusModal.Close>
-              <Button size="small" type="submit" isLoading={isPending}>
-                {t("actions.save")}
-              </Button>
             </div>
           </div>
         </RouteFocusModal.Header>
@@ -206,7 +197,19 @@ export const AddCurrenciesForm = ({
             queryObject={raw}
           />
         </RouteFocusModal.Body>
-      </form>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
+      </KeyboundForm>
     </RouteFocusModal.Form>
   )
 }

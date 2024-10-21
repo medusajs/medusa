@@ -1,0 +1,205 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Integrate Third-Party Brand System in a Service`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to integrate a dummy third-party system in a service as a step of the ["Integrate Systems" chapter](../page.mdx).
+
+</Note>
+
+## 1. Create Service
+
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    }
+  ]}
+/>
+
+Start by creating the file `src/modules/brand/services/client.ts` with the following content:
+
+export const serviceHighlights = [
+  ["4", "BrandClientOptions", "Define the options that the Brand Module receives necessary for the integration."],
+  ["8", "InjectedDependencies", "Define the dependencies injected into the service."],
+  ["20", "moduleDef", "Retrieve the module's configuration."]
+]
+
+```ts title="src/modules/brand/services/client.ts" highlights={serviceHighlights}
+import { Logger, ConfigModule } from "@medusajs/framework/types"
+import { BRAND_MODULE } from ".."
+
+export type BrandClientOptions = {
+  apiKey: string
+}
+
+type InjectedDependencies = {
+  logger: Logger
+  configModule: ConfigModule
+}
+
+export class BrandClient {
+  private options_: BrandClientOptions
+  private logger_: Logger
+
+  constructor({ logger, configModule }: InjectedDependencies) {
+    this.logger_ = logger
+
+    const moduleDef = configModule.modules[BRAND_MODULE]
+    if (typeof moduleDef !== "boolean") {
+      this.options_ = moduleDef.options as BrandClientOptions
+    }
+  }
+}
+```
+
+This creates a `BrandClient` service. Using dependency injection, you resolve the `logger` and `configModule` from the Module's container.
+
+`logger` is useful to log messages, and `configModule` has configurations exported in `medusa-config.ts`.
+
+You also define an `options_` property in your service to store the module's options.
+
+The `configModule`'s `modules` property is an object whose keys are registered module names and values are the module's configuration.
+
+If the module's configuration isn't a boolean, it has an `options` property that holds the module's options. You use it to set the `options_` property's value.
+
+<Note title="Tip">
+
+If the service integrating the third-party system was a main service, it receives the module's options as a second parameter.
+
+</Note>
+
+### Integration Methods
+
+Next, add the following methods to simulate sending requests to the third-party system:
+
+export const methodsHighlights = [
+  ["10", "sendRequest", "Since the third-party system isn't real, this method only logs a message."],
+  ["19", "createBrand", "A method that creates a brand in the third-party system."],
+  ["23", "deleteBrand", "A method that deletes a brand in the third-party system."],
+  ["27", "retrieveBrands", "A method that retrieves a brand from a third-party system."]
+]
+
+```ts title="src/modules/brand/services/client.ts" highlights={methodsHighlights}
+// other imports...
+import { InferTypeOf } from "@medusajs/framework/types"
+import { Brand } from "../models/brand"
+
+export class BrandClient {
+  // ...
+
+  // a dummy method to simulate sending a request,
+  // in a realistic scenario, you'd use an SDK, fetch, or axios clients
+  private async sendRequest(url: string, method: string, data?: any) {
+    this.logger_.info(`Sending a ${
+      method
+    } request to ${url}. data: ${JSON.stringify(data, null, 2)}`)
+    this.logger_.info(`Client Options: ${
+      JSON.stringify(this.options_, null, 2)
+    }`)
+  }
+
+  async createBrand(brand: InferTypeOf<typeof Brand>) {
+    await this.sendRequest("/brands", "POST", brand)
+  }
+
+  async deleteBrand(id: string) {
+    await this.sendRequest(`/brands/${id}`, "DELETE")
+  }
+
+  async retrieveBrands() {
+    await this.sendRequest("/brands", "GET")
+
+    return []
+  }
+}
+```
+
+The `sendRequest` method is a dummy method to simulate sending a request to a third-party system.
+
+You also add three methods that use the `sendRequest` method:
+
+- `createBrand` that creates a brand in the third-party system. To reference a brand's type, you use the `InferTypeOf` utility imported from `@medusajs/framework/types`. This transforms a data model, which is a variable, to its equivalent type.
+- `deleteBrand` that deletes the brand in the third-party system.
+- `retrieveBrands` to retrieve a brand from the third-party system.
+
+---
+
+## 2. Export Service
+
+If the service integrating the third-party system is the module's main service, you only need to export it in the module definition.
+
+However, since this service is an internal service in the Brand Module, you must export it in a `src/modules/brand/services/index.ts` file:
+
+```ts title="src/modules/brand/services/index.ts"
+export * from "./client"
+```
+
+This registers the service in the module's container, allowing you to access it in the module's main service.
+
+---
+
+## 3. Add Internal Service in Main Service
+
+In the main service at `src/modules/brand/service.ts`, add the following imports and types at the top of the file:
+
+```ts title="src/modules/brand/service.ts"
+// other imports...
+import { BrandClient, BrandClientOptions } from "./services"
+
+type InjectedDependencies = {
+  brandClient: BrandClient
+}
+```
+
+Then, add the following in the `BrandModuleService` class:
+
+```ts title="src/modules/brand/service.ts"
+class BrandModuleService extends MedusaService({
+  Brand,
+}) {
+  public client: BrandClient
+
+  constructor({ brandClient }: InjectedDependencies) {
+    super(...arguments)
+
+    this.client = brandClient
+  }
+}
+```
+
+In the main module service, you first resolve through dependency injection the `brandClient` from the container and set it in a public property `client`.
+
+---
+
+## 4. Pass Options to the Module
+
+To pass options in the module, change its configurations in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/brand",
+      options: {
+        apiKey: process.env.BRAND_API_KEY || "temp",
+      },
+    },
+  ] 
+})
+```
+
+A module's configuration accepts an `options` property, which can hold any options to pass to the module.
+
+---
+
+## Next Steps: Sync Brand From Medusa to Third-Party System
+
+In the next chapter, you'll learn how to sync brands created in Medusa to the third-party system using a workflow and a scheduled job.

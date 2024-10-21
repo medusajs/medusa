@@ -796,6 +796,8 @@ paths:
       paths/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
+  /admin/orders/{id}/line-items:
+    $ref: paths/admin_orders_{id}_line-items.yaml
   /admin/orders/{id}/preview:
     $ref: paths/admin_orders_{id}_preview.yaml
   /admin/payment-collections:

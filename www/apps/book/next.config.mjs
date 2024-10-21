@@ -130,50 +130,50 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/advanced-development/modules/remote-query",
-        destination: "/advanced-development/module-links/query",
+        source: "/advanced-development/:path*",
+        destination: "/learn/advanced-development/:path*",
         permanent: true,
       },
       {
-        source: "/advanced-development/modules/query",
-        destination: "/advanced-development/module-links/query",
+        source: "/basics/:path*",
+        destination: "/learn/basics/:path*",
         permanent: true,
       },
       {
-        source: "/advanced-development/modules/module-links",
-        destination: "/advanced-development/module-links",
+        source: "/customization/:path*",
+        destination: "/learn/customization/:path*",
         permanent: true,
       },
       {
-        source: "/advanced-development/modules/module-link-directions",
-        destination: "/advanced-development/module-links/directions",
+        source: "/debugging-and-testing/:path*",
+        destination: "/learn/debugging-and-testing/:path*",
         permanent: true,
       },
       {
-        source: "/advanced-development/modules/remote-link",
-        destination: "/advanced-development/module-links/remote-link",
+        source: "/deployment/:path*",
+        destination: "/learn/deployment/:path*",
         permanent: true,
       },
       {
-        source: "/cheatsheet",
-        destination: "/more-resources/cheatsheet",
+        source: "/first-customizations/:path*",
+        destination: "/learn/first-customizations/:path*",
         permanent: true,
       },
       {
-        source: "/architectural-modules",
-        destination: "/advanced-development/architecture/architectural-modules",
+        source: "/more-resources/:path*",
+        destination: "/learn/more-resources/:path*",
         permanent: true,
       },
       {
-        source: "/basics/modules-and-services",
-        destination: "/basics/modules",
-        permanent: true
+        source: "/storefront-development/:path*",
+        destination: "/learn/storefront-development/:path*",
+        permanent: true,
       },
       {
-        source: "/basics/data-models",
-        destination: "/basics/modules",
-        permanent: true
-      }
+        source: "/more-resources/examples",
+        destination: "/resources/examples",
+        permanent: true,
+      },
     ]
   },
 }

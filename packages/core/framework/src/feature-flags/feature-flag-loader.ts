@@ -8,7 +8,7 @@ import {
   isTruthy,
   objectFromStringPath,
 } from "@medusajs/utils"
-import { trackFeatureFlag } from "medusa-telemetry"
+import { trackFeatureFlag } from "@medusajs/telemetry"
 import { join, normalize } from "path"
 import { logger } from "../logger"
 import { FlagSettings } from "./types"

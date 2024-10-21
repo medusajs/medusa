@@ -49,8 +49,24 @@ export class AbstractNotificationProviderService
   implements INotificationProvider
 {
   /**
-   * Override this static method in order for the loader to validate the options provided to the module provider.
-   * @param options
+   * This method validates the options of the provider set in `medusa-config.ts`.
+   * Implementing this method is optional. It's useful if your provider requires custom validation.
+   * 
+   * If the options aren't valid, throw an error.
+   * 
+   * @param options - The provider's options.
+   * 
+   * @example
+   * class MyNotificationProviderService extends AbstractNotificationProviderService {
+   *   static validateOptions(options: Record<any, any>) {
+   *     if (!options.apiKey) {
+   *       throw new MedusaError(
+   *         MedusaError.Types.INVALID_DATA,
+   *         "API key is required in the provider's options."
+   *       )
+   *     }
+   *   }
+   * }
    */
   static validateOptions(options: Record<any, any>): void | never {}
 

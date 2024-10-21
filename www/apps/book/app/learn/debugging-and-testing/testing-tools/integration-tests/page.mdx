@@ -1,0 +1,89 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Write Integration Tests`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the `medusaIntegrationTestRunner` utility function used to write integration tests.
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
+
+## medusaIntegrationTestRunner Utility
+
+The `medusaIntegrationTestRunner` utility function is provided by the `@medusajs/test-utils` package to create integration tests in your Medusa project. It runs a full Medusa application, allowing you test API routes, workflows, or other customizations.
+
+For example:
+
+export const highlights = [
+  ["4", "api", "A set of utility methods used to send requests to the Medusa application."],
+  ["4", "getContainer", "A function to retrieve the Medusa container."]
+]
+
+```ts title="integration-tests/http/test.spec.ts" highlights={highlights}
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ api, getContainer }) => {
+    // TODO write tests...
+  },
+})
+```
+
+The `medusaIntegrationTestRunner` function accepts an object as a parameter. The object has a required property `testSuite`.
+
+`testSuite`'s value is a function that defines the tests to run. The function accepts as a parameter an object that has the following properties:
+
+- `api`: a set of utility methods used to send requests to the Medusa application. It has the following methods:
+    - `get`: Send a `GET` request to an API route.
+    - `post`: Send a `POST` request to an API route.
+    - `delete`: Send a `DELETE` request to an API route.
+- `getContainer`: a function that retrieves the Medusa Container. Use the `getContainer().resolve` method to resolve resources from the Medusa Container.
+
+The tests in the `testSuite` function are written using [Jest](https://jestjs.io/).
+
+---
+
+### Run Tests
+
+Run the following command to run your tests:
+
+```bash npm2yarn
+npm run test:integration
+```
+
+<Note title="Tip">
+
+If you don't have a `test:integration` script in `package.json`, refer to the [Medusa Testing Tools chapter](../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available under the `src/integrations/http` directory.
+
+---
+
+## Other Options and Inputs
+
+Refer to [this reference in the Development Resources documentation](!resources!/test-tools-reference/medusaIntegrationTestRunner) for other available parameter options and inputs of the `testSuite` function.
+
+---
+
+## Database Used in Tests
+
+The `medusaIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+
+To manage that database, such as changing its name or perform operations on it in your tests, refer to the [references in the Development Resources documentation](!resources!/test-tools-reference/medusaIntegrationTestRunner).
+
+---
+
+## Example Integration Tests
+
+The next chapters provide examples of writing integration tests for API routes and workflows.

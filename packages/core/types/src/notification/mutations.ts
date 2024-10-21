@@ -1,3 +1,5 @@
+import { NotificationContent } from "./common"
+
 /**
  * @interface
  *
@@ -21,6 +23,10 @@ export interface CreateNotificationDTO {
    * The data that gets passed over to the provider for rendering the notification.
    */
   data?: Record<string, unknown> | null
+  /**
+   * The content that gets passed over to the provider.
+   */
+  content?: NotificationContent | null
   /**
    * The event name, the workflow, or anything else that can help to identify what triggered the notification.
    */

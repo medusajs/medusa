@@ -8,17 +8,17 @@
  *   - order_change
  *   - currency_code
  *   - id
- *   - created_at
- *   - updated_at
- *   - email
  *   - version
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
+ *   - email
  *   - payment_collections
  *   - payment_status
  *   - fulfillment_status
  *   - summary
+ *   - created_at
+ *   - updated_at
  *   - original_item_total
  *   - original_item_subtotal
  *   - original_item_tax_total

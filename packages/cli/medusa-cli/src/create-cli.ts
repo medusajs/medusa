@@ -1,5 +1,5 @@
 import { sync as existsSync } from "fs-exists-cached"
-import { setTelemetryEnabled } from "medusa-telemetry"
+import { setTelemetryEnabled } from "@medusajs/telemetry"
 import path from "path"
 import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
@@ -354,9 +354,15 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `build`,
-      desc: `Build your project.`,
-      builder: (_) => _,
+      command: "build",
+      desc: "Build your project.",
+      builder: (_) =>
+        _.option("admin-only", {
+          default: false,
+          type: "boolean",
+          describe:
+            "Only build the admin to serve it separately (outDir .medusa/admin)",
+        }),
       handler: handlerP(
         getCommandHandler(`build`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

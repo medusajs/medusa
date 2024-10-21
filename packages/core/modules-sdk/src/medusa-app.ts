@@ -18,6 +18,7 @@ import {
   dynamicImport,
   GraphQLUtils,
   isObject,
+  isSharedConnectionSymbol,
   isString,
   MedusaError,
   MODULE_PACKAGE_NAMES,
@@ -34,7 +35,7 @@ import {
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { createQuery, RemoteQuery } from "./remote-query"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -123,15 +124,14 @@ export async function loadModules(args: {
     }
 
     declaration.scope ??= MODULE_SCOPE.INTERNAL
-    if (declaration.scope === MODULE_SCOPE.INTERNAL && !declaration.resources) {
-      declaration.resources = MODULE_RESOURCE_TYPE.SHARED
-    }
 
-    if (
-      declaration.scope === MODULE_SCOPE.INTERNAL &&
-      declaration.resources === MODULE_RESOURCE_TYPE.SHARED
-    ) {
+    if (declaration.scope === MODULE_SCOPE.INTERNAL) {
       declaration.options ??= {}
+
+      if (!declaration.options.database) {
+        declaration.options[isSharedConnectionSymbol] = true
+      }
+
       declaration.options.database ??= {
         ...sharedResourcesConfig?.database,
       }
@@ -493,9 +493,7 @@ async function MedusaApp_({
     for (const { resolution: moduleResolution } of moduleResolutions) {
       if (
         !moduleResolution.options?.database &&
-        moduleResolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-        moduleResolution.moduleDeclaration?.resources ===
-          MODULE_RESOURCE_TYPE.SHARED
+        moduleResolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL
       ) {
         moduleResolution.options ??= {}
         moduleResolution.options.database = {
@@ -510,7 +508,7 @@ async function MedusaApp_({
         modulePath: moduleResolution.resolutionPath as string,
         container: sharedContainer,
         options: moduleResolution.options,
-        moduleExports: moduleResolution.moduleExports,
+        moduleExports: moduleResolution.moduleExports as ModuleExports,
       }
 
       if (action === "revert") {

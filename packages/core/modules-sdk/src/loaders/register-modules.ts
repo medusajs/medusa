@@ -12,7 +12,7 @@ import {
   normalizeImportPathWithSource,
 } from "@medusajs/utils"
 import { ModulesDefinition } from "../definitions"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../types"
+import { MODULE_SCOPE } from "../types"
 
 export const registerMedusaModule = (
   moduleKey: string,
@@ -67,7 +67,9 @@ function getCustomModuleResolution(
   const originalPath = normalizeImportPathWithSource(
     (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
   )
-  const resolutionPath = require.resolve(originalPath)
+  const resolutionPath = require.resolve(originalPath, {
+    paths: [process.cwd()],
+  })
 
   const conf = isObject(moduleConfig)
     ? moduleConfig
@@ -84,12 +86,10 @@ function getCustomModuleResolution(
       defaultPackage: "",
       dependencies,
       defaultModuleDeclaration: {
-        resources: MODULE_RESOURCE_TYPE.SHARED,
         scope: MODULE_SCOPE.INTERNAL,
       },
     },
     moduleDeclaration: {
-      resources: conf?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
       scope: MODULE_SCOPE.INTERNAL,
     },
     dependencies,
@@ -142,7 +142,9 @@ function getInternalModuleResolution(
     const originalPath = normalizeImportPathWithSource(
       (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
     )
-    resolutionPath = require.resolve(originalPath)
+    resolutionPath = require.resolve(originalPath, {
+      paths: [process.cwd()],
+    })
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}

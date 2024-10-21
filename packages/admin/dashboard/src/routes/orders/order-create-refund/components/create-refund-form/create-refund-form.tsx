@@ -15,6 +15,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRefundPayment } from "../../../../../hooks/api"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
@@ -95,8 +96,11 @@ export const CreateRefundForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <RouteDrawer.Body>
+      <KeyboundForm
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
+      >
+        <RouteDrawer.Body className="flex-1 overflow-auto">
           <div className="flex flex-col gap-y-4">
             <Select
               value={payment?.id}
@@ -106,7 +110,7 @@ export const CreateRefundForm = ({
                 })
               }}
             >
-              <Label className="font-sans txt-compact-small font-medium mb-[-6px]">
+              <Label className="txt-compact-small mb-[-6px] font-sans font-medium">
                 {t("orders.payment.selectPaymentToRefund")}
               </Label>
 
@@ -247,7 +251,7 @@ export const CreateRefundForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

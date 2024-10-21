@@ -39,6 +39,9 @@ module.exports = {
     medusa_v2: enableMedusaV2,
   },
   modules: {
+    testingModule: {
+      resolve: "__tests__/__fixtures__/testing-module",
+    },
     [Modules.AUTH]: {
       resolve: "@medusajs/auth",
       options: {
@@ -52,7 +55,6 @@ module.exports = {
     },
     [Modules.USER]: {
       scope: "internal",
-      resources: "shared",
       resolve: "@medusajs/user",
       options: {
         jwt_secret: "test",
@@ -62,12 +64,13 @@ module.exports = {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 0 }, // Cache disabled
     },
+    [Modules.LOCKING]: true,
     [Modules.STOCK_LOCATION]: {
-      resolve: "@medusajs/stock-location-next",
+      resolve: "@medusajs/stock-location",
       options: {},
     },
     [Modules.INVENTORY]: {
-      resolve: "@medusajs/inventory-next",
+      resolve: "@medusajs/inventory",
       options: {},
     },
     [Modules.PRODUCT]: true,

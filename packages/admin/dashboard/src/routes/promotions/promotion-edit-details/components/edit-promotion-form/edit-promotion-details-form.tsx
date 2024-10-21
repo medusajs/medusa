@@ -8,6 +8,7 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
@@ -70,7 +71,7 @@ export const EditPromotionDetailsForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form
+      <KeyboundForm
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
@@ -277,7 +278,7 @@ export const EditPromotionDetailsForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

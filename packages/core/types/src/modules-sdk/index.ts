@@ -3,6 +3,7 @@ import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
+import { ModuleProviderExports } from "./module-provider"
 import {
   RemoteQueryGraph,
   RemoteQueryInput,
@@ -45,7 +46,6 @@ export type CustomModuleDefinition = {
 
 export type InternalModuleDeclaration = {
   scope: "internal"
-  resources: "shared" | "isolated"
   dependencies?: string[]
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
@@ -86,7 +86,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
-  moduleExports?: ModuleExports
+  moduleExports?: ModuleExports | ModuleProviderExports
 }
 
 export type ModuleDefinition = {

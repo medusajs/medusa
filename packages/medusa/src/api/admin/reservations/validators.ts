@@ -18,6 +18,7 @@ export const AdminGetReservationsParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
+    q: z.string().optional(),
     location_id: z.union([z.string(), z.array(z.string())]).optional(),
     inventory_item_id: z.union([z.string(), z.array(z.string())]).optional(),
     line_item_id: z.union([z.string(), z.array(z.string())]).optional(),

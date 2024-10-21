@@ -7,6 +7,7 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { InlineTip } from "../../../../../components/common/inline-tip"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 
 type EditServiceZoneFormProps = {
@@ -59,8 +60,11 @@ export const EditServiceZoneForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <RouteDrawer.Body>
+      <KeyboundForm
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
+      >
+        <RouteDrawer.Body className="flex-1 overflow-auto">
           <div className="flex flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -94,7 +98,7 @@ export const EditServiceZoneForm = ({
             </Button>
           </div>
         </RouteDrawer.Footer>
-      </form>
+      </KeyboundForm>
     </RouteDrawer.Form>
   )
 }

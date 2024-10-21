@@ -1,4 +1,4 @@
-import { TypeDocOptions } from "typedoc"
+import { ReflectionKind, TypeDocOptions } from "typedoc"
 import { baseOptions } from "./base-options.js"
 import path from "path"
 import { jsonOutputPathPrefix, rootPathPrefix } from "./general.js"
@@ -8,7 +8,7 @@ import {
   customModuleTitles,
   dmlModules,
 } from "./references-details.js"
-import { FormattingOptionType } from "types"
+import { AllowedProjectDocumentsOption, FormattingOptionType } from "types"
 import { kebabToCamel, kebabToPascal, kebabToSnake, kebabToTitle } from "utils"
 import baseSectionsOptions from "./base-section-options.js"
 import mergerCustomOptions from "./merger-custom-options/index.js"
@@ -16,6 +16,39 @@ import {
   getCoreFlowNamespaces,
   getNamespaceNames,
 } from "../utils/get-namespaces.js"
+
+const commonAllowedDocuments = {
+  [ReflectionKind.Variable]: true,
+  [ReflectionKind.Function]: true,
+  [ReflectionKind.Method]: true,
+}
+const allowedProjectDocuments: AllowedProjectDocumentsOption = {
+  dml: commonAllowedDocuments,
+  "helper-steps": commonAllowedDocuments,
+  workflows: commonAllowedDocuments,
+  "js-sdk": {
+    [ReflectionKind.Method]: true,
+    [ReflectionKind.Property]: true,
+  },
+}
+
+modules.forEach((module) => {
+  allowedProjectDocuments[module] = {
+    ...commonAllowedDocuments,
+  }
+})
+
+dmlModules.forEach((module) => {
+  allowedProjectDocuments[`${module}-models`] = {
+    ...commonAllowedDocuments,
+  }
+})
+
+getNamespaceNames(getCoreFlowNamespaces()).forEach((namespace) => {
+  allowedProjectDocuments[namespace] = {
+    ...commonAllowedDocuments,
+  }
+})
 
 const mergerOptions: Partial<TypeDocOptions> = {
   ...baseOptions,
@@ -33,16 +66,8 @@ const mergerOptions: Partial<TypeDocOptions> = {
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 3,
-  allReflectionsHaveOwnDocument: [
-    ...modules,
-    ...dmlModules.map((module) => `${module}-models`),
-    "dml",
-    "helper-steps",
-    "workflows",
-  ],
-  allReflectionsHaveOwnDocumentInNamespace: [
-    ...getNamespaceNames(getCoreFlowNamespaces()),
-  ],
+  // @ts-expect-error this is due to a typing issue in typedoc
+  allowedProjectDocuments,
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -88,7 +113,13 @@ const mergerOptions: Partial<TypeDocOptions> = {
           },
         },
         [`^${snakeCaseModuleName}/${moduleServiceName}/methods`]: {
-          reflectionDescription: `This documentation provides a reference to the \`{{alias}}\` {{kind}}. This belongs to the ${titleModuleName} Module.`,
+          reflectionDescription: `This documentation provides a reference to the \`{{alias}}\` {{kind}}. This belongs to the ${titleModuleName} Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>`,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}Reference`,
             slug: `/references/${moduleName}/{{alias}}`,
@@ -101,7 +132,13 @@ const mergerOptions: Partial<TypeDocOptions> = {
           },
         },
         [`^${snakeCaseModuleName}/.*${moduleServiceName}/page\\.mdx`]: {
-          reflectionDescription: `This section of the documentation provides a reference to the \`${moduleServiceName}\` interface’s methods. This is the interface developers use to use the functionalities provided by the ${titleModuleName} Module.`,
+          reflectionDescription: `This section of the documentation provides a reference to the \`${moduleServiceName}\` interface’s methods. This is the interface developers use to use the functionalities provided by the ${titleModuleName} Module.
+
+<Note>
+
+You should only use the methods in this reference when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>`,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}Reference`,
             slug: `/references/${moduleName}`,

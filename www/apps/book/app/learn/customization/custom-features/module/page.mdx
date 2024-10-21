@@ -1,0 +1,128 @@
+export const metadata = {
+  title: `${pageNumber} Implement Brand Module`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to create a Brand Module as part of the ["Build Custom Features" chapter](../page.mdx).
+
+</Note>
+
+## 1. Create Module Directory
+
+Start by creating the directory `src/modules/brand` that will hold the Brand Module's files.
+
+---
+
+## 2. Create Data Model
+
+To create a data model that represents a new `brand` table in the database, create the file `src/modules/brand/models/brand.ts` with the following content:
+
+```ts title="src/modules/brand/models/brand.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Brand = model.define("brand", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+})
+```
+
+This creates a `Brand` data model which has an `id` primary key property, and a `name` text property.
+
+---
+
+## 3. Create Module Service
+
+Next, you'll create the module's main service that manages the `Brand` data model.
+
+Create the file `src/modules/brand/service.ts` with the following content:
+
+export const serviceHighlights = [
+  ["4", "MedusaService", "A service factory that generates data-management methods."]
+]
+
+```ts title="src/modules/brand/service.ts" highlights={serviceHighlights}
+import { MedusaService } from "@medusajs/framework/utils"
+import { Brand } from "./models/brand"
+
+class BrandModuleService extends MedusaService({
+  Brand,
+}) {
+
+}
+
+export default BrandModuleService
+```
+
+The `BrandModuleService` extends a `MedusaService` function imported from `@medusajs/framework/utils` which is a service factory.
+
+The `MedusaService` function receives an object of the module's data models as a parameter, and generates methods to manage those data models, such as `createBrands` and `updateBrands`.
+
+Those methods are now available at the `BrandModuleService` class and you'll use them in upcoming steps.
+
+<Note title="Tip">
+
+Find a reference of the generated methods in [this guide](!resources!/service-factory-reference).
+
+</Note>
+
+---
+
+## 4. Create Module's Definition
+
+To export the module's definition, create the file `src/modules/brand/index.ts` with the following content:
+
+```ts title="src/modules/brand/index.ts"
+import { Module } from "@medusajs/framework/utils"
+import BrandModuleService from "./service"
+
+export const BRAND_MODULE = "brandModuleService"
+
+export default Module(BRAND_MODULE, {
+  service: BrandModuleService,
+})
+```
+
+This exposes the module to your application and allows you to resolve the `BrandModuleService`, which is its main service.
+
+<Note>
+
+Learn more about modules and services [in this guide](../../../basics/modules/page.mdx).
+
+</Note>
+
+---
+
+## 5. Register Module in Config
+
+Finally, add the module to Medusa's configurations in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/brand",
+    }
+  ]
+})
+```
+
+---
+
+## 6. Generate and Run Migrations
+
+To reflect the data model in the database, generate migrations for the `brandModuleService` module and migrate the changes to the database:
+
+```bash
+npx medusa db:generate brandModuleService
+npx medusa db:migrate
+```
+
+---
+
+## Next Step: Create Brand Workflow
+
+In the next step, you'll create a workflow whose steps use the Brand Module's main service to create a brand.

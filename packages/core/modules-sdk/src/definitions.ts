@@ -5,7 +5,7 @@ import {
   Modules,
   upperCaseFirst,
 } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import { MODULE_SCOPE } from "./types"
 
 export const ModulesDefinition: {
   [key: string]: ModuleDefinition
@@ -19,7 +19,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.STOCK_LOCATION]: {
@@ -31,7 +30,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.INVENTORY]: {
@@ -43,7 +41,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.CACHE]: {
@@ -54,7 +51,6 @@ export const ModulesDefinition: {
     isQueryable: false,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.PRODUCT]: {
@@ -66,7 +62,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.PRICING]: {
@@ -78,7 +73,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.PROMOTION]: {
@@ -90,7 +84,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.AUTH]: {
@@ -102,7 +95,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.WORKFLOW_ENGINE]: {
@@ -115,7 +107,6 @@ export const ModulesDefinition: {
     __passSharedContainer: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.SALES_CHANNEL]: {
@@ -127,7 +118,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.FULFILLMENT]: {
@@ -139,7 +129,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.CART]: {
@@ -151,7 +140,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.CUSTOMER]: {
@@ -163,7 +151,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.PAYMENT]: {
@@ -175,7 +162,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.USER]: {
@@ -187,7 +173,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.REGION]: {
@@ -199,7 +184,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.ORDER]: {
@@ -211,7 +195,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.TAX]: {
@@ -223,7 +206,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER, Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.API_KEY]: {
@@ -235,7 +217,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.STORE]: {
@@ -247,7 +228,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.CURRENCY]: {
@@ -259,7 +239,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.FILE]: {
@@ -271,7 +250,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.NOTIFICATION]: {
@@ -283,7 +261,6 @@ export const ModulesDefinition: {
     dependencies: [Modules.EVENT_BUS, ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.INDEX]: {
@@ -300,7 +277,6 @@ export const ModulesDefinition: {
     ],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
   [Modules.LOCKING]: {
@@ -312,7 +288,6 @@ export const ModulesDefinition: {
     dependencies: [ContainerRegistrationKeys.LOGGER],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
 }
