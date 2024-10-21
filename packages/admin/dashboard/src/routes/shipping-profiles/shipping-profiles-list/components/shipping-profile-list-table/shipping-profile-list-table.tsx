@@ -61,7 +61,12 @@ export const ShippingProfileListTable = () => {
         count={count}
         columns={columns}
         filters={filters}
-        orderBy={["name", "type", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "name", label: t("fields.name") },
+          { key: "type", label: t("fields.type") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         isLoading={isLoading}
         navigateTo={(row) => row.id}
         queryObject={raw}

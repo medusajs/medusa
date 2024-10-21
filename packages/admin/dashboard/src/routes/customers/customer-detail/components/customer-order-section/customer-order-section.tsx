@@ -1,4 +1,5 @@
 import { ArrowPath } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -11,7 +12,6 @@ import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-ord
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 type CustomerGeneralSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -75,7 +75,11 @@ export const CustomerOrderSection = ({
         count={count}
         isLoading={isLoading}
         pageSize={PAGE_SIZE}
-        orderBy={["display_id", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "display_id", label: t("orders.fields.displayId") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         search={true}
         queryObject={raw}
       />

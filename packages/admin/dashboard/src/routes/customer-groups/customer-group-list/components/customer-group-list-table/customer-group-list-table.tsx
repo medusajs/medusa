@@ -78,7 +78,11 @@ export const CustomerGroupListTable = () => {
         search
         pagination
         navigateTo={(row) => `/customer-groups/${row.original.id}`}
-        orderBy={["name", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "name", label: t("fields.name") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         queryObject={raw}
         isLoading={isLoading}
       />

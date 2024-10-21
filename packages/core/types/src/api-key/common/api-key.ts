@@ -51,6 +51,16 @@ export interface ApiKeyDTO {
   created_at: Date
 
   /**
+   * The date the API key was updated.
+   */
+  updated_at: Date
+
+  /**
+   * The date the API key was deleted.
+   */
+  deleted_at: Date | null
+
+  /**
    * Who revoked the API key. For example,
    * the ID of the user that revoked it.
    */

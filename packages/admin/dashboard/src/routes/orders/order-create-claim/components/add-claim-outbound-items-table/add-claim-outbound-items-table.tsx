@@ -1,6 +1,7 @@
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 
+import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useVariants } from "../../../../../hooks/api"
 import { useDataTable } from "../../../../../hooks/use-data-table"
@@ -22,6 +23,8 @@ export const AddClaimOutboundItemsTable = ({
   selectedItems,
   currencyCode,
 }: AddClaimOutboundItemsTableProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     selectedItems.reduce((acc, id) => {
       acc[id] = true
@@ -78,7 +81,11 @@ export const AddClaimOutboundItemsTable = ({
         pagination
         layout="fill"
         search
-        orderBy={["product_id", "title", "sku"]}
+        orderBy={[
+          { key: "product_id", label: t("fields.product") },
+          { key: "title", label: t("fields.title") },
+          { key: "sku", label: t("fields.sku") },
+        ]}
         prefix={PREFIX}
         queryObject={raw}
       />

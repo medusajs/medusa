@@ -4,9 +4,9 @@ import {
   Button,
   Container,
   Heading,
+  Text,
   toast,
   usePrompt,
-  Text,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -83,7 +83,11 @@ export const RegionListTable = () => {
         pageSize={PAGE_SIZE}
         isLoading={isLoading}
         filters={filters}
-        orderBy={["name", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "name", label: t("fields.name") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         navigateTo={(row) => `${row.original.id}`}
         pagination
         search
@@ -118,18 +122,14 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
       return
     }
 
-    try {
-      await mutateAsync(undefined)
-      toast.success(t("general.success"), {
-        description: t("regions.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("regions.toast.delete"))
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

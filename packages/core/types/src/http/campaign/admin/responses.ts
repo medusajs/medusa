@@ -16,6 +16,9 @@ export interface AdminCampaign {
     limit: number
     used: number
   }
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
 }
 
 export type AdminCampaignListResponse = PaginatedResponse<{

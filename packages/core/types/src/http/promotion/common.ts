@@ -39,6 +39,9 @@ export interface BasePromotion {
   rules?: BasePromotionRule[]
   campaign_id?: string
   campaign?: AdminCampaign
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
 }
 
 export interface BasePromotionRuleValue {
