@@ -19,7 +19,9 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
         ref={ref}
       >
         {children}
-        {!noDivider && <SectionDivider className="-left-1.5 lg:!-left-full" />}
+        {!noDivider && (
+          <SectionDivider className="-left-[16px] lg:!-left-1/4" />
+        )}
       </div>
     )
   }
