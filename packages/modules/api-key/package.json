@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/api-key",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Medusa API Key module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,8 +37,8 @@
     "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
-    "@medusajs/test-utils": "^1.1.44",
+    "@medusajs/framework": "^0.0.2",
+    "@medusajs/test-utils": "^1.1.45",
     "@mikro-orm/cli": "5.9.7",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
@@ -48,7 +48,7 @@
     "typescript": "^5.6.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",

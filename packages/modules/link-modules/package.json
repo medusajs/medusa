@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,8 +33,8 @@
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
-    "@medusajs/test-utils": "^1.1.44",
+    "@medusajs/framework": "^0.0.2",
+    "@medusajs/test-utils": "^1.1.45",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
@@ -47,7 +47,7 @@
     "typescript": "^5.6.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",

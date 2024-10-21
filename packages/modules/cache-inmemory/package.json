@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cache-inmemory",
-  "version": "1.8.10",
+  "version": "1.8.11",
   "description": "In-memory Cache Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -23,7 +23,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^0.0.2",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
@@ -36,6 +36,6 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1"
+    "@medusajs/framework": "^0.0.2"
   }
 }
