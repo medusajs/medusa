@@ -1,5 +1,5 @@
-import { StoreShippingOption } from "."
+import { StoreCartShippingOption } from "../../fulfillment"
 
 export interface StoreShippingOptionListResponse {
-  shipping_options: StoreShippingOption[]
+  shipping_options: StoreCartShippingOption[]
 }
