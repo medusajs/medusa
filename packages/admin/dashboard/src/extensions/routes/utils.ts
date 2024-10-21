@@ -1,6 +1,5 @@
 import { ComponentType } from "react"
 import { RouteObject } from "react-router-dom"
-import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { RouteExtension, RouteModule } from "../types"
 
 /**
@@ -28,34 +27,32 @@ export const createRouteMap = (
   const root: RouteObject[] = []
 
   const addRoute = (
-    pathSegments: string[],
+    fullPath: string,
     Component: ComponentType,
     currentLevel: RouteObject[]
   ) => {
-    if (!pathSegments.length) {
-      return
-    }
+    const pathSegments = fullPath.split("/").filter(Boolean)
+    let currentArray = currentLevel
 
-    const [currentSegment, ...remainingSegments] = pathSegments
-    let route = currentLevel.find((r) => r.path === currentSegment)
+    for (let i = 0; i < pathSegments.length; i++) {
+      const segment = pathSegments[i]
+      let route = currentArray.find((r) => r.path === segment)
 
-    if (!route) {
-      route = { path: currentSegment, children: [] }
-      currentLevel.push(route)
-    }
+      if (!route) {
+        route = {
+          path: segment,
+          lazy: async () => ({ Component }),
+        }
+        currentArray.push(route)
+      }
 
-    if (remainingSegments.length === 0) {
-      route.children ||= []
-      route.children.push({
-        path: "",
-        ErrorBoundary: ErrorBoundary,
-        async lazy() {
-          return { Component }
-        },
-      })
-    } else {
-      route.children ||= []
-      addRoute(remainingSegments, Component, route.children)
+      if (i < pathSegments.length - 1) {
+        // This is not the last segment, so we need to move to the next level
+        if (!route.children) {
+          route.children = []
+        }
+        currentArray = route.children
+      }
     }
   }
 
@@ -64,8 +61,7 @@ export const createRouteMap = (
     const cleanedPath = ignore
       ? path.replace(ignore, "").replace(/^\/+/, "")
       : path.replace(/^\/+/, "")
-    const pathSegments = cleanedPath.split("/").filter(Boolean)
-    addRoute(pathSegments, Component, root)
+    addRoute(cleanedPath, Component, root)
   })
 
   return root
