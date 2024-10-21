@@ -11,6 +11,7 @@ import {
   MedusaError,
   Modules,
   OrderChangeStatus,
+  OrderWorkflowEvents,
   ReturnStatus,
 } from "@medusajs/framework/utils"
 import {
@@ -21,7 +22,11 @@ import {
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import {
+  createRemoteLinkStep,
+  emitEventStep,
+  useRemoteQueryStep,
+} from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -284,6 +289,13 @@ export const confirmReturnRequestWorkflow = createWorkflow(
         changes: [orderChange],
         orderId: order.id,
         confirmed_by: input.confirmed_by,
+      }),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.RETURN_REQUESTED,
+        data: {
+          order_id: order.id,
+          return_id: orderReturn.id,
+        },
       })
     )
 
