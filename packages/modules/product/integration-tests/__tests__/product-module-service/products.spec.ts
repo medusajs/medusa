@@ -1190,7 +1190,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(productsWithCollectionOne).toHaveLength(1)
 
-          expect([
+          expect(productsWithCollectionOne).toEqual([
             expect.objectContaining({
               collection: expect.objectContaining({
                 id: productCollectionOne.id,
