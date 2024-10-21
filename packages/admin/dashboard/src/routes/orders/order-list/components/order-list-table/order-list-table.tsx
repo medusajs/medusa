@@ -1,13 +1,13 @@
-import { keepPreviousData } from "@tanstack/react-query"
 import { Container, Heading } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 
 import { DataTable } from "../../../../../components/table/data-table/data-table"
+import { useOrders } from "../../../../../hooks/api/orders"
 import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-order-table-columns"
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useOrders } from "../../../../../hooks/api/orders"
 
 import { DEFAULT_FIELDS } from "../../const"
 
@@ -59,7 +59,11 @@ export const OrderListTable = () => {
         search
         isLoading={isLoading}
         pageSize={PAGE_SIZE}
-        orderBy={["display_id", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "display_id", label: t("orders.fields.displayId") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         queryObject={raw}
         noRecords={{
           message: t("orders.list.noRecordsMessage"),

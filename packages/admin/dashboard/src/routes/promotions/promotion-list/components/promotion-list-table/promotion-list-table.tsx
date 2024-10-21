@@ -73,7 +73,10 @@ export const PromotionListTable = () => {
         isLoading={isLoading}
         queryObject={raw}
         navigateTo={(row) => `${row.original.id}`}
-        orderBy={["created_at", "updated_at"]}
+        orderBy={[
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
       />
       <Outlet />
     </Container>

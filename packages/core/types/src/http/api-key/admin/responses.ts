@@ -7,11 +7,12 @@ interface AdminApiKey {
   redacted: string
   title: string
   type: ApiKeyType
-  last_used_at: Date | null
+  last_used_at: string | null
   created_by: string
-  created_at: Date
+  created_at: string
+  updated_at: string
   revoked_by: string | null
-  revoked_at: Date | null
+  revoked_at: string | null
 }
 
 export interface AdminApiKeyResponse {

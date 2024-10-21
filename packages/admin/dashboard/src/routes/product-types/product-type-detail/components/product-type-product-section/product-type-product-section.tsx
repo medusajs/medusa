@@ -56,7 +56,11 @@ export const ProductTypeProductSection = ({
         count={count}
         pageSize={PAGE_SIZE}
         navigateTo={({ original }) => `/products/${original.id}`}
-        orderBy={["title", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         queryObject={raw}
         search
         pagination

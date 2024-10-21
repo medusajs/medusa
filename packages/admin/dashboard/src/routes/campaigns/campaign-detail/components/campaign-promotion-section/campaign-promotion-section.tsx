@@ -100,12 +100,10 @@ export const CampaignPromotionSection = ({
         search
         pagination
         orderBy={[
-          "email",
-          "first_name",
-          "last_name",
-          "has_account",
-          "created_at",
-          "updated_at",
+          { key: "code", label: t("fields.code") },
+          { key: "type", label: t("fields.type") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         queryObject={raw}
         commands={[

@@ -66,7 +66,12 @@ export const CollectionListTable = () => {
         pageSize={PAGE_SIZE}
         count={count}
         filters={filters}
-        orderBy={["title", "handle", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "handle", label: t("fields.handle") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         search
         navigateTo={(row) => `/collections/${row.original.id}`}
         queryObject={raw}

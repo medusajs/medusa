@@ -68,7 +68,11 @@ export const CampaignListTable = () => {
         navigateTo={(row) => row.id}
         isLoading={isLoading}
         queryObject={raw}
-        orderBy={["name", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "name", label: t("fields.name") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
       />
     </Container>
   )
@@ -97,7 +101,9 @@ const CampaignActions = ({ campaign }: { campaign: AdminCampaign }) => {
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("campaigns.toast.delete"))
+        toast.success(
+          t("campaigns.delete.successToast", { name: campaign.name })
+        )
       },
       onError: (e) => {
         toast.error(e.message)

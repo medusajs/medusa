@@ -1,5 +1,5 @@
-import { PromotionDTO } from "@medusajs/types"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { HttpTypes } from "@medusajs/types"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -13,7 +13,7 @@ import {
 } from "../../../components/table/table-cells/common/text-cell"
 import { StatusCell } from "../../../components/table/table-cells/promotion/status-cell"
 
-const columnHelper = createColumnHelper<PromotionDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminPromotion>()
 
 export const usePromotionTableColumns = () => {
   const { t } = useTranslation()
@@ -44,6 +44,6 @@ export const usePromotionTableColumns = () => {
         cell: ({ row }) => <StatusCell promotion={row.original} />,
       }),
     ],
-    []
-  ) as ColumnDef<PromotionDTO>[]
+    [t]
+  )
 }
