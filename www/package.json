@@ -16,7 +16,8 @@
     "start": "turbo run start:monorepo",
     "dev": "turbo run dev:monorepo",
     "lint": "turbo run lint",
-    "lint:content": "turbo run lint:content"
+    "lint:content": "turbo run lint:content",
+    "prep": "turbo run prep"
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
