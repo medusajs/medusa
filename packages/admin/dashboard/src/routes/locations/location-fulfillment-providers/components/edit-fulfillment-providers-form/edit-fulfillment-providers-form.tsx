@@ -132,7 +132,7 @@ export const LocationEditFulfillmentProvidersForm = ({
             filters={filters}
             search="autofocus"
             pagination
-            orderBy={["id", "created_at", "updated_at"]}
+            orderBy={[{ key: "id", label: t("fields.id") }]}
             queryObject={raw}
             layout="fill"
           />

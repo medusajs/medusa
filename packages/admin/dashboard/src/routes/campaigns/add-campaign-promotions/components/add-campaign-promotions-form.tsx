@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminCampaign, PromotionDTO } from "@medusajs/types"
+import { AdminCampaign, HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
@@ -131,7 +131,12 @@ export const AddCampaignPromotionsForm = ({
             pageSize={PAGE_SIZE}
             isLoading={isLoading}
             filters={filters}
-            orderBy={["title", "status", "created_at", "updated_at"]}
+            orderBy={[
+              { key: "code", label: t("fields.code") },
+              { key: "type", label: t("fields.type") },
+              { key: "created_at", label: t("fields.createdAt") },
+              { key: "updated_at", label: t("fields.updatedAt") },
+            ]}
             queryObject={raw}
             layout="fill"
             pagination
@@ -158,7 +163,7 @@ export const AddCampaignPromotionsForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<PromotionDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminPromotion>()
 
 const useColumns = () => {
   const base = usePromotionTableColumns()

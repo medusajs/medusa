@@ -4,8 +4,13 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 
+export type DataTableOrderByKey<TData> = {
+  key: keyof TData
+  label: string
+}
+
 type DataTableOrderByProps<TData> = {
-  keys: (keyof TData)[]
+  keys: DataTableOrderByKey<TData>[]
   prefix?: string
 }
 
@@ -36,18 +41,6 @@ const initState = (params: URLSearchParams, prefix?: string): SortState => {
     key,
     dir,
   }
-}
-
-const formatKey = (key: string) => {
-  const words = key.split("_")
-  const formattedWords = words.map((word, index) => {
-    if (index === 0) {
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    } else {
-      return word
-    }
-  })
-  return formattedWords.join(" ")
 }
 
 export const DataTableOrderBy = <TData,>({
@@ -116,7 +109,7 @@ export const DataTableOrderBy = <TData,>({
           onValueChange={handleKeyChange}
         >
           {keys.map((key) => {
-            const stringKey = String(key)
+            const stringKey = String(key.key)
 
             return (
               <DropdownMenu.RadioItem
@@ -124,7 +117,7 @@ export const DataTableOrderBy = <TData,>({
                 value={stringKey}
                 onSelect={(event) => event.preventDefault()}
               >
-                {formatKey(stringKey)}
+                {key.label}
               </DropdownMenu.RadioItem>
             )
           })}

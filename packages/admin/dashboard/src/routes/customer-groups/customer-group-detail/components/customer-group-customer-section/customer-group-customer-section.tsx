@@ -106,12 +106,12 @@ export const CustomerGroupCustomerSection = ({
         search
         pagination
         orderBy={[
-          "email",
-          "first_name",
-          "last_name",
-          "has_account",
-          "created_at",
-          "updated_at",
+          { key: "email", label: t("fields.email") },
+          { key: "first_name", label: t("fields.firstName") },
+          { key: "last_name", label: t("fields.lastName") },
+          { key: "has_account", label: t("customers.hasAccount") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         queryObject={raw}
         commands={[

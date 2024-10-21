@@ -71,7 +71,11 @@ export const ProductTagListTable = () => {
         navigateTo={(row) => row.original.id}
         search
         pagination
-        orderBy={["value", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "value", label: t("fields.value") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
       />
     </Container>
   )

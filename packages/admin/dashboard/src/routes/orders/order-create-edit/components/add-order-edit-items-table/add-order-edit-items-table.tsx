@@ -1,12 +1,13 @@
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 
+import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useVariants } from "../../../../../hooks/api"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useOrderEditItemsTableColumns } from "./use-order-edit-item-table-columns"
 import { useOrderEditItemTableFilters } from "./use-order-edit-item-table-filters"
 import { useOrderEditItemTableQuery } from "./use-order-edit-item-table-query"
-import { useOrderEditItemsTableColumns } from "./use-order-edit-item-table-columns"
 
 const PAGE_SIZE = 50
 const PREFIX = "rit"
@@ -20,6 +21,8 @@ export const AddOrderEditItemsTable = ({
   onSelectionChange,
   currencyCode,
 }: AddExchangeOutboundItemsTableProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
@@ -71,7 +74,11 @@ export const AddOrderEditItemsTable = ({
         pagination
         layout="fill"
         search
-        orderBy={["product_id", "title", "sku"]}
+        orderBy={[
+          { key: "product_id", label: t("fields.product") },
+          { key: "title", label: t("fields.title") },
+          { key: "sku", label: t("fields.sku") },
+        ]}
         prefix={PREFIX}
         queryObject={raw}
       />

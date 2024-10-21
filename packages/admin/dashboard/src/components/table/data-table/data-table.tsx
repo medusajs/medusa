@@ -7,7 +7,7 @@ import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 
 interface DataTableProps<TData>
   extends Omit<DataTableRootProps<TData>, "noResults">,
-    DataTableQueryProps {
+    DataTableQueryProps<TData> {
   isLoading?: boolean
   pageSize: number
   queryObject?: Record<string, any>
@@ -16,7 +16,7 @@ interface DataTableProps<TData>
 
 // Maybe we should use the memoized version of DataTableRoot
 // const MemoizedDataTableRoot = memo(DataTableRoot) as typeof DataTableRoot
-const MemoizedDataTableQuery = memo(DataTableQuery)
+const MemoizedDataTableQuery = memo(DataTableQuery) as typeof DataTableQuery
 
 export const DataTable = <TData,>({
   table,
