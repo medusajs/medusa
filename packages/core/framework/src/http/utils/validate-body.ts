@@ -7,7 +7,7 @@ export function validateAndTransformBody(
   zodSchema:
     | z.ZodObject<any, any>
     | ((
-        customSchema?: z.ZodObject<any, any>
+        customSchema?: z.ZodOptional<z.ZodNullable<z.ZodObject<any, any>>>
       ) => z.ZodObject<any, any> | z.ZodEffects<any, any>)
 ): (
   req: MedusaRequest,
