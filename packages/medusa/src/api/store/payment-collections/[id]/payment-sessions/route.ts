@@ -3,12 +3,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { StoreCreatePaymentSessionType } from "../../validators"
 import { refetchPaymentCollection } from "../../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<StoreCreatePaymentSessionType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.StoreInitializePaymentSession>,
   res: MedusaResponse<HttpTypes.StorePaymentCollectionResponse>
 ) => {
   const collectionId = req.params.id

@@ -11,40 +11,139 @@ export interface BaseCustomerGroup {
 }
 
 export interface BaseCustomerAddress {
+  /**
+   * The address's ID.
+   */
   id: string
+  /**
+   * The address's name.
+   */
   address_name: string | null
+  /**
+   * Whether the address is used by default for shipping.
+   */
   is_default_shipping: boolean
+  /**
+   * Whether the address is used by default for billing.
+   */
   is_default_billing: boolean
+  /**
+   * The ID of the customer that the address belongs to.
+   */
   customer_id: string
+  /**
+   * The address's company.
+   */
   company: string | null
+  /**
+   * The address's first name.
+   */
   first_name: string | null
+  /**
+   * The address's last name.
+   */
   last_name: string | null
+  /**
+   * The address's first line.
+   */
   address_1: string | null
+  /**
+   * The address's second line.
+   */
   address_2: string | null
+  /**
+   * The address's city.
+   */
   city: string | null
+  /**
+   * The address's country code.
+   * 
+   * @example
+   * us
+   */
   country_code: string | null
+  /**
+   * The address's province.
+   */
   province: string | null
+  /**
+   * The address's postal code.
+   */
   postal_code: string | null
+  /**
+   * The address's phone.
+   */
   phone: string | null
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata: Record<string, unknown> | null
+  /**
+   * The date the address was created.
+   */
   created_at: string
+  /**
+   * The date the address was updated.
+   */
   updated_at: string
 }
 
 export interface BaseCustomer {
+  /**
+   * The customer's ID.
+   */
   id: string
+  /**
+   * The customer's email.
+   */
   email: string
+  /**
+   * The ID of the customer's default billing address.
+   */
   default_billing_address_id: string | null
+  /**
+   * The ID of the customer's default shipping address.
+   */
   default_shipping_address_id: string | null
+  /**
+   * The customer's company name.
+   */
   company_name: string | null
+  /**
+   * The customer's first name.
+   */
   first_name: string | null
+  /**
+   * The customer's last name.
+   */
   last_name: string | null
+  /**
+   * The customer's addresses
+   */
   addresses: BaseCustomerAddress[]
+  /**
+   * The customer's phone.
+   */
   phone?: string | null
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown>
+  /**
+   * The ID of the user that created the customer.
+   */
   created_by?: string | null
+  /**
+   * The date the customer was deleted.
+   */
   deleted_at?: Date | string | null
+  /**
+   * The date the customer was created.
+   */
   created_at?: Date | string
+  /**
+   * The date the customer was updated.
+   */
   updated_at?: Date | string
 }
 
@@ -73,61 +172,202 @@ export interface BaseCustomerFilters
 
 export interface BaseCustomerAddressFilters
   extends BaseFilterable<BaseCustomerAddressFilters> {
+  /**
+   * A query or keyword to search the address's searchable fields.
+   */
   q?: string
+  /**
+   * Filter by company name(s).
+   */
   company?: string[] | string
+  /**
+   * Filter by cities.
+   */
   city?: string[] | string
+  /**
+   * Filter by country code(s).
+   */
   country_code?: string[] | string
+  /**
+   * Filter by province(s).
+   */
   province?: string[] | string
+  /**
+   * Filter by postal code(s).
+   */
   postal_code?: string[] | string
 }
 
 export interface BaseCreateCustomer {
+  /**
+   * The customer's email.
+   */
   email: string
+  /**
+   * The customer's company name.
+   */
   company_name?: string
+  /**
+   * The customer's first name.
+   */
   first_name?: string
+  /**
+   * The customer's last name.
+   */
   last_name?: string
+  /**
+   * The customer's phone.
+   */
   phone?: string
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown>
 }
 
 export interface BaseUpdateCustomer {
+  /**
+   * The customer's company name.
+   */
   company_name?: string
+  /**
+   * The customer's first name.
+   */
   first_name?: string
+  /**
+   * The customer's last name.
+   */
   last_name?: string
+  /**
+   * The customer's phone.
+   */
   phone?: string
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown>
 }
 
 export interface BaseCreateCustomerAddress {
+  /**
+   * The address's first name.
+   */
   first_name?: string
+  /**
+   * The address's last name.
+   */
   last_name?: string
+  /**
+   * The address's phone.
+   */
   phone?: string
+  /**
+   * The address's company.
+   */
   company?: string
+  /**
+   * The address's first line.
+   */
   address_1?: string
+  /**
+   * The address's second line.
+   */
   address_2?: string
+  /**
+   * The address's city.
+   */
   city?: string
+  /**
+   * The address's country code.
+   * 
+   * @example
+   * us
+   */
   country_code?: string
+  /**
+   * The address's province.
+   */
   province?: string
+  /**
+   * The address's postal code.
+   */
   postal_code?: string
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown>
+  /**
+   * The address's name.
+   */
   address_name?: string
+  /**
+   * Whether the address is used by default for shipping.
+   */
   is_default_shipping?: boolean
+  /**
+   * Whether the address is used by default for billing.
+   */
   is_default_billing?: boolean
 }
 
 export interface BaseUpdateCustomerAddress {
+  /**
+   * The address's first name.
+   */
   first_name?: string
+  /**
+   * The address's last name.
+   */
   last_name?: string
+  /**
+   * The address's phone.
+   */
   phone?: string
+  /**
+   * The address's company.
+   */
   company?: string
+  /**
+   * The address's first line.
+   */
   address_1?: string
+  /**
+   * The address's second line.
+   */
   address_2?: string
+  /**
+   * The address's city.
+   */
   city?: string
+  /**
+   * The address's country code.
+   * 
+   * @example
+   * us
+   */
   country_code?: string
+  /**
+   * The address's province.
+   */
   province?: string
+  /**
+   * The address's postal code.
+   */
   postal_code?: string
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown> | null
+  /**
+   * The address's name.
+   */
   address_name?: string
+  /**
+   * Whether the address is used by default for shipping.
+   */
   is_default_shipping?: boolean
+  /**
+   * Whether the address is used by default for billing.
+   */
   is_default_billing?: boolean
 }
