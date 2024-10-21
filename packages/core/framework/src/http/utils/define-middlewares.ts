@@ -47,7 +47,9 @@ export function defineMiddlewares<
        */
       if (additionalDataValidator) {
         customMiddleware.push((req, _, next) => {
-          req.additionalDataValidator = zod.object(additionalDataValidator)
+          req.additionalDataValidator = zod
+            .object(additionalDataValidator)
+            .nullish()
           next()
         })
       }

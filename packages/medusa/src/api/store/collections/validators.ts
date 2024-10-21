@@ -14,7 +14,6 @@ export const StoreGetCollectionsParamsFields = z.object({
   handle: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
-  deleted_at: createOperatorMap().optional(),
 })
 
 export type StoreGetCollectionsParamsType = z.infer<
