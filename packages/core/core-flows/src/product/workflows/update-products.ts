@@ -81,7 +81,8 @@ function prepareUpdateProductInput({
   }
 }
 
-function updateProductIds({
+// This helper finds the IDs of products that have associated sales channels.
+function findProductsWithSalesChannels({
   updatedProducts,
   input,
 }: {
@@ -252,10 +253,6 @@ export const updateProductsWorkflow = createWorkflow(
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
-    const updatedProductIds = transform(
-      { updatedProducts, input },
-      updateProductIds
-    )
 
     const salesChannelLinks = transform(
       { input, updatedProducts },
@@ -267,10 +264,15 @@ export const updateProductsWorkflow = createWorkflow(
       prepareVariantPrices
     )
 
+    const productsWithSalesChannels = transform(
+      { updatedProducts, input },
+      findProductsWithSalesChannels
+    )
+
     const currentSalesChannelLinks = useRemoteQueryStep({
       entry_point: "product_sales_channel",
       fields: ["product_id", "sales_channel_id"],
-      variables: { filters: { product_id: updatedProductIds } },
+      variables: { filters: { product_id: productsWithSalesChannels } },
     }).config({ name: "get-current-sales-channel-links-step" })
 
     const toDeleteSalesChannelLinks = transform(
@@ -285,10 +287,10 @@ export const updateProductsWorkflow = createWorkflow(
     dismissRemoteLinkStep(toDeleteSalesChannelLinks)
 
     const productIdEvents = transform(
-      { updatedProductIds },
-      ({ updatedProductIds }) => {
-        return updatedProductIds?.map((id) => {
-          return { id }
+      { updatedProducts },
+      ({ updatedProducts }) => {
+        return updatedProducts?.map((p) => {
+          return { id: p.id }
         })
       }
     )
