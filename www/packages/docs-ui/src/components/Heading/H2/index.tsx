@@ -1,6 +1,9 @@
+"use client"
+
 import clsx from "clsx"
-import React from "react"
-import { Link } from "@/components"
+import React, { useMemo } from "react"
+import { CopyButton, Link } from "@/components"
+import { useIsBrowser } from "../../../providers"
 
 type H2Props = React.HTMLAttributes<HTMLHeadingElement> & {
   id?: string
@@ -8,6 +11,21 @@ type H2Props = React.HTMLAttributes<HTMLHeadingElement> & {
 }
 
 export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
+  const { isBrowser } = useIsBrowser()
+  const copyText = useMemo(() => {
+    const url = `#${props.id}`
+    if (!isBrowser) {
+      return url
+    }
+
+    const hashIndex = window.location.href.indexOf("#")
+    return (
+      window.location.href.substring(
+        0,
+        hashIndex !== -1 ? hashIndex : window.location.href.length
+      ) + url
+    )
+  }, [props.id, isBrowser])
   return (
     <h2
       className={clsx(
@@ -20,12 +38,14 @@ export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
     >
       {children}
       {props.id && (
-        <Link
-          href={`#${props.id}`}
+        <CopyButton
+          text={copyText}
           className="opacity-0 group-hover/h2:opacity-100 transition-opacity ml-docs_0.5 inline-block"
         >
-          #
-        </Link>
+          <Link href={`#${props.id}`} scroll={false}>
+            #
+          </Link>
+        </CopyButton>
       )}
     </h2>
   )
