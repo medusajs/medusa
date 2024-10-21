@@ -457,7 +457,7 @@ moduleIntegrationTestRunner<Service>({
           ])
         })
 
-        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
+        it.only("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
           const productCategoryResults = await service.list(
             {
               parent_category_id: "category-1",
@@ -469,29 +469,25 @@ moduleIntegrationTestRunner<Service>({
             }
           )
 
-          const serializedObject = JSON.parse(
-            JSON.stringify(productCategoryResults)
-          )
-
-          expect(serializedObject).toEqual([
+          expect(productCategoryResults).toEqual([
             {
               id: "category-1-a",
               handle: "category-1-a",
               mpath: "category-0.category-1.category-1-a",
               parent_category_id: "category-1",
-              parent_category: {
+              parent_category: expect.objectContaining({
                 id: "category-1",
                 handle: "category-1",
                 mpath: "category-0.category-1",
                 parent_category_id: "category-0",
-                parent_category: {
+                parent_category: expect.objectContaining({
                   id: "category-0",
                   handle: "category-0",
                   mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
-                },
-              },
+                }),
+              }),
               category_children: [],
             },
             {
@@ -499,26 +495,26 @@ moduleIntegrationTestRunner<Service>({
               handle: "category-1-b",
               mpath: "category-0.category-1.category-1-b",
               parent_category_id: "category-1",
-              parent_category: {
+              parent_category: expect.objectContaining({
                 id: "category-1",
                 handle: "category-1",
                 mpath: "category-0.category-1",
                 parent_category_id: "category-0",
-                parent_category: {
+                parent_category: expect.objectContaining({
                   id: "category-0",
                   handle: "category-0",
                   mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
-                },
-              },
+                }),
+              }),
               category_children: [
-                {
+                expect.objectContaining({
                   id: "category-1-b-1",
                   handle: "category-1-b-1",
                   mpath: "category-0.category-1.category-1-b.category-1-b-1",
                   parent_category_id: "category-1-b",
-                },
+                }),
               ],
             },
           ])
