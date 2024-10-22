@@ -1,4 +1,4 @@
-name: Generate Public References
+name: Update References on Release
 on:
   workflow_dispatch:
     inputs:
