@@ -23,6 +23,7 @@ import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publisha
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
+  MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
   MiddlewareFunction,
@@ -952,13 +953,24 @@ export class RoutesLoader {
   }
 
   #assignRestrictedFields(baseRestrictedFields: string[]) {
-    this.#app.use("/store", (req: MedusaRequest) => {
+    this.#app.use("/store", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
       req.restrictedFields = new RestrictedFields()
       req.restrictedFields.add(baseRestrictedFields)
-    })
-    this.#app.use("/admin", (req: MedusaRequest) => {
+      next()
+    }) as unknown as RequestHandler)
+
+    this.#app.use("/admin", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
       req.restrictedFields = new RestrictedFields()
-    })
+      next()
+    }) as unknown as RequestHandler)
   }
 
   async load() {
