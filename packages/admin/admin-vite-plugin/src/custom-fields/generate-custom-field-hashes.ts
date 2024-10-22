@@ -1,5 +1,12 @@
 import fs from "fs/promises"
-import { isIdentifier, isObjectProperty, parse, traverse } from "../babel"
+import {
+  File,
+  isIdentifier,
+  isObjectProperty,
+  parse,
+  ParseResult,
+  traverse,
+} from "../babel"
 import { logger } from "../logger"
 import { crawl, generateHash, getParserOptions } from "../utils"
 import { getConfigArgument } from "./helpers"
@@ -41,7 +48,18 @@ async function getCustomFieldContents(file: string): Promise<{
   display: string | null
 }> {
   const code = await fs.readFile(file, "utf-8")
-  const ast = parse(code, getParserOptions(file))
+
+  let ast: ParseResult<File> | null = null
+
+  try {
+    ast = parse(code, getParserOptions(file))
+  } catch (e) {
+    logger.error(`An error occurred while parsing the file.`, {
+      file,
+      error: e,
+    })
+    return { link: null, form: null, display: null }
+  }
 
   let linkContent: string | null = null
   let formContent: string | null = null

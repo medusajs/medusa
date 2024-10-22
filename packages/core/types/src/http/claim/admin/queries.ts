@@ -4,9 +4,7 @@ import { BaseClaimListParams } from "../common"
 
 export interface AdminClaimListParams
   extends BaseClaimListParams,
-    BaseFilterable<AdminClaimListParams> {
-  deleted_at?: OperatorMap<string>
-}
+    BaseFilterable<AdminClaimListParams> { }
 
 export interface AdminClaimParams extends SelectParams {
   id?: string | string[]
