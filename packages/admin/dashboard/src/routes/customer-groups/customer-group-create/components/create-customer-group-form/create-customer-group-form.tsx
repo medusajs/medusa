@@ -59,7 +59,7 @@ export const CreateCustomerGroupForm = () => {
       >
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
-          <div className="flex size-full w-full max-w-[720px] flex-col gap-y-8">
+          <div className="flex size-full max-w-[720px] flex-col gap-y-8">
             <div>
               <RouteFocusModal.Title asChild>
                 <Heading>{t("customerGroups.create.header")}</Heading>
