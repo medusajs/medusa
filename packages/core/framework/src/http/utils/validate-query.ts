@@ -72,7 +72,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       const allowed = queryConfig.allowed ?? []
 
       // If any custom allowed fields are set, we add them to the allowed list along side the one configured in the query config if any
-      if (req.allowed) {
+      if (req.allowed?.length) {
         allowed.push(...req.allowed)
       }
 
