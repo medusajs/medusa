@@ -1,21 +1,21 @@
 import { Filter } from ".."
 import { DataTableFilter } from "../data-table-filter"
-import { DataTableOrderBy } from "../data-table-order-by"
+import { DataTableOrderBy, DataTableOrderByKey } from "../data-table-order-by"
 import { DataTableSearch } from "../data-table-search"
 
-export interface DataTableQueryProps {
+export interface DataTableQueryProps<TData> {
   search?: boolean | "autofocus"
-  orderBy?: (string | number)[]
+  orderBy?: DataTableOrderByKey<TData>[]
   filters?: Filter[]
   prefix?: string
 }
 
-export const DataTableQuery = ({
+export const DataTableQuery = <TData,>({
   search,
   orderBy,
   filters,
   prefix,
-}: DataTableQueryProps) => {
+}: DataTableQueryProps<TData>) => {
   return (
     (search || orderBy || filters || prefix) && (
       <div className="flex items-start justify-between gap-x-4 px-6 py-4">

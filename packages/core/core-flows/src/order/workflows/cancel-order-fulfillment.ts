@@ -5,7 +5,11 @@ import {
   OrderDTO,
   OrderWorkflow,
 } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  OrderWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -15,7 +19,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import { cancelOrderFulfillmentStep } from "../steps/cancel-fulfillment"
@@ -153,9 +157,20 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
+    const eventData = transform({ order, fulfillment }, (data) => {
+      return {
+        order_id: data.order.id,
+        fulfillment_id: data.fulfillment.id,
+      }
+    })
+
     parallelize(
       cancelOrderFulfillmentStep(cancelOrderFulfillmentData),
-      adjustInventoryLevelsStep(inventoryAdjustment)
+      adjustInventoryLevelsStep(inventoryAdjustment),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.FULFILLMENT_CANCELED,
+        data: eventData,
+      })
     )
 
     // last step because there is no compensation for this step

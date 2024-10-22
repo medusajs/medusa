@@ -135,7 +135,12 @@ export const SalesChannelProductSection = ({
         filters={filters}
         navigateTo={(row) => `/products/${row.id}`}
         isLoading={isLoading}
-        orderBy={["title", "variants", "status", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "status", label: t("fields.status") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         queryObject={raw}
         noRecords={{
           message: t("salesChannels.products.list.noRecordsMessage"),

@@ -4,7 +4,11 @@ import {
   OrderWorkflow,
   PaymentCollectionDTO,
 } from "@medusajs/framework/types"
-import { MedusaError, deepFlatMap } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  OrderWorkflowEvents,
+  deepFlatMap,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -14,7 +18,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { cancelPaymentStep } from "../../payment/steps"
 import { deleteReservationsByLineItemsStep } from "../../reservation/steps"
 import { cancelOrdersStep } from "../steps/cancel-orders"
@@ -122,7 +126,11 @@ export const cancelOrderWorkflow = createWorkflow(
     parallelize(
       deleteReservationsByLineItemsStep(lineItemIds),
       cancelPaymentStep({ paymentIds }),
-      cancelOrdersStep({ orderIds: [order.id] })
+      cancelOrdersStep({ orderIds: [order.id] }),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.CANCELED,
+        data: { id: order.id },
+      })
     )
 
     const orderCanceled = createHook("orderCanceled", {

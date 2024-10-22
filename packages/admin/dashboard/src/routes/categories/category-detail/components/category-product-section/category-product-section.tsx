@@ -129,7 +129,11 @@ export const CategoryProductSection = ({
         table={table}
         filters={filters}
         columns={columns}
-        orderBy={["title", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         pageSize={PAGE_SIZE}
         count={count}
         navigateTo={(row) => `/products/${row.id}`}

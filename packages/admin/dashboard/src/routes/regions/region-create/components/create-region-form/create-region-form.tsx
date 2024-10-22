@@ -364,7 +364,10 @@ export const CreateRegionForm = ({
                           columns={columns}
                           count={count}
                           pageSize={PAGE_SIZE}
-                          orderBy={["name", "code"]}
+                          orderBy={[
+                            { key: "display_name", label: t("fields.name") },
+                            { key: "iso_2", label: t("fields.code") },
+                          ]}
                           pagination
                           search="autofocus"
                           layout="fill"

@@ -76,7 +76,12 @@ export const ApiKeyManagementListTable = ({
         columns={columns}
         count={count}
         pageSize={PAGE_SIZE}
-        orderBy={["title", "created_at", "updated_at", "revoked_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+          { key: "revoked_at", label: t("fields.revokedAt") },
+        ]}
         navigateTo={(row) => row.id}
         pagination
         search

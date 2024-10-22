@@ -166,7 +166,11 @@ export const EditCategoryProductsForm = ({
             count={count}
             queryObject={raw}
             filters={filters}
-            orderBy={["title", "created_at", "updated_at"]}
+            orderBy={[
+              { key: "title", label: t("fields.title") },
+              { key: "created_at", label: t("fields.createdAt") },
+              { key: "updated_at", label: t("fields.updatedAt") },
+            ]}
             prefix={PREFIX}
             isLoading={isPending}
             layout="fill"
