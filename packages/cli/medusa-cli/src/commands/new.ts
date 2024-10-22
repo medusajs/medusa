@@ -8,21 +8,20 @@ import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
-import sysPath from "path"
-import path from "path"
-import prompts from "prompts"
+import { default as path, default as sysPath } from "path"
 import { Pool } from "pg"
+import prompts from "prompts"
 import url from "url"
 // @ts-ignore
+import { track } from "@medusajs/telemetry"
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
-import { track } from "@medusajs/telemetry"
 
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 import reporter from "../reporter"
-import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import { getPackageManager, setPackageManager } from "../util/package-manager"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -187,7 +186,7 @@ const clone = async (hostInfo, rootPath, v2 = false, inputBranch) => {
       : []
 
   if (v2) {
-    branch = [`-b`, inputBranch || "feat/v2"]
+    branch = [`-b`, inputBranch || "master"]
   }
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)
