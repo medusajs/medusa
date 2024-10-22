@@ -3,7 +3,7 @@
 import type { OpenAPIV3 } from "openapi-types"
 import type { Operation, PathsObject } from "@/types/openapi"
 import { useSidebar } from "docs-ui"
-import { Fragment, useEffect } from "react"
+import { Fragment, Suspense, useEffect } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import clsx from "clsx"
@@ -48,25 +48,27 @@ const TagPaths = ({ tag, className, paths }: TagPathsProps) => {
   }, [paths])
 
   return (
-    <div className={clsx("relative", className)}>
-      {loading && <DividedLoading className="mt-7" />}
-      {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
-        <Fragment key={pathIndex}>
-          {Object.entries(operations).map(
-            ([method, operation], operationIndex) => (
-              <TagOperation
-                method={method}
-                operation={operation as Operation}
-                tag={tag}
-                key={`${pathIndex}-${operationIndex}`}
-                endpointPath={endpointPath}
-                className={clsx("pt-7")}
-              />
-            )
-          )}
-        </Fragment>
-      ))}
-    </div>
+    <Suspense>
+      <div className={clsx("relative", className)}>
+        {loading && <DividedLoading className="mt-7" />}
+        {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
+          <Fragment key={pathIndex}>
+            {Object.entries(operations).map(
+              ([method, operation], operationIndex) => (
+                <TagOperation
+                  method={method}
+                  operation={operation as Operation}
+                  tag={tag}
+                  key={`${pathIndex}-${operationIndex}`}
+                  endpointPath={endpointPath}
+                  className={clsx("pt-7")}
+                />
+              )
+            )}
+          </Fragment>
+        ))}
+      </div>
+    </Suspense>
   )
 }
 

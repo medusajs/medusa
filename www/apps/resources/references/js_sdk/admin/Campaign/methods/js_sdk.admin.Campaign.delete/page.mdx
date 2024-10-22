@@ -1,0 +1,23 @@
+import { TypeList } from "docs-ui"
+
+# delete
+
+This method deletes a campaign by its ID. It sends a request to the
+[Delete Campaign](https://docs.medusajs.com/v2/api/admin#campaigns\_deletecampaignsid) API route.
+
+## Example
+
+```ts
+sdk.admin.campaign.delete("procamp_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The campaign's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[DeleteResponse](../../../../../types/HttpTypes/types/types.HttpTypes.DeleteResponse/page.mdx)&#60;\"campaign\"&#62;&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../../types/HttpTypes/types/types.HttpTypes.DeleteResponse/page.mdx)&#60;\"campaign\"&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"\"campaign\"","type":"`\"campaign\"`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>

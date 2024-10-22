@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useRef } from "react"
+import React, { Suspense, useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
@@ -142,12 +142,24 @@ export const Sidebar = ({
                         ? `${item.path}-${index}`
                         : `${item.title}-${index}`
                     return (
-                      <SidebarItem
-                        item={item}
+                      <Suspense
+                        fallback={
+                          <Loading
+                            count={1}
+                            className="!mb-0 !px-docs_0.5"
+                            barClassName="h-[20px]"
+                          />
+                        }
                         key={itemKey}
-                        expandItems={expandItems}
-                        hasNextItems={index !== sidebarItems.default.length - 1}
-                      />
+                      >
+                        <SidebarItem
+                          item={item}
+                          expandItems={expandItems}
+                          hasNextItems={
+                            index !== sidebarItems.default.length - 1
+                          }
+                        />
+                      </Suspense>
                     )
                   })}
                 </div>

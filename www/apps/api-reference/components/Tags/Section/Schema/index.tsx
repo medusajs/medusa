@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef } from "react"
+import { Suspense, useEffect, useMemo, useRef } from "react"
 import { SchemaObject } from "../../../../types/openapi"
 import TagOperationParameters from "../../Operation/Parameters"
 import {
@@ -114,41 +114,43 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   }
 
   return (
-    <InView
-      as="div"
-      id={schemaSlug}
-      initialInView={true}
-      onChange={handleViewChange}
-      root={root}
-      threshold={0.1}
-    >
-      <DividedLayout
-        mainContent={
-          <SectionContainer ref={paramsRef}>
-            <h2>{formattedName} Object</h2>
-            <h4 className="border-medusa-border-base border-b py-1.5 mt-2">
-              Fields
-            </h4>
-            <TagOperationParameters schemaObject={schema} topLevel={true} />
-          </SectionContainer>
-        }
-        codeContent={
-          <SectionContainer noDivider>
-            {examples.length && (
-              <CodeBlock
-                source={examples[0].content}
-                lang="json"
-                title={`The ${formattedName} Object`}
-                className={clsx("overflow-auto")}
-                style={{
-                  maxHeight: "100vh",
-                }}
-              />
-            )}
-          </SectionContainer>
-        }
-      />
-    </InView>
+    <Suspense>
+      <InView
+        as="div"
+        id={schemaSlug}
+        initialInView={true}
+        onChange={handleViewChange}
+        root={root}
+        threshold={0.1}
+      >
+        <DividedLayout
+          mainContent={
+            <SectionContainer ref={paramsRef}>
+              <h2>{formattedName} Object</h2>
+              <h4 className="border-medusa-border-base border-b py-1.5 mt-2">
+                Fields
+              </h4>
+              <TagOperationParameters schemaObject={schema} topLevel={true} />
+            </SectionContainer>
+          }
+          codeContent={
+            <SectionContainer noDivider>
+              {examples.length && (
+                <CodeBlock
+                  source={examples[0].content}
+                  lang="json"
+                  title={`The ${formattedName} Object`}
+                  className={clsx("overflow-auto")}
+                  style={{
+                    maxHeight: "100vh",
+                  }}
+                />
+              )}
+            </SectionContainer>
+          }
+        />
+      </InView>
+    </Suspense>
   )
 }
 

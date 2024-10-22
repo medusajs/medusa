@@ -59,6 +59,12 @@ const jsSdkOptions: FormattingOptionsType = {
     },
     reflectionDescription:
       "This documentation provides a reference to the `sdk.admin.{{alias}}` set of methods used to send requests to Medusa's Admin API routes.",
+    sections: {
+      ...baseSectionsOptions,
+      member_declaration_title: false,
+      member_declaration_children: true,
+      member_force_title: true,
+    },
   },
   "^js_sdk/auth/classes/.*Auth": {
     frontmatterData: {
