@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 
+import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
@@ -17,7 +18,6 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { PriceListCreateProductsSchema } from "../../../common/schemas"
 import { PricingCreateSchemaType } from "./schema"
-import { useTranslation } from "react-i18next"
 
 type PriceListProductsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -126,7 +126,12 @@ export const PriceListProductsForm = ({ form }: PriceListProductsFormProps) => {
         count={count}
         isLoading={isLoading}
         layout="fill"
-        orderBy={["title", "status", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "status", label: t("fields.status") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         pagination
         search
         queryObject={raw}

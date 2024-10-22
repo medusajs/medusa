@@ -15,6 +15,16 @@ export const OrderWorkflowEvents = {
   PLACED: "order.placed",
   CANCELED: "order.canceled",
   COMPLETED: "order.completed",
+  ARCHIVED: "order.archived",
+
+  FULFILLMENT_CREATED: "order.fulfillment_created",
+  FULFILLMENT_CANCELED: "order.fulfillment_canceled",
+
+  RETURN_REQUESTED: "order.return_requested",
+  RETURN_RECEIVED: "order.return_received",
+
+  CLAIM_CREATED: "order.claim_created",
+  EXCHANGE_CREATED: "order.exchange_created",
 }
 
 export const UserWorkflowEvents = {

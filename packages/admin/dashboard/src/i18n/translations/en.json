@@ -847,7 +847,8 @@
       "groups": "Groups"
     },
     "registered": "Registered",
-    "guest": "Guest"
+    "guest": "Guest",
+    "hasAccount": "Has account"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -910,7 +911,6 @@
       "shippingSubtotal": "Shipping Subtotal",
       "discountSubtotal": "Discount Subtotal",
       "taxTotal": "Tax Total"
-
     },
     "payment": {
       "title": "Payments",
@@ -1269,6 +1269,11 @@
           "confirmed": "Order edit #{{editId}} confirmed"
         }
       }
+    },
+    "fields": {
+      "displayId": "Display ID",
+      "refundableAmount": "Refundable amount",
+      "returnableQuantity": "Returnable quantity"
     }
   },
   "draftOrders": {
@@ -2407,13 +2412,13 @@
   },
   "invite": {
     "title": "Welcome to Medusa",
-    "hint": "Create you account below",
+    "hint": "Create your account below",
     "backToLogin": "Back to login",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have an account? - <0>Log in</0>",
     "emailTooltip": "Your email cannot be changed. If you would like to use another email, a new invite must be sent.",
     "invalidInvite": "The invite is invalid or has expired.",
-    "successTitle": "Your account has is registered",
+    "successTitle": "Your account has been registered",
     "successHint": "Get started with Medusa Admin right away.",
     "successAction": "Start Medusa Admin",
     "invalidTokenTitle": "Your invite token is invalid",

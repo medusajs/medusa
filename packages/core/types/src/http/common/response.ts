@@ -26,8 +26,17 @@ export type DeleteResponseWithParent<
 }
 
 export type PaginatedResponse<T> = {
+  /**
+   * The maximum number of items retrieved.
+   */
   limit: number
+  /**
+   * The number of items to skip before retrieving the returned items.
+   */
   offset: number
+  /**
+   * The total number of items.
+   */
   count: number
 } & T
 

@@ -1,6 +1,6 @@
 import fs from "fs/promises"
 import { outdent } from "outdent"
-import { parse } from "../babel"
+import { File, parse, ParseResult } from "../babel"
 import { logger } from "../logger"
 import {
   crawl,
@@ -88,7 +88,18 @@ async function parseFile(
 
 async function isValidRouteFile(file: string): Promise<boolean> {
   const code = await fs.readFile(file, "utf-8")
-  const ast = parse(code, getParserOptions(file))
+
+  let ast: ParseResult<File> | null = null
+
+  try {
+    ast = parse(code, getParserOptions(file))
+  } catch (e) {
+    logger.error("An error occurred while parsing the file.", {
+      file,
+      error: e,
+    })
+    return false
+  }
 
   try {
     return await hasDefaultExport(ast)

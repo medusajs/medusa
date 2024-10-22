@@ -6,6 +6,7 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCustomers } from "../../../../../hooks/api/customers"
@@ -13,7 +14,6 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -63,12 +63,12 @@ export const CustomerListTable = () => {
         count={count}
         filters={filters}
         orderBy={[
-          "email",
-          "first_name",
-          "last_name",
-          "has_account",
-          "created_at",
-          "updated_at",
+          { key: "email", label: t("fields.email") },
+          { key: "first_name", label: t("fields.firstName") },
+          { key: "last_name", label: t("fields.lastName") },
+          { key: "has_account", label: t("customers.hasAccount") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         isLoading={isLoading}
         navigateTo={(row) => row.original.id}

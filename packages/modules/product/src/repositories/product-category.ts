@@ -6,9 +6,9 @@ import {
 } from "@medusajs/framework/types"
 import { DALUtils, isDefined, MedusaError } from "@medusajs/framework/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCategory } from "@models"
@@ -93,7 +93,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         ancestors: transformOptions.includeAncestorsTree,
       },
       productCategories,
-      findOptions_
+      findOptions_,
+      context
     )
 
     return this.sortCategoriesByRank(categoriesTree)
@@ -250,7 +251,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         ancestors: transformOptions.includeAncestorsTree,
       },
       productCategories,
-      findOptions_
+      findOptions_,
+      context
     )
 
     return [this.sortCategoriesByRank(categoriesTree), count]
