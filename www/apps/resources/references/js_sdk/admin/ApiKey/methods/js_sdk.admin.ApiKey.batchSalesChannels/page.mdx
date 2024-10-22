@@ -1,0 +1,27 @@
+import { TypeList } from "docs-ui"
+
+# batchSalesChannels
+
+This method manages the sales channels associated with a publishable API key to either add
+or remove associations. It sends a request to the [Manage Sales Channels](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeysidsaleschannels)
+API route.
+
+## Example
+
+```ts
+sdk.admin.apiKey.batchSalesChannels("apk_123", {
+  add: ["sc_123"],
+  remove: ["sc_321"]
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminBatchLink](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchLink/page.mdx)","description":"The sales channels to add or remove from the API key.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"add","type":"`string`[]","description":"The items to create an association to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"The items to remove association from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSalesChannels"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSalesChannels"/>

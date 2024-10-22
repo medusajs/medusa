@@ -1,0 +1,50 @@
+---
+slug: /references/js-sdk/admin/payment
+sidebar_label: payment
+---
+
+import { TypeList } from "docs-ui"
+
+# payment - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.payment` set of methods used to send requests to Medusa's Admin API routes.
+
+## Parameters
+
+<TypeList types={[{"name":"query","type":"`AdminPaymentFilters`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminPaymentsResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminPaymentsResponse","type":"`AdminPaymentsResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+## Parameters
+
+<TypeList types={[{"name":"query","type":"`AdminGetPaymentProvidersParams`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listPaymentProviders"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminPaymentProviderListResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminPaymentProviderListResponse","type":"`AdminPaymentProviderListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listPaymentProviders"/>
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminPaymentFilters`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminPaymentResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminPaymentResponse","type":"`AdminPaymentResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminCapturePayment`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="capture"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminPaymentResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminPaymentResponse","type":"`AdminPaymentResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="capture"/>
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminRefundPayment`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="refund"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminPaymentResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminPaymentResponse","type":"`AdminPaymentResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="refund"/>

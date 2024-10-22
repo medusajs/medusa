@@ -1,0 +1,42 @@
+import { TypeList } from "docs-ui"
+
+# accept
+
+This method accepts an invite. It requires sending a previous request to
+the Auth.register.
+
+This method sends a request to the [Accept Invite]
+(https://docs.medusajs.com/v2/api/admin#invites\_postinvitesaccept)
+API route.
+
+## Example
+
+```ts
+const token = await sdk.auth.register("user", "emailpass", {
+  email: "user@gmail.com",
+  password: "supersecret"
+})
+
+sdk.admin.invite.accept(
+  {
+    email: "user@gmail.com",
+    first_name: "John",
+    last_name: "Smith",
+    invite_token: "12345..."
+  },
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"input","type":"[AdminAcceptInvite](../../../../../types/HttpTypes/types/types.HttpTypes.AdminAcceptInvite/page.mdx) & `object`","description":"The details of the user to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The user's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string`","description":"The user's first name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"The user's last name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"invite_token","type":"`string`","description":"The invite's token.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the user.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="accept"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminAcceptInviteResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminAcceptInviteResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"AdminAcceptInviteResponse","type":"[AdminAcceptInviteResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminAcceptInviteResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"user","type":"`AdminUser`","description":"The user's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"message","type":"`string`","description":"A message if an error occurs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="accept"/>

@@ -1,0 +1,510 @@
+---
+slug: /references/js-sdk/admin/cart
+sidebar_label: cart
+---
+
+import { TypeList } from "docs-ui"
+
+# cart - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.cart` set of methods used to send requests to Medusa's Store API routes.
+
+Related guides: [How to implement carts in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart).
+
+## create
+
+This method creates a cart. It sends a request to the [Create Cart](https://docs.medusajs.com/v2/api/store#carts\_postcarts)
+API route.
+
+Related guide: [How to create a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/create).
+
+### Example
+
+```ts
+sdk.store.cart.create({
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"`StoreCreateCart`","description":"The details of the cart to create.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The created cart.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## update
+
+This method updates a cart. It sends a request to the
+[Update Cart](https://docs.medusajs.com/v2/api/store#carts\_postcartsid) API route.
+
+Related guide: [How to update a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/update).
+
+### Example
+
+```ts
+sdk.store.cart.update("cart_123", {
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreUpdateCart`","description":"The data to update in the cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The updated cart.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a cart by its ID. It sends a request to the 
+[Get Cart](https://docs.medusajs.com/v2/api/store#carts\_getcartsid) API route.
+
+Related guide: [How to retrieve a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/retrieve).
+
+### Example
+
+To retrieve a cart by its ID:
+
+```ts
+sdk.store.cart.retrieve("cart_123")
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.cart.retrieve("cart_123", {
+  fields: "id,*items"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## createLineItem
+
+This methods adds a product variant to the cart as a line item. It sends a request to the
+[Add Line Item](https://docs.medusajs.com/v2/api/store#carts\_postcartsidlineitems) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.createLineItem("cart_123", {
+  variant_id: "variant_123",
+  quantity: 1
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreAddCartLineItem`","description":"The details of the item to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## updateLineItem
+
+This method updates a line item in a cart. It sends a request to the 
+[Update Line Item](https://docs.medusajs.com/v2/api/store#carts\_postcartsidlineitemsline\_id) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.updateLineItem(
+  "cart_123", 
+  "li_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"The line item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreUpdateCartLineItem`","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## deleteLineItem
+
+This method deletes a line item from a cart. It sends a request to the
+[Remove Line Item](https://docs.medusajs.com/v2/api/store#carts\_deletecartsidlineitemsline\_id) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.deleteLineItem(
+  "cart_123",
+  "li_123"
+)
+.then(({ deleted, parent: cart }) => {
+  console.log(deleted, cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"The item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreLineItemDeleteResponse&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"StoreLineItemDeleteResponse","type":"`StoreLineItemDeleteResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## addShippingMethod
+
+This method adds a shipping method to a cart. It sends a request to 
+the [Add Shipping Method](https://docs.medusajs.com/v2/api/store#carts\_postcartsidshippingmethods) API routes.
+
+Related guide: [Implement shipping step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.cart.addShippingMethod("cart_123", {
+  option_id: "so_123",
+  data: {
+    // custom data for fulfillment provider.
+  }
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreAddCartShippingMethods`","description":"The shipping method's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## complete
+
+This method completes a cart and places the order. It's the last step of the checkout flow.
+The method sends a request to the [Complete Cart](https://docs.medusajs.com/v2/api/store#carts\_postcartsidcomplete)
+API route.
+
+Related guide: [Learn how to complete cart in checkout flow](https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart).
+
+### Example
+
+```ts
+sdk.store.cart.complete("cart_123")
+.then((data) => {
+  if(data.type === "cart") {
+    // an error occurred
+    console.log(data.error, data.cart)
+  } else {
+    // order placed successfully
+    console.log(data.order)
+  }
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the created order.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCompleteCartResponse&#62;","optional":false,"defaultValue":"","description":"The order's details, if it was placed successfully. Otherwise, the cart is returned with an error.","expandable":false,"children":[{"name":"StoreCompleteCartResponse","type":"`StoreCompleteCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## create
+
+This method creates a cart. It sends a request to the [Create Cart](https://docs.medusajs.com/v2/api/store#carts\_postcarts)
+API route.
+
+Related guide: [How to create a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/create).
+
+### Example
+
+```ts
+sdk.store.cart.create({
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"`StoreCreateCart`","description":"The details of the cart to create.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The created cart.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## update
+
+This method updates a cart. It sends a request to the
+[Update Cart](https://docs.medusajs.com/v2/api/store#carts\_postcartsid) API route.
+
+Related guide: [How to update a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/update).
+
+### Example
+
+```ts
+sdk.store.cart.update("cart_123", {
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreUpdateCart`","description":"The data to update in the cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The updated cart.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a cart by its ID. It sends a request to the 
+[Get Cart](https://docs.medusajs.com/v2/api/store#carts\_getcartsid) API route.
+
+Related guide: [How to retrieve a cart in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/retrieve).
+
+### Example
+
+To retrieve a cart by its ID:
+
+```ts
+sdk.store.cart.retrieve("cart_123")
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.cart.retrieve("cart_123", {
+  fields: "id,*items"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## createLineItem
+
+This methods adds a product variant to the cart as a line item. It sends a request to the
+[Add Line Item](https://docs.medusajs.com/v2/api/store#carts\_postcartsidlineitems) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.createLineItem("cart_123", {
+  variant_id: "variant_123",
+  quantity: 1
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreAddCartLineItem`","description":"The details of the item to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## updateLineItem
+
+This method updates a line item in a cart. It sends a request to the 
+[Update Line Item](https://docs.medusajs.com/v2/api/store#carts\_postcartsidlineitemsline\_id) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.updateLineItem(
+  "cart_123", 
+  "li_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"The line item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreUpdateCartLineItem`","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## deleteLineItem
+
+This method deletes a line item from a cart. It sends a request to the
+[Remove Line Item](https://docs.medusajs.com/v2/api/store#carts\_deletecartsidlineitemsline\_id) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.deleteLineItem(
+  "cart_123",
+  "li_123"
+)
+.then(({ deleted, parent: cart }) => {
+  console.log(deleted, cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"The item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreLineItemDeleteResponse&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"StoreLineItemDeleteResponse","type":"`StoreLineItemDeleteResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## addShippingMethod
+
+This method adds a shipping method to a cart. It sends a request to 
+the [Add Shipping Method](https://docs.medusajs.com/v2/api/store#carts\_postcartsidshippingmethods) API routes.
+
+Related guide: [Implement shipping step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.cart.addShippingMethod("cart_123", {
+  option_id: "so_123",
+  data: {
+    // custom data for fulfillment provider.
+  }
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreAddCartShippingMethods`","description":"The shipping method's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCartResponse&#62;","optional":false,"defaultValue":"","description":"The cart's details.","expandable":false,"children":[{"name":"StoreCartResponse","type":"`StoreCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## complete
+
+This method completes a cart and places the order. It's the last step of the checkout flow.
+The method sends a request to the [Complete Cart](https://docs.medusajs.com/v2/api/store#carts\_postcartsidcomplete)
+API route.
+
+Related guide: [Learn how to complete cart in checkout flow](https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart).
+
+### Example
+
+```ts
+sdk.store.cart.complete("cart_123")
+.then((data) => {
+  if(data.type === "cart") {
+    // an error occurred
+    console.log(data.error, data.cart)
+  } else {
+    // order placed successfully
+    console.log(data.order)
+  }
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the created order.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCompleteCartResponse&#62;","optional":false,"defaultValue":"","description":"The order's details, if it was placed successfully. Otherwise, the cart is returned with an error.","expandable":false,"children":[{"name":"StoreCompleteCartResponse","type":"`StoreCompleteCartResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

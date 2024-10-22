@@ -1,0 +1,27 @@
+import { TypeList } from "docs-ui"
+
+# batchCustomers
+
+This method manages customers of a group to add or remove them from the group.
+It sends a request to the [Manage Customers](https://docs.medusajs.com/v2/api/admin#customer-groups\_postcustomergroupsidcustomers)
+API route.
+
+## Example
+
+```ts
+sdk.admin.customerGroup.batchCustomers("cusgroup_123", {
+  add: ["cus_123"],
+  remove: ["cus_321"]
+})
+.then(({ customer_group }) => {
+  console.log(customer_group)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The group's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminBatchLink](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchLink/page.mdx)","description":"The customers to add or remove from the group.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"add","type":"`string`[]","description":"The items to create an association to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"The items to remove association from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchCustomers"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminCustomerGroupResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminCustomerGroupResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The customer group's details.","expandable":false,"children":[{"name":"AdminCustomerGroupResponse","type":"[AdminCustomerGroupResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminCustomerGroupResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"customer_group","type":"[AdminCustomerGroup](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminCustomerGroup/page.mdx)","description":"The customer group's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"customers","type":"`AdminCustomer`[]","description":"The customers in the group.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The customer group's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"The customer group's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the customer group was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the customer group was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchCustomers"/>

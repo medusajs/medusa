@@ -1,0 +1,152 @@
+---
+slug: /references/js-sdk/admin/fulfillmentSet
+sidebar_label: fulfillmentSet
+---
+
+import { TypeList } from "docs-ui"
+
+# fulfillmentSet - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.fulfillmentSet` set of methods used to send requests to Medusa's Admin API routes.
+
+This method deletes a fulfillment set. It sends a request to the
+[Delete Fulfillment Set](https://docs.medusajs.com/v2/api/admin#fulfillment-sets\_deletefulfillmentsetsid)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentSet.delete("fset_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminFulfillmentSetDeleteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetDeleteResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"AdminFulfillmentSetDeleteResponse","type":"[AdminFulfillmentSetDeleteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetDeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the item that was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"fulfillment_set\"`","description":"The type of the item that was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>
+
+This method adds a service zone to a fulfillment set. It uses the 
+[Add Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets\_postfulfillmentsetsidservicezones)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentSet.createServiceZone("fset_123", {
+  name: "Europe Service Zone",
+  geo_zones: [{
+    type: "country",
+    country_code: "us"
+  }]
+})
+.then(({ fulfillment_set }) => {
+  console.log(fulfillment_set)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminCreateFulfillmentSetServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminCreateFulfillmentSetServiceZone/page.mdx)","description":"The service zone's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The service zone's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"[AdminUpsertFulfillmentSetServiceZoneGeoZone](../../../../../types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone/page.mdx)[]","description":"The service zone's geo zones to restrict it to\nspecific geographical locations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"country\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"province\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"city\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"The geo zone's city.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"zip\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"The geo zone's city.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"postal_expression","type":"`Record<string, unknown>`","description":"The geo zone's postal expression or ZIP code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the fulfillment set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createServiceZone"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminFulfillmentSetResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The fulfillment set's details.","expandable":false,"children":[{"name":"AdminFulfillmentSetResponse","type":"[AdminFulfillmentSetResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"fulfillment_set","type":"[AdminFulfillmentSet](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet/page.mdx)","description":"The fulfillment set's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The fulfillment set's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The fulfillment set's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"[AdminStockLocation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocation/page.mdx)","description":"The stock location associated with this fulfillment set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zones","type":"[AdminServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx)[]","description":"The fulfillment set's service zones.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the fulfillment set is created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the fulfillment set is updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the fulfillment set is deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createServiceZone"/>
+
+This method retrieves a fulfillment set's service zone's details. It sends a request to the
+[Get Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets\_getfulfillmentsetsidservicezoneszone\_id)
+API route.
+
+## Example
+
+To retrieve a fulfillment set's service zone by its ID:
+
+```ts
+sdk.admin.fulfillmentSet.retrieveServiceZone(
+  "fset_123",
+  "serzo_123"
+)
+.then(({ service_zone }) => {
+  console.log(service_zone)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.fulfillmentSet.retrieveServiceZone(
+  "fset_123",
+  "serzo_123",
+  {
+    fields: "id,*geo_zones"
+  }
+)
+.then(({ service_zone }) => {
+  console.log(service_zone)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+## Parameters
+
+<TypeList types={[{"name":"fulfillmentSetId","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"serviceZoneId","type":"`string`","description":"The service zone's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveServiceZone"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminServiceZoneResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The service zone's details.","expandable":false,"children":[{"name":"AdminServiceZoneResponse","type":"[AdminServiceZoneResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"service_zone","type":"[AdminServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx)","description":"The service zone's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The service zone's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The service zone's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_set_id","type":"`string`","description":"The ID of the fulfillment set this service zone belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_set","type":"[AdminFulfillmentSet](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet/page.mdx)","description":"The fulfillment set this service zone belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"[AdminGeoZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminGeoZone/page.mdx)[]","description":"The service zone's geo zones.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"[AdminShippingOption](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOption/page.mdx)[]","description":"The shipping options that can be used in this service zone.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the service zone is created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the service zone is updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the service zone is deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieveServiceZone"/>
+
+This method updates a service zone in a fulfillment set. It sends a request to the
+[Update Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets\_postfulfillmentsetsidservicezoneszone\_id)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentSet.updateServiceZone(
+  "fset_123", 
+  "serzo_123",
+  {
+    name: "Europe Service Zone",
+  }
+)
+.then(({ fulfillment_set }) => {
+  console.log(fulfillment_set)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"fulfillmentSetId","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"serviceZoneId","type":"`string`","description":"The service zone's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateFulfillmentSetServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateFulfillmentSetServiceZone/page.mdx)","description":"The data to update in the service zone.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The service zone's name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"[AdminUpdateFulfillmentSetServiceZoneGeoZone](../../../../../types/types/types.AdminUpdateFulfillmentSetServiceZoneGeoZone/page.mdx)[]","description":"The service zone's geo zones to restrict it to\nspecific geographical locations. You can update\nexisting ones by their IDs or add new ones.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"country\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"province\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"city\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"The geo zone's city.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The geo zone's country code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`\"zip\"`","description":"The geo zone's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`string`","description":"The geo zone's province code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"The geo zone's city.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"postal_expression","type":"`Record<string, unknown>`","description":"The geo zone's postal expression or ZIP code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the geo zone to update.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the geo zone to update.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the geo zone to update.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the geo zone to update.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the fulfillment set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateServiceZone"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminFulfillmentSetResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The fulfillment set's details.","expandable":false,"children":[{"name":"AdminFulfillmentSetResponse","type":"[AdminFulfillmentSetResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"fulfillment_set","type":"[AdminFulfillmentSet](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet/page.mdx)","description":"The fulfillment set's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The fulfillment set's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The fulfillment set's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"[AdminStockLocation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocation/page.mdx)","description":"The stock location associated with this fulfillment set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zones","type":"[AdminServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx)[]","description":"The fulfillment set's service zones.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the fulfillment set is created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the fulfillment set is updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the fulfillment set is deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateServiceZone"/>
+
+This method deletes a service zone in a fulfillment set. It sends a request to the
+[Remove Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets\_deletefulfillmentsetsidservicezoneszone\_id)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentSet.deleteServiceZone(
+  "fset_123", 
+  "serzo_123",
+)
+.then(({ deleted, parent: fulfillmentSet }) => {
+  console.log(deleted, fulfillmentSet)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"fulfillmentSetId","type":"`string`","description":"The fulfullment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"serviceZoneId","type":"`string`","description":"The service zone's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteServiceZone"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminServiceZoneDeleteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneDeleteResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"AdminServiceZoneDeleteResponse","type":"[AdminServiceZoneDeleteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneDeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the item that was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"service_zone\"`","description":"The type of the item that was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"parent","type":"[AdminFulfillmentSet](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet/page.mdx)","description":"The parent resource of the item that was deleted, if applicable.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The fulfillment set's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The fulfillment set's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"[AdminStockLocation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocation/page.mdx)","description":"The stock location associated with this fulfillment set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zones","type":"[AdminServiceZone](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx)[]","description":"The fulfillment set's service zones.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the fulfillment set is created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the fulfillment set is updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the fulfillment set is deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteServiceZone"/>

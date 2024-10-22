@@ -1,0 +1,210 @@
+---
+slug: /references/js-sdk/admin/payment
+sidebar_label: payment
+---
+
+import { TypeList } from "docs-ui"
+
+# payment - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.payment` set of methods used to send requests to Medusa's Store API routes.
+
+## listPaymentProviders
+
+This method retrieves the payment providers available in a region, which is useful during checkout.
+It sends a request to the [List Payment Providers](https://docs.medusajs.com/v2/api/store#payment-providers\_getpaymentproviders)
+API route.
+
+Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+
+### Example
+
+To retrieve the list of payment providers for a region:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123"
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123",
+  limit: 10,
+  offset: 10
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each provider:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123",
+  limit: 10,
+  offset: 10,
+  fields: "id"
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StorePaymentProviderFilters`","description":"The filters to apply on the retrieved providers, along with configurations of the \nfields to retrieve in the options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StorePaymentProviderListResponse&#62;","optional":false,"defaultValue":"","description":"The list of payment providers.","expandable":false,"children":[{"name":"StorePaymentProviderListResponse","type":"`StorePaymentProviderListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## initiatePaymentSession
+
+This method creates a payment session of a cart's payment collection, selecting a payment provider.
+It sends a request to the [Initialize Payment Session](https://docs.medusajs.com/v2/api/store#payment-collections\_postpaymentcollectionsidpaymentsessions)
+API route.
+
+If the cart doesn't have a payment collection, a payment collection is created for the cart by
+sending a request to the [Create Payment Collection](https://docs.medusajs.com/v2/api/store#payment-collections\_postpaymentcollections)
+API route.
+
+Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+
+### Example
+
+```ts
+sdk.store.payment.initiatePaymentSession(
+  cart, // assuming you already have the cart object.
+  {
+    provider_id: "pp_stripe_stripe",
+    data: {
+      // any data relevant for the provider.
+    }
+  }
+)
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cart","type":"`StoreCart`","description":"The cart's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreInitializePaymentSession`","description":"The payment session's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the payment collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StorePaymentCollectionResponse&#62;","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"StorePaymentCollectionResponse","type":"`StorePaymentCollectionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## listPaymentProviders
+
+This method retrieves the payment providers available in a region, which is useful during checkout.
+It sends a request to the [List Payment Providers](https://docs.medusajs.com/v2/api/store#payment-providers\_getpaymentproviders)
+API route.
+
+Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+
+### Example
+
+To retrieve the list of payment providers for a region:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123"
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123",
+  limit: 10,
+  offset: 10
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each provider:
+
+```ts
+sdk.store.payment.listPaymentProviders({
+  region_id: "reg_123",
+  limit: 10,
+  offset: 10,
+  fields: "id"
+})
+.then(({ payment_providers, count, offset, limit }) => {
+  console.log(payment_providers)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StorePaymentProviderFilters`","description":"The filters to apply on the retrieved providers, along with configurations of the \nfields to retrieve in the options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StorePaymentProviderListResponse&#62;","optional":false,"defaultValue":"","description":"The list of payment providers.","expandable":false,"children":[{"name":"StorePaymentProviderListResponse","type":"`StorePaymentProviderListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## initiatePaymentSession
+
+This method creates a payment session of a cart's payment collection, selecting a payment provider.
+It sends a request to the [Initialize Payment Session](https://docs.medusajs.com/v2/api/store#payment-collections\_postpaymentcollectionsidpaymentsessions)
+API route.
+
+If the cart doesn't have a payment collection, a payment collection is created for the cart by
+sending a request to the [Create Payment Collection](https://docs.medusajs.com/v2/api/store#payment-collections\_postpaymentcollections)
+API route.
+
+Related guide: [Implement payment step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment).
+
+### Example
+
+```ts
+sdk.store.payment.initiatePaymentSession(
+  cart, // assuming you already have the cart object.
+  {
+    provider_id: "pp_stripe_stripe",
+    data: {
+      // any data relevant for the provider.
+    }
+  }
+)
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cart","type":"`StoreCart`","description":"The cart's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`StoreInitializePaymentSession`","description":"The payment session's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the payment collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StorePaymentCollectionResponse&#62;","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"StorePaymentCollectionResponse","type":"`StorePaymentCollectionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

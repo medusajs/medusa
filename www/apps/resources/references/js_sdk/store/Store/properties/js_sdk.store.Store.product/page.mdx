@@ -1,0 +1,212 @@
+---
+slug: /references/js-sdk/admin/product
+sidebar_label: product
+---
+
+import { TypeList } from "docs-ui"
+
+# product - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.product` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves a list of products. It sends a request to the
+[List Products API route](https://docs.medusajs.com/v2/api/store#products\_getproducts).
+
+Related guides:
+
+- [How to list products in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/list).
+- [How to retrieve a product variant's prices in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve the list of products:
+
+```ts
+sdk.store.product.list()
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.product.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each product:
+
+```ts
+sdk.store.product.list({
+  fields: "id,*collection"
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`StoreProductParams`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreProductListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of products.","expandable":false,"children":[{"name":"StoreProductListResponse","type":"`StoreProductListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method is used to retrieve a product by its ID. It sends a request to the 
+[Get Product](https://docs.medusajs.com/v2/api/store#products\_getproductsid) API route.
+
+Related guides:
+
+- [How to retrieve a product in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/retrieve).
+- [How to retrieve a product variant's prices in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve a product by its ID:
+
+```ts
+sdk.store.product.retrieve("prod_123")
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.product.retrieve("prod_123", {
+  fields: "id,*collection"
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the product.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreProductResponse&#62;","optional":false,"defaultValue":"","description":"The product.","expandable":false,"children":[{"name":"StoreProductResponse","type":"`StoreProductResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## list
+
+This method retrieves a list of products. It sends a request to the
+[List Products API route](https://docs.medusajs.com/v2/api/store#products\_getproducts).
+
+Related guides:
+
+- [How to list products in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/list).
+- [How to retrieve a product variant's prices in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve the list of products:
+
+```ts
+sdk.store.product.list()
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.product.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each product:
+
+```ts
+sdk.store.product.list({
+  fields: "id,*collection"
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`StoreProductParams`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreProductListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of products.","expandable":false,"children":[{"name":"StoreProductListResponse","type":"`StoreProductListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method is used to retrieve a product by its ID. It sends a request to the 
+[Get Product](https://docs.medusajs.com/v2/api/store#products\_getproductsid) API route.
+
+Related guides:
+
+- [How to retrieve a product in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/retrieve).
+- [How to retrieve a product variant's prices in the storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve a product by its ID:
+
+```ts
+sdk.store.product.retrieve("prod_123")
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.product.retrieve("prod_123", {
+  fields: "id,*collection"
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the product.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreProductResponse&#62;","optional":false,"defaultValue":"","description":"The product.","expandable":false,"children":[{"name":"StoreProductResponse","type":"`StoreProductResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

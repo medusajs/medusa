@@ -1,0 +1,206 @@
+---
+slug: /references/js-sdk/admin/region
+sidebar_label: region
+---
+
+import { TypeList } from "docs-ui"
+
+# region - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.region` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves the paginated list of regions in the store. It sends a request to the 
+[List Regions API route](https://docs.medusajs.com/v2/api/store#regions\_getregions).
+
+Related guide: [How to list regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/list).
+
+### Example
+
+To retrieve the list of regions:
+
+```ts
+sdk.store.region.list()
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.region.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each region:
+
+```ts
+sdk.store.region.list({
+  fields: "id,*countries"
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StoreRegionFilters`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreRegionListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of regions.","expandable":false,"children":[{"name":"StoreRegionListResponse","type":"`StoreRegionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a region by its ID. It sends a request to the [Get Region](https://docs.medusajs.com/v2/api/store#regions\_getregionsid)
+API route.
+
+Related guide: [Store and retrieve regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/store-retrieve-region).
+
+### Example
+
+To retrieve a region by its ID:
+
+```ts
+sdk.store.region.retrieve("reg_123")
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.region.retrieve(
+  "reg_123",
+  {
+    fields: "id,*countries"
+  }
+)
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The region's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the region.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreRegionResponse&#62;","optional":false,"defaultValue":"","description":"The region.","expandable":false,"children":[{"name":"StoreRegionResponse","type":"`StoreRegionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## list
+
+This method retrieves the paginated list of regions in the store. It sends a request to the 
+[List Regions API route](https://docs.medusajs.com/v2/api/store#regions\_getregions).
+
+Related guide: [How to list regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/list).
+
+### Example
+
+To retrieve the list of regions:
+
+```ts
+sdk.store.region.list()
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.region.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each region:
+
+```ts
+sdk.store.region.list({
+  fields: "id,*countries"
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StoreRegionFilters`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreRegionListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of regions.","expandable":false,"children":[{"name":"StoreRegionListResponse","type":"`StoreRegionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a region by its ID. It sends a request to the [Get Region](https://docs.medusajs.com/v2/api/store#regions\_getregionsid)
+API route.
+
+Related guide: [Store and retrieve regions in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/regions/store-retrieve-region).
+
+### Example
+
+To retrieve a region by its ID:
+
+```ts
+sdk.store.region.retrieve("reg_123")
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.region.retrieve(
+  "reg_123",
+  {
+    fields: "id,*countries"
+  }
+)
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The region's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the region.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreRegionResponse&#62;","optional":false,"defaultValue":"","description":"The region.","expandable":false,"children":[{"name":"StoreRegionResponse","type":"`StoreRegionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
