@@ -1,7 +1,7 @@
 "use client"
 
 import getSectionId from "@/utils/get-section-id"
-import { useInView } from "react-intersection-observer"
+import { InView } from "react-intersection-observer"
 import { useEffect, useMemo, useState } from "react"
 import {
   isElmWindow,
@@ -65,30 +65,6 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
 
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement, isBrowser])
-  const { ref, inView } = useInView({
-    threshold: 0.8,
-    rootMargin: `112px 0px 112px 0px`,
-    root,
-    onChange: (inView) => {
-      if (inView && !loadData) {
-        setLoadData(true)
-      }
-      if (inView) {
-        // ensure that the hash link doesn't change if it links to an inner path
-        const currentHashArr = location.hash.replace("#", "").split("_")
-        if (currentHashArr.length < 2 || currentHashArr[0] !== slugTagName) {
-          if (location.hash !== slugTagName) {
-            router.push(`#${slugTagName}`, {
-              scroll: false,
-            })
-          }
-          if (activePath !== slugTagName) {
-            setActivePath(slugTagName)
-          }
-        }
-      }
-    },
-  })
   const { data: schemaData } = useSWR<{
     schema: SchemaObject
   }>(
@@ -136,10 +112,31 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
   }, [slugTagName, activePath, isBrowser])
 
   return (
-    <div
+    <InView
       className={clsx("min-h-screen", !loadData && "relative")}
       id={slugTagName}
-      ref={ref}
+      threshold={0.8}
+      rootMargin={`112px 0px 112px 0px`}
+      root={root}
+      onChange={(inView) => {
+        if (inView) {
+          if (!loadData) {
+            setLoadData(true)
+          }
+          // ensure that the hash link doesn't change if it links to an inner path
+          const currentHashArr = location.hash.replace("#", "").split("_")
+          if (currentHashArr.length < 2 || currentHashArr[0] !== slugTagName) {
+            if (location.hash !== slugTagName) {
+              router.push(`#${slugTagName}`, {
+                scroll: false,
+              })
+            }
+            if (activePath !== slugTagName) {
+              setActivePath(slugTagName)
+            }
+          }
+        }
+      }}
     >
       <DividedLayout
         mainContent={
@@ -188,7 +185,7 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
         </LoadingProvider>
       )}
       {!loadData && <SectionDivider className="lg:!-left-1" />}
-    </div>
+    </InView>
   )
 }
 
