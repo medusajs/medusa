@@ -46,7 +46,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/telemetry": "^0.0.17",
+    "@medusajs/telemetry": "^1.0.1",
     "@medusajs/utils": "1.11.9",
     "@types/express": "^4.17.17",
     "chalk": "^4.0.0",

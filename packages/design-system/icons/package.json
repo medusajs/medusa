@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
-    "@medusajs/toolbox": "^0.0.1",
+    "@medusajs/toolbox": "^1.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@testing-library/dom": "^9.3.1",

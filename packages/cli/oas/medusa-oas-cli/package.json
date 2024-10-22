@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-oas-cli",
-  "version": "0.3.2",
+  "version": "1.0.1",
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {

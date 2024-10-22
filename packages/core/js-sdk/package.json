@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
