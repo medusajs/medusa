@@ -7,8 +7,8 @@ export const defaultStoreRetrieveReturnReasonFields = [
   "created_at",
   "updated_at",
   "deleted_at",
-  "*.parent_return_reason",
-  "*.return_reason_children",
+  "*parent_return_reason",
+  "*return_reason_children",
 ]
 
 export const retrieveTransformQueryConfig = {
