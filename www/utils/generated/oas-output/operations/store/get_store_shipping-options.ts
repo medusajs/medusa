@@ -79,6 +79,14 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: is_return
+ *     in: query
+ *     description: The shipping option's is return.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: is_return
+ *       description: The shipping option's is return.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

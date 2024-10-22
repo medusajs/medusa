@@ -718,13 +718,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: The updated cart's details.
-                required:
-                  - cart
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/StoreCart'
+                $ref: '#/components/schemas/StoreCartResponse'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -737,7 +731,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      x-workflow: updateCartWorkflow
+      x-workflow: updateCartWorkflowWithCustomerValidation
   /store/carts/{id}/complete:
     post:
       operationId: PostCartsIdComplete
@@ -1372,237 +1366,6 @@ paths:
             type: string
             title: order
             description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-        - name: deleted_at
-          in: query
-          description: Filter by the collection's deletion date.
-          required: false
-          schema:
-            type: object
-            description: Filter by the collection's deletion date.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by an exact match.
-                    items:
-                      type: string
-                      title: $eq
-                      description: Filter by an exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: Filter by values in this array.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: Filter by values not in this array.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                    properties:
-                      $and:
-                        type: array
-                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $and
-                      $or:
-                        type: array
-                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $or
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: Filter by an exact match.
-                          - type: array
-                            description: Filter by an exact match.
-                            items:
-                              type: string
-                              title: $eq
-                              description: Filter by an exact match.
-                      $ne:
-                        type: string
-                        title: $ne
-                        description: Filter by values not equal to this parameter.
-                      $in:
-                        type: array
-                        description: Filter by values in this array.
-                        items:
-                          type: string
-                          title: $in
-                          description: Filter by values in this array.
-                      $nin:
-                        type: array
-                        description: Filter by values not in this array.
-                        items:
-                          type: string
-                          title: $nin
-                          description: Filter by values not in this array.
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: object
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: array
-                            description: Filter by values not matching the conditions in this parameter.
-                            items:
-                              type: string
-                              title: $not
-                              description: Filter by values not matching the conditions in this parameter.
-                      $gt:
-                        type: string
-                        title: $gt
-                        description: Filter by values greater than this parameter. Useful for numbers and dates only.
-                      $gte:
-                        type: string
-                        title: $gte
-                        description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-                      $lt:
-                        type: string
-                        title: $lt
-                        description: Filter by values less than this parameter. Useful for numbers and dates only.
-                      $lte:
-                        type: string
-                        title: $lte
-                        description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-                      $like:
-                        type: string
-                        title: $like
-                        description: Apply a `like` filter. Useful for strings only.
-                      $re:
-                        type: string
-                        title: $re
-                        description: Apply a regex filter. Useful for strings only.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: Apply a case-insensitive `like` filter. Useful for strings only.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: Filter to apply on full-text properties.
-                      $overlap:
-                        type: array
-                        description: Filter arrays that have overlapping values with this parameter.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: Filter arrays that have overlapping values with this parameter.
-                      $contains:
-                        type: array
-                        description: Filter arrays that contain some of the values of this parameter.
-                        items:
-                          type: string
-                          title: $contains
-                          description: Filter arrays that contain some of the values of this parameter.
-                      $contained:
-                        type: array
-                        description: Filter arrays that contain all values of this parameter.
-                        items:
-                          type: string
-                          title: $contained
-                          description: Filter arrays that contain all values of this parameter.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: Filter by whether a value for this parameter exists (not `null`).
-                  - type: array
-                    description: Filter by values not matching the conditions in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: Filter arrays that have overlapping values with this parameter.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: Filter arrays that contain some of the values of this parameter.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: Filter arrays that contain all values of this parameter.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
         - name: title
           in: query
           required: false
@@ -3415,25 +3178,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              description: The payment session's details.
-              required:
-                - provider_id
-              properties:
-                provider_id:
-                  type: string
-                  title: provider_id
-                  description: The ID of the payment provider the customer chose.
-                  example: pp_stripe_stripe
-                context:
-                  type: object
-                  description: The payment's context, such as the customer or address details. If the customer is logged-in, the customer `id` is set in the context under a `customer.id` property.
-                data:
-                  type: object
-                  description: Any data necessary for the payment provider to process the payment.
-                  externalDocs:
-                    url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-session#data-property
-                    description: Learn more about the payment session's data property
+              $ref: '#/components/schemas/StoreInitializePaymentSession'
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -3944,237 +3689,6 @@ paths:
           schema:
             type: object
             description: Filter by the category's update date.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by multiple exact matches.
-                    items:
-                      type: string
-                      title: $eq
-                      description: An exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: The value to match.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: The value not to match.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                    properties:
-                      $and:
-                        type: array
-                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $and
-                      $or:
-                        type: array
-                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $or
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: Filter by an exact match.
-                          - type: array
-                            description: Filter by multiple exact matches.
-                            items:
-                              type: string
-                              title: $eq
-                              description: The value to match.
-                      $ne:
-                        type: string
-                        title: $ne
-                        description: Filter by values not matching this parameter.
-                      $in:
-                        type: array
-                        description: Filter by values in this array.
-                        items:
-                          type: string
-                          title: $in
-                          description: The value to match.
-                      $nin:
-                        type: array
-                        description: Filter by values not in this array.
-                        items:
-                          type: string
-                          title: $nin
-                          description: The value to not match
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: Filter by values not matching this parameter
-                          - type: object
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: array
-                            description: Filter by values not matching the values of this parameter.
-                            items:
-                              type: string
-                              title: $not
-                              description: The values to not match.
-                      $gt:
-                        type: string
-                        title: $gt
-                        description: Filter by values greater than this parameter. Useful for numbers and dates only.
-                      $gte:
-                        type: string
-                        title: $gte
-                        description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-                      $lt:
-                        type: string
-                        title: $lt
-                        description: Filter by values less than this parameter. Useful for numbers and dates only.
-                      $lte:
-                        type: string
-                        title: $lte
-                        description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-                      $like:
-                        type: string
-                        title: $like
-                        description: Apply a `like` filter. Useful for strings only.
-                      $re:
-                        type: string
-                        title: $re
-                        description: Apply a regex filter. Useful for strings only.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: Apply a case-insensitive `like` filter. Useful for strings only.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: Filter to apply on full-text properties.
-                      $overlap:
-                        type: array
-                        description: Filter arrays that have overlapping values with this parameter.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: The value to match.
-                      $contains:
-                        type: array
-                        description: Filter arrays that contain some of the values of this parameter.
-                        items:
-                          type: string
-                          title: $contains
-                          description: The values to match.
-                      $contained:
-                        type: array
-                        description: Filter arrays that contain all values of this parameter.
-                        items:
-                          type: string
-                          title: $contained
-                          description: The values to match.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: Filter by whether a value for this parameter exists (not `null`).
-                  - type: array
-                    description: Filter by values not matching those in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: The values to not match.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: The values to match.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: The values to match.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: The values to match.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
-        - name: deleted_at
-          in: query
-          description: Filter by the category's deletion date.
-          required: false
-          schema:
-            type: object
-            description: Filter by the category's deletion date.
             properties:
               $and:
                 type: array
@@ -5160,237 +4674,6 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
-        - name: deleted_at
-          in: query
-          description: Filter by the product's date date.
-          required: false
-          schema:
-            type: object
-            description: Filter by the product's date date.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by multiple exact matches.
-                    items:
-                      type: string
-                      title: $eq
-                      description: An exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: The value to match.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: The value not to match.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                    properties:
-                      $and:
-                        type: array
-                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $and
-                      $or:
-                        type: array
-                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $or
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: Filter by an exact match.
-                          - type: array
-                            description: Filter by multiple exact matches.
-                            items:
-                              type: string
-                              title: $eq
-                              description: The value to match.
-                      $ne:
-                        type: string
-                        title: $ne
-                        description: Filter by values not matching this parameter.
-                      $in:
-                        type: array
-                        description: Filter by values in this array.
-                        items:
-                          type: string
-                          title: $in
-                          description: The value to match.
-                      $nin:
-                        type: array
-                        description: Filter by values not in this array.
-                        items:
-                          type: string
-                          title: $nin
-                          description: The value to not match
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: Filter by values not matching this parameter
-                          - type: object
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: array
-                            description: Filter by values not matching the values of this parameter.
-                            items:
-                              type: string
-                              title: $not
-                              description: The values to not match.
-                      $gt:
-                        type: string
-                        title: $gt
-                        description: Filter by values greater than this parameter. Useful for numbers and dates only.
-                      $gte:
-                        type: string
-                        title: $gte
-                        description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-                      $lt:
-                        type: string
-                        title: $lt
-                        description: Filter by values less than this parameter. Useful for numbers and dates only.
-                      $lte:
-                        type: string
-                        title: $lte
-                        description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-                      $like:
-                        type: string
-                        title: $like
-                        description: Apply a `like` filter. Useful for strings only.
-                      $re:
-                        type: string
-                        title: $re
-                        description: Apply a regex filter. Useful for strings only.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: Apply a case-insensitive `like` filter. Useful for strings only.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: Filter to apply on full-text properties.
-                      $overlap:
-                        type: array
-                        description: Filter arrays that have overlapping values with this parameter.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: The value to match.
-                      $contains:
-                        type: array
-                        description: Filter arrays that contain some of the values of this parameter.
-                        items:
-                          type: string
-                          title: $contains
-                          description: The values to match.
-                      $contained:
-                        type: array
-                        description: Filter arrays that contain all values of this parameter.
-                        items:
-                          type: string
-                          title: $contained
-                          description: The values to match.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: Filter by whether a value for this parameter exists (not `null`).
-                  - type: array
-                    description: Filter by values not matching those in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: The values to not match.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: The values to match.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: The values to match.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: The values to match.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
         - name: region_id
           in: query
           description: The ID of the region the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
@@ -6129,6 +5412,14 @@ paths:
             items:
               type: object
             title: $or
+        - name: is_return
+          in: query
+          description: The shipping option's is return.
+          required: false
+          schema:
+            type: boolean
+            title: is_return
+            description: The shipping option's is return.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -6172,8 +5463,10 @@ components:
         - last_used_at
         - created_by
         - created_at
+        - updated_at
         - revoked_by
         - revoked_at
+        - deleted_at
       properties:
         id:
           type: string
@@ -6221,6 +5514,16 @@ components:
           title: revoked_at
           description: The date and time the API key was revoked. The API key is considered revoked when this property is set.
           format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The api key's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The api key's deleted at.
     AdminApiKeyResponse:
       type: object
       description: The API key's details.
@@ -6436,6 +5739,9 @@ components:
         - starts_at
         - ends_at
         - budget
+        - created_at
+        - updated_at
+        - deleted_at
       properties:
         id:
           type: string
@@ -6499,6 +5805,21 @@ components:
               title: used
               description: |
                 How much of the budget has been used. If the limit is `spend`, this property holds the total amount discounted so far. If the limit is `usage`, it holds the number of times the campaign's promotions have been used so far.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The campaign's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The campaign's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The campaign's deleted at.
     AdminCampaignResponse:
       type: object
       description: The campaign's details.
@@ -6767,7 +6088,7 @@ components:
           type: array
           description: The collection's products.
           items:
-            type: object
+            $ref: '#/components/schemas/BaseProduct'
         metadata:
           type: object
           description: The collection's metadata, used to store custom key-value pairs.
@@ -7351,6 +6672,10 @@ components:
         metadata:
           type: object
           description: The product's metadata, used to store custom key-value pairs.
+        external_id:
+          type: string
+          title: external_id
+          description: The create's external id.
     AdminCreateProductCategory:
       type: object
       description: The product category's details.
@@ -14247,6 +13572,9 @@ components:
       x-schemaName: AdminPromotion
       required:
         - id
+        - created_at
+        - updated_at
+        - deleted_at
       properties:
         application_method:
           type: object
@@ -14280,6 +13608,21 @@ components:
           description: The ID of the campaign this promotion belongs to.
         campaign:
           $ref: '#/components/schemas/AdminCampaign'
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The promotion's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The promotion's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The promotion's deleted at.
     AdminPromotionResponse:
       type: object
       description: The promotion's details.
@@ -16194,6 +15537,10 @@ components:
         metadata:
           type: object
           description: The product's metadata, can hold custom key-value pairs.
+        external_id:
+          type: string
+          title: external_id
+          description: The update's external id.
     AdminUpdateProductOption:
       type: object
       description: The details to update in a product option.
@@ -17716,54 +17063,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the claim was updated.
-    BaseCollection:
-      type: object
-      description: The product collection's details.
-      x-schemaName: BaseCollection
-      required:
-        - id
-        - title
-        - handle
-        - created_at
-        - updated_at
-        - deleted_at
-        - metadata
-      properties:
-        id:
-          type: string
-          title: id
-          description: The collection's ID.
-        title:
-          type: string
-          title: title
-          description: The collection's title.
-        handle:
-          type: string
-          title: handle
-          description: The collection's handle.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The collection's creation date.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The collection's update date.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The collection's deletion date.
-        products:
-          type: array
-          description: The collection's products.
-          items:
-            $ref: '#/components/schemas/AdminProduct'
-        metadata:
-          type: object
-          description: The collection's metadata, used to store custom key-value pairs.
     BaseExchangeItem:
       type: object
       description: The item's details.
@@ -19374,282 +18673,40 @@ components:
         - status
     BaseProduct:
       type: object
-      description: The parent's product.
+      description: The product type's details.
       x-schemaName: BaseProduct
       required:
         - id
-        - title
-        - handle
-        - subtitle
-        - description
-        - is_giftcard
-        - status
-        - thumbnail
-        - width
-        - weight
-        - length
-        - height
-        - origin_country
-        - hs_code
-        - mid_code
-        - material
-        - collection_id
-        - type_id
-        - variants
-        - options
-        - images
-        - discountable
-        - external_id
+        - value
         - created_at
         - updated_at
-        - deleted_at
       properties:
         id:
           type: string
           title: id
-          description: The product's ID.
-        title:
+          description: The type's ID.
+        value:
           type: string
-          title: title
-          description: The product's title.
-        handle:
-          type: string
-          title: handle
-          description: The product's handle.
-        subtitle:
-          type: string
-          title: subtitle
-          description: The product's subtitle.
-        description:
-          type: string
-          title: description
-          description: The product's description.
-        is_giftcard:
-          type: boolean
-          title: is_giftcard
-          description: The product's is giftcard.
-        status:
-          type: string
-          description: The product's status.
-          enum:
-            - draft
-            - proposed
-            - published
-            - rejected
-        thumbnail:
-          type: string
-          title: thumbnail
-          description: The product's thumbnail.
-        width:
-          type: number
-          title: width
-          description: The product's width.
-        weight:
-          type: number
-          title: weight
-          description: The product's weight.
-        length:
-          type: number
-          title: length
-          description: The product's length.
-        height:
-          type: number
-          title: height
-          description: The product's height.
-        origin_country:
-          type: string
-          title: origin_country
-          description: The product's origin country.
-        hs_code:
-          type: string
-          title: hs_code
-          description: The product's hs code.
-        mid_code:
-          type: string
-          title: mid_code
-          description: The product's mid code.
-        material:
-          type: string
-          title: material
-          description: The product's material.
-        collection:
-          $ref: '#/components/schemas/BaseCollection'
-        collection_id:
-          type: string
-          title: collection_id
-          description: The product's collection id.
-        categories:
-          type: array
-          description: The product's categories.
-          items:
-            $ref: '#/components/schemas/BaseProductCategory'
-        type:
-          type: object
-        type_id:
-          type: string
-          title: type_id
-          description: The product's type id.
-        tags:
-          type: array
-          description: The product's tags.
-          items:
-            $ref: '#/components/schemas/BaseProductTag'
-        variants:
-          type: array
-          description: The product's variants.
-          items:
-            type: object
-        options:
-          type: array
-          description: The product's options.
-          items:
-            $ref: '#/components/schemas/BaseProductOption'
-        images:
-          type: array
-          description: The product's images.
-          items:
-            $ref: '#/components/schemas/BaseProductImage'
-        discountable:
-          type: boolean
-          title: discountable
-          description: The product's discountable.
-        external_id:
-          type: string
-          title: external_id
-          description: The product's external id.
+          title: value
+          description: The type's value.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The product's created at.
+          description: The date the type was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The product's updated at.
+          description: The date the type was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The product's deleted at.
+          description: The date the type was deleted.
         metadata:
           type: object
-          description: The product's metadata.
-    BaseProductCategory:
-      type: object
-      description: The product category's details.
-      x-schemaName: BaseProductCategory
-      required:
-        - id
-        - name
-        - description
-        - handle
-        - is_active
-        - is_internal
-        - rank
-        - parent_category_id
-        - parent_category
-        - category_children
-        - created_at
-        - updated_at
-        - deleted_at
-      properties:
-        category_children:
-          type: array
-          description: The category's children.
-          items:
-            type: object
-        parent_category:
-          type: object
-        products:
-          type: array
-          description: The category's products.
-          items:
-            type: object
-        name:
-          type: string
-          title: name
-          description: The category's name.
-        description:
-          type: string
-          title: description
-          description: The category's description.
-        id:
-          type: string
-          title: id
-          description: The category's ID.
-        metadata:
-          type: object
-          description: The category's metadata, can hold custom key-value pairs.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the category was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the category was updated.
-        handle:
-          type: string
-          title: handle
-          description: The category's unique handle.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The date the category was deleted.
-        is_active:
-          type: boolean
-          title: is_active
-          description: Whether the category is active. If disabled, the category isn't shown in the storefront.
-        is_internal:
-          type: boolean
-          title: is_internal
-          description: Whether the category is internal. If enabled, the category is only seen by admin users.
-        rank:
-          type: number
-          title: rank
-          description: The category's rank among sibling categories.
-        parent_category_id:
-          type: string
-          title: parent_category_id
-          description: The ID of the category's parent.
-    BaseProductImage:
-      type: object
-      description: The image's details.
-      x-schemaName: BaseProductImage
-      properties:
-        id:
-          type: string
-          title: id
-          description: The image's ID.
-        url:
-          type: string
-          title: url
-          description: The image's URL.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the image was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the image was updated.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The date the image was deleted.
-        metadata:
-          type: object
-          description: The image's metadata, can hold custom key-value pairs.
-      required:
-        - id
-        - url
+          description: The type's metadata, can hold custom key-value pairs.
     BaseProductOption:
       type: object
       description: The product option's details.
@@ -19735,42 +18792,6 @@ components:
           format: date-time
           title: deleted_at
           description: The date the value was deleted.
-    BaseProductTag:
-      type: object
-      description: The product tag's details.
-      x-schemaName: BaseProductTag
-      required:
-        - id
-        - value
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          title: id
-          description: The tag's ID.
-        value:
-          type: string
-          title: value
-          description: The tag's value.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The date the tag was created.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The date the tag was updated.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The date the tag was deleted.
-        metadata:
-          type: object
-          description: The tag's metadata, can hold custom key-value pairs.
     BaseProductVariant:
       type: object
       description: The product variant's details.
@@ -21433,8 +20454,19 @@ components:
           title: no_notification
           description: Whether to send the customer notifications when the exchange is updated.
         difference_due:
-          type: number
-          title: difference_due
+          oneOf:
+            - type: string
+              title: difference_due
+              description: The exchange's difference due.
+            - type: number
+              title: difference_due
+              description: The exchange's difference due.
+            - type: string
+              title: difference_due
+              description: The exchange's difference due.
+            - type: number
+              title: difference_due
+              description: The exchange's difference due.
           description: The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer.
         return:
           $ref: '#/components/schemas/Return'
@@ -22313,8 +21345,19 @@ components:
             - received
             - partially_received
         refund_amount:
-          type: number
-          title: refund_amount
+          oneOf:
+            - type: string
+              title: refund_amount
+              description: The return order's refund amount.
+            - type: number
+              title: refund_amount
+              description: The return order's refund amount.
+            - type: string
+              title: refund_amount
+              description: The return order's refund amount.
+            - type: number
+              title: refund_amount
+              description: The return order's refund amount.
           description: The amount refunded by this return.
         order_id:
           type: string
@@ -23272,6 +22315,97 @@ components:
           type: number
           title: discount_tax_total
           description: The taxes applied on the discounted amount.
+    StoreCartShippingOption:
+      type: object
+      description: The shipping option's details.
+      x-schemaName: StoreCartShippingOption
+      required:
+        - id
+        - name
+        - price_type
+        - service_zone_id
+        - shipping_profile_id
+        - provider_id
+        - data
+        - type
+        - provider
+        - amount
+      properties:
+        id:
+          type: string
+          title: id
+          description: The shipping option's ID.
+        name:
+          type: string
+          title: name
+          description: The shipping option's name.
+        price_type:
+          type: string
+          description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.
+          enum:
+            - flat
+            - calculated
+        service_zone_id:
+          type: string
+          title: service_zone_id
+          description: The ID of the service zone the shipping option belongs to.
+        provider_id:
+          type: string
+          title: provider_id
+          description: The ID of the fulfillment provider handling this option.
+        provider:
+          type: object
+          description: The fulfillment provider's details.
+          required:
+            - id
+            - is_enabled
+          properties:
+            id:
+              type: string
+              title: id
+              description: The provider's ID.
+            is_enabled:
+              type: boolean
+              title: is_enabled
+              description: Whether the provider is enabled.
+        type:
+          type: object
+          description: The shipping option type's details.
+          required:
+            - id
+            - label
+            - description
+            - code
+          properties:
+            id:
+              type: string
+              title: id
+              description: The type's ID.
+            label:
+              type: string
+              title: label
+              description: The type's label.
+            description:
+              type: string
+              title: description
+              description: The type's description.
+            code:
+              type: string
+              title: code
+              description: The type's code.
+        shipping_profile_id:
+          type: string
+          title: shipping_profile_id
+          description: The ID of the associated shipping profile.
+        amount:
+          type: number
+          title: amount
+          description: The shipping option's amount.
+        data:
+          type: object
+          description: The shipping option's data, useful for the provider handling fulfillment.
+          externalDocs:
+            url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
     StoreCollection:
       type: object
       description: The collection's details.
@@ -23781,6 +22915,27 @@ components:
       properties:
         customer:
           $ref: '#/components/schemas/StoreCustomer'
+    StoreInitializePaymentSession:
+      type: object
+      description: The payment session's details.
+      required:
+        - provider_id
+      properties:
+        provider_id:
+          type: string
+          title: provider_id
+          description: The ID of the payment provider the customer chose.
+          example: pp_stripe_stripe
+        context:
+          type: object
+          description: The payment's context, such as the customer or address details. If the customer is logged-in, the customer `id` is set in the context under a `customer.id` property.
+        data:
+          type: object
+          description: Any data necessary for the payment provider to process the payment.
+          externalDocs:
+            url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-session#data-property
+            description: Learn more about the payment session's data property
+      x-schemaName: StoreInitializePaymentSession
     StoreOrder:
       type: object
       description: The order's details.
@@ -30957,7 +30112,7 @@ components:
           type: array
           description: The shipping option's shipping options.
           items:
-            $ref: '#/components/schemas/StoreShippingOption'
+            $ref: '#/components/schemas/StoreCartShippingOption'
     StoreShippingOptionType:
       type: object
       description: The shipping option type's details.

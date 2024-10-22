@@ -50,13 +50,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           description: The updated cart's details.
- *           required:
- *             - cart
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/StoreCart"
+ *           $ref: "#/components/schemas/StoreCartResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -69,7 +63,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-workflow: updateCartWorkflow
+ * x-workflow: updateCartWorkflowWithCustomerValidation
  * 
 */
 

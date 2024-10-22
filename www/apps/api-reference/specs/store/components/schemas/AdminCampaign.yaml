@@ -10,6 +10,9 @@ required:
   - starts_at
   - ends_at
   - budget
+  - created_at
+  - updated_at
+  - deleted_at
 properties:
   id:
     type: string
@@ -79,3 +82,18 @@ properties:
           property holds the total amount discounted so far. If the limit is
           `usage`, it holds the number of times the campaign's promotions have
           been used so far.
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The campaign's created at.
+  updated_at:
+    type: string
+    format: date-time
+    title: updated_at
+    description: The campaign's updated at.
+  deleted_at:
+    type: string
+    format: date-time
+    title: deleted_at
+    description: The campaign's deleted at.

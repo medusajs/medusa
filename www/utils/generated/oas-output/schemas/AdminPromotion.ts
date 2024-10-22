@@ -5,6 +5,9 @@
  * x-schemaName: AdminPromotion
  * required:
  *   - id
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
  * properties:
  *   application_method:
  *     $ref: "#/components/schemas/AdminApplicationMethod"
@@ -38,6 +41,21 @@
  *     description: The ID of the campaign this promotion belongs to.
  *   campaign:
  *     $ref: "#/components/schemas/AdminCampaign"
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The promotion's created at.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The promotion's updated at.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The promotion's deleted at.
  * 
 */
 

@@ -117,13 +117,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            description: The updated cart's details.
-            required:
-              - cart
-            properties:
-              cart:
-                $ref: ../components/schemas/StoreCart.yaml
+            $ref: ../components/schemas/StoreCartResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -136,4 +130,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  x-workflow: updateCartWorkflow
+  x-workflow: updateCartWorkflowWithCustomerValidation
