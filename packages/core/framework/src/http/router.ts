@@ -23,6 +23,7 @@ import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publisha
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
+  MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
   MiddlewareFunction,
@@ -35,6 +36,7 @@ import {
   RouteHandler,
   RouteVerb,
 } from "./types"
+import { RestrictedFields } from "./utils/restricted-fields"
 
 const log = ({
   activityId,
@@ -244,7 +246,7 @@ export class ApiRoutesLoader {
   static traceMiddleware?: (
     handler: RequestHandler | MiddlewareFunction,
     route: { route: string; method?: string }
-  ) => RequestHandler
+  ) => RequestHandler | MiddlewareFunction
 
   constructor({
     app,
@@ -589,14 +591,15 @@ export class ApiRoutesLoader {
    * Applies middleware that checks if a valid publishable key is set on store request
    */
   applyStorePublishableKeyMiddleware(route: string) {
-    let middleware =
-      ensurePublishableApiKeyMiddleware as unknown as RequestHandler
+    let middleware = ensurePublishableApiKeyMiddleware as unknown as
+      | RequestHandler
+      | MiddlewareFunction
 
     if (ApiRoutesLoader.traceMiddleware) {
       middleware = ApiRoutesLoader.traceMiddleware(middleware, { route: route })
     }
 
-    this.#router.use(route, middleware)
+    this.#router.use(route, middleware as RequestHandler)
   }
 
   /**
@@ -609,7 +612,9 @@ export class ApiRoutesLoader {
     authType: AuthType | AuthType[],
     options?: { allowUnauthenticated?: boolean; allowUnregistered?: boolean }
   ) {
-    let authenticateMiddleware = authenticate(actorType, authType, options)
+    let authenticateMiddleware: RequestHandler | MiddlewareFunction =
+      authenticate(actorType, authType, options)
+
     if (ApiRoutesLoader.traceMiddleware) {
       authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
         authenticateMiddleware,
@@ -617,7 +622,7 @@ export class ApiRoutesLoader {
       )
     }
 
-    this.#router.use(route, authenticateMiddleware)
+    this.#router.use(route, authenticateMiddleware as RequestHandler)
   }
 
   /**
@@ -933,14 +938,39 @@ export class RoutesLoader {
     app,
     activityId,
     sourceDir,
+    baseRestrictedFields = [],
   }: {
     app: Express
     activityId?: string
     sourceDir: string | string[]
+    baseRestrictedFields?: string[]
   }) {
     this.#app = app
     this.#activityId = activityId
     this.#sourceDir = sourceDir
+
+    this.#assignRestrictedFields(baseRestrictedFields)
+  }
+
+  #assignRestrictedFields(baseRestrictedFields: string[]) {
+    this.#app.use("/store", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.restrictedFields = new RestrictedFields()
+      req.restrictedFields.add(baseRestrictedFields)
+      next()
+    }) as unknown as RequestHandler)
+
+    this.#app.use("/admin", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.restrictedFields = new RestrictedFields()
+      next()
+    }) as unknown as RequestHandler)
   }
 
   async load() {

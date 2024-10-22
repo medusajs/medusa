@@ -134,14 +134,22 @@ export const Sidebar = ({
                   {!sidebarItems.default.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}
-                  {sidebarItems.default.map((item, index) => (
-                    <SidebarItem
-                      item={item}
-                      key={index}
-                      expandItems={expandItems}
-                      hasNextItems={index !== sidebarItems.default.length - 1}
-                    />
-                  ))}
+                  {sidebarItems.default.map((item, index) => {
+                    const itemKey =
+                      item.type === "separator"
+                        ? index
+                        : item.type === "link"
+                        ? `${item.path}-${index}`
+                        : `${item.title}-${index}`
+                    return (
+                      <SidebarItem
+                        item={item}
+                        key={itemKey}
+                        expandItems={expandItems}
+                        hasNextItems={index !== sidebarItems.default.length - 1}
+                      />
+                    )
+                  })}
                 </div>
               </div>
             </CSSTransition>

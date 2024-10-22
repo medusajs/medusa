@@ -327,7 +327,7 @@ curl -X POST 'localhost:9000/admin/products' \
 
 Make sure to replace `{token}` with an admin user's JWT token. Learn how to retrieve it in the [API reference](!api!/admin#1-bearer-authorization-with-jwt-tokens).
 
-The request will return the product's details. You'll learn how to retrive the `custom_name` property with the product's details in the next section.
+The request will return the product's details. You'll learn how to retreive the `custom_name` property with the product's details in the next section.
 
 ---
 
@@ -635,7 +635,7 @@ return new WorkflowResponse({
 })
 ```
 
-Using the `when-then` utility, you check if the product has a linked `Custom` record and `custom_name` is passed in the `additional_data`. If so, you update the linked `Custom` recod.
+Using the `when-then` utility, you check if the product has a linked `Custom` record and `custom_name` is passed in the `additional_data`. If so, you update the linked `Custom` record.
 
 You return in the workflow response the created, updated, and deleted `Custom` record.
 

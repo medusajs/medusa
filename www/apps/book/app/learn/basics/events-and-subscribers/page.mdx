@@ -40,7 +40,7 @@ export const config: SubscriberConfig = {
 
 A subscriber file must export:
 
-- A subscriber function that is an asynchronous function executed whenever the associated event is triggered.
+- An asynchronous subscriber function that's executed whenever the associated event is triggered.
 - A configuration object defining the event this subscriber is listening to.
 
 The above subscriber listens to the `product.created` event. Whenever the event is emitted, it logs in the terminal `A product is created`.

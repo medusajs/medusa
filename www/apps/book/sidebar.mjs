@@ -475,7 +475,7 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              path: "/advanced-development/custom-cli-scripts/seed-data",
+              path: "/learn/advanced-development/custom-cli-scripts/seed-data",
               title: "Seed Data",
             },
           ],
@@ -588,11 +588,6 @@ export const sidebar = numberSidebarItems(
           type: "link",
           path: "/learn/more-resources/cheatsheet",
           title: "Cheat Sheet",
-        },
-        {
-          type: "link",
-          path: "/learn/more-resources/examples",
-          title: "Examples",
         },
       ],
     },
