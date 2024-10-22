@@ -45,6 +45,10 @@ export const createDataGridPriceColumns = <
         (p) => p.attribute === "currency_code" && p.value === currency
       )
 
+      const translatedCurrencyName = t("fields.priceTemplate", {
+        regionOrCurrency: currency.toUpperCase(),
+      })
+
       return columnHelper.column({
         id: `currency_prices.${currency}`,
         name: t("fields.priceTemplate", {
@@ -62,9 +66,9 @@ export const createDataGridPriceColumns = <
         type: "number",
         header: () => (
           <div className="flex w-full items-center justify-between gap-3">
-            {t("fields.priceTemplate", {
-              regionOrCurrency: currency.toUpperCase(),
-            })}
+            <span className="truncate" title={translatedCurrencyName}>
+              {translatedCurrencyName}
+            </span>
             <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
           </div>
         ),
@@ -81,6 +85,10 @@ export const createDataGridPriceColumns = <
       const preference = pricePreferences?.find(
         (p) => p.attribute === "region_id" && p.value === region.id
       )
+
+      const translatedRegionName = t("fields.priceTemplate", {
+        regionOrCurrency: region.name,
+      })
 
       return columnHelper.column({
         id: `region_prices.${region.id}`,
@@ -99,9 +107,9 @@ export const createDataGridPriceColumns = <
         type: "number",
         header: () => (
           <div className="flex w-full items-center justify-between gap-3">
-            {t("fields.priceTemplate", {
-              regionOrCurrency: region.name,
-            })}
+            <span className="truncate" title={translatedRegionName}>
+              {translatedRegionName}
+            </span>
             <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
           </div>
         ),
