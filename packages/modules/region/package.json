@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/region",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "description": "Medusa Region module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

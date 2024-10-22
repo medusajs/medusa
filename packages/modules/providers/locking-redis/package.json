@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-redis",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Redis Lock for Medusa",
   "main": "dist/index.js",
   "repository": {

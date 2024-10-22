@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-bundler",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {

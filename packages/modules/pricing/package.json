@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/pricing",
-  "version": "0.1.12",
+  "version": "1.0.1",
   "description": "Medusa Pricing module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

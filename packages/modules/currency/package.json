@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/currency",
-  "version": "0.1.2",
+  "version": "1.0.1",
   "description": "Medusa Currency module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

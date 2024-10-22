@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file-local",
-  "version": "0.0.2",
+  "version": "1.0.1",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",
   "repository": {

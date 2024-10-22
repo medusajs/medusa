@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/index",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Medusa Index module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

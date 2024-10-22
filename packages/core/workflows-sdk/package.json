@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/workflows-sdk",
-  "version": "0.1.6",
+  "version": "1.0.1",
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
   "exports": {

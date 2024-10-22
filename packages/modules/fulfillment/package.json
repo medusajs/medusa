@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/fulfillment",
-  "version": "0.1.2",
+  "version": "1.0.1",
   "description": "Medusa Fulfillment module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

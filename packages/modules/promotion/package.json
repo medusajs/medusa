@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/promotion",
-  "version": "0.0.4",
+  "version": "1.0.1",
   "description": "Medusa Promotion module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

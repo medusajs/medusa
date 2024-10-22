@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/payment-stripe",
-  "version": "0.0.2",
+  "version": "1.0.1",
   "description": "Stripe payment provider for Medusa",
   "main": "dist/index.js",
   "repository": {

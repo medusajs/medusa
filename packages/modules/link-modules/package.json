@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "0.2.11",
+  "version": "1.0.1",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

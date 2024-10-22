@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Medusa File module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

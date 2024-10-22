@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-google",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Google OAuth authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {

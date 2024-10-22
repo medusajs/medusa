@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cart",
-  "version": "0.0.3",
+  "version": "1.0.1",
   "description": "Medusa Cart module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

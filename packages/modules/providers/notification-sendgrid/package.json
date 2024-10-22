@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-sendgrid",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Sendgrid notification provider for Medusa",
   "main": "dist/index.js",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/tax",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "description": "Medusa Tax module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
