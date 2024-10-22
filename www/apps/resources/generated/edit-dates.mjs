@@ -117,7 +117,7 @@ export const generatedEditDates = {
   "app/contribution-guidelines/docs/page.mdx": "2024-10-16T15:48:04.071Z",
   "app/create-medusa-app/page.mdx": "2024-08-05T11:10:55+03:00",
   "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
-  "app/deployment/medusa-application/railway/page.mdx": "2024-10-15T12:50:50.981Z",
+  "app/deployment/medusa-application/railway/page.mdx": "2024-10-22T11:02:09.029Z",
   "app/deployment/storefront/vercel/page.mdx": "2024-07-26T07:21:31+00:00",
   "app/deployment/page.mdx": "2024-07-25T09:55:22+03:00",
   "app/integrations/page.mdx": "2024-10-15T12:26:39.839Z",
@@ -129,7 +129,7 @@ export const generatedEditDates = {
   "app/recipes/commerce-automation/page.mdx": "2024-10-16T08:52:01.585Z",
   "app/recipes/digital-products/examples/standard/page.mdx": "2024-10-16T08:52:12.991Z",
   "app/recipes/digital-products/page.mdx": "2024-10-03T13:07:44.147Z",
-  "app/recipes/ecommerce/page.mdx": "2024-06-09T15:18:43+02:00",
+  "app/recipes/ecommerce/page.mdx": "2024-10-22T11:01:01.218Z",
   "app/recipes/integrate-ecommerce-stack/page.mdx": "2024-10-16T08:52:16.760Z",
   "app/recipes/marketplace/examples/vendors/page.mdx": "2024-10-16T08:52:24.906Z",
   "app/recipes/marketplace/page.mdx": "2024-10-03T13:07:44.153Z",
@@ -193,7 +193,7 @@ export const generatedEditDates = {
   "app/storefront-development/regions/list/page.mdx": "2024-09-11T10:07:34.742Z",
   "app/storefront-development/regions/store-retrieve-region/page.mdx": "2024-09-11T10:07:42.887Z",
   "app/storefront-development/regions/page.mdx": "2024-06-09T15:19:09+02:00",
-  "app/storefront-development/tips/page.mdx": "2024-10-16T12:44:31.781Z",
+  "app/storefront-development/tips/page.mdx": "2024-10-22T11:01:01.298Z",
   "app/storefront-development/page.mdx": "2024-06-09T15:19:09+02:00",
   "app/troubleshooting/cors-errors/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/create-medusa-app-errors/page.mdx": "2024-07-11T10:29:13+03:00",
@@ -238,7 +238,6 @@ export const generatedEditDates = {
   "app/admin-widget-injection-zones/page.mdx": "2024-09-30T08:43:53.147Z",
   "app/architectural-modules/notification/page.mdx": "2024-10-15T12:51:28.735Z",
   "app/architectural-modules/event/create/page.mdx": "2024-10-16T08:51:41.334Z",
-  "app/troubleshooting/deployment/page.mdx": "2024-08-19T07:19:40.924Z",
   "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:58.913Z",
   "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow/page.mdx": "2024-08-20T00:10:58.949Z",
   "references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:59.121Z",
@@ -2292,5 +2291,5 @@ export const generatedEditDates = {
   "app/commerce-modules/store/links-to-other-modules/page.mdx": "2024-06-26T07:19:49.931Z",
   "app/examples/page.mdx": "2024-10-16T15:47:38.345Z",
   "app/medusa-cli/commands/build/page.mdx": "2024-10-16T08:16:27.618Z",
-  "app/js-sdk/page.mdx": "2024-10-16T12:12:34.512Z"
+  "app/js-sdk/page.mdx": "2024-10-22T11:01:01.375Z"
 }
