@@ -82,6 +82,18 @@ const server = setupServer(
       statusText: "Internal Server Error",
     })
   }),
+  http.get(`${baseUrl}/nostore`, ({ request }) => {
+    if (!request.headers.get("authorization")) {
+      return HttpResponse.json({
+        test: "test",
+      })
+    }
+
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    })
+  }),
   http.all("*", ({ request, params, cookies }) => {
     return new HttpResponse(null, {
       status: 404,
@@ -185,11 +197,11 @@ describe("Client", () => {
   })
 
   describe("Authrized requests", () => {
-    it("should set the token in memory by default", async () => {
+    it("should not store the token by default", async () => {
       const token = "token-123" // Eg. from a response after a successful authentication
       client.setToken(token)
 
-      const resp = await client.fetch<any>("jwt")
+      const resp = await client.fetch<any>("nostore")
       expect(resp).toEqual({ test: "test" })
     })
 
