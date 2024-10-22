@@ -120,6 +120,6 @@ export const defaultStoreCartFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
-  allowed: [...defaultStoreCartFields],
+  allowed: [...defaultStoreCartFields.map((f) => f.replace("*", ""))],
   isList: false,
 }
