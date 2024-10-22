@@ -7,7 +7,12 @@ import getSectionId from "@/utils/get-section-id"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { useInView } from "react-intersection-observer"
-import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
+import {
+  isElmWindow,
+  useIsBrowser,
+  useScrollController,
+  useSidebar,
+} from "docs-ui"
 import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
@@ -44,9 +49,14 @@ const TagOperation = ({
   const nodeRef = useRef<Element | null>(null)
   const { loading, removeLoading } = useLoading()
   const { scrollableElement, scrollToTop } = useScrollController()
+  const { isBrowser } = useIsBrowser()
   const root = useMemo(() => {
+    if (!isBrowser) {
+      return
+    }
+
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
-  }, [scrollableElement])
+  }, [isBrowser, scrollableElement])
   const { ref } = useInView({
     threshold: 0.3,
     rootMargin: `112px 0px 112px 0px`,
@@ -83,6 +93,10 @@ const TagOperation = ({
   )
 
   const scrollIntoView = useCallback(() => {
+    if (!isBrowser) {
+      return
+    }
+
     if (nodeRef.current && !checkElementInViewport(nodeRef.current, 0)) {
       const elm = nodeRef.current as HTMLElement
       scrollToTop(
@@ -91,7 +105,7 @@ const TagOperation = ({
       )
     }
     setShow(true)
-  }, [scrollToTop, nodeRef])
+  }, [scrollToTop, nodeRef, isBrowser])
 
   useEffect(() => {
     if (nodeRef && nodeRef.current) {
