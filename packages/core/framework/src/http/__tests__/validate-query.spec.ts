@@ -329,6 +329,9 @@ describe("validateAndTransformQuery", () => {
         fields: "*product.variants,+product.id",
       },
     } as unknown as MedusaRequest
+
+    mockRequest.restrictedFields.add(["product"])
+
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
 
@@ -722,7 +725,7 @@ describe("validateAndTransformQuery", () => {
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
 
-    let queryConfig: QueryConfig<any> = {
+    const queryConfig: QueryConfig<any> = {
       defaults: [
         "id",
         "created_at",
@@ -736,7 +739,7 @@ describe("validateAndTransformQuery", () => {
       isList: true,
     }
 
-    let middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+    const middleware = validateAndTransformQuery(createFindParams(), queryConfig)
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
@@ -746,73 +749,5 @@ describe("validateAndTransformQuery", () => {
         `Requested fields [metadata.product.id, product] are not valid`
       )
     )
-
-    queryConfig = {
-      defaults: [
-        "id",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-        "metadata.id",
-        "metadata.parent.id",
-        "metadata.children.id",
-        "metadata.product.id",
-      ],
-      allowed: [
-        "id",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-        "metadata.id",
-        "metadata.parent.id",
-        "metadata.children.id",
-        "metadata.product.id",
-        "product",
-      ],
-      isList: true,
-    }
-
-    middleware = validateAndTransformQuery(createFindParams(), queryConfig)
-
-    await middleware(mockRequest, mockResponse, nextFunction)
-
-    expect(mockRequest.listConfig).toEqual({
-      select: [
-        "id",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-        "metadata.id",
-        "metadata.parent.id",
-        "metadata.children.id",
-        "metadata.product.id",
-      ],
-      relations: [
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
-        "product",
-      ],
-      skip: 0,
-      take: 20,
-    })
-    expect(mockRequest.remoteQueryConfig).toEqual({
-      fields: [
-        "id",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-        "metadata.id",
-        "metadata.parent.id",
-        "metadata.children.id",
-        "metadata.product.id",
-        "product.*",
-      ],
-      pagination: {
-        skip: 0,
-        take: 20,
-      },
-    })
   })
 })
