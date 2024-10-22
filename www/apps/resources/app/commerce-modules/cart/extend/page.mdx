@@ -309,7 +309,7 @@ curl -X POST 'localhost:9000/store/carts' \
 
 Make sure to replace `{publishable_api_key}` with your publishable API key, which you can retrieve from the Medusa Admin. Also, replace the value of `region_id` with an ID of a region in your application.
 
-The request will return the cart's details. You'll learn how to retrive the `custom_name` property with the cart's details in the next section.
+The request will return the cart's details. You'll learn how to retrieve the `custom_name` property with the cart's details in the next section.
 
 ---
 
@@ -401,7 +401,7 @@ export default defineMiddlewares({
 })
 ```
 
-The validation schema is the similar to that of the Create Cart API route, except you can pass a `null` value for `custom_name` to remove or unset the `custom_name`'s value.
+The validation schema is similar to that of the Create Cart API route, except you can pass a `null` value for `custom_name` to remove or unset the `custom_name`'s value.
 
 ### Create Workflow to Update Custom Record
 
@@ -617,7 +617,7 @@ return new WorkflowResponse({
 })
 ```
 
-Using the `when-then` utility, you check if the cart has a linked `Custom` record and `custom_name` is passed in the `additional_data`. If so, you update the linked `Custom` recod.
+Using the `when-then` utility, you check if the cart has a linked `Custom` record and `custom_name` is passed in the `additional_data`. If so, you update the linked `Custom` record.
 
 You return in the workflow response the created, updated, and deleted `Custom` record.
 
