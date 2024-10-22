@@ -7,7 +7,12 @@ import {
   OrderWorkflow,
   ReservationItemDTO,
 } from "@medusajs/framework/types"
-import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils"
+import {
+  MathBN,
+  MedusaError,
+  Modules,
+  OrderWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -17,7 +22,11 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import {
+  createRemoteLinkStep,
+  emitEventStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import {
@@ -351,7 +360,14 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       registerOrderFulfillmentStep(registerOrderFulfillmentData),
       createRemoteLinkStep(link),
       updateReservationsStep(toUpdate),
-      deleteReservationsStep(toDelete)
+      deleteReservationsStep(toDelete),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.FULFILLMENT_CREATED,
+        data: {
+          order_id: input.order_id,
+          fulfillment_id: fulfillment.id,
+        },
+      })
     )
 
     const fulfillmentCreated = createHook("fulfillmentCreated", {

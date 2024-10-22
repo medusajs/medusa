@@ -36,7 +36,7 @@ export const createAuthenticatedCustomer = async (
       actor_type: "customer",
       auth_identity_id: authIdentity.id,
     },
-    http.jwtSecret
+    http.jwtSecret!
   )
 
   return { customer, authIdentity, jwt: token }

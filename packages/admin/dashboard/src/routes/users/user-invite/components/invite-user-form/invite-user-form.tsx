@@ -168,7 +168,11 @@ export const InviteUserForm = () => {
                     search="autofocus"
                     isLoading={isLoading}
                     queryObject={raw}
-                    orderBy={["email", "created_at", "updated_at"]}
+                    orderBy={[
+                      { key: "email", label: t("fields.email") },
+                      { key: "created_at", label: t("fields.createdAt") },
+                      { key: "updated_at", label: t("fields.updatedAt") },
+                    ]}
                   />
                 </Container>
               </div>

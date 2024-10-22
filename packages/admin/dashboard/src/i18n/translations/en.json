@@ -847,7 +847,8 @@
       "groups": "Groups"
     },
     "registered": "Registered",
-    "guest": "Guest"
+    "guest": "Guest",
+    "hasAccount": "Has account"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -1268,6 +1269,11 @@
           "confirmed": "Order edit #{{editId}} confirmed"
         }
       }
+    },
+    "fields": {
+      "displayId": "Display ID",
+      "refundableAmount": "Refundable amount",
+      "returnableQuantity": "Returnable quantity"
     }
   },
   "draftOrders": {

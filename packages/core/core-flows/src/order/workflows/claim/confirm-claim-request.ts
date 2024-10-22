@@ -13,6 +13,7 @@ import {
   MedusaError,
   Modules,
   OrderChangeStatus,
+  OrderWorkflowEvents,
   ReturnStatus,
 } from "@medusajs/framework/utils"
 import {
@@ -25,7 +26,11 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import {
+  createRemoteLinkStep,
+  emitEventStep,
+  useRemoteQueryStep,
+} from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
@@ -436,6 +441,14 @@ export const confirmClaimRequestWorkflow = createWorkflow(
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {
         order_id: order.id,
+      },
+    })
+
+    emitEventStep({
+      eventName: OrderWorkflowEvents.CLAIM_CREATED,
+      data: {
+        order_id: order.id,
+        claim_id: orderClaim.id,
       },
     })
 

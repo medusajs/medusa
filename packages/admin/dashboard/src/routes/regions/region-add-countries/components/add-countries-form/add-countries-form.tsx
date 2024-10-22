@@ -150,7 +150,10 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
             search="autofocus"
             pagination
             layout="fill"
-            orderBy={["name", "code"]}
+            orderBy={[
+              { key: "display_name", label: t("fields.name") },
+              { key: "iso_2", label: t("fields.code") },
+            ]}
             queryObject={raw}
             prefix={PREFIX}
           />

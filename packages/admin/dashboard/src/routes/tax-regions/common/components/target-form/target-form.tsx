@@ -2,46 +2,46 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
-    OnChangeFn,
-    RowSelectionState,
-    createColumnHelper,
+  OnChangeFn,
+  RowSelectionState,
+  createColumnHelper,
 } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { useSearchParams } from "react-router-dom"
 import {
-    StackedDrawer,
-    StackedFocusModal,
+  StackedDrawer,
+  StackedFocusModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
-    useCollections,
-    useCustomerGroups,
-    useProductTags,
-    useProductTypes,
-    useProducts,
+  useCollections,
+  useCustomerGroups,
+  useProductTags,
+  useProductTypes,
+  useProducts,
 } from "../../../../../hooks/api"
 import {
-    useCollectionTableColumns,
-    useCustomerGroupTableColumns,
-    useProductTableColumns,
-    useProductTagTableColumns,
-    useProductTypeTableColumns,
+  useCollectionTableColumns,
+  useCustomerGroupTableColumns,
+  useProductTableColumns,
+  useProductTagTableColumns,
+  useProductTypeTableColumns,
 } from "../../../../../hooks/table/columns"
 import {
-    useCollectionTableFilters,
-    useCustomerGroupTableFilters,
-    useProductTableFilters,
-    useProductTagTableFilters,
-    useProductTypeTableFilters,
+  useCollectionTableFilters,
+  useCustomerGroupTableFilters,
+  useProductTableFilters,
+  useProductTagTableFilters,
+  useProductTypeTableFilters,
 } from "../../../../../hooks/table/filters"
 import {
-    useCollectionTableQuery,
-    useCustomerGroupTableQuery,
-    useProductTableQuery,
-    useProductTagTableQuery,
-    useProductTypeTableQuery,
+  useCollectionTableQuery,
+  useCustomerGroupTableQuery,
+  useProductTableQuery,
+  useProductTagTableQuery,
+  useProductTypeTableQuery,
 } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { TaxRateRuleReferenceType } from "../../constants"
@@ -140,6 +140,8 @@ const CustomerGroupTable = ({
   intermediate,
   setIntermediate,
 }: TableImplementationProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowState)
 
@@ -206,7 +208,11 @@ const CustomerGroupTable = ({
       count={count}
       isLoading={isLoading}
       filters={filters}
-      orderBy={["name", "created_at", "updated_at"]}
+      orderBy={[
+        { key: "name", label: t("fields.name") },
+        { key: "created_at", label: t("fields.createdAt") },
+        { key: "updated_at", label: t("fields.updatedAt") },
+      ]}
       layout="fill"
       pagination
       search
@@ -264,6 +270,8 @@ const ProductTable = ({
   intermediate,
   setIntermediate,
 }: TableImplementationProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowState)
 
@@ -336,7 +344,11 @@ const ProductTable = ({
       count={count}
       isLoading={isLoading}
       filters={filters}
-      orderBy={["title", "created_at", "updated_at"]}
+      orderBy={[
+        { key: "title", label: t("fields.title") },
+        { key: "created_at", label: t("fields.createdAt") },
+        { key: "updated_at", label: t("fields.updatedAt") },
+      ]}
       layout="fill"
       pagination
       search
@@ -394,6 +406,8 @@ const ProductCollectionTable = ({
   intermediate,
   setIntermediate,
 }: TableImplementationProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowState)
 
@@ -466,7 +480,11 @@ const ProductCollectionTable = ({
       count={count}
       isLoading={isLoading}
       filters={filters}
-      orderBy={["title", "created_at", "updated_at"]}
+      orderBy={[
+        { key: "title", label: t("fields.title") },
+        { key: "created_at", label: t("fields.createdAt") },
+        { key: "updated_at", label: t("fields.updatedAt") },
+      ]}
       layout="fill"
       pagination
       search
@@ -524,6 +542,8 @@ const ProductTypeTable = ({
   intermediate,
   setIntermediate,
 }: TableImplementationProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowState)
 
@@ -596,7 +616,11 @@ const ProductTypeTable = ({
       count={count}
       isLoading={isLoading}
       filters={filters}
-      orderBy={["value", "created_at", "updated_at"]}
+      orderBy={[
+        { key: "value", label: t("fields.value") },
+        { key: "created_at", label: t("fields.createdAt") },
+        { key: "updated_at", label: t("fields.updatedAt") },
+      ]}
       layout="fill"
       pagination
       search
@@ -654,6 +678,8 @@ const ProductTagTable = ({
   intermediate,
   setIntermediate,
 }: TableImplementationProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialRowState)
 
@@ -726,7 +752,11 @@ const ProductTagTable = ({
       count={count}
       isLoading={isLoading}
       filters={filters}
-      orderBy={["value", "created_at", "updated_at"]}
+      orderBy={[
+        { key: "value", label: t("fields.value") },
+        { key: "created_at", label: t("fields.createdAt") },
+        { key: "updated_at", label: t("fields.updatedAt") },
+      ]}
       layout="fill"
       pagination
       search
