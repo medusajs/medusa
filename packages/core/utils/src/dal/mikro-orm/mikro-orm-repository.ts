@@ -54,7 +54,7 @@ export class MikroOrmBase<T = any> {
     transactionManager,
     manager,
   }: Context = {}): TManager {
-    return (transactionManager ?? manager ?? this.manager_) as TManager
+    return (transactionManager ?? manager ?? this.getFreshManager()) as TManager
   }
 
   async transaction<TManager = unknown>(

@@ -119,34 +119,6 @@ export const useCancelClaim = (
   })
 }
 
-export const useDeleteClaim = (
-  id: string,
-  orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimDeleteResponse, FetchError>
-) => {
-  return useMutation({
-    mutationFn: () => sdk.admin.claim.delete(id),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
 export const useAddClaimItems = (
   id: string,
   orderId: string,

@@ -36,6 +36,10 @@ interface AdminApiKey {
    */
   created_at: Date
   /**
+   * The date the API key was updated.
+   */
+  updated_at: Date
+  /**
    * The ID of the user that revoked the API key.
    */
   revoked_by: string | null
@@ -43,6 +47,10 @@ interface AdminApiKey {
    * The date the API key was revoked.
    */
   revoked_at: Date | null
+  /**
+   * The date the API key was deleted.
+   */
+  deleted_at: Date | null
 }
 
 export interface AdminApiKeyResponse {

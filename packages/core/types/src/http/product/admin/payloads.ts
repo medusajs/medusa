@@ -69,6 +69,7 @@ export interface AdminCreateProduct {
   handle?: string
   status?: ProductStatus
   type_id?: string
+  external_id?: string
   collection_id?: string
   categories?: { id: string }[]
   tags?: { id: string }[]
@@ -119,6 +120,7 @@ export interface AdminUpdateProduct {
   handle?: string
   status?: ProductStatus
   type_id?: string | null
+  external_id?: string | null
   collection_id?: string | null
   categories?: { id: string }[]
   tags?: { id: string }[]

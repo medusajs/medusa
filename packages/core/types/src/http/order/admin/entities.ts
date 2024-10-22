@@ -54,6 +54,19 @@ export interface AdminOrderChange
   actions: AdminOrderChangeAction[]
 }
 
+export interface AdminOrderItem {
+  order_id: string
+  item_id: string
+  version: number
+  history: {
+    version: {
+      from: number
+      to: number
+    }
+  }
+  item: AdminOrderLineItem
+}
+
 export interface AdminOrderChangeAction
   extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
   /**

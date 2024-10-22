@@ -5,10 +5,8 @@
  * x-schemaName: AdminOrderLineItem
  * required:
  *   - title
- *   - metadata
  *   - id
- *   - subtitle
- *   - thumbnail
+ *   - metadata
  *   - created_at
  *   - updated_at
  *   - item_total
@@ -22,6 +20,8 @@
  *   - tax_total
  *   - discount_total
  *   - discount_tax_total
+ *   - subtitle
+ *   - thumbnail
  *   - variant_id
  *   - product_id
  *   - product_title

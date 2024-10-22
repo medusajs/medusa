@@ -10,12 +10,12 @@
  *   - exchange
  *   - actions
  *   - status
- *   - order_id
- *   - metadata
  *   - id
+ *   - version
+ *   - metadata
  *   - created_at
  *   - updated_at
- *   - version
+ *   - order_id
  *   - canceled_at
  *   - return_id
  *   - exchange_id
@@ -62,11 +62,7 @@
  *     title: claim_id
  *     description: The ID of the associated claim.
  *   order:
- *     type: string
- *     title: order
- *     description: The order change's order.
- *     externalDocs:
- *       url: "#pagination"
+ *     $ref: "#/components/schemas/AdminOrder"
  *   return_order:
  *     $ref: "#/components/schemas/AdminReturn"
  *   exchange:

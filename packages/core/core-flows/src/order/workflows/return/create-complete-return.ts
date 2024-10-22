@@ -11,15 +11,21 @@ import {
   MathBN,
   MedusaError,
   Modules,
+  OrderWorkflowEvents,
   isDefined,
 } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import {
+  createRemoteLinkStep,
+  emitEventStep,
+  useRemoteQueryStep,
+} from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
 import { createCompleteReturnStep } from "../../steps/return/create-complete-return"
 import { receiveReturnStep } from "../../steps/return/receive-return"
@@ -332,5 +338,22 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       prepareReceiveItems
     )
     receiveReturnStep(receiveItems)
+
+    parallelize(
+      emitEventStep({
+        eventName: OrderWorkflowEvents.RETURN_REQUESTED,
+        data: {
+          order_id: order.id,
+          return_id: returnCreated.id,
+        },
+      }).config({ name: "emit-return-requested-event" }),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.RETURN_RECEIVED,
+        data: {
+          order_id: order.id,
+          return_id: returnCreated.id,
+        },
+      }).config({ name: "emit-return-received-event" })
+    )
   }
 )

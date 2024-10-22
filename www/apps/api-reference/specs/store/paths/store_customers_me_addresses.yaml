@@ -12,16 +12,6 @@ get:
       https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#list-customer-addresses
     description: 'Storefront guide: How to retrieve the logged-in customer''s addresses.'
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-
@@ -166,16 +156,6 @@ post:
     description: 'Storefront guide: How to create an address for the logged-in customer.'
   x-authenticated: true
   parameters:
-    - name: expand
-      in: query
-      description: Comma-separated relations that should be expanded in the returned data.
-      required: false
-      schema:
-        type: string
-        title: expand
-        description: >-
-          Comma-separated relations that should be expanded in the returned
-          data.
     - name: fields
       in: query
       description: >-

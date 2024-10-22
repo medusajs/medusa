@@ -181,21 +181,6 @@ export class Claim {
     )
   }
 
-  async delete(
-    id: string,
-    query?: HttpTypes.SelectParams,
-    headers?: ClientHeaders
-  ) {
-    return await this.client.fetch<HttpTypes.AdminClaimDeleteResponse>(
-      `/admin/claims/${id}`,
-      {
-        method: "DELETE",
-        headers,
-        query,
-      }
-    )
-  }
-
   /**
    * This method adds items to the claim. It sends a request to the
    * [Add Items](https://docs.medusajs.com/v2/api/admin#claims_postclaimsidclaimitems) API route.

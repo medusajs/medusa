@@ -33,28 +33,6 @@
  *   - original_shipping_total
  *   - original_shipping_subtotal
  *   - original_shipping_tax_total
- *   - raw_original_item_total
- *   - raw_original_item_subtotal
- *   - raw_original_item_tax_total
- *   - raw_item_total
- *   - raw_item_subtotal
- *   - raw_item_tax_total
- *   - raw_original_total
- *   - raw_original_subtotal
- *   - raw_original_tax_total
- *   - raw_total
- *   - raw_subtotal
- *   - raw_tax_total
- *   - raw_discount_total
- *   - raw_discount_tax_total
- *   - raw_gift_card_total
- *   - raw_gift_card_tax_total
- *   - raw_shipping_total
- *   - raw_shipping_subtotal
- *   - raw_shipping_tax_total
- *   - raw_original_shipping_total
- *   - raw_original_shipping_subtotal
- *   - raw_original_shipping_tax_total
  * properties:
  *   id:
  *     type: string
@@ -230,72 +208,6 @@
  *     type: number
  *     title: original_shipping_tax_total
  *     description: The total taxes of the order's shipping excluding promotions.
- *   raw_original_item_total:
- *     type: object
- *     description: The order's raw original item total.
- *   raw_original_item_subtotal:
- *     type: object
- *     description: The order's raw original item subtotal.
- *   raw_original_item_tax_total:
- *     type: object
- *     description: The order's raw original item tax total.
- *   raw_item_total:
- *     type: object
- *     description: The order's raw item total.
- *   raw_item_subtotal:
- *     type: object
- *     description: The order's raw item subtotal.
- *   raw_item_tax_total:
- *     type: object
- *     description: The order's raw item tax total.
- *   raw_original_total:
- *     type: object
- *     description: The order's raw original total.
- *   raw_original_subtotal:
- *     type: object
- *     description: The order's raw original subtotal.
- *   raw_original_tax_total:
- *     type: object
- *     description: The order's raw original tax total.
- *   raw_total:
- *     type: object
- *     description: The order's raw total.
- *   raw_subtotal:
- *     type: object
- *     description: The order's raw subtotal.
- *   raw_tax_total:
- *     type: object
- *     description: The order's raw tax total.
- *   raw_discount_total:
- *     type: object
- *     description: The order's raw discount total.
- *   raw_discount_tax_total:
- *     type: object
- *     description: The order's raw discount tax total.
- *   raw_gift_card_total:
- *     type: object
- *     description: The order's raw gift card total.
- *   raw_gift_card_tax_total:
- *     type: object
- *     description: The order's raw gift card tax total.
- *   raw_shipping_total:
- *     type: object
- *     description: The order's raw shipping total.
- *   raw_shipping_subtotal:
- *     type: object
- *     description: The order's raw shipping subtotal.
- *   raw_shipping_tax_total:
- *     type: object
- *     description: The order's raw shipping tax total.
- *   raw_original_shipping_total:
- *     type: object
- *     description: The order's raw original shipping total.
- *   raw_original_shipping_subtotal:
- *     type: object
- *     description: The order's raw original shipping subtotal.
- *   raw_original_shipping_tax_total:
- *     type: object
- *     description: The order's raw original shipping tax total.
  * 
 */
 

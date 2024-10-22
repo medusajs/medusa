@@ -126,7 +126,11 @@ export const PriceListCustomerGroupRuleForm = ({
           count={count}
           isLoading={isLoading}
           filters={filters}
-          orderBy={["name", "created_at", "updated_at"]}
+          orderBy={[
+            { key: "name", label: t("fields.name") },
+            { key: "created_at", label: t("fields.createdAt") },
+            { key: "updated_at", label: t("fields.updatedAt") },
+          ]}
           layout="fill"
           pagination
           search

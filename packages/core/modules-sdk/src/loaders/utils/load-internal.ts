@@ -420,7 +420,7 @@ export async function loadModuleMigrations(
               key: provider.id,
             },
             resolutionPath: isString(provider.resolve)
-              ? provider.resolve
+              ? require.resolve(provider.resolve, { paths: [process.cwd()] })
               : false,
           },
         })

@@ -165,7 +165,10 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         />
       </div>
       <DataTable
-        orderBy={["code", "name"]}
+        orderBy={[
+          { key: "name", label: t("fields.name") },
+          { key: "code", label: t("fields.code") },
+        ]}
         search
         pagination
         table={table}
