@@ -7,6 +7,7 @@ import {
   RequestQueryFields,
 } from "@medusajs/types"
 import { MedusaContainer } from "../container"
+import { RestrictedFields } from "./utils/restricted-fields"
 
 /**
  * List of all the supported HTTP methods
@@ -135,6 +136,9 @@ export interface MedusaRequest<Body = unknown>
   session?: any
   rawBody?: any
   requestId?: string
+
+  restrictedFields?: RestrictedFields
+
   /**
    * An object that carries the context that is used to calculate prices for variants
    */

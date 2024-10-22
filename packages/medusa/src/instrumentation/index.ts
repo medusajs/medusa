@@ -1,5 +1,10 @@
 import { snakeCase } from "lodash"
-import { Query } from "@medusajs/framework"
+import {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+  Query,
+} from "@medusajs/framework"
 import { ApiRoutesLoader } from "@medusajs/framework/http"
 import { Tracer } from "@medusajs/framework/telemetry"
 import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
@@ -84,7 +89,11 @@ export function instrumentHttpLayer() {
    * OpenTelemetry
    */
   ApiRoutesLoader.traceMiddleware = (handler) => {
-    return async (req, res, next) => {
+    return async (
+      req: MedusaRequest<any>,
+      res: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
       if (shouldExcludeResource(req.originalUrl)) {
         return handler(req, res, next)
       }

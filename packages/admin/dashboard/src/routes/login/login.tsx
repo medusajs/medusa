@@ -7,7 +7,6 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
-import { KeyboundForm } from "../../components/utilities/keybound-form"
 import { useDashboardExtension } from "../../extensions"
 import { useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
@@ -86,7 +85,7 @@ export const Login = () => {
             return <Component key={i} />
           })}
           <Form {...form}>
-            <KeyboundForm
+            <form
               onSubmit={handleSubmit}
               className="flex w-full flex-col gap-y-6"
             >
@@ -149,7 +148,7 @@ export const Login = () => {
               <Button className="w-full" type="submit" isLoading={isPending}>
                 {t("actions.continueWithEmail")}
               </Button>
-            </KeyboundForm>
+            </form>
           </Form>
           {getWidgets("login.after").map((Component, i) => {
             return <Component key={i} />
