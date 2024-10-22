@@ -2,7 +2,19 @@
   "description": "",
   "methods": [],
   "displayName": "ProgressTabs.Trigger",
-  "props": {},
+  "props": {
+    "status": {
+      "required": false,
+      "tsType": {
+        "name": "ProgressStatus"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "\"not-started\"",
+        "computed": false
+      }
+    }
+  },
   "composes": [
     "Omit"
   ]

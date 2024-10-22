@@ -1,0 +1,8 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "I18nProvider",
+  "composes": [
+    "Props"
+  ]
+}
