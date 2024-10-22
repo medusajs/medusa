@@ -53,10 +53,13 @@ export const CreateCustomerGroupForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <KeyboundForm onSubmit={handleSubmit}>
+      <KeyboundForm
+        className="flex h-full flex-col overflow-hidden"
+        onSubmit={handleSubmit}
+      >
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
-          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
+          <div className="flex size-full w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <RouteFocusModal.Title asChild>
                 <Heading>{t("customerGroups.create.header")}</Heading>
