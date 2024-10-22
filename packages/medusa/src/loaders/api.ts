@@ -3,14 +3,13 @@ import { join } from "path"
 import qs from "qs"
 import { RoutesLoader } from "@medusajs/framework/http"
 import { MedusaContainer, PluginDetails } from "@medusajs/framework/types"
+import { ConfigModule } from "@medusajs/framework/config"
 
 type Options = {
   app: Express
   plugins: PluginDetails[]
   container: MedusaContainer
 }
-
-const defaultRestrictedFields = ["order", "orders"]
 
 export default async ({ app, container, plugins }: Options) => {
   // This is a workaround for the issue described here: https://github.com/expressjs/express/issues/3454
@@ -49,6 +48,12 @@ export default async ({ app, container, plugins }: Options) => {
     join(__dirname, "../api")
   )
 
+  const {
+    projectConfig: {
+      http: { restrictedFields },
+    },
+  } = container.resolve<ConfigModule>("configModule")
+
   // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
   // Adding this here temporarily
   // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
@@ -56,7 +61,7 @@ export default async ({ app, container, plugins }: Options) => {
     await new RoutesLoader({
       app: app,
       sourceDir: sourcePaths,
-      baseRestrictedFields: defaultRestrictedFields,
+      baseRestrictedFields: restrictedFields?.store,
     }).load()
   } catch (err) {
     throw Error(
