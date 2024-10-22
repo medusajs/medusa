@@ -8,12 +8,13 @@ import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
-import { default as path, default as sysPath } from "path"
-import { Pool } from "pg"
+import sysPath from "path"
+import path from "path"
 import prompts from "prompts"
+import { Pool } from "pg"
 import url from "url"
-// @ts-ignore
 import { track } from "@medusajs/telemetry"
+// @ts-ignore
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
 
