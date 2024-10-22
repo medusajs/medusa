@@ -6,13 +6,13 @@ import { useEffect, useMemo, useState } from "react"
 import {
   isElmWindow,
   swrFetcher,
+  useIsBrowser,
   useScrollController,
   useSidebar,
 } from "docs-ui"
 import dynamic from "next/dynamic"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
-import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
 import LoadingProvider from "@/providers/loading"
 import SectionContainer from "../../Section/Container"
@@ -22,11 +22,12 @@ import clsx from "clsx"
 import { Feedback, Loading, Link } from "docs-ui"
 import { usePathname, useRouter } from "next/navigation"
 import formatReportLink from "@/utils/format-report-link"
-import { SchemaObject, TagObject } from "@/types/openapi"
-import useSWR from "swr"
+import { PathsObject, SchemaObject, TagObject } from "@/types/openapi"
 import { TagSectionSchemaProps } from "./Schema"
-import basePathUrl from "../../../utils/base-path-url"
 import checkElementInViewport from "../../../utils/check-element-in-viewport"
+import TagPaths from "../Paths"
+import useSWR from "swr"
+import basePathUrl from "../../../utils/base-path-url"
 
 export type TagSectionProps = {
   tag: TagObject
@@ -47,39 +48,30 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
   }
 ) as React.FC<MDXContentClientProps>
 
-const TagSection = ({ tag }: TagSectionProps) => {
+const TagSectionComponent = ({ tag }: TagSectionProps) => {
   const { activePath, setActivePath } = useSidebar()
   const router = useRouter()
-  const [loadPaths, setLoadPaths] = useState(false)
+  const [loadData, setLoadData] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const pathname = usePathname()
   const { scrollableElement, scrollToTop } = useScrollController()
-  const { data } = useSWR<{
-    schema: SchemaObject
-  }>(
-    tag["x-associatedSchema"]
-      ? basePathUrl(
-          `/api/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
-        )
-      : null,
-    swrFetcher,
-    {
-      errorRetryInterval: 2000,
-    }
-  )
-  const associatedSchema = data?.schema
+  const { isBrowser } = useIsBrowser()
 
   const root = useMemo(() => {
+    if (!isBrowser) {
+      return
+    }
+
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
-  }, [scrollableElement])
-  const { ref } = useInView({
+  }, [scrollableElement, isBrowser])
+  const { ref, inView } = useInView({
     threshold: 0.8,
     rootMargin: `112px 0px 112px 0px`,
     root,
     onChange: (inView) => {
-      if (inView && !loadPaths) {
-        setLoadPaths(true)
+      if (inView && !loadData) {
+        setLoadData(true)
       }
       if (inView) {
         // ensure that the hash link doesn't change if it links to an inner path
@@ -97,8 +89,36 @@ const TagSection = ({ tag }: TagSectionProps) => {
       }
     },
   })
+  const { data: schemaData } = useSWR<{
+    schema: SchemaObject
+  }>(
+    loadData && tag["x-associatedSchema"]
+      ? basePathUrl(
+          `/api/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
+        )
+      : null,
+    swrFetcher,
+    {
+      errorRetryInterval: 2000,
+    }
+  )
+  const { data: pathsData } = useSWR<{
+    paths: PathsObject
+  }>(
+    loadData
+      ? basePathUrl(`/api/tag?tagName=${slugTagName}&area=${area}`)
+      : null,
+    swrFetcher,
+    {
+      errorRetryInterval: 2000,
+    }
+  )
 
   useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
     if (activePath && activePath.includes(slugTagName)) {
       const tagName = activePath.split("_")
       if (tagName.length === 1 && tagName[0] === slugTagName) {
@@ -110,18 +130,18 @@ const TagSection = ({ tag }: TagSectionProps) => {
           )
         }
       } else if (tagName.length > 1 && tagName[0] === slugTagName) {
-        setLoadPaths(true)
+        setLoadData(true)
       }
     }
-  }, [slugTagName, activePath])
+  }, [slugTagName, activePath, isBrowser])
 
   return (
     <div
-      className={clsx("min-h-screen", !loadPaths && "relative")}
+      className={clsx("min-h-screen", !loadData && "relative")}
       id={slugTagName}
+      ref={ref}
     >
       <DividedLayout
-        ref={ref}
         mainContent={
           <SectionContainer noDivider={true}>
             <h2>{tag.name}</h2>
@@ -159,17 +179,17 @@ const TagSection = ({ tag }: TagSectionProps) => {
         }
         codeContent={<></>}
       />
-      {associatedSchema && (
-        <TagSectionSchema schema={associatedSchema} tagName={tag.name} />
+      {schemaData && (
+        <TagSectionSchema schema={schemaData.schema} tagName={tag.name} />
       )}
-      {loadPaths && (
+      {loadData && pathsData && (
         <LoadingProvider initialLoading={true}>
-          <TagPaths tag={tag} />
+          <TagPaths tag={tag} paths={pathsData.paths} />
         </LoadingProvider>
       )}
-      {!loadPaths && <SectionDivider className="lg:!-left-1" />}
+      {!loadData && <SectionDivider className="lg:!-left-1" />}
     </div>
   )
 }
 
-export default TagSection
+export default TagSectionComponent
