@@ -21,7 +21,7 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/medusa-oas-cli": "0.3.2",
+    "@medusajs/medusa-oas-cli": "1.0.1",
     "execa": "^5.1.1"
   }
 }

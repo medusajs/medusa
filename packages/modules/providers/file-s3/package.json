@@ -26,7 +26,7 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^1.0.1",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
     "axios": "^1.6.8",
@@ -40,7 +40,7 @@
     "ulid": "^2.3.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1"
+    "@medusajs/framework": "^1.0.1"
   },
   "keywords": [
     "medusa-plugin",
