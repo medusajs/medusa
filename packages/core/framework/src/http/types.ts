@@ -137,7 +137,7 @@ export interface MedusaRequest<Body = unknown>
   rawBody?: any
   requestId?: string
 
-  restrictedFields: RestrictedFields
+  restrictedFields?: RestrictedFields
 
   /**
    * An object that carries the context that is used to calculate prices for variants

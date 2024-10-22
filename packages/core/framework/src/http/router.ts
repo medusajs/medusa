@@ -952,9 +952,12 @@ export class RoutesLoader {
   }
 
   #assignRestrictedFields(baseRestrictedFields: string[]) {
-    this.#app.use((req: MedusaRequest) => {
+    this.#app.use("/store", (req: MedusaRequest) => {
       req.restrictedFields = new RestrictedFields()
       req.restrictedFields.add(baseRestrictedFields)
+    })
+    this.#app.use("/admin", (req: MedusaRequest) => {
+      req.restrictedFields = new RestrictedFields()
     })
   }
 
