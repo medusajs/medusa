@@ -6,12 +6,100 @@ on:
         description: "Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or `ui` to generate UI reference."
         required: false
         default: "all"
-  # Disable this action until v2 is out of RC
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 jobs:
-  api-v2:
+  update-starter:
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ github.event_name == 'release' }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.STARTER_ACCESS_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/medusajs/medusa-starter-default/actions/workflows/update-preview-deps.yml/dispatches \
+          -d '{"ref":"master"}'
+  references:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch'}}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install Docs dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build Docs packages
+        working-directory: www
+        run: yarn build:packages
+
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build Workspace packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Generate References
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: "yarn start generate ${{ github.event.inputs.referenceName || 'all' }} --merge"
+        working-directory: www/utils/packages/typedoc-generate-references
+
+      - name: Generate References
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: "yarn generate:references"
+        working-directory: www/utils
+
+      - name: Generate Sidebar and File Map
+        run: "yarn prep"
+        working-directory: www/apps/resources
+
+      - name: Get PR Message
+        id: pr-message
+        run: yarn generate:message
+        working-directory: www/utils/packages/scripts
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated References (automated)"
+          base: "develop"
+          title: "chore(docs): Generated References (automated)"
+          labels: "type: chore"
+          add-paths: |
+            www/apps/resources/references/**
+            www/apps/resources/generated/**
+            www/utils/generated/typedoc-json-output
+          branch: "docs/generate-reference"
+          branch-suffix: "timestamp"
+          body: ${{ steps.pr-message.outputs.body }}
+
+  api:
+    name: Generate OAS
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
@@ -39,29 +127,92 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Generate API Reference (v2)
-        run: yarn openapi:generate
-
-      - name: Install and Build www/utils dependencies
-        run: yarn && yarn build
+      - name: Install www/utils Dependencies
+        run: yarn
         working-directory: www/utils
 
-      - name: Generate Changeset
-        run: "yarn generate:changeset"
-        working-directory: www/utils/packages/scripts
+      - name: Build www/utils packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Run docblock generator
+        run: "yarn generate:oas"
+        working-directory: www/utils
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Generate API Reference
+        run: yarn openapi:generate
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "chore(docs): Generated API Reference (v2)"
+          commit-message: "chore(docs): Generated API Reference (automated)"
           base: "develop"
-          title: "chore(docs): Updated API Reference (v2)"
+          title: "chore(docs): Updated API Reference (automated)"
           labels: "type: chore"
           add-paths: |
             www/apps/api-reference/specs
             www/utils/generated/oas-output
           branch: "docs/generate-api-ref"
           branch-suffix: "timestamp"
+  dml:
+    name: Generate DML JSON files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build www/utils packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Run docblock generator
+        run: "yarn generate:dml"
+        working-directory: www/utils
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated DML JSON files (automated)"
+          title: "chore(docs): Generated DML JSON files (automated)"
+          body: "This PR holds all generated DML JSON files for the upcoming release."
+          branch: "chore/generate-dml-json"
+          branch-suffix: "timestamp"
+          add-paths: www/utils/generated/dml-output/**
+          base: "develop"
+          labels: "type: chore"
   ui:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
@@ -102,16 +253,12 @@ jobs:
         run: yarn generate:ui
         working-directory: www/utils/packages/react-docs-generator
 
-      - name: Generate Changeset
-        run: "yarn generate:changeset"
-        working-directory: www/utils/packages/scripts
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "chore(docs): Generated UI Reference"
+          commit-message: "chore(docs): Generated UI Reference (automated)"
           base: "develop"
-          title: "chore(docs): Updated UI Reference"
+          title: "chore(docs): Updated UI Reference (automated)"
           labels: "type: chore"
           add-paths: www/apps/ui/src/specs
           branch: "docs/generate-ui-ref"
