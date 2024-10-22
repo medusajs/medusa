@@ -58,6 +58,7 @@ export const defaultStoreRetrieveOrderFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreRetrieveOrderFields,
+  allowed: [...defaultStoreRetrieveOrderFields],
   isList: false,
 }
 
