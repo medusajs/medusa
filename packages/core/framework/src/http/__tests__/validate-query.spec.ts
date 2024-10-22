@@ -327,7 +327,7 @@ describe("validateAndTransformQuery", () => {
     let mockRequest = {
       restrictedFields,
       query: {
-        fields: "*product.variants,+product.id",
+        fields: "product.*, *product.variants,+product.id",
       },
     } as unknown as MedusaRequest
 
@@ -398,6 +398,7 @@ describe("validateAndTransformQuery", () => {
           "metadata.children.id",
           "metadata.product.id",
           "product.id",
+          "product.*",
           "product.variants.*",
         ],
       })
