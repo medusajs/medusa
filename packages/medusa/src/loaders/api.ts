@@ -10,6 +10,8 @@ type Options = {
   container: MedusaContainer
 }
 
+const defaultRestrictedFields = ["order", "orders"]
+
 export default async ({ app, container, plugins }: Options) => {
   // This is a workaround for the issue described here: https://github.com/expressjs/express/issues/3454
   // We parse the url and get the qs to be parsed and override the query prop from the request
@@ -54,6 +56,7 @@ export default async ({ app, container, plugins }: Options) => {
     await new RoutesLoader({
       app: app,
       sourceDir: sourcePaths,
+      baseRestrictedFields: defaultRestrictedFields,
     }).load()
   } catch (err) {
     throw Error(

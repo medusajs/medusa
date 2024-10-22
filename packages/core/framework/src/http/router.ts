@@ -35,6 +35,7 @@ import {
   RouteHandler,
   RouteVerb,
 } from "./types"
+import { RestrictedFields } from "./utils/restricted-fields"
 
 const log = ({
   activityId,
@@ -933,14 +934,25 @@ export class RoutesLoader {
     app,
     activityId,
     sourceDir,
+    baseRestrictedFields = [],
   }: {
     app: Express
     activityId?: string
     sourceDir: string | string[]
+    baseRestrictedFields?: string[]
   }) {
     this.#app = app
     this.#activityId = activityId
     this.#sourceDir = sourceDir
+
+    this.#assignRestrictedFields(baseRestrictedFields)
+  }
+
+  #assignRestrictedFields(baseRestrictedFields: string[]) {
+    this.#app.use((req: MedusaRequest) => {
+      req.restrictedFields = new RestrictedFields()
+      req.restrictedFields.add(baseRestrictedFields)
+    })
   }
 
   async load() {
