@@ -126,9 +126,7 @@ export const retrieveTransformQueryConfig = {
     "items.product",
     "items.variant",
     "items.thumbnail",
-    "promotions",
     "region",
-    "company",
   ],
   isList: false,
 }
