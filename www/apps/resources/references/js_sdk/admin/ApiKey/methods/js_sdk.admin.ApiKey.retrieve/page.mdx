@@ -1,0 +1,23 @@
+import { TypeList } from "docs-ui"
+
+# retrieve
+
+This method retrieves an API key's details. It sends a request to the 
+[Get API key](https://docs.medusajs.com/v2/api/admin#api-keys\_getapikeysid) API route.
+
+## Example
+
+```ts
+sdk.admin.apiKey.retrieve("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>

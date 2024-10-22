@@ -30,6 +30,7 @@ export type SectionKey =
   | "members_group_categories"
   | "members_categories"
   | "member_returns"
+  | "member_force_title"
   | "title_reflectionPath"
   | "reflection_comment"
   | "reflection_typeParameters"

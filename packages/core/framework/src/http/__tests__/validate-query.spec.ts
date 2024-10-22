@@ -2,6 +2,8 @@ import z from "zod"
 import { MedusaError } from "@medusajs/utils"
 import { validateAndTransformQuery } from "../utils/validate-query"
 import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "../types"
+import { RestrictedFields } from "../utils/restricted-fields"
+import { QueryConfig } from "@medusajs/types"
 
 export const createSelectParams = () => {
   return z.object({
@@ -60,6 +62,7 @@ describe("validateAndTransformQuery", () => {
 
   it("should transform the input query", async () => {
     let mockRequest = {
+      restrictedFields: new RestrictedFields(),
       query: {},
     } as MedusaRequest
     const mockResponse = {} as MedusaResponse
@@ -148,6 +151,7 @@ describe("validateAndTransformQuery", () => {
     })
 
     mockRequest = {
+      ...mockRequest,
       query: {
         limit: "10",
         offset: "5",
@@ -167,6 +171,7 @@ describe("validateAndTransformQuery", () => {
     })
 
     mockRequest = {
+      ...mockRequest,
       query: {
         limit: "10",
         offset: "5",
@@ -202,6 +207,7 @@ describe("validateAndTransformQuery", () => {
 
   it("should transform the input query taking into account the fields symbols (+,- or no symbol)", async () => {
     let mockRequest = {
+      restrictedFields: new RestrictedFields(),
       query: {
         fields: "id",
       },
@@ -234,6 +240,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "+test_prop,-prop-test-something",
       },
@@ -275,6 +282,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "+test_prop,-updated_at",
       },
@@ -315,11 +323,16 @@ describe("validateAndTransformQuery", () => {
   })
 
   it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
+    const restrictedFields = new RestrictedFields()
     let mockRequest = {
+      restrictedFields,
       query: {
-        fields: "*product.variants,+product.id",
+        fields: "product.*, *product.variants,+product.id",
       },
     } as unknown as MedusaRequest
+
+    restrictedFields.add(["product"])
+
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
 
@@ -385,12 +398,14 @@ describe("validateAndTransformQuery", () => {
           "metadata.children.id",
           "metadata.product.id",
           "product.id",
+          "product.*",
           "product.variants.*",
         ],
       })
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "store.name",
       },
@@ -441,6 +456,7 @@ describe("validateAndTransformQuery", () => {
 
   it("should throw when attempting to transform the input if disallowed fields are requested", async () => {
     let mockRequest = {
+      restrictedFields: new RestrictedFields(),
       query: {
         fields: "+test_prop",
       },
@@ -458,12 +474,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-      ],
-      defaultRelations: [
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
       ],
       allowed: [
         "id",
@@ -490,6 +500,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "product",
       },
@@ -505,12 +516,6 @@ describe("validateAndTransformQuery", () => {
         "metadata.parent.id",
         "metadata.children.id",
         "metadata.product.id",
-      ],
-      defaultRelations: [
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
       ],
       allowed: [
         "id",
@@ -537,6 +542,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "store",
       },
@@ -580,6 +586,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "*product",
       },
@@ -621,6 +628,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "*product.variants",
       },
@@ -663,6 +671,7 @@ describe("validateAndTransformQuery", () => {
     )
 
     mockRequest = {
+      ...mockRequest,
       query: {
         fields: "*product",
       },
@@ -701,6 +710,49 @@ describe("validateAndTransformQuery", () => {
       new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Requested fields [product] are not valid`
+      )
+    )
+  })
+
+  it("should throw when attempting to transform the input if restricted fields are requested", async () => {
+    const restrictedFields = new RestrictedFields()
+    let mockRequest = {
+      restrictedFields,
+      query: {
+        fields: "*product",
+      },
+    } as unknown as MedusaRequest
+
+    restrictedFields.add(["product"])
+
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
+
+    const queryConfig: QueryConfig<any> = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    const middleware = validateAndTransformQuery(
+      createFindParams(),
+      queryConfig
+    )
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenLastCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [metadata.product.id, product] are not valid`
       )
     )
   })

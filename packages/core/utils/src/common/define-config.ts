@@ -20,6 +20,15 @@ const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
   "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
+export const DEFAULT_STORE_RESTRICTED_FIELDS = [
+  "order",
+  "orders",
+  /*"customer",
+  "customers",
+  "payment_collection",
+  "payment_collections"*/
+]
+
 type InternalModuleDeclarationOverride = InternalModuleDeclaration & {
   /**
    * Optional key to be used to identify the module, if not provided, it will be inferred from the module joiner config service name.
@@ -79,6 +88,9 @@ export function defineConfig(config: Config = {}): ConfigModule {
       authCors: process.env.AUTH_CORS || DEFAULT_ADMIN_CORS,
       jwtSecret: process.env.JWT_SECRET || DEFAULT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET || DEFAULT_SECRET,
+      restrictedFields: {
+        store: DEFAULT_STORE_RESTRICTED_FIELDS,
+      },
       ...http,
     },
     ...restOfProjectConfig,

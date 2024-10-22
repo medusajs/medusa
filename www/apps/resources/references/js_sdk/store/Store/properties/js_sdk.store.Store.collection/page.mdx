@@ -1,0 +1,200 @@
+---
+slug: /references/js-sdk/admin/collection
+sidebar_label: collection
+---
+
+import { TypeList } from "docs-ui"
+
+# collection - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.collection` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves a paginated list of product collections. It sends a request to the
+[List Collections](https://docs.medusajs.com/v2/api/store#collections\_getcollections) API route.
+
+Related guide: [How to retrieve collections in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/collections/list).
+
+### Example
+
+To retrieve the list of collections:
+
+```ts
+sdk.store.collection.list()
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.collection.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each collection:
+
+```ts
+sdk.store.collection.list({
+  fields: "id,handle"
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StoreCollectionFilters`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCollectionListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of collections.","expandable":false,"children":[{"name":"StoreCollectionListResponse","type":"`StoreCollectionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a collection by its ID. It sends a request to the [Get Collection](https://docs.medusajs.com/v2/api/store#collections\_getcollectionsid)
+API route.
+
+Related guide: [How to retrieve a collection in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/collections/retrieve).
+
+### Example
+
+To retrieve a collection by its ID:
+
+```ts
+sdk.store.collection.retrieve("pcol_123")
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.collection.retrieve("pcol_123", {
+  fields: "id,handle"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the collection to retrieve.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCollectionResponse&#62;","optional":false,"defaultValue":"","description":"The collection.","expandable":false,"children":[{"name":"StoreCollectionResponse","type":"`StoreCollectionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## list
+
+This method retrieves a paginated list of product collections. It sends a request to the
+[List Collections](https://docs.medusajs.com/v2/api/store#collections\_getcollections) API route.
+
+Related guide: [How to retrieve collections in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/collections/list).
+
+### Example
+
+To retrieve the list of collections:
+
+```ts
+sdk.store.collection.list()
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.collection.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each collection:
+
+```ts
+sdk.store.collection.list({
+  fields: "id,handle"
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[FindParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx) & `StoreCollectionFilters`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCollectionListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of collections.","expandable":false,"children":[{"name":"StoreCollectionListResponse","type":"`StoreCollectionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## retrieve
+
+This method retrieves a collection by its ID. It sends a request to the [Get Collection](https://docs.medusajs.com/v2/api/store#collections\_getcollectionsid)
+API route.
+
+Related guide: [How to retrieve a collection in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/products/collections/retrieve).
+
+### Example
+
+To retrieve a collection by its ID:
+
+```ts
+sdk.store.collection.retrieve("pcol_123")
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.collection.retrieve("pcol_123", {
+  fields: "id,handle"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the collection to retrieve.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreCollectionResponse&#62;","optional":false,"defaultValue":"","description":"The collection.","expandable":false,"children":[{"name":"StoreCollectionResponse","type":"`StoreCollectionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

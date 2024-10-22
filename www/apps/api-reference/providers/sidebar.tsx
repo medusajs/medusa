@@ -3,12 +3,9 @@
 import {
   SidebarProvider as UiSidebarProvider,
   usePageLoading,
-  usePrevious,
   useScrollController,
 } from "docs-ui"
 import { config } from "../config"
-import { useCallback } from "react"
-import { usePathname } from "next/navigation"
 
 type SidebarProviderProps = {
   children?: React.ReactNode
@@ -17,13 +14,6 @@ type SidebarProviderProps = {
 const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const { isLoading, setIsLoading } = usePageLoading()
   const { scrollableElement } = useScrollController()
-  const pathname = usePathname()
-  const prevPathName = usePrevious(pathname)
-
-  const resetOnCondition = useCallback(
-    () => prevPathName !== undefined && pathname !== prevPathName,
-    [pathname, prevPathName]
-  )
 
   return (
     <UiSidebarProvider
@@ -32,7 +22,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       shouldHandleHashChange={true}
       scrollableElement={scrollableElement}
       initialItems={config.sidebar}
-      resetOnCondition={resetOnCondition}
       persistState={false}
       projectName="api"
     >

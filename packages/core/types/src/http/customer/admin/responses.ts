@@ -6,10 +6,16 @@ import {
 import { AdminCustomer, AdminCustomerAddress } from "./entities"
 
 export interface AdminCustomerResponse {
+  /**
+   * The customer's details.
+   */
   customer: AdminCustomer
 }
 
 export type AdminCustomerListResponse = PaginatedResponse<{
+  /**
+   * The list of customers.
+   */
   customers: AdminCustomer[]
 }>
 

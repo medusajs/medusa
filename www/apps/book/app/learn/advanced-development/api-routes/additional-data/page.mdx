@@ -147,7 +147,7 @@ import { Modules } from "@medusajs/framework/utils"
 
 createProductsWorkflow.hooks.productsCreated(
   async ({ products, additional_data }, { container }) => {
-    if (!additional_data.brand) {
+    if (!additional_data?.brand) {
       return
     }
 
@@ -204,4 +204,4 @@ createProductsWorkflow.hooks.productsCreated(
 )
 ```
 
-This updates the product to their original state before adding the brand to their `metadata` property.
+This updates the products to their original state before adding the brand to their `metadata` property.

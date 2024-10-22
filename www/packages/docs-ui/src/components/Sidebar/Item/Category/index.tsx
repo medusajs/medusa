@@ -28,6 +28,7 @@ export const SidebarItemCategory = ({
     updatePersistedCategoryState,
     getPersistedCategoryState,
     persistState,
+    activePath,
   } = useSidebar()
   const itemShowLoading = useMemo(() => {
     return !item.loaded || (item.showLoadingIfEmpty && !item.children?.length)
@@ -47,6 +48,7 @@ export const SidebarItemCategory = ({
 
   useEffect(() => {
     const isActive = isChildrenActive(item)
+
     if (isActive && !open) {
       setOpen(true)
     }
