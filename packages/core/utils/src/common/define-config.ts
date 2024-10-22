@@ -20,7 +20,7 @@ const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
   "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
-const STORE_RESTRICTED_FIELDS = [
+export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
   "customer",
@@ -89,7 +89,7 @@ export function defineConfig(config: Config = {}): ConfigModule {
       jwtSecret: process.env.JWT_SECRET || DEFAULT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET || DEFAULT_SECRET,
       restrictedFields: {
-        store: STORE_RESTRICTED_FIELDS,
+        store: DEFAULT_STORE_RESTRICTED_FIELDS,
       },
       ...http,
     },
