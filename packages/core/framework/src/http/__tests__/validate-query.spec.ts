@@ -323,14 +323,15 @@ describe("validateAndTransformQuery", () => {
   })
 
   it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
+    const restrictedFields = new RestrictedFields()
     let mockRequest = {
-      restrictedFields: new RestrictedFields(),
+      restrictedFields,
       query: {
         fields: "*product.variants,+product.id",
       },
     } as unknown as MedusaRequest
 
-    mockRequest.restrictedFields.add(["product"])
+    restrictedFields.add(["product"])
 
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
@@ -713,14 +714,15 @@ describe("validateAndTransformQuery", () => {
   })
 
   it("should throw when attempting to transform the input if restricted fields are requested", async () => {
+    const restrictedFields = new RestrictedFields()
     let mockRequest = {
-      restrictedFields: new RestrictedFields(),
+      restrictedFields,
       query: {
         fields: "*product",
       },
     } as unknown as MedusaRequest
 
-    mockRequest.restrictedFields.add(["product"])
+    restrictedFields.add(["product"])
 
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
@@ -739,7 +741,10 @@ describe("validateAndTransformQuery", () => {
       isList: true,
     }
 
-    const middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+    const middleware = validateAndTransformQuery(
+      createFindParams(),
+      queryConfig
+    )
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
