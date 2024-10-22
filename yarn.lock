@@ -957,18 +957,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.23.5":
-  version: 7.25.7
-  resolution: "@babel/generator@npm:7.25.7"
-  dependencies:
-    "@babel/types": ^7.25.7
-    "@jridgewell/gen-mapping": ^0.3.5
-    "@jridgewell/trace-mapping": ^0.3.25
-    jsesc: ^3.0.2
-  checksum: c03a26c79864d60d04ce36b649c3fa0d6fd7b2bf6a22e22854a0457aa09206508392dd73ee40e7bc8d50b3602f9ff068afa47770cda091d332e7db1ca382ee96
-  languageName: node
-  linkType: hard
-
 "@babel/generator@npm:^7.24.5, @babel/generator@npm:^7.7.2":
   version: 7.24.5
   resolution: "@babel/generator@npm:7.24.5"
@@ -1300,15 +1288,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-split-export-declaration@npm:^7.22.6":
-  version: 7.24.7
-  resolution: "@babel/helper-split-export-declaration@npm:7.24.7"
-  dependencies:
-    "@babel/types": ^7.24.7
-  checksum: 0254577d7086bf09b01bbde98f731d4fcf4b7c3fa9634fdb87929801307c1f6202a1352e3faa5492450fa8da4420542d44de604daf540704ff349594a78184f6
-  languageName: node
-  linkType: hard
-
 "@babel/helper-split-export-declaration@npm:^7.24.5":
   version: 7.24.5
   resolution: "@babel/helper-split-export-declaration@npm:7.24.5"
@@ -1332,13 +1311,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-string-parser@npm:^7.25.7":
-  version: 7.25.7
-  resolution: "@babel/helper-string-parser@npm:7.25.7"
-  checksum: 73ef2ceb81f8294678a0afe8ab0103729c0370cac2e830e0d5128b03be5f6a2635838af31d391d763e3c5a4460ed96f42fd7c9b552130670d525be665913bc4c
-  languageName: node
-  linkType: hard
-
 "@babel/helper-validator-identifier@npm:^7.22.20, @babel/helper-validator-identifier@npm:^7.24.5":
   version: 7.24.5
   resolution: "@babel/helper-validator-identifier@npm:7.24.5"
@@ -1350,13 +1322,6 @@ __metadata:
   version: 7.24.7
   resolution: "@babel/helper-validator-identifier@npm:7.24.7"
   checksum: 87ad608694c9477814093ed5b5c080c2e06d44cb1924ae8320474a74415241223cc2a725eea2640dd783ff1e3390e5f95eede978bc540e870053152e58f1d651
-  languageName: node
-  linkType: hard
-
-"@babel/helper-validator-identifier@npm:^7.25.7":
-  version: 7.25.7
-  resolution: "@babel/helper-validator-identifier@npm:7.25.7"
-  checksum: 07438e5bf01ab2882a15027fdf39ac3b0ba1b251774a5130917907014684e2f70fef8fd620137ca062c4c4eedc388508d2ea7a3a7d9936a32785f4fe116c68c0
   languageName: node
   linkType: hard
 
@@ -1430,15 +1395,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:7.23.5":
-  version: 7.23.5
-  resolution: "@babel/parser@npm:7.23.5"
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: 3356aa90d7bafb4e2c7310e7c2c3d443c4be4db74913f088d3d577a1eb914ea4188e05fd50a47ce907a27b755c4400c4e3cbeee73dbeb37761f6ca85954f5a20
-  languageName: node
-  linkType: hard
-
 "@babel/parser@npm:7.25.6, @babel/parser@npm:^7.14.0, @babel/parser@npm:^7.25.0, @babel/parser@npm:^7.25.6":
   version: 7.25.6
   resolution: "@babel/parser@npm:7.25.6"
@@ -1456,17 +1412,6 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 8333a6ad5328bad34fa0e12bcee147c3345ea9a438c0909e7c68c6cfbea43c464834ffd7eabd1cbc1c62df0a558e22ffade9f5b29440833ba7b33d96a71f88c0
-  languageName: node
-  linkType: hard
-
-"@babel/parser@npm:^7.23.5":
-  version: 7.25.8
-  resolution: "@babel/parser@npm:7.25.8"
-  dependencies:
-    "@babel/types": ^7.25.8
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: a1a13845b7e8dda4c970791814a4bbf60004969882f18f470e260ad822d2e1f8941948f851e9335895563610f240fa6c98481ce8019865e469502bbf21daafa4
   languageName: node
   linkType: hard
 
@@ -2911,24 +2856,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:7.23.5":
-  version: 7.23.5
-  resolution: "@babel/traverse@npm:7.23.5"
-  dependencies:
-    "@babel/code-frame": ^7.23.5
-    "@babel/generator": ^7.23.5
-    "@babel/helper-environment-visitor": ^7.22.20
-    "@babel/helper-function-name": ^7.23.0
-    "@babel/helper-hoist-variables": ^7.22.5
-    "@babel/helper-split-export-declaration": ^7.22.6
-    "@babel/parser": ^7.23.5
-    "@babel/types": ^7.23.5
-    debug: ^4.1.0
-    globals: ^11.1.0
-  checksum: c5ea793080ca6719b0a1612198fd25e361cee1f3c14142d7a518d2a1eeb5c1d21f7eec1b26c20ea6e1ddd8ed12ab50b960ff95ffd25be353b6b46e1b54d6f825
-  languageName: node
-  linkType: hard
-
 "@babel/traverse@npm:7.25.6, @babel/traverse@npm:^7.14.0, @babel/traverse@npm:^7.24.7, @babel/traverse@npm:^7.24.8, @babel/traverse@npm:^7.25.0, @babel/traverse@npm:^7.25.1, @babel/traverse@npm:^7.25.2, @babel/traverse@npm:^7.25.4":
   version: 7.25.6
   resolution: "@babel/traverse@npm:7.25.6"
@@ -2981,17 +2908,6 @@ __metadata:
     "@babel/helper-validator-identifier": ^7.24.5
     to-fast-properties: ^2.0.0
   checksum: e1284eb046c5e0451b80220d1200e2327e0a8544a2fe45bb62c952e5fdef7099c603d2336b17b6eac3cc046b7a69bfbce67fe56e1c0ea48cd37c65cb88638f2a
-  languageName: node
-  linkType: hard
-
-"@babel/types@npm:^7.23.5, @babel/types@npm:^7.25.7, @babel/types@npm:^7.25.8":
-  version: 7.25.8
-  resolution: "@babel/types@npm:7.25.8"
-  dependencies:
-    "@babel/helper-string-parser": ^7.25.7
-    "@babel/helper-validator-identifier": ^7.25.7
-    to-fast-properties: ^2.0.0
-  checksum: 55ca2d6df6426c98db2769ce884ce5e9de83a512ea2dd7bcf56c811984dc14351cacf42932a723630c5afcff2455809323decd645820762182f10b7b5252b59f
   languageName: node
   linkType: hard
 
@@ -5371,13 +5287,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-shared@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@medusajs/admin-shared@npm:0.0.1"
-  checksum: 5c1264d85aa751961487f3623d652d3bc218c2b966eb835e03c461766ff89e0068220292578380ed3b94320db3456590c06d628b218ae50fb181be2452308da6
-  languageName: node
-  linkType: hard
-
 "@medusajs/admin-vite-plugin@1.0.1, @medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin"
@@ -5400,21 +5309,6 @@ __metadata:
     vite: ^5.0.0
   languageName: unknown
   linkType: soft
-
-"@medusajs/admin-vite-plugin@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@medusajs/admin-vite-plugin@npm:0.0.1"
-  dependencies:
-    "@babel/parser": 7.23.5
-    "@babel/traverse": 7.23.5
-    chokidar: 3.5.3
-    fdir: 6.1.1
-    magic-string: 0.30.5
-  peerDependencies:
-    vite: ^5.0.0
-  checksum: d6d08b03396f9fa82eef819156fb4343a3753cbe4402d1dbd3ded9ce2c92df009eb5e5f4844a21dcf84f8d1d95648b80cc645ffafc36f4587b589708f57a1224
-  languageName: node
-  linkType: hard
 
 "@medusajs/api-key@^1.0.1, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
   version: 0.0.0-use.local
@@ -5702,8 +5596,8 @@ __metadata:
     "@dnd-kit/sortable": ^8.0.0
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": 3.4.2
-    "@medusajs/admin-shared": ^0.0.1
-    "@medusajs/admin-vite-plugin": 0.0.1
+    "@medusajs/admin-shared": ^1.0.1
+    "@medusajs/admin-vite-plugin": 1.0.1
     "@medusajs/icons": 1.2.1
     "@medusajs/js-sdk": 1.0.1
     "@medusajs/types": 1.11.16
@@ -23546,15 +23440,6 @@ __metadata:
   bin:
     jsesc: bin/jsesc
   checksum: dbf59312e0ebf2b4405ef413ec2b25abb5f8f4d9bc5fb8d9f90381622ebca5f2af6a6aa9a8578f65903f9e33990a6dc798edd0ce5586894bf0e9e31803a1de88
-  languageName: node
-  linkType: hard
-
-"jsesc@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "jsesc@npm:3.0.2"
-  bin:
-    jsesc: bin/jsesc
-  checksum: ef22148f9e793180b14d8a145ee6f9f60f301abf443288117b4b6c53d0ecd58354898dc506ccbb553a5f7827965cd38bc5fb726575aae93c5e8915e2de8290e1
   languageName: node
   linkType: hard
 
