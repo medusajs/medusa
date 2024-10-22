@@ -35,3 +35,6 @@ export async function GET(request: Request) {
     status: 200,
   })
 }
+
+export const dynamic = "force-static"
+export const revalidate = 3600
