@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+"use client"
+
+import { useEffect, useMemo, useRef } from "react"
 import { SchemaObject } from "../../../../types/openapi"
 import TagOperationParameters from "../../Operation/Parameters"
 import {
   Badge,
   CodeBlock,
   isElmWindow,
+  useIsBrowser,
   useScrollController,
   useSidebar,
 } from "docs-ui"
@@ -16,7 +19,6 @@ import useSchemaExample from "../../../../hooks/use-schema-example"
 import { InView } from "react-intersection-observer"
 import checkElementInViewport from "../../../../utils/check-element-in-viewport"
 import { singular } from "pluralize"
-import useResizeObserver from "@react-hook/resize-observer"
 import clsx from "clsx"
 
 export type TagSectionSchemaProps = {
@@ -26,7 +28,6 @@ export type TagSectionSchemaProps = {
 
 const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   const paramsRef = useRef<HTMLDivElement>(null)
-  const [maxCodeHeight, setMaxCodeHeight] = useState(0)
   const { addItems, setActivePath, activePath } = useSidebar()
   const tagSlugName = useMemo(() => getSectionId([tagName]), [tagName])
   const formattedName = useMemo(
@@ -43,14 +44,16 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
       skipNonRequired: false,
     },
   })
-  useResizeObserver(paramsRef, () => {
-    setMaxCodeHeight(paramsRef.current?.clientHeight || 0)
-  })
+  const { isBrowser } = useIsBrowser()
 
   const { scrollableElement, scrollToElement } = useScrollController()
   const root = useMemo(() => {
+    if (!isBrowser) {
+      return
+    }
+
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
-  }, [scrollableElement])
+  }, [isBrowser, scrollableElement])
 
   useEffect(() => {
     addItems(
@@ -77,18 +80,26 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   }, [formattedName])
 
   useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
       if (!checkElementInViewport(elm, 0)) {
         scrollToElement(elm)
       }
     }
-  }, [activePath, schemaSlug])
+  }, [activePath, schemaSlug, isBrowser])
 
   const handleViewChange = (
     inView: boolean,
     entry: IntersectionObserverEntry
   ) => {
+    if (!isBrowser) {
+      return
+    }
+
     const section = entry.target
 
     if (
@@ -106,7 +117,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     <InView
       as="div"
       id={schemaSlug}
-      initialInView={false}
+      initialInView={true}
       onChange={handleViewChange}
       root={root}
       threshold={0.1}
@@ -128,10 +139,9 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
                 source={examples[0].content}
                 lang="json"
                 title={`The ${formattedName} Object`}
-                className={clsx(maxCodeHeight && "overflow-auto")}
+                className={clsx("overflow-auto")}
                 style={{
-                  // remove padding + extra space
-                  maxHeight: maxCodeHeight ? maxCodeHeight - 212 : "unset",
+                  maxHeight: "100vh",
                 }}
               />
             )}

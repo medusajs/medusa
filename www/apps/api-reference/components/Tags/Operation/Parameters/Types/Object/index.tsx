@@ -7,7 +7,7 @@ import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import checkRequired from "@/utils/check-required"
 import { Loading, type DetailsProps } from "docs-ui"
-import { useMemo } from "react"
+import { Fragment, useMemo } from "react"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -101,20 +101,19 @@ const TagOperationParametersObject = ({
     const content = (
       <>
         {sortedProperties.map((property, index) => (
-          <>
+          <Fragment key={index}>
             {index !== 0 && <hr className="bg-medusa-border-base my-0" />}
             <TagOperationParameters
               schemaObject={{
                 ...properties[property],
                 parameterName: property,
               }}
-              key={index}
               isRequired={
                 properties[property].isRequired ||
                 checkRequired(schema, property)
               }
             />
-          </>
+          </Fragment>
         ))}
       </>
     )

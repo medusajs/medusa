@@ -3,12 +3,13 @@
 import { useScrollController, useSidebar, H2 as UiH2 } from "docs-ui"
 import { useEffect, useMemo, useRef, useState } from "react"
 import getSectionId from "../../../utils/get-section-id"
+import { SidebarItem } from "types"
 
 type H2Props = React.HTMLAttributes<HTMLHeadingElement>
 
 const H2 = ({ children, ...props }: H2Props) => {
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const { activePath, addItems } = useSidebar()
+  const { activePath, addItems, removeItems } = useSidebar()
   const { scrollableElement, scrollToElement } = useScrollController()
   const [scrolledFirstTime, setScrolledFirstTime] = useState(false)
 
@@ -28,14 +29,19 @@ const H2 = ({ children, ...props }: H2Props) => {
   }, [scrollableElement, headingRef, id])
 
   useEffect(() => {
-    addItems([
+    const item: SidebarItem[] = [
       {
         type: "link",
         path: `${id}`,
         title: children as string,
         loaded: true,
       },
-    ])
+    ]
+    addItems(item)
+
+    return () => {
+      removeItems(item)
+    }
   }, [id])
 
   return (

@@ -58,7 +58,7 @@ Data models automatically have the date properties `created_at`, `updated_at`, a
 
 ### 2. Create Service
 
-A module must define a service that implements its functionalities, such as manage the records of your custom data models in the database.
+A module must define a service that implements its functionalities, such as managing the records of your custom data models in the database.
 
 A service is a TypeScript or JavaScript class defined in the `service.ts` file at the root of your module's directory.
 
@@ -140,11 +140,11 @@ module.exports = defineConfig({
 })
 ```
 
-Its value is an array of objects, each having a `resolve` property, whose value is either a path to module's directory, or an `npm` package’s name.
+Its value is an array of objects, each having a `resolve` property, whose value is either a path to the module's directory, or an `npm` package’s name.
 
 ### 5. Generate Migrations
 
-A migration is a TypeScript or JavaScript file that defines database changes made by your module, such as create the `my_custom` table for the `MyCustom` data model.
+A migration is a TypeScript or JavaScript file that defines database changes made by your module, such as creating the `my_custom` table for the `MyCustom` data model.
 
 To generate a migration for the data models in your module, run the following command:
 
@@ -160,7 +160,7 @@ The module name `helloModuleService` is the key used when registering the module
 
 </Note>
 
-The above command creates a migration file at the directory `src/modules/hello/migrations` similar to the following:
+The above command creates a migration file in the directory `src/modules/hello/migrations` similar to the following:
 
 ```ts
 import { Migration } from "@mikro-orm/migrations"

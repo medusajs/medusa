@@ -53,6 +53,9 @@ export default async function dereference({
         canParse: /.*/,
       },
     },
+    dereference: {
+      circular: "ignore",
+    },
   })) as unknown as Document
 
   return document
