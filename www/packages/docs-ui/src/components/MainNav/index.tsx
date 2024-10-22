@@ -9,6 +9,7 @@ import {
   SearchModalOpener,
   useMainNav,
   useSidebar,
+  useSiteConfig,
 } from "../.."
 import { MainNavEditDate } from "./EditDate"
 import { MainNavItems } from "./Items"
@@ -16,6 +17,7 @@ import { MedusaIcon } from "../Icons/MedusaLogo"
 import { MainNavDesktopMenu } from "./DesktopMenu"
 import { SidebarLeftIcon } from "../Icons/SidebarLeft"
 import { MainNavMobileMenu } from "./MobileMenu"
+import Link from "next/link"
 
 type MainNavProps = {
   className?: string
@@ -25,6 +27,7 @@ type MainNavProps = {
 export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
   const { reportIssueLink, editDate } = useMainNav()
   const { setMobileSidebarOpen, isSidebarShown } = useSidebar()
+  const { config } = useSiteConfig()
 
   return (
     <div
@@ -46,10 +49,12 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
               <SidebarLeftIcon />
             </Button>
           )}
-          <BorderedIcon
-            IconComponent={MedusaIcon}
-            iconWrapperClassName="my-[14px]"
-          />
+          <Link href={`${config.baseUrl}/v2`}>
+            <BorderedIcon
+              IconComponent={MedusaIcon}
+              iconWrapperClassName="my-[14px]"
+            />
+          </Link>
         </div>
         <MainNavItems className={itemsClassName} />
       </div>

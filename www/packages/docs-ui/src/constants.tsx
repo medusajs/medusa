@@ -52,11 +52,6 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
-        title: "UI Library",
-        link: "/ui",
-      },
-      {
-        type: "link",
         title: "Admin Components",
         link: "/v2/resources/admin-components",
       },
@@ -64,6 +59,11 @@ export const navDropdownItems: NavigationItem[] = [
         type: "link",
         title: "Storefront Development",
         link: "/v2/resources/storefront-development",
+      },
+      {
+        type: "link",
+        title: "UI Library",
+        link: "/ui",
       },
     ],
   },
@@ -98,6 +98,65 @@ export const navDropdownItems: NavigationItem[] = [
   },
   {
     type: "dropdown",
+    title: "Framework",
+    children: [
+      {
+        type: "link",
+        title: "API Routes",
+        link: "/v2/learn/basics/api-routes",
+      },
+      {
+        type: "link",
+        title: "Modules",
+        link: "/v2/learn/basics/modules",
+      },
+      {
+        type: "link",
+        title: "Subscribers",
+        link: "/v2/learn/basics/events-and-subscribers",
+      },
+      {
+        type: "link",
+        title: "Scheduled Jobs",
+        link: "/v2/learn/basics/scheduled-jobs",
+      },
+      {
+        type: "link",
+        title: "Loaders",
+        link: "/v2/learn/basics/loaders",
+      },
+      {
+        type: "link",
+        title: "Admin Customizations",
+        link: "/v2/learn/basics/admin-customizations",
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "link",
+        title: "Links",
+        link: "/v2/learn/advanced-development/module-links",
+      },
+      {
+        type: "link",
+        title: "Query",
+        link: "/v2/learn/advanced-development/module-links/query",
+      },
+      {
+        type: "link",
+        title: "Data Models",
+        link: "/v2/learn/advanced-development/data-models",
+      },
+      {
+        type: "link",
+        title: "Workflows",
+        link: "/v2/learn/basics/workflows",
+      },
+    ],
+  },
+  {
+    type: "dropdown",
     title: "Reference",
     children: [
       {
@@ -122,6 +181,21 @@ export const navDropdownItems: NavigationItem[] = [
         type: "link",
         title: "Data Model API",
         link: "/v2/resources/references/data-model",
+      },
+      {
+        type: "link",
+        title: "Service Factory",
+        link: "/v2/resources/service-factory-reference",
+      },
+      {
+        type: "link",
+        title: "Events Reference",
+        link: "/v2/resources/events-reference",
+      },
+      {
+        type: "link",
+        title: "Admin Widget Injection Zones",
+        link: "/v2/resources/admin-widget-injection-zones",
       },
     ],
   },
