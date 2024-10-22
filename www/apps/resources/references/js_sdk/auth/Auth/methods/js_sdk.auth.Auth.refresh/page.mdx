@@ -1,0 +1,26 @@
+---
+slug: /references/js-sdk/auth/refresh
+sidebar_label: refresh
+---
+
+import { TypeList } from "docs-ui"
+
+# refresh - JS SDK Auth Reference
+
+This documentation provides a reference to the `sdk.auth.refresh` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method refreshes a JWT authentication token, which is useful after validating the Oauth callback
+with [callback](../js_sdk.auth.Auth.callback/page.mdx). It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/v2/api/admin#auth\_postadminauthtokenrefresh).
+
+## Example
+
+```ts
+sdk.auth.refresh()
+.then((token) => {
+  console.log(token)
+})
+```
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The refreshed JWT authentication token.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="refresh"/>

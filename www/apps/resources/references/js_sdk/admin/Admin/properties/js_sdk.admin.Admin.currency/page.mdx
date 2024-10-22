@@ -1,0 +1,102 @@
+---
+slug: /references/js-sdk/admin/currency
+sidebar_label: currency
+---
+
+import { TypeList } from "docs-ui"
+
+# currency - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.currency` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This method retrieves a paginated list of currencies. It sends a request to the
+[List Currencies](https://docs.medusajs.com/v2/api/admin#currencies\_getcurrencies)
+API route.
+
+### Example
+
+To retrieve the list of currencies:
+
+```ts
+sdk.admin.currency.list()
+.then(({ currencies, count, limit, offset }) => {
+  console.log(currencies)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.currency.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ currencies, count, limit, offset }) => {
+  console.log(currencies)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each currency:
+
+```ts
+sdk.admin.currency.list({
+  fields: "code,symbol"
+})
+.then(({ currencies, count, limit, offset }) => {
+  console.log(currencies)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`AdminCurrencyListParams`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminCurrencyListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of currencies.","expandable":false,"children":[{"name":"AdminCurrencyListResponse","type":"`AdminCurrencyListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+___
+
+## retrieve
+
+This method retrieves a currency by its code. It sends a request to the
+[Get Currency](https://docs.medusajs.com/v2/api/admin#currencies\_getcurrenciescode) API route.
+
+### Example
+
+To retrieve a currency by its code:
+
+```ts
+sdk.admin.currency.retrieve("usd")
+.then(({ currency }) => {
+  console.log(currency)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.currency.retrieve("usd", {
+  fields: "code,symbol"
+})
+.then(({ currency }) => {
+  console.log(currency)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The currency's code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminCurrencyParams`","description":"Configure the fields to retrieve in the currency.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminCurrencyResponse&#62;","optional":false,"defaultValue":"","description":"The currency's details.","expandable":false,"children":[{"name":"AdminCurrencyResponse","type":"`AdminCurrencyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
