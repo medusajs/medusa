@@ -69,7 +69,13 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
   ) {
     try {
       const restricted = req.restrictedFields?.list()
-      const allowed = (req.allowed ?? queryConfig.allowed ?? []) as string[]
+      const allowed = queryConfig.allowed ?? []
+
+      // If any custom allowed fields are set, we add them to the allowed list along side the one configured in the query config if any
+      if (req.allowed) {
+        allowed.push(...req.allowed)
+      }
+
       delete req.allowed
       const query = normalizeQuery(req)
 
