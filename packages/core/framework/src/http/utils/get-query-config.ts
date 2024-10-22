@@ -23,6 +23,85 @@ export function pickByConfig<TModel>(
   return obj
 }
 
+function validatePotentialStarFields(fields: string[]): void | never {
+  const wrongFields = fields.filter((f) => f.endsWith(".*"))
+  if (wrongFields.length) {
+    const exampleField = `*${wrongFields[0].replace(".*", "")}`
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [${wrongFields.join(
+        ", "
+      )}] are not valid. The fields must start with a '*' (e.g ${exampleField})`
+    )
+  }
+}
+
+function checkRestrictedFields({
+  fields,
+  restricted,
+}: {
+  fields: string[]
+  restricted: string[]
+}): string[] {
+  const notAllowedFields: string[] = []
+
+  fields.forEach((field) => {
+    const fieldSegments = field.split(".")
+    const hasRestrictedField = restricted.some((restrictedField) =>
+      fieldSegments.includes(restrictedField)
+    )
+    if (hasRestrictedField) {
+      notAllowedFields.push(field)
+      return
+    }
+
+    return
+  })
+
+  return notAllowedFields
+}
+
+function checkAllowedFields({
+  fields,
+  allowed,
+  starFields,
+}: {
+  fields: string[]
+  starFields: Set<string>
+  allowed: string[]
+}): string[] {
+  const notAllowedFields: string[] = []
+
+  fields.forEach((field) => {
+    const hasAllowedField = allowed.includes(field)
+
+    if (hasAllowedField) {
+      return
+    }
+
+    // Select full relation in that case it must match an allowed field fully
+    // e.g product.variants in that case we must have a product.variants in the allowedFields
+    if (starFields.has(field)) {
+      if (hasAllowedField) {
+        return
+      }
+      notAllowedFields.push(field)
+      return
+    }
+
+    const fieldStartsWithAllowedField = allowed.some((allowedField) =>
+      field.startsWith(allowedField)
+    )
+
+    if (!fieldStartsWithAllowedField) {
+      notAllowedFields.push(field)
+      return
+    }
+  })
+
+  return notAllowedFields
+}
+
 export function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> & { restricted?: string[] } = {}
@@ -80,51 +159,23 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
     }
   })
 
-  const notAllowedFields: string[] = []
+  validatePotentialStarFields(Array.from(allFields))
+
+  let notAllowedFields: string[] = []
 
   if (allowed.length || restricted.length) {
     const fieldsToCheck = [...allFields, ...Array.from(starFields)]
 
     if (allowed.length) {
-      fieldsToCheck.forEach((field) => {
-        const hasAllowedField = allowed.includes(field)
-
-        if (hasAllowedField) {
-          return
-        }
-
-        // Select full relation in that case it must match an allowed field fully
-        // e.g product.variants in that case we must have a product.variants in the allowedFields
-        if (starFields.has(field)) {
-          if (hasAllowedField) {
-            return
-          }
-          notAllowedFields.push(field)
-          return
-        }
-
-        const fieldStartsWithAllowedField = allowed.some((allowedField) =>
-          field.startsWith(allowedField)
-        )
-
-        if (!fieldStartsWithAllowedField) {
-          notAllowedFields.push(field)
-          return
-        }
+      notAllowedFields = checkAllowedFields({
+        fields: fieldsToCheck,
+        starFields,
+        allowed,
       })
     } else if (restricted.length) {
-      // id, order, sales_channels.order, product.sales_channels.order, product.sales_channels.order.id
-      fieldsToCheck.forEach((field) => {
-        const fieldSegments = field.split(".")
-        const hasRestrictedField = restricted.some((restrictedField) =>
-          fieldSegments.includes(restrictedField)
-        )
-        if (hasRestrictedField) {
-          notAllowedFields.push(field)
-          return
-        }
-
-        return
+      notAllowedFields = checkRestrictedFields({
+        fields: fieldsToCheck,
+        restricted,
       })
     }
   }
