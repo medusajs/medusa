@@ -1,4 +1,4 @@
-import { PromotionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import {
   getPromotionStatus,
@@ -7,7 +7,7 @@ import {
 import { StatusCell as StatusCell_ } from "../../common/status-cell"
 
 type PromotionCellProps = {
-  promotion: PromotionDTO
+  promotion: HttpTypes.AdminPromotion
 }
 type StatusColors = "grey" | "orange" | "green" | "red"
 type StatusMap = Record<string, [StatusColors, string]>

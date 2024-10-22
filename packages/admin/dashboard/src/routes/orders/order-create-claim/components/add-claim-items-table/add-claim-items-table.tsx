@@ -6,6 +6,7 @@ import {
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 
+import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -30,6 +31,8 @@ export const AddClaimItemsTable = ({
   items,
   currencyCode,
 }: AddReturnItemsTableProps) => {
+  const { t } = useTranslation()
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     selectedItems.reduce((acc, id) => {
       acc[id] = true
@@ -141,11 +144,17 @@ export const AddClaimItemsTable = ({
         layout="fill"
         search
         orderBy={[
-          "product_title",
-          "variant_title",
-          "sku",
-          "returnable_quantity",
-          "refundable_amount",
+          { key: "product_title", label: t("fields.product") },
+          { key: "variant_title", label: t("fields.variant") },
+          { key: "sku", label: t("fields.sku") },
+          {
+            key: "returnable_quantity",
+            label: t("orders.fields.returnableQuantity"),
+          },
+          {
+            key: "refundable_amount",
+            label: t("orders.fields.refundableAmount"),
+          },
         ]}
         prefix={PREFIX}
         queryObject={raw}

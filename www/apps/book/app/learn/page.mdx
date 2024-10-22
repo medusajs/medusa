@@ -8,14 +8,17 @@ export const metadata = {
 
 # {pageNumber} Introduction
 
-Medusa is a digital commerce platform with a built-in framework for customizations and integrations.
+Medusa is a digital commerce platform with a built-in framework for customization.
 
-Medusa's framework includes two types of tools:
+Medusa ships with three main tools:
 
-1. Modules that provide commerce functionalities, such as Product, Order, and Cart modules.
-2. Customization tools to build your business features, such as custom data models, business logic, flows, and endpoints.
+1. A suite of commerce modules that provide core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
+2. A framework to build custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
+3. A customizable admin dashboard for merchants to configure and operate their store.
 
-With these tools, you save time you would spend with other platforms on maintaining and setting up your customizations. Instead, you rapidly build important features for your business.
+When you start Medusa the first time you get a fully fledged commerce platform with all the features you need to get off the ground.
+
+However, unlike other platforms, Medusa is built with customization in mind. You don't need to build hacky workarounds that are difficult to maintain and scale. Instead, you can focus on building features that brings your business's vision to life.
 
 --- 
 
@@ -44,13 +47,11 @@ npx create-medusa-app@rc
 
 ---
 
-## Who is Medusa for
+## Who should use Medusa
 
-Medusa is for ambitious businesses and developers that are limited by traditional ecommerce solutions:
+Medusa is for businesses with unique requirements that other digital commerce platforms can't easily support. Businesses of any size can use Medusa, from small startups to large enterprises - all it takes is a developer to manage and deploy your project.
 
-- You want rich commerce features that are customizable and flexible enough to support your business use case as if you built them from scratch.
-- You want your custom requirements built as an integral part of the commerce application’s features and architecture, rather than hacked into it.
-- You want to customize your commerce flows by integrating external services without data inconsistency and irregularity.
+Below are some stories from companies that use Medusa:
 
 <CardList items={[
   {
@@ -95,14 +96,14 @@ Medusa is for ambitious businesses and developers that are limited by traditiona
 
 ## Who is this documentation for
 
-This documentation is for TypeScript or JavaScript developers looking to master Medusa and build their commerce applications. By following this documentation, you’ll learn about Medusa’s concepts, from basic to advanced, with easy-to-follow examples to assist you along the way.
+This documentation is for developers looking to master Medusa. The documentation is structured to gradually introduce Medusa's concepts, from basic to advanced, with easy-to-follow examples to assist you along the way.
 
-By the end of this documentation, you’ll be an expert Medusa developer, leading teams using Medusa from the development till production.
+By the end of this documentation, you’ll be able to create custom commerce experiences that would otherwise take large engineering teams months to build.
 
 ### How to use the documentation
 
 The documentation for Medusa v2 is split into the following sections:
 
-1. The main documentation, which is the one you're currently viewing. It's highly recommended to follow all the chapters in this documentation before jumping into other documentation sections.
+1. The main documentation, which is the one you're currently viewing. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them.
 2. The [Development Resources documentation](!resources!) provides guides and resources useful during your development, such as tools, API references, recipes, step-by-step guides and examples, and more.
 3. The [Store](!api!/store) and [Admin](!api!/admin) API references provide a reference to the Medusa application's endpoints and instructions related to authentication, parameter types, and more.

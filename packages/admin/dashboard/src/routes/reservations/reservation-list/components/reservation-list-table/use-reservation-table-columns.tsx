@@ -30,26 +30,29 @@ export const useReservationTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("line_item", {
-        header: t("fields.order"),
-        cell: ({ getValue }) => {
-          const inventoryItem = getValue()
-
-          if (!inventoryItem || !inventoryItem.order?.display_id) {
-            return <PlaceholderCell />
-          }
-
-          return (
-            <div className="flex size-full items-center overflow-hidden">
-              <LinkButton to={`/orders/${inventoryItem.order.id}`}>
-                <span className="truncate">
-                  #{inventoryItem.order.display_id}
-                </span>
-              </LinkButton>
-            </div>
-          )
-        },
-      }),
+      /**
+       * TEMP: hide this column until a link is added
+       */
+      // columnHelper.accessor("line_item", {
+      //   header: t("fields.order"),
+      //   cell: ({ getValue }) => {
+      //     const inventoryItem = getValue()
+      //
+      //     if (!inventoryItem || !inventoryItem.order?.display_id) {
+      //       return <PlaceholderCell />
+      //     }
+      //
+      //     return (
+      //       <div className="flex size-full items-center overflow-hidden">
+      //         <LinkButton to={`/orders/${inventoryItem.order.id}`}>
+      //           <span className="truncate">
+      //             #{inventoryItem.order.display_id}
+      //           </span>
+      //         </LinkButton>
+      //       </div>
+      //     )
+      //   },
+      // }),
       columnHelper.accessor("description", {
         header: t("fields.description"),
         cell: ({ getValue }) => {

@@ -1,6 +1,13 @@
 import fs from "fs/promises"
 import { outdent } from "outdent"
-import { isIdentifier, isObjectProperty, parse, traverse } from "../babel"
+import {
+  File,
+  isIdentifier,
+  isObjectProperty,
+  parse,
+  ParseResult,
+  traverse,
+} from "../babel"
 import { logger } from "../logger"
 import {
   crawl,
@@ -118,7 +125,18 @@ async function getRouteConfig(
   file: string
 ): Promise<{ label: boolean; icon: boolean } | null> {
   const code = await fs.readFile(file, "utf-8")
-  const ast = parse(code, getParserOptions(file))
+
+  let ast: ParseResult<File> | null = null
+
+  try {
+    ast = parse(code, getParserOptions(file))
+  } catch (e) {
+    logger.error(`An error occurred while parsing the file.`, {
+      file,
+      error: e,
+    })
+    return null
+  }
 
   let config: { label: boolean; icon: boolean } | null = null
 

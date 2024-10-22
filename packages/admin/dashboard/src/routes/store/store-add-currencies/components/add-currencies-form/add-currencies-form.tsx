@@ -64,13 +64,16 @@ export const AddCurrenciesForm = ({
   const form = useForm<zod.infer<typeof AddCurrenciesSchema>>({
     defaultValues: {
       currencies: [],
-      pricePreferences: pricePreferences?.reduce((acc, curr) => {
-        if (curr.value) {
-          acc[curr.value] = curr.is_tax_inclusive
-        }
+      pricePreferences: pricePreferences?.reduce(
+        (acc, curr) => {
+          if (curr.value) {
+            acc[curr.value] = curr.is_tax_inclusive
+          }
 
-        return acc
-      }, {} as Record<string, boolean>),
+          return acc
+        },
+        {} as Record<string, boolean>
+      ),
     },
     resolver: zodResolver(AddCurrenciesSchema),
   })
@@ -192,7 +195,10 @@ export const AddCurrenciesForm = ({
             pagination
             search="autofocus"
             prefix={PREFIX}
-            orderBy={["code", "name"]}
+            orderBy={[
+              { key: "name", label: t("fields.name") },
+              { key: "code", label: t("fields.code") },
+            ]}
             isLoading={isLoading}
             queryObject={raw}
           />

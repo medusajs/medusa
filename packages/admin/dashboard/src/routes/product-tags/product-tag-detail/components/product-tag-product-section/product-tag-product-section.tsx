@@ -62,7 +62,12 @@ export const ProductTagProductSection = ({
         navigateTo={(row) => row.original.id}
         search
         pagination
-        orderBy={["title", "status", "created_at", "updated_at"]}
+        orderBy={[
+          { key: "title", label: t("fields.title") },
+          { key: "status", label: t("fields.status") },
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
       />
     </Container>
   )

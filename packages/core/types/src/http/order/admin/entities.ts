@@ -32,10 +32,25 @@ export interface AdminOrderChange
     BaseOrderChange,
     "order" | "claim" | "return_order" | "exchange" | "actions"
   > {
+  /**
+   * The order's details.
+   */
   order: AdminOrder
+  /**
+   * The claim's details.
+   */
   claim: AdminClaim
+  /**
+   * The return's details.
+   */
   return_order: AdminReturn
+  /**
+   * The exchange's details.
+   */
   exchange: AdminExchange
+  /**
+   * The order change action's details.
+   */
   actions: AdminOrderChangeAction[]
 }
 
@@ -54,7 +69,13 @@ export interface AdminOrderItem {
 
 export interface AdminOrderChangeAction
   extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
+  /**
+   * The order change's details.
+   */
   order_change: AdminOrderChange
+  /**
+   * The order's details.
+   */
   order: AdminOrder | null
 }
 
@@ -87,9 +108,21 @@ export interface AdminOrderShippingMethod extends BaseOrderShippingMethod {}
 
 export interface AdminOrderPreview
   extends Omit<AdminOrder, "items" | "shipping_methods"> {
+  /**
+   * The total amount for the items requested to be returned.
+   */
   return_requested_total: number
+  /**
+   * The details of the changes on the order.
+   */
   order_change: AdminOrderChange
+  /**
+   * The order's items.
+   */
   items: (AdminOrderLineItem & { actions?: AdminOrderChangeAction[] })[]
+  /**
+   * The order's shipping methods.
+   */
   shipping_methods: (AdminOrderShippingMethod & {
     actions?: AdminOrderChangeAction[]
   })[]

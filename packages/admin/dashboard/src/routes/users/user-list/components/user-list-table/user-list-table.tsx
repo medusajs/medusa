@@ -55,7 +55,11 @@ export const UserListTable = () => {
         count={count}
         pageSize={PAGE_SIZE}
         isLoading={isLoading}
-        orderBy={["email", "first_name", "last_name"]}
+        orderBy={[
+          { key: "email", label: t("fields.email") },
+          { key: "first_name", label: t("fields.firstName") },
+          { key: "last_name", label: t("fields.lastName") },
+        ]}
         navigateTo={(row) => `${row.id}`}
         search
         pagination

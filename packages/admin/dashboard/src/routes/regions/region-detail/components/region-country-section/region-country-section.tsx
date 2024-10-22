@@ -120,7 +120,10 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
         columns={columns}
         pageSize={PAGE_SIZE}
         count={count}
-        orderBy={["name", "code"]}
+        orderBy={[
+          { key: "display_name", label: t("fields.name") },
+          { key: "iso_2", label: t("fields.code") },
+        ]}
         search
         pagination
         queryObject={raw}
