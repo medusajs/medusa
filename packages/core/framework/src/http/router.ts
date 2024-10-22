@@ -245,7 +245,7 @@ export class ApiRoutesLoader {
   static traceMiddleware?: (
     handler: RequestHandler | MiddlewareFunction,
     route: { route: string; method?: string }
-  ) => RequestHandler
+  ) => RequestHandler | MiddlewareFunction
 
   constructor({
     app,
@@ -590,14 +590,15 @@ export class ApiRoutesLoader {
    * Applies middleware that checks if a valid publishable key is set on store request
    */
   applyStorePublishableKeyMiddleware(route: string) {
-    let middleware =
-      ensurePublishableApiKeyMiddleware as unknown as RequestHandler
+    let middleware = ensurePublishableApiKeyMiddleware as unknown as
+      | RequestHandler
+      | MiddlewareFunction
 
     if (ApiRoutesLoader.traceMiddleware) {
       middleware = ApiRoutesLoader.traceMiddleware(middleware, { route: route })
     }
 
-    this.#router.use(route, middleware)
+    this.#router.use(route, middleware as RequestHandler)
   }
 
   /**
@@ -610,7 +611,9 @@ export class ApiRoutesLoader {
     authType: AuthType | AuthType[],
     options?: { allowUnauthenticated?: boolean; allowUnregistered?: boolean }
   ) {
-    let authenticateMiddleware = authenticate(actorType, authType, options)
+    let authenticateMiddleware: RequestHandler | MiddlewareFunction =
+      authenticate(actorType, authType, options)
+
     if (ApiRoutesLoader.traceMiddleware) {
       authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
         authenticateMiddleware,
@@ -618,7 +621,7 @@ export class ApiRoutesLoader {
       )
     }
 
-    this.#router.use(route, authenticateMiddleware)
+    this.#router.use(route, authenticateMiddleware as RequestHandler)
   }
 
   /**
