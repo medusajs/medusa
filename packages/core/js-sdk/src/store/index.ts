@@ -1071,7 +1071,7 @@ export class Store {
      *   },
      *   {},
      *   {
-     *     authorization: `Bearer ${token}`
+     *     Authorization: `Bearer ${token}`
      *   }
      * )
      * .then(({ customer }) => {
