@@ -85,7 +85,7 @@ type CreateBrandsInput = {
 }
 
 export const createBrandsStep = createStep(
-  "create-brand-step",
+  "create-brands-step",
   async (input: CreateBrandsInput, { container }) => {
     const brandModuleService: BrandModuleService = container.resolve(
       BRAND_MODULE
@@ -142,7 +142,7 @@ type UpdateBrandsInput = {
 }
 
 export const updateBrandsStep = createStep(
-  "update-brand-step",
+  "update-brands-step",
   async ({ brands }: UpdateBrandsInput, { container }) => {
     const brandModuleService: BrandModuleService = container.resolve(
       BRAND_MODULE
