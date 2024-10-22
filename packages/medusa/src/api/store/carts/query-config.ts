@@ -1,3 +1,4 @@
+// TODO: Global todo, review all default fields to prevent over fetching by default
 export const defaultStoreCartFields = [
   "id",
   "currency_code",
@@ -33,8 +34,13 @@ export const defaultStoreCartFields = [
   "promotions.application_method.value",
   "promotions.application_method.type",
   "promotions.application_method.currency_code",
+  "items",
+  "items.thumbnail",
+  "region",
   "items.id",
+  "items.product",
   "items.product.id",
+  "items.variant",
   "items.variant_id",
   "items.product_id",
   "items.product.categories.id",
@@ -120,13 +126,5 @@ export const defaultStoreCartFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
-  allowed: [
-    ...defaultStoreCartFields.map((f) => f.replace("*", "")),
-    "items",
-    "items.product",
-    "items.variant",
-    "items.thumbnail",
-    "region",
-  ],
   isList: false,
 }

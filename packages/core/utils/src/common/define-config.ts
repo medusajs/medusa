@@ -23,10 +23,10 @@ const DEFAULT_ADMIN_CORS =
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
-  "customer",
+  /*"customer",
   "customers",
   "payment_collection",
-  "payment_collections",
+  "payment_collections"*/
 ]
 
 type InternalModuleDeclarationOverride = InternalModuleDeclaration & {

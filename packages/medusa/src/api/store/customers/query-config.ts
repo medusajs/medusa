@@ -42,9 +42,6 @@ export const defaultStoreCustomerAddressFields = [
 
 export const retrieveAddressTransformQueryConfig = {
   defaults: defaultStoreCustomerAddressFields,
-  allowed: [
-    ...defaultStoreCustomerAddressFields.map((f) => f.replace("*", "")),
-  ],
   isList: false,
 }
 

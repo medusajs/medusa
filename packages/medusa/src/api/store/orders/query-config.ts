@@ -58,10 +58,6 @@ export const defaultStoreRetrieveOrderFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreRetrieveOrderFields,
-  allowed: [
-    ...defaultStoreRetrieveOrderFields.map((f) => f.replace("*", "")),
-    "payment_collections.payments",
-  ],
   isList: false,
 }
 
