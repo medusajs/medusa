@@ -301,7 +301,8 @@ export class Client {
     const hasSession = hasStorage("sessionStorage")
 
     const storageMethod =
-      this.config.auth?.jwtTokenStorageMethod || (hasLocal ? "local" : "memory")
+      this.config.auth?.jwtTokenStorageMethod ||
+      (hasLocal ? "local" : "nostore")
     const storageKey =
       this.config.auth?.jwtTokenStorageKey || this.DEFAULT_JWT_STORAGE_KEY
 
