@@ -23,19 +23,6 @@ export function pickByConfig<TModel>(
   return obj
 }
 
-function validatePotentialStarFields(fields: string[]): void | never {
-  const wrongFields = fields.filter((f) => f.endsWith(".*"))
-  if (wrongFields.length) {
-    const exampleField = `*${wrongFields[0].replace(".*", "")}`
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Requested fields [${wrongFields.join(
-        ", "
-      )}] are not valid. The fields must start with a '*' (e.g ${exampleField})`
-    )
-  }
-}
-
 function checkRestrictedFields({
   fields,
   restricted,
@@ -131,7 +118,8 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
           field.startsWith("-") ||
           field.startsWith("+") ||
           field.startsWith(" ") ||
-          field.startsWith("*")
+          field.startsWith("*") ||
+          field.endsWith(".*")
         )
       })
 
@@ -153,13 +141,11 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
   }
 
   allFields.forEach((field) => {
-    if (field.startsWith("*")) {
-      starFields.add(field.replace(/^\*/, ""))
+    if (field.startsWith("*") || field.endsWith(".*")) {
+      starFields.add(field.replace(/(^\*|\.\*$)/, ""))
       allFields.delete(field)
     }
   })
-
-  validatePotentialStarFields(Array.from(allFields))
 
   let notAllowedFields: string[] = []
 
