@@ -300,14 +300,22 @@ export type RawRounding = {
  */
 export type QueryConfig<TEntity> = {
   /**
-   * Default fields and relations to return
+   * Default fields and relations to return.
+   * use `*` to select all fields and relations (e.g *products will select all products properties)
    */
   defaults?: (keyof TEntity | string)[]
   /**
-   * Fields and relations that are allowed to be requested
+   * Fields and relations that are allowed to be requested.
+   * Synbol such as `*`, `+` and `-` should be removed as they dont make sense for
+   * the authorization search.
    */
   allowed?: string[]
   defaultLimit?: number
+  /**
+   * If the route that will use that configuration is supposed to return a list of entities. This
+   * will change the configuration that will be created on req.listConfig and req.remoteQueryConfig (among
+   * other things it will include pagination and sorting)
+   */
   isList?: boolean
 }
 
