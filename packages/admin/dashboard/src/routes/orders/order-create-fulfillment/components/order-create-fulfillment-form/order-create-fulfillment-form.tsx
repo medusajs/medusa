@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -8,7 +8,6 @@ import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import { OrderLineItemDTO } from "@medusajs/types"
-import { useSearchParams } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
@@ -20,6 +19,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { CreateFulfillmentSchema } from "./constants"
 import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
+import { useReservationItems } from "../../../../../hooks/api"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -32,10 +32,19 @@ export function OrderCreateFulfillmentForm({
 }: OrderCreateFulfillmentFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [searchParams] = useSearchParams()
 
   const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
     useCreateOrderFulfillment(order.id)
+
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
+
+  const itemReservedQuantitiesMap = useMemo(
+    () =>
+      new Map((reservations || []).map((r) => [r.line_item_id, r.quantity])),
+    [reservations]
+  )
 
   const [fulfillableItems, setFulfillableItems] = useState(() =>
     (order.items || []).filter(
@@ -246,6 +255,9 @@ export function OrderCreateFulfillmentForm({
                             form={form}
                             item={item}
                             locationId={selectedLocationId}
+                            itemReservedQuantitiesMap={
+                              itemReservedQuantitiesMap
+                            }
                           />
                         )
                       })}
