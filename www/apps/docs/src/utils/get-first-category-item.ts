@@ -1,7 +1,7 @@
 import {
   findSidebarCategory,
   useDocsSidebar,
-} from "@docusaurus/theme-common/internal"
+} from "@docusaurus/plugin-content-docs/client"
 import { PropSidebarItem } from "@docusaurus/plugin-content-docs"
 
 type Options = {

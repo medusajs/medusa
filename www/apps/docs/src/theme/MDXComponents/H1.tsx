@@ -1,7 +1,7 @@
 import React from "react"
 import type { Props } from "@theme/MDXComponents/Heading"
 import MDXHeading from "@theme/MDXComponents/Heading"
-import { useDoc } from "@docusaurus/theme-common/internal"
+import { useDoc } from "@docusaurus/plugin-content-docs/client"
 import { DocContextValue } from "@medusajs/docs"
 import { Badge, BadgeVariant } from "docs-ui"
 import clsx from "clsx"

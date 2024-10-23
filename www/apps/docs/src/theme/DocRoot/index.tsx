@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import React from "react"
 import clsx from "clsx"
 import {
@@ -7,7 +14,7 @@ import {
 import {
   DocsSidebarProvider,
   useDocRootMetadata,
-} from "@docusaurus/theme-common/internal"
+} from "@docusaurus/plugin-content-docs/client"
 import DocRootLayout from "@theme/DocRoot/Layout"
 import NotFoundContent from "@theme/NotFound/Content"
 import type { Props } from "@theme/DocRoot"
