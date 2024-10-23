@@ -6,5 +6,12 @@
   "framework": "nextjs",
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/v2",
+      "permanent": false
+    }
+  ]
 }
