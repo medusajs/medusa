@@ -52,7 +52,7 @@ For requests that use the cart, it's also assumed you already have [used CartPro
 
 Customers should be able to see the list of available regions and select their region.
 
-You can retrieve available regions by sending a request to the [List Regions API Route](https://docs.medusajs.com/api/store#regions_getregions):
+You can retrieve available regions by sending a request to the [List Regions API Route](https://docs.medusajs.com/v1/api/store#regions_getregions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -118,7 +118,7 @@ When a customer selects a region, you should store that region’s ID. You’ll 
 
 ## Show Product Prices Based on the Selected Region
 
-To retrieve products with the prices based on the selected regions, you can pass the `region_id` query parameter to the [List Products](https://docs.medusajs.com/api/store#products_getproducts) or [Get a Product](https://docs.medusajs.com/api/store#products_getproductsproduct) API Routes.
+To retrieve products with the prices based on the selected regions, you can pass the `region_id` query parameter to the [List Products](https://docs.medusajs.com/v1/api/store#products_getproducts) or [Get a Product](https://docs.medusajs.com/v1/api/store#products_getproductsproduct) API Routes.
 
 For example:
 
@@ -177,7 +177,7 @@ For example:
 
 In this example, you send a request to the List Products API Route, passing it the `region_id` query parameter. It is assumed that you have the ID of the region stored in the variable `regionId`.
 
-This request returns the list of products along with [pagination fields](https://docs.medusajs.com/api/store#pagination). The prices of the products are based on the selected region.
+This request returns the list of products along with [pagination fields](https://docs.medusajs.com/v1/api/store#pagination). The prices of the products are based on the selected region.
 
 ---
 
@@ -250,6 +250,6 @@ For example:
   </TabItem>
 </Tabs>
 
-In this example, you send a request to the [Update Cart API Route](https://docs.medusajs.com/api/store#carts_postcartscart). In the request’s body, you pass the parameter `region_id` and set its value to the selected region’s ID. It is assumed that you have the ID of the region stored in the variable `regionId`.
+In this example, you send a request to the [Update Cart API Route](https://docs.medusajs.com/v1/api/store#carts_postcartscart). In the request’s body, you pass the parameter `region_id` and set its value to the selected region’s ID. It is assumed that you have the ID of the region stored in the variable `regionId`.
 
 This request returns the full object of the updated cart.

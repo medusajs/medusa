@@ -1,6 +1,6 @@
 # Medusa Documentation
 
-The Medusa documentation website is built with Docusaurus v2. You can learn more about contributing [here](https://docs.medusajs.com/contribution-guidelines).
+The Medusa documentation website is built with Docusaurus v2. You can learn more about contributing [here](https://docs.medusajs.com/v1/contribution-guidelines).
 
 ## Components and Theme
 

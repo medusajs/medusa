@@ -52,7 +52,7 @@ It's also assumed you already have [used CartProvider higher in your component t
 
 ### Previous Steps
 
-This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](https://docs.medusajs.com/api/store#carts_postcart) for the customer with at least [one product in it](https://docs.medusajs.com/api/store#carts_postcartscartlineitems).
+This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](https://docs.medusajs.com/v1/api/store#carts_postcart) for the customer with at least [one product in it](https://docs.medusajs.com/v1/api/store#carts_postcartscartlineitems).
 
 You can learn how to implement the cart flow using [this documentation](../../../modules/carts-and-checkout/storefront/implement-cart.mdx).
 
@@ -62,7 +62,7 @@ You can learn how to implement the cart flow using [this documentation](../../..
 
 The customer can enter a discount code during the checkout flow to benefit from a promotion.
 
-You can add a discount to a customer’s cart by sending the [Update Cart request](https://docs.medusajs.com/api/store#carts_postcartscart):
+You can add a discount to a customer’s cart by sending the [Update Cart request](https://docs.medusajs.com/v1/api/store#carts_postcartscart):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -253,7 +253,7 @@ The returned `cart` object has the following properties that can be used to disp
 
 The customer can choose to remove a discount from their cart.
 
-You can remove a discount from a customer’s cart using the [Remove Discount request](https://docs.medusajs.com/api/store#carts_deletecartscartdiscountsdiscount):
+You can remove a discount from a customer’s cart using the [Remove Discount request](https://docs.medusajs.com/v1/api/store#carts_deletecartscartdiscountsdiscount):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>

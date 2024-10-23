@@ -646,7 +646,7 @@ const paths: LearningPathType[] = [
                 Nuxt storefront.
               </li>
               <li>
-                <Link href={`https://docs.medusajs.com/api/store`}>
+                <Link href={`https://docs.medusajs.com/v1/api/store`}>
                   Store REST APIs
                 </Link>
                 : You can send requests directly to the API Routes without using
@@ -730,7 +730,7 @@ const paths: LearningPathType[] = [
               </li>
               <li>
                 You can also checkout the{" "}
-                <Link href={`https://docs.medusajs.com/api/store`}>
+                <Link href={`https://docs.medusajs.com/v1/api/store`}>
                   Store REST APIs
                 </Link>{" "}
                 for a full list of available REST APIs.

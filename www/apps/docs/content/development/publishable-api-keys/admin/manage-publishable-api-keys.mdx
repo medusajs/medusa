@@ -55,13 +55,13 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/v1/api/admin#authentication).
 
 ---
 
 ## List Publishable API Keys
 
-You can retrieve a list of publishable API keys by sending a request to the [List Publishable API Keys route](https://docs.medusajs.com/api/admin#publishable-api-keys_getpublishableapikeys):
+You can retrieve a list of publishable API keys by sending a request to the [List Publishable API Keys route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_getpublishableapikeys):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -133,7 +133,7 @@ You can retrieve a list of publishable API keys by sending a request to the [Lis
   </TabItem>
 </Tabs>
 
-This request does not require any path parameters. You can pass it optional query parameters related to expanding fields and pagination, which you can check out in the [API reference](https://docs.medusajs.com/api/admin#publishable-api-keys_getpublishableapikeys).
+This request does not require any path parameters. You can pass it optional query parameters related to expanding fields and pagination, which you can check out in the [API reference](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_getpublishableapikeys).
 
 This request returns the following data in the response:
 
@@ -144,7 +144,7 @@ This request returns the following data in the response:
 
 :::note
 
-You can learn more about pagination in the [API reference](https://docs.medusajs.com/api/admin#pagination).
+You can learn more about pagination in the [API reference](https://docs.medusajs.com/v1/api/admin#pagination).
 
 :::
 
@@ -152,7 +152,7 @@ You can learn more about pagination in the [API reference](https://docs.medusajs
 
 ## Create a Publishable API Key
 
-You can create a publishable API key by sending a request to the [Create Publishable API Key route](https://docs.medusajs.com/api/admin#publishable-api-keys_postpublishableapikeys):
+You can create a publishable API key by sending a request to the [Create Publishable API Key route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_postpublishableapikeys):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -235,7 +235,7 @@ It returns the created publishable API key in the response.
 
 ## Update a Publishable API Key
 
-You can update a publishable API key’s details by sending a request to the [Update Publishable API Key route](https://docs.medusajs.com/api/admin#publishable-api-keys_postpublishableapikyspublishableapikey):
+You can update a publishable API key’s details by sending a request to the [Update Publishable API Key route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_postpublishableapikyspublishableapikey):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -330,7 +330,7 @@ This request returns the update publishable API key object in the response.
 
 Revoking a publishable API key does not remove it, but does not allow using it in future requests.
 
-You can revoke a publishable API key by sending a request to the [Revoke Publishable API Key route](https://docs.medusajs.com/api/admin#publishable-api-keys_postpublishableapikeyspublishableapikeyrevoke):
+You can revoke a publishable API key by sending a request to the [Revoke Publishable API Key route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_postpublishableapikeyspublishableapikeyrevoke):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -410,7 +410,7 @@ This request requires the ID of the publishable API key as a path parameter. It 
 
 ## Delete a Publishable API Key
 
-You can delete a publishable API key by sending a request to the [Delete Publishable API Key route](https://docs.medusajs.com/api/admin#publishable-api-keys_deletepublishableapikeyspublishableapikey):
+You can delete a publishable API key by sending a request to the [Delete Publishable API Key route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_deletepublishableapikeyspublishableapikey):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -497,7 +497,7 @@ This section covers how to manage sales channels in a publishable API key. This 
 
 ### List Sales Channels of a Publishable API Key
 
-You can retrieve the list of sales channels associated with a publishable API key by sending a request to the [List Sales Channels API Route](https://docs.medusajs.com/api/admin#sales-channels_getsaleschannels):
+You can retrieve the list of sales channels associated with a publishable API key by sending a request to the [List Sales Channels API Route](https://docs.medusajs.com/v1/api/admin#sales-channels_getsaleschannels):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -585,7 +585,7 @@ It returns an array of sales channels associated with the publishable API key in
 
 ### Add Sales Channels to Publishable API Key
 
-You can add a sales channel to a publishable API key by sending a request to the [Add Sales Channels API Route](https://docs.medusajs.com/api/admin#publishable-api-keys_postpublishableapikeysaleschannelschannelsbatch):
+You can add a sales channel to a publishable API key by sending a request to the [Add Sales Channels API Route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_postpublishableapikeysaleschannelschannelsbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -705,7 +705,7 @@ This request returns the updated publishable API key in the response.
 
 ### Delete Sales Channels from a Publishable API Key
 
-You can delete a sales channel from a publishable API key by sending a request to the [Delete Sales Channels API Route](https://docs.medusajs.com/api/admin#publishable-api-keys_deletepublishableapikeysaleschannelschannelsbatch):
+You can delete a sales channel from a publishable API key by sending a request to the [Delete Sales Channels API Route](https://docs.medusajs.com/v1/api/admin#publishable-api-keys_deletepublishableapikeysaleschannelschannelsbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>

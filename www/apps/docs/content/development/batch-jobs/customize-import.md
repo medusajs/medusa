@@ -103,7 +103,7 @@ npm run build
 
 Since you didn’t create a new batch job type and overwrote the functionality of the strategy, you can test out your functionality using the [same steps used with the default strategy](./create.mdx#test-your-batch-job-strategy).
 
-Specifically, since you create batch jobs using the [Create Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs) which accepts the batch job type as a body parameter, you just need to send the same type you used for this field. In the example of this documentation, the `type` would be `product-import`.
+Specifically, since you create batch jobs using the [Create Batch Job API Route](https://docs.medusajs.com/v1/api/admin#batch-jobs_postbatchjobs) which accepts the batch job type as a body parameter, you just need to send the same type you used for this field. In the example of this documentation, the `type` would be `product-import`.
 
 If you overwrote the import functionality, you can follow [these steps to learn how to import products using the Admin APIs](../../modules/products/admin/import-products.mdx).
 
@@ -111,7 +111,7 @@ If you overwrote the import functionality, you can follow [these steps to learn 
 
 ## Create Custom Batch Job Strategy
 
-If you don’t want to override Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs).
+If you don’t want to override Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](https://docs.medusajs.com/v1/api/admin#batch-jobs_postbatchjobs).
 
 For more details on creating custom batch job strategies, please check out the [Create Batch Job Strategy documentation](./create.mdx).
 

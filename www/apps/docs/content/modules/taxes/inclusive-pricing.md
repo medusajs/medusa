@@ -31,7 +31,7 @@ Then, Medusa handles calculating the tax amount using the tax rate and the tax-i
 
 Tax inclusivity can be toggled for regions, currencies, price lists, and shipping options either during creation or while editing. This is represented by the boolean attribute `includes_tax` available in the entities `Region`, `Currency`, `PriceList`, and `ShippingOption`. By default, this attribute is set to `false`.
 
-If you want to enable or disable this attribute for any of these entities, you can use the create or update API Routes related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
+If you want to enable or disable this attribute for any of these entities, you can use the create or update API Routes related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/v1/api/admin/).
 
 The value set for these entities can affect whether line items and shipping methods are tax inclusive or not.
 
@@ -88,7 +88,7 @@ If you have disabled the automatic calculation of taxes in a region, you must [m
 
 ### Products
 
-Taxes are calculated for each product variant either when a [single product is retrieved](https://docs.medusajs.com/api/store#products_getproductsproduct) or a [list of products is retrieved](https://docs.medusajs.com/api/store#products_getproducts).
+Taxes are calculated for each product variant either when a [single product is retrieved](https://docs.medusajs.com/v1/api/store#products_getproductsproduct) or a [list of products is retrieved](https://docs.medusajs.com/v1/api/store#products_getproducts).
 
 Among the pricing fields retrieved for each variant, the following fields are relevant to taxes:
 
@@ -148,7 +148,7 @@ Here is an example of these fields when tax inclusivity is enabled for both the 
 
 ### Line Item
 
-The taxes of line items are calculated and retrieved whenever the [cart is retrieved or updated](https://docs.medusajs.com/api/store#carts).
+The taxes of line items are calculated and retrieved whenever the [cart is retrieved or updated](https://docs.medusajs.com/v1/api/store#carts).
 
 Each line item returned in any of the cart’s requests has total fields related to the price of the line item and its taxes. Among those fields, the following are relevant to tax-inclusive pricing:
 
@@ -172,7 +172,7 @@ Finally, `original_tax_total` undergoes the same `tax_total` calculation, howeve
 
 ### Shipping Options
 
-Taxes for Shipping Options are calculated and retrieved when the [list of shipping options is retrieved](https://docs.medusajs.com/api/store#shipping-options).
+Taxes for Shipping Options are calculated and retrieved when the [list of shipping options is retrieved](https://docs.medusajs.com/v1/api/store#shipping-options).
 
 Among the returned fields for each shipping option, the following are relevant to each of their pricing and taxes:
 
@@ -186,9 +186,9 @@ If tax inclusivity is enabled for the shipping option, `amount` and `price_incl_
 
 Carts and Orders have the same total fields relevant for taxes.
 
-A cart’s totals, including its taxes, are calculated and retrieved whenever the cart is [updated or retrieved](https://docs.medusajs.com/api/store#carts).
+A cart’s totals, including its taxes, are calculated and retrieved whenever the cart is [updated or retrieved](https://docs.medusajs.com/v1/api/store#carts).
 
-An order’s totals, including its taxes, are calculated and retrieved whenever the order is retrieved both on the [storefront](https://docs.medusajs.com/api/store#orders) and on the [admin](https://docs.medusajs.com/api/admin#orders).
+An order’s totals, including its taxes, are calculated and retrieved whenever the order is retrieved both on the [storefront](https://docs.medusajs.com/v1/api/store#orders) and on the [admin](https://docs.medusajs.com/v1/api/admin#orders).
 
 The relevant fields are:
 

@@ -29,7 +29,7 @@ The API Route for PayPal webhook integration with your Medusa backend should be 
 
 Additionally, you need a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx) to get started.
 
-You also need [Medusa Admin](../../admin/quickstart.mdx) installed to enable PayPal as a payment processor. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin).
+You also need [Medusa Admin](../../admin/quickstart.mdx) installed to enable PayPal as a payment processor. You can alternatively use the [REST APIs](https://docs.medusajs.com/v1/api/admin).
 
 ---
 
@@ -258,8 +258,8 @@ Here’s briefly what this code snippet does:
 3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProcessor` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added. The PayPal button uses `id` provided from backend to inject total amount with currency.
 4. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 5. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed.
-6. In the fulfillment function, you first ensure that the payment session for the PayPal payment processor is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession). Then, you send a request to the backend to [update the payment session](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionupdate) data with the authorization data received from PayPal.
-7. You then [complete the cart and place the order](https://docs.medusajs.com/api/store#carts_postcartscartcomplete). If that is done successfully, you just show a success alert. You can change this based on the behavior you want in your storefront.
+6. In the fulfillment function, you first ensure that the payment session for the PayPal payment processor is set as the [selected Payment Session in the cart](https://docs.medusajs.com/v1/api/store#carts_postcartscartpaymentsession). Then, you send a request to the backend to [update the payment session](https://docs.medusajs.com/v1/api/store#carts_postcartscartpaymentsessionupdate) data with the authorization data received from PayPal.
+7. You then [complete the cart and place the order](https://docs.medusajs.com/v1/api/store#carts_postcartscartcomplete). If that is done successfully, you just show a success alert. You can change this based on the behavior you want in your storefront.
 
 You can then import this component where you want to show it in your storefront.
 

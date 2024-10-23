@@ -38,7 +38,7 @@ The methods of the payment processor are used at different points in the Checkou
 The `PaymentProvider` entity has 2 properties: `id` and `is_installed`. The `identifier` property in the payment processor service is used when the payment processor is added to the database.
 
 The value of this property is also used to reference the payment processor throughout Medusa.
-For example, it is used to [add a payment processor](https://docs.medusajs.com/api/admin#regions\_postregionsregionpaymentproviders) to a region.
+For example, it is used to [add a payment processor](https://docs.medusajs.com/v1/api/admin#regions\_postregionsregionpaymentproviders) to a region.
 
 ```ts
 class MyPaymentService extends AbstractPaymentProcessor {
@@ -109,7 +109,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
 ### initiatePayment
 
-This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts\_postcartscartpaymentsession),
+This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/v1/api/store#carts\_postcartscartpaymentsession),
 which occurs when the customer selects their preferred payment method during checkout.
 
 It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer.
@@ -154,8 +154,8 @@ class MyPaymentService extends AbstractPaymentProcessor {
 ### updatePayment
 
 This method is used to update the payment session when the payment amount changes. It's called whenever the cart or any of its related data is updated.
-For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts\_postcartscartlineitems) or when a
-[shipping method is selected](https://docs.medusajs.com/api/store#carts\_postcartscartshippingmethod).
+For example, when a [line item is added to the cart](https://docs.medusajs.com/v1/api/store#carts\_postcartscartlineitems) or when a
+[shipping method is selected](https://docs.medusajs.com/v1/api/store#carts\_postcartscartshippingmethod).
 
 #### Example
 
@@ -202,7 +202,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.
 
-This method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments\_postpaymentspaymentrefunds).
+This method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/v1/api/admin#payments\_postpaymentspaymentrefunds).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
 
@@ -246,7 +246,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 ### authorizePayment
 
 This method is used to authorize payment using the Payment Session of an order. This is called when the
-[cart is completed](https://docs.medusajs.com/api/store#carts\_postcartscartcomplete) and before the order is created.
+[cart is completed](https://docs.medusajs.com/v1/api/store#carts\_postcartscartcomplete) and before the order is created.
 
 This method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.
 You can interact with a third-party provider and perform any actions necessary to authorize the payment.
@@ -316,7 +316,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
 
-This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments\_postpaymentspaymentcapture).
+This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/v1/api/admin#payments\_postpaymentspaymentcapture).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
 
@@ -360,8 +360,8 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
 
-1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store#carts\_deletecartscartpaymentsessionssession).
-2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store#carts\_postcartscartpaymentsessionssession). The Payment Session is deleted so that a newer one is initialized instead.
+1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/v1/api/store#carts\_deletecartscartpaymentsessionssession).
+2. When the [Payment Session is refreshed](https://docs.medusajs.com/v1/api/store#carts\_postcartscartpaymentsessionssession). The Payment Session is deleted so that a newer one is initialized instead.
 3. When the Payment Processor is no longer available. This generally happens when the store operator removes it from the available Payment Processor in the admin.
 4. When the region of the store is changed based on the cart information and the Payment Processor is not available in the new region.
 
@@ -518,7 +518,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 ### updatePaymentData
 
 This method is used to update the `data` field of a payment session. It's called when a request is sent to the
-[Update Payment Session API Route](https://docs.medusajs.com/api/store#carts\_postcartscartpaymentsessionupdate), or when the `CartService`'s `updatePaymentSession` is used.
+[Update Payment Session API Route](https://docs.medusajs.com/v1/api/store#carts\_postcartscartpaymentsessionupdate), or when the `CartService`'s `updatePaymentSession` is used.
 
 This method can also be used to update the data in the third-party payment provider, if necessary.
 

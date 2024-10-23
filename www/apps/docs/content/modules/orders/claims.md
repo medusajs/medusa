@@ -32,11 +32,11 @@ There are other important attributes discussed in later sections. Check out the 
 
 Claims are created in Medusa by an admin (typically a merchant). They are created on an order, and depending on the claim’s type the admin can specify details like the amount to be refunded, or the items to be returned and the new items to replace them.
 
-You can create a claim either using the [Create Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaims) or using the `ClaimService`'s [create method](../../references/services/classes/services.ClaimService.mdx#create). This section explains the process within the Create Claim API Route, with a focus on the `create` method.
+You can create a claim either using the [Create Claim API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderclaims) or using the `ClaimService`'s [create method](../../references/services/classes/services.ClaimService.mdx#create). This section explains the process within the Create Claim API Route, with a focus on the `create` method.
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a claim. It is generated when the claim creation process is started by the admin using the [Create Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaims) and can be used to retry the claim creation safely if an error occurs. The idempotency key is stored in the `ClaimOrder` entity in the attribute `idempotency_key`.
+An Idempotency Key is a unique key associated with a claim. It is generated when the claim creation process is started by the admin using the [Create Claim API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderclaims) and can be used to retry the claim creation safely if an error occurs. The idempotency key is stored in the `ClaimOrder` entity in the attribute `idempotency_key`.
 
 You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
@@ -63,7 +63,7 @@ The following flow is implemented within the Create Claim API Route:
 
 If a claim’s type is `replace`, an admin can create a [fulfillment](./fulfillments.md) for the additional items that should be sent to the customer.
 
-A fulfillment can be created either using the [Create Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimfulfillments) or the `ClaimService`'s [createFulfillment method](../../references/services/classes/services.ClaimService.mdx#createfulfillment).
+A fulfillment can be created either using the [Create Claim Fulfillment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderclaimsclaimfulfillments) or the `ClaimService`'s [createFulfillment method](../../references/services/classes/services.ClaimService.mdx#createfulfillment).
 
 :::note
 
@@ -73,9 +73,9 @@ The API Route handles updating the inventory and reservations. So, if you choose
 
 By default, when a fulfillment is created, the claim’s `fulfillment_status` is set to `fulfilled`. However, if any of the item’s quantity isn’t fulfilled successfully, the `fulfillment_status` is set to `requires_action`.
 
-After creating a fulfillment, you can create a shipment for the fulfillment either using the [Create Claim Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimshipments) or the `ClaimService`'s [createShipment method](../../references/services/classes/services.ClaimService.mdx#createshipment). If only some of the items and their quantities are shipped, the `fulfillment_status` of the claim is set to `partially_shipped`. Otherwise, if all items and quantities are shipped, the `fulfillment_status` of the claim is set to `shipped`.
+After creating a fulfillment, you can create a shipment for the fulfillment either using the [Create Claim Shipment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderclaimsclaimshipments) or the `ClaimService`'s [createShipment method](../../references/services/classes/services.ClaimService.mdx#createshipment). If only some of the items and their quantities are shipped, the `fulfillment_status` of the claim is set to `partially_shipped`. Otherwise, if all items and quantities are shipped, the `fulfillment_status` of the claim is set to `shipped`.
 
-You can alternatively cancel a fulfillment either using the [Cancel Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#tag/Orders/operation/PostOrdersClaimFulfillmentsCancel) or the `ClaimService`'s [cancelFulfillment method](../../references/services/classes/services.ClaimService.mdx#cancelfulfillment). This would change the `fulfillment_status` of the claim to `canceled`.
+You can alternatively cancel a fulfillment either using the [Cancel Claim Fulfillment API Route](https://docs.medusajs.com/v1/api/admin#tag/Orders/operation/PostOrdersClaimFulfillmentsCancel) or the `ClaimService`'s [cancelFulfillment method](../../references/services/classes/services.ClaimService.mdx#cancelfulfillment). This would change the `fulfillment_status` of the claim to `canceled`.
 
 ---
 
@@ -87,7 +87,7 @@ A claim's return can be marked as received, which would adjust the inventory and
 
 ## Cancel a Claim
 
-An admin can cancel a claim if it hasn’t been refunded either using the [Cancel Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersclaimcancel) or the `ClaimService`'s [cancel method](../../references/services/classes/services.ClaimService.mdx#cancel).
+An admin can cancel a claim if it hasn’t been refunded either using the [Cancel Claim API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersclaimcancel) or the `ClaimService`'s [cancel method](../../references/services/classes/services.ClaimService.mdx#cancel).
 
 If any fulfillments were created, they must be canceled first. Similarly, if the claim is associated with a return, the return must be canceled first.
 

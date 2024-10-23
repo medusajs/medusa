@@ -129,7 +129,7 @@ To test the plugin, run the following command in the directory of the Medusa bac
 npx medusa develop
 ```
 
-Then, place an order either using a [storefront](../../starters/nextjs-medusa-starter.mdx) or the [Store REST APIs](https://docs.medusajs.com/api/store). The order should appear on Brightpearl.
+Then, place an order either using a [storefront](../../starters/nextjs-medusa-starter.mdx) or the [Store REST APIs](https://docs.medusajs.com/v1/api/store). The order should appear on Brightpearl.
 
 ---
 

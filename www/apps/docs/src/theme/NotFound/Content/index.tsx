@@ -49,12 +49,12 @@ export default function NotFoundContent({ className }: Props): JSX.Element {
               </Link>
             </li>
             <li>
-              <Link href="https://docs.medusajs.com/api/store">
+              <Link href="https://docs.medusajs.com/v1/api/store">
                 Storefront REST API Reference
               </Link>
             </li>
             <li>
-              <Link href="https://docs.medusajs.com/api/admin">
+              <Link href="https://docs.medusajs.com/v1/api/admin">
                 Admin REST API Reference
               </Link>
             </li>

@@ -110,7 +110,7 @@ If you have tax-inclusive pricing enabled, you can learn about other available t
 
 :::
 
-The order’s totals are retrieved by default in all the order’s [store](https://docs.medusajs.com/api/store#orders) and [admin](https://docs.medusajs.com/api/admin#orders) APIs.
+The order’s totals are retrieved by default in all the order’s [store](https://docs.medusajs.com/v1/api/store#orders) and [admin](https://docs.medusajs.com/v1/api/admin#orders) APIs.
 
 ---
 
@@ -132,7 +132,7 @@ A merchant may also choose to force the edit on the order, by-passing the custom
 
 Although this process is implemented in this flow within the Medusa backend, there is no requirement for you to actually follow it. For example, you can allow the customer or a third-party service to create and manage the order edit.
 
-The Medusa backend provides the [order edit admin APIs](https://docs.medusajs.com/api/admin#order-edits), but you can also use the [OrderEditService](../../references/services/classes/services.OrderEditService.mdx) to perform the same functionalities in a custom flow.
+The Medusa backend provides the [order edit admin APIs](https://docs.medusajs.com/v1/api/admin#order-edits), but you can also use the [OrderEditService](../../references/services/classes/services.OrderEditService.mdx) to perform the same functionalities in a custom flow.
 
 Order edits are represented by the `OrderEdit` entity. This entity is linked to the order through the `order_id` attribute. You can access an order’s edits by expanding the `edits` relation and accessing `order.edits`. Notice that an order can have multiple edits during its lifecycle, but it can’t have more than one ongoing edit.
 
@@ -179,7 +179,7 @@ Medusa provides the necessary infrastructure and tooling that allows automating 
 - Swap: Swap an item with another. This involves returning the original item from the customer and shipping a new item to the customer.
 - Claim: Allow a customer to refund or replace an item in their order if it’s faulty or for other reasons.
 
-The Medusa backend facilitates automating these flows by allowing the customer to submit a [return](https://docs.medusajs.com/api/store#returns_postreturns) or [swap](https://docs.medusajs.com/api/store#swaps_postswaps) requests through the store APIs. The merchant can then review and handle these requests. This eliminates the need for the customer to perform the same action through customer support or other means.
+The Medusa backend facilitates automating these flows by allowing the customer to submit a [return](https://docs.medusajs.com/v1/api/store#returns_postreturns) or [swap](https://docs.medusajs.com/v1/api/store#swaps_postswaps) requests through the store APIs. The merchant can then review and handle these requests. This eliminates the need for the customer to perform the same action through customer support or other means.
 
 You can also integrate these flows within bigger processes that trigger requesting or creating these flows. It can be done through core APIs, [custom API Routes](../../development/api-routes/overview.mdx), or [custom services](../../development/services/overview.mdx). You can also listen to events related to orders such as [Order](../../development/events/events-list.md#order-events) or [Swap](../../development/events/events-list.md#swap-events) events with [subscribers](../../development/events/subscribers.mdx) to perform asynchronous actions.
 

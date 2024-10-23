@@ -61,7 +61,7 @@ The original price depends on the selected region or currency code in the curren
 
 The calculated price is the lowest price among all retrieved prices. Retrieved prices can include the original price and the price lists that can be applied. Prices are retrieved based on the provided context, such as region ID or currency code.
 
-In the [Get Product](https://docs.medusajs.com/api/store#products_getproductsproduct) and [List Product](https://docs.medusajs.com/api/store#products_getproducts) API Routes, you must pass either the `region_id` or `currency_code` to retrieve the correct prices, as they are part of the price selection strategy context.
+In the [Get Product](https://docs.medusajs.com/v1/api/store#products_getproductsproduct) and [List Product](https://docs.medusajs.com/v1/api/store#products_getproducts) API Routes, you must pass either the `region_id` or `currency_code` to retrieve the correct prices, as they are part of the price selection strategy context.
 
 Each variant in the response has the following properties:
 

@@ -209,7 +209,7 @@ info:    Strapi Subscriber Initialized
 
 ### Two-Way Syncing
 
-To test syncing data from Medusa to Strapi, try creating or updating a product either using the Medusa Admin or the [REST APIs](https://docs.medusajs.com/api/admin#products_postproducts). This triggers the associated event in Medusa, which makes the updates in Strapi.
+To test syncing data from Medusa to Strapi, try creating or updating a product either using the Medusa Admin or the [REST APIs](https://docs.medusajs.com/v1/api/admin#products_postproducts). This triggers the associated event in Medusa, which makes the updates in Strapi.
 
 :::tip
 

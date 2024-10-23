@@ -546,7 +546,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
 The Medusa Admin dashboard provides merchants with an easy-to-use interface to manage their store's data and settings. It's also extendable, so you can add widgets, pages, and setting pages relevant to your use case.
 
-To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload API Route](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
+To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload API Route](https://docs.medusajs.com/v1/api/admin#uploads_postuploadsprotected).
 
 <DocCardList colSize={4} items={[
   {
@@ -569,7 +569,7 @@ To add an interface that allows the admin user to upload digital products, you c
   },
   {
     type: 'link',
-    href: 'https://docs.medusajs.com/api/admin#uploads_postuploadsprotected',
+    href: 'https://docs.medusajs.com/v1/api/admin#uploads_postuploadsprotected',
     label: 'Protected Files Upload API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
@@ -918,7 +918,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   Notice that an alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
 
-  When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File API Route](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom API Route you created.
+  When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File API Route](https://docs.medusajs.com/v1/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom API Route you created.
 
   The product’s details can still be edited from the same Products interface, similar to regular products. You can edit its price, add more variants, and more.
 

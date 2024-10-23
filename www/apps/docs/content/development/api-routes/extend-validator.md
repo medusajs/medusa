@@ -79,4 +79,4 @@ npm run build
 npx medusa develop
 ```
 
-Then, send a request to the API Route you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](https://docs.medusajs.com/api/admin#authentication) to the [Create Product API Route](https://docs.medusajs.com/api/admin#products_postproducts) and pass it the `custom_field` body parameter. The request should execute with no errors.
+Then, send a request to the API Route you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](https://docs.medusajs.com/v1/api/admin#authentication) to the [Create Product API Route](https://docs.medusajs.com/v1/api/admin#products_postproducts) and pass it the `custom_field` body parameter. The request should execute with no errors.

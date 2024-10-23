@@ -51,7 +51,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/v1/api/admin#authentication).
 
 ---
 
@@ -63,7 +63,7 @@ As gift cards are, before purchase, essentially products, you’ll be using prod
 
 ### Retrieve Gift Card Product
 
-You can retrieve the gift card products by sending a request to the [List Products API Route](https://docs.medusajs.com/api/admin#products_getproducts), but filtering the products with the `is_giftcard` flag:
+You can retrieve the gift card products by sending a request to the [List Products API Route](https://docs.medusajs.com/v1/api/admin#products_getproducts), but filtering the products with the `is_giftcard` flag:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -148,11 +148,11 @@ You can retrieve the gift card products by sending a request to the [List Produc
 
 The List Products API Route accepts a variety of query parameters that can be used to filter the products. One of them is `is_giftcard`. When set to `true`, it will only retrieve the gift card products.
 
-The request returns the `products` array in the response which holds the gift card in it, if it’s available. It also returns [pagination fields](https://docs.medusajs.com/api/admin#pagination).
+The request returns the `products` array in the response which holds the gift card in it, if it’s available. It also returns [pagination fields](https://docs.medusajs.com/v1/api/admin#pagination).
 
 ### Create Gift Card Product
 
-You can create a gift card product by sending a request to the [Create a Product API Route](https://docs.medusajs.com/api/admin#products_postproducts):
+You can create a gift card product by sending a request to the [Create a Product API Route](https://docs.medusajs.com/v1/api/admin#products_postproducts):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -339,7 +339,7 @@ This request requires the `title` body parameter, which is the name given to the
 - `options`: An array that includes available options of the product. For a gift card, you should add one option with the title “Denomination”.
 - `variants`: An array that includes the different variations of the product using the available options. For a gift card, you should pass each denomination value as an item in this array. The value is passed in the `prices` and `options` array. If you want to add prices for different currencies, you can pass them under `prices` and `options` as well.
 
-You can pass other body parameters to change the handle, add images, and more. Check the [API reference](https://docs.medusajs.com/api/admin#products_postproducts) for available body parameters.
+You can pass other body parameters to change the handle, add images, and more. Check the [API reference](https://docs.medusajs.com/v1/api/admin#products_postproducts) for available body parameters.
 
 This request returns the created gift card product in the response.
 
@@ -353,7 +353,7 @@ Although you can create an unlimited number of gift cards, the admin dashboard's
 
 After creating a gift card, merchants can update it or its denomination.
 
-You can update a gift card product’s details by sending a request to the [Update a Product API Route](https://docs.medusajs.com/api/admin#products_postproductsproduct):
+You can update a gift card product’s details by sending a request to the [Update a Product API Route](https://docs.medusajs.com/v1/api/admin#products_postproductsproduct):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -436,13 +436,13 @@ You can update a gift card product’s details by sending a request to the [Upda
 
 This request requires the ID of the gift card product as a path parameter. You can pass in its body parameters, any of the gift card’s properties to update.
 
-In this example, you update the description of the gift card. You can check the [API reference](https://docs.medusajs.com/api/admin#products_postproductsproduct) for all the body parameters you can pass to this request.
+In this example, you update the description of the gift card. You can check the [API reference](https://docs.medusajs.com/v1/api/admin#products_postproductsproduct) for all the body parameters you can pass to this request.
 
 This request returns the updated gift card product in the response.
 
 ### Delete Gift Card Product
 
-You can delete a gift card product by sending a request to the [Delete a Product API Route](https://docs.medusajs.com/api/admin#products_deleteproductsproduct):
+You can delete a gift card product by sending a request to the [Delete a Product API Route](https://docs.medusajs.com/v1/api/admin#products_deleteproductsproduct):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -523,7 +523,7 @@ This section covers how to manage custom gift cards. You can create an unlimited
 
 ### List Custom Gift Cards
 
-You can retrieve all custom gift cards by sending a request to the [List Gift Cards API Route](https://docs.medusajs.com/api/admin#gift-cards_getgiftcards):
+You can retrieve all custom gift cards by sending a request to the [List Gift Cards API Route](https://docs.medusajs.com/v1/api/admin#gift-cards_getgiftcards):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -588,15 +588,15 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
   </TabItem>
 </Tabs>
 
-This request doesn't require any parameters. It accepts parameters related to pagination, which you can check out in the [API reference](https://docs.medusajs.com/api/admin#gift-cards_getgiftcards).
+This request doesn't require any parameters. It accepts parameters related to pagination, which you can check out in the [API reference](https://docs.medusajs.com/v1/api/admin#gift-cards_getgiftcards).
 
-This request returns an array of `gift_cards` and [pagination fields](https://docs.medusajs.com/api/admin#pagination) in the response.
+This request returns an array of `gift_cards` and [pagination fields](https://docs.medusajs.com/v1/api/admin#pagination) in the response.
 
 ### Create a Custom Gift Card
 
 Merchants can create custom gift cards to send a reward or gift to the customer.
 
-You can create a custom gift card by sending a request to the [Create a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_postgiftcards):
+You can create a custom gift card by sending a request to the [Create a Gift Card API Route](https://docs.medusajs.com/v1/api/admin#gift-cards_postgiftcards):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -680,7 +680,7 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
 
 This request requires the `region_id` body parameter. Its value should be the ID of the region that this gift card can be used in.
 
-It optionally accepts other body parameters, including the `value` parameter, which is the amount of the gift card. You can check the [API reference](https://docs.medusajs.com/api/admin#gift-cards_postgiftcards) for the rest of the body parameters.
+It optionally accepts other body parameters, including the `value` parameter, which is the amount of the gift card. You can check the [API reference](https://docs.medusajs.com/v1/api/admin#gift-cards_postgiftcards) for the rest of the body parameters.
 
 This request returns the created gift card object in the response.
 
@@ -688,7 +688,7 @@ This request returns the created gift card object in the response.
 
 Merchants can update any of the gift card’s properties, except for the value of the gift card.
 
-You can update a gift card by sending a request to the [Update a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_postgiftcardsgiftcard):
+You can update a gift card by sending a request to the [Update a Gift Card API Route](https://docs.medusajs.com/v1/api/admin#gift-cards_postgiftcardsgiftcard):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -767,13 +767,13 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
 
 This request requires the ID of the gift card as a path parameter. It accepts in its body parameters the gift card’s properties that you want to update.
 
-In this example, you update the balance of the gift card. The balance is the remaining amount in the gift card that the customer can use. You can check the [API reference](https://docs.medusajs.com/api/admin#gift-cards_postgiftcardsgiftcard) to learn what other parameters are allowed.
+In this example, you update the balance of the gift card. The balance is the remaining amount in the gift card that the customer can use. You can check the [API reference](https://docs.medusajs.com/v1/api/admin#gift-cards_postgiftcardsgiftcard) to learn what other parameters are allowed.
 
 This request returns the updated gift card object in the response.
 
 ### Delete Custom Gift Card
 
-You can delete a custom gift card by sending a request to the [Delete a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_deletegiftcardsgiftcard):
+You can delete a custom gift card by sending a request to the [Delete a Gift Card API Route](https://docs.medusajs.com/v1/api/admin#gift-cards_deletegiftcardsgiftcard):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>

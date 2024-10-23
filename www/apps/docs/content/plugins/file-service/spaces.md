@@ -127,7 +127,7 @@ Run your Medusa backend with the following command:
 npx medusa develop
 ```
 
-Then, you can either test the plugin using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Medusa Admin](../../admin/quickstart.mdx).
+Then, you can either test the plugin using the [REST APIs](https://docs.medusajs.com/v1/api/store) or using the [Medusa Admin](../../admin/quickstart.mdx).
 
 On the Medusa Admin, create a new product and, in the Images section, upload an image then click Save. If the integration was successful, the product image will be uploaded successfully.
 

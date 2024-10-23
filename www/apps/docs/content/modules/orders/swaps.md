@@ -69,7 +69,7 @@ This is all made possible since the swap is linked to a cart, so the same checko
 
 After the swap has been created and completed by the customer, the merchant can then process the payment of the swap. This includes either refunding or capturing an additional payment, which is decided by the value of the `difference_due` attribute as explained in the [Swap Entity section](#swap-entity-overview).
 
-The processing of the swap’s payment can be done either using the `SwapService`'s [processDifference method](../../references/services/classes/services.SwapService.mdx#processdifference), or using the [Process Swap Payment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderswapsswapprocesspayment).
+The processing of the swap’s payment can be done either using the `SwapService`'s [processDifference method](../../references/services/classes/services.SwapService.mdx#processdifference), or using the [Process Swap Payment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderswapsswapprocesspayment).
 
 If the swap requires any additional payment, the customer is expected to have authorized the payment during the [swap and cart completion flow explained earlier](#how-are-swaps-created). The merchant can then capture the payment and the `payment_status` of the swap is set to `captured`.
 
@@ -89,9 +89,9 @@ Although you have freedom in how you implement the process, the recommended proc
 
 ![Swap Fulfillment Flowchart](https://res.cloudinary.com/dza7lstvk/image/upload/v1681984933/Medusa%20Docs/Diagrams/swap-fulfillment-process_xfurko.jpg)
 
-1. The fulfillment is created either using the `SwapService`'s [createFulfillment method](../../references/services/classes/services.SwapService.mdx#createfulfillment) or using the [Create a Swap Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderswapsswapfulfillments). This would set the `fulfillment_status` of the swap either to `fulfilled` if all items have been fulfilled, or `partially_fulfilled` if only some items were fulfilled.
-2. The shipment can then be created using the `SwapService`'s [createShipment method](../../references/services/classes/services.SwapService.mdx#createshipment) or using the [Create Swap Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderswapsswapshipments). This would set the `fulfillment_status` of the swap either to `shipped` if all items have been shipped, or `partially_shipped` if only some items were shipped.
-3. Alternatively, a fulfillment can be canceled after it has been created using the `SwapService`'s [cancelFulfillment method](../../references/services/classes/services.SwapService.mdx#cancelfulfillment) or using the [Cancel Swap’s Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersswapfulfillmentscancel). This would set the `fulfillment_status` of the swap to `canceled`.
+1. The fulfillment is created either using the `SwapService`'s [createFulfillment method](../../references/services/classes/services.SwapService.mdx#createfulfillment) or using the [Create a Swap Fulfillment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderswapsswapfulfillments). This would set the `fulfillment_status` of the swap either to `fulfilled` if all items have been fulfilled, or `partially_fulfilled` if only some items were fulfilled.
+2. The shipment can then be created using the `SwapService`'s [createShipment method](../../references/services/classes/services.SwapService.mdx#createshipment) or using the [Create Swap Shipment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersorderswapsswapshipments). This would set the `fulfillment_status` of the swap either to `shipped` if all items have been shipped, or `partially_shipped` if only some items were shipped.
+3. Alternatively, a fulfillment can be canceled after it has been created using the `SwapService`'s [cancelFulfillment method](../../references/services/classes/services.SwapService.mdx#cancelfulfillment) or using the [Cancel Swap’s Fulfillment API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersswapfulfillmentscancel). This would set the `fulfillment_status` of the swap to `canceled`.
 
 A swap’s fulfillments can be accessed by expanding the `fulfillments` relation and accessing `swap.fulfillments`. A fulfillment is represented by the `Fulfillment` entity.
 
@@ -105,7 +105,7 @@ A swap's return can be marked as received, which would adjust the inventory and 
 
 ## Canceling a Swap
 
-A swap can be canceled by the merchant if necessary. It can be done either through the `SwapService`'s [cancel method](../../references/services/classes/services.SwapService.mdx#cancel) or the [Cancel Swap API Route](https://docs.medusajs.com/api/admin#orders_postordersswapcancel).
+A swap can be canceled by the merchant if necessary. It can be done either through the `SwapService`'s [cancel method](../../references/services/classes/services.SwapService.mdx#cancel) or the [Cancel Swap API Route](https://docs.medusajs.com/v1/api/admin#orders_postordersswapcancel).
 
 A swap can’t be canceled if:
 

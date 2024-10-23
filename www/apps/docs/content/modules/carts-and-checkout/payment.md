@@ -48,7 +48,7 @@ As a developer, you will mainly work with the Payment Processor when integrating
 
 When you run your Medusa backend, the Payment Processor will be registered on your backend if it hasn’t been already.
 
-Once the Payment Processor is added to the backend, the store operator will be able to choose using the [admin dashboard](../../admin/quickstart.mdx) the payment processors available in a region. You can alternatively do that using the [admin APIs](https://docs.medusajs.com/api/admin). These payment processors are shown to the customer at checkout as payment methods to choose from and use.
+Once the Payment Processor is added to the backend, the store operator will be able to choose using the [admin dashboard](../../admin/quickstart.mdx) the payment processors available in a region. You can alternatively do that using the [admin APIs](https://docs.medusajs.com/v1/api/admin). These payment processors are shown to the customer at checkout as payment methods to choose from and use.
 
 :::warning
 

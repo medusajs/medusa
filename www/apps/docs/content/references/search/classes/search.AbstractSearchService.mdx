@@ -335,7 +335,7 @@ class MySearchService extends AbstractSearchService {
 
 This method is used to search through an index by a query.
 
-In the Medusa backend, this method is used within the [Search Products API Route](https://docs.medusajs.com/api/store#products\_postproductssearch) 
+In the Medusa backend, this method is used within the [Search Products API Route](https://docs.medusajs.com/v1/api/store#products\_postproductssearch) 
 to retrieve the search results. The API route's response type is an array of items, though the item's format is not defined as it depends on the
 data returned by this method.
 
@@ -424,4 +424,4 @@ npm run build
 npx medusa develop
 ```
 
-4\. Try to search for products either using the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch). The results returned by your search service's `search` method is returned in the `hits` response field.
+4\. Try to search for products either using the [Search Products API Route](https://docs.medusajs.com/v1/api/store#products_postproductssearch). The results returned by your search service's `search` method is returned in the `hits` response field.

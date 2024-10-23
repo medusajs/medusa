@@ -181,7 +181,7 @@ class EmailSenderService extends AbstractNotificationService {
 ### resendNotification
 
 This method is used to resend notifications, which is typically triggered by the
-[Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications\_postnotificationsnotificationresend).
+[Resend Notification API Route](https://docs.medusajs.com/v1/api/admin#notifications\_postnotificationsnotificationresend).
 
 #### Example
 
@@ -215,7 +215,7 @@ class EmailSenderService extends AbstractNotificationService {
 
 #### Parameters
 
-<TypeList types={[{"name":"notification","type":"`unknown`","description":"The original [Notification record](https://docs.medusajs.com/references/entities/classes/Notification) that was created after you sent the\nnotification with `sendNotification`. It includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of\nthe object you return in [sendNotification](notification.AbstractNotificationService.mdx#sendnotification).","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`unknown`","description":"The new configuration used to resend the notification. The [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications\\_postnotificationsnotificationresend),\nallows you to pass a new `to` field. If specified, it will be available in this config object.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attachmentGenerator","type":"`unknown`","description":"f you’ve previously register an attachment generator to the `NotificationService` using the\n[`registerAttachmentGenerator`](https://docs.medusajs.com/references/services/classes/services.NotificationService#registerattachmentgenerator) method,\nyou have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is `null`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="resendNotification"/>
+<TypeList types={[{"name":"notification","type":"`unknown`","description":"The original [Notification record](https://docs.medusajs.com/references/entities/classes/Notification) that was created after you sent the\nnotification with `sendNotification`. It includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of\nthe object you return in [sendNotification](notification.AbstractNotificationService.mdx#sendnotification).","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`unknown`","description":"The new configuration used to resend the notification. The [Resend Notification API Route](https://docs.medusajs.com/v1/api/admin#notifications\\_postnotificationsnotificationresend),\nallows you to pass a new `to` field. If specified, it will be available in this config object.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attachmentGenerator","type":"`unknown`","description":"f you’ve previously register an attachment generator to the `NotificationService` using the\n[`registerAttachmentGenerator`](https://docs.medusajs.com/references/services/classes/services.NotificationService#registerattachmentgenerator) method,\nyou have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is `null`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="resendNotification"/>
 
 #### Returns
 
@@ -271,7 +271,7 @@ npm run build
 npx medusa develop
 ```
 
-3\. Place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [storefront](https://docs.medusajs.com/starters/nextjs-medusa-starter).
+3\. Place an order either using the [REST APIs](https://docs.medusajs.com/v1/api/store) or using the [storefront](https://docs.medusajs.com/starters/nextjs-medusa-starter).
 
 4\. After placing an order, you can see in your console the message “Notification Sent”. If you added your own notification sending logic, you should receive an email or alternatively the type of notification you’ve set up.
 
@@ -281,8 +281,8 @@ npx medusa develop
 
 To test resending a notification:
 
-1. Retrieve the ID of the notification you just sent using the [List Notifications API Route](https://docs.medusajs.com/api/admin#notifications_getnotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
+1. Retrieve the ID of the notification you just sent using the [List Notifications API Route](https://docs.medusajs.com/v1/api/admin#notifications_getnotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
 
-2. Send a request to the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend) using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. 
+2. Send a request to the [Resend Notification API Route](https://docs.medusajs.com/v1/api/admin#notifications_postnotificationsnotificationresend) using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. 
 
 3. You should see the message “Notification Resent” in your console.

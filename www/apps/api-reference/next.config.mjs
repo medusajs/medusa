@@ -3,27 +3,20 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v1/api",
   async rewrites() {
     const rewriteFallbacks = [
       {
-        source: "/ui",
-        destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui`,
+        source: "/v1",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1`,
       },
       {
-        source: "/ui/:path*",
-        destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui/:path*`,
-      },
-      {
-        source: "/v2",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2`,
-      },
-      {
-        source: "/v2/:path*",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
+        source: "/v1/:path*",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1`,
       },
       {
         source: "/:path*",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/:path*`,
       },
     ]
     return {
