@@ -16,7 +16,7 @@ export class Fulfillment {
 
   /**
    * This method creates a fulfillment. It sends a request to the 
-   * [Create Fulfillment](https://docs.medusajs.com/v2/api/admin#fulfillments_postfulfillments)
+   * [Create Fulfillment](https://docs.medusajs.com/api/admin#fulfillments_postfulfillments)
    * API route.
    * 
    * @param body - The fulfillment's details.
@@ -65,7 +65,7 @@ export class Fulfillment {
 
   /**
    * This method cancels a fulfillment. It sends a request to the
-   * [Cancel Fulfillment](https://docs.medusajs.com/v2/api/admin#fulfillments_postfulfillmentsidcancel)
+   * [Cancel Fulfillment](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidcancel)
    * API route.
    * 
    * @param id - The fulfillment's ID.
@@ -97,7 +97,7 @@ export class Fulfillment {
 
   /**
    * This method creates a shipment for a fulfillment. It sends a request to the
-   * [Create Shipment](https://docs.medusajs.com/v2/api/admin#fulfillments_postfulfillmentsidshipment)
+   * [Create Shipment](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidshipment)
    * API route.
    * 
    * @param id - The fulfillment's ID.

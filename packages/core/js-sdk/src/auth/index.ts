@@ -13,7 +13,7 @@ export class Auth {
 
   /**
    * This method is used to retrieve a registration JWT token for a user, customer, or custom actor type. It sends a request to the
-   * [Retrieve Registration Token API route](https://docs.medusajs.com/v2/api/store#auth_postactor_typeauth_provider_register).
+   * [Retrieve Registration Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register).
    * 
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
    * @param method - The authentication provider to use. For example, `emailpass` or `google`.
@@ -53,10 +53,10 @@ export class Auth {
 
   /**
    * This method retrieves the JWT authenticated token for an admin user, customer, or custom
-   * actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/v2/api/admin#auth_postactor_typeauth_provider).
+   * actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider).
    * 
    * If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
-   * [Set Authentication Session API route](https://docs.medusajs.com/v2/api/admin#auth_postsession).
+   * [Set Authentication Session API route](https://docs.medusajs.com/api/admin#auth_postsession).
    * 
    * Subsequent requests using the SDK will automatically have the necessary authentication headers / session
    * set.
@@ -105,7 +105,7 @@ export class Auth {
 
   /**
    * This method is used to validate an Oauth callback from a third-party service, such as Google, for an admin user, customer, or custom actor types.
-   * It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/v2/api/admin#auth_postactor_typeauth_providercallback).
+   * It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providercallback).
    * 
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
    * @param method - The authentication provider to use. For example, `google`.
@@ -147,7 +147,7 @@ export class Auth {
 
   /**
    * This method refreshes a JWT authentication token, which is useful after validating the Oauth callback
-   * with {@link callback}. It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/v2/api/admin#auth_postadminauthtokenrefresh).
+   * with {@link callback}. It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/api/admin#auth_postadminauthtokenrefresh).
    * 
    * @returns The refreshed JWT authentication token.
    * 
@@ -173,7 +173,7 @@ export class Auth {
 
   /**
    * This method deletes the authentication session of the currently logged-in user to log them out.
-   * It sends a request to the [Delete Authentication Session API route](https://docs.medusajs.com/v2/api/admin#auth_deletesession).
+   * It sends a request to the [Delete Authentication Session API route](https://docs.medusajs.com/api/admin#auth_deletesession).
    * 
    * @example
    * sdk.auth.logout()
@@ -193,11 +193,11 @@ export class Auth {
 
   /**
    * This method requests a reset password token for an admin user, customer, or custom actor type.
-   * It sends a request to the [Generate Reset Password Token API route](https://docs.medusajs.com/v2/api/admin#auth_postactor_typeauth_providerresetpassword).
+   * It sends a request to the [Generate Reset Password Token API route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword).
    * 
    * To reset the password later using the token delivered to the user, use the {@link updateProvider} method.
    * 
-   * Related guide: [How to allow customers to reset their passwords in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/reset-password).
+   * Related guide: [How to allow customers to reset their passwords in a storefront](https://docs.medusajs.com/resources/storefront-development/customers/reset-password).
    * 
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
    * @param provider - The authentication provider to use. For example, `emailpass`.
@@ -239,9 +239,9 @@ export class Auth {
    * More specifically, use this method when updating the password of an admin user, customer, or 
    * custom actor type after requesting to reset their password with {@link resetPassword}.
    * 
-   * This method sends a request to [this API route](https://docs.medusajs.com/v2/api/admin#auth_postactor_typeauth_providerupdate).
+   * This method sends a request to [this API route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerupdate).
    * 
-   * Related guide: [How to allow customers to reset their passwords in a storefront](https://docs.medusajs.com/v2/resources/storefront-development/customers/reset-password).
+   * Related guide: [How to allow customers to reset their passwords in a storefront](https://docs.medusajs.com/resources/storefront-development/customers/reset-password).
    * 
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
    * @param provider - The authentication provider to use. For example, `emailpass`.

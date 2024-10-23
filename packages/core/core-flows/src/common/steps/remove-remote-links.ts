@@ -9,7 +9,7 @@ export const removeRemoteLinkStepId = "remove-remote-links"
 /**
  * This step deletes linked records of a record.
  *
- * Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)
+ * Learn more in the [Remote Link documentation](https://docs.medusajs.com/advanced-development/modules/remote-link#cascade-delete-linked-records)
  *
  * @example
  * import {

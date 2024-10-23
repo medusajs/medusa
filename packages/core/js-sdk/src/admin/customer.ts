@@ -19,7 +19,7 @@ export class Customer {
 
   /**
    * This method creates a customer. It sends a request to the
-   * [Create Customer](https://docs.medusajs.com/v2/api/admin#customers_postcustomers) API route.
+   * [Create Customer](https://docs.medusajs.com/api/admin#customers_postcustomers) API route.
    * 
    * @param body - The customer's details.
    * @param query - Configure the fields to retrieve in the customer.
@@ -51,7 +51,7 @@ export class Customer {
 
   /**
    * This method updates a customer's details. It sends a request to the
-   * [Update Customer](https://docs.medusajs.com/v2/api/admin#customers_postcustomersid) API route.
+   * [Update Customer](https://docs.medusajs.com/api/admin#customers_postcustomersid) API route.
    * 
    * @param id - The customer's ID.
    * @param body - The details to update of the customer.
@@ -86,7 +86,7 @@ export class Customer {
 
   /**
    * This method retrieves a paginated list of customers. It sends a request to the
-   * [List Customers](https://docs.medusajs.com/v2/api/admin#customers_getcustomers)
+   * [List Customers](https://docs.medusajs.com/api/admin#customers_getcustomers)
    * API route.
    * 
    * @param queryParams - Filters and pagination configurations.
@@ -129,7 +129,7 @@ export class Customer {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     queryParams?: HttpTypes.AdminCustomerFilters,
@@ -145,7 +145,7 @@ export class Customer {
 
   /**
    * This method retrieves a customer by its ID. It sends a request to the 
-   * [Get Customer](https://docs.medusajs.com/v2/api/admin#customers_getcustomersid)
+   * [Get Customer](https://docs.medusajs.com/api/admin#customers_getcustomersid)
    * API route.
    * 
    * @param id - The customer's ID.
@@ -174,7 +174,7 @@ export class Customer {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return this.client.fetch<HttpTypes.AdminCustomerResponse>(
@@ -188,7 +188,7 @@ export class Customer {
 
   /**
    * This method deletes a customer by its ID. It sends a request to the 
-   * [Delete Customer](https://docs.medusajs.com/v2/api/admin#customers_deletecustomersid)
+   * [Delete Customer](https://docs.medusajs.com/api/admin#customers_deletecustomersid)
    * API route.
    * 
    * @param id - The customer's ID.

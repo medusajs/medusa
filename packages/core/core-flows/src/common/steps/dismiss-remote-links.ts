@@ -11,7 +11,7 @@ export const dismissRemoteLinkStepId = "dismiss-remote-links"
 /**
  * This step removes remote links between two records of linked data models.
  *
- * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#dismiss-link).
+ * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/advanced-development/modules/remote-link#dismiss-link).
  *
  * @example
  * import {

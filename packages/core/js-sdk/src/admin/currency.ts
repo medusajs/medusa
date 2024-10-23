@@ -16,7 +16,7 @@ export class Currency {
 
   /**
    * This method retrieves a paginated list of currencies. It sends a request to the
-   * [List Currencies](https://docs.medusajs.com/v2/api/admin#currencies_getcurrencies)
+   * [List Currencies](https://docs.medusajs.com/api/admin#currencies_getcurrencies)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -59,7 +59,7 @@ export class Currency {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminCurrencyListParams,
@@ -76,7 +76,7 @@ export class Currency {
 
   /**
    * This method retrieves a currency by its code. It sends a request to the
-   * [Get Currency](https://docs.medusajs.com/v2/api/admin#currencies_getcurrenciescode) API route.
+   * [Get Currency](https://docs.medusajs.com/api/admin#currencies_getcurrenciescode) API route.
    * 
    * @param code - The currency's code.
    * @param query - Configure the fields to retrieve in the currency.
@@ -104,7 +104,7 @@ export class Currency {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(
     code: string,

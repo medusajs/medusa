@@ -16,7 +16,7 @@ export class FulfillmentSet {
 
   /**
    * This method deletes a fulfillment set. It sends a request to the
-   * [Delete Fulfillment Set](https://docs.medusajs.com/v2/api/admin#fulfillment-sets_deletefulfillmentsetsid)
+   * [Delete Fulfillment Set](https://docs.medusajs.com/api/admin#fulfillment-sets_deletefulfillmentsetsid)
    * API route.
    * 
    * @param id - The fulfillment set's ID.
@@ -41,7 +41,7 @@ export class FulfillmentSet {
 
   /**
    * This method adds a service zone to a fulfillment set. It uses the 
-   * [Add Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets_postfulfillmentsetsidservicezones)
+   * [Add Service Zone](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezones)
    * API route.
    * 
    * @param id - The fulfillment set's ID.
@@ -81,7 +81,7 @@ export class FulfillmentSet {
 
   /**
    * This method retrieves a fulfillment set's service zone's details. It sends a request to the
-   * [Get Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets_getfulfillmentsetsidservicezoneszone_id)
+   * [Get Service Zone](https://docs.medusajs.com/api/admin#fulfillment-sets_getfulfillmentsetsidservicezoneszone_id)
    * API route.
    * 
    * @param fulfillmentSetId - The fulfillment set's ID. 
@@ -118,7 +118,7 @@ export class FulfillmentSet {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieveServiceZone(
     fulfillmentSetId: string,
@@ -138,7 +138,7 @@ export class FulfillmentSet {
 
   /**
    * This method updates a service zone in a fulfillment set. It sends a request to the
-   * [Update Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets_postfulfillmentsetsidservicezoneszone_id)
+   * [Update Service Zone](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezoneszone_id)
    * API route.
    * 
    * @param fulfillmentSetId - The fulfillment set's ID.
@@ -180,7 +180,7 @@ export class FulfillmentSet {
 
   /**
    * This method deletes a service zone in a fulfillment set. It sends a request to the
-   * [Remove Service Zone](https://docs.medusajs.com/v2/api/admin#fulfillment-sets_deletefulfillmentsetsidservicezoneszone_id)
+   * [Remove Service Zone](https://docs.medusajs.com/api/admin#fulfillment-sets_deletefulfillmentsetsidservicezoneszone_id)
    * API route.
    * 
    * @param fulfillmentSetId - The fulfullment set's ID.
