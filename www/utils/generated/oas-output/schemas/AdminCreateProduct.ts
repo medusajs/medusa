@@ -148,6 +148,10 @@
  *   metadata:
  *     type: object
  *     description: The product's metadata, used to store custom key-value pairs.
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The create's external id.
  * 
 */
 

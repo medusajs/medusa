@@ -10,7 +10,7 @@
  *     type: array
  *     description: The shipping option's shipping options.
  *     items:
- *       $ref: "#/components/schemas/StoreShippingOption"
+ *       $ref: "#/components/schemas/StoreCartShippingOption"
  * 
 */
 
