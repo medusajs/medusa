@@ -150,7 +150,7 @@
  *   external_id:
  *     type: string
  *     title: external_id
- *     description: The update's external id.
+ *     description: The ID of the product in an external or third-party system.
  * 
 */
 

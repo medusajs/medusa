@@ -67,12 +67,12 @@
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The api key's updated at.
+ *     description: The date the API key was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The api key's deleted at.
+ *     description: The date the API key was deleted.
  * 
 */
 

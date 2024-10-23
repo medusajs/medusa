@@ -22,19 +22,8 @@ properties:
       - received
       - partially_received
   refund_amount:
-    oneOf:
-      - type: string
-        title: refund_amount
-        description: The return order's refund amount.
-      - type: number
-        title: refund_amount
-        description: The return order's refund amount.
-      - type: string
-        title: refund_amount
-        description: The return order's refund amount.
-      - type: number
-        title: refund_amount
-        description: The return order's refund amount.
+    type: number
+    title: refund_amount
     description: The amount refunded by this return.
   order_id:
     type: string
@@ -94,7 +83,7 @@ properties:
     title: exchange_id
     description: The ID of the exchange this return belongs to, if any.
   exchange:
-    $ref: ./OrderExchange.yaml
+    type: object
   claim_id:
     type: string
     title: claim_id

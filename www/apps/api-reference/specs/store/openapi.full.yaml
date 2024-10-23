@@ -5420,12 +5420,12 @@ paths:
             title: $or
         - name: is_return
           in: query
-          description: The shipping option's is return.
+          description: Whether the shipping option can be used for returns.
           required: false
           schema:
             type: boolean
             title: is_return
-            description: The shipping option's is return.
+            description: Whether the shipping option can be used for returns.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -5524,12 +5524,12 @@ components:
           type: string
           format: date-time
           title: updated_at
-          description: The api key's updated at.
+          description: The date the API key was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The api key's deleted at.
+          description: The date the API key was deleted.
     AdminApiKeyResponse:
       type: object
       description: The API key's details.
@@ -5815,17 +5815,17 @@ components:
           type: string
           format: date-time
           title: created_at
-          description: The campaign's created at.
+          description: The date the campaign was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The campaign's updated at.
+          description: The date the campaign was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The campaign's deleted at.
+          description: The date the campaign was deleted.
     AdminCampaignResponse:
       type: object
       description: The campaign's details.
@@ -6681,7 +6681,7 @@ components:
         external_id:
           type: string
           title: external_id
-          description: The create's external id.
+          description: The ID of the product in an external or third-party system.
     AdminCreateProductCategory:
       type: object
       description: The product category's details.
@@ -13618,17 +13618,17 @@ components:
           type: string
           format: date-time
           title: created_at
-          description: The promotion's created at.
+          description: The date the promotion was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The promotion's updated at.
+          description: The date the promotion was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The promotion's deleted at.
+          description: The date the promotion was deleted.
     AdminPromotionResponse:
       type: object
       description: The promotion's details.
@@ -15546,7 +15546,7 @@ components:
         external_id:
           type: string
           title: external_id
-          description: The update's external id.
+          description: The ID of the product in an external or third-party system.
     AdminUpdateProductOption:
       type: object
       description: The details to update in a product option.
@@ -17069,6 +17069,54 @@ components:
           format: date-time
           title: updated_at
           description: The date the claim was updated.
+    BaseCollection:
+      type: object
+      description: The product collection's details.
+      x-schemaName: BaseCollection
+      required:
+        - id
+        - title
+        - handle
+        - created_at
+        - updated_at
+        - deleted_at
+        - metadata
+      properties:
+        id:
+          type: string
+          title: id
+          description: The collection's ID.
+        title:
+          type: string
+          title: title
+          description: The collection's title.
+        handle:
+          type: string
+          title: handle
+          description: The collection's handle.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The collection's creation date.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The collection's update date.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The collection's deletion date.
+        products:
+          type: array
+          description: The collection's products.
+          items:
+            type: object
+        metadata:
+          type: object
+          description: The collection's metadata, used to store custom key-value pairs.
     BaseExchangeItem:
       type: object
       description: The item's details.
@@ -18679,40 +18727,282 @@ components:
         - status
     BaseProduct:
       type: object
-      description: The product type's details.
+      description: The product's details.
       x-schemaName: BaseProduct
       required:
         - id
-        - value
+        - title
+        - handle
+        - subtitle
+        - description
+        - is_giftcard
+        - status
+        - thumbnail
+        - width
+        - weight
+        - length
+        - height
+        - origin_country
+        - hs_code
+        - mid_code
+        - material
+        - collection_id
+        - type_id
+        - variants
+        - options
+        - images
+        - discountable
+        - external_id
         - created_at
         - updated_at
+        - deleted_at
       properties:
         id:
           type: string
           title: id
-          description: The type's ID.
-        value:
+          description: The product's ID.
+        title:
           type: string
-          title: value
-          description: The type's value.
+          title: title
+          description: The product's title.
+        handle:
+          type: string
+          title: handle
+          description: The product's handle.
+        subtitle:
+          type: string
+          title: subtitle
+          description: The product's subtitle.
+        description:
+          type: string
+          title: description
+          description: The product's description.
+        is_giftcard:
+          type: boolean
+          title: is_giftcard
+          description: Whether the product is a gift card.
+        status:
+          type: string
+          description: The product's status.
+          enum:
+            - draft
+            - proposed
+            - published
+            - rejected
+        thumbnail:
+          type: string
+          title: thumbnail
+          description: The product's thumbnail URL.
+        width:
+          type: number
+          title: width
+          description: The product's width.
+        weight:
+          type: number
+          title: weight
+          description: The product's weight.
+        length:
+          type: number
+          title: length
+          description: The product's length.
+        height:
+          type: number
+          title: height
+          description: The product's height.
+        origin_country:
+          type: string
+          title: origin_country
+          description: The product's origin country.
+        hs_code:
+          type: string
+          title: hs_code
+          description: The product's hs code.
+        mid_code:
+          type: string
+          title: mid_code
+          description: The product's mid code.
+        material:
+          type: string
+          title: material
+          description: The product's material.
+        collection:
+          $ref: '#/components/schemas/BaseCollection'
+        collection_id:
+          type: string
+          title: collection_id
+          description: The ID of the collection the product belongs to.
+        categories:
+          type: array
+          description: The product's categories.
+          items:
+            $ref: '#/components/schemas/BaseProductCategory'
+        type:
+          $ref: '#/components/schemas/BaseProductType'
+        type_id:
+          type: string
+          title: type_id
+          description: The ID of the type the product belongs to.
+        tags:
+          type: array
+          description: The product's tags.
+          items:
+            $ref: '#/components/schemas/BaseProductTag'
+        variants:
+          type: array
+          description: The product's variants.
+          items:
+            type: object
+        options:
+          type: array
+          description: The product's options.
+          items:
+            $ref: '#/components/schemas/BaseProductOption'
+        images:
+          type: array
+          description: The product's images.
+          items:
+            $ref: '#/components/schemas/BaseProductImage'
+        discountable:
+          type: boolean
+          title: discountable
+          description: Whether the product is discountable.
+        external_id:
+          type: string
+          title: external_id
+          description: The ID of the product in an external or third-party system.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The date the type was created.
+          description: The date the product was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The date the type was updated.
+          description: The date the product was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The date the type was deleted.
+          description: The date the product was deleted.
         metadata:
           type: object
-          description: The type's metadata, can hold custom key-value pairs.
+          description: The product's metadata, can hold custom key-value pairs.
+    BaseProductCategory:
+      type: object
+      description: The product category's details.
+      x-schemaName: BaseProductCategory
+      required:
+        - id
+        - name
+        - description
+        - handle
+        - is_active
+        - is_internal
+        - rank
+        - parent_category_id
+        - parent_category
+        - category_children
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        category_children:
+          type: array
+          description: The category's children.
+          items:
+            type: object
+        parent_category:
+          type: object
+        products:
+          type: array
+          description: The category's products.
+          items:
+            type: object
+        name:
+          type: string
+          title: name
+          description: The category's name.
+        description:
+          type: string
+          title: description
+          description: The category's description.
+        id:
+          type: string
+          title: id
+          description: The category's ID.
+        metadata:
+          type: object
+          description: The category's metadata, can hold custom key-value pairs.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the category was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the category was updated.
+        handle:
+          type: string
+          title: handle
+          description: The category's unique handle.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the category was deleted.
+        is_active:
+          type: boolean
+          title: is_active
+          description: Whether the category is active. If disabled, the category isn't shown in the storefront.
+        is_internal:
+          type: boolean
+          title: is_internal
+          description: Whether the category is internal. If enabled, the category is only seen by admin users.
+        rank:
+          type: number
+          title: rank
+          description: The category's rank among sibling categories.
+        parent_category_id:
+          type: string
+          title: parent_category_id
+          description: The ID of the category's parent.
+    BaseProductImage:
+      type: object
+      description: The image's details.
+      x-schemaName: BaseProductImage
+      properties:
+        id:
+          type: string
+          title: id
+          description: The image's ID.
+        url:
+          type: string
+          title: url
+          description: The image's URL.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the image was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the image was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the image was deleted.
+        metadata:
+          type: object
+          description: The image's metadata, can hold custom key-value pairs.
+      required:
+        - id
+        - url
     BaseProductOption:
       type: object
       description: The product option's details.
@@ -18798,6 +19088,78 @@ components:
           format: date-time
           title: deleted_at
           description: The date the value was deleted.
+    BaseProductTag:
+      type: object
+      description: The product tag's details.
+      x-schemaName: BaseProductTag
+      required:
+        - id
+        - value
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The tag's ID.
+        value:
+          type: string
+          title: value
+          description: The tag's value.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the tag was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the tag was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the tag was deleted.
+        metadata:
+          type: object
+          description: The tag's metadata, can hold custom key-value pairs.
+    BaseProductType:
+      type: object
+      description: The product type's details.
+      x-schemaName: BaseProductType
+      required:
+        - id
+        - value
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The type's ID.
+        value:
+          type: string
+          title: value
+          description: The type's value.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the type was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the type was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the type was deleted.
+        metadata:
+          type: object
+          description: The type's metadata, can hold custom key-value pairs.
     BaseProductVariant:
       type: object
       description: The product variant's details.
@@ -20460,19 +20822,8 @@ components:
           title: no_notification
           description: Whether to send the customer notifications when the exchange is updated.
         difference_due:
-          oneOf:
-            - type: string
-              title: difference_due
-              description: The exchange's difference due.
-            - type: number
-              title: difference_due
-              description: The exchange's difference due.
-            - type: string
-              title: difference_due
-              description: The exchange's difference due.
-            - type: number
-              title: difference_due
-              description: The exchange's difference due.
+          type: number
+          title: difference_due
           description: The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer.
         return:
           $ref: '#/components/schemas/Return'
@@ -21351,19 +21702,8 @@ components:
             - received
             - partially_received
         refund_amount:
-          oneOf:
-            - type: string
-              title: refund_amount
-              description: The return order's refund amount.
-            - type: number
-              title: refund_amount
-              description: The return order's refund amount.
-            - type: string
-              title: refund_amount
-              description: The return order's refund amount.
-            - type: number
-              title: refund_amount
-              description: The return order's refund amount.
+          type: number
+          title: refund_amount
           description: The amount refunded by this return.
         order_id:
           type: string

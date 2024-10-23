@@ -45,14 +45,14 @@ properties:
     type: string
     format: date-time
     title: created_at
-    description: The promotion's created at.
+    description: The date the promotion was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The promotion's updated at.
+    description: The date the promotion was updated.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The promotion's deleted at.
+    description: The date the promotion was deleted.

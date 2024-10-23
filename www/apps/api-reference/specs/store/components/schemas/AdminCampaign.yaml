@@ -86,14 +86,14 @@ properties:
     type: string
     format: date-time
     title: created_at
-    description: The campaign's created at.
+    description: The date the campaign was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The campaign's updated at.
+    description: The date the campaign was updated.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The campaign's deleted at.
+    description: The date the campaign was deleted.

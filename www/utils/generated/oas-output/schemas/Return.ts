@@ -24,19 +24,8 @@
  *       - received
  *       - partially_received
  *   refund_amount:
- *     oneOf:
- *       - type: string
- *         title: refund_amount
- *         description: The return order's refund amount.
- *       - type: number
- *         title: refund_amount
- *         description: The return order's refund amount.
- *       - type: string
- *         title: refund_amount
- *         description: The return order's refund amount.
- *       - type: number
- *         title: refund_amount
- *         description: The return order's refund amount.
+ *     type: number
+ *     title: refund_amount
  *     description: The amount refunded by this return.
  *   order_id:
  *     type: string

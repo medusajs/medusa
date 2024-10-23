@@ -81,12 +81,12 @@
  *       title: $or
  *   - name: is_return
  *     in: query
- *     description: The shipping option's is return.
+ *     description: Whether the shipping option can be used for returns.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: is_return
- *       description: The shipping option's is return.
+ *       description: Whether the shipping option can be used for returns.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

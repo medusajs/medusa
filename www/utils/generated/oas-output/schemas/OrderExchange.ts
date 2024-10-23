@@ -25,19 +25,8 @@
  *     title: no_notification
  *     description: Whether to send the customer notifications when the exchange is updated.
  *   difference_due:
- *     oneOf:
- *       - type: string
- *         title: difference_due
- *         description: The exchange's difference due.
- *       - type: number
- *         title: difference_due
- *         description: The exchange's difference due.
- *       - type: string
- *         title: difference_due
- *         description: The exchange's difference due.
- *       - type: number
- *         title: difference_due
- *         description: The exchange's difference due.
+ *     type: number
+ *     title: difference_due
  *     description: The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer.
  *   return:
  *     $ref: "#/components/schemas/Return"
