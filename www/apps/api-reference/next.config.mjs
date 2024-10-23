@@ -5,7 +5,7 @@ import rehypeSlug from "rehype-slug"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/api",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
 

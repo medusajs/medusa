@@ -21,11 +21,11 @@ const withMDX = mdx({
           projectUrls: {
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "v2/resources",
+              path: "resources",
             },
             "user-guide": {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "v2/user-guide",
+              path: "user-guide",
             },
             ui: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
@@ -33,7 +33,7 @@ const withMDX = mdx({
             },
             api: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "v2/api",
+              path: "api",
             },
           },
           useBaseUrl:
@@ -81,29 +81,28 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   transpilePackages: ["docs-ui"],
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
   async rewrites() {
     return {
       fallback: [
         {
-          source: "/v2/resources",
+          source: "/resources",
           destination: `${
             process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
-          }/v2/resources`,
+          }/resources`,
           basePath: false,
         },
         {
-          source: "/v2/resources/:path*",
+          source: "/resources/:path*",
           destination: `${
             process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
-          }/v2/resources/:path*`,
+          }/resources/:path*`,
           basePath: false,
         },
         {
-          source: "/v2/api/:path*",
+          source: "/api/:path*",
           destination: `${
             process.env.NEXT_PUBLIC_API_URL || "https://localhost:3001"
-          }/v2/api/:path*`,
+          }/api/:path*`,
           basePath: false,
         },
         // TODO comment out once we have the user guide published
@@ -123,48 +122,8 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/advanced-development/:path*",
-        destination: "/learn/advanced-development/:path*",
-        permanent: true,
-      },
-      {
-        source: "/basics/:path*",
-        destination: "/learn/basics/:path*",
-        permanent: true,
-      },
-      {
-        source: "/customization/:path*",
-        destination: "/learn/customization/:path*",
-        permanent: true,
-      },
-      {
-        source: "/debugging-and-testing/:path*",
-        destination: "/learn/debugging-and-testing/:path*",
-        permanent: true,
-      },
-      {
-        source: "/deployment/:path*",
-        destination: "/learn/deployment/:path*",
-        permanent: true,
-      },
-      {
-        source: "/first-customizations/:path*",
-        destination: "/learn/first-customizations/:path*",
-        permanent: true,
-      },
-      {
-        source: "/more-resources/:path*",
-        destination: "/learn/more-resources/:path*",
-        permanent: true,
-      },
-      {
-        source: "/storefront-development/:path*",
-        destination: "/learn/storefront-development/:path*",
-        permanent: true,
-      },
-      {
-        source: "/more-resources/examples",
-        destination: "/resources/examples",
+        source: "/v2/:path*",
+        destination: "/:path*",
         permanent: true,
       },
     ]

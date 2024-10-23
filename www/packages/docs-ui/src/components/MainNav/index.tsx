@@ -49,7 +49,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
               <SidebarLeftIcon />
             </Button>
           )}
-          <Link href={`${config.baseUrl}/v2`}>
+          <Link href={`${config.baseUrl}`}>
             <BorderedIcon
               IconComponent={MedusaIcon}
               iconWrapperClassName="my-[14px]"

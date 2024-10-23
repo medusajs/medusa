@@ -48,7 +48,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}/v2/([^(resources)])*`
+          `^${config.baseUrl}/([^(resources)])*`
         ),
         filterOptions: searchFilters,
       }}
