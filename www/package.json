@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:prod": "turbo run build",
     "build:docs": "turbo run build --filter=docs",
     "start": "turbo run start:monorepo",
     "dev": "turbo run dev:monorepo",
