@@ -21,7 +21,7 @@ export const IncludesTaxTooltip = ({
       }
     >
       <BuildingTax
-        className={clx("min-w-[15px]", { "text-ui-fg-muted": !includesTax })}
+        className={clx("shrink-0", { "text-ui-fg-muted": !includesTax })}
       />
     </Tooltip>
   )
