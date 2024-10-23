@@ -3,22 +3,35 @@ import AdminContent from "../_mdx/admin.mdx"
 import Tags from "@/components/Tags"
 import PageTitleProvider from "@/providers/page-title"
 import { H1 } from "docs-ui"
+import { getBaseSpecs } from "../../lib"
+import BaseSpecsProvider from "../../providers/base-specs"
+import clsx from "clsx"
 
-const ReferencePage = async () => {
+const AdminPage = async () => {
+  const data = await getBaseSpecs("admin")
+
   return (
-    <AreaProvider area={"admin"}>
-      <PageTitleProvider>
-        <H1 className="!h2-docs scroll-m-56 lg:pl-4" id="introduction">
-          Medusa V2 Admin API Reference
-        </H1>
-        <AdminContent />
-        <Tags />
-      </PageTitleProvider>
-    </AreaProvider>
+    <BaseSpecsProvider baseSpecs={data}>
+      <AreaProvider area={"admin"}>
+        <PageTitleProvider>
+          <H1
+            className={clsx(
+              "!h2-docs lg:pl-4",
+              "scroll-m-[184px] lg:scroll-m-[264px]"
+            )}
+            id="introduction"
+          >
+            Medusa V2 Admin API Reference
+          </H1>
+          <AdminContent />
+          <Tags tags={data?.tags} />
+        </PageTitleProvider>
+      </AreaProvider>
+    </BaseSpecsProvider>
   )
 }
 
-export default ReferencePage
+export default AdminPage
 
 export function generateMetadata() {
   return {

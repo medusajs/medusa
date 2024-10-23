@@ -10,7 +10,6 @@ import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
-import { KeyboundForm } from "../../components/utilities/keybound-form"
 import { useSignUpWithEmailPass } from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
@@ -140,7 +139,7 @@ const LoginLink = () => {
       <Link
         key="login-link"
         to="/login"
-        className="text-ui-fg-interactive txt-small !text-ui-fg-base transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
+        className="txt-small text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover font-medium outline-none"
       >
         {t("invite.backToLogin")}
       </Link>
@@ -251,10 +250,7 @@ const CreateView = ({
         </Text>
       </div>
       <Form {...form}>
-        <KeyboundForm
-          onSubmit={handleSubmit}
-          className="flex w-full flex-col gap-y-6"
-        >
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-y-6">
           <div className="flex flex-col gap-y-2">
             <Form.Field
               control={form.control}
@@ -373,7 +369,7 @@ const CreateView = ({
           >
             {t("invite.createAccount")}
           </Button>
-        </KeyboundForm>
+        </form>
       </Form>
       <LoginLink />
     </div>
@@ -400,7 +396,7 @@ const SuccessView = () => {
       <Link
         key="login-link"
         to="/login"
-        className="text-ui-fg-interactive txt-small !text-ui-fg-base transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover mt-3 font-medium outline-none"
+        className="txt-small text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover mt-3 font-medium outline-none"
       >
         {t("invite.backToLogin")}
       </Link>

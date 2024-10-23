@@ -2049,6 +2049,28 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/js-sdk",
         title: "JS SDK",
+        isChildSidebar: true,
+        childSidebarTitle: "JS SDK Reference",
+        children: [
+          {
+            type: "category",
+            title: "Auth",
+            autogenerate_path: "/references/js_sdk/auth/Auth/methods",
+            initialOpen: true,
+          },
+          {
+            type: "category",
+            title: "Store",
+            autogenerate_path: "/references/js_sdk/store/Store/properties",
+            initialOpen: true,
+          },
+          {
+            type: "category",
+            title: "Admin",
+            autogenerate_path: "/references/js_sdk/admin/Admin/properties",
+            initialOpen: true,
+          },
+        ],
       },
       {
         type: "link",

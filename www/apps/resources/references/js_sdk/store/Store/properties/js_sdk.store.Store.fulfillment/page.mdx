@@ -1,0 +1,64 @@
+---
+slug: /references/js-sdk/admin/fulfillment
+sidebar_label: fulfillment
+---
+
+import { TypeList } from "docs-ui"
+
+# fulfillment - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.fulfillment` set of methods used to send requests to Medusa's Store API routes.
+
+## listCartOptions
+
+This method retrieves the list of shipping options for a cart. It sends a request to
+the [List Shipping Options](https://docs.medusajs.com/v2/api/store#shipping-options\_getshippingoptions)
+API route.
+
+Related guide: [Implement shipping step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.fulfillment.listCartOptions({
+  cart_id: "cart_123"
+})
+.then(({ shipping_options }) => {
+  console.log(shipping_options)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`StoreGetShippingOptionList`","description":"The cart's details along with configurations of the fields to retrieve in the options.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreShippingOptionListResponse&#62;","optional":false,"defaultValue":"","description":"The shipping options that can be used for the cart.","expandable":false,"children":[{"name":"StoreShippingOptionListResponse","type":"`StoreShippingOptionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## listCartOptions
+
+This method retrieves the list of shipping options for a cart. It sends a request to
+the [List Shipping Options](https://docs.medusajs.com/v2/api/store#shipping-options\_getshippingoptions)
+API route.
+
+Related guide: [Implement shipping step during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.fulfillment.listCartOptions({
+  cart_id: "cart_123"
+})
+.then(({ shipping_options }) => {
+  console.log(shipping_options)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`StoreGetShippingOptionList`","description":"The cart's details along with configurations of the fields to retrieve in the options.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;StoreShippingOptionListResponse&#62;","optional":false,"defaultValue":"","description":"The shipping options that can be used for the cart.","expandable":false,"children":[{"name":"StoreShippingOptionListResponse","type":"`StoreShippingOptionListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

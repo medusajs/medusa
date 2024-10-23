@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+"use client"
+
+import { Suspense, useEffect, useMemo, useRef } from "react"
 import { SchemaObject } from "../../../../types/openapi"
 import TagOperationParameters from "../../Operation/Parameters"
 import {
   Badge,
   CodeBlock,
   isElmWindow,
+  useIsBrowser,
   useScrollController,
   useSidebar,
 } from "docs-ui"
@@ -16,7 +19,6 @@ import useSchemaExample from "../../../../hooks/use-schema-example"
 import { InView } from "react-intersection-observer"
 import checkElementInViewport from "../../../../utils/check-element-in-viewport"
 import { singular } from "pluralize"
-import useResizeObserver from "@react-hook/resize-observer"
 import clsx from "clsx"
 
 export type TagSectionSchemaProps = {
@@ -26,7 +28,6 @@ export type TagSectionSchemaProps = {
 
 const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   const paramsRef = useRef<HTMLDivElement>(null)
-  const [maxCodeHeight, setMaxCodeHeight] = useState(0)
   const { addItems, setActivePath, activePath } = useSidebar()
   const tagSlugName = useMemo(() => getSectionId([tagName]), [tagName])
   const formattedName = useMemo(
@@ -43,14 +44,16 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
       skipNonRequired: false,
     },
   })
-  useResizeObserver(paramsRef, () => {
-    setMaxCodeHeight(paramsRef.current?.clientHeight || 0)
-  })
+  const { isBrowser } = useIsBrowser()
 
   const { scrollableElement, scrollToElement } = useScrollController()
   const root = useMemo(() => {
+    if (!isBrowser) {
+      return
+    }
+
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
-  }, [scrollableElement])
+  }, [isBrowser, scrollableElement])
 
   useEffect(() => {
     addItems(
@@ -77,18 +80,26 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   }, [formattedName])
 
   useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
       if (!checkElementInViewport(elm, 0)) {
         scrollToElement(elm)
       }
     }
-  }, [activePath, schemaSlug])
+  }, [activePath, schemaSlug, isBrowser])
 
   const handleViewChange = (
     inView: boolean,
     entry: IntersectionObserverEntry
   ) => {
+    if (!isBrowser) {
+      return
+    }
+
     const section = entry.target
 
     if (
@@ -103,42 +114,43 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   }
 
   return (
-    <InView
-      as="div"
-      id={schemaSlug}
-      initialInView={false}
-      onChange={handleViewChange}
-      root={root}
-      threshold={0.1}
-    >
-      <DividedLayout
-        mainContent={
-          <SectionContainer ref={paramsRef}>
-            <h2>{formattedName} Object</h2>
-            <h4 className="border-medusa-border-base border-b py-1.5 mt-2">
-              Fields
-            </h4>
-            <TagOperationParameters schemaObject={schema} topLevel={true} />
-          </SectionContainer>
-        }
-        codeContent={
-          <SectionContainer noDivider>
-            {examples.length && (
-              <CodeBlock
-                source={examples[0].content}
-                lang="json"
-                title={`The ${formattedName} Object`}
-                className={clsx(maxCodeHeight && "overflow-auto")}
-                style={{
-                  // remove padding + extra space
-                  maxHeight: maxCodeHeight ? maxCodeHeight - 212 : "unset",
-                }}
-              />
-            )}
-          </SectionContainer>
-        }
-      />
-    </InView>
+    <Suspense>
+      <InView
+        as="div"
+        id={schemaSlug}
+        initialInView={true}
+        onChange={handleViewChange}
+        root={root}
+        threshold={0.1}
+      >
+        <DividedLayout
+          mainContent={
+            <SectionContainer ref={paramsRef}>
+              <h2>{formattedName} Object</h2>
+              <h4 className="border-medusa-border-base border-b py-1.5 mt-2">
+                Fields
+              </h4>
+              <TagOperationParameters schemaObject={schema} topLevel={true} />
+            </SectionContainer>
+          }
+          codeContent={
+            <SectionContainer noDivider>
+              {examples.length && (
+                <CodeBlock
+                  source={examples[0].content}
+                  lang="json"
+                  title={`The ${formattedName} Object`}
+                  className={clsx("overflow-auto")}
+                  style={{
+                    maxHeight: "100vh",
+                  }}
+                />
+              )}
+            </SectionContainer>
+          }
+        />
+      </InView>
+    </Suspense>
   )
 }
 

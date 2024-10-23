@@ -1,0 +1,25 @@
+import { TypeList } from "docs-ui"
+
+# update
+
+This method updates an API key's details. It sends a request to the 
+[Update API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeysid) API route.
+
+## Example
+
+```ts
+sdk.admin.apiKey.update("apk_123", {
+  title: "Development"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminUpdateApiKey`","description":"The data to update in the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminGetApiKeysParams`","description":"Configure the fields to retrieve in the API key.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>

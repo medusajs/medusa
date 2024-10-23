@@ -5,8 +5,9 @@ import type { Operation, Document, ParsedPathItemObject } from "@/types/openapi"
 import readSpecDocument from "./read-spec-document"
 import getSectionId from "./get-section-id"
 import dereference from "./dereference"
+import { unstable_cache } from "next/cache"
 
-export default async function getPathsOfTag(
+async function getPathsOfTag_(
   tagName: string,
   area: string
 ): Promise<Document> {
@@ -47,3 +48,13 @@ export default async function getPathsOfTag(
     paths: documents,
   })
 }
+
+const getPathsOfTag = unstable_cache(
+  async (tagName: string, area: string) => getPathsOfTag_(tagName, area),
+  ["tag-paths"],
+  {
+    revalidate: 3600,
+  }
+)
+
+export default getPathsOfTag

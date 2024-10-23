@@ -15,6 +15,10 @@ const defaultStoreCustomersFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCustomersFields,
+  allowed: [
+    ...defaultStoreCustomersFields.map((f) => f.replace("*", "")),
+    "orders",
+  ],
   isList: false,
 }
 

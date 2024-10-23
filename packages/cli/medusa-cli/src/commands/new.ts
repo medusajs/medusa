@@ -13,16 +13,16 @@ import path from "path"
 import prompts from "prompts"
 import { Pool } from "pg"
 import url from "url"
+import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
-import { track } from "@medusajs/telemetry"
 
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 import reporter from "../reporter"
-import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import { getPackageManager, setPackageManager } from "../util/package-manager"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -187,7 +187,7 @@ const clone = async (hostInfo, rootPath, v2 = false, inputBranch) => {
       : []
 
   if (v2) {
-    branch = [`-b`, inputBranch || "feat/v2"]
+    branch = [`-b`, inputBranch || "master"]
   }
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)

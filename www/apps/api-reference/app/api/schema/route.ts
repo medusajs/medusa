@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server"
-import { SchemaObject } from "../../../types/openapi"
 import path from "path"
-import { existsSync, promises as fs } from "fs"
-import { parseDocument } from "yaml"
-import dereference from "../../../utils/dereference"
+import { existsSync } from "fs"
+import getSchemaContent from "../../../utils/get-schema-content"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -59,14 +57,8 @@ export async function GET(request: Request) {
     )
   }
 
-  const schemaContent = await fs.readFile(schemaPath, "utf-8")
-  const schema = parseDocument(schemaContent).toJS() as SchemaObject
-
-  // resolve references in schema
-  const dereferencedDocument = await dereference({
-    basePath: baseSchemasPath,
-    schemas: [schema],
-  })
+  const { dereferencedDocument, originalSchema: schema } =
+    await getSchemaContent(schemaPath, baseSchemasPath)
 
   return NextResponse.json(
     {

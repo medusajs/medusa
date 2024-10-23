@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useRef } from "react"
+import React, { Suspense, useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
@@ -134,14 +134,34 @@ export const Sidebar = ({
                   {!sidebarItems.default.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}
-                  {sidebarItems.default.map((item, index) => (
-                    <SidebarItem
-                      item={item}
-                      key={index}
-                      expandItems={expandItems}
-                      hasNextItems={index !== sidebarItems.default.length - 1}
-                    />
-                  ))}
+                  {sidebarItems.default.map((item, index) => {
+                    const itemKey =
+                      item.type === "separator"
+                        ? index
+                        : item.type === "link"
+                        ? `${item.path}-${index}`
+                        : `${item.title}-${index}`
+                    return (
+                      <Suspense
+                        fallback={
+                          <Loading
+                            count={1}
+                            className="!mb-0 !px-docs_0.5"
+                            barClassName="h-[20px]"
+                          />
+                        }
+                        key={itemKey}
+                      >
+                        <SidebarItem
+                          item={item}
+                          expandItems={expandItems}
+                          hasNextItems={
+                            index !== sidebarItems.default.length - 1
+                          }
+                        />
+                      </Suspense>
+                    )
+                  })}
                 </div>
               </div>
             </CSSTransition>
