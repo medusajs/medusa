@@ -4075,6 +4075,306 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/inventory_next_models/classes/inventory_next_models.ReservationItem/page.mdx"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey",
+    "newSlug": "/references/js-sdk/admin/apiKey",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign",
+    "newSlug": "/references/js-sdk/admin/campaign",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.claim",
+    "newSlug": "/references/js-sdk/admin/claim",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.claim/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.currency",
+    "newSlug": "/references/js-sdk/admin/currency",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.currency/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customer",
+    "newSlug": "/references/js-sdk/admin/customer",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customer/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customerGroup",
+    "newSlug": "/references/js-sdk/admin/customerGroup",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customerGroup/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.exchange",
+    "newSlug": "/references/js-sdk/admin/exchange",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.exchange/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillment",
+    "newSlug": "/references/js-sdk/admin/fulfillment",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillment/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentProvider",
+    "newSlug": "/references/js-sdk/admin/fulfillmentProvider",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentProvider/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentSet",
+    "newSlug": "/references/js-sdk/admin/fulfillmentSet",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentSet/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.inventoryItem",
+    "newSlug": "/references/js-sdk/admin/inventoryItem",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.inventoryItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.invite",
+    "newSlug": "/references/js-sdk/admin/invite",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.invite/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification",
+    "newSlug": "/references/js-sdk/admin/notification",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.order",
+    "newSlug": "/references/js-sdk/admin/order",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.order/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.orderEdit",
+    "newSlug": "/references/js-sdk/admin/orderEdit",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.orderEdit/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.payment",
+    "newSlug": "/references/js-sdk/admin/payment",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.payment/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.paymentCollection",
+    "newSlug": "/references/js-sdk/admin/paymentCollection",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.paymentCollection/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.priceList",
+    "newSlug": "/references/js-sdk/admin/priceList",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.priceList/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.pricePreference",
+    "newSlug": "/references/js-sdk/admin/pricePreference",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.pricePreference/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.product",
+    "newSlug": "/references/js-sdk/admin/product",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.product/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCategory",
+    "newSlug": "/references/js-sdk/admin/productCategory",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCategory/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCollection",
+    "newSlug": "/references/js-sdk/admin/productCollection",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCollection/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productTag",
+    "newSlug": "/references/js-sdk/admin/productTag",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productTag/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productType",
+    "newSlug": "/references/js-sdk/admin/productType",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productType/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productVariant",
+    "newSlug": "/references/js-sdk/admin/productVariant",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productVariant/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion",
+    "newSlug": "/references/js-sdk/admin/promotion",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.refundReason",
+    "newSlug": "/references/js-sdk/admin/refundReason",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.refundReason/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.region",
+    "newSlug": "/references/js-sdk/admin/region",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.region/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.reservation",
+    "newSlug": "/references/js-sdk/admin/reservation",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.reservation/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.return",
+    "newSlug": "/references/js-sdk/admin/return",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.return/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.returnReason",
+    "newSlug": "/references/js-sdk/admin/returnReason",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.returnReason/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel",
+    "newSlug": "/references/js-sdk/admin/salesChannel",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption",
+    "newSlug": "/references/js-sdk/admin/shippingOption",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingProfile",
+    "newSlug": "/references/js-sdk/admin/shippingProfile",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingProfile/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.stockLocation",
+    "newSlug": "/references/js-sdk/admin/stockLocation",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.stockLocation/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.store",
+    "newSlug": "/references/js-sdk/admin/store",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.store/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRate",
+    "newSlug": "/references/js-sdk/admin/taxRate",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRate/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRegion",
+    "newSlug": "/references/js-sdk/admin/taxRegion",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRegion/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.upload",
+    "newSlug": "/references/js-sdk/admin/upload",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.upload/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.user",
+    "newSlug": "/references/js-sdk/admin/user",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.user/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.workflowExecution",
+    "newSlug": "/references/js-sdk/admin/workflowExecution",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.workflowExecution/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/classes/js_sdk.admin.Admin",
+    "newSlug": "/references/js-sdk/admin",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Admin/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback",
+    "newSlug": "/references/js-sdk/auth/callback",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login",
+    "newSlug": "/references/js-sdk/auth/login",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.logout",
+    "newSlug": "/references/js-sdk/auth/logout",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.logout/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh",
+    "newSlug": "/references/js-sdk/auth/refresh",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register",
+    "newSlug": "/references/js-sdk/auth/register",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword",
+    "newSlug": "/references/js-sdk/auth/resetPassword",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.updateProvider",
+    "newSlug": "/references/js-sdk/auth/updateProvider",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.updateProvider/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/classes/js_sdk.auth.Auth",
+    "newSlug": "/references/js-sdk/auth",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/classes/js_sdk.auth.Auth/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.cart",
+    "newSlug": "/references/js-sdk/admin/cart",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.cart/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.category",
+    "newSlug": "/references/js-sdk/admin/category",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.category/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.collection",
+    "newSlug": "/references/js-sdk/admin/collection",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.collection/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.customer",
+    "newSlug": "/references/js-sdk/admin/customer",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.customer/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.fulfillment",
+    "newSlug": "/references/js-sdk/admin/fulfillment",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.fulfillment/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.order",
+    "newSlug": "/references/js-sdk/admin/order",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.order/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.payment",
+    "newSlug": "/references/js-sdk/admin/payment",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.payment/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.product",
+    "newSlug": "/references/js-sdk/admin/product",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.product/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.region",
+    "newSlug": "/references/js-sdk/admin/region",
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.region/page.mdx"
+  },
+  {
+    "origSlug": "/references/js_sdk/store/classes/js_sdk.store.Store",
+    "newSlug": "/references/js-sdk/store",
+    "filePath": "/www/apps/resources/references/js_sdk/store/classes/js_sdk.store.Store/page.mdx"
+  },
+  {
     "origSlug": "/references/medusa_config/interfaces/medusa_config.ConfigModule",
     "newSlug": "/references/medusa-config",
     "filePath": "/www/apps/resources/references/medusa_config/interfaces/medusa_config.ConfigModule/page.mdx"

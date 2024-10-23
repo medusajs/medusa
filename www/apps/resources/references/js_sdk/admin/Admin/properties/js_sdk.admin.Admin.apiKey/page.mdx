@@ -1,0 +1,215 @@
+---
+slug: /references/js-sdk/admin/apiKey
+sidebar_label: apiKey
+---
+
+import { TypeList } from "docs-ui"
+
+# apiKey - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.apiKey` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This methods retrieves a paginated list of API keys. It sends a request to the 
+[List API Keys](https://docs.medusajs.com/v2/api/admin#api-keys\_getapikeys) API route.
+
+### Example
+
+To retrieve the list of API keys:
+
+```ts
+sdk.admin.apiKey.list()
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.apiKey.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each API key:
+
+```ts
+sdk.admin.apiKey.list({
+  fields: "id,*sales_channels"
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"queryParams","type":"`AdminGetApiKeysParams`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of API keys.","expandable":false,"children":[{"name":"AdminApiKeyListResponse","type":"`AdminApiKeyListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+___
+
+## create
+
+This method creates an API key. It sends a request to the [Create API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeys)
+API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.create({
+  title: "Development",
+  type: "publishable"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"`AdminCreateApiKey`","description":"The API key's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminGetApiKeysParams`","description":"Configure the fields to retrieve in the created API key.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The created API key","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>
+
+___
+
+## revoke
+
+This method revokes an API key. It sends a request to the 
+[Revoke API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeysidrevoke) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.revoke("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="revoke"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="revoke"/>
+
+___
+
+## retrieve
+
+This method retrieves an API key's details. It sends a request to the 
+[Get API key](https://docs.medusajs.com/v2/api/admin#api-keys\_getapikeysid) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.retrieve("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+___
+
+## update
+
+This method updates an API key's details. It sends a request to the 
+[Update API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeysid) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.update("apk_123", {
+  title: "Development"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminUpdateApiKey`","description":"The data to update in the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminGetApiKeysParams`","description":"Configure the fields to retrieve in the API key.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+___
+
+## delete
+
+This method deletes an API key by its ID. It sends a request to the 
+[Delete API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_deleteapikeysid) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.delete("apk_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyDeleteResponse&#62;","optional":false,"defaultValue":"","description":"The deletion's details.","expandable":false,"children":[{"name":"AdminApiKeyDeleteResponse","type":"`AdminApiKeyDeleteResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="delete"/>
+
+___
+
+## batchSalesChannels
+
+This method manages the sales channels associated with a publishable API key to either add
+or remove associations. It sends a request to the [Manage Sales Channels](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeysidsaleschannels)
+API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.batchSalesChannels("apk_123", {
+  add: ["sc_123"],
+  remove: ["sc_321"]
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The API key's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminBatchLink](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchLink/page.mdx)","description":"The sales channels to add or remove from the API key.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSalesChannels"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The API key's details.","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSalesChannels"/>

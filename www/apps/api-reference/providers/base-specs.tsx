@@ -7,12 +7,13 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
 } from "react"
 import { SidebarItem, SidebarItemSections } from "types"
 import getSectionId from "../utils/get-section-id"
 import getTagChildSidebarItems from "../utils/get-tag-child-sidebar-items"
-import { useRouter } from "next/navigation"
-import { useSidebar } from "docs-ui"
+import { usePathname, useRouter } from "next/navigation"
+import { usePrevious, useSidebar } from "docs-ui"
 
 type BaseSpecsContextType = {
   baseSpecs: ExpandedDocument | undefined
@@ -28,7 +29,10 @@ type BaseSpecsProviderProps = {
 
 const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
   const router = useRouter()
-  const { activePath, addItems, setActivePath, resetItems } = useSidebar()
+  const { items, activePath, addItems, setActivePath, resetItems } =
+    useSidebar()
+  const pathname = usePathname()
+  const prevPathName = usePrevious(pathname)
 
   const getSecuritySchema = (
     securityName: string
@@ -49,23 +53,9 @@ const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
     return null
   }
 
-  const handleOpen = useCallback(
-    (tagPathName: string) => {
-      if (location.hash !== tagPathName) {
-        router.push(`#${tagPathName}`, {
-          scroll: false,
-        })
-      }
-      if (activePath !== tagPathName) {
-        setActivePath(tagPathName)
-      }
-    },
-    [activePath, router, setActivePath]
-  )
-
-  useEffect(() => {
+  const itemsToAdd = useMemo(() => {
     if (!baseSpecs) {
-      return
+      return []
     }
 
     const itemsToAdd: SidebarItem[] = [
@@ -88,19 +78,36 @@ const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
         loaded: childItems.length > 0,
         showLoadingIfEmpty: true,
         onOpen: () => {
-          handleOpen(tagPathName)
+          if (location.hash !== tagPathName) {
+            router.push(`#${tagPathName}`, {
+              scroll: false,
+            })
+          }
+          if (activePath !== tagPathName) {
+            setActivePath(tagPathName)
+          }
         },
       })
     })
 
+    return itemsToAdd
+  }, [baseSpecs])
+
+  useEffect(() => {
+    if (!itemsToAdd.length) {
+      return
+    }
+
     addItems(itemsToAdd, {
       section: SidebarItemSections.DEFAULT,
     })
+  }, [itemsToAdd])
 
+  useEffect(() => {
     return () => {
       resetItems()
     }
-  }, [baseSpecs])
+  }, [])
 
   return (
     <BaseSpecsContext.Provider
