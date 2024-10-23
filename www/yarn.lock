@@ -3007,7 +3007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/core@npm:3.1.1, @docusaurus/core@npm:latest":
+"@docusaurus/core@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/core@npm:3.1.1"
   dependencies:
@@ -3101,15 +3101,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/eslint-plugin@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@docusaurus/eslint-plugin@npm:3.1.0"
+"@docusaurus/eslint-plugin@npm:3.1.1":
+  version: 3.1.1
+  resolution: "@docusaurus/eslint-plugin@npm:3.1.1"
   dependencies:
     "@typescript-eslint/utils": ^5.62.0
     tslib: ^2.6.0
   peerDependencies:
     eslint: ">=6"
-  checksum: da76c3a90dea7d147a4fbc4d056bc90e2c2a417c3eac99a51c6d019923cc6ce8841cebcc58305313e108de1f481d6d52ec2b54b0fc100397165273ad1f082f01
+  checksum: f074596b75ed1de9fb3bca89292b24afecfe0582b61b5234d8a5e5f1952f14a451bb597d178b743d7f877bb927310eecdc2459c7d730fe8e836221de7ad2741d
   languageName: node
   linkType: hard
 
@@ -3160,7 +3160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/module-type-aliases@npm:3.1.1, @docusaurus/module-type-aliases@npm:latest":
+"@docusaurus/module-type-aliases@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/module-type-aliases@npm:3.1.1"
   dependencies:
@@ -3335,7 +3335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/preset-classic@npm:latest":
+"@docusaurus/preset-classic@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/preset-classic@npm:3.1.1"
   dependencies:
@@ -3371,7 +3371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/remark-plugin-npm2yarn@npm:latest":
+"@docusaurus/remark-plugin-npm2yarn@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/remark-plugin-npm2yarn@npm:3.1.1"
   dependencies:
@@ -3446,7 +3446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/theme-mermaid@npm:latest":
+"@docusaurus/theme-mermaid@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/theme-mermaid@npm:3.1.1"
   dependencies:
@@ -3501,14 +3501,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/tsconfig@npm:latest":
+"@docusaurus/tsconfig@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/tsconfig@npm:3.1.1"
   checksum: 5325ae169c19e155bdaf5b3e5da7ef6d3300a8f24e6271d76c4ae1671c2e385c4d60df72640c8ddd9f640213eeadeb59a16c60fe60b4fe34f70f66da9fa59186
   languageName: node
   linkType: hard
 
-"@docusaurus/types@npm:3.1.1, @docusaurus/types@npm:latest":
+"@docusaurus/types@npm:3.1.1":
   version: 3.1.1
   resolution: "@docusaurus/types@npm:3.1.1"
   dependencies:
@@ -12255,13 +12255,13 @@ __metadata:
     "@babel/preset-react": ^7.18.6
     "@cloudinary/react": ^1.11.2
     "@cloudinary/url-gen": ^1.9.2
-    "@docusaurus/core": latest
-    "@docusaurus/module-type-aliases": latest
-    "@docusaurus/preset-classic": latest
-    "@docusaurus/remark-plugin-npm2yarn": latest
-    "@docusaurus/theme-mermaid": latest
-    "@docusaurus/tsconfig": latest
-    "@docusaurus/types": latest
+    "@docusaurus/core": 3.1.1
+    "@docusaurus/module-type-aliases": 3.1.1
+    "@docusaurus/preset-classic": 3.1.1
+    "@docusaurus/remark-plugin-npm2yarn": 3.1.1
+    "@docusaurus/theme-mermaid": 3.1.1
+    "@docusaurus/tsconfig": 3.1.1
+    "@docusaurus/types": 3.1.1
     "@mdx-js/mdx": 3.0.0
     "@mdx-js/react": 3
     "@medusajs/icons": ^1.2.0
@@ -13068,7 +13068,7 @@ __metadata:
   resolution: "eslint-config-docs@workspace:packages/eslint-config-docs"
   dependencies:
     "@babel/eslint-parser": ^7.22.15
-    "@docusaurus/eslint-plugin": ^3.1.0
+    "@docusaurus/eslint-plugin": 3.1.1
     "@typescript-eslint/eslint-plugin": ^6.18.1
     "@typescript-eslint/parser": ^6.18.1
     eslint: ^8.36.0
@@ -22689,7 +22689,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tsconfig@workspace:packages/tsconfig"
   dependencies:
-    "@docusaurus/tsconfig": latest
+    "@docusaurus/tsconfig": 3.1.1
   languageName: unknown
   linkType: soft
 
