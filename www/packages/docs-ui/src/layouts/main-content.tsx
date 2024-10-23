@@ -3,19 +3,17 @@
 import React, { useEffect } from "react"
 import { useSidebar } from "../providers/Sidebar"
 import clsx from "clsx"
-import { Bannerv2, MainNav, useIsBrowser } from ".."
+import { MainNav, useIsBrowser } from ".."
 
 export type MainContentLayoutProps = {
   mainWrapperClasses?: string
   contentClassName?: string
-  showBanner?: boolean
   children: React.ReactNode
 }
 
 export const MainContentLayout = ({
   children,
   mainWrapperClasses,
-  showBanner = true,
   contentClassName,
 }: MainContentLayoutProps) => {
   const { isBrowser } = useIsBrowser()
@@ -43,7 +41,6 @@ export const MainContentLayout = ({
         mainWrapperClasses
       )}
     >
-      {showBanner && <Bannerv2 />}
       <div
         className={clsx(
           "bg-medusa-bg-base",
