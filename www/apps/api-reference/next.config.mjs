@@ -12,6 +12,15 @@ const nextConfig = {
     return config
   },
   transpilePackages: ["docs-ui"],
+  async redirects() {
+    return [
+      {
+        source: "/api/download/:path",
+        destination: "/download/:path",
+        permanent: true,
+      },
+    ]
+  },
 }
 
 const withMDX = mdx({
