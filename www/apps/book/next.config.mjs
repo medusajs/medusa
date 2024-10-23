@@ -117,13 +117,6 @@ const nextConfig = {
         //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide/:path*`,
         //   basePath: false,
         // },
-        {
-          source: "/:path((?!v2).*)",
-          destination: `${
-            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
-          }/:path*`,
-          basePath: false,
-        },
       ],
     }
   },
