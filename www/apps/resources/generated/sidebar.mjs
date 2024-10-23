@@ -9258,14 +9258,6 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/troubleshooting/deployment",
-            "title": "Deployment",
-            "children": []
           }
         ]
       }
