@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `register` method. This belongs to the Auth Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 ## Parameters
 
 <TypeList types={[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerData","type":"[AuthenticationInput](../../../interfaces/auth.AuthenticationInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="register"/>

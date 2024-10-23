@@ -1,12 +1,12 @@
 {
-	"id": 35035,
+	"id": 37498,
 	"name": "notification",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 35036,
+			"id": 37499,
 			"name": "AbstractNotificationProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,7 +25,7 @@
 			},
 			"children": [
 				{
-					"id": 35037,
+					"id": 37500,
 					"name": "validateOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -34,7 +34,7 @@
 					},
 					"signatures": [
 						{
-							"id": 35038,
+							"id": 37501,
 							"name": "validateOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -43,17 +43,44 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Override this static method in order for the loader to validate the options provided to the module provider."
+										"text": "This method validates the options of the provider set in "
+									},
+									{
+										"kind": "code",
+										"text": "`medusa-config.ts`"
+									},
+									{
+										"kind": "text",
+										"text": ".\nImplementing this method is optional. It's useful if your provider requires custom validation.\n\nIf the options aren't valid, throw an error."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyNotificationProviderService extends AbstractNotificationProviderService {\n  static validateOptions(options: Record<any, any>) {\n    if (!options.apiKey) {\n      throw new MedusaError(\n        MedusaError.Types.INVALID_DATA,\n        \"API key is required in the provider's options.\"\n      )\n    }\n  }\n}\n```"
+											}
+										]
 									}
 								]
 							},
 							"parameters": [
 								{
-									"id": 35039,
+									"id": 37502,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The provider's options."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -83,21 +110,21 @@
 					]
 				},
 				{
-					"id": 35040,
+					"id": 37503,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 35041,
+							"id": 37504,
 							"name": "new AbstractNotificationProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 35036,
+								"target": 37499,
 								"name": "AbstractNotificationProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -105,14 +132,14 @@
 					]
 				},
 				{
-					"id": 35042,
+					"id": 37505,
 					"name": "send",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 35043,
+							"id": 37506,
 							"name": "send",
 							"variant": "signature",
 							"kind": 4096,
@@ -147,7 +174,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35044,
+									"id": 37507,
 									"name": "notification",
 									"variant": "param",
 									"kind": 32768,
@@ -209,14 +236,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						35040
+						37503
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						35037,
-						35042
+						37500,
+						37505
 					]
 				}
 			],
@@ -237,41 +264,41 @@
 		{
 			"title": "Classes",
 			"children": [
-				35036
+				37499
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"35035": {
+		"37498": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": ""
 		},
-		"35036": {
+		"37499": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService"
 		},
-		"35037": {
+		"37500": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.validateOptions"
 		},
-		"35038": {
+		"37501": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.validateOptions"
 		},
-		"35039": {
+		"37502": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "options"
 		},
-		"35042": {
+		"37505": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.send"
 		},
-		"35043": {
+		"37506": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "AbstractNotificationProviderService.send"
 		},
-		"35044": {
+		"37507": {
 			"sourceFileName": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts",
 			"qualifiedName": "notification"
 		}
@@ -281,7 +308,7 @@
 			"1": "../../../../packages/core/utils/src/notification/abstract-notification-provider.ts"
 		},
 		"reflections": {
-			"1": 35035
+			"1": 37498
 		}
 	}
 }

@@ -7393,6 +7393,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/tax/updateTaxRegions",
+                        "title": "updateTaxRegions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/tax/upsertTaxRates",
                         "title": "upsertTaxRates",
                         "children": []
@@ -11257,6 +11265,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/validateInventoryDeleteStep",
+                    "title": "validateInventoryDeleteStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/validateInventoryItemsForCreate",
                     "title": "validateInventoryItemsForCreate",
                     "children": []
@@ -14671,6 +14687,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/updateTaxRatesWorkflow",
                     "title": "updateTaxRatesWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateTaxRegionsWorkflow",
+                    "title": "updateTaxRegionsWorkflow",
                     "children": []
                   }
                 ],

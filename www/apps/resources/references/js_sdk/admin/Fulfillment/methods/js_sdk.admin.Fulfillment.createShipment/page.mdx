@@ -2,10 +2,31 @@ import { TypeList } from "docs-ui"
 
 # createShipment
 
+This method creates a shipment for a fulfillment. It sends a request to the
+[Create Shipment](https://docs.medusajs.com/v2/api/admin#fulfillments\_postfulfillmentsidshipment)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillment.createShipment("ful_123", {
+  labels: [
+    {
+      tracking_number: "123",
+      tracking_url: "example.com",
+      label_url: "example.com"
+    }
+  ]
+})
+.then(({ fulfillment }) => {
+  console.log(fulfillment)
+})
+```
+
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminCreateFulfillmentShipment`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShipment"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminCreateFulfillmentShipment`","description":"The shipment's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the fulfillment.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShipment"/>
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminFulfillmentResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminFulfillmentResponse","type":"`AdminFulfillmentResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShipment"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminFulfillmentResponse&#62;","optional":false,"defaultValue":"","description":"The fulfillment's details.","expandable":false,"children":[{"name":"AdminFulfillmentResponse","type":"`AdminFulfillmentResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createShipment"/>
