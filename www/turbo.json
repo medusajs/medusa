@@ -15,6 +15,7 @@
     },
     "build:prod": {
       "dependsOn": [
+        "^build",
         "^build:prod"
       ],
       "outputs": [
