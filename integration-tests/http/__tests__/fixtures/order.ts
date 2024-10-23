@@ -22,7 +22,7 @@ export async function createOrderSeeder({
   container: MedusaContainer
   productOverride?: AdminProduct
   stockChannelOverride?: AdminStockLocation
-  additionalProducts?: AdminProduct[]
+  additionalProducts?: { variant_id: string; quantity: number }[]
   inventoryItemOverride?: AdminInventoryItem
 }) {
   const publishableKey = await generatePublishableKey(container)
@@ -195,10 +195,7 @@ export async function createOrderSeeder({
         sales_channel_id: salesChannel.id,
         items: [
           { quantity: 1, variant_id: product.variants[0].id },
-          ...(additionalProducts || []).map((p) => ({
-            quantity: 1,
-            variant_id: p.variants?.[0]?.id,
-          })),
+          ...(additionalProducts || []),
         ],
       },
       storeHeaders

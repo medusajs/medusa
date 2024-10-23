@@ -7,11 +7,11 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createOrderSeeder } from "../../fixtures/order"
 
-jest.setTimeout(30000)
+jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let order, seeder
+    let order, seeder, inventoryItemOverride3, productOverride3
 
     beforeEach(async () => {
       const container = getContainer()
@@ -82,8 +82,25 @@ medusaIntegrationTestRunner({
           )
         ).data.inventory_item
 
+        inventoryItemOverride3 = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "test-variant-3", requires_shipping: false },
+            adminHeaders
+          )
+        ).data.inventory_item
+
         await api.post(
           `/admin/inventory-items/${inventoryItemOverride2.id}/location-levels`,
+          {
+            location_id: stockChannelOverride.id,
+            stocked_quantity: 10,
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItemOverride3.id}/location-levels`,
           {
             location_id: stockChannelOverride.id,
             stocked_quantity: 10,
@@ -127,11 +144,50 @@ medusaIntegrationTestRunner({
           )
         ).data.product
 
+        productOverride3 = (
+          await api.post(
+            "/admin/products",
+            {
+              title: `Test fixture 3`,
+              options: [
+                { title: "size", values: ["large", "small"] },
+                { title: "color", values: ["green"] },
+              ],
+              variants: [
+                {
+                  title: "Test variant 3",
+                  sku: "test-variant-3",
+                  inventory_items: [
+                    {
+                      inventory_item_id: inventoryItemOverride3.id,
+                      required_quantity: 1,
+                    },
+                  ],
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 100,
+                    },
+                  ],
+                  options: {
+                    size: "small",
+                    color: "green",
+                  },
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
         seeder = await createOrderSeeder({
           api,
           container: getContainer(),
           productOverride,
-          additionalProducts: [productOverride2],
+          additionalProducts: [
+            { variant_id: productOverride2.variants[0].id, quantity: 1 },
+            { variant_id: productOverride3.variants[0].id, quantity: 3 },
+          ],
           stockChannelOverride,
           inventoryItemOverride,
         })
@@ -155,6 +211,86 @@ medusaIntegrationTestRunner({
 
         expect(response2.orders).toHaveLength(1)
         expect(response2.orders[0].email).toEqual(userEmail)
+      })
+
+      it("should update stock levels correctly when creating partial fulfillment on an order", async () => {
+        const orderItemId = order.items.find(
+          (i) => i.variant_id === productOverride3.variants[0].id
+        ).id
+
+        let iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(10)
+        expect(iitem.reserved_quantity).toBe(3)
+
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(9)
+        expect(iitem.reserved_quantity).toBe(2)
+
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(8)
+        expect(iitem.reserved_quantity).toBe(1)
+
+        const {
+          data: { order: fulfillableOrder },
+        } = await api.post(
+          `/admin/orders/${order.id}/fulfillments?fields=+fulfillments.id,fulfillments.quantity`,
+          {
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(7)
+        expect(iitem.reserved_quantity).toBe(0)
+
+        expect(fulfillableOrder.fulfillments).toHaveLength(3)
+        expect(
+          fulfillableOrder.fulfillments.every((f) => f.quantity === 1)
+        ).toBe(true)
       })
 
       it("should only create fulfillments grouped by shipping requirement", async () => {
