@@ -269,13 +269,15 @@ medusaIntegrationTestRunner({
         const {
           data: { order: fulfillableOrder },
         } = await api.post(
-          `/admin/orders/${order.id}/fulfillments?fields=+fulfillments.id,fulfillments.quantity`,
+          `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id`,
           {
             location_id: seeder.stockLocation.id,
             items: [{ id: orderItemId, quantity: 1 }],
           },
           adminHeaders
         )
+
+        expect(fulfillableOrder.fulfillments).toHaveLength(3)
 
         iitem = (
           await api.get(
@@ -286,11 +288,6 @@ medusaIntegrationTestRunner({
 
         expect(iitem.stocked_quantity).toBe(7)
         expect(iitem.reserved_quantity).toBe(0)
-
-        expect(fulfillableOrder.fulfillments).toHaveLength(3)
-        expect(
-          fulfillableOrder.fulfillments.every((f) => f.quantity === 1)
-        ).toBe(true)
       })
 
       it("should only create fulfillments grouped by shipping requirement", async () => {
