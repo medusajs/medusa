@@ -7,6 +7,7 @@
     "dev": "docusaurus clear && docusaurus start",
     "dev:monorepo": "yarn dev --port 3001",
     "build": "docusaurus build",
+    "build:prod": "docusaurus build --out-dir build/v1",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

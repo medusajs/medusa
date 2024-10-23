@@ -500,7 +500,7 @@
   ],
   "framework": "docusaurus-2",
   "installCommand": "yarn install",
-  "buildCommand": "turbo run build",
+  "buildCommand": "turbo run build:prod",
   "outputDirectory": "build",
   "ignoreCommand": "bash ../../ignore-build-script.sh",
   "devCommand": "yarn dev"
