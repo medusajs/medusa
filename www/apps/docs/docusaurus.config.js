@@ -13,7 +13,7 @@ const config = {
   title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
-  baseUrl: process.env.BASE_PATH || "/v1",
+  baseUrl: process.env.BASE_PATH || "/v1/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
