@@ -1,19 +1,19 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DatePicker",
+  "displayName": "TooltipProvider",
   "props": {
-    "size": {
+    "delayDuration": {
       "defaultValue": {
-        "value": "\"base\"",
+        "value": "100",
         "computed": false
       },
       "description": "",
       "required": false
     },
-    "shouldCloseOnSelect": {
+    "skipDelayDuration": {
       "defaultValue": {
-        "value": "true",
+        "value": "300",
         "computed": false
       },
       "description": "",

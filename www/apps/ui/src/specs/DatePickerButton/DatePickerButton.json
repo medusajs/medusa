@@ -1,19 +1,11 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DatePicker",
+  "displayName": "DatePickerButton",
   "props": {
     "size": {
       "defaultValue": {
         "value": "\"base\"",
-        "computed": false
-      },
-      "description": "",
-      "required": false
-    },
-    "shouldCloseOnSelect": {
-      "defaultValue": {
-        "value": "true",
         "computed": false
       },
       "description": "",
