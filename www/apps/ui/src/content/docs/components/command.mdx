@@ -25,3 +25,21 @@ import { Command } from "@medusajs/ui"
 ---
 
 <ComponentReference mainComponent="Command" />
+
+## Usage Outside Medusa Admin
+
+---
+
+If you're using the `Command` component in a project other than the Medusa Admin, make sure to include the `TooltipProvider` somewhere up in your component tree, as the `Command.Copy` component uses a [Tooltip](/components/tooltip#usage-outside-medusa-admin):
+
+```tsx
+<TooltipProvider>
+  <Command>
+    <code>yarn add @medusajs/ui</code>
+    <Command.Copy
+      content="yarn add @medusajs/ui"
+      className="ml-auto"
+    />
+  </Command>
+</TooltipProvider>
+```
