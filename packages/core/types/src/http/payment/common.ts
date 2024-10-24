@@ -472,5 +472,8 @@ export interface BasePaymentProviderFilters
 }
 
 export interface BasePaymentFilters extends BaseFilterable<BasePaymentFilters> {
+  /**
+   * Filter by payment ID(s).
+   */
   id?: string | string[]
 }
