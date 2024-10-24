@@ -2,18 +2,17 @@
  * Adapted from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-cli/src/init-starter.ts
  */
 
+import { track } from "@medusajs/telemetry"
 import { execSync } from "child_process"
 import execa from "execa"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
-import sysPath from "path"
-import path from "path"
-import prompts from "prompts"
+import { default as path, default as sysPath } from "path"
 import { Pool } from "pg"
+import prompts from "prompts"
 import url from "url"
-import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
@@ -443,11 +442,11 @@ const runMigrations = async (rootPath) => {
   const cliPath = sysPath.join(
     `node_modules`,
     `@medusajs`,
-    `medusa-cli`,
+    `cli`,
     `cli.js`
   )
 
-  return await execa(cliPath, [`migrations`, `run`], {
+  return await execa(cliPath, [`db:migrate`], {
     cwd: rootPath,
   })
     .then(() => {
