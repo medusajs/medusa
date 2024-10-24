@@ -28,6 +28,7 @@ import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use
 import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
 import { sdk } from "../../../../../lib/client/index.ts"
 import { queryClient } from "../../../../../lib/query-client.ts"
+import { useBatchCustomerCustomerGroups } from "../../../../../hooks/api"
 
 type CustomerGroupSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -56,6 +57,9 @@ export const CustomerGroupSection = ({
         placeholderData: keepPreviousData,
       }
     )
+
+  const { mutateAsync: batchCustomerCustomerGroups } =
+    useBatchCustomerCustomerGroups(customer.id)
 
   const filters = useCustomerGroupTableFilters()
   const columns = useColumns(customer.id)
@@ -94,20 +98,15 @@ export const CustomerGroupSection = ({
     }
 
     try {
-      /**
-       * TODO: use this for now until add customer groups to customers batch is implemented
-       */
-      const promises = customerGroupIds.map((id) =>
-        sdk.admin.customerGroup.batchCustomers(id, {
-          remove: [customer.id],
+      await batchCustomerCustomerGroups({ remove: customerGroupIds })
+
+      toast.success(
+        t("customers.groups.removed.success", {
+          groups: customer_groups!
+            .filter((cg) => customerGroupIds.includes(cg.id))
+            .map((cg) => cg?.name),
         })
       )
-
-      await Promise.all(promises)
-
-      await queryClient.invalidateQueries({
-        queryKey: customerGroupsQueryKeys.lists(),
-      })
     } catch (e) {
       toast.error(e.message)
     }

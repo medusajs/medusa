@@ -210,4 +210,38 @@ export class Customer {
       }
     )
   }
+
+  /**
+   * This method manages customer groups for a customer.
+   * It sends a request to the [Manage Customers](https://docs.medusajs.com/api/admin#customers_postcustomersidcustomergroups)
+   * API route.
+   *
+   * @param id - The customer's ID.
+   * @param body - The groups to add customer to or remove customer from.
+   * @param headers - Headers to pass in the request
+   * @returns The customers details.
+   *
+   * @example
+   * sdk.admin.customer.batchCustomerGroups("cus_123", {
+   *   add: ["cusgroup_123"],
+   *   remove: ["cusgroup_321"]
+   * })
+   * .then(({ customer }) => {
+   *   console.log(customer)
+   * })
+   */
+  async batchCustomerGroups(
+    id: string,
+    body: HttpTypes.AdminBatchLink,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminCustomerResponse>(
+      `/admin/customers/${id}/customer-groups`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
 }
