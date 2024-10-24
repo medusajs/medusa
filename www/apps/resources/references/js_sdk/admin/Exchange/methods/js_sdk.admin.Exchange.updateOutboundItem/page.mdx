@@ -1,0 +1,35 @@
+import { TypeList } from "docs-ui"
+
+# updateOutboundItem
+
+This method updates an outbound (or new) item from an exchange using the ID 
+of the item's `ITEM_ADD` action.
+
+Every item has an `actions` property, whose value is an array of actions. 
+You can check the action's name using its `action` property, and use the value of the `id` property.
+
+This method sends a request to the [Update Inbound Item](https://docs.medusajs.com/v2/api/admin#exchanges\_postexchangesidoutbounditemsaction\_id)
+API route.
+
+## Example
+
+```ts
+sdk.admin.exchange.updateOutboundItem(
+  "exchange_123",
+  "ordchact_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ exchange }) => {
+  console.log(exchange)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The exchange's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new exchange item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateExchangeOutboundItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateExchangeOutboundItem/page.mdx)","description":"The item's details to update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reason_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the exchange.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateOutboundItem"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminExchangePreviewResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminExchangePreviewResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The exchange's details with a preview of the order when the exchange is applied.","expandable":false,"children":[{"name":"AdminExchangePreviewResponse","type":"[AdminExchangePreviewResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminExchangePreviewResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_preview","type":"`AdminOrderPreview`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"exchange","type":"[AdminExchange](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminExchange/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_at","type":"`string` \\| `Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_items","type":"[BaseExchangeItem](../../../../../types/interfaces/types.BaseExchangeItem/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_items","type":"[AdminReturnItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminReturnItem/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"display_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order_version","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"difference_due","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"return","type":"[AdminReturn](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminReturn/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`BaseOrder`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"`BaseOrderShippingMethod`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactions","type":"`BaseOrderTransaction`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateOutboundItem"/>

@@ -14,14 +14,18 @@ This is useful in many cases such as when a payment is being processed asynchron
 
 ---
 
-## processEvent Method
+## getWebhookActionAndData Method
 
-The Payment Module’s main service has a [processEvent method](/references/payment/processEvent) used to handle incoming webhook events from third-party payment services. The method delegates the handling to the associated payment provider, which returns the event's details.
+The Payment Module’s main service has a [getWebhookActionAndData method](/references/payment/getWebhookActionAndData) used to handle incoming webhook events from third-party payment services. The method delegates the handling to the associated payment provider, which returns the event's details.
 
 Medusa implements a webhook listener route at the `/hooks/payment/[provider]` API route, where `[provider]` is the ID of the provider (for example, `stripe`). Use that webhook listener in your third-party payment provider's configurations.
 
-![A diagram showcasing the steps of how the processEvent method words](https://res.cloudinary.com/dza7lstvk/image/upload/v1711567415/Medusa%20Resources/payment-webhook_seaocg.jpg)
+![A diagram showcasing the steps of how the getWebhookActionAndData method words](https://res.cloudinary.com/dza7lstvk/image/upload/v1711567415/Medusa%20Resources/payment-webhook_seaocg.jpg)
 
 If the event's details indicate that the payment should be authorized, then the [authorizePaymentSession method of the main service](/references/payment/authorizePaymentSession) is executed on the specified payment session.
 
 If the event's details indicate that the payment should be captured, then the [capturePayment method of the main service](/references/payment/capturePayment) is executed on the payment of the specified payment session.
+
+### Actions After Webhook Payment Processing
+
+After the payment webhook actions are processed and the payment is authorized or captured, the Medusa application completes the cart associated with the payment's collection if it's not completed yet.

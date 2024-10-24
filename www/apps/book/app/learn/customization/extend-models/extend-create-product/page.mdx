@@ -94,7 +94,7 @@ import BrandModuleService from "../../modules/brand/service"
 
 createProductsWorkflow.hooks.productsCreated(
   (async ({ products, additional_data }, { container }) => {
-    if (!additional_data.brand_id) {
+    if (!additional_data?.brand_id) {
       return new StepResponse([], [])
     }
 
@@ -215,7 +215,7 @@ In the Medusa application's logs, you'll find the message `Linked brand to produ
 
 ---
 
-## Worflows and API Routes References
+## Workflows and API Routes References
 
 Medusa exposes hooks in many of its workflows that you can consume to add custom logic.
 

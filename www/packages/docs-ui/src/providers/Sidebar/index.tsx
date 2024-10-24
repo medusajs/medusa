@@ -40,7 +40,8 @@ export type SidebarContextType = {
   setActivePath: (path: string | null) => void
   isLinkActive: (item: SidebarItem, checkChildren?: boolean) => boolean
   isChildrenActive: (item: SidebarItemCategory) => boolean
-  addItems: (item: SidebarItem[], options?: ActionOptionsType) => void
+  addItems: (items: SidebarItem[], options?: ActionOptionsType) => void
+  removeItems: (items: SidebarItem[]) => void
   findItemInSection: (
     section: SidebarItem[],
     item: Partial<SidebarItem>,
@@ -86,6 +87,10 @@ export type ActionType =
   | {
       type: "replace"
       replacementItems: SidebarSectionItems
+    }
+  | {
+      type: "remove"
+      items: SidebarItem[]
     }
 
 type LinksMap = Map<string, SidebarItemLinkWithParent>
@@ -152,9 +157,45 @@ const getLinksMap = (
   return map
 }
 
-export const reducer = (state: SidebarSectionItems, actionData: ActionType) => {
+export const reducer = (
+  state: SidebarSectionItems,
+  actionData: ActionType
+): SidebarSectionItems => {
   if (actionData.type === "replace") {
     return actionData.replacementItems
+  }
+  if (actionData.type === "remove") {
+    return {
+      ...state,
+      default: state.default.filter((item) => {
+        if (item.type === "separator") {
+          return true
+        }
+
+        const found = actionData.items.some((itemToRemove) => {
+          if (
+            itemToRemove.type === "separator" ||
+            itemToRemove.type !== item.type
+          ) {
+            return false
+          }
+
+          if (
+            itemToRemove.type === "category" ||
+            itemToRemove.type === "sub-category"
+          ) {
+            return itemToRemove.title === item.title
+          }
+
+          return (
+            itemToRemove.path === (item as SidebarItemLink).path &&
+            itemToRemove.title === (item as SidebarItemLink).title
+          )
+        })
+
+        return !found
+      }),
+    }
   }
   const { type, options } = actionData
   let { items } = actionData
@@ -303,6 +344,13 @@ export const SidebarProvider = ({
       type: options?.parent ? "update" : "add",
       items: newItems,
       options,
+    })
+  }
+
+  const removeItems = (itemsToRemove: SidebarItem[]) => {
+    dispatch({
+      type: "remove",
+      items: itemsToRemove,
     })
   }
 
@@ -516,6 +564,7 @@ export const SidebarProvider = ({
   useEffect(() => {
     if (resetOnCondition?.()) {
       resetItems()
+      setActivePath(null)
     }
   }, [resetOnCondition, resetItems])
 
@@ -575,6 +624,7 @@ export const SidebarProvider = ({
         items,
         currentItems,
         addItems,
+        removeItems,
         activePath,
         setActivePath,
         isLinkActive: isLinkActive,

@@ -730,6 +730,27 @@ export type ProjectConfigOptions = {
      * ```
      */
     authMethodsPerActor?: Record<string, string[]>
+
+    /**
+     * Specifies the fields that can't be selected in the response unless specified in the allowed query config.
+     * This is useful to restrict sensitive fields from being exposed in the API.
+     *
+     * @example
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       restrictedFields: {
+     *         store: ["order", "orders"],
+     *       }
+     *     }
+     * ```
+     */
+    restrictedFields?: {
+      store?: string[]
+      /*admin?: string[]*/
+    }
   }
 }
 

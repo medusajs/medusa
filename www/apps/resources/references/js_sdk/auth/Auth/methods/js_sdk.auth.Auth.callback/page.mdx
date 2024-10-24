@@ -1,0 +1,35 @@
+---
+slug: /references/js-sdk/auth/callback
+sidebar_label: callback
+---
+
+import { TypeList } from "docs-ui"
+
+# callback - JS SDK Auth Reference
+
+This documentation provides a reference to the `sdk.auth.callback` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method is used to validate an Oauth callback from a third-party service, such as Google, for an admin user, customer, or custom actor types.
+It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/v2/api/admin#auth\_postactor\_typeauth\_providercallback).
+
+## Example
+
+```ts
+sdk.auth.callback(
+  "customer",
+  "google",
+  {
+    code: "123",
+  }
+).then((token) => {
+  console.log(token)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"method","type":"`string`","description":"The authentication provider to use. For example, `google`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, unknown>`","description":"The query parameters from the Oauth callback, which should be passed to the API route.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="callback"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The authentication JWT token","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="callback"/>

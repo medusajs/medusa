@@ -1,0 +1,25 @@
+import { TypeList } from "docs-ui"
+
+# create
+
+This method creates a customer. It sends a request to the
+[Create Customer](https://docs.medusajs.com/v2/api/admin#customers\_postcustomers) API route.
+
+## Example
+
+```ts
+sdk.admin.customer.create({
+  email: "customer@gmail.com"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"body","type":"`AdminCreateCustomer`","description":"The customer's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the customer.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminCustomerResponse&#62;","optional":false,"defaultValue":"","description":"The customer's details.","expandable":false,"children":[{"name":"AdminCustomerResponse","type":"`AdminCustomerResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>

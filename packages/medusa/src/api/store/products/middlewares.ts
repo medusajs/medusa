@@ -16,10 +16,7 @@ import {
 import { validateAndTransformQuery } from "@medusajs/framework"
 import { maybeApplyStockLocationId } from "./helpers"
 import * as QueryConfig from "./query-config"
-import {
-  StoreGetProductsParams,
-  StoreGetProductsParamsType,
-} from "./validators"
+import { StoreGetProductsParams } from "./validators"
 
 export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -41,7 +38,8 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       }),
       applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
-        categories: (filters: StoreGetProductsParamsType, fields: string[]) => {
+        // TODO: the type here seems off and the implementation does not take into account $and and $or possible filters. Might be worth re working (original type used here was StoreGetProductsParamsType)
+        categories: (filters: any, fields: string[]) => {
           const categoryIds = filters.category_id
           delete filters.category_id
 

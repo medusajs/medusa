@@ -1,0 +1,44 @@
+---
+slug: /references/js-sdk/admin/store
+sidebar_label: store
+---
+
+import { TypeList } from "docs-ui"
+
+# store - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.store` set of methods used to send requests to Medusa's Admin API routes.
+
+## retrieve
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminStoreParams`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminStoreResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminStoreResponse","type":"`AdminStoreResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+___
+
+## list
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"`AdminStoreListParams`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminStoreListResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminStoreListResponse","type":"`AdminStoreListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+___
+
+## update
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`AdminUpdateStore`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminStoreResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminStoreResponse","type":"`AdminStoreResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>

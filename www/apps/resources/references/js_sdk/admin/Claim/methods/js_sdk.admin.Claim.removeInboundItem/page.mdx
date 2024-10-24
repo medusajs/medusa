@@ -1,0 +1,30 @@
+import { TypeList } from "docs-ui"
+
+# removeInboundItem
+
+This method removes an inbound (or return) item from a claim using the ID of the item's `RETURN_ITEM` action.
+It sends a request to the [Remove Inbound Item](https://docs.medusajs.com/v2/api/admin#claims\_deleteclaimsidinbounditemsaction\_id)
+API route.
+
+Every item has an `actions` property, whose value is an array of actions. 
+You can check the action's name using its `action` property, and use the value of the `id` property.
+
+## Example
+
+```ts
+sdk.admin.claim.removeInboundItem(
+  "claim_123", 
+  "ordchact_123",
+  )
+.then(({ return: returnData }) => {
+  console.log(returnData)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The ID of the return item's `RETURN_ITEM` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the return.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeInboundItem"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminClaimReturnPreviewResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminClaimReturnPreviewResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the return associated wth the claim, with a preview of the order when the claim is applied.","expandable":false,"children":[{"name":"AdminClaimReturnPreviewResponse","type":"[AdminClaimReturnPreviewResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminClaimReturnPreviewResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_preview","type":"`AdminOrderPreview`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return","type":"[AdminReturn](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminReturn/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[AdminReturnItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminReturnItem/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_version","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"display_id","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"received_at","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_at","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ReturnStatus](../../../../../order/types/order.ReturnStatus-1/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"exchange_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refund_amount","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeInboundItem"/>

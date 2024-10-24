@@ -1,0 +1,26 @@
+import { TypeList } from "docs-ui"
+
+# create
+
+This method creates an API key. It sends a request to the [Create API Key](https://docs.medusajs.com/v2/api/admin#api-keys\_postapikeys)
+API route.
+
+## Example
+
+```ts
+sdk.admin.apiKey.create({
+  title: "Development",
+  type: "publishable"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"body","type":"`AdminCreateApiKey`","description":"The API key's details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`AdminGetApiKeysParams`","description":"Configure the fields to retrieve in the created API key.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyResponse&#62;","optional":false,"defaultValue":"","description":"The created API key","expandable":false,"children":[{"name":"AdminApiKeyResponse","type":"`AdminApiKeyResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="create"/>
