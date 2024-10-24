@@ -19,19 +19,16 @@ const mdxPluginOptions = {
           projectUrls: {
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
-              path: "v2",
+              path: "",
             },
             "user-guide": {
               url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
-              path: "v2/user-guide",
             },
             ui: {
               url: process.env.NEXT_PUBLIC_UI_URL,
-              path: "ui",
             },
             api: {
               url: process.env.NEXT_PUBLIC_API_URL,
-              path: "v2/api",
             },
           },
           useBaseUrl:

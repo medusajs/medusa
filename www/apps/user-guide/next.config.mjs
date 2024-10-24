@@ -23,18 +23,16 @@ const withMDX = mdx({
           projectUrls: {
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
+              path: "",
             },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "resources",
             },
             ui: {
               url: process.env.NEXT_PUBLIC_UI_URL,
-              path: "ui",
             },
             api: {
               url: process.env.NEXT_PUBLIC_API_URL,
-              path: "api",
             },
           },
           useBaseUrl:

@@ -791,15 +791,17 @@ In this step, you’ll create a workflow that’s executed when the customer pla
 graph TD
   retrieveCartStep["Retrieve Cart (useRemoteQueryStep from Medusa)"] --> completeCartWorkflow["completeCartWorkflow (Medusa)"]
   completeCartWorkflow["completeCartWorkflow (Medusa)"] --> groupVendorItemsStep
-  groupVendorItemsStep --> createVendorOrdersStep
+  groupVendorItemsStep --> getOrderDetailWorkflow
+  getOrderDetailWorkflow --> createVendorOrdersStep
   createVendorOrdersStep --> createRemoteLinkStep["Create Links (createRemoteLinkStep from Medusa)"]
 ```
 
 1. Retrieve the cart using its ID. Medusa provides a `useRemoteQueryStep` in the `@medusajs/medusa/core-flows` package that you can use.
 2. Create a parent order for the cart and its items. Medusa also has a `completeCartWorkflow` in the `@medusajs/medusa/core-flows` package that you can use as a step.
 3. Group the cart items by their product’s associated vendor.
-4. For each vendor, create a child order with the cart items of their products, and return the orders with the links to be created.
-5. Create the links created by the previous step. Medusa provides a `createRemoteLinkStep` in the `@medusajs/medusa/core-flows` package that you can use.
+4. Retrieve the order's details using Medusa's `getOrderDetailWorkflow` exported by the `@medusajs/medusa/core-flows` package.
+5. For each vendor, create a child order with the cart items of their products, and return the orders with the links to be created.
+6. Create the links created by the previous step. Medusa provides a `createRemoteLinkStep` in the `@medusajs/medusa/core-flows` package that you can use.
 
 You'll implement the third and fourth steps.
 
@@ -1135,6 +1137,7 @@ import {
   useRemoteQueryStep,
   createRemoteLinkStep,
   completeCartWorkflow,
+  getOrderDetailWorkflow
 } from "@medusajs/medusa/core-flows"
 import { CartDTO } from "@medusajs/framework/types"
 import groupVendorItemsStep from "./steps/group-vendor-items"
@@ -1155,14 +1158,30 @@ const createVendorOrdersWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }) as CartDTO
 
-    const order = completeCartWorkflow.runAsStep({
+    const { id: orderId } = completeCartWorkflow.runAsStep({
       input: {
-        id: cart.id,
-      },
+        id: cart.id
+      }
     })
 
     const { vendorsItems } = groupVendorItemsStep({
       cart,
+    })
+
+    const order = getOrderDetailWorkflow.runAsStep({
+      input: {
+        order_id: orderId,
+        fields: [
+          "region_id",
+          "customer_id",
+          "sales_channel_id",
+          "email",
+          "currency_code",
+          "shipping_address.*",
+          "billing_address.*",
+          "shipping_methods.*",
+        ]
+      }
     })
 
     const { 
