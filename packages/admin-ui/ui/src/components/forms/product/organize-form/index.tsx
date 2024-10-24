@@ -13,6 +13,7 @@ import {
 } from "../../../molecules/select/next-select"
 import TagInput from "../../../molecules/tag-input"
 import useOrganizeData from "./use-organize-data"
+import { useTranslation } from "react-i18next"
 
 export type OrganizeFormType = {
   type: Option | null
@@ -26,6 +27,7 @@ type Props = {
 }
 
 const OrganizeForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   const { control, path, setValue } = form
   const {
     productTypeOptions,
@@ -57,11 +59,14 @@ const OrganizeForm = ({ form }: Props) => {
           render={({ field: { value, onChange } }) => {
             return (
               <NextCreateableSelect
-                label="Type"
+                label={t("organize-form-type-label", "Type")}
                 onChange={onChange}
                 options={productTypeOptions}
                 value={value || null}
-                placeholder="Choose a type"
+                placeholder={t(
+                  "organize-form-type-placeholder",
+                  "Choose a type"
+                )}
                 onCreateOption={onCreateOption}
                 isClearable
               />
@@ -74,11 +79,14 @@ const OrganizeForm = ({ form }: Props) => {
           render={({ field: { value, onChange } }) => {
             return (
               <NextSelect
-                label="Collection"
+                label={t("organize-form-collection-label", "Collection")}
                 onChange={onChange}
                 options={collectionOptions}
                 value={value}
-                placeholder="Choose a collection"
+                placeholder={t(
+                  "organize-form-collection-placeholder",
+                  "Choose a collection"
+                )}
                 isClearable
               />
             )
@@ -88,7 +96,10 @@ const OrganizeForm = ({ form }: Props) => {
 
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) ? (
         <>
-          <InputHeader label="Categories" className="mb-2" />
+          <InputHeader
+            label={t("organize-form-categories-label", "Categories")}
+            className="mb-2"
+          />
           <Controller
             name={path("categories")}
             control={control}
@@ -102,8 +113,14 @@ const OrganizeForm = ({ form }: Props) => {
                 <NestedMultiselect
                   placeholder={
                     !!categoriesOptions?.length
-                      ? "Choose categories"
-                      : "No categories available"
+                      ? t(
+                          "organize-form-categories-placeholder",
+                          "Choose categories"
+                        )
+                      : t(
+                          "organize-form-categories-placeholder-no-categories",
+                          "No categories available"
+                        )
                   }
                   onSelect={onChange}
                   options={categoriesOptions}

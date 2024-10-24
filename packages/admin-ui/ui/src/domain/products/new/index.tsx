@@ -294,7 +294,10 @@ const NewProduct = ({ onClose }: Props) => {
                   <DiscountableForm form={nestedForm(form, "discounted")} />
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Organize" value="organize">
+              <Accordion.Item
+                title={t("new-organize-title", "Organize")}
+                value="organize"
+              >
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-to-start-selling-all-you-need-is-a-name-and-a-price",
