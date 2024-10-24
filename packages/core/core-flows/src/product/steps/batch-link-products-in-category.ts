@@ -26,7 +26,8 @@ export const batchLinkProductsToCategoryStep = createStep(
     const dbProducts = await service.listProducts(
       { id: [...(data.add ?? []), ...(data.remove ?? [])] },
       {
-        select: ["id", "categories"],
+        select: ["id"],
+        relations: ["categories"],
       }
     )
 
