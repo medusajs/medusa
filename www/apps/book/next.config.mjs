@@ -21,19 +21,15 @@ const withMDX = mdx({
           projectUrls: {
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "resources",
             },
             "user-guide": {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "user-guide",
             },
             ui: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "ui",
             },
             api: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-              path: "api",
             },
           },
           useBaseUrl:

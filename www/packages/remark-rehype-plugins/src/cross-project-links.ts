@@ -38,7 +38,7 @@ function matchAndFixLinks(
   const path =
     projectUrls &&
     Object.hasOwn(projectUrls, projectArea.groups.area) &&
-    projectUrls[projectArea.groups.area]?.path
+    projectUrls[projectArea.groups.area]?.path !== undefined
       ? projectUrls[projectArea.groups.area].path
       : projectArea.groups.area
 
