@@ -15,7 +15,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
-    "@medusajs/icons": "preview",
+    "@medusajs/icons": "^2.0.0",
     "@medusajs/ui": "^3.0.0",
     "@next/mdx": "14.2.14",
     "@react-hook/resize-observer": "^2.0.2",

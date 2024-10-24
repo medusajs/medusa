@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `completePaymentCollections` method. This belongs to the Payment Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 ## completePaymentCollections(paymentCollectionId, sharedContext?): Promise&#60;[PaymentCollectionDTO](../../../interfaces/payment.PaymentCollectionDTO/page.mdx)&#62;
 
 This method marks a payment collection as completed by settings its `completed_at` field to the current date and time.

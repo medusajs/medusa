@@ -1,0 +1,23 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "TooltipProvider",
+  "props": {
+    "delayDuration": {
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    },
+    "skipDelayDuration": {
+      "defaultValue": {
+        "value": "300",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    }
+  }
+}

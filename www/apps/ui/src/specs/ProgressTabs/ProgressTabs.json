@@ -1,6 +1,5 @@
 {
   "description": "This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.",
   "methods": [],
-  "displayName": "ProgressTabs",
-  "props": {}
+  "displayName": "ProgressTabs"
 }
