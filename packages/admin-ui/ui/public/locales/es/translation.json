@@ -1920,5 +1920,8 @@
   "users-the-team": "El Equipo",
   "users-manage-users-of-your-medusa-store": "Administrar usuarios de tu Tienda Medusa",
   "users-count_one": "{{count}}",
-  "users-count_other": "{{count}}"
+  "users-count_other": "{{count}}",
+  "discountable-form-discountable": "Descontable",
+  "discountable-form-hint-gift-card": "Cuando no esté marcado, esta tarjeta de regalo no se descontará del inventario.",
+  "discountable-form-hint-product": "Cuando no esté marcado, este producto no se descontará del inventario."
 }
