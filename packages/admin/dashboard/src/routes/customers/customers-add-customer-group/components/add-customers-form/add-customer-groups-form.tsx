@@ -17,16 +17,12 @@ import {
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import {
-  customerGroupsQueryKeys,
-  useCustomerGroups,
-} from "../../../../../hooks/api/customer-groups"
+import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
 import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns/use-customer-group-table-columns"
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { sdk } from "../../../../../lib/client"
-import { queryClient } from "../../../../../lib/query-client"
+import { useBatchCustomerCustomerGroups } from "../../../../../hooks/api"
 
 type AddCustomerGroupsFormProps = {
   customerId: string
@@ -44,6 +40,9 @@ export const AddCustomerGroupsForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [isPending, setIsPending] = useState(false)
+
+  const { mutateAsync: batchCustomerCustomerGroups } =
+    useBatchCustomerCustomerGroups(customerId)
 
   const form = useForm<zod.infer<typeof AddCustomerGroupsSchema>>({
     defaultValues: {
@@ -117,16 +116,7 @@ export const AddCustomerGroupsForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     setIsPending(true)
     try {
-      /**
-       * TODO: use this for now until add customer groups to customers batch is implemented
-       */
-      const promises = data.customer_group_ids.map((id) =>
-        sdk.admin.customerGroup.batchCustomers(id, {
-          add: [customerId],
-        })
-      )
-
-      await Promise.all(promises)
+      await batchCustomerCustomerGroups({ add: data.customer_group_ids })
 
       toast.success(
         t("customers.groups.add.success", {
@@ -136,10 +126,6 @@ export const AddCustomerGroupsForm = ({
             .map((cg) => cg?.name),
         })
       )
-
-      await queryClient.invalidateQueries({
-        queryKey: customerGroupsQueryKeys.lists(),
-      })
 
       handleSuccess(`/customers/${customerId}`)
     } catch (e) {

@@ -829,6 +829,12 @@
         "list": {
           "noRecordsMessage": "Please create a customer group first."
         }
+      },
+      "removed": {
+        "success": "Customer removed from: {{groups}}.",
+        "list": {
+          "noRecordsMessage": "Please create a customer group first."
+        }
       }
     },
     "edit": {

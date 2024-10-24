@@ -15,6 +15,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -98,6 +99,17 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminCustomerAddressesParams,
         QueryConfig.listAddressesTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customers/:id/customer-groups",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },

@@ -10,6 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { customerGroupsQueryKeys } from "./customer-groups"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
 export const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
@@ -108,6 +109,38 @@ export const useDeleteCustomer = (
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: customersQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useBatchCustomerCustomerGroups = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminCustomerResponse,
+    FetchError,
+    HttpTypes.AdminBatchLink
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.customer.batchCustomerGroups(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: customersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customersQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)
