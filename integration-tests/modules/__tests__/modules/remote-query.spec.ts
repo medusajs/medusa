@@ -268,7 +268,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it(`should perform cross module query and apply filters correctly to the correct modules [0]`, async () => {
+      it(`should support filtering using operators on a primary column`, async () => {
         const { data } = await query.graph({
           entity: "product",
           fields: ["id", "title"],
