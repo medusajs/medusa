@@ -99,10 +99,31 @@ const nextConfig = {
           basePath: false,
         },
         {
+          source: "/api",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_URL || "https://localhost:3001"
+          }/api`,
+          basePath: false,
+        },
+        {
           source: "/api/:path*",
           destination: `${
             process.env.NEXT_PUBLIC_API_URL || "https://localhost:3001"
           }/api/:path*`,
+          basePath: false,
+        },
+        {
+          source: "/v1",
+          destination: `${
+            process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3001"
+          }/v1`,
+          basePath: false,
+        },
+        {
+          source: "/v1/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3001"
+          }/v1/:path*`,
           basePath: false,
         },
         // TODO comment out once we have the user guide published
