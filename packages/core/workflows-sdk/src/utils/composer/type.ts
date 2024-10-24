@@ -100,13 +100,6 @@ export type CreateWorkflowComposerContext = {
   flow: OrchestratorBuilder
   isAsync: boolean
   handlers: WorkflowHandler
-  stepBinder: <TOutput = unknown>(
-    fn: StepFunctionResult
-  ) => WorkflowData<TOutput>
-  hookBinder: (name: string, fn: () => HookHandler) => void
-  parallelizeBinder: <TOutput extends WorkflowData[] = WorkflowData[]>(
-    fn: (this: CreateWorkflowComposerContext) => TOutput
-  ) => TOutput
 }
 
 /**
