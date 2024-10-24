@@ -18,6 +18,7 @@ import { MainNavDesktopMenu } from "./DesktopMenu"
 import { SidebarLeftIcon } from "../Icons/SidebarLeft"
 import { MainNavMobileMenu } from "./MobileMenu"
 import Link from "next/link"
+import { MainNavVersion } from "./Version"
 
 type MainNavProps = {
   className?: string
@@ -49,7 +50,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
               <SidebarLeftIcon />
             </Button>
           )}
-          <Link href={`${config.baseUrl}/v2`}>
+          <Link href={`${config.baseUrl}`}>
             <BorderedIcon
               IconComponent={MedusaIcon}
               iconWrapperClassName="my-[14px]"
@@ -60,6 +61,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
       </div>
       <div className="flex items-center gap-docs_0.75 my-docs_0.75">
         <div className="lg:flex items-center gap-docs_0.5 text-medusa-fg-subtle hidden">
+          <MainNavVersion />
           {editDate && <MainNavEditDate date={editDate} />}
           <LinkButton
             href={reportIssueLink}

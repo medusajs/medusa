@@ -43,7 +43,7 @@ export interface TaxRateDTO {
   /**
    * Whether the tax rate should be combined with parent rates.
    *
-   * Learn more [here](https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+   * Learn more [here](https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
    */
   is_combinable: boolean
 

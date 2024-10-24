@@ -5,28 +5,29 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export const AdminGetApiKeyParams = createSelectParams()
+
+export const AdminGetApiKeysParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  title: z.union([z.string(), z.array(z.string())]).optional(),
+  token: z.union([z.string(), z.array(z.string())]).optional(),
+  type: z.nativeEnum(ApiKeyType).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+  revoked_at: createOperatorMap().optional(),
+})
 
 export type AdminGetApiKeysParamsType = z.infer<typeof AdminGetApiKeysParams>
 export const AdminGetApiKeysParams = createFindParams({
   offset: 0,
   limit: 20,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    title: z.union([z.string(), z.array(z.string())]).optional(),
-    token: z.union([z.string(), z.array(z.string())]).optional(),
-    type: z.nativeEnum(ApiKeyType).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    revoked_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
-    $or: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetApiKeysParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetApiKeysParamsFields))
 
 export type AdminCreateApiKeyType = z.infer<typeof AdminCreateApiKey>
 export const AdminCreateApiKey = z.object({

@@ -7,7 +7,7 @@ export const createLinksStepId = "create-remote-links"
 /**
  * This step creates remote links between two records of linked data models.
  *
- * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).
+ * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/advanced-development/modules/remote-link#create-link).
  *
  * @example
  * import {

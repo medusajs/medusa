@@ -1,0 +1,21 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "CalendarCell",
+  "props": {
+    "date": {
+      "required": true,
+      "tsType": {
+        "name": "CalendarDate"
+      },
+      "description": ""
+    },
+    "state": {
+      "required": true,
+      "tsType": {
+        "name": "CalendarState"
+      },
+      "description": ""
+    }
+  }
+}

@@ -16,7 +16,7 @@ export class CustomerGroup {
 
   /**
    * This method retrieves a customer group by its ID. It sends a request to the
-   * [Get Customer Group](https://docs.medusajs.com/v2/api/admin#customer-groups_getcustomergroupsid) API route.
+   * [Get Customer Group](https://docs.medusajs.com/api/admin#customer-groups_getcustomergroupsid) API route.
    * 
    * @param id - The customer group's ID.
    * @param query - Configure the fields to retrieve in the customer group.
@@ -44,7 +44,7 @@ export class CustomerGroup {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -63,7 +63,7 @@ export class CustomerGroup {
 
   /**
    * This method retrieves a paginated list of customer groups. It sends a request to the
-   * [List Customer Groups](https://docs.medusajs.com/v2/api/admin#customer-groups_getcustomergroups)
+   * [List Customer Groups](https://docs.medusajs.com/api/admin#customer-groups_getcustomergroups)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -106,7 +106,7 @@ export class CustomerGroup {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminGetCustomerGroupsParams,
@@ -124,7 +124,7 @@ export class CustomerGroup {
 
   /**
    * This method creates a customer group. It sends a request to the
-   * [Create Customer Group](https://docs.medusajs.com/v2/api/admin#customer-groups_postcustomergroups)
+   * [Create Customer Group](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroups)
    * API route.
    * 
    * @param body - The customer group's details.
@@ -158,7 +158,7 @@ export class CustomerGroup {
 
   /**
    * This method updates a customer group's details. It sends a request to the
-   * [Update Customer](https://docs.medusajs.com/v2/api/admin#customer-groups_postcustomergroupsid)
+   * [Update Customer](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsid)
    * API route.
    * 
    * @param id - The customer group's ID.
@@ -194,7 +194,7 @@ export class CustomerGroup {
 
   /**
    * This method deletes a customer group. This method sends a request to the
-   * [Delete Customer Group](https://docs.medusajs.com/v2/api/admin#customer-groups_deletecustomergroupsid)
+   * [Delete Customer Group](https://docs.medusajs.com/api/admin#customer-groups_deletecustomergroupsid)
    * API route.
    * 
    * @param id - The customer group's ID.
@@ -219,7 +219,7 @@ export class CustomerGroup {
 
   /**
    * This method manages customers of a group to add or remove them from the group.
-   * It sends a request to the [Manage Customers](https://docs.medusajs.com/v2/api/admin#customer-groups_postcustomergroupsidcustomers)
+   * It sends a request to the [Manage Customers](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsidcustomers)
    * API route.
    * 
    * @param id - The group's ID.

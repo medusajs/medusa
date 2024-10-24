@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -11,28 +14,32 @@ export type AdminGetSalesChannelParamsType = z.infer<
 >
 export const AdminGetSalesChannelParams = createSelectParams()
 
+export const AdminGetSalesChannelsParamsDirectFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.union([z.string(), z.array(z.string())]).optional(),
+  description: z.string().optional(),
+  is_disabled: booleanString().optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export type AdminGetSalesChannelsParamsType = z.infer<
   typeof AdminGetSalesChannelsParams
 >
 export const AdminGetSalesChannelsParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
-    description: z.string().optional(),
-    is_disabled: booleanString().optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    location_id: z.union([z.string(), z.array(z.string())]).optional(),
-    publishable_key_id: z.union([z.string(), z.array(z.string())]).optional(),
-    $and: z.lazy(() => AdminGetSalesChannelsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetSalesChannelsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetSalesChannelsParamsDirectFields)
+  .merge(applyAndAndOrOperators(AdminGetSalesChannelsParamsDirectFields))
+  .merge(
+    z.object({
+      location_id: z.union([z.string(), z.array(z.string())]).optional(),
+      publishable_key_id: z.union([z.string(), z.array(z.string())]).optional(),
+    })
+  )
 
 export type AdminCreateSalesChannelType = z.infer<
   typeof AdminCreateSalesChannel

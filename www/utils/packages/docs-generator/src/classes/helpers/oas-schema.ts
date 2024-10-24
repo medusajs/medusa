@@ -357,7 +357,7 @@ class OasSchemaHelper {
       .replace("DTO", "")
       .replace(this.schemaRefPrefix, "")
       .replace(
-        /(?<!(AdminProduct|CreateProduct|StoreShippingOption|AdminShippingOption|CreateShippingOption))Type$/,
+        /(?<!(AdminProduct|CreateProduct|StoreShippingOption|AdminShippingOption|CreateShippingOption|BaseProduct))Type$/,
         ""
       )
   }

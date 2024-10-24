@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -11,6 +14,26 @@ export type AdminGetInventoryItemParamsType = z.infer<
 >
 export const AdminGetInventoryItemParams = createSelectParams()
 
+export const AdminGetInventoryItemsParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  sku: z.union([z.string(), z.array(z.string())]).optional(),
+  origin_country: z.union([z.string(), z.array(z.string())]).optional(),
+  mid_code: z.union([z.string(), z.array(z.string())]).optional(),
+  hs_code: z.union([z.string(), z.array(z.string())]).optional(),
+  material: z.union([z.string(), z.array(z.string())]).optional(),
+  requires_shipping: booleanString().optional(),
+  weight: createOperatorMap(z.number(), parseFloat).optional(),
+  length: createOperatorMap(z.number(), parseFloat).optional(),
+  height: createOperatorMap(z.number(), parseFloat).optional(),
+  width: createOperatorMap(z.number(), parseFloat).optional(),
+  location_levels: z
+    .object({
+      location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    })
+    .optional(),
+})
+
 export type AdminGetInventoryItemsParamsType = z.infer<
   typeof AdminGetInventoryItemsParams
 >
@@ -18,29 +41,8 @@ export const AdminGetInventoryItemsParams = createFindParams({
   limit: 20,
   offset: 0,
 })
-  .merge(
-    z.object({
-      q: z.string().optional(),
-      id: z.union([z.string(), z.array(z.string())]).optional(),
-      sku: z.union([z.string(), z.array(z.string())]).optional(),
-      origin_country: z.union([z.string(), z.array(z.string())]).optional(),
-      mid_code: z.union([z.string(), z.array(z.string())]).optional(),
-      hs_code: z.union([z.string(), z.array(z.string())]).optional(),
-      material: z.union([z.string(), z.array(z.string())]).optional(),
-      requires_shipping: booleanString().optional(),
-      weight: createOperatorMap(z.number(), parseFloat).optional(),
-      length: createOperatorMap(z.number(), parseFloat).optional(),
-      height: createOperatorMap(z.number(), parseFloat).optional(),
-      width: createOperatorMap(z.number(), parseFloat).optional(),
-      location_levels: z
-        .object({
-          location_id: z.union([z.string(), z.array(z.string())]).optional(),
-        })
-        .optional(),
-      $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
-      $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
-    })
-  )
+  .merge(AdminGetInventoryItemsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetInventoryItemsParamsFields))
   .strict()
 
 export type AdminGetInventoryLocationLevelParamsType = z.infer<
@@ -48,21 +50,19 @@ export type AdminGetInventoryLocationLevelParamsType = z.infer<
 >
 export const AdminGetInventoryLocationLevelParams = createSelectParams()
 
+export const AdminGetInventoryLocationLevelsParamsFields = z.object({
+  location_id: z.union([z.string(), z.array(z.string())]).optional(),
+})
+
 export type AdminGetInventoryLocationLevelsParamsType = z.infer<
   typeof AdminGetInventoryLocationLevelsParams
 >
 export const AdminGetInventoryLocationLevelsParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    location_id: z.union([z.string(), z.array(z.string())]).optional(),
-    $and: z
-      .lazy(() => AdminGetInventoryLocationLevelsParams.array())
-      .optional(),
-    $or: z.lazy(() => AdminGetInventoryLocationLevelsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetInventoryLocationLevelsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetInventoryLocationLevelsParamsFields))
 
 export type AdminCreateInventoryLocationLevelType = z.infer<
   typeof AdminCreateInventoryLocationLevel

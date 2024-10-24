@@ -57,7 +57,7 @@ export const UserMenu = () => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
-            <Link to="https://docs.medusajs.com/v2" target="_blank">
+            <Link to="https://docs.medusajs.com" target="_blank">
               <BookOpen className="text-ui-fg-subtle mr-2" />
               {t("app.menus.user.documentation")}
             </Link>

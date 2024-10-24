@@ -38,12 +38,12 @@ export const MainNavDesktopMenu = () => {
         title: "Homepage",
         link: "https://medusajs.com",
       },
-      // {
-      //   type: "link",
-      //   icon: <BookIcon />,
-      //   title: "Medusa v1",
-      //   link: "https://docs.medusajs.com",
-      // },
+      {
+        type: "link",
+        icon: <BookIcon />,
+        title: "Medusa v1",
+        link: "https://docs.medusajs.com/v1",
+      },
       {
         type: "link",
         icon: <TimelineVertical />,
@@ -54,7 +54,7 @@ export const MainNavDesktopMenu = () => {
         type: "link",
         icon: <QuestionMarkCircle />,
         title: "Troubleshooting",
-        link: "https://docs.medusajs.com/v2/resources/troubleshooting",
+        link: "https://docs.medusajs.com/resources/troubleshooting",
       },
     ]
 

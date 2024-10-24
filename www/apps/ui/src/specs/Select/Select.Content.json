@@ -2,5 +2,30 @@
   "description": "",
   "methods": [],
   "displayName": "Select.Content",
-  "props": {}
+  "props": {
+    "position": {
+      "defaultValue": {
+        "value": "\"popper\"",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    },
+    "sideOffset": {
+      "defaultValue": {
+        "value": "8",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    },
+    "collisionPadding": {
+      "defaultValue": {
+        "value": "24",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    }
+  }
 }
