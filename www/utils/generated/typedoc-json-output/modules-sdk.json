@@ -1,12 +1,12 @@
 {
-	"id": 37082,
+	"id": 37073,
 	"name": "modules-sdk",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 37083,
+			"id": 37074,
 			"name": "ModulesDefinition",
 			"variant": "declaration",
 			"kind": 32,
@@ -16,21 +16,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37084,
+					"id": 37075,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"indexSignatures": [
 						{
-							"id": 37085,
+							"id": 37076,
 							"name": "__index",
 							"variant": "signature",
 							"kind": 8192,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37086,
+									"id": 37077,
 									"name": "key",
 									"variant": "param",
 									"kind": 32768,
@@ -57,7 +57,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 37087,
+			"id": 37078,
 			"name": "MODULE_DEFINITIONS",
 			"variant": "declaration",
 			"kind": 32,
@@ -79,15 +79,168 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 37088,
+			"id": 37079,
 			"name": "moduleLoader",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37089,
+					"id": 37080,
 					"name": "moduleLoader",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"parameters": [
+						{
+							"id": 37081,
+							"name": "__namedParameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 37082,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 37083,
+											"name": "container",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
+													"qualifiedName": "MedusaContainer"
+												},
+												"name": "MedusaContainer",
+												"package": "@medusajs/types"
+											}
+										},
+										{
+											"id": 37084,
+											"name": "moduleResolutions",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+															"qualifiedName": "ModuleResolution"
+														},
+														"name": "ModuleResolution",
+														"package": "@medusajs/types"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 37085,
+											"name": "logger",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
+													"qualifiedName": "Logger"
+												},
+												"name": "Logger",
+												"package": "@medusajs/types"
+											}
+										},
+										{
+											"id": 37086,
+											"name": "migrationOnly",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "boolean"
+											}
+										},
+										{
+											"id": 37087,
+											"name": "loaderOnly",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "boolean"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												37083,
+												37084,
+												37085,
+												37086,
+												37087
+											]
+										}
+									]
+								}
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "void"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 37088,
+			"name": "moduleProviderLoader",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"signatures": [
+				{
+					"id": 37089,
+					"name": "moduleProviderLoader",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
@@ -125,159 +278,6 @@
 										},
 										{
 											"id": 37093,
-											"name": "moduleResolutions",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "reference",
-														"target": {
-															"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-															"qualifiedName": "ModuleResolution"
-														},
-														"name": "ModuleResolution",
-														"package": "@medusajs/types"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											}
-										},
-										{
-											"id": 37094,
-											"name": "logger",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
-													"qualifiedName": "Logger"
-												},
-												"name": "Logger",
-												"package": "@medusajs/types"
-											}
-										},
-										{
-											"id": 37095,
-											"name": "migrationOnly",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {
-												"isOptional": true
-											},
-											"type": {
-												"type": "intrinsic",
-												"name": "boolean"
-											}
-										},
-										{
-											"id": 37096,
-											"name": "loaderOnly",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {
-												"isOptional": true
-											},
-											"type": {
-												"type": "intrinsic",
-												"name": "boolean"
-											}
-										}
-									],
-									"groups": [
-										{
-											"title": "Properties",
-											"children": [
-												37092,
-												37093,
-												37094,
-												37095,
-												37096
-											]
-										}
-									]
-								}
-							}
-						}
-					],
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Promise"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "void"
-							}
-						],
-						"name": "Promise",
-						"package": "typescript"
-					}
-				}
-			]
-		},
-		{
-			"id": 37097,
-			"name": "moduleProviderLoader",
-			"variant": "declaration",
-			"kind": 64,
-			"flags": {},
-			"signatures": [
-				{
-					"id": 37098,
-					"name": "moduleProviderLoader",
-					"variant": "signature",
-					"kind": 4096,
-					"flags": {},
-					"parameters": [
-						{
-							"id": 37099,
-							"name": "__namedParameters",
-							"variant": "param",
-							"kind": 32768,
-							"flags": {},
-							"type": {
-								"type": "reflection",
-								"declaration": {
-									"id": 37100,
-									"name": "__type",
-									"variant": "declaration",
-									"kind": 65536,
-									"flags": {},
-									"children": [
-										{
-											"id": 37101,
-											"name": "container",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
-													"qualifiedName": "MedusaContainer"
-												},
-												"name": "MedusaContainer",
-												"package": "@medusajs/types"
-											}
-										},
-										{
-											"id": 37102,
 											"name": "providers",
 											"variant": "declaration",
 											"kind": 1024,
@@ -296,7 +296,7 @@
 											}
 										},
 										{
-											"id": 37103,
+											"id": 37094,
 											"name": "registerServiceFn",
 											"variant": "declaration",
 											"kind": 1024,
@@ -306,21 +306,21 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 37104,
+													"id": 37095,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 37105,
+															"id": 37096,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
 															"flags": {},
 															"parameters": [
 																{
-																	"id": 37106,
+																	"id": 37097,
 																	"name": "klass",
 																	"variant": "param",
 																	"kind": 32768,
@@ -331,7 +331,7 @@
 																	}
 																},
 																{
-																	"id": 37107,
+																	"id": 37098,
 																	"name": "container",
 																	"variant": "param",
 																	"kind": 32768,
@@ -347,7 +347,7 @@
 																	}
 																},
 																{
-																	"id": 37108,
+																	"id": 37099,
 																	"name": "moduleDetails",
 																	"variant": "param",
 																	"kind": 32768,
@@ -383,9 +383,9 @@
 										{
 											"title": "Properties",
 											"children": [
-												37101,
-												37102,
-												37103
+												37092,
+												37093,
+												37094
 											]
 										}
 									]
@@ -412,21 +412,21 @@
 			]
 		},
 		{
-			"id": 37109,
+			"id": 37100,
 			"name": "loadModuleProvider",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37110,
+					"id": 37101,
 					"name": "loadModuleProvider",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37111,
+							"id": 37102,
 							"name": "container",
 							"variant": "param",
 							"kind": 32768,
@@ -442,7 +442,7 @@
 							}
 						},
 						{
-							"id": 37112,
+							"id": 37103,
 							"name": "provider",
 							"variant": "param",
 							"kind": 32768,
@@ -458,7 +458,7 @@
 							}
 						},
 						{
-							"id": 37113,
+							"id": 37104,
 							"name": "registerServiceFn",
 							"variant": "param",
 							"kind": 32768,
@@ -468,21 +468,21 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37114,
+									"id": 37105,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37115,
+											"id": 37106,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 37116,
+													"id": 37107,
 													"name": "klass",
 													"variant": "param",
 													"kind": 32768,
@@ -493,7 +493,7 @@
 													}
 												},
 												{
-													"id": 37117,
+													"id": 37108,
 													"name": "container",
 													"variant": "param",
 													"kind": 32768,
@@ -504,7 +504,7 @@
 													}
 												},
 												{
-													"id": 37118,
+													"id": 37109,
 													"name": "moduleDetails",
 													"variant": "param",
 													"kind": 32768,
@@ -558,21 +558,21 @@
 			]
 		},
 		{
-			"id": 37119,
+			"id": 37110,
 			"name": "registerMedusaModule",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37120,
+					"id": 37111,
 					"name": "registerMedusaModule",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37121,
+							"id": 37112,
 							"name": "moduleKey",
 							"variant": "param",
 							"kind": 32768,
@@ -583,7 +583,7 @@
 							}
 						},
 						{
-							"id": 37122,
+							"id": 37113,
 							"name": "moduleDeclaration",
 							"variant": "param",
 							"kind": 32768,
@@ -639,7 +639,7 @@
 							}
 						},
 						{
-							"id": 37123,
+							"id": 37114,
 							"name": "moduleExports",
 							"variant": "param",
 							"kind": 32768,
@@ -657,7 +657,7 @@
 							}
 						},
 						{
-							"id": 37124,
+							"id": 37115,
 							"name": "definition",
 							"variant": "param",
 							"kind": 32768,
@@ -703,21 +703,21 @@
 			]
 		},
 		{
-			"id": 37125,
+			"id": 37116,
 			"name": "registerMedusaLinkModule",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37126,
+					"id": 37117,
 					"name": "registerMedusaLinkModule",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37127,
+							"id": 37118,
 							"name": "definition",
 							"variant": "param",
 							"kind": 32768,
@@ -733,7 +733,7 @@
 							}
 						},
 						{
-							"id": 37128,
+							"id": 37119,
 							"name": "moduleDeclaration",
 							"variant": "param",
 							"kind": 32768,
@@ -760,7 +760,7 @@
 							}
 						},
 						{
-							"id": 37129,
+							"id": 37120,
 							"name": "moduleExports",
 							"variant": "param",
 							"kind": 32768,
@@ -806,7 +806,7 @@
 			]
 		},
 		{
-			"id": 37157,
+			"id": 37148,
 			"name": "RunMigrationFn",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -814,14 +814,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37158,
+					"id": 37149,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37159,
+							"id": 37150,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
@@ -847,7 +847,7 @@
 			}
 		},
 		{
-			"id": 37160,
+			"id": 37151,
 			"name": "RevertMigrationFn",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -855,21 +855,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37161,
+					"id": 37152,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37162,
+							"id": 37153,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37163,
+									"id": 37154,
 									"name": "moduleNames",
 									"variant": "param",
 									"kind": 32768,
@@ -904,7 +904,7 @@
 			}
 		},
 		{
-			"id": 37164,
+			"id": 37155,
 			"name": "GenerateMigrations",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -912,21 +912,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37165,
+					"id": 37156,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37166,
+							"id": 37157,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37167,
+									"id": 37158,
 									"name": "moduleNames",
 									"variant": "param",
 									"kind": 32768,
@@ -961,7 +961,7 @@
 			}
 		},
 		{
-			"id": 37168,
+			"id": 37159,
 			"name": "GetLinkExecutionPlanner",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -969,14 +969,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37169,
+					"id": 37160,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37170,
+							"id": 37161,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
@@ -996,7 +996,7 @@
 			}
 		},
 		{
-			"id": 37171,
+			"id": 37162,
 			"name": "MedusaModuleConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1004,21 +1004,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37172,
+					"id": 37163,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"indexSignatures": [
 						{
-							"id": 37173,
+							"id": 37164,
 							"name": "__index",
 							"variant": "signature",
 							"kind": 8192,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37174,
+									"id": 37165,
 									"name": "key",
 									"variant": "param",
 									"kind": 32768,
@@ -1096,7 +1096,7 @@
 			}
 		},
 		{
-			"id": 37175,
+			"id": 37166,
 			"name": "SharedResources",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1104,14 +1104,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37176,
+					"id": 37167,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 37177,
+							"id": 37168,
 							"name": "database",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1140,14 +1140,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 37178,
+											"id": 37169,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 37179,
+													"id": 37170,
 													"name": "pool",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1187,7 +1187,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														37179
+														37170
 													]
 												}
 											]
@@ -1201,7 +1201,7 @@
 						{
 							"title": "Properties",
 							"children": [
-								37177
+								37168
 							]
 						}
 					]
@@ -1209,21 +1209,21 @@
 			}
 		},
 		{
-			"id": 37130,
+			"id": 37121,
 			"name": "loadModules",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37131,
+					"id": 37122,
 					"name": "loadModules",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37132,
+							"id": 37123,
 							"name": "args",
 							"variant": "param",
 							"kind": 32768,
@@ -1231,27 +1231,27 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37133,
+									"id": 37124,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 37134,
+											"id": 37125,
 											"name": "modulesConfig",
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
 											"type": {
 												"type": "reference",
-												"target": 37171,
+												"target": 37162,
 												"name": "MedusaModuleConfig",
 												"package": "@medusajs/modules-sdk"
 											}
 										},
 										{
-											"id": 37135,
+											"id": 37126,
 											"name": "sharedContainer",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1267,7 +1267,7 @@
 											}
 										},
 										{
-											"id": 37136,
+											"id": 37127,
 											"name": "sharedResourcesConfig",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1276,13 +1276,13 @@
 											},
 											"type": {
 												"type": "reference",
-												"target": 37175,
+												"target": 37166,
 												"name": "SharedResources",
 												"package": "@medusajs/modules-sdk"
 											}
 										},
 										{
-											"id": 37137,
+											"id": 37128,
 											"name": "migrationOnly",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1295,7 +1295,7 @@
 											}
 										},
 										{
-											"id": 37138,
+											"id": 37129,
 											"name": "loaderOnly",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1308,7 +1308,7 @@
 											}
 										},
 										{
-											"id": 37139,
+											"id": 37130,
 											"name": "workerMode",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1338,12 +1338,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												37134,
-												37135,
-												37136,
-												37137,
-												37138,
-												37139
+												37125,
+												37126,
+												37127,
+												37128,
+												37129,
+												37130
 											]
 										}
 									]
@@ -1370,7 +1370,7 @@
 			]
 		},
 		{
-			"id": 37180,
+			"id": 37171,
 			"name": "MedusaAppOutput",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1378,14 +1378,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37181,
+					"id": 37172,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 37182,
+							"id": 37173,
 							"name": "modules",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1433,7 +1433,7 @@
 							}
 						},
 						{
-							"id": 37183,
+							"id": 37174,
 							"name": "link",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1443,7 +1443,7 @@
 								"types": [
 									{
 										"type": "reference",
-										"target": 37254,
+										"target": 37245,
 										"name": "RemoteLink",
 										"package": "@medusajs/modules-sdk"
 									},
@@ -1455,7 +1455,7 @@
 							}
 						},
 						{
-							"id": 37184,
+							"id": 37175,
 							"name": "query",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1471,7 +1471,7 @@
 							}
 						},
 						{
-							"id": 37185,
+							"id": 37176,
 							"name": "entitiesMap",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1499,7 +1499,7 @@
 							}
 						},
 						{
-							"id": 37186,
+							"id": 37177,
 							"name": "gqlSchema",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1518,7 +1518,7 @@
 							}
 						},
 						{
-							"id": 37187,
+							"id": 37178,
 							"name": "notFound",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1561,59 +1561,59 @@
 							}
 						},
 						{
-							"id": 37188,
+							"id": 37179,
 							"name": "runMigrations",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37157,
+								"target": 37148,
 								"name": "RunMigrationFn",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37189,
+							"id": 37180,
 							"name": "revertMigrations",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37160,
+								"target": 37151,
 								"name": "RevertMigrationFn",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37190,
+							"id": 37181,
 							"name": "generateMigrations",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37164,
+								"target": 37155,
 								"name": "GenerateMigrations",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37191,
+							"id": 37182,
 							"name": "linkMigrationExecutionPlanner",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37168,
+								"target": 37159,
 								"name": "GetLinkExecutionPlanner",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37192,
+							"id": 37183,
 							"name": "onApplicationShutdown",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1621,14 +1621,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37193,
+									"id": 37184,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37194,
+											"id": 37185,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
@@ -1654,7 +1654,7 @@
 							}
 						},
 						{
-							"id": 37195,
+							"id": 37186,
 							"name": "onApplicationPrepareShutdown",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1662,14 +1662,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37196,
+									"id": 37187,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37197,
+											"id": 37188,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
@@ -1695,7 +1695,7 @@
 							}
 						},
 						{
-							"id": 37198,
+							"id": 37189,
 							"name": "onApplicationStart",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1703,14 +1703,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37199,
+									"id": 37190,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37200,
+											"id": 37191,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
@@ -1736,7 +1736,7 @@
 							}
 						},
 						{
-							"id": 37201,
+							"id": 37192,
 							"name": "sharedContainer",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1758,20 +1758,20 @@
 						{
 							"title": "Properties",
 							"children": [
+								37173,
+								37174,
+								37175,
+								37176,
+								37177,
+								37178,
+								37179,
+								37180,
+								37181,
 								37182,
 								37183,
-								37184,
-								37185,
 								37186,
-								37187,
-								37188,
 								37189,
-								37190,
-								37191,
-								37192,
-								37195,
-								37198,
-								37201
+								37192
 							]
 						}
 					]
@@ -1779,7 +1779,7 @@
 			}
 		},
 		{
-			"id": 37202,
+			"id": 37193,
 			"name": "MedusaAppOptions",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1787,14 +1787,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37203,
+					"id": 37194,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 37204,
+							"id": 37195,
 							"name": "workerMode",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1820,7 +1820,7 @@
 							}
 						},
 						{
-							"id": 37205,
+							"id": 37196,
 							"name": "sharedContainer",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1838,7 +1838,7 @@
 							}
 						},
 						{
-							"id": 37206,
+							"id": 37197,
 							"name": "sharedResourcesConfig",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1847,13 +1847,13 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 37175,
+								"target": 37166,
 								"name": "SharedResources",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37207,
+							"id": 37198,
 							"name": "loadedModules",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1874,7 +1874,7 @@
 							}
 						},
 						{
-							"id": 37208,
+							"id": 37199,
 							"name": "servicesConfig",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1895,7 +1895,7 @@
 							}
 						},
 						{
-							"id": 37209,
+							"id": 37200,
 							"name": "modulesConfigPath",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1908,7 +1908,7 @@
 							}
 						},
 						{
-							"id": 37210,
+							"id": 37201,
 							"name": "modulesConfigFileName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1921,7 +1921,7 @@
 							}
 						},
 						{
-							"id": 37211,
+							"id": 37202,
 							"name": "modulesConfig",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1930,13 +1930,13 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 37171,
+								"target": 37162,
 								"name": "MedusaModuleConfig",
 								"package": "@medusajs/modules-sdk"
 							}
 						},
 						{
-							"id": 37212,
+							"id": 37203,
 							"name": "linkModules",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1948,7 +1948,7 @@
 								"types": [
 									{
 										"type": "reference",
-										"target": 37244,
+										"target": 37235,
 										"name": "RegisterModuleJoinerConfig",
 										"package": "@medusajs/modules-sdk"
 									},
@@ -1956,7 +1956,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 37244,
+											"target": 37235,
 											"name": "RegisterModuleJoinerConfig",
 											"package": "@medusajs/modules-sdk"
 										}
@@ -1965,7 +1965,7 @@
 							}
 						},
 						{
-							"id": 37213,
+							"id": 37204,
 							"name": "remoteFetchData",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1983,7 +1983,7 @@
 							}
 						},
 						{
-							"id": 37214,
+							"id": 37205,
 							"name": "injectedDependencies",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1996,7 +1996,7 @@
 							}
 						},
 						{
-							"id": 37215,
+							"id": 37206,
 							"name": "onApplicationStartCb",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2006,14 +2006,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37216,
+									"id": 37207,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37217,
+											"id": 37208,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
@@ -2028,7 +2028,7 @@
 							}
 						},
 						{
-							"id": 37218,
+							"id": 37209,
 							"name": "loaderOnly",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2053,19 +2053,19 @@
 						{
 							"title": "Properties",
 							"children": [
+								37195,
+								37196,
+								37197,
+								37198,
+								37199,
+								37200,
+								37201,
+								37202,
+								37203,
 								37204,
 								37205,
 								37206,
-								37207,
-								37208,
-								37209,
-								37210,
-								37211,
-								37212,
-								37213,
-								37214,
-								37215,
-								37218
+								37209
 							]
 						}
 					]
@@ -2073,28 +2073,28 @@
 			}
 		},
 		{
-			"id": 37140,
+			"id": 37131,
 			"name": "MedusaApp",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37141,
+					"id": 37132,
 					"name": "MedusaApp",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37142,
+							"id": 37133,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37202,
+								"target": 37193,
 								"name": "MedusaAppOptions",
 								"package": "@medusajs/modules-sdk"
 							},
@@ -2110,7 +2110,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 37180,
+								"target": 37171,
 								"name": "MedusaAppOutput",
 								"package": "@medusajs/modules-sdk"
 							}
@@ -2122,28 +2122,28 @@
 			]
 		},
 		{
-			"id": 37143,
+			"id": 37134,
 			"name": "MedusaAppMigrateUp",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37144,
+					"id": 37135,
 					"name": "MedusaAppMigrateUp",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37145,
+							"id": 37136,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37202,
+								"target": 37193,
 								"name": "MedusaAppOptions",
 								"package": "@medusajs/modules-sdk"
 							},
@@ -2169,21 +2169,21 @@
 			]
 		},
 		{
-			"id": 37146,
+			"id": 37137,
 			"name": "MedusaAppMigrateDown",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37147,
+					"id": 37138,
 					"name": "MedusaAppMigrateDown",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37148,
+							"id": 37139,
 							"name": "moduleNames",
 							"variant": "param",
 							"kind": 32768,
@@ -2197,14 +2197,14 @@
 							}
 						},
 						{
-							"id": 37149,
+							"id": 37140,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37202,
+								"target": 37193,
 								"name": "MedusaAppOptions",
 								"package": "@medusajs/modules-sdk"
 							},
@@ -2230,21 +2230,21 @@
 			]
 		},
 		{
-			"id": 37150,
+			"id": 37141,
 			"name": "MedusaAppMigrateGenerate",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37151,
+					"id": 37142,
 					"name": "MedusaAppMigrateGenerate",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37152,
+							"id": 37143,
 							"name": "moduleNames",
 							"variant": "param",
 							"kind": 32768,
@@ -2258,14 +2258,14 @@
 							}
 						},
 						{
-							"id": 37153,
+							"id": 37144,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37202,
+								"target": 37193,
 								"name": "MedusaAppOptions",
 								"package": "@medusajs/modules-sdk"
 							},
@@ -2291,28 +2291,28 @@
 			]
 		},
 		{
-			"id": 37154,
+			"id": 37145,
 			"name": "MedusaAppGetLinksExecutionPlanner",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37155,
+					"id": 37146,
 					"name": "MedusaAppGetLinksExecutionPlanner",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37156,
+							"id": 37147,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37202,
+								"target": 37193,
 								"name": "MedusaAppOptions",
 								"package": "@medusajs/modules-sdk"
 							},
@@ -2343,7 +2343,7 @@
 			]
 		},
 		{
-			"id": 37219,
+			"id": 37210,
 			"name": "MigrationOptions",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2351,14 +2351,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37220,
+					"id": 37211,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 37221,
+							"id": 37212,
 							"name": "moduleKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2369,7 +2369,7 @@
 							}
 						},
 						{
-							"id": 37222,
+							"id": 37213,
 							"name": "modulePath",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2380,7 +2380,7 @@
 							}
 						},
 						{
-							"id": 37223,
+							"id": 37214,
 							"name": "container",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2398,7 +2398,7 @@
 							}
 						},
 						{
-							"id": 37224,
+							"id": 37215,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2426,7 +2426,7 @@
 							}
 						},
 						{
-							"id": 37225,
+							"id": 37216,
 							"name": "moduleExports",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2448,11 +2448,11 @@
 						{
 							"title": "Properties",
 							"children": [
-								37221,
-								37222,
-								37223,
-								37224,
-								37225
+								37212,
+								37213,
+								37214,
+								37215,
+								37216
 							]
 						}
 					]
@@ -2460,7 +2460,7 @@
 			}
 		},
 		{
-			"id": 37226,
+			"id": 37217,
 			"name": "ModuleBootstrapOptions",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2468,14 +2468,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37227,
+					"id": 37218,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 37228,
+							"id": 37219,
 							"name": "moduleKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2486,7 +2486,7 @@
 							}
 						},
 						{
-							"id": 37229,
+							"id": 37220,
 							"name": "defaultPath",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2497,7 +2497,7 @@
 							}
 						},
 						{
-							"id": 37230,
+							"id": 37221,
 							"name": "declaration",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2515,7 +2515,7 @@
 							}
 						},
 						{
-							"id": 37231,
+							"id": 37222,
 							"name": "moduleExports",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2533,7 +2533,7 @@
 							}
 						},
 						{
-							"id": 37232,
+							"id": 37223,
 							"name": "sharedContainer",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2551,7 +2551,7 @@
 							}
 						},
 						{
-							"id": 37233,
+							"id": 37224,
 							"name": "moduleDefinition",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2565,6 +2565,190 @@
 									"qualifiedName": "ModuleDefinition"
 								},
 								"name": "ModuleDefinition",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 37225,
+							"name": "injectedDependencies",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 37226,
+							"name": "migrationOnly",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "In this mode, all instances are partially loaded, meaning that the module will not be fully loaded and the services will not be available.\nDon't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 37227,
+							"name": "loaderOnly",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Forces the modules bootstrapper to only run the modules loaders and return prematurely. This\nis meant for modules that have data loader. In a test env, in order to clear all data\nand load them back, we need to run those loader again"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 37228,
+							"name": "workerMode",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "shared"
+									},
+									{
+										"type": "literal",
+										"value": "worker"
+									},
+									{
+										"type": "literal",
+										"value": "server"
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								37219,
+								37220,
+								37221,
+								37222,
+								37223,
+								37224,
+								37225,
+								37226,
+								37227,
+								37228
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 37229,
+			"name": "LinkModuleBootstrapOptions",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 37230,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 37231,
+							"name": "definition",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+									"qualifiedName": "LinkModuleDefinition"
+								},
+								"name": "LinkModuleDefinition",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 37232,
+							"name": "declaration",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+									"qualifiedName": "InternalModuleDeclaration"
+								},
+								"name": "InternalModuleDeclaration",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 37233,
+							"name": "moduleExports",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+									"qualifiedName": "ModuleExports"
+								},
+								"name": "ModuleExports",
 								"package": "@medusajs/types"
 							}
 						},
@@ -2595,90 +2779,16 @@
 								"name": "Record",
 								"package": "typescript"
 							}
-						},
-						{
-							"id": 37235,
-							"name": "migrationOnly",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "In this mode, all instances are partially loaded, meaning that the module will not be fully loaded and the services will not be available.\nDon't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done."
-									}
-								]
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						},
-						{
-							"id": 37236,
-							"name": "loaderOnly",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "Forces the modules bootstrapper to only run the modules loaders and return prematurely. This\nis meant for modules that have data loader. In a test env, in order to clear all data\nand load them back, we need to run those loader again"
-									}
-								]
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						},
-						{
-							"id": 37237,
-							"name": "workerMode",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "union",
-								"types": [
-									{
-										"type": "literal",
-										"value": "shared"
-									},
-									{
-										"type": "literal",
-										"value": "worker"
-									},
-									{
-										"type": "literal",
-										"value": "server"
-									}
-								]
-							}
 						}
 					],
 					"groups": [
 						{
 							"title": "Properties",
 							"children": [
-								37228,
-								37229,
-								37230,
 								37231,
 								37232,
 								37233,
-								37234,
-								37235,
-								37236,
-								37237
+								37234
 							]
 						}
 					]
@@ -2686,117 +2796,7 @@
 			}
 		},
 		{
-			"id": 37238,
-			"name": "LinkModuleBootstrapOptions",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 37239,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 37240,
-							"name": "definition",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-									"qualifiedName": "LinkModuleDefinition"
-								},
-								"name": "LinkModuleDefinition",
-								"package": "@medusajs/types"
-							}
-						},
-						{
-							"id": 37241,
-							"name": "declaration",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-									"qualifiedName": "InternalModuleDeclaration"
-								},
-								"name": "InternalModuleDeclaration",
-								"package": "@medusajs/types"
-							}
-						},
-						{
-							"id": 37242,
-							"name": "moduleExports",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-									"qualifiedName": "ModuleExports"
-								},
-								"name": "ModuleExports",
-								"package": "@medusajs/types"
-							}
-						},
-						{
-							"id": 37243,
-							"name": "injectedDependencies",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "any"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								37240,
-								37241,
-								37242,
-								37243
-							]
-						}
-					]
-				}
-			}
-		},
-		{
-			"id": 37244,
+			"id": 37235,
 			"name": "RegisterModuleJoinerConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2816,21 +2816,21 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 37245,
+							"id": 37236,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 37246,
+									"id": 37237,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 37247,
+											"id": 37238,
 											"name": "modules",
 											"variant": "param",
 											"kind": 32768,
@@ -2866,7 +2866,7 @@
 			}
 		},
 		{
-			"id": 37248,
+			"id": 37239,
 			"name": "MedusaModule",
 			"variant": "declaration",
 			"kind": 32,
@@ -2889,7 +2889,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 37249,
+			"id": 37240,
 			"name": "DeleteEntityInput",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2905,21 +2905,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 37250,
+					"id": 37241,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"indexSignatures": [
 						{
-							"id": 37251,
+							"id": 37242,
 							"name": "__index",
 							"variant": "signature",
 							"kind": 8192,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37252,
+									"id": 37243,
 									"name": "moduleName",
 									"variant": "param",
 									"kind": 32768,
@@ -2981,41 +2981,41 @@
 			}
 		},
 		{
-			"id": 37253,
+			"id": 37244,
 			"name": "RestoreEntityInput",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"type": {
 				"type": "reference",
-				"target": 37249,
+				"target": 37240,
 				"name": "DeleteEntityInput",
 				"package": "@medusajs/modules-sdk"
 			}
 		},
 		{
-			"id": 37254,
+			"id": 37245,
 			"name": "RemoteLink",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 37255,
+					"id": 37246,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37256,
+							"id": 37247,
 							"name": "new RemoteLink",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37257,
+									"id": 37248,
 									"name": "modulesLoaded",
 									"variant": "param",
 									"kind": 32768,
@@ -3027,14 +3027,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 37258,
+												"id": 37249,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 37259,
+														"id": 37250,
 														"name": "__joinerConfig",
 														"variant": "declaration",
 														"kind": 1024,
@@ -3050,7 +3050,7 @@
 														}
 													},
 													{
-														"id": 37260,
+														"id": 37251,
 														"name": "__definition",
 														"variant": "declaration",
 														"kind": 1024,
@@ -3070,8 +3070,8 @@
 													{
 														"title": "Properties",
 														"children": [
-															37259,
-															37260
+															37250,
+															37251
 														]
 													}
 												]
@@ -3082,7 +3082,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 37254,
+								"target": 37245,
 								"name": "RemoteLink",
 								"package": "@medusajs/modules-sdk"
 							}
@@ -3090,7 +3090,7 @@
 					]
 				},
 				{
-					"id": 37264,
+					"id": 37255,
 					"name": "addModule",
 					"variant": "declaration",
 					"kind": 2048,
@@ -3099,14 +3099,14 @@
 					},
 					"signatures": [
 						{
-							"id": 37265,
+							"id": 37256,
 							"name": "addModule",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37266,
+									"id": 37257,
 									"name": "mod",
 									"variant": "param",
 									"kind": 32768,
@@ -3114,14 +3114,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 37267,
+											"id": 37258,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 37268,
+													"id": 37259,
 													"name": "__joinerConfig",
 													"variant": "declaration",
 													"kind": 1024,
@@ -3137,7 +3137,7 @@
 													}
 												},
 												{
-													"id": 37269,
+													"id": 37260,
 													"name": "__definition",
 													"variant": "declaration",
 													"kind": 1024,
@@ -3157,8 +3157,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														37268,
-														37269
+														37259,
+														37260
 													]
 												}
 											]
@@ -3174,21 +3174,21 @@
 					]
 				},
 				{
-					"id": 37274,
+					"id": 37265,
 					"name": "getLinkModule",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37275,
+							"id": 37266,
 							"name": "getLinkModule",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37276,
+									"id": 37267,
 									"name": "moduleA",
 									"variant": "param",
 									"kind": 32768,
@@ -3199,7 +3199,7 @@
 									}
 								},
 								{
-									"id": 37277,
+									"id": 37268,
 									"name": "moduleAKey",
 									"variant": "param",
 									"kind": 32768,
@@ -3210,7 +3210,7 @@
 									}
 								},
 								{
-									"id": 37278,
+									"id": 37269,
 									"name": "moduleB",
 									"variant": "param",
 									"kind": 32768,
@@ -3221,7 +3221,7 @@
 									}
 								},
 								{
-									"id": 37279,
+									"id": 37270,
 									"name": "moduleBKey",
 									"variant": "param",
 									"kind": 32768,
@@ -3254,14 +3254,14 @@
 					]
 				},
 				{
-					"id": 37280,
+					"id": 37271,
 					"name": "getRelationships",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37281,
+							"id": 37272,
 							"name": "getRelationships",
 							"variant": "signature",
 							"kind": 4096,
@@ -3312,21 +3312,21 @@
 					]
 				},
 				{
-					"id": 37295,
+					"id": 37286,
 					"name": "create",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37296,
+							"id": 37287,
 							"name": "create",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37297,
+									"id": 37288,
 									"name": "link",
 									"variant": "param",
 									"kind": 32768,
@@ -3381,15 +3381,238 @@
 					]
 				},
 				{
-					"id": 37298,
+					"id": 37289,
 					"name": "dismiss",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37299,
+							"id": 37290,
 							"name": "dismiss",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 37291,
+									"name": "link",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+													"qualifiedName": "LinkDefinition"
+												},
+												"name": "LinkDefinition",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": {
+														"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+														"qualifiedName": "LinkDefinition"
+													},
+													"name": "LinkDefinition",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "unknown"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 37292,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 37293,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 37294,
+									"name": "removedServices",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": 37240,
+										"name": "DeleteEntityInput",
+										"package": "@medusajs/modules-sdk"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "union",
+												"types": [
+													{
+														"type": "literal",
+														"value": null
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+																"qualifiedName": "CascadeError"
+															},
+															"name": "CascadeError",
+															"package": "@medusajs/modules-sdk"
+														}
+													}
+												]
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+													"qualifiedName": "RemovedIds"
+												},
+												"name": "RemovedIds",
+												"package": "@medusajs/modules-sdk"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 37295,
+					"name": "restore",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 37296,
+							"name": "restore",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 37297,
+									"name": "removedServices",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": 37240,
+										"name": "DeleteEntityInput",
+										"package": "@medusajs/modules-sdk"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "union",
+												"types": [
+													{
+														"type": "literal",
+														"value": null
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+																"qualifiedName": "CascadeError"
+															},
+															"name": "CascadeError",
+															"package": "@medusajs/modules-sdk"
+														}
+													}
+												]
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+													"qualifiedName": "RemovedIds"
+												},
+												"name": "RemovedIds",
+												"package": "@medusajs/modules-sdk"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 37298,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 37299,
+							"name": "list",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -3426,232 +3649,9 @@
 											}
 										]
 									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "intrinsic",
-											"name": "unknown"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 37301,
-					"name": "delete",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 37302,
-							"name": "delete",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 37303,
-									"name": "removedServices",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "reference",
-										"target": 37249,
-										"name": "DeleteEntityInput",
-										"package": "@medusajs/modules-sdk"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "tuple",
-										"elements": [
-											{
-												"type": "union",
-												"types": [
-													{
-														"type": "literal",
-														"value": null
-													},
-													{
-														"type": "array",
-														"elementType": {
-															"type": "reference",
-															"target": {
-																"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-																"qualifiedName": "CascadeError"
-															},
-															"name": "CascadeError",
-															"package": "@medusajs/modules-sdk"
-														}
-													}
-												]
-											},
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-													"qualifiedName": "RemovedIds"
-												},
-												"name": "RemovedIds",
-												"package": "@medusajs/modules-sdk"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 37304,
-					"name": "restore",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 37305,
-							"name": "restore",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 37306,
-									"name": "removedServices",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "reference",
-										"target": 37249,
-										"name": "DeleteEntityInput",
-										"package": "@medusajs/modules-sdk"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "tuple",
-										"elements": [
-											{
-												"type": "union",
-												"types": [
-													{
-														"type": "literal",
-														"value": null
-													},
-													{
-														"type": "array",
-														"elementType": {
-															"type": "reference",
-															"target": {
-																"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-																"qualifiedName": "CascadeError"
-															},
-															"name": "CascadeError",
-															"package": "@medusajs/modules-sdk"
-														}
-													}
-												]
-											},
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-													"qualifiedName": "RemovedIds"
-												},
-												"name": "RemovedIds",
-												"package": "@medusajs/modules-sdk"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 37307,
-					"name": "list",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 37308,
-							"name": "list",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 37309,
-									"name": "link",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-													"qualifiedName": "LinkDefinition"
-												},
-												"name": "LinkDefinition",
-												"package": "@medusajs/types"
-											},
-											{
-												"type": "array",
-												"elementType": {
-													"type": "reference",
-													"target": {
-														"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-														"qualifiedName": "LinkDefinition"
-													},
-													"name": "LinkDefinition",
-													"package": "@medusajs/types"
-												}
-											}
-										]
-									}
 								},
 								{
-									"id": 37310,
+									"id": 37301,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -3661,14 +3661,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 37311,
+											"id": 37302,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 37312,
+													"id": 37303,
 													"name": "asLinkDefinition",
 													"variant": "declaration",
 													"kind": 1024,
@@ -3685,7 +3685,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														37312
+														37303
 													]
 												}
 											]
@@ -3733,26 +3733,26 @@
 				{
 					"title": "Constructors",
 					"children": [
-						37255
+						37246
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						37264,
-						37274,
-						37280,
+						37255,
+						37265,
+						37271,
+						37286,
+						37289,
+						37292,
 						37295,
-						37298,
-						37301,
-						37304,
-						37307
+						37298
 					]
 				}
 			]
 		},
 		{
-			"id": 37316,
+			"id": 37307,
 			"name": "Query",
 			"variant": "declaration",
 			"kind": 128,
@@ -3767,7 +3767,7 @@
 			},
 			"children": [
 				{
-					"id": 37317,
+					"id": 37308,
 					"name": "traceGraphQuery",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3786,21 +3786,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 37318,
+							"id": 37309,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 37319,
+									"id": 37310,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 37320,
+											"id": 37311,
 											"name": "queryFn",
 											"variant": "param",
 											"kind": 32768,
@@ -3808,14 +3808,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 37321,
+													"id": 37312,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 37322,
+															"id": 37313,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
@@ -3841,7 +3841,7 @@
 											}
 										},
 										{
-											"id": 37323,
+											"id": 37314,
 											"name": "queryOptions",
 											"variant": "param",
 											"kind": 32768,
@@ -3884,7 +3884,7 @@
 					}
 				},
 				{
-					"id": 37324,
+					"id": 37315,
 					"name": "traceRemoteQuery",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3903,21 +3903,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 37325,
+							"id": 37316,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 37326,
+									"id": 37317,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 37327,
+											"id": 37318,
 											"name": "queryFn",
 											"variant": "param",
 											"kind": 32768,
@@ -3925,14 +3925,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 37328,
+													"id": 37319,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 37329,
+															"id": 37320,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
@@ -3958,7 +3958,7 @@
 											}
 										},
 										{
-											"id": 37330,
+											"id": 37321,
 											"name": "queryOptions",
 											"variant": "param",
 											"kind": 32768,
@@ -4030,7 +4030,7 @@
 					}
 				},
 				{
-					"id": 37331,
+					"id": 37322,
 					"name": "instrument",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4040,28 +4040,28 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 37332,
+							"id": 37323,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 37333,
+									"id": 37324,
 									"name": "graphQuery",
 									"variant": "declaration",
 									"kind": 2048,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37334,
+											"id": 37325,
 											"name": "graphQuery",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 37335,
+													"id": 37326,
 													"name": "tracer",
 													"variant": "param",
 													"kind": 32768,
@@ -4076,14 +4076,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 37336,
+																	"id": 37327,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"signatures": [
 																		{
-																			"id": 37337,
+																			"id": 37328,
 																			"name": "__type",
 																			"variant": "signature",
 																			"kind": 4096,
@@ -4098,7 +4098,7 @@
 																			},
 																			"parameters": [
 																				{
-																					"id": 37338,
+																					"id": 37329,
 																					"name": "queryFn",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4106,14 +4106,14 @@
 																					"type": {
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 37339,
+																							"id": 37330,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"signatures": [
 																								{
-																									"id": 37340,
+																									"id": 37331,
 																									"name": "__type",
 																									"variant": "signature",
 																									"kind": 4096,
@@ -4139,7 +4139,7 @@
 																					}
 																				},
 																				{
-																					"id": 37341,
+																					"id": 37332,
 																					"name": "queryOptions",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4192,21 +4192,21 @@
 									]
 								},
 								{
-									"id": 37342,
+									"id": 37333,
 									"name": "remoteQuery",
 									"variant": "declaration",
 									"kind": 2048,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37343,
+											"id": 37334,
 											"name": "remoteQuery",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 37344,
+													"id": 37335,
 													"name": "tracer",
 													"variant": "param",
 													"kind": 32768,
@@ -4221,14 +4221,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 37345,
+																	"id": 37336,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"signatures": [
 																		{
-																			"id": 37346,
+																			"id": 37337,
 																			"name": "__type",
 																			"variant": "signature",
 																			"kind": 4096,
@@ -4243,7 +4243,7 @@
 																			},
 																			"parameters": [
 																				{
-																					"id": 37347,
+																					"id": 37338,
 																					"name": "queryFn",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4251,14 +4251,14 @@
 																					"type": {
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 37348,
+																							"id": 37339,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"signatures": [
 																								{
-																									"id": 37349,
+																									"id": 37340,
 																									"name": "__type",
 																									"variant": "signature",
 																									"kind": 4096,
@@ -4284,7 +4284,7 @@
 																					}
 																				},
 																				{
-																					"id": 37350,
+																					"id": 37341,
 																					"name": "queryOptions",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4366,21 +4366,21 @@
 									]
 								},
 								{
-									"id": 37351,
+									"id": 37342,
 									"name": "remoteDataFetch",
 									"variant": "declaration",
 									"kind": 2048,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 37352,
+											"id": 37343,
 											"name": "remoteDataFetch",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 37353,
+													"id": 37344,
 													"name": "tracer",
 													"variant": "param",
 													"kind": 32768,
@@ -4395,21 +4395,21 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 37354,
+																	"id": 37345,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"signatures": [
 																		{
-																			"id": 37355,
+																			"id": 37346,
 																			"name": "__type",
 																			"variant": "signature",
 																			"kind": 4096,
 																			"flags": {},
 																			"parameters": [
 																				{
-																					"id": 37356,
+																					"id": 37347,
 																					"name": "fetcher",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4417,14 +4417,14 @@
 																					"type": {
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 37357,
+																							"id": 37348,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"signatures": [
 																								{
-																									"id": 37358,
+																									"id": 37349,
 																									"name": "__type",
 																									"variant": "signature",
 																									"kind": 4096,
@@ -4450,7 +4450,7 @@
 																					}
 																				},
 																				{
-																					"id": 37359,
+																					"id": 37350,
 																					"name": "serviceName",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4461,7 +4461,7 @@
 																					}
 																				},
 																				{
-																					"id": 37360,
+																					"id": 37351,
 																					"name": "method",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4472,7 +4472,7 @@
 																					}
 																				},
 																				{
-																					"id": 37361,
+																					"id": 37352,
 																					"name": "options",
 																					"variant": "param",
 																					"kind": 32768,
@@ -4480,14 +4480,14 @@
 																					"type": {
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 37362,
+																							"id": 37353,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"children": [
 																								{
-																									"id": 37363,
+																									"id": 37354,
 																									"name": "select",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -4503,7 +4503,7 @@
 																									}
 																								},
 																								{
-																									"id": 37364,
+																									"id": 37355,
 																									"name": "relations",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -4521,8 +4521,8 @@
 																								{
 																									"title": "Properties",
 																									"children": [
-																										37363,
-																										37364
+																										37354,
+																										37355
 																									]
 																								}
 																							]
@@ -4565,9 +4565,9 @@
 								{
 									"title": "Methods",
 									"children": [
+										37324,
 										37333,
-										37342,
-										37351
+										37342
 									]
 								}
 							]
@@ -4576,28 +4576,28 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 37365,
+					"id": 37356,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37366,
+							"id": 37357,
 							"name": "new Query",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37367,
+									"id": 37358,
 									"name": "remoteQuery",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 37392,
+										"target": 37383,
 										"name": "RemoteQuery",
 										"package": "@medusajs/modules-sdk"
 									}
@@ -4605,7 +4605,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 37316,
+								"target": 37307,
 								"name": "Query",
 								"package": "@medusajs/modules-sdk"
 							}
@@ -4613,21 +4613,21 @@
 					]
 				},
 				{
-					"id": 37378,
+					"id": 37369,
 					"name": "query",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37379,
+							"id": 37370,
 							"name": "query",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37380,
+									"id": 37371,
 									"name": "queryOptions",
 									"variant": "param",
 									"kind": 32768,
@@ -4693,7 +4693,7 @@
 									}
 								},
 								{
-									"id": 37381,
+									"id": 37372,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -4730,14 +4730,14 @@
 					]
 				},
 				{
-					"id": 37382,
+					"id": 37373,
 					"name": "gql",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37383,
+							"id": 37374,
 							"name": "gql",
 							"variant": "signature",
 							"kind": 4096,
@@ -4752,7 +4752,7 @@
 							},
 							"parameters": [
 								{
-									"id": 37384,
+									"id": 37375,
 									"name": "query",
 									"variant": "param",
 									"kind": 32768,
@@ -4763,7 +4763,7 @@
 									}
 								},
 								{
-									"id": 37385,
+									"id": 37376,
 									"name": "variables",
 									"variant": "param",
 									"kind": 32768,
@@ -4776,7 +4776,7 @@
 									}
 								},
 								{
-									"id": 37386,
+									"id": 37377,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -4808,14 +4808,14 @@
 					]
 				},
 				{
-					"id": 37387,
+					"id": 37378,
 					"name": "graph",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37388,
+							"id": 37379,
 							"name": "graph",
 							"variant": "signature",
 							"kind": 4096,
@@ -4830,7 +4830,7 @@
 							},
 							"typeParameters": [
 								{
-									"id": 37389,
+									"id": 37380,
 									"name": "TEntry",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -4845,7 +4845,7 @@
 							],
 							"parameters": [
 								{
-									"id": 37390,
+									"id": 37381,
 									"name": "queryOptions",
 									"variant": "param",
 									"kind": 32768,
@@ -4859,7 +4859,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 37389,
+												"target": 37380,
 												"name": "TEntry",
 												"package": "@medusajs/modules-sdk",
 												"refersToTypeParameter": true
@@ -4870,7 +4870,7 @@
 									}
 								},
 								{
-									"id": 37391,
+									"id": 37382,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -4904,7 +4904,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 37389,
+												"target": 37380,
 												"name": "TEntry",
 												"package": "@medusajs/modules-sdk",
 												"refersToTypeParameter": true
@@ -4925,36 +4925,36 @@
 				{
 					"title": "Constructors",
 					"children": [
-						37365
+						37356
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						37317,
-						37324,
-						37331
+						37308,
+						37315,
+						37322
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						37378,
-						37382,
-						37387
+						37369,
+						37373,
+						37378
 					]
 				}
 			]
 		},
 		{
-			"id": 37313,
+			"id": 37304,
 			"name": "createQuery",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37314,
+					"id": 37305,
 					"name": "createQuery",
 					"variant": "signature",
 					"kind": 4096,
@@ -4969,14 +4969,14 @@
 					},
 					"parameters": [
 						{
-							"id": 37315,
+							"id": 37306,
 							"name": "remoteQuery",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 37392,
+								"target": 37383,
 								"name": "RemoteQuery",
 								"package": "@medusajs/modules-sdk"
 							}
@@ -5010,14 +5010,14 @@
 			]
 		},
 		{
-			"id": 37392,
+			"id": 37383,
 			"name": "RemoteQuery",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 37393,
+					"id": 37384,
 					"name": "traceFetchRemoteData",
 					"variant": "declaration",
 					"kind": 1024,
@@ -5028,21 +5028,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 37394,
+							"id": 37385,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 37395,
+									"id": 37386,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 37396,
+											"id": 37387,
 											"name": "fetcher",
 											"variant": "param",
 											"kind": 32768,
@@ -5050,14 +5050,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 37397,
+													"id": 37388,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 37398,
+															"id": 37389,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
@@ -5083,7 +5083,7 @@
 											}
 										},
 										{
-											"id": 37399,
+											"id": 37390,
 											"name": "serviceName",
 											"variant": "param",
 											"kind": 32768,
@@ -5094,7 +5094,7 @@
 											}
 										},
 										{
-											"id": 37400,
+											"id": 37391,
 											"name": "method",
 											"variant": "param",
 											"kind": 32768,
@@ -5105,7 +5105,7 @@
 											}
 										},
 										{
-											"id": 37401,
+											"id": 37392,
 											"name": "options",
 											"variant": "param",
 											"kind": 32768,
@@ -5113,14 +5113,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 37402,
+													"id": 37393,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 37403,
+															"id": 37394,
 															"name": "select",
 															"variant": "declaration",
 															"kind": 1024,
@@ -5136,7 +5136,7 @@
 															}
 														},
 														{
-															"id": 37404,
+															"id": 37395,
 															"name": "relations",
 															"variant": "declaration",
 															"kind": 1024,
@@ -5154,8 +5154,8 @@
 														{
 															"title": "Properties",
 															"children": [
-																37403,
-																37404
+																37394,
+																37395
 															]
 														}
 													]
@@ -5184,21 +5184,21 @@
 					}
 				},
 				{
-					"id": 37419,
+					"id": 37410,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 37420,
+							"id": 37411,
 							"name": "new RemoteQuery",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37421,
+									"id": 37412,
 									"name": "__namedParameters",
 									"variant": "param",
 									"kind": 32768,
@@ -5206,14 +5206,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 37422,
+											"id": 37413,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 37423,
+													"id": 37414,
 													"name": "modulesLoaded",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5225,14 +5225,14 @@
 														"elementType": {
 															"type": "reflection",
 															"declaration": {
-																"id": 37424,
+																"id": 37415,
 																"name": "__type",
 																"variant": "declaration",
 																"kind": 65536,
 																"flags": {},
 																"children": [
 																	{
-																		"id": 37425,
+																		"id": 37416,
 																		"name": "__joinerConfig",
 																		"variant": "declaration",
 																		"kind": 1024,
@@ -5248,7 +5248,7 @@
 																		}
 																	},
 																	{
-																		"id": 37426,
+																		"id": 37417,
 																		"name": "__definition",
 																		"variant": "declaration",
 																		"kind": 1024,
@@ -5268,8 +5268,8 @@
 																	{
 																		"title": "Properties",
 																		"children": [
-																			37425,
-																			37426
+																			37416,
+																			37417
 																		]
 																	}
 																]
@@ -5278,7 +5278,7 @@
 													}
 												},
 												{
-													"id": 37427,
+													"id": 37418,
 													"name": "customRemoteFetchData",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5296,7 +5296,7 @@
 													}
 												},
 												{
-													"id": 37428,
+													"id": 37419,
 													"name": "servicesConfig",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5318,7 +5318,7 @@
 													"defaultValue": "[]"
 												},
 												{
-													"id": 37429,
+													"id": 37420,
 													"name": "entitiesMap",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5348,10 +5348,10 @@
 												{
 													"title": "Properties",
 													"children": [
-														37423,
-														37427,
-														37428,
-														37429
+														37414,
+														37418,
+														37419,
+														37420
 													]
 												}
 											]
@@ -5361,7 +5361,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 37392,
+								"target": 37383,
 								"name": "RemoteQuery",
 								"package": "@medusajs/modules-sdk"
 							}
@@ -5369,7 +5369,7 @@
 					]
 				},
 				{
-					"id": 37437,
+					"id": 37428,
 					"name": "getEntitiesMap",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5378,7 +5378,7 @@
 					},
 					"signatures": [
 						{
-							"id": 37438,
+							"id": 37429,
 							"name": "getEntitiesMap",
 							"variant": "signature",
 							"kind": 4096,
@@ -5406,7 +5406,7 @@
 					]
 				},
 				{
-					"id": 37439,
+					"id": 37430,
 					"name": "setFetchDataCallback",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5415,14 +5415,14 @@
 					},
 					"signatures": [
 						{
-							"id": 37440,
+							"id": 37431,
 							"name": "setFetchDataCallback",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37441,
+									"id": 37432,
 									"name": "remoteFetchData",
 									"variant": "param",
 									"kind": 32768,
@@ -5430,21 +5430,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 37442,
+											"id": 37433,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 37443,
+													"id": 37434,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 37444,
+															"id": 37435,
 															"name": "expand",
 															"variant": "param",
 															"kind": 32768,
@@ -5460,7 +5460,7 @@
 															}
 														},
 														{
-															"id": 37445,
+															"id": 37436,
 															"name": "keyField",
 															"variant": "param",
 															"kind": 32768,
@@ -5471,7 +5471,7 @@
 															}
 														},
 														{
-															"id": 37446,
+															"id": 37437,
 															"name": "ids",
 															"variant": "param",
 															"kind": 32768,
@@ -5487,7 +5487,7 @@
 															}
 														},
 														{
-															"id": 37447,
+															"id": 37438,
 															"name": "relationship",
 															"variant": "param",
 															"kind": 32768,
@@ -5510,14 +5510,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 37448,
+																	"id": 37439,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 37449,
+																			"id": 37440,
 																			"name": "data",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5535,21 +5535,21 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 37450,
+																							"id": 37441,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"indexSignatures": [
 																								{
-																									"id": 37451,
+																									"id": 37442,
 																									"name": "__index",
 																									"variant": "signature",
 																									"kind": 8192,
 																									"flags": {},
 																									"parameters": [
 																										{
-																											"id": 37452,
+																											"id": 37443,
 																											"name": "path",
 																											"variant": "param",
 																											"kind": 32768,
@@ -5575,7 +5575,7 @@
 																			}
 																		},
 																		{
-																			"id": 37453,
+																			"id": 37444,
 																			"name": "path",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5592,8 +5592,8 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				37449,
-																				37453
+																				37440,
+																				37444
 																			]
 																		}
 																	]
@@ -5617,7 +5617,7 @@
 					]
 				},
 				{
-					"id": 37405,
+					"id": 37396,
 					"name": "getAllFieldsAndRelations",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5627,14 +5627,14 @@
 					},
 					"signatures": [
 						{
-							"id": 37406,
+							"id": 37397,
 							"name": "getAllFieldsAndRelations",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37407,
+									"id": 37398,
 									"name": "expand",
 									"variant": "param",
 									"kind": 32768,
@@ -5654,14 +5654,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 37408,
+													"id": 37399,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 37409,
+															"id": 37400,
 															"name": "fields",
 															"variant": "declaration",
 															"kind": 1024,
@@ -5677,7 +5677,7 @@
 															}
 														},
 														{
-															"id": 37410,
+															"id": 37401,
 															"name": "args",
 															"variant": "declaration",
 															"kind": 1024,
@@ -5698,7 +5698,7 @@
 															}
 														},
 														{
-															"id": 37411,
+															"id": 37402,
 															"name": "expands",
 															"variant": "declaration",
 															"kind": 1024,
@@ -5720,9 +5720,9 @@
 														{
 															"title": "Properties",
 															"children": [
-																37409,
-																37410,
-																37411
+																37400,
+																37401,
+																37402
 															]
 														}
 													]
@@ -5732,7 +5732,7 @@
 									}
 								},
 								{
-									"id": 37412,
+									"id": 37403,
 									"name": "prefix",
 									"variant": "param",
 									"kind": 32768,
@@ -5744,7 +5744,7 @@
 									"defaultValue": "\"\""
 								},
 								{
-									"id": 37413,
+									"id": 37404,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -5764,14 +5764,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37414,
+									"id": 37405,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 37415,
+											"id": 37406,
 											"name": "select",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5787,7 +5787,7 @@
 											}
 										},
 										{
-											"id": 37416,
+											"id": 37407,
 											"name": "relations",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5801,7 +5801,7 @@
 											}
 										},
 										{
-											"id": 37417,
+											"id": 37408,
 											"name": "args",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5817,7 +5817,7 @@
 											}
 										},
 										{
-											"id": 37418,
+											"id": 37409,
 											"name": "take",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5843,10 +5843,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												37415,
-												37416,
-												37417,
-												37418
+												37406,
+												37407,
+												37408,
+												37409
 											]
 										}
 									]
@@ -5856,7 +5856,7 @@
 					]
 				},
 				{
-					"id": 37468,
+					"id": 37459,
 					"name": "remoteFetchData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5865,14 +5865,14 @@
 					},
 					"signatures": [
 						{
-							"id": 37469,
+							"id": 37460,
 							"name": "remoteFetchData",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37470,
+									"id": 37461,
 									"name": "expand",
 									"variant": "param",
 									"kind": 32768,
@@ -5888,7 +5888,7 @@
 									}
 								},
 								{
-									"id": 37471,
+									"id": 37462,
 									"name": "keyField",
 									"variant": "param",
 									"kind": 32768,
@@ -5899,7 +5899,7 @@
 									}
 								},
 								{
-									"id": 37472,
+									"id": 37463,
 									"name": "ids",
 									"variant": "param",
 									"kind": 32768,
@@ -5915,7 +5915,7 @@
 									}
 								},
 								{
-									"id": 37473,
+									"id": 37464,
 									"name": "relationship",
 									"variant": "param",
 									"kind": 32768,
@@ -5943,14 +5943,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 37474,
+											"id": 37465,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 37475,
+													"id": 37466,
 													"name": "data",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5968,21 +5968,21 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 37476,
+																	"id": 37467,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"indexSignatures": [
 																		{
-																			"id": 37477,
+																			"id": 37468,
 																			"name": "__index",
 																			"variant": "signature",
 																			"kind": 8192,
 																			"flags": {},
 																			"parameters": [
 																				{
-																					"id": 37478,
+																					"id": 37469,
 																					"name": "path",
 																					"variant": "param",
 																					"kind": 32768,
@@ -6005,7 +6005,7 @@
 													}
 												},
 												{
-													"id": 37479,
+													"id": 37470,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -6022,8 +6022,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														37475,
-														37479
+														37466,
+														37470
 													]
 												}
 											]
@@ -6037,7 +6037,7 @@
 					]
 				},
 				{
-					"id": 37480,
+					"id": 37471,
 					"name": "query",
 					"variant": "declaration",
 					"kind": 2048,
@@ -6046,14 +6046,14 @@
 					},
 					"signatures": [
 						{
-							"id": 37481,
+							"id": 37472,
 							"name": "query",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 37482,
+									"id": 37473,
 									"name": "query",
 									"variant": "param",
 									"kind": 32768,
@@ -6082,7 +6082,7 @@
 									}
 								},
 								{
-									"id": 37483,
+									"id": 37474,
 									"name": "variables",
 									"variant": "param",
 									"kind": 32768,
@@ -6110,7 +6110,7 @@
 									}
 								},
 								{
-									"id": 37484,
+									"id": 37475,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -6151,36 +6151,36 @@
 				{
 					"title": "Constructors",
 					"children": [
-						37419
+						37410
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						37393
+						37384
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						37437,
-						37439,
-						37405,
-						37468,
-						37480
+						37428,
+						37430,
+						37396,
+						37459,
+						37471
 					]
 				}
 			]
 		},
 		{
-			"id": 37485,
+			"id": 37476,
 			"name": "MODULE_SCOPE",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 37486,
+					"id": 37477,
 					"name": "INTERNAL",
 					"variant": "declaration",
 					"kind": 16,
@@ -6191,7 +6191,7 @@
 					}
 				},
 				{
-					"id": 37487,
+					"id": 37478,
 					"name": "EXTERNAL",
 					"variant": "declaration",
 					"kind": 16,
@@ -6206,28 +6206,28 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						37486,
-						37487
+						37477,
+						37478
 					]
 				}
 			]
 		},
 		{
-			"id": 37491,
+			"id": 37482,
 			"name": "convertRecordsToLinkDefinition",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 37492,
+					"id": 37483,
 					"name": "convertRecordsToLinkDefinition",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37493,
+							"id": 37484,
 							"name": "links",
 							"variant": "param",
 							"kind": 32768,
@@ -6241,7 +6241,7 @@
 							}
 						},
 						{
-							"id": 37494,
+							"id": 37485,
 							"name": "service",
 							"variant": "param",
 							"kind": 32768,
@@ -6249,14 +6249,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 37495,
+									"id": 37486,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 37496,
+											"id": 37487,
 											"name": "__joinerConfig",
 											"variant": "declaration",
 											"kind": 1024,
@@ -6272,7 +6272,7 @@
 											}
 										},
 										{
-											"id": 37497,
+											"id": 37488,
 											"name": "__definition",
 											"variant": "declaration",
 											"kind": 1024,
@@ -6292,8 +6292,8 @@
 										{
 											"title": "Properties",
 											"children": [
-												37496,
-												37497
+												37487,
+												37488
 											]
 										}
 									]
@@ -6317,7 +6317,7 @@
 			]
 		},
 		{
-			"id": 37488,
+			"id": 37479,
 			"name": "linkingErrorMessage",
 			"variant": "declaration",
 			"kind": 64,
@@ -6332,14 +6332,14 @@
 			},
 			"signatures": [
 				{
-					"id": 37489,
+					"id": 37480,
 					"name": "linkingErrorMessage",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 37490,
+							"id": 37481,
 							"name": "input",
 							"variant": "param",
 							"kind": 32768,
@@ -6367,153 +6367,189 @@
 		{
 			"title": "Enumerations",
 			"children": [
-				37485
+				37476
 			]
 		},
 		{
 			"title": "Classes",
 			"children": [
-				37254,
-				37316,
-				37392
+				37245,
+				37307,
+				37383
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				37157,
-				37160,
-				37164,
-				37168,
+				37148,
+				37151,
+				37155,
+				37159,
+				37162,
+				37166,
 				37171,
-				37175,
-				37180,
-				37202,
-				37219,
-				37226,
-				37238,
-				37244,
-				37249,
-				37253
+				37193,
+				37210,
+				37217,
+				37229,
+				37235,
+				37240,
+				37244
 			]
 		},
 		{
 			"title": "Variables",
 			"children": [
-				37083,
-				37087,
-				37248
+				37074,
+				37078,
+				37239
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
+				37079,
 				37088,
-				37097,
-				37109,
-				37119,
-				37125,
-				37130,
-				37140,
-				37143,
-				37146,
-				37150,
-				37154,
-				37313,
-				37491,
-				37488
+				37100,
+				37110,
+				37116,
+				37121,
+				37131,
+				37134,
+				37137,
+				37141,
+				37145,
+				37304,
+				37482,
+				37479
 			]
 		}
 	],
 	"packageName": "@medusajs/modules-sdk",
 	"symbolIdMap": {
-		"37082": {
+		"37073": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/index.ts",
 			"qualifiedName": ""
 		},
-		"37083": {
+		"37074": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/definitions.ts",
 			"qualifiedName": "ModulesDefinition"
 		},
-		"37084": {
+		"37075": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/definitions.ts",
 			"qualifiedName": "__type"
 		},
-		"37085": {
+		"37076": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/definitions.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"37087": {
+		"37078": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/definitions.ts",
 			"qualifiedName": "MODULE_DEFINITIONS"
 		},
-		"37088": {
+		"37079": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "moduleLoader"
 		},
-		"37089": {
+		"37080": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "moduleLoader"
 		},
-		"37090": {
+		"37081": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__0"
 		},
-		"37091": {
+		"37082": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type"
 		},
-		"37092": {
+		"37083": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type.container"
 		},
-		"37093": {
+		"37084": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type.moduleResolutions"
 		},
-		"37094": {
+		"37085": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type.logger"
 		},
-		"37095": {
+		"37086": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type.migrationOnly"
 		},
-		"37096": {
+		"37087": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-loader.ts",
 			"qualifiedName": "__type.loaderOnly"
 		},
-		"37097": {
+		"37088": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "moduleProviderLoader"
 		},
-		"37098": {
+		"37089": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "moduleProviderLoader"
 		},
-		"37099": {
+		"37090": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__0"
 		},
-		"37100": {
+		"37091": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__type"
 		},
-		"37101": {
+		"37092": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__type.container"
 		},
-		"37102": {
+		"37093": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__type.providers"
 		},
-		"37103": {
+		"37094": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__type.registerServiceFn"
 		},
-		"37104": {
+		"37095": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "__type"
+		},
+		"37096": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "__type"
+		},
+		"37097": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "klass"
+		},
+		"37098": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "container"
+		},
+		"37099": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "moduleDetails"
+		},
+		"37100": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "loadModuleProvider"
+		},
+		"37101": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "loadModuleProvider"
+		},
+		"37102": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "container"
+		},
+		"37103": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "provider"
+		},
+		"37104": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
+			"qualifiedName": "registerServiceFn"
 		},
 		"37105": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
@@ -6521,223 +6557,223 @@
 		},
 		"37106": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "klass"
+			"qualifiedName": "__type"
 		},
 		"37107": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "container"
+			"qualifiedName": "klass"
 		},
 		"37108": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "moduleDetails"
+			"qualifiedName": "container"
 		},
 		"37109": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "loadModuleProvider"
-		},
-		"37110": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "loadModuleProvider"
-		},
-		"37111": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "container"
-		},
-		"37112": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "provider"
-		},
-		"37113": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "registerServiceFn"
-		},
-		"37114": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "__type"
-		},
-		"37115": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "__type"
-		},
-		"37116": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "klass"
-		},
-		"37117": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
-			"qualifiedName": "container"
-		},
-		"37118": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/module-provider-loader.ts",
 			"qualifiedName": "moduleDetails"
 		},
-		"37119": {
+		"37110": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
 			"qualifiedName": "registerMedusaModule"
 		},
-		"37120": {
+		"37111": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
 			"qualifiedName": "registerMedusaModule"
 		},
-		"37121": {
+		"37112": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
 			"qualifiedName": "moduleKey"
 		},
-		"37122": {
+		"37113": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
 			"qualifiedName": "moduleDeclaration"
+		},
+		"37114": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "moduleExports"
+		},
+		"37115": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "definition"
+		},
+		"37116": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "registerMedusaLinkModule"
+		},
+		"37117": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "registerMedusaLinkModule"
+		},
+		"37118": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "definition"
+		},
+		"37119": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "moduleDeclaration"
+		},
+		"37120": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
+			"qualifiedName": "moduleExports"
+		},
+		"37121": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "loadModules"
+		},
+		"37122": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "loadModules"
 		},
 		"37123": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "moduleExports"
-		},
-		"37124": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "definition"
-		},
-		"37125": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "registerMedusaLinkModule"
-		},
-		"37126": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "registerMedusaLinkModule"
-		},
-		"37127": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "definition"
-		},
-		"37128": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "moduleDeclaration"
-		},
-		"37129": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/loaders/register-modules.ts",
-			"qualifiedName": "moduleExports"
-		},
-		"37130": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "loadModules"
-		},
-		"37131": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "loadModules"
-		},
-		"37132": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "args"
 		},
-		"37133": {
+		"37124": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type"
 		},
-		"37134": {
+		"37125": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.modulesConfig"
 		},
-		"37135": {
+		"37126": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.sharedContainer"
 		},
-		"37136": {
+		"37127": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.sharedResourcesConfig"
 		},
-		"37137": {
+		"37128": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.migrationOnly"
 		},
-		"37138": {
+		"37129": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.loaderOnly"
 		},
-		"37139": {
+		"37130": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.workerMode"
 		},
-		"37140": {
+		"37131": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "MedusaApp"
+		},
+		"37132": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaApp"
+		},
+		"37133": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "options"
+		},
+		"37134": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaAppMigrateUp"
+		},
+		"37135": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaAppMigrateUp"
+		},
+		"37136": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "options"
+		},
+		"37137": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaAppMigrateDown"
+		},
+		"37138": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaAppMigrateDown"
+		},
+		"37139": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "moduleNames"
+		},
+		"37140": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "options"
 		},
 		"37141": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaApp"
+			"qualifiedName": "MedusaAppMigrateGenerate"
 		},
 		"37142": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "MedusaAppMigrateGenerate"
 		},
 		"37143": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateUp"
+			"qualifiedName": "moduleNames"
 		},
 		"37144": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateUp"
+			"qualifiedName": "options"
 		},
 		"37145": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "MedusaAppGetLinksExecutionPlanner"
 		},
 		"37146": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateDown"
+			"qualifiedName": "MedusaAppGetLinksExecutionPlanner"
 		},
 		"37147": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateDown"
+			"qualifiedName": "options"
 		},
 		"37148": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "moduleNames"
+			"qualifiedName": "RunMigrationFn"
 		},
 		"37149": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "__type"
 		},
 		"37150": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateGenerate"
+			"qualifiedName": "__type"
 		},
 		"37151": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppMigrateGenerate"
+			"qualifiedName": "RevertMigrationFn"
 		},
 		"37152": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "moduleNames"
+			"qualifiedName": "__type"
 		},
 		"37153": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "__type"
 		},
 		"37154": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppGetLinksExecutionPlanner"
+			"qualifiedName": "moduleNames"
 		},
 		"37155": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppGetLinksExecutionPlanner"
+			"qualifiedName": "GenerateMigrations"
 		},
 		"37156": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "__type"
 		},
 		"37157": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "RunMigrationFn"
+			"qualifiedName": "__type"
 		},
 		"37158": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "moduleNames"
 		},
 		"37159": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "GetLinkExecutionPlanner"
 		},
 		"37160": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "RevertMigrationFn"
+			"qualifiedName": "__type"
 		},
 		"37161": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
@@ -6745,31 +6781,27 @@
 		},
 		"37162": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "MedusaModuleConfig"
 		},
 		"37163": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "moduleNames"
+			"qualifiedName": "__type"
 		},
 		"37164": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "GenerateMigrations"
-		},
-		"37165": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.__index"
 		},
 		"37166": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "SharedResources"
 		},
 		"37167": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "moduleNames"
+			"qualifiedName": "__type"
 		},
 		"37168": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "GetLinkExecutionPlanner"
+			"qualifiedName": "__type.database"
 		},
 		"37169": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
@@ -6777,11 +6809,11 @@
 		},
 		"37170": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.pool"
 		},
 		"37171": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaModuleConfig"
+			"qualifiedName": "MedusaAppOutput"
 		},
 		"37172": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
@@ -6789,83 +6821,87 @@
 		},
 		"37173": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.__index"
-		},
-		"37175": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "SharedResources"
-		},
-		"37176": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
-		},
-		"37177": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.database"
-		},
-		"37178": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
-		},
-		"37179": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.pool"
-		},
-		"37180": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppOutput"
-		},
-		"37181": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
-		},
-		"37182": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.modules"
 		},
-		"37183": {
+		"37174": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.link"
 		},
-		"37184": {
+		"37175": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.query"
 		},
-		"37185": {
+		"37176": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.entitiesMap"
 		},
-		"37186": {
+		"37177": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.gqlSchema"
 		},
-		"37187": {
+		"37178": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.notFound"
 		},
-		"37188": {
+		"37179": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.runMigrations"
 		},
-		"37189": {
+		"37180": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.revertMigrations"
 		},
-		"37190": {
+		"37181": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.generateMigrations"
 		},
-		"37191": {
+		"37182": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.linkMigrationExecutionPlanner"
 		},
-		"37192": {
+		"37183": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.onApplicationShutdown"
 		},
-		"37193": {
+		"37184": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type"
+		},
+		"37185": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type"
+		},
+		"37186": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type.onApplicationPrepareShutdown"
+		},
+		"37187": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type"
+		},
+		"37188": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type"
+		},
+		"37189": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type.onApplicationStart"
+		},
+		"37190": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type"
+		},
+		"37191": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type"
+		},
+		"37192": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "__type.sharedContainer"
+		},
+		"37193": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
+			"qualifiedName": "MedusaAppOptions"
 		},
 		"37194": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
@@ -6873,159 +6909,159 @@
 		},
 		"37195": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.onApplicationPrepareShutdown"
+			"qualifiedName": "__type.workerMode"
 		},
 		"37196": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.sharedContainer"
 		},
 		"37197": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.sharedResourcesConfig"
 		},
 		"37198": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.onApplicationStart"
+			"qualifiedName": "__type.loadedModules"
 		},
 		"37199": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.servicesConfig"
 		},
 		"37200": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.modulesConfigPath"
 		},
 		"37201": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.sharedContainer"
+			"qualifiedName": "__type.modulesConfigFileName"
 		},
 		"37202": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "MedusaAppOptions"
+			"qualifiedName": "__type.modulesConfig"
 		},
 		"37203": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.linkModules"
 		},
 		"37204": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.workerMode"
+			"qualifiedName": "__type.remoteFetchData"
 		},
 		"37205": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.sharedContainer"
+			"qualifiedName": "__type.injectedDependencies"
 		},
 		"37206": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.sharedResourcesConfig"
+			"qualifiedName": "__type.onApplicationStartCb"
 		},
 		"37207": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.loadedModules"
+			"qualifiedName": "__type"
 		},
 		"37208": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.servicesConfig"
+			"qualifiedName": "__type"
 		},
 		"37209": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.modulesConfigPath"
-		},
-		"37210": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.modulesConfigFileName"
-		},
-		"37211": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.modulesConfig"
-		},
-		"37212": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.linkModules"
-		},
-		"37213": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.remoteFetchData"
-		},
-		"37214": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.injectedDependencies"
-		},
-		"37215": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type.onApplicationStartCb"
-		},
-		"37216": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
-		},
-		"37217": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
-			"qualifiedName": "__type"
-		},
-		"37218": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-app.ts",
 			"qualifiedName": "__type.loaderOnly"
 		},
-		"37219": {
+		"37210": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "MigrationOptions"
 		},
-		"37220": {
+		"37211": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type"
 		},
-		"37221": {
+		"37212": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.moduleKey"
 		},
-		"37222": {
+		"37213": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.modulePath"
 		},
-		"37223": {
+		"37214": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.container"
 		},
-		"37224": {
+		"37215": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.options"
 		},
-		"37225": {
+		"37216": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.moduleExports"
 		},
-		"37226": {
+		"37217": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "ModuleBootstrapOptions"
 		},
-		"37227": {
+		"37218": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type"
 		},
-		"37228": {
+		"37219": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.moduleKey"
 		},
-		"37229": {
+		"37220": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.defaultPath"
 		},
-		"37230": {
+		"37221": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.declaration"
 		},
-		"37231": {
+		"37222": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.moduleExports"
 		},
-		"37232": {
+		"37223": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.sharedContainer"
 		},
-		"37233": {
+		"37224": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "__type.moduleDefinition"
+		},
+		"37225": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.injectedDependencies"
+		},
+		"37226": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.migrationOnly"
+		},
+		"37227": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.loaderOnly"
+		},
+		"37228": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.workerMode"
+		},
+		"37229": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "LinkModuleBootstrapOptions"
+		},
+		"37230": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type"
+		},
+		"37231": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.definition"
+		},
+		"37232": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.declaration"
+		},
+		"37233": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
+			"qualifiedName": "__type.moduleExports"
 		},
 		"37234": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
@@ -7033,91 +7069,79 @@
 		},
 		"37235": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.migrationOnly"
+			"qualifiedName": "RegisterModuleJoinerConfig"
 		},
 		"37236": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.loaderOnly"
+			"qualifiedName": "__type"
 		},
 		"37237": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.workerMode"
+			"qualifiedName": "__type"
 		},
 		"37238": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "LinkModuleBootstrapOptions"
+			"qualifiedName": "modules"
 		},
 		"37239": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type"
-		},
-		"37240": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.definition"
-		},
-		"37241": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.declaration"
-		},
-		"37242": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.moduleExports"
-		},
-		"37243": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type.injectedDependencies"
-		},
-		"37244": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "RegisterModuleJoinerConfig"
-		},
-		"37245": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type"
-		},
-		"37246": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "__type"
-		},
-		"37247": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
-			"qualifiedName": "modules"
-		},
-		"37248": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/medusa-module.ts",
 			"qualifiedName": "GlobalMedusaModule"
 		},
-		"37249": {
+		"37240": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "DeleteEntityInput"
 		},
-		"37250": {
+		"37241": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "__type"
 		},
-		"37251": {
+		"37242": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"37253": {
+		"37244": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RestoreEntityInput"
 		},
-		"37254": {
+		"37245": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink"
 		},
-		"37255": {
+		"37246": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.__constructor"
 		},
-		"37256": {
+		"37247": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink"
 		},
-		"37257": {
+		"37248": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "modulesLoaded"
+		},
+		"37249": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"37250": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.__joinerConfig"
+		},
+		"37251": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.__definition"
+		},
+		"37255": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.addModule"
+		},
+		"37256": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.addModule"
+		},
+		"37257": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "mod"
 		},
 		"37258": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
@@ -7131,81 +7155,93 @@
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.__definition"
 		},
-		"37264": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.addModule"
-		},
 		"37265": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.addModule"
+			"qualifiedName": "RemoteLink.getLinkModule"
 		},
 		"37266": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "mod"
+			"qualifiedName": "RemoteLink.getLinkModule"
 		},
 		"37267": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"37268": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.__joinerConfig"
-		},
-		"37269": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.__definition"
-		},
-		"37274": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.getLinkModule"
-		},
-		"37275": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.getLinkModule"
-		},
-		"37276": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "moduleA"
 		},
-		"37277": {
+		"37268": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "moduleAKey"
 		},
-		"37278": {
+		"37269": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "moduleB"
 		},
-		"37279": {
+		"37270": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "moduleBKey"
 		},
-		"37280": {
+		"37271": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.getRelationships"
 		},
-		"37281": {
+		"37272": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.getRelationships"
 		},
-		"37295": {
+		"37286": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.create"
 		},
-		"37296": {
+		"37287": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.create"
 		},
-		"37297": {
+		"37288": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "link"
 		},
-		"37298": {
+		"37289": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.dismiss"
 		},
-		"37299": {
+		"37290": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "RemoteLink.dismiss"
+		},
+		"37291": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "link"
+		},
+		"37292": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.delete"
+		},
+		"37293": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.delete"
+		},
+		"37294": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "removedServices"
+		},
+		"37295": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.restore"
+		},
+		"37296": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.restore"
+		},
+		"37297": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "removedServices"
+		},
+		"37298": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.list"
+		},
+		"37299": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
+			"qualifiedName": "RemoteLink.list"
 		},
 		"37300": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
@@ -7213,75 +7249,75 @@
 		},
 		"37301": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.delete"
+			"qualifiedName": "options"
 		},
 		"37302": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.delete"
+			"qualifiedName": "__type"
 		},
 		"37303": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "removedServices"
-		},
-		"37304": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.restore"
-		},
-		"37305": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.restore"
-		},
-		"37306": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "removedServices"
-		},
-		"37307": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.list"
-		},
-		"37308": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "RemoteLink.list"
-		},
-		"37309": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "link"
-		},
-		"37310": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "options"
-		},
-		"37311": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
-			"qualifiedName": "__type"
-		},
-		"37312": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-link.ts",
 			"qualifiedName": "__type.asLinkDefinition"
 		},
-		"37313": {
+		"37304": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "createQuery"
 		},
-		"37314": {
+		"37305": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "createQuery"
 		},
-		"37315": {
+		"37306": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "remoteQuery"
 		},
-		"37316": {
+		"37307": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "Query"
 		},
-		"37317": {
+		"37308": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "Query.traceGraphQuery"
 		},
-		"37318": {
+		"37309": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "__type"
+		},
+		"37310": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "__type"
+		},
+		"37311": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "queryFn"
+		},
+		"37312": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "__type"
+		},
+		"37313": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "__type"
+		},
+		"37314": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "queryOptions"
+		},
+		"37315": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "Query.traceRemoteQuery"
+		},
+		"37316": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "__type"
+		},
+		"37317": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "__type"
+		},
+		"37318": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "queryFn"
 		},
 		"37319": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
@@ -7289,35 +7325,35 @@
 		},
 		"37320": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryFn"
+			"qualifiedName": "__type"
 		},
 		"37321": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "queryOptions"
 		},
 		"37322": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "Query.instrument"
 		},
 		"37323": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryOptions"
+			"qualifiedName": "__object"
 		},
 		"37324": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.traceRemoteQuery"
+			"qualifiedName": "__object.graphQuery"
 		},
 		"37325": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.graphQuery"
 		},
 		"37326": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "tracer"
 		},
 		"37327": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryFn"
+			"qualifiedName": "__type"
 		},
 		"37328": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
@@ -7325,27 +7361,27 @@
 		},
 		"37329": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "queryFn"
 		},
 		"37330": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryOptions"
+			"qualifiedName": "__type"
 		},
 		"37331": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.instrument"
+			"qualifiedName": "__type"
 		},
 		"37332": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "queryOptions"
 		},
 		"37333": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.graphQuery"
+			"qualifiedName": "__object.remoteQuery"
 		},
 		"37334": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.graphQuery"
+			"qualifiedName": "__object.remoteQuery"
 		},
 		"37335": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
@@ -7377,493 +7413,457 @@
 		},
 		"37342": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.remoteQuery"
+			"qualifiedName": "__object.remoteDataFetch"
 		},
 		"37343": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.remoteQuery"
+			"qualifiedName": "__object.remoteDataFetch"
 		},
 		"37344": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "tracer"
 		},
 		"37345": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
 		"37346": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
 		"37347": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryFn"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "fetcher"
 		},
 		"37348": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
 		"37349": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
 		"37350": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryOptions"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "serviceName"
 		},
 		"37351": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.remoteDataFetch"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "method"
 		},
 		"37352": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "__object.remoteDataFetch"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "options"
 		},
 		"37353": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "tracer"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type"
 		},
 		"37354": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.select"
 		},
 		"37355": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
-		},
-		"37356": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "fetcher"
-		},
-		"37357": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
-		},
-		"37358": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
-		},
-		"37359": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "serviceName"
-		},
-		"37360": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "method"
-		},
-		"37361": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "options"
-		},
-		"37362": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
-		},
-		"37363": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.select"
-		},
-		"37364": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.relations"
 		},
-		"37365": {
+		"37356": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "Query.__constructor"
 		},
-		"37366": {
+		"37357": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "Query"
 		},
-		"37367": {
+		"37358": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "remoteQuery"
 		},
-		"37378": {
+		"37369": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
 			"qualifiedName": "Query.query"
+		},
+		"37370": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "Query.query"
+		},
+		"37371": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "queryOptions"
+		},
+		"37372": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "options"
+		},
+		"37373": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "Query.gql"
+		},
+		"37374": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "Query.gql"
+		},
+		"37375": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "query"
+		},
+		"37376": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "variables"
+		},
+		"37377": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "options"
+		},
+		"37378": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
+			"qualifiedName": "Query.graph"
 		},
 		"37379": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.query"
+			"qualifiedName": "Query.graph"
 		},
 		"37380": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryOptions"
+			"qualifiedName": "TEntry"
 		},
 		"37381": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "queryOptions"
 		},
 		"37382": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.gql"
+			"qualifiedName": "options"
 		},
 		"37383": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.gql"
-		},
-		"37384": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "query"
-		},
-		"37385": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "variables"
-		},
-		"37386": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "options"
-		},
-		"37387": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.graph"
-		},
-		"37388": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "Query.graph"
-		},
-		"37389": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "TEntry"
-		},
-		"37390": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "queryOptions"
-		},
-		"37391": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/query.ts",
-			"qualifiedName": "options"
-		},
-		"37392": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery"
 		},
-		"37393": {
+		"37384": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.traceFetchRemoteData"
 		},
-		"37394": {
+		"37385": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37395": {
+		"37386": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37396": {
+		"37387": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "fetcher"
 		},
-		"37397": {
+		"37388": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37398": {
+		"37389": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37399": {
+		"37390": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "serviceName"
 		},
-		"37400": {
+		"37391": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "method"
 		},
-		"37401": {
+		"37392": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "options"
 		},
-		"37402": {
+		"37393": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37403": {
+		"37394": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.select"
 		},
-		"37404": {
+		"37395": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.relations"
 		},
-		"37405": {
+		"37396": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.getAllFieldsAndRelations"
 		},
-		"37406": {
+		"37397": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.getAllFieldsAndRelations"
 		},
-		"37407": {
+		"37398": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "expand"
 		},
-		"37408": {
+		"37399": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
-		"37409": {
+		"37400": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
 			"qualifiedName": "__type.fields"
 		},
-		"37410": {
+		"37401": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
 		},
-		"37411": {
+		"37402": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
 			"qualifiedName": "__type.expands"
 		},
-		"37412": {
+		"37403": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "prefix"
 		},
-		"37413": {
+		"37404": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "args"
 		},
-		"37414": {
+		"37405": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37415": {
+		"37406": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.select"
 		},
-		"37416": {
+		"37407": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.relations"
 		},
-		"37417": {
+		"37408": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.args"
 		},
-		"37418": {
+		"37409": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.take"
 		},
-		"37419": {
+		"37410": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.__constructor"
 		},
-		"37420": {
+		"37411": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery"
 		},
-		"37421": {
+		"37412": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__0"
 		},
-		"37422": {
+		"37413": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37423": {
+		"37414": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.modulesLoaded"
 		},
-		"37424": {
+		"37415": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"37425": {
+		"37416": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.__joinerConfig"
 		},
-		"37426": {
+		"37417": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.__definition"
 		},
-		"37427": {
+		"37418": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.customRemoteFetchData"
 		},
-		"37428": {
+		"37419": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.servicesConfig"
 		},
-		"37429": {
+		"37420": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.entitiesMap"
 		},
-		"37437": {
+		"37428": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.getEntitiesMap"
 		},
-		"37438": {
+		"37429": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.getEntitiesMap"
 		},
-		"37439": {
+		"37430": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.setFetchDataCallback"
 		},
-		"37440": {
+		"37431": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "RemoteQuery.setFetchDataCallback"
 		},
-		"37441": {
+		"37432": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "remoteFetchData"
 		},
-		"37442": {
+		"37433": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37443": {
+		"37434": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
+		},
+		"37435": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "expand"
+		},
+		"37436": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "keyField"
+		},
+		"37437": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "ids"
+		},
+		"37438": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "relationship"
+		},
+		"37439": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type"
+		},
+		"37440": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type.data"
+		},
+		"37441": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type"
+		},
+		"37442": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type.__index"
 		},
 		"37444": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "__type.path"
+		},
+		"37459": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "RemoteQuery.remoteFetchData"
+		},
+		"37460": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
+			"qualifiedName": "RemoteQuery.remoteFetchData"
+		},
+		"37461": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "expand"
 		},
-		"37445": {
+		"37462": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "keyField"
 		},
-		"37446": {
+		"37463": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "ids"
 		},
-		"37447": {
+		"37464": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "relationship"
 		},
-		"37448": {
+		"37465": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
 		},
-		"37449": {
+		"37466": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type.data"
 		},
-		"37450": {
+		"37467": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "__type"
-		},
-		"37451": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.__index"
-		},
-		"37453": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.path"
 		},
 		"37468": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "RemoteQuery.remoteFetchData"
-		},
-		"37469": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "RemoteQuery.remoteFetchData"
+			"qualifiedName": "__type.__index"
 		},
 		"37470": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "expand"
+			"qualifiedName": "__type.path"
 		},
 		"37471": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "keyField"
+			"qualifiedName": "RemoteQuery.query"
 		},
 		"37472": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "ids"
+			"qualifiedName": "RemoteQuery.query"
 		},
 		"37473": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "relationship"
+			"qualifiedName": "query"
 		},
 		"37474": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "variables"
 		},
 		"37475": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.data"
-		},
-		"37476": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type"
-		},
-		"37477": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.__index"
-		},
-		"37479": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "__type.path"
-		},
-		"37480": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "RemoteQuery.query"
-		},
-		"37481": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "RemoteQuery.query"
-		},
-		"37482": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "query"
-		},
-		"37483": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
-			"qualifiedName": "variables"
-		},
-		"37484": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/remote-query/remote-query.ts",
 			"qualifiedName": "options"
 		},
-		"37485": {
+		"37476": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/types/index.ts",
 			"qualifiedName": "MODULE_SCOPE"
 		},
-		"37486": {
+		"37477": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/types/index.ts",
 			"qualifiedName": "MODULE_SCOPE.INTERNAL"
 		},
-		"37487": {
+		"37478": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/types/index.ts",
 			"qualifiedName": "MODULE_SCOPE.EXTERNAL"
 		},
-		"37488": {
+		"37479": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/linking-error.ts",
 			"qualifiedName": "linkingErrorMessage"
 		},
-		"37489": {
+		"37480": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/linking-error.ts",
 			"qualifiedName": "linkingErrorMessage"
 		},
-		"37490": {
+		"37481": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/linking-error.ts",
 			"qualifiedName": "input"
 		},
-		"37491": {
+		"37482": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/convert-data-to-link-definition.ts",
 			"qualifiedName": "convertRecordsToLinkDefinition"
 		},
-		"37492": {
+		"37483": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/convert-data-to-link-definition.ts",
 			"qualifiedName": "convertRecordsToLinkDefinition"
 		},
-		"37493": {
+		"37484": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/convert-data-to-link-definition.ts",
 			"qualifiedName": "links"
 		},
-		"37494": {
+		"37485": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/convert-data-to-link-definition.ts",
 			"qualifiedName": "service"
 		},
-		"37495": {
+		"37486": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"37496": {
+		"37487": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.__joinerConfig"
 		},
-		"37497": {
+		"37488": {
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.__definition"
 		}
@@ -7873,7 +7873,7 @@
 			"1": "../../../../packages/core/modules-sdk/src/index.ts"
 		},
 		"reflections": {
-			"1": 37082
+			"1": 37073
 		}
 	}
 }

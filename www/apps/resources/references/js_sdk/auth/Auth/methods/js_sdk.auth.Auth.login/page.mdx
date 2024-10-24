@@ -10,10 +10,10 @@ import { TypeList } from "docs-ui"
 This documentation provides a reference to the `sdk.auth.login` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
 
 This method retrieves the JWT authenticated token for an admin user, customer, or custom
-actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/v2/api/admin#auth\_postactor\_typeauth\_provider).
+actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/api/admin#auth\_postactor\_typeauth\_provider).
 
 If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
-[Set Authentication Session API route](https://docs.medusajs.com/v2/api/admin#auth\_postsession).
+[Set Authentication Session API route](https://docs.medusajs.com/api/admin#auth\_postsession).
 
 Subsequent requests using the SDK will automatically have the necessary authentication headers / session
 set.
