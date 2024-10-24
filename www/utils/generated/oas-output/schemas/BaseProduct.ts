@@ -1,7 +1,7 @@
 /**
  * @schema BaseProduct
  * type: object
- * description: The parent's product.
+ * description: The product's details.
  * x-schemaName: BaseProduct
  * required:
  *   - id
@@ -54,7 +54,7 @@
  *   is_giftcard:
  *     type: boolean
  *     title: is_giftcard
- *     description: The product's is giftcard.
+ *     description: Whether the product is a gift card.
  *   status:
  *     type: string
  *     description: The product's status.
@@ -66,7 +66,7 @@
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The product's thumbnail.
+ *     description: The product's thumbnail URL.
  *   width:
  *     type: number
  *     title: width
@@ -104,18 +104,18 @@
  *   collection_id:
  *     type: string
  *     title: collection_id
- *     description: The product's collection id.
+ *     description: The ID of the collection the product belongs to.
  *   categories:
  *     type: array
  *     description: The product's categories.
  *     items:
  *       $ref: "#/components/schemas/BaseProductCategory"
  *   type:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/BaseProductType"
  *   type_id:
  *     type: string
  *     title: type_id
- *     description: The product's type id.
+ *     description: The ID of the type the product belongs to.
  *   tags:
  *     type: array
  *     description: The product's tags.
@@ -139,29 +139,29 @@
  *   discountable:
  *     type: boolean
  *     title: discountable
- *     description: The product's discountable.
+ *     description: Whether the product is discountable.
  *   external_id:
  *     type: string
  *     title: external_id
- *     description: The product's external id.
+ *     description: The ID of the product in an external or third-party system.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The product's created at.
+ *     description: The date the product was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The product's updated at.
+ *     description: The date the product was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The product's deleted at.
+ *     description: The date the product was deleted.
  *   metadata:
  *     type: object
- *     description: The product's metadata.
+ *     description: The product's metadata, can hold custom key-value pairs.
  * 
 */
 

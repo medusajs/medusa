@@ -1,0 +1,96 @@
+/**
+ * @schema StoreCartShippingOption
+ * type: object
+ * description: The shipping option's details.
+ * x-schemaName: StoreCartShippingOption
+ * required:
+ *   - id
+ *   - name
+ *   - price_type
+ *   - service_zone_id
+ *   - shipping_profile_id
+ *   - provider_id
+ *   - data
+ *   - type
+ *   - provider
+ *   - amount
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The shipping option's ID.
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The shipping option's name.
+ *   price_type:
+ *     type: string
+ *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated
+ *       fulfillment provider.
+ *     enum:
+ *       - flat
+ *       - calculated
+ *   service_zone_id:
+ *     type: string
+ *     title: service_zone_id
+ *     description: The ID of the service zone the shipping option belongs to.
+ *   provider_id:
+ *     type: string
+ *     title: provider_id
+ *     description: The ID of the fulfillment provider handling this option.
+ *   provider:
+ *     type: object
+ *     description: The fulfillment provider's details.
+ *     required:
+ *       - id
+ *       - is_enabled
+ *     properties:
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The provider's ID.
+ *       is_enabled:
+ *         type: boolean
+ *         title: is_enabled
+ *         description: Whether the provider is enabled.
+ *   type:
+ *     type: object
+ *     description: The shipping option type's details.
+ *     required:
+ *       - id
+ *       - label
+ *       - description
+ *       - code
+ *     properties:
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The type's ID.
+ *       label:
+ *         type: string
+ *         title: label
+ *         description: The type's label.
+ *       description:
+ *         type: string
+ *         title: description
+ *         description: The type's description.
+ *       code:
+ *         type: string
+ *         title: code
+ *         description: The type's code.
+ *   shipping_profile_id:
+ *     type: string
+ *     title: shipping_profile_id
+ *     description: The ID of the associated shipping profile.
+ *   amount:
+ *     type: number
+ *     title: amount
+ *     description: The shipping option's amount.
+ *   data:
+ *     type: object
+ *     description: The shipping option's data, useful for the provider handling fulfillment.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
+ * 
+*/
+

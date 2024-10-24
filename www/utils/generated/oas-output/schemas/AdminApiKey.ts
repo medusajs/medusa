@@ -12,8 +12,10 @@
  *   - last_used_at
  *   - created_by
  *   - created_at
+ *   - updated_at
  *   - revoked_by
  *   - revoked_at
+ *   - deleted_at
  * properties:
  *   id:
  *     type: string
@@ -61,6 +63,16 @@
  *     title: revoked_at
  *     description: The date and time the API key was revoked. The API key is considered revoked when this property is set.
  *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The date the API key was updated.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the API key was deleted.
  * 
 */
 

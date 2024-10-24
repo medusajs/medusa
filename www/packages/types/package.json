@@ -41,6 +41,6 @@
     "node": ">=18.17.0"
   },
   "dependencies": {
-    "@medusajs/icons": "^1.2.2"
+    "@medusajs/icons": "^2.0.0"
   }
 }

@@ -1,9 +1,8 @@
 import { InformationCircleSolid } from "@medusajs/icons"
-import { Tooltip } from "@medusajs/ui"
 
 import { HookData, HookDataMap } from "@/types/hooks"
 import { EnumType, FunctionType, ObjectType } from "@/types/props"
-import { InlineCode, Table } from "docs-ui"
+import { InlineCode, Table, Tooltip } from "docs-ui"
 
 const HookTable = ({ props }: { props: HookDataMap }) => {
   return (
@@ -66,9 +65,8 @@ const Row = ({ value, type, description }: HookData) => {
         )}
         {isObject(type) && (
           <Tooltip
-            content={<pre>{type.shape}</pre>}
-            className="font-mono"
-            maxWidth={500}
+            tooltipChildren={<pre>{type.shape}</pre>}
+            className="font-mono max-w-[500px]"
           >
             <div className="flex items-center gap-x-1">
               <span>{type.name}</span>
@@ -78,9 +76,8 @@ const Row = ({ value, type, description }: HookData) => {
         )}
         {isFunction(type) && (
           <Tooltip
-            content={<pre>{type.signature}</pre>}
-            className="font-mono"
-            maxWidth={500}
+            tooltipChildren={<pre>{type.signature}</pre>}
+            className="font-mono max-w-[500px]"
           >
             <div className="flex items-center gap-x-1">
               <span>function</span>
