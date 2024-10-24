@@ -113,6 +113,20 @@ const nextConfig = {
           basePath: false,
         },
         {
+          source: "/ui",
+          destination: `${
+            process.env.NEXT_PUBLIC_UI_URL || "https://localhost:3001"
+          }/ui`,
+          basePath: false,
+        },
+        {
+          source: "/ui/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_UI_URL || "https://localhost:3001"
+          }/ui/:path*`,
+          basePath: false,
+        },
+        {
           source: "/v1",
           destination: `${
             process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3001"
