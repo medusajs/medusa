@@ -317,7 +317,10 @@ const NewProduct = ({ onClose }: Props) => {
                   </div>
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Variants" value="variants">
+              <Accordion.Item
+                title={t("new-variants-title", "Variants")}
+                value="variants"
+              >
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-add-variations-of-this-product",
@@ -337,7 +340,10 @@ const NewProduct = ({ onClose }: Props) => {
                   />
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Attributes" value="attributes">
+              <Accordion.Item
+                title={t("new-attributes-title", "Attributes")}
+                value="attributes"
+              >
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-used-for-shipping-and-customs-purposes",

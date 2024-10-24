@@ -1,6 +1,7 @@
 import FormValidator from "../../../../../utils/form-validator"
 import { NestedForm } from "../../../../../utils/nested-form"
 import InputField from "../../../../molecules/input"
+import { useTranslation } from "react-i18next"
 
 export type VariantGeneralFormType = {
   title: string | null
@@ -12,6 +13,7 @@ type Props = {
 }
 
 const VariantGeneralForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   const {
     path,
     register,
@@ -21,21 +23,30 @@ const VariantGeneralForm = ({ form }: Props) => {
   return (
     <div>
       <p className="inter-base-regular text-grey-50">
-        Configure the general information for this variant.
+        {t(
+          "variant-general-form-description",
+          "Configure the general information for this variant."
+        )}
       </p>
       <div className="pt-large">
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label="Custom title"
-            placeholder="Green / XL..."
+            label={t("variant-general-form-title-input-label", "Custom title")}
+            placeholder={t(
+              "variant-general-form-title-input-placeholder",
+              "Green / XL..."
+            )}
             {...register(path("title"), {
               pattern: FormValidator.whiteSpaceRule("Title"),
             })}
             errors={errors}
           />
           <InputField
-            label="Material"
-            placeholder="80% wool, 20% cotton..."
+            label={t("variant-general-form-material-input-label", "Material")}
+            placeholder={t(
+              "variant-general-form-material-input-placeholder",
+              "80% wool, 20% cotton..."
+            )}
             {...form.register(path("material"), {
               pattern: FormValidator.whiteSpaceRule("Material"),
             })}

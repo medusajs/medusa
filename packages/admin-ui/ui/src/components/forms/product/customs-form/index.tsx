@@ -5,6 +5,7 @@ import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
 import { NextSelect } from "../../../molecules/select/next-select"
+import { useTranslation } from "react-i18next"
 
 export type CustomsFormType = {
   mid_code: string | null
@@ -22,6 +23,7 @@ type CustomsFormProps = {
  * <CustomsForm form={nestedForm(form, "customs")} />
  */
 const CustomsForm = ({ form }: CustomsFormProps) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -37,7 +39,7 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
   return (
     <div className="gap-large pb-2xsmall grid grid-cols-2">
       <InputField
-        label="MID Code"
+        label={t("customs-form-mid-input-label", "MID Code")}
         placeholder="XDSKLAD9999..."
         {...register(path("mid_code"), {
           pattern: FormValidator.whiteSpaceRule("MID Code"),
@@ -45,7 +47,7 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="HS Code"
+        label={t("customs-form-hs-input-label", "HS Code")}
         placeholder="BDJSK39277W..."
         {...register(path("hs_code"), {
           pattern: FormValidator.whiteSpaceRule("HS Code"),
@@ -58,8 +60,14 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
         render={({ field }) => {
           return (
             <NextSelect
-              label="Country of origin"
-              placeholder="Choose a country"
+              label={t(
+                "customs-form-origin-country-input-label",
+                "Country of origin"
+              )}
+              placeholder={t(
+                "customs-form-origin-country-input-placeholder",
+                "Choose a country"
+              )}
               options={countryOptions}
               isSearchable
               isClearable

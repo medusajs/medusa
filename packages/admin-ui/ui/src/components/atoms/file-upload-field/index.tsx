@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import React, { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 type FileUploadFieldProps = {
   onFileChosen: (files: File[]) => void
@@ -11,22 +12,17 @@ type FileUploadFieldProps = {
   text?: React.ReactElement | string
 }
 
-const defaultText = (
-  <span>
-    Drop your images here, or{" "}
-    <span className="text-violet-60">click to browse</span>
-  </span>
-)
-
 const FileUploadField: React.FC<FileUploadFieldProps> = ({
   onFileChosen,
   filetypes,
   errorMessage,
   className,
-  text = defaultText,
+  text,
   placeholder = "",
   multiple = false,
 }) => {
+  const { t } = useTranslation()
+
   const inputRef = useRef<HTMLInputElement>(null)
   const [fileUploadError, setFileUploadError] = useState(false)
 
@@ -71,6 +67,18 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
     }
   }
 
+  const defaultText = (
+    <span>
+      {t(
+        "file-upload-field-drop-your-images-here-or",
+        "Drop your images here, or"
+      )}{" "}
+      <span className="text-violet-60">
+        {t("file-upload-field-click-to-browse", "click to browse")}
+      </span>
+    </span>
+  )
+
   return (
     <div
       onClick={() => inputRef?.current?.click()}
@@ -82,7 +90,7 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
       )}
     >
       <div className="flex flex-col items-center">
-        <p>{text}</p>
+        <p>{text ?? defaultText}</p>
         {placeholder}
       </div>
       {fileUploadError && (
