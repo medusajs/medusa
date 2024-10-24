@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -17,33 +20,33 @@ export const AdminCustomerGroupInCustomerParams = z.object({
   deleted_at: createOperatorMap().optional(),
 })
 
+export const AdminCustomersParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  email: z.union([z.string(), z.array(z.string())]).optional(),
+  groups: z
+    .union([
+      AdminCustomerGroupInCustomerParams,
+      z.string(),
+      z.array(z.string()),
+    ])
+    .optional(),
+  company_name: z.union([z.string(), z.array(z.string())]).optional(),
+  first_name: z.union([z.string(), z.array(z.string())]).optional(),
+  last_name: z.union([z.string(), z.array(z.string())]).optional(),
+  has_account: booleanString().optional(),
+  created_by: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export const AdminCustomersParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    email: z.union([z.string(), z.array(z.string())]).optional(),
-    groups: z
-      .union([
-        AdminCustomerGroupInCustomerParams,
-        z.string(),
-        z.array(z.string()),
-      ])
-      .optional(),
-    company_name: z.union([z.string(), z.array(z.string())]).optional(),
-    first_name: z.union([z.string(), z.array(z.string())]).optional(),
-    last_name: z.union([z.string(), z.array(z.string())]).optional(),
-    has_account: booleanString().optional(),
-    created_by: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminCustomersParams.array()).optional(),
-    $or: z.lazy(() => AdminCustomersParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminCustomersParamsFields)
+  .merge(applyAndAndOrOperators(AdminCustomersParamsFields))
 
 export const CreateCustomer = z.object({
   email: z.string().email().nullish(),

@@ -4,11 +4,22 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetStockLocationParamsType = z.infer<
   typeof AdminGetStockLocationParams
 >
 export const AdminGetStockLocationParams = createSelectParams()
+
+export const AdminGetStockLocationsParamsDirectFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.union([z.string(), z.array(z.string())]).optional(),
+  address_id: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
 export type AdminGetStockLocationsParamsType = z.infer<
   typeof AdminGetStockLocationsParams
@@ -16,20 +27,14 @@ export type AdminGetStockLocationsParamsType = z.infer<
 export const AdminGetStockLocationsParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
-    address_id: z.union([z.string(), z.array(z.string())]).optional(),
-    sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetStockLocationsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetStockLocationsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetStockLocationsParamsDirectFields)
+  .merge(applyAndAndOrOperators(AdminGetStockLocationsParamsDirectFields))
+  .merge(
+    z.object({
+      sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
+    })
+  )
 
 export type AdminUpsertStockLocationAddressType = z.infer<
   typeof AdminUpsertStockLocationAddress

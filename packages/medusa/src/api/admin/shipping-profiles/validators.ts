@@ -4,11 +4,22 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetShippingProfileParamsType = z.infer<
   typeof AdminGetShippingProfileParams
 >
 export const AdminGetShippingProfileParams = createSelectParams()
+
+export const AdminGetShippingProfilesParamsFields = z.object({
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  q: z.string().optional(),
+  type: z.string().optional(),
+  name: z.string().optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
 export type AdminGetShippingProfilesParamsType = z.infer<
   typeof AdminGetShippingProfilesParams
@@ -16,19 +27,9 @@ export type AdminGetShippingProfilesParamsType = z.infer<
 export const AdminGetShippingProfilesParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    q: z.string().optional(),
-    type: z.string().optional(),
-    name: z.string().optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetShippingProfilesParams.array()).optional(),
-    $or: z.lazy(() => AdminGetShippingProfilesParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetShippingProfilesParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetShippingProfilesParamsFields))
 
 export type AdminCreateShippingProfileType = z.infer<
   typeof AdminCreateShippingProfile
