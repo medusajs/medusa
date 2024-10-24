@@ -19,7 +19,6 @@ export const WorkflowExecutionListTable = () => {
     useWorkflowExecutions(
       {
         ...searchParams,
-        fields: "execution,state",
       },
       {
         placeholderData: keepPreviousData,
