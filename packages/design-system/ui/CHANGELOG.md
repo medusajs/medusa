@@ -1,5 +1,11 @@
 # @medusajs/ui
 
+## 4.0.1
+
+### Patch Changes
+
+- [#9775](https://github.com/medusajs/medusa/pull/9775) [`59e6747800133e091d20c2c167f600981abc5c0d`](https://github.com/medusajs/medusa/commit/59e6747800133e091d20c2c167f600981abc5c0d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(dashboard,ui): DateFilter should remain open
+
 ## 4.0.0
 
 ### Major Changes

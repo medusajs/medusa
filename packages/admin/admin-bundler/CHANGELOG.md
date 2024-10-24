@@ -1,5 +1,12 @@
 # @medusajs/admin-bundler
 
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`e0870731213d353d2d718ba0b600ce8c08add14a`](https://github.com/medusajs/medusa/commit/e0870731213d353d2d718ba0b600ce8c08add14a), [`7b6793f846a36289fe8cdfd501401b1d993d9eff`](https://github.com/medusajs/medusa/commit/7b6793f846a36289fe8cdfd501401b1d993d9eff), [`59e6747800133e091d20c2c167f600981abc5c0d`](https://github.com/medusajs/medusa/commit/59e6747800133e091d20c2c167f600981abc5c0d)]:
+  - @medusajs/dashboard@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
