@@ -9,10 +9,12 @@ const nextConfig = {
       {
         source: "/v1",
         destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1`,
+        basePath: false,
       },
       {
         source: "/v1/:path*",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1`,
+        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1/:path*`,
+        basePath: false,
       },
       {
         source: "/:path*",
