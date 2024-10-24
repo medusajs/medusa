@@ -17,7 +17,7 @@ export class Exchange {
 
   /**
    * This method retrieves a paginated list of exchanges. It sends a request to the
-   * [List Exchanges](https://docs.medusajs.com/v2/api/admin#exchanges_getexchanges)
+   * [List Exchanges](https://docs.medusajs.com/api/admin#exchanges_getexchanges)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -60,7 +60,7 @@ export class Exchange {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminExchangeListParams,
@@ -77,7 +77,7 @@ export class Exchange {
 
   /**
    * This method retrieves an exchange by its ID. It sends a request to the 
-   * [Get Exchange](https://docs.medusajs.com/v2/api/admin#exchanges_getexchangesid)
+   * [Get Exchange](https://docs.medusajs.com/api/admin#exchanges_getexchangesid)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -106,7 +106,7 @@ export class Exchange {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -124,7 +124,7 @@ export class Exchange {
 
   /**
    * This method creates an admin exchange. It sends a request to the
-   * [Create Exchange](https://docs.medusajs.com/v2/api/admin#exchanges_postexchanges) API route.
+   * [Create Exchange](https://docs.medusajs.com/api/admin#exchanges_postexchanges) API route.
    * 
    * @param body - The exchange's details.
    * @param query - Configure the fields to retrieve in the exchange.
@@ -157,7 +157,7 @@ export class Exchange {
 
   /**
    * This method cancels an exchange. It sends a request to the
-   * [Cancel Exchange](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidcancel) API route.
+   * [Cancel Exchange](https://docs.medusajs.com/api/admin#exchanges_postexchangesidcancel) API route.
    * 
    * @param id - The exchange's ID.
    * @param query - Configure the fields to retrieve in the exchange.
@@ -189,7 +189,7 @@ export class Exchange {
    * This method adds inbound (or return) items to an exchange. These inbound items will 
    * have the action `RETURN_ITEM`.
    * 
-   * This method sends a request to the [Add Inbound Items](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidinbounditems)
+   * This method sends a request to the [Add Inbound Items](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinbounditems)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -233,7 +233,7 @@ export class Exchange {
    * Every item has an `actions` property, whose value is an array of actions. You can 
    * check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Update Inbound Item](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidinbounditemsaction_id)
+   * This method sends a request to the [Update Inbound Item](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinbounditemsaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -280,7 +280,7 @@ export class Exchange {
    * Every item has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Remove Inbound Item](https://docs.medusajs.com/v2/api/admin#exchanges_deleteexchangesidinbounditemsaction_id)
+   * This method sends a request to the [Remove Inbound Item](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidinbounditemsaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -318,10 +318,10 @@ export class Exchange {
    * This method adds an inbound (or return) shipping method to an exchange. 
    * The inbound shipping method will have a `SHIPPING_ADD` action.
    * 
-   * This method sends a request to the [Add Inbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidinboundshippingmethod)
+   * This method sends a request to the [Add Inbound Shipping](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethod)
    * API route.
    * 
-   * This method sends a request to the [Add Inbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidinboundshippingmethod)
+   * This method sends a request to the [Add Inbound Shipping](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethod)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -362,7 +362,7 @@ export class Exchange {
    * Every shipping method has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Update Inbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidinboundshippingmethodaction_id)
+   * This method sends a request to the [Update Inbound Shipping](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethodaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -409,7 +409,7 @@ export class Exchange {
    * Every shipping method has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Remove Inbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_deleteexchangesidinboundshippingmethodaction_id)
+   * This method sends a request to the [Remove Inbound Shipping](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidinboundshippingmethodaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -447,7 +447,7 @@ export class Exchange {
    * This method adds outbound (or new) items to an exchange. 
    * These outbound items will have the action `ITEM_ADD`.
    * 
-   * This method sends a request to the [Add Outbound Items](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidoutbounditems)
+   * This method sends a request to the [Add Outbound Items](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutbounditems)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -491,7 +491,7 @@ export class Exchange {
    * Every item has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Update Inbound Item](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidoutbounditemsaction_id)
+   * This method sends a request to the [Update Inbound Item](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutbounditemsaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -538,7 +538,7 @@ export class Exchange {
    * Every item has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Update Outbound Item](https://docs.medusajs.com/v2/api/admin#exchanges_deleteexchangesidoutbounditemsaction_id)
+   * This method sends a request to the [Update Outbound Item](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutbounditemsaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -576,7 +576,7 @@ export class Exchange {
    * This method adds an outbound shipping method to an exchange. The outbound shipping method 
    * will have a `SHIPPING_ADD` action.
    * 
-   * This method sends a request to the [Add Outbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidoutboundshippingmethod)
+   * This method sends a request to the [Add Outbound Shipping](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethod)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -617,7 +617,7 @@ export class Exchange {
    * Every shipping method has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Update Outbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidoutboundshippingmethodaction_id)
+   * This method sends a request to the [Update Outbound Shipping](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethodaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -664,7 +664,7 @@ export class Exchange {
    * Every shipping method has an `actions` property, whose value is an array of actions. 
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    * 
-   * This method sends a request to the [Remove Outbound Shipping](https://docs.medusajs.com/v2/api/admin#exchanges_deleteexchangesidoutboundshippingmethodaction_id)
+   * This method sends a request to the [Remove Outbound Shipping](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutboundshippingmethodaction_id)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -701,7 +701,7 @@ export class Exchange {
   /**
    * This method confirms an exchange request, applying its changes on the associated order.
    * 
-   * This method sends a request to the [Confirm Exchange](https://docs.medusajs.com/v2/api/admin#exchanges_postexchangesidrequest)
+   * This method sends a request to the [Confirm Exchange](https://docs.medusajs.com/api/admin#exchanges_postexchangesidrequest)
    * API route.
    * 
    * @param id - The exchange's ID.
@@ -735,7 +735,7 @@ export class Exchange {
 
   /**
    * This method cancels an exchange request. It sends a request to the
-   * [Cancel Exchange Request](https://docs.medusajs.com/v2/api/admin#exchanges_deleteexchangesidrequest)
+   * [Cancel Exchange Request](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidrequest)
    * API route.
    * 
    * @param id - The exchange's ID.

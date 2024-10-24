@@ -16,7 +16,7 @@ export class Campaign {
 
   /**
    * This method retrieves a campaign by its ID. It sends a request to the 
-   * [Get Campaign](https://docs.medusajs.com/v2/api/admin#campaigns_getcampaignsid) API route.
+   * [Get Campaign](https://docs.medusajs.com/api/admin#campaigns_getcampaignsid) API route.
    * 
    * @param id - The campaign's ID.
    * @param query - Configure the fields to retrieve in the campaign.
@@ -44,7 +44,7 @@ export class Campaign {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -62,7 +62,7 @@ export class Campaign {
 
   /**
    * This method retrieves a paginated list of campaigns. It sends a request to the 
-   * [List Campaigns](https://docs.medusajs.com/v2/api/admin#campaigns_getcampaigns) API route.
+   * [List Campaigns](https://docs.medusajs.com/api/admin#campaigns_getcampaigns) API route.
    * 
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -104,7 +104,7 @@ export class Campaign {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminGetCampaignsParams,
@@ -121,7 +121,7 @@ export class Campaign {
 
   /**
    * This method creates a campaign. It sends a request to the 
-   * [Create Campaign](https://docs.medusajs.com/v2/api/admin#campaigns_postcampaigns) API route.
+   * [Create Campaign](https://docs.medusajs.com/api/admin#campaigns_postcampaigns) API route.
    * 
    * @param payload - The details of the campaign to create.
    * @param headers - Headers to pass in the request
@@ -151,7 +151,7 @@ export class Campaign {
 
   /**
    * This method updates a campaign. It sends a request to the 
-   * [Update Campaign](https://docs.medusajs.com/v2/api/admin#campaigns_postcampaignsid) API route.
+   * [Update Campaign](https://docs.medusajs.com/api/admin#campaigns_postcampaignsid) API route.
    * 
    * @param id - The campaign's ID.
    * @param payload - The data to update in the campaign.
@@ -183,7 +183,7 @@ export class Campaign {
 
   /**
    * This method deletes a campaign by its ID. It sends a request to the
-   * [Delete Campaign](https://docs.medusajs.com/v2/api/admin#campaigns_deletecampaignsid) API route.
+   * [Delete Campaign](https://docs.medusajs.com/api/admin#campaigns_deletecampaignsid) API route.
    * 
    * @param id - The campaign's ID.
    * @param headers - Headers to pass in the request
@@ -207,7 +207,7 @@ export class Campaign {
 
   /**
    * This method manages the promotions of a campaign to either add or remove the association between them.
-   * It sends a request to the [Manage Promotions](https://docs.medusajs.com/v2/api/admin#campaigns_postcampaignsidpromotions)
+   * It sends a request to the [Manage Promotions](https://docs.medusajs.com/api/admin#campaigns_postcampaignsidpromotions)
    * API route.
    * 
    * @param id - The campaign's ID.

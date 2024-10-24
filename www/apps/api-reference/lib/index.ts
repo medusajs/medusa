@@ -6,7 +6,7 @@ const URL = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_P
 
 export async function getBaseSpecs(area: Area) {
   try {
-    const res = await fetch(`${URL}/api/base-specs?area=${area}`, {
+    const res = await fetch(`${URL}/base-specs?area=${area}`, {
       next: {
         revalidate: 3000,
         tags: [area],

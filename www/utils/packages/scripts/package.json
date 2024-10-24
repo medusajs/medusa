@@ -7,11 +7,13 @@
   },
   "scripts": {
     "build": "tsc",
+    "watch": "tsc --watch",
     "check:freshness": "node ./dist/freshness-check.js",
     "generate:message": "node ./dist/get-generate-diff-message.js",
     "check:release-commit": "node ./dist/check-release-commit.js",
     "generate:changeset": "node ./dist/run-changeset.js",
-    "check:pr-files-count": "node ./dist/check-pr-files-count.js"
+    "check:pr-files-count": "node ./dist/check-pr-files-count.js",
+    "update:config-version": "node ./dist/change-config-version.js"
   },
   "version": "0.0.0",
   "type": "module",

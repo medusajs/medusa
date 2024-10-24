@@ -13,7 +13,7 @@ const TagsOperationDescriptionSectionWorkflowBadge = ({
     <p className="my-1">
       Workflow{" "}
       <Link
-        href={`${config.baseUrl}/v2/resources/references/medusa-workflows/${workflow}`}
+        href={`${config.baseUrl}/resources/references/medusa-workflows/${workflow}`}
         className="align-middle"
         target="_blank"
         rel="noreferrer"

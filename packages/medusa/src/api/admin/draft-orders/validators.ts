@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { AddressPayload, BigNumberInput } from "../../utils/common-validators"
+import {
+  AddressPayload,
+  applyAndAndOrOperators,
+  BigNumberInput,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createSelectParams,
@@ -9,17 +13,17 @@ import {
 export type AdminGetOrderParamsType = z.infer<typeof AdminGetOrderParams>
 export const AdminGetOrderParams = createSelectParams()
 
+export const AdminGetOrdersParamsFields = z.object({
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+})
+
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 export const AdminGetOrdersParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    $and: z.lazy(() => AdminGetOrdersParams.array()).optional(),
-    $or: z.lazy(() => AdminGetOrdersParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetOrdersParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetOrdersParamsFields))
 
 enum Status {
   completed = "completed",

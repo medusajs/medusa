@@ -1,22 +1,23 @@
 import { z } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetStoreParamsType = z.infer<typeof AdminGetStoreParams>
 export const AdminGetStoreParams = createSelectParams()
+
+export const AdminGetStoresParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.union([z.string(), z.array(z.string())]).optional(),
+})
 
 export type AdminGetStoresParamsType = z.infer<typeof AdminGetStoresParams>
 export const AdminGetStoresParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
-    $and: z.lazy(() => AdminGetStoresParams.array()).optional(),
-    $or: z.lazy(() => AdminGetStoresParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetStoresParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetStoresParamsFields))
 
 export type AdminUpdateStoreType = z.infer<typeof AdminUpdateStore>
 export const AdminUpdateStore = z.object({

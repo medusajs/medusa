@@ -23,7 +23,7 @@ export type Hook<Name extends string, Input> = {
  *
  * A handler hook can later be registered to consume the hook and perform custom functionality.
  *
- * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook).
+ * Learn more in [this documentation](https://docs.medusajs.com/advanced-development/workflows/add-workflow-hook).
  *
  * @param name - The hook's name. This is used when the hook handler is registered to consume the workflow.
  * @param input - The input to pass to the hook handler.

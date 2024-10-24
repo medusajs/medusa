@@ -2,6 +2,7 @@ import { BatchMethodRequest } from "@medusajs/framework/types"
 import { ProductStatus } from "@medusajs/framework/utils"
 import { z } from "zod"
 import {
+  applyAndAndOrOperators,
   booleanString,
   GetProductsParams,
   transformProductParams,
@@ -19,43 +20,55 @@ export const AdminGetProductParams = createSelectParams()
 export const AdminGetProductVariantParams = createSelectParams()
 export const AdminGetProductOptionParams = createSelectParams()
 
+export const AdminGetProductVariantsParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  manage_inventory: booleanString().optional(),
+  allow_backorder: booleanString().optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export type AdminGetProductVariantsParamsType = z.infer<
   typeof AdminGetProductVariantsParams
 >
 export const AdminGetProductVariantsParams = createFindParams({
   offset: 0,
   limit: 50,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    manage_inventory: booleanString().optional(),
-    allow_backorder: booleanString().optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetProductVariantsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetProductVariantsParamsFields))
+
+export const AdminGetProductsParamsDirectFields = z.object({
+  variants: AdminGetProductVariantsParams.optional(),
+  status: statusEnum.array().optional(),
+})
 
 export type AdminGetProductsParamsType = z.infer<typeof AdminGetProductsParams>
 export const AdminGetProductsParams = createFindParams({
   offset: 0,
   limit: 50,
 })
+  .merge(AdminGetProductsParamsDirectFields)
   .merge(
     z
       .object({
-        variants: AdminGetProductVariantsParams.optional(),
         price_list_id: z.string().array().optional(),
-        status: statusEnum.array().optional(),
-        $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
-        $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
       })
+      .merge(applyAndAndOrOperators(AdminGetProductsParamsDirectFields))
       .merge(GetProductsParams)
   )
   .transform(transformProductParams)
+
+export const AdminGetProductOptionsParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  title: z.string().optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
 export type AdminGetProductOptionsParamsType = z.infer<
   typeof AdminGetProductOptionsParams
@@ -63,18 +76,9 @@ export type AdminGetProductOptionsParamsType = z.infer<
 export const AdminGetProductOptionsParams = createFindParams({
   offset: 0,
   limit: 50,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    title: z.string().optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetProductOptionsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetProductOptionsParamsFields))
 
 export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
 export const AdminCreateProductTag = z.object({

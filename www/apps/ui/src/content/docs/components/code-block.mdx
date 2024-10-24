@@ -41,6 +41,29 @@ import { CodeBlock } from "@medusajs/ui"
   "CodeBlock.Body"
 ]} />
 
+## Usage Outside Medusa Admin
+
+---
+
+If you're using the `CodeBlock` component in a project other than the Medusa Admin, make sure to include the `TooltipProvider` somewhere up in your component tree, as the `CodeBlock.Header` component uses a [Tooltip](/components/tooltip#usage-outside-medusa-admin):
+
+```tsx
+<TooltipProvider>
+  <CodeBlock 
+    snippets={[
+      { 
+        language: "tsx", 
+        label: "Label", 
+        code: "import { useProduct } from \"medusa-react\"",
+      },
+    ]}
+  >
+    <CodeBlock.Header />
+    <CodeBlock.Body />
+  </CodeBlock>
+</TooltipProvider>
+```
+
 ## Examples
 
 ---

@@ -144,7 +144,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *
    * - The {@link authorizePayment} method returns the status `captured`, which automatically executed this method after authorization.
    * - The merchant requests to capture the payment after its associated payment session was authorized.
-   * - A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events).
+   * - A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/resources/commerce-modules/payment/webhook-events).
    *
    * In this method, use the third-party provider to capture the payment.
    *
@@ -194,7 +194,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * This method authorizes a payment session. When authorized successfully, a payment is created by the Payment
    * Module which can be later captured using the {@link capturePayment} method.
    *
-   * Refer to [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-flow#3-authorize-payment-session)
+   * Refer to [this guide](https://docs.medusajs.com/resources/commerce-modules/payment/payment-flow#3-authorize-payment-session)
    * to learn more about how this fits into the payment flow and how to handle required actions.
    *
    * To automatically capture the payment after authorization, return the status `captured`.
@@ -619,7 +619,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * This method is executed when a webhook event is received from the third-party payment provider. Use it
    * to process the action of the payment provider.
    *
-   * Learn more in [this documentation](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events)
+   * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/payment/webhook-events)
    *
    * @param data - The webhook event's data
    * @returns The webhook result. If the `action`'s value is `captured`, the payment is captured within Medusa as well.
