@@ -75,7 +75,7 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
     } else {
       // we can't mix html and templates for sendgrid
       mailContent = {
-        templateId: notification.template,
+        templateId: notification.template || "",
       }
     }
 
