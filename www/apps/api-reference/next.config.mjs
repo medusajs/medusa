@@ -5,13 +5,22 @@ import rehypeSlug from "rehype-slug"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/api",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
 
     return config
   },
   transpilePackages: ["docs-ui"],
+  async redirects() {
+    return [
+      {
+        source: "/api/download/:path",
+        destination: "/download/:path",
+        permanent: true,
+      },
+    ]
+  },
 }
 
 const withMDX = mdx({

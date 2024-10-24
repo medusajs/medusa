@@ -16,6 +16,7 @@ export const GET = async (
     req.remoteQueryConfig.fields,
     req.remoteQueryConfig.pagination
   )
+
   res.json({
     notifications,
     count: metadata.count,

@@ -16,7 +16,7 @@ export class ApiKey {
 
   /**
    * This methods retrieves a paginated list of API keys. It sends a request to the 
-   * [List API Keys](https://docs.medusajs.com/v2/api/admin#api-keys_getapikeys) API route.
+   * [List API Keys](https://docs.medusajs.com/api/admin#api-keys_getapikeys) API route.
    * 
    * @param queryParams - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -58,7 +58,7 @@ export class ApiKey {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
     queryParams?: HttpTypes.AdminGetApiKeysParams,
@@ -73,7 +73,7 @@ export class ApiKey {
   }
 
   /**
-   * This method creates an API key. It sends a request to the [Create API Key](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeys)
+   * This method creates an API key. It sends a request to the [Create API Key](https://docs.medusajs.com/api/admin#api-keys_postapikeys)
    * API route.
    * 
    * @param body - The API key's details.
@@ -108,7 +108,7 @@ export class ApiKey {
 
   /**
    * This method revokes an API key. It sends a request to the 
-   * [Revoke API Key](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeysidrevoke) API route.
+   * [Revoke API Key](https://docs.medusajs.com/api/admin#api-keys_postapikeysidrevoke) API route.
    * 
    * @param id - The API key's ID.
    * @param headers - Headers to pass in the request.
@@ -132,7 +132,7 @@ export class ApiKey {
 
   /**
    * This method retrieves an API key's details. It sends a request to the 
-   * [Get API key](https://docs.medusajs.com/v2/api/admin#api-keys_getapikeysid) API route.
+   * [Get API key](https://docs.medusajs.com/api/admin#api-keys_getapikeysid) API route.
    * 
    * @param id - The API key's ID.
    * @param headers - Headers to pass in the request.
@@ -155,7 +155,7 @@ export class ApiKey {
 
   /**
    * This method updates an API key's details. It sends a request to the 
-   * [Update API Key](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeysid) API route.
+   * [Update API Key](https://docs.medusajs.com/api/admin#api-keys_postapikeysid) API route.
    * 
    * @param id - The API key's ID.
    * @param body - The data to update in the API key.
@@ -190,7 +190,7 @@ export class ApiKey {
 
   /**
    * This method deletes an API key by its ID. It sends a request to the 
-   * [Delete API Key](https://docs.medusajs.com/v2/api/admin#api-keys_deleteapikeysid) API route.
+   * [Delete API Key](https://docs.medusajs.com/api/admin#api-keys_deleteapikeysid) API route.
    * 
    * @param id - The API key's ID.
    * @param headers - Headers to pass in the request.
@@ -214,7 +214,7 @@ export class ApiKey {
 
   /**
    * This method manages the sales channels associated with a publishable API key to either add
-   * or remove associations. It sends a request to the [Manage Sales Channels](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeysidsaleschannels)
+   * or remove associations. It sends a request to the [Manage Sales Channels](https://docs.medusajs.com/api/admin#api-keys_postapikeysidsaleschannels)
    * API route.
    * 
    * @param id - The API key's ID.

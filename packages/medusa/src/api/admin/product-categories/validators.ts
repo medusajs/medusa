@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -16,30 +19,30 @@ export const AdminProductCategoryParams = createSelectParams().merge(
   })
 )
 
+export const AdminProductCategoriesParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  description: z.union([z.string(), z.array(z.string())]).optional(),
+  handle: z.union([z.string(), z.array(z.string())]).optional(),
+  parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
+  include_ancestors_tree: booleanString().optional(),
+  include_descendants_tree: booleanString().optional(),
+  is_internal: booleanString().optional(),
+  is_active: booleanString().optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export type AdminProductCategoriesParamsType = z.infer<
   typeof AdminProductCategoriesParams
 >
 export const AdminProductCategoriesParams = createFindParams({
   offset: 0,
   limit: 50,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    description: z.union([z.string(), z.array(z.string())]).optional(),
-    handle: z.union([z.string(), z.array(z.string())]).optional(),
-    parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
-    include_ancestors_tree: booleanString().optional(),
-    include_descendants_tree: booleanString().optional(),
-    is_internal: booleanString().optional(),
-    is_active: booleanString().optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminProductCategoriesParams.array()).optional(),
-    $or: z.lazy(() => AdminProductCategoriesParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminProductCategoriesParamsFields)
+  .merge(applyAndAndOrOperators(AdminProductCategoriesParamsFields))
 
 export const AdminCreateProductCategory = z
   .object({

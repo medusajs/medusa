@@ -70,7 +70,7 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
   }>(
     loadData && tag["x-associatedSchema"]
       ? basePathUrl(
-          `/api/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
+          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
         )
       : null,
     swrFetcher,
@@ -81,9 +81,7 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
   const { data: pathsData } = useSWR<{
     paths: PathsObject
   }>(
-    loadData
-      ? basePathUrl(`/api/tag?tagName=${slugTagName}&area=${area}`)
-      : null,
+    loadData ? basePathUrl(`/tag?tagName=${slugTagName}&area=${area}`) : null,
     swrFetcher,
     {
       errorRetryInterval: 2000,

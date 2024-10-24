@@ -4,6 +4,7 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetCustomerGroupParamsType = z.infer<
   typeof AdminGetCustomerGroupParams
@@ -30,28 +31,28 @@ export const AdminCustomerInGroupFilters = z.object({
   deleted_at: createOperatorMap().optional(),
 })
 
+export const AdminGetCustomerGroupsParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.union([z.string(), z.array(z.string())]).optional(),
+  customers: z
+    .union([z.string(), z.array(z.string()), AdminCustomerInGroupFilters])
+    .optional(),
+  created_by: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export type AdminGetCustomerGroupsParamsType = z.infer<
   typeof AdminGetCustomerGroupsParams
 >
 export const AdminGetCustomerGroupsParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
-    customers: z
-      .union([z.string(), z.array(z.string()), AdminCustomerInGroupFilters])
-      .optional(),
-    created_by: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetCustomerGroupsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetCustomerGroupsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetCustomerGroupsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetCustomerGroupsParamsFields))
 
 export type AdminCreateCustomerGroupType = z.infer<
   typeof AdminCreateCustomerGroup

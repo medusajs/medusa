@@ -18,14 +18,6 @@ import ClientLibraries from "./client-libraries.mdx"
 
 <DividedMarkdownContent>
 
-<Note type="warning" title="Production Warning">
-
-Medusa v2.0 is in development and not suitable for production
-environments. As such, the API reference is incomplete and subject to
-change, so please use it with caution.
-
-</Note>
-
 This API reference includes Medusa v2's Store APIs, which are REST APIs exposed by the Medusa application. They are used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
 All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa application URL.
@@ -278,7 +270,7 @@ and associate placed orders with the specified sales channel.
 
 {/* TODO add v2 links */}
 
-Create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeys), or using the Medusa Admin.
+Create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/api/admin#api-keys_postapikeys), or using the Medusa Admin.
 
 ### How to Use a Publishable API Key
 
@@ -847,7 +839,7 @@ If you click on the workflow, you'll view a reference of that workflow, includin
 
 This is useful if you want to extend an API route and pass additional data or perform custom actions.
 
-Refer to [this guide](https://docs.medusajs.com/v2/customization/extend-models/extend-create-product) to find an example of extending an API route.
+Refer to [this guide](https://docs.medusajs.com/customization/extend-models/extend-create-product) to find an example of extending an API route.
 
 <Feedback
   event="survey_api-ref"

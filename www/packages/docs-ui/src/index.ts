@@ -1,4 +1,5 @@
 export * from "./constants"
+export * from "./global-config"
 
 export * from "./components"
 export * from "./hooks"

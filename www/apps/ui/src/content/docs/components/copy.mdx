@@ -24,6 +24,18 @@ import { Copy } from "@medusajs/ui"
 
 <ComponentReference mainComponent="Copy" />
 
+## Usage Outside Medusa Admin
+
+---
+
+If you're using the `Copy` component in a project other than the Medusa Admin, make sure to include the `TooltipProvider` somewhere up in your component tree, as the `Copy` component uses a [Tooltip](/components/tooltip#usage-outside-medusa-admin):
+
+```tsx
+<TooltipProvider>
+  <Copy content="yarn add @medusajs/ui" />
+</TooltipProvider>
+```
+
 ## Examples
 
 ---

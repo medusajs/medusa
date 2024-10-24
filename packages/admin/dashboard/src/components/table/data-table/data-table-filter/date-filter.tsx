@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next"
 import { useDate } from "../../../../hooks/use-date"
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
-import { IFilter } from "./types"
 import FilterChip from "./filter-chip"
+import { IFilter } from "./types"
 
 type DateFilterProps = IFilter
 
@@ -97,7 +97,9 @@ export const DateFilter = ({
 
   const displayValue = getDisplayValueFromPresets() || getCustomDisplayValue()
 
-  const [previousValue, setPreviousValue] = useState<string | undefined>(displayValue)
+  const [previousValue, setPreviousValue] = useState<string | undefined>(
+    displayValue
+  )
 
   const handleRemove = () => {
     selectedParams.delete()
@@ -210,6 +212,7 @@ export const DateFilter = ({
                   </div>
                   <div className="px-2 py-1">
                     <DatePicker
+                      modal
                       maxValue={customEndValue}
                       value={customStartValue}
                       onChange={(d) => handleCustomDateChange(d, "start")}
@@ -224,6 +227,7 @@ export const DateFilter = ({
                   </div>
                   <div className="px-2 py-1">
                     <DatePicker
+                      modal
                       minValue={customStartValue}
                       value={customEndValue || undefined}
                       onChange={(d) => {

@@ -32,7 +32,6 @@ export default function RootLayout({
           expandItems: false,
         }}
         showToc={false}
-        showBanner={false}
         showBreadcrumbs={false}
         ProvidersComponent={Providers}
       >

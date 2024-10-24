@@ -5,8 +5,21 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export const AdminGetCampaignParams = createSelectParams()
+
+export const AdminGetCampaignsParamsFields = z
+  .object({
+    q: z.string().optional(),
+    campaign_identifier: z.string().optional(),
+    budget: z
+      .object({
+        currency_code: z.string().optional(),
+      })
+      .optional(),
+  })
+  .strict()
 
 export type AdminGetCampaignsParamsType = z.infer<
   typeof AdminGetCampaignsParams
@@ -15,20 +28,8 @@ export const AdminGetCampaignsParams = createFindParams({
   offset: 0,
   limit: 50,
 })
-  .merge(
-    z.object({
-      q: z.string().optional(),
-      campaign_identifier: z.string().optional(),
-      budget: z
-        .object({
-          currency_code: z.string().optional(),
-        })
-        .optional(),
-      $and: z.lazy(() => AdminGetCampaignsParams.array()).optional(),
-      $or: z.lazy(() => AdminGetCampaignsParams.array()).optional(),
-    })
-  )
-  .strict()
+  .merge(AdminGetCampaignsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetCampaignsParamsFields).strict())
 
 const CreateCampaignBudget = z
   .object({

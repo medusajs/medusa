@@ -41,7 +41,7 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
 
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/resources",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
   async redirects() {
     return [
       {

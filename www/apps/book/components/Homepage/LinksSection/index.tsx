@@ -15,7 +15,7 @@ const HomepageLinksSection = () => {
           text: "Build a Module",
         },
         {
-          href: "https://docs.medusajs.com/v2/resources/integrations",
+          href: "https://docs.medusajs.com/resources/integrations",
           text: "Browse third-party integrations",
         },
       ],
@@ -41,11 +41,11 @@ const HomepageLinksSection = () => {
       title: "Storefront Development",
       links: [
         {
-          href: "https://docs.medusajs.com/v2/resources/nextjs-starter",
+          href: "https://docs.medusajs.com/resources/nextjs-starter",
           text: "Explore our storefront starter",
         },
         {
-          href: "https://docs.medusajs.com/v2/resources/storefront-development",
+          href: "https://docs.medusajs.com/resources/storefront-development",
           text: "Build a custom storefront",
         },
         {

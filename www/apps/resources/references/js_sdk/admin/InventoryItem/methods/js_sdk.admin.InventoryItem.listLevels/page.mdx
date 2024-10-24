@@ -2,10 +2,53 @@ import { TypeList } from "docs-ui"
 
 # listLevels
 
+This method retrieves a paginated list of inventory levels that belong to an inventory item.
+It sends a request to the [List Inventory Items](https://docs.medusajs.com/v2/api/admin#inventory-items\_getinventoryitems)
+API route.
+
+## Example
+
+To retrieve the list of inventory levels:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123")
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  limit: 10,
+  offset: 10
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each inventory level:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  fields: "id,*inventory_item"
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[AdminInventoryLevelFilters](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelFilters/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string` \\| `string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listLevels"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The inventory item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[AdminInventoryLevelFilters](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelFilters/page.mdx)","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string` \\| `string`[]","description":"Filter by stock location IDs to retrieve their\nassociated inventory levels.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listLevels"/>
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminInventoryLevelListResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminInventoryLevelListResponse","type":"[AdminInventoryLevelListResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listLevels"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminInventoryLevelListResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The paginated list of inventory levels.","expandable":false,"children":[{"name":"AdminInventoryLevelListResponse","type":"[AdminInventoryLevelListResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listLevels"/>

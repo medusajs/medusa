@@ -568,7 +568,7 @@ export type ProjectConfigOptions = {
      * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
      *
      * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
-     * Learn more in the [API Reference](https://docs.medusajs.com/v2/api/store#http-compression).
+     * Learn more in the [API Reference](https://docs.medusajs.com/api/store#http-compression).
      *
      * @example
      * ```js title="medusa-config.js"

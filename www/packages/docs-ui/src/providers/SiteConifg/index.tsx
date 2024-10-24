@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react"
 import { DocsConfig } from "types"
+import { globalConfig } from "../../global-config"
 
 export type SiteConfigContextType = {
   config: DocsConfig
@@ -33,6 +34,7 @@ export const SiteConfigProvider = ({
       breadcrumbOptions: {
         showCategories: true,
       },
+      ...globalConfig,
     }
   )
 

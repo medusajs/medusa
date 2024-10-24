@@ -31,7 +31,7 @@ runs:
 
     - name: Install dev cli
       shell: "bash"
-      run: sudo npm i -g medusa-dev-cli
+      run: sudo npm i -g medusa-dev-cli@preview
 
     - name: Set path to medusa repo
       shell: "bash"

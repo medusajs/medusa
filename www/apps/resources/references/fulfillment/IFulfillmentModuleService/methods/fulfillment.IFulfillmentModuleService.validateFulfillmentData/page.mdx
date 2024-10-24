@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `validateFulfillmentData` method. This belongs to the Fulfillment Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 This method validates fulfillment data with the provider it belongs to.
   e.g. if the shipping option requires a drop point, the data you pass to create the
   shipping method must contain a drop point ID. This method can be used to
