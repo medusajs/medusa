@@ -13,7 +13,6 @@ import { pgGodCredentials } from "../utils"
 import { FileSystem } from "../../../common"
 import { join } from "path"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { buildQuery } from "../../../modules-sdk"
 
 export const fileSystem = new FileSystem(
   join(__dirname, "../../integration-tests-migrations-many-to-one")
@@ -43,7 +42,6 @@ describe("manyToOne - belongTo", () => {
         id: model.id().primaryKey(),
         username: model.text(),
         teams: model.hasMany(() => team, { mappedBy: "user" }),
-        metadata: model.json(),
       })
       .cascades({
         delete: ["teams"],
@@ -61,7 +59,6 @@ describe("manyToOne - belongTo", () => {
       host: pgGodCredentials.host,
       user: pgGodCredentials.user,
       type: "postgresql",
-      debug: true,
       migrations: {
         generator: CustomTsMigrationGenerator,
         path: fileSystem.basePath,
@@ -87,33 +84,13 @@ describe("manyToOne - belongTo", () => {
 
     const user1 = manager.create(User, {
       username: "User 1",
-      metadata: {
-        icgIds: ["1", "2"],
-      },
     })
     const user2 = manager.create(User, {
       username: "User 2",
-      metadata: {
-        icgIds: [1, 2],
-      },
     })
 
     await manager.persistAndFlush([user1, user2])
     manager = orm.em.fork()
-
-    const test = await manager.findOne(
-      User,
-      buildQuery({
-        $or: [1, 3].map((variantId) => ({
-          metadata: {
-            icgIds: { $contains: [variantId] },
-          },
-        })),
-      }).where,
-      {}
-    )
-
-    console.dir(test, { depth: null })
 
     const team1 = manager.create(Team, {
       name: "Team 1",
