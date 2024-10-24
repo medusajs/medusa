@@ -36,13 +36,6 @@ export const docsConfig: DocsConfig = {
             isPathHref: true,
             loaded: true,
           },
-          {
-            type: "link",
-            title: "Upgrade Guides",
-            path: `${process.env.NEXT_PUBLIC_DOCS_URL}/upgrade-guides/medusa-ui`,
-            isPathHref: true,
-            loaded: true,
-          },
         ],
       },
       {

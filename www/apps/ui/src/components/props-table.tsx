@@ -1,11 +1,10 @@
 "use client"
 
 import { InformationCircleSolid } from "@medusajs/icons"
-import { Tooltip } from "@medusajs/ui"
 
 import { PropData, PropDataMap, PropSpecType } from "@/types/props"
 import { useCallback, useMemo } from "react"
-import { InlineCode, MarkdownContent, Table } from "docs-ui"
+import { InlineCode, MarkdownContent, Table, Tooltip } from "docs-ui"
 
 type PropTableProps = {
   props: PropDataMap
@@ -133,7 +132,7 @@ const Row = ({
           <InlineCode>{propName}</InlineCode>
           {description && (
             <Tooltip
-              content={
+              tooltipChildren={
                 <MarkdownContent
                   allowedElements={["a", "code"]}
                   unwrapDisallowed={true}
@@ -154,7 +153,7 @@ const Row = ({
               {index > 0 && <span>|</span>}
               {typeNode.tooltipContent && (
                 <Tooltip
-                  content={<pre>{typeNode.tooltipContent}</pre>}
+                  tooltipChildren={<pre>{typeNode.tooltipContent}</pre>}
                   className="font-mono !max-w-none"
                 >
                   <div className="flex items-center gap-x-1">

@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `authenticate` method. This belongs to the Auth Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 This method is used to authenticate a user using a provider. The `authenticate` method of the
 underlying provider is called, passing it the `providerData` parameter as a parameter. The method
 returns the data returned by the provider.

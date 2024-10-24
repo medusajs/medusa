@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `registerUsage` method. This belongs to the Promotion Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 This method adjusts the budget for each campaign associated with the promotions' specified computed actions.
 It adjusts the `used` property of a `CampaignBudget` to account for the adjustment amounts in the specified associated
 computed actions.

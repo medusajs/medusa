@@ -122,7 +122,7 @@ In this example, a record of `product` can be linked to more than one record of 
 
 ## Set Delete Cascades on Link
 
-To enable delete cascade on a link so that when a record is deleted, its linked records are also deleted, pass the `deleteCascades` property in the object passed to `defineLink`.
+To enable delete cascade on a link so that when a record is deleted, its linked records are also deleted, pass the `deleteCascade` property in the object passed to `defineLink`.
 
 For example:
 
@@ -135,7 +135,7 @@ export default defineLink(
   ProductModule.linkable.product,
   {
     linkable: HelloModule.linkable.myCustom,
-    deleteCascades: true,
+    deleteCascade: true,
   }
 )
 ```

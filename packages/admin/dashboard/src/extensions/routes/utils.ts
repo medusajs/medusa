@@ -1,5 +1,6 @@
 import { ComponentType } from "react"
 import { RouteObject } from "react-router-dom"
+import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { RouteExtension, RouteModule } from "../types"
 
 /**
@@ -27,41 +28,43 @@ export const createRouteMap = (
   const root: RouteObject[] = []
 
   const addRoute = (
-    fullPath: string,
+    pathSegments: string[],
     Component: ComponentType,
     currentLevel: RouteObject[]
   ) => {
-    const pathSegments = fullPath.split("/").filter(Boolean)
-    let currentArray = currentLevel
+    if (!pathSegments.length) {
+      return
+    }
 
-    for (let i = 0; i < pathSegments.length; i++) {
-      const segment = pathSegments[i]
-      let route = currentArray.find((r) => r.path === segment)
+    const [currentSegment, ...remainingSegments] = pathSegments
+    let route = currentLevel.find((r) => r.path === currentSegment)
 
-      if (!route) {
-        route = {
-          path: segment,
-          lazy: async () => ({ Component }),
-        }
-        currentArray.push(route)
-      }
+    if (!route) {
+      route = { path: currentSegment, children: [] }
+      currentLevel.push(route)
+    }
 
-      if (i < pathSegments.length - 1) {
-        // This is not the last segment, so we need to move to the next level
-        if (!route.children) {
-          route.children = []
-        }
-        currentArray = route.children
-      }
+    if (remainingSegments.length === 0) {
+      route.children ||= []
+      route.children.push({
+        path: "",
+        ErrorBoundary: ErrorBoundary,
+        async lazy() {
+          return { Component }
+        },
+      })
+    } else {
+      route.children ||= []
+      addRoute(remainingSegments, Component, route.children)
     }
   }
 
   routes.forEach(({ path, Component }) => {
-    // Remove the ignore segment from the path if it is provided
     const cleanedPath = ignore
       ? path.replace(ignore, "").replace(/^\/+/, "")
       : path.replace(/^\/+/, "")
-    addRoute(cleanedPath, Component, root)
+    const pathSegments = cleanedPath.split("/").filter(Boolean)
+    addRoute(pathSegments, Component, root)
   })
 
   return root
