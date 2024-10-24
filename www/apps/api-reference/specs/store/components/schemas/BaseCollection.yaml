@@ -41,7 +41,7 @@ properties:
     type: array
     description: The collection's products.
     items:
-      type: object
+      $ref: ./BaseProduct.yaml
   metadata:
     type: object
     description: The collection's metadata, used to store custom key-value pairs.

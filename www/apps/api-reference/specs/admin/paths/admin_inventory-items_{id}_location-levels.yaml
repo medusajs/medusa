@@ -64,20 +64,6 @@ get:
           The field to sort the data by. By default, the sort order is
           ascending. To change the order to descending, prefix the field name
           with `-`.
-    - name: location_id
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: location_id
-            description: Filter by an associated location's ID.
-          - type: array
-            description: Filter by associated location IDs.
-            items:
-              type: string
-              title: location_id
-              description: An associated location ID.
     - name: $and
       in: query
       required: false

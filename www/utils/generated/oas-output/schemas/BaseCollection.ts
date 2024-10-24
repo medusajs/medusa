@@ -43,7 +43,7 @@
  *     type: array
  *     description: The collection's products.
  *     items:
- *       $ref: "#/components/schemas/AdminProduct"
+ *       $ref: "#/components/schemas/BaseProduct"
  *   metadata:
  *     type: object
  *     description: The collection's metadata, used to store custom key-value pairs.

@@ -22,14 +22,14 @@
  *     type: array
  *     description: The category's children.
  *     items:
- *       $ref: "#/components/schemas/BaseProductCategory"
+ *       $ref: "#/components/schemas/AdminProductCategory"
  *   parent_category:
- *     $ref: "#/components/schemas/BaseProductCategory"
+ *     $ref: "#/components/schemas/AdminProductCategory"
  *   products:
  *     type: array
  *     description: The category's products.
  *     items:
- *       $ref: "#/components/schemas/BaseProduct"
+ *       $ref: "#/components/schemas/AdminProduct"
  *   name:
  *     type: string
  *     title: name
