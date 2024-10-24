@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "vite",
@@ -45,7 +45,7 @@
     "@medusajs/admin-shared": "2.0.0",
     "@medusajs/icons": "2.0.0",
     "@medusajs/js-sdk": "2.0.0",
-    "@medusajs/ui": "4.0.0",
+    "@medusajs/ui": "4.0.1",
     "@radix-ui/react-collapsible": "1.1.0",
     "@tanstack/react-query": "^5.28.14",
     "@tanstack/react-table": "8.20.5",

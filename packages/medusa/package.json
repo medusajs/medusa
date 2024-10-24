@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
   "exports": {
@@ -61,7 +61,7 @@
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
     "@inquirer/input": "^2.2.9",
-    "@medusajs/admin-bundler": "^2.0.0",
+    "@medusajs/admin-bundler": "^2.0.1",
     "@medusajs/api-key": "^2.0.0",
     "@medusajs/auth": "^2.0.0",
     "@medusajs/auth-emailpass": "^2.0.0",

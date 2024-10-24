@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.1
+
+### Patch Changes
+
+- [#9748](https://github.com/medusajs/medusa/pull/9748) [`471f7e4a10fe415064480b2a0aa5b8b23174c141`](https://github.com/medusajs/medusa/commit/471f7e4a10fe415064480b2a0aa5b8b23174c141) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Admin validator filtering and pagination
+
+- Updated dependencies []:
+  - @medusajs/admin-bundler@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
