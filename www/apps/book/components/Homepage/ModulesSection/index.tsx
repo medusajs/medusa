@@ -101,7 +101,7 @@ const HomepageModulesSection = () => {
         {
           title: "Tax",
           text: "Granular tax control",
-          href: "/resources/commerce-modules/stock-location",
+          href: "/resources/commerce-modules/tax",
           image: basePathUrl("/images/tax-icon.png"),
         },
         {

@@ -2,10 +2,38 @@ import { TypeList } from "docs-ui"
 
 # retrieve
 
+This method retrieves an invite by its ID. It sends a request to the
+[Get Invite](https://docs.medusajs.com/v2/api/admin#invites\_getinvitesid)
+API route.
+
+## Example
+
+To retrieve an invite its ID:
+
+```ts
+sdk.admin.invite.retrieve("invite_123")
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.invite.retrieve("invite_123", {
+  fields: "id,email"
+})
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The invite's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the invite.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"invite","type":"[AdminInviteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInviteResponse/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"invite","type":"[AdminInvite](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInvite/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminInviteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInviteResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The invite's details.","expandable":false,"children":[{"name":"AdminInviteResponse","type":"[AdminInviteResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInviteResponse/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"invite","type":"[AdminInvite](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminInvite/page.mdx)","description":"The invite's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The invite's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the invited user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"accepted","type":"`boolean`","description":"Whether the invite was accepted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"token","type":"`string`","description":"The invite token.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date`","description":"The date the invite expires.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date that the invite was created.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date that the invite was updated.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>

@@ -1,9 +1,9 @@
 "use client"
 
-import { Copy, clx } from "@medusajs/ui"
 import React from "react"
-import { useColorMode } from "docs-ui"
+import { CopyButton, useColorMode } from "docs-ui"
 import { colors as allColors } from "../config/colors"
+import { clx } from "@medusajs/ui"
 
 type Color = {
   name: string
@@ -154,12 +154,12 @@ const Colors = () => {
           <hr className="mb-4" />
           <div className="xs:grid-cols-2 mb-8 grid grid-cols-1 gap-4 gap-y-10 sm:grid-cols-3 ">
             {colors.map((colour) => (
-              <Copy
-                content={cssVarToTailwindClass(colour.name)}
+              <CopyButton
+                text={cssVarToTailwindClass(colour.name)}
                 key={`colours-section-${section}-${colour.name}`}
               >
                 <ColorBlock colour={colour} />
-              </Copy>
+              </CopyButton>
             ))}
           </div>
         </div>

@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `softDeleteProductCategories` method. This belongs to the Product Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 This method is used to delete product categories. Unlike the deleteCategories method, this method won't completely remove the category. It can still be accessed or retrieved using methods like retrieveCategories if you pass the `withDeleted` property to the `config` object parameter.
 
 The soft-deleted categories can be restored using the restoreCategories method.
