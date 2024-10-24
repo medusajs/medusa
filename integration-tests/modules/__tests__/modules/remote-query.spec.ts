@@ -205,6 +205,7 @@ medusaIntegrationTestRunner({
         query = appContainer.resolve(ContainerRegistrationKeys.QUERY)
       })
 
+      let product
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -224,11 +225,13 @@ medusaIntegrationTestRunner({
           ],
         }
 
-        await api
+        const res = await api
           .post("/admin/products", payload, adminHeaders)
           .catch((err) => {
             console.log(err)
           })
+
+        product = res.data.product
       })
 
       it(`should throw if not exists`, async () => {
@@ -265,7 +268,27 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it(`should perform cross module query and apply filters correctly to the correct modules [0]`, async () => {
+        const { data } = await query.graph({
+          entity: "product",
+          fields: ["id", "title"],
+          filters: {
+            id: {
+              $in: [product.id],
+            },
+          },
+        })
+
+        expect(data).toEqual([
+          expect.objectContaining({
+            id: product.id,
+            title: product.title,
+          }),
+        ])
+      })
+
       it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
+        console.log("original product", product.id)
         const { data } = await query.graph({
           entity: "product",
           fields: ["id", "title", "variants.*", "variants.prices.amount"],
