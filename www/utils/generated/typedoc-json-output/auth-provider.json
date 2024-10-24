@@ -256,7 +256,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method authenticates the user.\n\nThe authentication happens either by directly authenticating or returning a redirect URL to continue\nthe authentication with a third party provider.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+										"text": "This method authenticates the user.\n\nThe authentication happens either by directly authenticating or returning a redirect URL to continue\nthe authentication with a third party provider.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route)."
 									}
 								],
 								"blockTags": [
@@ -416,7 +416,7 @@
 									},
 									{
 										"kind": "text",
-										"text": " provider, this method ensures that the provided email doesn't exist\nbefore creating the auth identity.\n\nThis method is only used in a basic authentication flow, such as when using an email and password\nto register and authenticate a user.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+										"text": " provider, this method ensures that the provided email doesn't exist\nbefore creating the auth identity.\n\nThis method is only used in a basic authentication flow, such as when using an email and password\nto register and authenticate a user.\n\nRelated Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route)."
 									}
 								],
 								"blockTags": [
@@ -773,7 +773,7 @@
 									},
 									{
 										"kind": "text",
-										"text": ": Store metadata of the user's details. For example, if the third-party service returns the user's information such as email\nor name, you store this data in this property.\n\nRelated Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route)."
+										"text": ": Store metadata of the user's details. For example, if the third-party service returns the user's information such as email\nor name, you store this data in this property.\n\nRelated Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route)."
 									}
 								],
 								"blockTags": [

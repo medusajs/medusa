@@ -29,7 +29,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link)."
+						"text": "This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/advanced-development/modules/remote-link#create-link)."
 					}
 				],
 				"blockTags": [
@@ -436,7 +436,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "This step removes remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#dismiss-link)."
+						"text": "This step removes remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/advanced-development/modules/remote-link#dismiss-link)."
 					}
 				],
 				"blockTags": [
@@ -1093,7 +1093,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)"
+						"text": "This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/advanced-development/modules/remote-link#cascade-delete-linked-records)"
 					}
 				],
 				"blockTags": [
@@ -3019,7 +3019,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query)."
+						"text": "This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/advanced-development/modules/remote-query)."
 					}
 				],
 				"blockTags": [

@@ -3,7 +3,7 @@ import { TypeList } from "docs-ui"
 # retrieve
 
 This method retrieves a claim. It sends a request to the
-[Get Claim](https://docs.medusajs.com/v2/api/admin#claims\_getclaimsid) API route.
+[Get Claim](https://docs.medusajs.com/api/admin#claims\_getclaimsid) API route.
 
 ## Example
 
@@ -27,11 +27,11 @@ sdk.admin.claim.retrieve("claim_123", {
 })
 ```
 
-Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
 
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the claim.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the claim.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
 
 ## Returns
 

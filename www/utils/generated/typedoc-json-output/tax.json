@@ -5084,7 +5084,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether the tax rate should be combined with parent rates.\n\nLearn more [here](https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates)."
+								"text": "Whether the tax rate should be combined with parent rates.\n\nLearn more [here](https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates)."
 							}
 						]
 					},
@@ -9259,7 +9259,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether the tax rate is combinable.\n\nLearn more [here](https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates)."
+								"text": "Whether the tax rate is combinable.\n\nLearn more [here](https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates)."
 							}
 						]
 					},
