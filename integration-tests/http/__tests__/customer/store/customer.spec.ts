@@ -53,6 +53,12 @@ medusaIntegrationTestRunner({
             email: "newcustomer@medusa.js",
             first_name: "John",
             last_name: "Doe",
+            metadata: {
+              loyalty_level: "gold",
+              preferences: {
+                newsletter: true,
+              },
+            },
           },
           {
             headers: {
@@ -69,6 +75,12 @@ medusaIntegrationTestRunner({
             first_name: "John",
             last_name: "Doe",
             has_account: true,
+            metadata: {
+              loyalty_level: "gold",
+              preferences: {
+                newsletter: true,
+              },
+            },
           }),
         })
       })
