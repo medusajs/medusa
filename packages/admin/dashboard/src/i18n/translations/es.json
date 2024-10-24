@@ -976,1036 +976,1036 @@
 			}
 		},
 		"returns": {
-			"create": "Create Return",
-			"confirm": "Confirm Return",
-			"confirmText": "You are about to confirm a Return. Esta acción no se puede deshacer.",
-			"inbound": "Inbound",
-			"outbound": "Outbound",
-			"sendNotification": "Send notification",
-			"sendNotificationHint": "Notify customer about return.",
-			"returnTotal": "Return total",
-			"inboundTotal": "Inbound total",
-			"refundAmount": "Refund amount",
-			"outstandingAmount": "Outstanding amount",
-			"reason": "Reason",
-			"reasonHint": "Choose why the customer want to return items.",
-			"note": "Note",
-			"noInventoryLevel": "No inventory level",
-			"noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
-			"noteHint": "You can type freely if you want to specify something.",
-			"location": "Location",
-			"locationHint": "Choose which location you want to return the items to.",
-			"inboundShipping": "Return shipping",
-			"inboundShippingHint": "Choose which method you want to use.",
-			"returnableQuantityLabel": "Returnable quantity",
-			"refundableAmountLabel": "Refundable amount",
-			"returnRequestedInfo": "{{requestedItemsCount}}x items return requested",
-			"returnReceivedInfo": "{{requestedItemsCount}}x items return received",
-			"itemReceived": "Items received",
-			"returnRequested": "Return requested",
-			"damagedItemReceived": "Damaged items received",
-			"damagedItemsReturned": "{{quantity}}x damaged items returned",
-			"activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
+			"create": "Crear Devolución",
+			"confirm": "Confirmar Devolución",
+			"confirmText": "Estás a punto de confirmar una Devolución. Esta acción no se puede deshacer.",
+			"inbound": "Entrante",
+			"outbound": "Saliente",
+			"sendNotification": "Enviar notificación",
+			"sendNotificationHint": "Notificar al cliente sobre la devolución.",
+			"returnTotal": "Devolución total",
+			"inboundTotal": "Total entrante",
+			"refundAmount": "Cantidad de reembolso",
+			"outstandingAmount": "Cantidad pendiente",
+			"reason": "Motivo",
+			"reasonHint": "Elige por qué el cliente quiere devolver los artículos.",
+			"note": "Nota",
+			"noInventoryLevel": "Nivel de inventario no definido",
+			"noInventoryLevelDesc": "El ubicación seleccionada no tiene un nivel de inventario para la cantidad seleccionada de artículos. La devolución no se puede solicitar pero no se puede recibir hasta que se cree un nivel de inventario para la ubicación seleccionada.",
+			"noteHint": "Puedes escribir libremente si quieres especificar algo.",
+			"location": "Ubicación",
+			"locationHint": "Elige la ubicación donde quieres devolver los artículos.",
+			"inboundShipping": "Envío entrante",
+			"inboundShippingHint": "Elige el método que quieres usar.",
+			"returnableQuantityLabel": "Cantidad devolvible",
+			"refundableAmountLabel": "Cantidad reembolsable",
+			"returnRequestedInfo": "{{requestedItemsCount}}x artículos devueltos",
+			"returnReceivedInfo": "{{requestedItemsCount}}x artículos devueltos",
+			"itemReceived": "Artículos recibidos",
+			"returnRequested": "Devolución solicitada",
+			"damagedItemReceived": "Artículos dañados recibidos",
+			"damagedItemsReturned": "{{quantity}}x artículos dañados devueltos",
+			"activeChangeError": "Ya hay una edición de orden activa en esta orden. Por favor, termine o descarte la edición antes de editar la devolución.",
 			"cancel": {
-				"title": "Cancel Return",
-				"description": "Are you sure you want to cancel the return request?"
+				"title": "Cancelar Devolución",
+				"description": "¿Estás seguro de que quieres cancelar la solicitud de devolución?"
 			},
 			"placeholders": {
 				"noReturnShippingOptions": {
-					"title": "No return shipping options found",
-					"hint": "No return shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+					"title": "No encontramos opciones de envío para la devolución.",
+					"hint": "No encontramos opciones de envío para la devolución. Puedes crear una en <LinkComponent>Ubicación y Envío</LinkComponent>."
 				},
 				"outboundShippingOptions": {
-					"title": "No outbound shipping options found",
-					"hint": "No outbound shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+					"title": "No encontramos opciones de envío saliente para la devolución.",
+					"hint": "No encontramos opciones de envío saliente para la devolución. Puedes crear una en <LinkComponent>Ubicación y Envío</LinkComponent>."
 				}
 			},
 			"receive": {
-				"action": "Receive items",
+				"action": "Recibir artículos",
 				"receiveItems": "{{ returnType }} {{ id }}",
-				"restockAll": "Restock all items",
-				"itemsLabel": "Items received",
-				"title": "Receive items for #{{returnId}}",
-				"sendNotificationHint": "Notify customer about received return.",
-				"inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
-				"writeOffInputLabel": "How many of the items are damaged?",
+				"restockAll": "Restock todos los artículos",
+				"itemsLabel": "Artículos recibidos",
+				"title": "Recibir artículos para #{{returnId}}",
+				"sendNotificationHint": "Notificar al cliente sobre la devolución recibida.",
+				"inventoryWarning": "Por favor, ten en cuenta que ajustaremos automáticamente los niveles de inventario en función de tus entradas anteriores.",
+				"writeOffInputLabel": "¿Cuánto de los artículos están dañados?",
 				"toast": {
-					"success": "Return received successfully.",
-					"errorLargeValue": "Quantity is greater than requested item quantity.",
-					"errorNegativeValue": "Quantity cannot be a negative value.",
-					"errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
+					"success": "Devolución recibida exitosamente.",
+					"errorLargeValue": "La cantidad es mayor que la cantidad solicitada del artículo.",
+					"errorNegativeValue": "La cantidad no puede ser un valor negativo.",
+					"errorLargeDamagedValue": "La cantidad de artículos dañados + la cantidad no dañada recibida excede la cantidad total del artículo en la devolución. Por favor, disminuya la cantidad de artículos no dañados."
 				}
 			},
 			"toast": {
-				"canceledSuccessfully": "Return canceled successfully",
-				"confirmedSuccessfully": "Return confirmed successfully"
+				"canceledSuccessfully": "Devolución cancelada exitosamente",
+				"confirmedSuccessfully": "Devolución confirmada exitosamente"
 			},
 			"panel": {
-				"title": "Return initiated",
-				"description": "There is an open return request to be completed"
+				"title": "Devolución iniciada",
+				"description": "Hay una solicitud de devolución abierta para completarse"
 			}
 		},
 		"claims": {
-			"create": "Create Claim",
-			"confirm": "Confirm Claim",
-			"confirmText": "You are about to confirm a Claim. Esta acción no se puede deshacer.",
-			"manage": "Administrar Claim",
-			"outbound": "Outbound",
-			"outboundItemAdded": "{{itemsCount}}x added through claim",
-			"outboundTotal": "Outbound total",
-			"outboundShipping": "Outbound shipping",
-			"outboundShippingHint": "Choose which method you want to use.",
-			"refundAmount": "Estimated difference",
-			"activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+			"create": "Crear Reclamo",
+			"confirm": "Confirmar Reclamo",
+			"confirmText": "Estás a punto de confirmar un Reclamo. Esta acción no se puede deshacer.",
+			"manage": "Administrar Reclamo",
+			"outbound": "Saliente",
+			"outboundItemAdded": "{{itemsCount}}x agregado a través del reclamo",
+			"outboundTotal": "Total saliente",
+			"outboundShipping": "Envío saliente",
+			"outboundShippingHint": "Elige el método que quieres usar.",
+			"refundAmount": "Diferencia estimada",
+			"activeChangeError": "Ya hay una edición de orden activa en esta orden. Por favor, termine o descarte la edición anterior.",
 			"actions": {
 				"cancelClaim": {
-					"successToast": "Claim was successfully canceled."
+					"successToast": "Reclamo cancelado exitosamente."
 				}
 			},
 			"cancel": {
-				"title": "Cancel Claim",
-				"description": "Are you sure you want to cancel the claim?"
+				"title": "Cancelar Reclamo",
+				"description": "¿Estás seguro de que quieres cancelar el reclamo?"
 			},
 			"tooltips": {
-				"onlyReturnShippingOptions": "This list will consist of only return shipping options."
+				"onlyReturnShippingOptions": "Esta lista consistirá en solo opciones de envío de devolución."
 			},
 			"toast": {
-				"canceledSuccessfully": "Claim canceled successfully",
-				"confirmedSuccessfully": "Claim confirmed successfully"
+				"canceledSuccessfully": "Reclamo cancelado exitosamente",
+				"confirmedSuccessfully": "Reclamo confirmado exitosamente"
 			},
 			"panel": {
-				"title": "Claim initiated",
-				"description": "There is an open claim request to be completed"
+				"title": "Reclamo iniciado",
+				"description": "Hay una solicitud de reclamo abierta para completarse"
 			}
 		},
 		"exchanges": {
-			"create": "Create Exchange",
-			"manage": "Administrar Exchange",
-			"confirm": "Confirm Exchange",
-			"confirmText": "You are about to confirm an Exchange. Esta acción no se puede deshacer.",
-			"outbound": "Outbound",
-			"outboundItemAdded": "{{itemsCount}}x added through exchange",
-			"outboundTotal": "Outbound total",
-			"outboundShipping": "Outbound shipping",
-			"outboundShippingHint": "Choose which method you want to use.",
-			"refundAmount": "Estimated difference",
-			"activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+			"create": "Crear Intercambio",
+			"manage": "Administrar Intercambio",
+			"confirm": "Confirmar Intercambio",
+			"confirmText": "Estás a punto de confirmar un Intercambio. Esta acción no se puede deshacer.",
+			"outbound": "Saliente",
+			"outboundItemAdded": "{{itemsCount}}x agregado a través del intercambio",
+			"outboundTotal": "Total saliente",
+			"outboundShipping": "Envío saliente",
+			"outboundShippingHint": "Elige el método que quieres usar.",
+			"refundAmount": "Diferencia estimada",
+			"activeChangeError": "Ya hay una edición de orden activa en esta orden. Por favor, termine o descarte la edición anterior.",
 			"actions": {
 				"cancelExchange": {
-					"successToast": "Exchange was successfully canceled."
+					"successToast": "Intercambio cancelado exitosamente."
 				}
 			},
 			"cancel": {
-				"title": "Cancel Exchange",
-				"description": "Are you sure you want to cancel the exchange?"
+				"title": "Cancelar Intercambio",
+				"description": "¿Estás seguro de que quieres cancelar el intercambio?"
 			},
 			"tooltips": {
-				"onlyReturnShippingOptions": "This list will consist of only return shipping options."
+				"onlyReturnShippingOptions": "Esta lista consistirá en solo opciones de envío de devolución."
 			},
 			"toast": {
-				"canceledSuccessfully": "Exchange canceled successfully",
-				"confirmedSuccessfully": "Exchange confirmed successfully"
+				"canceledSuccessfully": "Intercambio cancelado exitosamente",
+				"confirmedSuccessfully": "Intercambio confirmado exitosamente"
 			},
 			"panel": {
-				"title": "Exchange initiated",
-				"description": "There is an open exchange request to be completed"
+				"title": "Intercambio iniciado",
+				"description": "Hay una solicitud de intercambio abierta para completarse"
 			}
 		},
 		"reservations": {
-			"allocatedLabel": "Allocated",
-			"notAllocatedLabel": "Not allocated"
+			"allocatedLabel": "Reservado",
+			"notAllocatedLabel": "No reservado"
 		},
 		"allocateItems": {
-			"action": "Allocate items",
-			"title": "Allocate order items",
-			"locationDescription": "Choose which location you want to allocate from.",
-			"itemsToAllocate": "Items to allocate",
-			"itemsToAllocateDesc": "Select the number of items you wish to allocate",
-			"search": "Buscar items",
-			"consistsOf": "Consists of {{num}}x inventory items",
-			"requires": "Requires {{num}} per variant",
+			"action": "Asignar artículos",
+			"title": "Asignar artículos de la orden",
+			"locationDescription": "Elige la ubicación donde quieres asignar desde.",
+			"itemsToAllocate": "Artículos a asignar",
+			"itemsToAllocateDesc": "Selecciona la cantidad de artículos que quieres asignar",
+			"search": "Buscar artículos",
+			"consistsOf": "Consiste en {{num}}x artículos del inventario",
+			"requires": "Requiere {{num}} por variante",
 			"toast": {
-				"created": "Items successfully allocated"
+				"created": "Artículos asignados exitosamente"
 			},
 			"error": {
-				"quantityNotAllocated": "There are unallocated items."
+				"quantityNotAllocated": "No hay artículos asignados."
 			}
 		},
 		"shipment": {
-			"title": "Mark fulfillment shipped",
-			"trackingNumber": "Tracking number",
-			"addTracking": "Add tracking number",
-			"sendNotification": "Send notification",
-			"sendNotificationHint": "Notify the customer about this shipment.",
-			"toastCreated": "Shipment creado exitosamente."
+			"title": "Marcar envío completo",
+			"trackingNumber": "Número de seguimiento",
+			"addTracking": "Agregar número de seguimiento",
+			"sendNotification": "Enviar notificación",
+			"sendNotificationHint": "Notificar al cliente sobre este envío.",
+			"toastCreated": "Envío creado exitosamente."
 		},
 		"fulfillment": {
-			"cancelWarning": "You are about to cancel a fulfillment. Esta acción no se puede deshacer.",
-			"markAsDeliveredWarning": "You are about to mark fulfillment as delivered. Esta acción no se puede deshacer.",
-			"unfulfilledItems": "Unfulfilled Items",
-			"statusLabel": "Fulfillment status",
-			"statusTitle": "Fulfillment Status",
-			"fulfillItems": "Fulfill items",
-			"awaitingFulfillmentBadge": "Awaiting fulfillment",
-			"requiresShipping": "Requires shipping",
-			"number": "Fulfillment #{{number}}",
-			"itemsToFulfill": "Items to fulfill",
-			"create": "Create Fulfillment",
-			"available": "Available",
-			"inStock": "In stock",
-			"markAsShipped": "Mark as shipped",
-			"markAsDelivered": "Mark as delivered",
-			"itemsToFulfillDesc": "Choose items and quantities to fulfill",
-			"locationDescription": "Choose which location you want to fulfill items from.",
-			"sendNotificationHint": "Notify customers about the created fulfillment.",
-			"methodDescription": "Choose a different shipping method from the one customer selected",
+			"cancelWarning": "Estás a punto de cancelar un envío. Esta acción no se puede deshacer.",
+			"markAsDeliveredWarning": "Estás a punto de marcar el envío como entregado. Esta acción no se puede deshacer.",
+			"unfulfilledItems": "Artículos no entregados",
+			"statusLabel": "Estado del envío",
+			"statusTitle": "Estado del envío",
+			"fulfillItems": "Entregar artículos",
+			"awaitingFulfillmentBadge": "Esperando el envío",
+			"requiresShipping": "Requiere envío",
+			"number": "Envío #{{number}}",
+			"itemsToFulfill": "Artículos a entregar",
+			"create": "Crear Envío",
+			"available": "Disponible",
+			"inStock": "En stock",
+			"markAsShipped": "Marcar como enviado",
+			"markAsDelivered": "Marcar como entregado",
+			"itemsToFulfillDesc": "Elige los artículos y cantidades a entregar",
+			"locationDescription": "Elige la ubicación donde quieres entregar los artículos.",
+			"sendNotificationHint": "Notificar al cliente sobre el envío creado.",
+			"methodDescription": "Elige un método de envío diferente de el que el cliente seleccionó",
 			"error": {
-				"wrongQuantity": "Only one item is available for fulfillment",
-				"wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
-				"noItems": "No items to fulfill."
+				"wrongQuantity": "Solo un artículo está disponible para el envío",
+				"wrongQuantity_other": "La cantidad debe ser un número entre 1 y {{number}}",
+				"noItems": "No hay artículos para entregar."
 			},
 			"status": {
-				"notFulfilled": "Not fulfilled",
-				"partiallyFulfilled": "Partially fulfilled",
-				"fulfilled": "Fulfilled",
-				"partiallyShipped": "Partially shipped",
-				"shipped": "Shipped",
-				"delivered": "Delivered",
-				"partiallyDelivered": "Partially delivered",
-				"partiallyReturned": "Partially returned",
-				"returned": "Returned",
-				"canceled": "Canceled",
-				"requiresAction": "Requires action"
+				"notFulfilled": "No entregado",
+				"partiallyFulfilled": "Parcialmente entregado",
+				"fulfilled": "Entregado",
+				"partiallyShipped": "Parcialmente enviado",
+				"shipped": "Enviado",
+				"delivered": "Entregado",
+				"partiallyDelivered": "Parcialmente entregado",
+				"partiallyReturned": "Parcialmente devuelto",
+				"returned": "Devuelto",
+				"canceled": "Cancelado",
+				"requiresAction": "Requiere acción"
 			},
 			"toast": {
-				"created": "Fulfillment creado exitosamente",
-				"canceled": "Fulfillment successfully canceled",
-				"fulfillmentShipped": "Cannot cancel an already shipped fulfillment",
-				"fulfillmentDelivered": "Fulfillment marked as delivered successfully"
+				"created": "Envío creado exitosamente",
+				"canceled": "Envío cancelado exitosamente",
+				"fulfillmentShipped": "No se puede cancelar un envío ya enviado",
+				"fulfillmentDelivered": "Envío marcado como entregado exitosamente"
 			},
-			"trackingLabel": "Tracking",
-			"shippingFromLabel": "Shipping from",
-			"itemsLabel": "Items"
+			"trackingLabel": "Seguimiento",
+			"shippingFromLabel": "Envío desde",
+			"itemsLabel": "Artículos"
 		},
 		"refund": {
-			"title": "Create Refund",
-			"sendNotificationHint": "Notify customers about the created refund.",
-			"systemPayment": "System payment",
-			"systemPaymentDesc": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
+			"title": "Crear Reembolso",
+			"sendNotificationHint": "Notificar al cliente sobre el reembolso creado.",
+			"systemPayment": "Pago del sistema",
+			"systemPaymentDesc": "Uno o más de sus pagos es un pago del sistema. Tenga en cuenta que las capturas y reembolsos no se manejan por Medusa para tales pagos.",
 			"error": {
-				"amountToLarge": "Cannot refund more than the original order amount.",
-				"amountNegative": "Refund amount must be a positive number.",
-				"reasonRequired": "Please select a refund reason."
+				"amountToLarge": "No se puede reembolsar más que la cantidad original de la orden.",
+				"amountNegative": "La cantidad del reembolso debe ser un número positivo.",
+				"reasonRequired": "Por favor, selecciona un motivo del reembolso."
 			}
 		},
 		"customer": {
-			"contactLabel": "Contact",
-			"editEmail": "Edit email",
-			"transferOwnership": "Transfer ownership",
-			"editBillingAddress": "Edit billing address",
-			"editShippingAddress": "Edit shipping address"
+			"contactLabel": "Contacto",
+			"editEmail": "Editar correo electrónico",
+			"transferOwnership": "Transferir propiedad",
+			"editBillingAddress": "Editar dirección de facturación",
+			"editShippingAddress": "Editar dirección de envío"
 		},
 		"activity": {
-			"header": "Activity",
-			"showMoreActivities_one": "Show {{count}} more activity",
-			"showMoreActivities_other": "Show {{count}} more activities",
+			"header": "Actividad",
+			"showMoreActivities_one": "Mostrar más de {{count}} actividad",
+			"showMoreActivities_other": "Mostrar más de {{count}} actividades",
 			"comment": {
-				"label": "Comment",
-				"placeholder": "Leave a comment",
-				"addButtonText": "Add comment",
-				"deleteButtonText": "Delete comment"
+				"label": "Comentario",
+				"placeholder": "Deja un comentario",
+				"addButtonText": "Agregar comentario",
+				"deleteButtonText": "Eliminar comentario"
 			},
 			"events": {
 				"common": {
-					"toReturn": "To return",
-					"toSend": "To send"
+					"toReturn": "A devolver",
+					"toSend": "A enviar"
 				},
 				"placed": {
-					"title": "Order placed",
-					"fromSalesChannel": "from {{salesChannel}}"
+					"title": "Orden realizada",
+					"fromSalesChannel": "desde {{salesChannel}}"
 				},
 				"canceled": {
-					"title": "Order canceled"
+					"title": "Orden cancelada"
 				},
 				"payment": {
-					"awaiting": "Awaiting payment",
-					"captured": "Payment captured",
-					"canceled": "Payment canceled",
-					"refunded": "Payment refunded"
+					"awaiting": "Esperando pago",
+					"captured": "Pago capturado",
+					"canceled": "Pago cancelado",
+					"refunded": "Pago reembolsado"
 				},
 				"fulfillment": {
-					"created": "Items fulfilled",
-					"canceled": "Fulfillment canceled",
-					"shipped": "Items shipped",
-					"delivered": "Items delivered",
-					"items_one": "{{count}} item",
-					"items_other": "{{count}} items"
+					"created": "Artículos entregados",
+					"canceled": "Envío cancelado",
+					"shipped": "Artículos enviados",
+					"delivered": "Artículos entregados",
+					"items_one": "{{count}} artículo",
+					"items_other": "{{count}} artículos"
 				},
 				"return": {
-					"created": "Return #{{returnId}} requested",
-					"canceled": "Return #{{returnId}} canceled",
-					"received": "Return #{{returnId}} received",
-					"items_one": "{{count}} item returned",
-					"items_other": "{{count}} items returned"
+					"created": "Devolución #{{returnId}} solicitada",
+					"canceled": "Devolución #{{returnId}} cancelada",
+					"received": "Devolución #{{returnId}} recibida",
+					"items_one": "{{count}} artículo devuelto",
+					"items_other": "{{count}} artículos devueltos"
 				},
 				"note": {
-					"comment": "Comment",
-					"byLine": "by {{author}}"
+					"comment": "Comentario",
+					"byLine": "por {{author}}"
 				},
 				"claim": {
-					"created": "Claim #{{claimId}} requested",
-					"canceled": "Claim #{{claimId}} canceled",
-					"itemsInbound": "{{count}} item to return",
-					"itemsOutbound": "{{count}} item to send"
+					"created": "Reclamo #{{claimId}} solicitado",
+					"canceled": "Reclamo #{{claimId}} cancelado",
+					"itemsInbound": "{{count}} artículo a devolver",
+					"itemsOutbound": "{{count}} artículo a enviar"
 				},
 				"exchange": {
-					"created": "Exchange #{{exchangeId}} requested",
-					"canceled": "Exchange #{{exchangeId}} canceled",
-					"itemsInbound": "{{count}} item to return",
-					"itemsOutbound": "{{count}} item to send"
+					"created": "Intercambio #{{exchangeId}} solicitado",
+					"canceled": "Intercambio #{{exchangeId}} cancelado",
+					"itemsInbound": "{{count}} artículo a devolver",
+					"itemsOutbound": "{{count}} artículo a enviar"
 				},
 				"edit": {
-					"requested": "Order edit #{{editId}} requested",
-					"confirmed": "Order edit #{{editId}} confirmed"
+					"requested": "Edición de orden #{{editId}} solicitada",
+					"confirmed": "Edición de orden #{{editId}} confirmada"
 				}
 			}
 		},
 		"fields": {
-			"displayId": "Display ID",
-			"refundableAmount": "Refundable amount",
-			"returnableQuantity": "Returnable quantity"
+			"displayId": "ID de visualización",
+			"refundableAmount": "Cantidad reembolsable",
+			"returnableQuantity": "Cantidad devolvible"
 		}
 	},
 	"draftOrders": {
-		"domain": "Draft Ordenes",
-		"deleteWarning": "Estás a punto de eliminar the draft order {{id}}. Esta acción no se puede deshacer.",
-		"paymentLinkLabel": "Payment link",
-		"cartIdLabel": "Cart ID",
+		"domain": "Borradores de Ordenes",
+		"deleteWarning": "Estás a punto de eliminar el borrador de la orden {{id}}. Esta acción no se puede deshacer.",
+		"paymentLinkLabel": "Enlace de pago",
+		"cartIdLabel": "ID del carrito",
 		"markAsPaid": {
-			"label": "Mark as paid",
-			"warningTitle": "Mark as Paid",
-			"warningDescription": "You are about to mark the draft order as paid. Esta acción no se puede deshacer, and collecting payment will not be possible later."
+			"label": "Marcar como pagado",
+			"warningTitle": "Marcar como pagado",
+			"warningDescription": "Estás a punto de marcar el borrador de la orden como pagado. Esta acción no se puede deshacer, y la recopilación de pagos no será posible más adelante."
 		},
 		"status": {
-			"open": "Open",
-			"completed": "Completed"
+			"open": "Abierto",
+			"completed": "Completado"
 		},
 		"create": {
-			"createDraftOrder": "Create Draft Order",
-			"createDraftOrderHint": "Create a new draft order to manage the details of an order before it is placed.",
-			"chooseRegionHint": "Choose region",
-			"existingItemsLabel": "Existing items",
-			"existingItemsHint": "Add existing products to the draft order.",
-			"customItemsLabel": "Custom items",
-			"customItemsHint": "Add custom items to the draft order.",
-			"addExistingItemsAction": "Add existing items",
-			"addCustomItemAction": "Add custom item",
-			"noCustomItemsAddedLabel": "No custom items added yet",
-			"noExistingItemsAddedLabel": "No existing items added yet",
-			"chooseRegionTooltip": "Choose a region first",
-			"useExistingCustomerLabel": "Use existing customer",
-			"addShippingMethodsAction": "Add shipping methods",
-			"unitPriceOverrideLabel": "Unit price override",
-			"shippingOptionLabel": "Shipping option",
-			"shippingOptionHint": "Choose the shipping option for the draft order.",
-			"shippingPriceOverrideLabel": "Shipping price override",
-			"shippingPriceOverrideHint": "Override the shipping price for the draft order.",
-			"sendNotificationLabel": "Send notification",
-			"sendNotificationHint": "Send a notification to the customer when the draft order is created."
+			"createDraftOrder": "Crear borrador de orden",
+			"createDraftOrderHint": "Crear un nuevo borrador de orden para administrar los detalles de una orden antes de que se realice.",
+			"chooseRegionHint": "Elige la región",
+			"existingItemsLabel": "Artículos existentes",
+			"existingItemsHint": "Agregar artículos existentes a la orden.",
+			"customItemsLabel": "Artículos personalizados",
+			"customItemsHint": "Agregar artículos personalizados a la orden.",
+			"addExistingItemsAction": "Agregar artículos existentes",
+			"addCustomItemAction": "Agregar artículo personalizado",
+			"noCustomItemsAddedLabel": "Todavía no se agregaron artículos personalizados",
+			"noExistingItemsAddedLabel": "Todavía no se agregaron artículos existentes",
+			"chooseRegionTooltip": "Elige una región primero",
+			"useExistingCustomerLabel": "Usar cliente existente",
+			"addShippingMethodsAction": "Agregar métodos de envío",
+			"unitPriceOverrideLabel": "Sobreescribir precio unitario",
+			"shippingOptionLabel": "Opción de envío",
+			"shippingOptionHint": "Elige la opción de envío para el borrador de la orden.",
+			"shippingPriceOverrideLabel": "Sobreescribir precio de envío",
+			"shippingPriceOverrideHint": "Sobreescribir el precio de envío para el borrador de la orden.",
+			"sendNotificationLabel": "Enviar notificación",
+			"sendNotificationHint": "Enviar una notificación al cliente cuando el borrador de la orden se cree."
 		},
 		"validation": {
-			"requiredEmailOrCustomer": "Email or customer is required.",
-			"requiredItems": "At least one item is required.",
-			"invalidEmail": "Email must be a valid email address."
+			"requiredEmailOrCustomer": "El correo electrónico o el cliente es requerido.",
+			"requiredItems": "Al menos un artículo es requerido.",
+			"invalidEmail": "El correo electrónico debe ser un correo electrónico válido."
 		}
 	},
 	"stockLocations": {
-		"domain": "Locations & Shipping",
+		"domain": "Ubicaciones de stock",
 		"list": {
-			"description": "Administrar your store's stock locations and shipping options."
+			"description": "Administrar las ubicaciones de stock de tu tienda y las opciones de envío."
 		},
 		"create": {
-			"header": "Create Stock Location",
-			"hint": "A stock location is a physical site where products are stored and shipped from.",
-			"successToast": "Location {{name}} se ha creado con éxito."
+			"header": "Crear ubicación de stock",
+			"hint": "Una ubicación de stock es un sitio físico donde los productos se almacenan y se envían.",
+			"successToast": "Ubicación {{name}} se ha creado con éxito."
 		},
 		"edit": {
-			"header": "Edit Stock Location",
-			"viewInventory": "View inventory",
-			"successToast": "Location {{name}} se ha actualizado con éxito."
+			"header": "Editar ubicación de stock",
+			"viewInventory": "Ver inventario",
+			"successToast": "Ubicación {{name}} se ha actualizado con éxito."
 		},
 		"delete": {
-			"confirmation": "Estás a punto de eliminar the stock location {{name}}. Esta acción no se puede deshacer."
+			"confirmation": "Estás a punto de eliminar la ubicación de stock {{name}}. Esta acción no se puede deshacer."
 		},
 		"fulfillmentProviders": {
-			"header": "Fulfillment Providers",
-			"shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
-			"label": "Connected fulfillment providers",
-			"connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
-			"noProviders": "This Stock Location is not connected to any fulfillment providers.",
-			"action": "Connect Providers",
-			"successToast": "Fulfillment providers for stock location were successfully updated."
+			"header": "Proveedores de envío",
+			"shippingOptionsTooltip": "Esta lista desplegable consistirá en proveedores de envío habilitados para esta ubicación. Agrégalos a la ubicación si la lista desplegable está deshabilitada.",
+			"label": "Proveedores de envío conectados",
+			"connectedTo": "Conectado a {{count}} de {{total}} proveedores de envío",
+			"noProviders": "Esta ubicación de stock no está conectada a ningún proveedor de envío.",
+			"action": "Conectar proveedores de envío",
+			"successToast": "Los proveedores de envío para la ubicación de stock se han actualizado con éxito."
 		},
 		"fulfillmentSets": {
 			"pickup": {
-				"header": "Pickup"
+				"header": "Recolección"
 			},
 			"shipping": {
-				"header": "Shipping"
+				"header": "Envío"
 			},
 			"disable": {
-				"confirmation": "Are you sure that you want to disable {{name}}? This will delete all associated service zones and shipping options, and cannot be undone.",
-				"pickup": "Pickup was successfully disabled.",
-				"shipping": "Shipping was successfully disabled."
+				"confirmation": "¿Estás seguro de que quieres deshabilitar {{name}}? Esto eliminará todos los productos asociados y no podrá deshacerse.",
+				"pickup": "Recolección se ha deshabilitado con éxito.",
+				"shipping": "Envío se ha deshabilitado con éxito."
 			},
 			"enable": {
-				"pickup": "Pickup was successfully enabled.",
-				"shipping": "Shipping was successfully enabled."
+				"pickup": "Recolección se ha habilitado con éxito.",
+				"shipping": "Envío se ha habilitado con éxito."
 			}
 		},
 		"sidebar": {
-			"header": "Shipping Configuration",
+			"header": "Configuración de envío",
 			"shippingProfiles": {
-				"label": "Shipping Profiles",
-				"description": "Group products by shipping requirements"
+				"label": "Perfiles de envío",
+				"description": "Agrupa productos con requisitos de envío similares"
 			}
 		},
 		"salesChannels": {
-			"header": "Sales Channels",
-			"label": "Connected sales channels",
-			"connectedTo": "Connected to {{count}} of {{total}} sales channels",
-			"noChannels": "The location is not connected to any sales channels.",
-			"action": "Connect sales channels",
-			"successToast": "Sales channels were successfully updated."
+			"header": "Canales de venta",
+			"label": "Canales de venta conectados",
+			"connectedTo": "Conectado a {{count}} de {{total}} canales de venta",
+			"noChannels": "La ubicación de stock no está conectada a ningún canal de venta.",
+			"action": "Conectar canales de venta",
+			"successToast": "Los canales de venta para la ubicación de stock se han actualizado con éxito."
 		},
 		"shippingOptions": {
 			"create": {
 				"shipping": {
-					"header": "Create Shipping Option for {{zone}}",
-					"hint": "Create a new shipping option to define how products are shipped from this location.",
-					"label": "Shipping options",
-					"successToast": "Shipping option {{name}} se ha creado con éxito."
+					"header": "Crear opción de envío para {{zone}}",
+					"hint": "Cree una nueva opción de envío para definir cómo se envían los productos de esta ubicación.",
+					"label": "Opciones de envío",
+					"successToast": "Opción de envío {{name}} se ha creado con éxito."
 				},
 				"returns": {
-					"header": "Create a Return Option for {{zone}}",
-					"hint": "Create a new return option to define how products are returned to this location.",
-					"label": "Return options",
-					"successToast": "Return option {{name}} se ha creado con éxito."
+					"header": "Crear opción de devolución para {{zone}}",
+					"hint": "Cree una nueva opción de devolución para definir cómo se devuelven los productos de esta ubicación.",
+					"label": "Opciones de devolución",
+					"successToast": "Opción de devolución {{name}} se ha creado con éxito."
 				},
 				"tabs": {
-					"details": "Details",
-					"prices": "Prices"
+					"details": "Detalles",
+					"prices": "Precios"
 				},
-				"action": "Create option"
+				"action": "Crear opción"
 			},
 			"delete": {
-				"confirmation": "Estás a punto de eliminar the shipping option {{name}}. Esta acción no se puede deshacer.",
-				"successToast": "Shipping option {{name}} se ha eliminado con éxito."
+				"confirmation": "Estás a punto de eliminar la opción de envío {{name}}. Esta acción no se puede deshacer.",
+				"successToast": "Opción de envío {{name}} se ha eliminado con éxito."
 			},
 			"edit": {
-				"header": "Edit Shipping Option",
-				"action": "Edit option",
-				"successToast": "Shipping option {{name}} se ha actualizado con éxito."
+				"header": "Editar opción de envío",
+				"action": "Editar opción",
+				"successToast": "Opción de envío {{name}} se ha actualizado con éxito."
 			},
 			"pricing": {
 				"action": "Editar precios"
 			},
 			"fields": {
 				"count": {
-					"shipping_one": "{{count}} shipping option",
-					"shipping_other": "{{count}} shipping options",
-					"returns_one": "{{count}} return option",
-					"returns_other": "{{count}} return options"
+					"shipping_one": "{{count}} opción de envío",
+					"shipping_other": "{{count}} opciones de envío",
+					"returns_one": "{{count}} devolución",
+					"returns_other": "{{count}} devoluciones"
 				},
 				"priceType": {
-					"label": "Price type",
+					"label": "Tipo de precio",
 					"options": {
 						"fixed": {
-							"label": "Fixed",
-							"hint": "The shipping option's price is fixed and does not change based on the order's contents."
+							"label": "Precio fijo",
+							"hint": "La opción de envío tiene un precio fijo y no cambia según el contenido del pedido."
 						},
 						"calculated": {
-							"label": "Calculated",
-							"hint": "The shipping option's price is calculated by the fulfillment provider during checkout."
+							"label": "Precio calculado",
+							"hint": "La opción de envío tiene un precio calculado por el proveedor de envío durante el proceso de envío."
 						}
 					}
 				},
 				"enableInStore": {
-					"label": "Habilitar in store",
-					"hint": "Whether customers can use this option during checkout."
+					"label": "Habilitar en tienda",
+					"hint": "¿Está permitido que los clientes usen esta opción de envío durante el proceso de envío?"
 				},
-				"provider": "Fulfillment provider",
-				"profile": "Shipping profile"
+				"provider": "Proveedor de envío",
+				"profile": "Perfil de envío"
 			}
 		},
 		"serviceZones": {
 			"create": {
-				"headerPickup": "Create Service Zone for Pickup from {{location}}",
-				"headerShipping": "Create Service Zone for Shipping from {{location}}",
-				"action": "Create service zone",
-				"successToast": "Service zone {{name}} se ha creado con éxito."
+				"headerPickup": "Crear zona de servicio para recoger desde {{location}}",
+				"headerShipping": "Crear zona de servicio para enviar desde {{location}}",
+				"action": "Crear zona de servicio",
+				"successToast": "Zona de servicio {{name}} se ha creado con éxito."
 			},
 			"edit": {
-				"header": "Edit Service Zone",
-				"successToast": "Service zone {{name}} se ha actualizado con éxito."
+				"header": "Editar zona de servicio",
+				"successToast": "Zona de servicio {{name}} se ha actualizado con éxito."
 			},
 			"delete": {
-				"confirmation": "Estás a punto de eliminar the service zone {{name}}. Esta acción no se puede deshacer.",
-				"successToast": "Service zone {{name}} se ha eliminado con éxito."
+				"confirmation": "Estás a punto de eliminar la zona de servicio {{name}}. Esta acción no se puede deshacer.",
+				"successToast": "Zona de servicio {{name}} se ha eliminado con éxito."
 			},
 			"manageAreas": {
-				"header": "Administrar Areas for {{name}}",
-				"action": "Administrar areas",
-				"label": "Areas",
-				"hint": "Select the geographical areas that the service zone covers.",
-				"successToast": "Areas for {{name}} were successfully updated."
+				"header": "Administrar áreas para {{name}}",
+				"action": "Administrar áreas",
+				"label": "Áreas",
+				"hint": "Seleccione las áreas geográficas que cubre la zona de servicio.",
+				"successToast": "Áreas para {{name}} se han actualizado con éxito."
 			},
 			"fields": {
-				"noRecords": "There are no service zones to add shipping options to.",
-				"tip": "A service zone is a collection of geographical zones or areas. It's used to restrict available shipping options to a defined set of locations."
+				"noRecords": "No hay zonas de servicio para agregar opciones de envío.",
+				"tip": "Una zona de servicio es una colección de zonas geográficas o áreas. Se utiliza para restringir las opciones de envío disponibles a un conjunto definido de ubicaciones."
 			}
 		}
 	},
 	"shippingProfile": {
-		"domain": "Shipping Profiles",
-		"subtitle": "Group products with similar shipping requirements into profiles.",
+		"domain": "Perfiles de envío",
+		"subtitle": "Agrupa productos con requisitos de envío similares en perfiles.",
 		"create": {
-			"header": "Create Shipping Profile",
-			"hint": "Create a new shipping profile to group products with similar shipping requirements.",
-			"successToast": "Shipping profile {{name}} se ha creado con éxito."
+			"header": "Crear un perfil de envío",
+			"hint": "Cree un nuevo perfil de envío para agrupar productos con requisitos de envío similares.",
+			"successToast": "El perfil de envío {{name}} se ha creado con éxito."
 		},
 		"delete": {
-			"title": "Delete Shipping Profile",
-			"description": "Estás a punto de eliminar the shipping profile {{name}}. Esta acción no se puede deshacer.",
-			"successToast": "Shipping profile {{name}} se ha eliminado con éxito."
+			"title": "Eliminar perfil de envío",
+			"description": "Estás a punto de eliminar el perfil de envío {{name}}. Esta acción no se puede deshacer.",
+			"successToast": "El perfil de envío {{name}} se ha eliminado con éxito."
 		},
 		"tooltip": {
-			"type": "Enter shipping profile type, for example: Heavy, Oversized, Freight-only, etc."
+			"type": "Ingrese el tipo de perfil de envío, por ejemplo: Pesado, Sobrecargado, Sólo envío, etc."
 		}
 	},
 	"taxRegions": {
-		"domain": "Tax Regions",
+		"domain": "Región fiscal",
 		"list": {
-			"hint": "Administrar what you charge your customers when they shop from different countries and regions."
+			"hint": "Administra qué cargas a tus clientes cuando compran desde diferentes países y regiones."
 		},
 		"delete": {
-			"confirmation": "Estás a punto de eliminar a tax region. Esta acción no se puede deshacer.",
-			"successToast": "The tax region se ha eliminado con éxito."
+			"confirmation": "Estás a punto de eliminar a una región fiscal. Esta acción no se puede deshacer.",
+			"successToast": "La región fiscal se ha eliminado con éxito."
 		},
 		"create": {
-			"header": "Create Tax Region",
-			"hint": "Create a new tax region to define tax rates for a specific country.",
+			"header": "Crear una región fiscal",
+			"hint": "Cree una nueva región fiscal para definir las tasas impositivas para un país específico.",
 			"errors": {
-				"rateIsRequired": "Tax rate is required when creating a default tax rate.",
-				"nameIsRequired": "Name is required when creating a default tax rate."
+				"rateIsRequired": "El impuesto es obligatoria al crear un impuesto predeterminada.",
+				"nameIsRequired": "El nombre es obligatorio al crear una impuesto predeterminada."
 			},
-			"successToast": "The tax region se ha creado con éxito."
+			"successToast": "La región fiscal se ha creado con éxito."
 		},
 		"province": {
-			"header": "Provinces",
+			"header": "Provincias",
 			"create": {
-				"header": "Create Province Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific province."
+				"header": "Crear una región fiscal de provincia",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para una provincia específica."
 			}
 		},
 		"state": {
-			"header": "States",
+			"header": "Estados",
 			"create": {
-				"header": "Create State Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific state."
+				"header": "Crear una región fiscal de estado",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un estado específico."
 			}
 		},
 		"stateOrTerritory": {
-			"header": "States or Territories",
+			"header": "Estados o Territorios",
 			"create": {
-				"header": "Create State/Territory Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific state/territory."
+				"header": "Crear una región fiscal de estado o territorio",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un estado o territorio específico."
 			}
 		},
 		"county": {
-			"header": "Counties",
+			"header": "Condados",
 			"create": {
-				"header": "Create County Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific county."
+				"header": "Crear una región fiscal de condado",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un condado específico."
 			}
 		},
 		"region": {
-			"header": "Regions",
+			"header": "Regiones",
 			"create": {
-				"header": "Create Region Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific region."
+				"header": "Crear una región fiscal de región",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para una región específica."
 			}
 		},
 		"department": {
-			"header": "Departments",
+			"header": "Departamentos",
 			"create": {
-				"header": "Create Department Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific department."
+				"header": "Crear una región fiscal de departamento",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un departamento específico."
 			}
 		},
 		"territory": {
-			"header": "Territories",
+			"header": "Territorios",
 			"create": {
-				"header": "Create Territory Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific territory."
+				"header": "Crear una región fiscal de territorio",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un territorio específico."
 			}
 		},
 		"prefecture": {
-			"header": "Prefectures",
+			"header": "Prefecturas",
 			"create": {
-				"header": "Create Prefecture Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific prefecture."
+				"header": "Crear una región fiscal de prefectura",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para una prefectura específica."
 			}
 		},
 		"district": {
-			"header": "Districts",
+			"header": "Districtos",
 			"create": {
-				"header": "Create District Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific district."
+				"header": "Crear una región fiscal de distrito",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un distrito específico."
 			}
 		},
 		"governorate": {
-			"header": "Governorates",
+			"header": "Gobernadores",
 			"create": {
-				"header": "Create Governorate Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific governorate."
+				"header": "Crear una región fiscal de gobernador",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un gobernador específico."
 			}
 		},
 		"canton": {
-			"header": "Cantons",
+			"header": "Cantones",
 			"create": {
-				"header": "Create Canton Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific canton."
+				"header": "Crear una región fiscal de cantón",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un cantón específico."
 			}
 		},
 		"emirate": {
-			"header": "Emirates",
+			"header": "Emiratos",
 			"create": {
-				"header": "Create Emirate Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific emirate."
+				"header": "Crear una región fiscal de emirato",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un emirato específico."
 			}
 		},
 		"sublevel": {
-			"header": "Sublevels",
+			"header": "Subniveles",
 			"create": {
-				"header": "Create Sublevel Tax Region",
-				"hint": "Create a new tax region to define tax rates for a specific sublevel."
+				"header": "Crear una región fiscal de subnivel",
+				"hint": "Cree una nueva región fiscal para definir los impuestos para un subnivel específico."
 			}
 		},
 		"taxOverrides": {
-			"header": "Overrides",
+			"header": "Sobreescrituras",
 			"create": {
-				"header": "Create Override",
-				"hint": "Create a tax rate that overrides the default tax rates for selected conditions."
+				"header": "Crear una sobreescritura",
+				"hint": "Cree una nueva sobreescritura para definir los impuestos para un región específica."
 			},
 			"edit": {
-				"header": "Edit Override",
-				"hint": "Edit the tax rate that overrides the default tax rates for selected conditions."
+				"header": "Editar una sobreescritura",
+				"hint": "Edite el impuesto que sobreescribe los impuestos por defecto para las condiciones seleccionadas."
 			}
 		},
 		"taxRates": {
 			"create": {
-				"header": "Create Tax Rate",
-				"hint": "Create a new tax rate to define the tax rate for a region.",
-				"successToast": "Tax rate se ha creado con éxito."
+				"header": "Crear un impuesto",
+				"hint": "Cree un nuevo impuesto para definir los impuestos para una región.",
+				"successToast": "El impuesto se ha creado con éxito."
 			},
 			"edit": {
-				"header": "Edit Tax Rate",
-				"hint": "Edit the tax rate to define the tax rate for a region.",
-				"successToast": "Tax rate se ha actualizado con éxito."
+				"header": "Editar un impuesto",
+				"hint": "Edite el impuesto para definir los impuestos para una región.",
+				"successToast": "El impuesto se ha actualizado con éxito."
 			},
 			"delete": {
-				"confirmation": "Estás a punto de eliminar the tax rate {{name}}. Esta acción no se puede deshacer.",
-				"successToast": "Tax rate se ha eliminado con éxito."
+				"confirmation": "Estás a punto de eliminar el impuesto {{name}}. Esta acción no se puede deshacer.",
+				"successToast": "El impuesto se ha eliminado con éxito."
 			}
 		},
 		"fields": {
 			"isCombinable": {
 				"label": "Combinable",
-				"hint": "Whether this tax rate can be combined with the default rate from the tax region.",
+				"hint": "¿Este impuesto se puede combinar con el impuesto predeterminado de la región fiscal?",
 				"true": "Combinable",
-				"false": "Not combinable"
+				"false": "No combinable"
 			},
 			"defaultTaxRate": {
-				"label": "Default tax rate",
-				"tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country or region.",
-				"action": "Create default tax rate"
+				"label": "Tipo de impuesto predeterminado",
+				"tooltip": "El impuesto predeterminado para esta región. Por ejemplo, el impuesto de IVA estándar para un país o una región.",
+				"action": "Crear impuesto predeterminado"
 			},
-			"taxRate": "Tax rate",
-			"taxCode": "Tax code",
+			"taxRate": "Tasa impositiva",
+			"taxCode": "Código del impuesto",
 			"targets": {
-				"label": "Targets",
-				"hint": "Select the targets that this tax rate will apply to.",
+				"label": "Objetivos",
+				"hint": "Seleccioná los objetivos a los que se aplicará este impuesto.",
 				"options": {
 					"product": "Productos",
-					"productCollection": "Product collections",
-					"productTag": "Product tags",
-					"productType": "Product types",
-					"customerGroup": "Customer groups"
+					"productCollection": "Colecciones de producto",
+					"productTag": "Etiquetas de producto",
+					"productType": "Tipos de producto",
+					"customerGroup": "Grupos de clientes"
 				},
 				"operators": {
-					"in": "in",
-					"on": "on",
-					"and": "and"
+					"in": "dentro de",
+					"on": "sobre",
+					"and": "y"
 				},
 				"placeholders": {
-					"product": "Buscar for products",
-					"productCollection": "Buscar for product collections",
-					"productTag": "Buscar for product tags",
-					"productType": "Buscar for product types",
-					"customerGroup": "Buscar for customer groups"
+					"product": "Buscar productos",
+					"productCollection": "Buscar colecciones de producto",
+					"productTag": "Buscar etiquetas de producto",
+					"productType": "Buscar tipos de producto",
+					"customerGroup": "Buscar grupos de clientes"
 				},
 				"tags": {
-					"product": "Product",
-					"productCollection": "Product collection",
-					"productTag": "Product tag",
-					"productType": "Product type",
-					"customerGroup": "Customer group"
+					"product": "Producto",
+					"productCollection": "Colección de producto",
+					"productTag": "Etiqueta de producto",
+					"productType": "Tipo de producto",
+					"customerGroup": "Grupo de clientes"
 				},
 				"modal": {
-					"header": "Add targets"
+					"header": "Agregar objetivos"
 				},
-				"values_one": "{{count}} value",
-				"values_other": "{{count}} values",
-				"numberOfTargets_one": "{{count}} target",
-				"numberOfTargets_other": "{{count}} targets",
-				"additionalValues_one": "and {{count}} more value",
-				"additionalValues_other": "and {{count}} more values",
-				"action": "Add target"
+				"values_one": "{{count}} valor",
+				"values_other": "{{count}} valores",
+				"numberOfTargets_one": "{{count}} objetivo",
+				"numberOfTargets_other": "{{count}} objetivos",
+				"additionalValues_one": "y {{count}} más valor",
+				"additionalValues_other": "y {{count}} más valores",
+				"action": "Agregar objetivo"
 			},
 			"sublevels": {
 				"labels": {
-					"province": "Province",
-					"state": "State",
-					"region": "Region",
-					"stateOrTerritory": "State/Territory",
-					"department": "Department",
-					"county": "County",
-					"territory": "Territory",
-					"prefecture": "Prefecture",
-					"district": "District",
-					"governorate": "Governorate",
-					"emirate": "Emirate",
-					"canton": "Canton",
-					"sublevel": "Sublevel code"
+					"province": "Provincia",
+					"state": "Estado",
+					"region": "Región",
+					"stateOrTerritory": "Estado o territorio",
+					"department": "Departamento",
+					"county": "Condado",
+					"territory": "Territorio",
+					"prefecture": "Prefectura",
+					"district": "Distrito",
+					"governorate": "Gobernador",
+					"emirate": "Emirato",
+					"canton": "Cantón",
+					"sublevel": "Subnivel"
 				},
 				"placeholders": {
-					"province": "Select province",
-					"state": "Select state",
-					"region": "Select region",
-					"stateOrTerritory": "Select state/territory",
-					"department": "Select department",
-					"county": "Select county",
-					"territory": "Select territory",
-					"prefecture": "Select prefecture",
-					"district": "Select district",
-					"governorate": "Select governorate",
-					"emirate": "Select emirate",
-					"canton": "Select canton"
+					"province": "Seleccionar provincia",
+					"state": "Seleccionar estado",
+					"region": "Seleccionar región",
+					"stateOrTerritory": "Seleccionar estado o territorio",
+					"department": "Seleccionar departamento",
+					"county": "Seleccionar condado",
+					"territory": "Seleccionar territorio",
+					"prefecture": "Seleccionar prefectura",
+					"district": "Seleccionar distrito",
+					"governorate": "Seleccionar gobernador",
+					"emirate": "Seleccionar emirato",
+					"canton": "Seleccionar cantón"
 				},
 				"tooltips": {
-					"sublevel": "Enter the ISO 3166-2 code for the sublevel tax region.",
-					"notPartOfCountry": "{{province}} does not appear to be part of {{country}}. Please double-check if this is correct."
+					"sublevel": "Ingrese el código ISO 3166-2 para la región fiscal de subnivel.",
+					"notPartOfCountry": "{{province}} no parece estar en parte de {{country}}. Por favor, compruebe si esto es correcto."
 				},
 				"alert": {
-					"header": "Sublevel regions are disabled for this tax region",
-					"description": "Sublevel regions are disabled for this region by default. You can enable them to create sublevel regions like provinces, states, or territories.",
-					"action": "Habilitar sublevel regions"
+					"header": "Las regiones de subnivel están deshabilitadas para esta región fiscal",
+					"description": "Las regiones de subnivel están deshabilitadas para esta región por defecto. Puede habilitarlas para crear regiones de subnivel como provincias, estados o territorios.",
+					"action": "Habilitar regiones de subnivel"
 				}
 			},
 			"noDefaultRate": {
-				"label": "No default rate",
-				"tooltip": "This tax region does not have a default tax rate. If there is a standard rate, such as a country's VAT, please add it to this region."
+				"label": "Sin impuesto predeterminado",
+				"tooltip": "Esta región fiscal no tiene un impuesto predeterminado. Si hay un impuesto estándar, como el IVA de un país, agreguelo a esta región."
 			}
 		}
 	},
 	"promotions": {
-		"domain": "Promotions",
+		"domain": "Promociones",
 		"sections": {
-			"details": "Promotion Details"
+			"details": "Detalles de la promoción"
 		},
 		"tabs": {
-			"template": "Type",
-			"details": "Details",
-			"campaign": "Campaign"
+			"template": "Tipo",
+			"details": "Detalles",
+			"campaign": "Campaña"
 		},
 		"fields": {
-			"type": "Type",
-			"value_type": "Value Type",
-			"value": "Value",
-			"campaign": "Campaign",
-			"method": "Method",
-			"allocation": "Allocation",
-			"addCondition": "Add condition",
-			"clearAll": "Clear all",
+			"type": "Tipo",
+			"value_type": "Tipo de valor",
+			"value": "Valor",
+			"campaign": "Campaña",
+			"method": "Método",
+			"allocation": "Asignación",
+			"addCondition": "Agregar condición",
+			"clearAll": "Borrar todo",
 			"amount": {
-				"tooltip": "Select the currency code to enable setting the amount"
+				"tooltip": "Seleccione el código de moneda para habilitar la configuración de la cantidad"
 			},
 			"conditions": {
 				"rules": {
-					"title": "Who can use this code?",
-					"description": "Which customer is allowed to use the promotion code? Promotion code can be used by all customers if left untouched."
+					"title": "¿Quién puede usar este código?",
+					"description": "¿Cuál es el cliente autorizado para usar el código de promoción? El código de promoción se puede usar por todos los clientes si se deja sin cambios."
 				},
 				"target-rules": {
-					"title": "What items will the promotion be applied to?",
-					"description": "The promotion will be applied to items that match the following conditions."
+					"title": "¿Qué artículos se aplicarán a la promoción?",
+					"description": "La promoción se aplicará a los artículos que coincidan con las siguientes condiciones."
 				},
 				"buy-rules": {
-					"title": "What needs to be in the cart to unlock the promotion?",
-					"description": "If these conditions match, we enable the promotion on the target items."
+					"title": "¿Qué necesita estar en el carrito para desbloquear la promoción?",
+					"description": "Si estas condiciones coinciden, habilitamos la promoción en los artículos objetivos."
 				}
 			}
 		},
 		"tooltips": {
-			"campaignType": "The currency code must be selected in the promotion to set a spend budget."
+			"campaignType": "El código de moneda debe seleccionarse en la promoción para establecer un presupuesto de gasto."
 		},
 		"errors": {
-			"requiredField": "Required field",
-			"promotionTabError": "Fix errors in Promotion Tab before proceeding"
+			"requiredField": "Campo requerido",
+			"promotionTabError": "Arreglar errores en la pestaña de promoción antes de continuar"
 		},
 		"toasts": {
-			"promotionCreateSuccess": "Promotion ({{code}}) se ha creado con éxito."
+			"promotionCreateSuccess": "Promoción ({{code}}) se ha creado con éxito."
 		},
 		"create": {},
 		"edit": {
-			"title": "Edit Promotion Details",
+			"title": "Editar detalles de la promoción",
 			"rules": {
-				"title": "Edit usage conditions"
+				"title": "Editar condiciones de uso"
 			},
 			"target-rules": {
-				"title": "Edit item conditions"
+				"title": "Editar condiciones de artículo"
 			},
 			"buy-rules": {
-				"title": "Edit buy rules"
+				"title": "Editar reglas de compra"
 			}
 		},
 		"campaign": {
-			"header": "Campaign",
+			"header": "Campaña",
 			"edit": {
-				"header": "Edit Campaign",
-				"successToast": "Successfully updated the campaign of the promotion."
+				"header": "Editar Campaña",
+				"successToast": "Se ha actualizado con éxito la campaña de la promoción."
 			},
 			"actions": {
-				"goToCampaign": "Go to campaign"
+				"goToCampaign": "Ir a la campaña"
 			}
 		},
 		"campaign_currency": {
-			"tooltip": "This is the promotion's currency. Change it from the Details tab."
+			"tooltip": "Esta es la moneda de la promoción. Cambie desde la pestaña Detalles."
 		},
 		"form": {
-			"required": "Required",
-			"and": "AND",
-			"selectAttribute": "Select Attribute",
+			"required": "Requerido",
+			"and": "Y",
+			"selectAttribute": "Seleccionar atributo",
 			"campaign": {
 				"existing": {
-					"title": "Existing Campaign",
-					"description": "Add promotion to an existing campaign.",
+					"title": "Campaña existente",
+					"description": "Agregue la promoción a una campaña existente.",
 					"placeholder": {
-						"title": "No existing campaigns",
-						"desc": "You can create one to track multiple promotions and set budget limits."
+						"title": "Sin campañas existentes",
+						"desc": "Puede crear una para rastrear múltiples promociones y establecer límites de presupuesto."
 					}
 				},
 				"new": {
-					"title": "New Campaign",
-					"description": "Create a new campaign for this promotion."
+					"title": "Nueva campaña",
+					"description": "Cree una nueva campaña para esta promoción."
 				},
 				"none": {
-					"title": "Without Campaign",
-					"description": "Proceed without associating promotion with campaign"
+					"title": "Sin campaña",
+					"description": "Continúe sin asociar la promoción con la campaña"
 				}
 			},
 			"status": {
-				"title": "Status"
+				"title": "Estado"
 			},
 			"method": {
-				"label": "Method",
+				"label": "Método",
 				"code": {
-					"title": "Promotion code",
-					"description": "Clientes must enter this code at checkout"
+					"title": "Código de promoción",
+					"description": "Los clientes deben ingresar este código en el pago"
 				},
 				"automatic": {
-					"title": "Automatic",
-					"description": "Clientes will see this promotion at checkout"
+					"title": "Automático",
+					"description": "Los clientes verán esta promoción en el pago"
 				}
 			},
 			"max_quantity": {
-				"title": "Maximum Quantity",
-				"description": "Maximum quantity of items this promotion applies to."
+				"title": "Cantidad máxima",
+				"description": "La cantidad máxima de artículos que se aplican a esta promoción."
 			},
 			"type": {
 				"standard": {
-					"title": "Standard",
-					"description": "A standard promotion"
+					"title": "Estándar",
+					"description": "Una promoción estándar"
 				},
 				"buyget": {
-					"title": "Buy Get",
-					"description": "Buy X get Y promotion"
+					"title": "Comprar y obtener",
+					"description": "Comprar X obtener Y promoción"
 				}
 			},
 			"allocation": {
 				"each": {
-					"title": "Each",
-					"description": "Applies value on each item"
+					"title": "Por cada",
+					"description": "Aplica el valor a cada artículo"
 				},
 				"across": {
-					"title": "Across",
-					"description": "Applies value across items"
+					"title": "En todo",
+					"description": "Aplica el valor en todos los artículos"
 				}
 			},
 			"code": {
-				"title": "Code",
-				"description": "The code your customers will enter during checkout."
+				"title": "Código",
+				"description": "El código que los clientes ingresarán durante el pago."
 			},
 			"value": {
-				"title": "Promotion Value"
+				"title": "Valor de la promoción"
 			},
 			"value_type": {
 				"fixed": {
-					"title": "Promotion Value",
-					"description": "The amount to be discounted. eg. 100"
+					"title": "Valor de la promoción",
+					"description": "La cantidad a descontar. por ejemplo, 100"
 				},
 				"percentage": {
-					"title": "Promotion Value",
-					"description": "The percentage to discount off the amount. eg. 8%"
+					"title": "Valor de la promoción",
+					"description": "El porcentaje a descontar del importe. por ejemplo, 8%"
 				}
 			}
 		},
-		"deleteWarning": "Estás a punto de eliminar the promotion {{code}}. Esta acción no se puede deshacer.",
-		"createPromotionTitle": "Create Promotion",
-		"type": "Promotion type",
+		"deleteWarning": "Estás a punto de eliminar la promoción {{code}}. Esta acción no se puede deshacer.",
+		"createPromotionTitle": "Crear promoción",
+		"type": "Tipo de promoción",
 		"conditions": {
-			"add": "Add condition",
+			"add": "Añadir condición",
 			"list": {
-				"noRecordsMessage": "Add a condition to restrict what items the promotion applies to."
+				"noRecordsMessage": "Agrega una condición para restringir qué artículos se aplican a la promoción."
 			}
 		}
 	},
 	"campaigns": {
-		"domain": "Campaigns",
-		"details": "Campaign details",
+		"domain": "Campañas",
+		"details": "Detalles de la campaña",
 		"status": {
-			"active": "Active",
-			"expired": "Expired",
-			"scheduled": "Scheduled"
+			"active": "Activa",
+			"expired": "Expirada",
+			"scheduled": "Programada"
 		},
 		"delete": {
-			"title": "Are you sure?",
-			"description": "Estás a punto de eliminar the campaign '{{name}}'. Esta acción no se puede deshacer.",
-			"successToast": "Campaign '{{name}}' se ha creado con éxito."
+			"title": "¿Estás seguro?",
+			"description": "Estás a punto de eliminar la campaña '{{name}}'. Esta acción no se puede deshacer.",
+			"successToast": "La campaña '{{name}}' se ha creado con éxito."
 		},
 		"edit": {
-			"header": "Edit Campaign",
-			"description": "Edit the details of the campaign.",
-			"successToast": "Campaign '{{name}}' se ha actualizado con éxito."
+			"header": "Editar Campaña",
+			"description": "Editar los detalles de la campaña.",
+			"successToast": "La campaña '{{name}}' se ha actualizado con éxito."
 		},
 		"configuration": {
-			"header": "Configuration",
+			"header": "Configuración",
 			"edit": {
-				"header": "Edit Campaign Configuration",
-				"description": "Edit the configuration of the campaign.",
-				"successToast": "Campaign configuration se ha actualizado con éxito."
+				"header": "Editar configuración de campaña",
+				"description": "Edite la configuración de la campaña.",
+				"successToast": "Configuración de campaña se ha actualizado con éxito."
 			}
 		},
 		"create": {
-			"title": "Create Campaign",
-			"description": "Create a promotional campaign.",
-			"hint": "Create a promotional campaign.",
-			"header": "Create Campaign",
-			"successToast": "Campaign '{{name}}' se ha creado con éxito."
+			"title": "Crear Campaña",
+			"description": "Crear una campaña promocional.",
+			"hint": "Cree una campaña promocional.",
+			"header": "Crear Campaña",
+			"successToast": "La campaña '{{name}}' se ha creado con éxito."
 		},
 		"fields": {
-			"name": "Name",
-			"identifier": "Identifier",
-			"start_date": "Start date",
-			"end_date": "End date",
-			"total_spend": "Budget spent",
-			"total_used": "Budget used",
-			"budget_limit": "Budget limit",
+			"name": "Nombre",
+			"identifier": "Identificador",
+			"start_date": "Fecha de inicio",
+			"end_date": "Fecha de finalización",
+			"total_spend": "Gasto total",
+			"total_used": "Gasto total utilizado",
+			"budget_limit": "Límite de presupuesto",
 			"campaign_id": {
-				"hint": "Only campaigns with the same currency code as the promotion are shown in this list."
+				"hint": "Solo se muestran las campañas con el mismo código de moneda que la promoción."
 			}
 		},
 		"budget": {
 			"create": {
-				"hint": "Create a budget for the campaign.",
-				"header": "Campaign Budget"
+				"hint": "Cree un presupuesto para la campaña.",
+				"header": "Presupuesto de la campaña"
 			},
-			"details": "Campaign budget",
+			"details": "Presupuesto de la campaña",
 			"fields": {
-				"type": "Type",
-				"currency": "Currency",
-				"limit": "Limit",
-				"used": "Used"
+				"type": "Tipo",
+				"currency": "Moneda",
+				"limit": "Límite",
+				"used": "Uso"
 			},
 			"type": {
 				"spend": {
-					"title": "Spend",
-					"description": "Set a limit on the total discounted amount of all promotion usages."
+					"title": "Gasto",
+					"description": "Establezca un límite en la cantidad total de descuento de todos los usos de la promoción."
 				},
 				"usage": {
-					"title": "Usage",
-					"description": "Set a limit on how many times the promotion can be used."
+					"title": "Utilización",
+					"description": "Establezca un límite en la cantidad de veces que la promoción se puede usar."
 				}
 			},
 			"edit": {
-				"header": "Edit Campaign Budget"
+				"header": "Editar presupuesto de campaña"
 			}
 		},
 		"promotions": {
 			"remove": {
-				"title": "Remove promotion from campaign",
-				"description": "Estás a punto de eliminar {{count}} promotion(s) from the campaign. Esta acción no se puede deshacer."
+				"title": "Eliminar promoción de la campaña",
+				"description": "Estás a punto de eliminar {{count}} promoción(es) de la campaña. Esta acción no se puede deshacer."
 			},
-			"alreadyAdded": "This promotion has already been added to the campaign.",
-			"alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
-			"currencyMismatch": "Currency of the promotion and campaign doesn't match",
+			"alreadyAdded": "Esta promoción ya se ha agregado a la campaña.",
+			"alreadyAddedDiffCampaign": "Esta promoción ya se ha agregado a una campaña diferente ({{name}}).",
+			"currencyMismatch": "La moneda de la promoción y la campaña no coinciden",
 			"toast": {
-				"success": "Successfully added {{count}} promotion(s) to campaign"
+				"success": "Se agregaron con éxito {{count}} promoción(es) a la campaña"
 			},
 			"add": {
 				"list": {
-					"noRecordsMessage": "Create a promotion first."
+					"noRecordsMessage": "Cree una promoción primero."
 				}
 			},
 			"list": {
-				"noRecordsMessage": "There are no promotions in the campaign."
+				"noRecordsMessage": "No hay promociones en la campaña."
 			}
 		},
-		"deleteCampaignWarning": "Estás a punto de eliminar the campaign {{name}}. Esta acción no se puede deshacer.",
+		"deleteCampaignWarning": "Estás a punto de eliminar la campaña {{name}}. Esta acción no se puede deshacer.",
 		"totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
 	},
 	"priceLists": {
-		"domain": "Price Lists",
-		"subtitle": "Create sales or override prices for specific conditions.",
+		"domain": "Listas de precios",
+		"subtitle": "Cree ventas o sobreescriba los precios para condiciones específicas.",
 		"delete": {
-			"confirmation": "Estás a punto de eliminar the price list {{title}}. Esta acción no se puede deshacer.",
-			"successToast": "Price list {{title}} se ha eliminado con éxito."
+			"confirmation": "Estás a punto de eliminar la lista de precios {{title}}. Esta acción no se puede deshacer.",
+			"successToast": "Lista de precios {{title}} se ha eliminado con éxito."
 		},
 		"create": {
-			"header": "Create Price List",
-			"subheader": "Create a new price list to manage the prices of your products.",
+			"header": "Crear lista de precios",
+			"subheader": "Cree una nueva lista de precios para administrar los precios de sus productos.",
 			"tabs": {
-				"details": "Details",
+				"details": "Detalles",
 				"products": "Productos",
-				"prices": "Prices"
+				"prices": "Precios"
 			},
-			"successToast": "Price list {{title}} se ha creado con éxito.",
+			"successToast": "Lista de precios {{title}} se ha creado con éxito.",
 			"products": {
 				"list": {
-					"noRecordsMessage": "Create a product first."
+					"noRecordsMessage": "Cree un producto primero."
 				}
 			}
 		},
 		"edit": {
-			"header": "Edit Price List",
-			"successToast": "Price list {{title}} se ha actualizado con éxito."
+			"header": "Editar lista de precios",
+			"successToast": "Lista de precios {{title}} se ha actualizado con éxito."
 		},
 		"configuration": {
-			"header": "Configuration",
+			"header": "Configuración",
 			"edit": {
-				"header": "Edit Price List Configuration",
-				"description": "Edit the configuration of the price list.",
-				"successToast": "Price list configuration se ha actualizado con éxito."
+				"header": "Editar configuración de lista de precios",
+				"description": "Edite la configuración de la lista de precios.",
+				"successToast": "Configuración de lista de precios se ha actualizado con éxito."
 			}
 		},
 		"products": {
@@ -2015,60 +2015,60 @@
 				"editPrices": "Editar precios"
 			},
 			"delete": {
-				"confirmation_one": "Estás a punto de eliminar the prices for {{count}} product in the price list. Esta acción no se puede deshacer.",
-				"confirmation_other": "Estás a punto de eliminar the prices for {{count}} products in the price list. Esta acción no se puede deshacer.",
-				"successToast_one": "Successfully deleted prices for {{count}} product.",
-				"successToast_other": "Successfully deleted prices for {{count}} products."
+				"confirmation_one": "Estás a punto de eliminar los precios para {{count}} producto en la lista de precios. Esta acción no se puede deshacer.",
+				"confirmation_other": "Estás a punto de eliminar los precios para {{count}} productos en la lista de precios. Esta acción no se puede deshacer.",
+				"successToast_one": "Se eliminaron con éxito los precios para {{count}} producto.",
+				"successToast_other": "Se eliminaron con éxito los precios para {{count}} productos."
 			},
 			"add": {
-				"successToast": "Prices were successfully added to the price list."
+				"successToast": "Se agregaron con éxito los precios a la lista de precios."
 			},
 			"edit": {
-				"successToast": "Prices were successfully updated."
+				"successToast": "Se actualizaron con éxito los precios."
 			}
 		},
 		"fields": {
 			"priceOverrides": {
-				"label": "Price overrides",
-				"header": "Price Overrides"
+				"label": "Sobreescrituras de precio",
+				"header": "Sobreescrituras de precio"
 			},
 			"status": {
-				"label": "Status",
+				"label": "Estado",
 				"options": {
-					"active": "Active",
-					"draft": "Draft",
-					"expired": "Expired",
-					"scheduled": "Scheduled"
+					"active": "Activo",
+					"draft": "Borrador",
+					"expired": "Expirado",
+					"scheduled": "Programado"
 				}
 			},
 			"type": {
-				"label": "Type",
-				"hint": "Choose the type of price list you want to create.",
+				"label": "Tipo",
+				"hint": "Elige el tipo de lista de precios que desea crear.",
 				"options": {
 					"sale": {
-						"label": "Sale",
-						"description": "Sale prices are temporary price changes for products."
+						"label": "Venta",
+						"description": "Los precios de venta son cambios de precio temporales para los productos."
 					},
 					"override": {
-						"label": "Override",
-						"description": "Overrides are usually used to create customer-specific prices."
+						"label": "Sobreescribir",
+						"description": "Las sobreescrituras se usan normalmente para crear precios específicos de clientes."
 					}
 				}
 			},
 			"startsAt": {
-				"label": "Price list has a start date?",
-				"hint": "Schedule the price list to activate in the future."
+				"label": "¿La lista de precios tiene una fecha de inicio?",
+				"hint": "Programe la lista de precios para activarse en el futuro."
 			},
 			"endsAt": {
-				"label": "Price list has an expiry date?",
-				"hint": "Schedule the price list to deactivate in the future."
+				"label": "¿La lista de precios tiene una fecha de caducidad?",
+				"hint": "Programe la lista de precios para desactivarse en el futuro."
 			},
 			"customerAvailability": {
-				"header": "Choose customer groups",
-				"label": "Customer availability",
-				"hint": "Choose which customer groups the price list should be applied to.",
-				"placeholder": "Buscar for customer groups",
-				"attribute": "Customer groups"
+				"header": "Elige grupos de clientes",
+				"label": "Disponibilidad del cliente",
+				"hint": "Elige qué grupos de clientes deben aplicarse a la lista de precios.",
+				"placeholder": "Buscar grupos de clientes",
+				"attribute": "Grupos de clientes"
 			}
 		}
 	},
