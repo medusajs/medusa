@@ -143,6 +143,10 @@ export const useUpdateProductCategoryProducts = (
         queryKey: productsQueryKeys.lists(),
       })
 
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.details(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
