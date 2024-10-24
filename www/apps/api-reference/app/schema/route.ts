@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import path from "path"
 import { existsSync } from "fs"
-import getSchemaContent from "../../../utils/get-schema-content"
+import getSchemaContent from "../../utils/get-schema-content"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
