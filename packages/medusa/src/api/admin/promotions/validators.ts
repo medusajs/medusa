@@ -13,11 +13,26 @@ import {
   WithAdditionalData,
 } from "../../utils/validators"
 import { CreateCampaign } from "../campaigns/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
 >
 export const AdminGetPromotionParams = createSelectParams()
+
+export const AdminGetPromotionsParamsFields = z.object({
+  q: z.string().optional(),
+  code: z.union([z.string(), z.array(z.string())]).optional(),
+  campaign_id: z.union([z.string(), z.array(z.string())]).optional(),
+  application_method: z
+    .object({
+      currency_code: z.union([z.string(), z.array(z.string())]).optional(),
+    })
+    .optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
 export type AdminGetPromotionsParamsType = z.infer<
   typeof AdminGetPromotionsParams
@@ -26,23 +41,8 @@ export const AdminGetPromotionsParams = createFindParams({
   limit: 50,
   offset: 0,
 })
-  .merge(
-    z.object({
-      q: z.string().optional(),
-      code: z.union([z.string(), z.array(z.string())]).optional(),
-      campaign_id: z.union([z.string(), z.array(z.string())]).optional(),
-      application_method: z
-        .object({
-          currency_code: z.union([z.string(), z.array(z.string())]).optional(),
-        })
-        .optional(),
-      created_at: createOperatorMap().optional(),
-      updated_at: createOperatorMap().optional(),
-      deleted_at: createOperatorMap().optional(),
-      $and: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
-      $or: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
-    })
-  )
+  .merge(AdminGetPromotionsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetPromotionsParamsFields))
   .strict()
 
 export type AdminGetPromotionRuleParamsType = z.infer<

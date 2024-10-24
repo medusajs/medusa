@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -9,22 +12,27 @@ import {
 export type AdminGetPaymentParamsType = z.infer<typeof AdminGetPaymentParams>
 export const AdminGetPaymentParams = createSelectParams()
 
+export const AdminGetPaymentsParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  payment_session_id: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
 export type AdminGetPaymentsParamsType = z.infer<typeof AdminGetPaymentsParams>
 export const AdminGetPaymentsParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    payment_session_id: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetPaymentsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetPaymentsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetPaymentsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetPaymentsParamsFields))
+
+export const AdminGetPaymentProvidersParamsFields = z.object({
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  is_enabled: booleanString().optional(),
+})
 
 export type AdminGetPaymentProvidersParamsType = z.infer<
   typeof AdminGetPaymentProvidersParams
@@ -32,14 +40,9 @@ export type AdminGetPaymentProvidersParamsType = z.infer<
 export const AdminGetPaymentProvidersParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    is_enabled: booleanString().optional(),
-    $and: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
-    $or: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetPaymentProvidersParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetPaymentProvidersParamsFields))
 
 export type AdminCreatePaymentCaptureType = z.infer<
   typeof AdminCreatePaymentCapture

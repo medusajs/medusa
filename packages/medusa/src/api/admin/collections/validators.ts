@@ -4,8 +4,18 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export const AdminGetCollectionParams = createSelectParams()
+
+export const AdminGetCollectionsParamsFields = z.object({
+  q: z.string().optional(),
+  title: z.union([z.string(), z.array(z.string())]).optional(),
+  handle: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
 export type AdminGetCollectionsParamsType = z.infer<
   typeof AdminGetCollectionsParams
@@ -13,18 +23,9 @@ export type AdminGetCollectionsParamsType = z.infer<
 export const AdminGetCollectionsParams = createFindParams({
   offset: 0,
   limit: 10,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    title: z.union([z.string(), z.array(z.string())]).optional(),
-    handle: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetCollectionsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetCollectionsParams.array()).optional(),
-  })
-)
+})
+  .merge(AdminGetCollectionsParamsFields)
+  .merge(applyAndAndOrOperators(AdminGetCollectionsParamsFields))
 
 export type AdminCreateCollectionType = z.infer<typeof AdminCreateCollection>
 export const AdminCreateCollection = z.object({
