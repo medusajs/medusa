@@ -8,4 +8,4 @@ properties:
     type: array
     description: The shipping option's shipping options.
     items:
-      $ref: ./StoreShippingOption.yaml
+      $ref: ./StoreCartShippingOption.yaml
