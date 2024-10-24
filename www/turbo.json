@@ -13,6 +13,19 @@
         "dist/**"
       ]
     },
+    "build:prod": {
+      "dependsOn": [
+        "^build",
+        "^build:prod"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".docusaurus/**",
+        "build/**",
+        "dist/**"
+      ]
+    },
     "start:monorepo": {
       "dependsOn": [
         "build#docs-ui",

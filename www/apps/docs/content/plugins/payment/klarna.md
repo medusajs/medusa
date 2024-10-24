@@ -27,7 +27,7 @@ You can integrate Klarna into Medusa using the [official plugin](https://github.
 
 It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx).
 
-In addition, you’ll need to use the [Medusa Admin](../../admin/quickstart.mdx) to enable the payment provider in later steps. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
+In addition, you’ll need to use the [Medusa Admin](../../admin/quickstart.mdx) to enable the payment provider in later steps. You can alternatively use the [REST APIs](https://docs.medusajs.com/v1/api/admin#regions_postregionsregionpaymentproviders).
 
 ### Needed Accounts
 
@@ -90,7 +90,7 @@ const plugins = [
 
 To use Klarna in your store, you must enable it in at least one region.
 
-You can follow [this user guide to learn how to enable a payment provider in a region](../../user-guide/regions/providers#manage-payment-providers). You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
+You can follow [this user guide to learn how to enable a payment provider in a region](../../user-guide/regions/providers#manage-payment-providers). You can alternatively use the [REST APIs](https://docs.medusajs.com/v1/api/admin#regions_postregionsregionpaymentproviders).
 
 ---
 

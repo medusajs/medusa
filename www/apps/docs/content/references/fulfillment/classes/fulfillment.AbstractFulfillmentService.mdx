@@ -34,7 +34,7 @@ export default MyFulfillmentService
 
 The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the fulfillment provider service is used when the fulfillment provider is added to the database.
 
-The value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions\_postregionsregionfulfillmentproviders) to a region.
+The value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/v1/api/admin#regions\_postregionsregionfulfillmentproviders) to a region.
 
 ```ts
 class MyFulfillmentService extends AbstractFulfillmentService {
@@ -80,7 +80,7 @@ ___
 
 ### getFulfillmentOptions
 
-This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options API Route](https://docs.medusajs.com/api/admin#regions\_getregionsregionfulfillmentoptions).
+This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options API Route](https://docs.medusajs.com/v1/api/admin#regions\_getregionsregionfulfillmentoptions).
 For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point. Each of these options can have different data associated with them.
 
 #### Example
@@ -103,7 +103,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options. These options don't have any required format. Later on, these options can be used when creating a shipping option,\nsuch as when using the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\\_postshippingoptions). The chosen fulfillment option, which is one of the\nitems in the array returned by this method, will be set in the `data` object of the shipping option.","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getFulfillmentOptions"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options. These options don't have any required format. Later on, these options can be used when creating a shipping option,\nsuch as when using the [Create Shipping Option API Route](https://docs.medusajs.com/v1/api/admin#shipping-options\\_postshippingoptions). The chosen fulfillment option, which is one of the\nitems in the array returned by this method, will be set in the `data` object of the shipping option.","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getFulfillmentOptions"/>
 
 ### validateFulfillmentData
 
@@ -146,7 +146,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ### validateOption
 
-Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\_postshippingoptions) is used.
+Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/v1/api/admin#shipping-options\_postshippingoptions) is used.
 
 #### Example
 
@@ -306,9 +306,9 @@ class MyFulfillmentService extends FulfillmentService {
 ### createReturn
 
 Fulfillment providers can also be used to return products. A shipping option can be used for returns if the `is_return` property is true or if an admin creates a Return Shipping Option from the settings.
-This method is used when the admin [creates a return request](https://docs.medusajs.com/api/admin#orders\_postordersorderreturns) for an order,
-[creates a swap](https://docs.medusajs.com/api/admin#orders\_postordersorderswaps) for an order, or when the
-[customer creates a return of their order](https://docs.medusajs.com/api/store#returns\_postreturns). The fulfillment is created automatically for the order return.
+This method is used when the admin [creates a return request](https://docs.medusajs.com/v1/api/admin#orders\_postordersorderreturns) for an order,
+[creates a swap](https://docs.medusajs.com/v1/api/admin#orders\_postordersorderswaps) for an order, or when the
+[customer creates a return of their order](https://docs.medusajs.com/v1/api/store#returns\_postreturns). The fulfillment is created automatically for the order return.
 
 #### Example
 
@@ -467,6 +467,6 @@ npm run build
 npx medusa develop
 ```
 
-3\. Enable your fulfillment provider in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
+3\. Enable your fulfillment provider in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/v1/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
 
 4\. To test out your fulfillment provider implementation, create a cart and complete an order. You can do that either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).

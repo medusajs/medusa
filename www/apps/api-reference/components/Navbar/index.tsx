@@ -11,6 +11,7 @@ import { useMemo } from "react"
 import { config } from "../../config"
 import { usePathname } from "next/navigation"
 import VersionSwitcher from "../VersionSwitcher"
+import { getBasePathUrl } from "../../utils/get-base-path-url"
 
 const Navbar = () => {
   const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
@@ -29,8 +30,8 @@ const Navbar = () => {
   return (
     <UiNavbar
       logo={{
-        light: "/images/logo-icon.png",
-        dark: "/images/logo-icon-dark.png",
+        light: getBasePathUrl("/images/logo-icon.png"),
+        dark: getBasePathUrl("/images/logo-icon-dark.png"),
       }}
       items={navbarItems}
       mobileMenuButton={{

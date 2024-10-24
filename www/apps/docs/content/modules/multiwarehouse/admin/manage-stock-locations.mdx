@@ -53,13 +53,13 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/v1/api/admin#authentication).
 
 ---
 
 ## List Stock Locations
 
-You can list stock locations by using the [List Stock Locations API Route](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations):
+You can list stock locations by using the [List Stock Locations API Route](https://docs.medusajs.com/v1/api/admin#stock-locations_getstocklocations):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -129,15 +129,15 @@ You can list stock locations by using the [List Stock Locations API Route](https
   </TabItem>
 </Tabs>
 
-This API Route doesn't require any path or query parameters. You can, however, pass it query parameters to search or filter the list of stock locations. For example, you can pass the `q` query parameter to search through the locations by name. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations).
+This API Route doesn't require any path or query parameters. You can, however, pass it query parameters to search or filter the list of stock locations. For example, you can pass the `q` query parameter to search through the locations by name. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/v1/api/admin#stock-locations_getstocklocations).
 
-The request returns an array of stock location objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
+The request returns an array of stock location objects along with [pagination parameters](https://docs.medusajs.com/v1/api/admin#pagination).
 
 ---
 
 ## Create a Stock Location
 
-You can create a stock location using the [Create a Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations):
+You can create a stock location using the [Create a Stock Location API Route](https://docs.medusajs.com/v1/api/admin#stock-locations_poststocklocations):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -212,7 +212,7 @@ You can create a stock location using the [Create a Stock Location API Route](ht
   </TabItem>
 </Tabs>
 
-This API Route requires in its body parameters the `name` field, which is the name of the stock location. You can also pass in the request body parameters other fields related to the address or metadata. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations).
+This API Route requires in its body parameters the `name` field, which is the name of the stock location. You can also pass in the request body parameters other fields related to the address or metadata. You can learn more in the [API reference](https://docs.medusajs.com/v1/api/admin#stock-locations_poststocklocations).
 
 This request returns the created stock location as an object.
 
@@ -220,7 +220,7 @@ This request returns the created stock location as an object.
 
 ## Retrieve a Stock Location
 
-You can retrieve a stock location by sending a request to the [Get Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation):
+You can retrieve a stock location by sending a request to the [Get Stock Location API Route](https://docs.medusajs.com/v1/api/admin#stock-locations_getstocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -287,7 +287,7 @@ You can retrieve a stock location by sending a request to the [Get Stock Locatio
   </TabItem>
 </Tabs>
 
-This API Route requires the stock location ID to be passed as a path parameter. It also accepts query parameters related to expanding and selecting fields. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation).
+This API Route requires the stock location ID to be passed as a path parameter. It also accepts query parameters related to expanding and selecting fields. You can learn more in the [API reference](https://docs.medusajs.com/v1/api/admin#stock-locations_getstocklocationsstocklocation).
 
 It returns the stock location as an object.
 
@@ -295,7 +295,7 @@ It returns the stock location as an object.
 
 ## Associate a Stock Location with a Sales Channel
 
-You can associate a stock location with a sales channel by sending a request to the [Associate Stock Channel API Route](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelssaleschannelstocklocation):
+You can associate a stock location with a sales channel by sending a request to the [Associate Stock Channel API Route](https://docs.medusajs.com/v1/api/admin#sales-channels_postsaleschannelssaleschannelstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -393,7 +393,7 @@ You can associate a location with more than one sales channel, and you can assoc
 
 ## Remove Association Between Stock Location and Sales Channel
 
-You can remove the association between a stock location and a sales channel by sending a request to the [Remove Stock Location Association API Route](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelssaleschannelstocklocation):
+You can remove the association between a stock location and a sales channel by sending a request to the [Remove Stock Location Association API Route](https://docs.medusajs.com/v1/api/admin#sales-channels_deletesaleschannelssaleschannelstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -495,7 +495,7 @@ This request does not delete the stock location. It only removes the association
 
 ## Update a Stock Location
 
-You can update a stock location by sending a request to the [Update Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation):
+You can update a stock location by sending a request to the [Update Stock Location API Route](https://docs.medusajs.com/v1/api/admin#stock-locations_poststocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -578,7 +578,7 @@ You can update a stock location by sending a request to the [Update Stock Locati
   </TabItem>
 </Tabs>
 
-This API Route requires the ID of a stock location as a path parameter. In its body parameters, you can pass any of the location’s attributes to update, such as the name or address. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation).
+This API Route requires the ID of a stock location as a path parameter. In its body parameters, you can pass any of the location’s attributes to update, such as the name or address. You can learn more in the [API reference](https://docs.medusajs.com/v1/api/admin#stock-locations_poststocklocationsstocklocation).
 
 This request returns the updated stock location as an object.
 
@@ -586,7 +586,7 @@ This request returns the updated stock location as an object.
 
 ## Delete a Stock Location
 
-You can delete a stock location by sending a request to the [Delete Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsstocklocation):
+You can delete a stock location by sending a request to the [Delete Stock Location API Route](https://docs.medusajs.com/v1/api/admin#stock-locations_deletestocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>

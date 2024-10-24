@@ -1,17 +1,10 @@
 {
   "crons": [{
-    "path": "/api/algolia",
+    "path": "/v1/api/algolia",
     "schedule": "0 0 * * 4"
   }],
   "framework": "nextjs",
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
-  "outputDirectory": ".next",
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/v2",
-      "permanent": false
-    }
-  ]
+  "outputDirectory": ".next"
 }

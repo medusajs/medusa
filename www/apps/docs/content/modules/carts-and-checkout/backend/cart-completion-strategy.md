@@ -85,7 +85,7 @@ In the above example, you inject the `IdempotencyKeyService` in the constructor.
 
 ## Step 2: Implement the complete Method
 
-The cart completion strategy is required to implement a single method: the `complete` method. This method is used in the [Complete Cart API Route](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) to handle the logic of completing the cart.
+The cart completion strategy is required to implement a single method: the `complete` method. This method is used in the [Complete Cart API Route](https://docs.medusajs.com/v1/api/store#carts_postcartscartcomplete) to handle the logic of completing the cart.
 
 The method accepts three parameters:
 

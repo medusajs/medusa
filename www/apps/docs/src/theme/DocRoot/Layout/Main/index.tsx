@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { useDocsSidebar } from "@docusaurus/theme-common/internal"
+import { useDocsSidebar } from "@docusaurus/plugin-content-docs/client"
 import type { Props } from "@theme/DocRoot/Layout/Main"
 
 import { useSidebar } from "../../../../providers/Sidebar"

@@ -7,6 +7,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@docusaurus/tsconfig": "latest"
+    "@docusaurus/tsconfig": "^3.5.2"
   }
 }

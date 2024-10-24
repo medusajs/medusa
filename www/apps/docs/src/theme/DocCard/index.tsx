@@ -4,7 +4,7 @@ import Link from "@docusaurus/Link"
 import {
   findFirstSidebarItemLink,
   useDocById,
-} from "@docusaurus/theme-common/internal"
+} from "@docusaurus/plugin-content-docs/client"
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import { translate } from "@docusaurus/Translate"
 import {

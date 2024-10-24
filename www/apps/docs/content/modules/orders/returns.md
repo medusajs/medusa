@@ -63,7 +63,7 @@ After this process, the return will be available for the merchant or the admin t
 
 Marking a return as received would refund the amount to the customer and adjust the store’s inventory for the returned items.
 
-The following process occurs within the [Receive Return admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
+The following process occurs within the [Receive Return admin API Route](https://docs.medusajs.com/v1/api/admin#returns_postreturnsreturnreceive):
 
 ![Receive Return Process Flowchart](https://res.cloudinary.com/dza7lstvk/image/upload/v1681996834/Medusa%20Docs/Diagrams/return-admin-process_e99skk.jpg)
 
@@ -79,7 +79,7 @@ The following process occurs within the [Receive Return admin API Route](https:/
 
 ### Cancel a Return
 
-The merchant can cancel a return if it hasn’t be marked as `received` before. This can be done either using the `ReturnService`'s [cancel method](../../references/services/classes/services.ReturnService.mdx#cancel) or using the [Cancel Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel).
+The merchant can cancel a return if it hasn’t be marked as `received` before. This can be done either using the `ReturnService`'s [cancel method](../../references/services/classes/services.ReturnService.mdx#cancel) or using the [Cancel Return API Route](https://docs.medusajs.com/v1/api/admin#returns_postreturnsreturncancel).
 
 Canceling a return would change its status to canceled.
 

@@ -96,14 +96,14 @@ Medusa provides a Next.js storefront starter with basic ecommerce functionalitie
 
 ## Pass Personalized Data to the Order
 
-If you followed the basic approach of using the `metadata` attribute to store the personalized data, you can pass the personalization data when you add an item to the cart in the storefront using the [Add a Line Item](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) API Route. This API Route accepts a `metadata` request body parameter that will be stored in the created Line Item’s `metadata` attribute.
+If you followed the basic approach of using the `metadata` attribute to store the personalized data, you can pass the personalization data when you add an item to the cart in the storefront using the [Add a Line Item](https://docs.medusajs.com/v1/api/store#carts_postcartscartlineitems) API Route. This API Route accepts a `metadata` request body parameter that will be stored in the created Line Item’s `metadata` attribute.
 
 In the case that you’ve created a custom entity or extended a core entity, you can create a custom API Route that handles saving the personalization data. You can then call that API Route from the storefront before or after adding the item to the cart.
 
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: 'https://docs.medusajs.com/api/store#carts_postcartscartlineitems',
+    href: 'https://docs.medusajs.com/v1/api/store#carts_postcartscartlineitems',
     label: 'Add a Line Item API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
@@ -134,7 +134,7 @@ If you want to show the personalized data in the Medusa Admin, you can extend th
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: 'https://docs.medusajs.com/api/store#expanding-fields',
+    href: 'https://docs.medusajs.com/v1/api/store#expanding-fields',
     label: 'Expanding Relations in API Requests',
     customProps: {
       icon: Icons['academic-cap-solid'],

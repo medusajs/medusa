@@ -20,7 +20,7 @@ This section explores different ways you can calculate taxes based on your purpo
 
 ### Use Calculate Cart Taxes API Route
 
-The [Calculate Cart Taxes](https://docs.medusajs.com/api/store#carts_postcartscarttaxes) API Route forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
+The [Calculate Cart Taxes](https://docs.medusajs.com/v1/api/store#carts_postcartscarttaxes) API Route forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
 
 This calculates and retrieves the taxes on the cart and each of the line items in that cart.
 
