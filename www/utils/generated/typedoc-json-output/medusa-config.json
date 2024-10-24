@@ -1,12 +1,12 @@
 {
-	"id": 34580,
+	"id": 36761,
 	"name": "medusa-config",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 34581,
+			"id": 36762,
 			"name": "AdminOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -21,7 +21,7 @@
 			},
 			"children": [
 				{
-					"id": 34582,
+					"id": 36763,
 					"name": "disable",
 					"variant": "declaration",
 					"kind": 1024,
@@ -57,7 +57,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  admin: {\n    disable: process.env.ADMIN_DISABLED === \"true\" ||\n      false\n  },\n  // ...\n})\n```"
+										"text": "```ts\ntitle = \"medusa-config.ts\"\nmodule.exports = defineConfig({\n  admin: {\n    disable: process.env.ADMIN_DISABLED === \"true\" || false,\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -69,7 +69,7 @@
 					}
 				},
 				{
-					"id": 34583,
+					"id": 36764,
 					"name": "path",
 					"variant": "declaration",
 					"kind": 1024,
@@ -161,7 +161,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  admin: {\n    path: process.env.ADMIN_PATH || `/app`,\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  admin: {\n    path: process.env.ADMIN_PATH || `/app`,\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -182,7 +182,7 @@
 					}
 				},
 				{
-					"id": 34584,
+					"id": 36765,
 					"name": "outDir",
 					"variant": "declaration",
 					"kind": 1024,
@@ -218,7 +218,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  admin: {\n    outDir: process.env.ADMIN_BUILD_DIR || `./build`,\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  admin: {\n    outDir: process.env.ADMIN_BUILD_DIR || `./build`,\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"id": 34585,
+					"id": 36766,
 					"name": "backendUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -250,7 +250,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  admin: {\n    backendUrl: process.env.MEDUSA_BACKEND_URL ||\n      \"http://localhost:9000\"\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  admin: {\n    backendUrl: process.env.MEDUSA_BACKEND_URL ||\n      \"http://localhost:9000\"\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -262,7 +262,7 @@
 					}
 				},
 				{
-					"id": 34586,
+					"id": 36767,
 					"name": "vite",
 					"variant": "declaration",
 					"kind": 1024,
@@ -288,21 +288,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 34587,
+							"id": 36768,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 34588,
+									"id": 36769,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 34589,
+											"id": 36770,
 											"name": "config",
 											"variant": "param",
 											"kind": 32768,
@@ -310,22 +310,20 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/types/node_modules/vite/dist/node/index.d.ts",
+													"sourceFileName": "",
 													"qualifiedName": "InlineConfig"
 												},
-												"name": "InlineConfig",
-												"package": "vite"
+												"name": "InlineConfig"
 											}
 										}
 									],
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/node_modules/vite/dist/node/index.d.ts",
+											"sourceFileName": "",
 											"qualifiedName": "InlineConfig"
 										},
-										"name": "InlineConfig",
-										"package": "vite"
+										"name": "InlineConfig"
 									}
 								}
 							]
@@ -337,17 +335,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						34582,
-						34583,
-						34584,
-						34585,
-						34586
+						36763,
+						36764,
+						36765,
+						36766,
+						36767
 					]
 				}
 			]
 		},
 		{
-			"id": 34590,
+			"id": 36771,
 			"name": "HttpCompressionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -362,7 +360,7 @@
 			},
 			"children": [
 				{
-					"id": 34591,
+					"id": 36772,
 					"name": "enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -391,7 +389,7 @@
 					}
 				},
 				{
-					"id": 34592,
+					"id": 36773,
 					"name": "level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -420,7 +418,7 @@
 					}
 				},
 				{
-					"id": 34593,
+					"id": 36774,
 					"name": "memLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -449,7 +447,7 @@
 					}
 				},
 				{
-					"id": 34594,
+					"id": 36775,
 					"name": "threshold",
 					"variant": "declaration",
 					"kind": 1024,
@@ -491,16 +489,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						34591,
-						34592,
-						34593,
-						34594
+						36772,
+						36773,
+						36774,
+						36775
 					]
 				}
 			]
 		},
 		{
-			"id": 34595,
+			"id": 36776,
 			"name": "ProjectConfigOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -515,7 +513,7 @@
 			},
 			"children": [
 				{
-					"id": 34596,
+					"id": 36777,
 					"name": "databaseName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -543,7 +541,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseName: process.env.DATABASE_NAME ||\n      \"medusa-store\",\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseName: process.env.DATABASE_NAME ||\n      \"medusa-store\",\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -555,7 +553,7 @@
 					}
 				},
 				{
-					"id": 34597,
+					"id": 36778,
 					"name": "databaseUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -675,7 +673,7 @@
 									},
 									{
 										"kind": "code",
-										"text": "`medusa-config.js`"
+										"text": "`medusa-config.ts`"
 									},
 									{
 										"kind": "text",
@@ -683,7 +681,7 @@
 									},
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseUrl: process.env.DATABASE_URL,\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseUrl: process.env.DATABASE_URL,\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -695,7 +693,7 @@
 					}
 				},
 				{
-					"id": 34598,
+					"id": 36779,
 					"name": "databaseSchema",
 					"variant": "declaration",
 					"kind": 1024,
@@ -718,7 +716,7 @@
 							},
 							{
 								"kind": "code",
-								"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseSchema: process.env.DATABASE_SCHEMA ||\n      \"custom\",\n    // ...\n  },\n  // ...\n})\n```"
+								"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseSchema: process.env.DATABASE_SCHEMA ||\n      \"custom\",\n    // ...\n  },\n  // ...\n})\n```"
 							}
 						]
 					},
@@ -728,7 +726,7 @@
 					}
 				},
 				{
-					"id": 34599,
+					"id": 36780,
 					"name": "databaseLogging",
 					"variant": "declaration",
 					"kind": 1024,
@@ -748,7 +746,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseLogging: false\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseLogging: false\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -760,7 +758,7 @@
 					}
 				},
 				{
-					"id": 34601,
+					"id": 36781,
 					"name": "databaseDriverOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -828,7 +826,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseDriverOptions: process.env.NODE_ENV !== \"development\" ?\n      { ssl: { rejectUnauthorized: false } } : {}\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    databaseDriverOptions: process.env.NODE_ENV !== \"development\" ?\n      { ssl: { rejectUnauthorized: false } } : {}\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -850,7 +848,7 @@
 									},
 									{
 										"type": "intrinsic",
-										"name": "unknown"
+										"name": "any"
 									}
 								],
 								"name": "Record",
@@ -859,14 +857,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 34602,
+									"id": 36782,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 34603,
+											"id": 36783,
 											"name": "connection",
 											"variant": "declaration",
 											"kind": 1024,
@@ -876,14 +874,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 34604,
+													"id": 36784,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 34605,
+															"id": 36785,
 															"name": "ssl",
 															"variant": "declaration",
 															"kind": 1024,
@@ -901,14 +899,14 @@
 															"type": {
 																"type": "reflection",
 																"declaration": {
-																	"id": 34606,
+																	"id": 36786,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 34607,
+																			"id": 36787,
 																			"name": "rejectUnauthorized",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -933,7 +931,7 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				34607
+																				36787
 																			]
 																		}
 																	]
@@ -945,7 +943,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																34605
+																36785
 															]
 														}
 													]
@@ -957,7 +955,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												34603
+												36783
 											]
 										}
 									]
@@ -967,7 +965,7 @@
 					}
 				},
 				{
-					"id": 34608,
+					"id": 36788,
 					"name": "redisUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1003,7 +1001,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisUrl: process.env.REDIS_URL ||\n      \"redis://localhost:6379\",\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisUrl: process.env.REDIS_URL ||\n      \"redis://localhost:6379\",\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1015,7 +1013,7 @@
 					}
 				},
 				{
-					"id": 34609,
+					"id": 36789,
 					"name": "redisPrefix",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1051,7 +1049,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisPrefix: process.env.REDIS_URL || \"medusa:\",\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisPrefix: process.env.REDIS_URL || \"medusa:\",\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1063,7 +1061,7 @@
 					}
 				},
 				{
-					"id": 34610,
+					"id": 36790,
 					"name": "redisOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1083,7 +1081,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisOptions: {\n      connectionName: process.env.REDIS_CONNECTION_NAME ||\n        \"medusa\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    redisOptions: {\n      connectionName: process.env.REDIS_CONNECTION_NAME ||\n        \"medusa\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1100,7 +1098,7 @@
 					}
 				},
 				{
-					"id": 34611,
+					"id": 36791,
 					"name": "sessionOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1120,7 +1118,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    sessionOptions: {\n      name: process.env.SESSION_NAME || \"custom\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    sessionOptions: {\n      name: process.env.SESSION_NAME || \"custom\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1129,7 +1127,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+							"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 							"qualifiedName": "SessionOptions"
 						},
 						"name": "SessionOptions",
@@ -1137,7 +1135,7 @@
 					}
 				},
 				{
-					"id": 34614,
+					"id": 36793,
 					"name": "workerMode",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1213,7 +1211,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    workerMode: process.env.WORKER_MODE || \"shared\"\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    workerMode: process.env.WORKER_MODE || \"shared\"\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1238,7 +1236,7 @@
 					}
 				},
 				{
-					"id": 34615,
+					"id": 36794,
 					"name": "http",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1256,7 +1254,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      cookieSecret: \"supersecret\",\n      compression: {\n        // ...\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      cookieSecret: \"supersecret\",\n      compression: {\n        // ...\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -1265,14 +1263,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 34616,
+							"id": 36795,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 34617,
+									"id": 36796,
 									"name": "jwtSecret",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1300,7 +1298,7 @@
 												"content": [
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      jwtSecret: \"supersecret\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      jwtSecret: \"supersecret\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1312,7 +1310,7 @@
 									}
 								},
 								{
-									"id": 34618,
+									"id": 36797,
 									"name": "jwtExpiresIn",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1340,7 +1338,7 @@
 												"content": [
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      jwtExpiresIn: \"2d\"\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      jwtExpiresIn: \"2d\"\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1352,7 +1350,7 @@
 									}
 								},
 								{
-									"id": 34619,
+									"id": 36798,
 									"name": "cookieSecret",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1380,7 +1378,7 @@
 												"content": [
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      cookieSecret: \"supersecret\"\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      cookieSecret: \"supersecret\"\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1392,7 +1390,7 @@
 									}
 								},
 								{
-									"id": 34620,
+									"id": 36799,
 									"name": "authCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1462,7 +1460,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1470,7 +1468,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authCors: process.env.AUTH_CORS\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authCors: process.env.AUTH_CORS\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													},
 													{
 														"kind": "text",
@@ -1478,7 +1476,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1494,7 +1492,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authCors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authCors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1506,7 +1504,7 @@
 									}
 								},
 								{
-									"id": 34621,
+									"id": 36800,
 									"name": "compression",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1534,7 +1532,7 @@
 												"content": [
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      compression: {\n        enabled: true,\n        level: 6,\n        memLevel: 8,\n        threshold: 1024\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      compression: {\n        enabled: true,\n        level: 6,\n        memLevel: 8,\n        threshold: 1024\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1542,13 +1540,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 34590,
+										"target": 36771,
 										"name": "HttpCompressionOptions",
 										"package": "@medusajs/framework"
 									}
 								},
 								{
-									"id": 34622,
+									"id": 36801,
 									"name": "storeCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1610,7 +1608,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1618,7 +1616,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      storeCors: process.env.STORE_CORS,\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      storeCors: process.env.STORE_CORS,\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													},
 													{
 														"kind": "text",
@@ -1626,7 +1624,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1642,7 +1640,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      storeCors: \"/vercel\\\\.app$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      storeCors: \"/vercel\\\\.app$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1654,7 +1652,7 @@
 									}
 								},
 								{
-									"id": 34623,
+									"id": 36802,
 									"name": "adminCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1716,7 +1714,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1724,7 +1722,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      adminCors: process.env.ADMIN_CORS,\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      adminCors: process.env.ADMIN_CORS,\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													},
 													{
 														"kind": "text",
@@ -1732,7 +1730,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1748,7 +1746,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      adminCors: \"/vercel\\\\.app$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      adminCors: \"/vercel\\\\.app$/\",\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1760,7 +1758,7 @@
 									}
 								},
 								{
-									"id": 34624,
+									"id": 36803,
 									"name": "authMethodsPerActor",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1824,7 +1822,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "`medusa-config.js`"
+														"text": "`medusa-config.ts`"
 													},
 													{
 														"kind": "text",
@@ -1832,7 +1830,7 @@
 													},
 													{
 														"kind": "code",
-														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authMethodsPerActor: {\n        user: [\"email\"],\n        customer: [\"emailpass\", \"google\"]\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
+														"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      authMethodsPerActor: {\n        user: [\"email\"],\n        customer: [\"emailpass\", \"google\"]\n      }\n    }\n    // ...\n  },\n  // ...\n})\n```"
 													}
 												]
 											}
@@ -1860,20 +1858,85 @@
 										"name": "Record",
 										"package": "typescript"
 									}
+								},
+								{
+									"id": 36804,
+									"name": "restrictedFields",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Specifies the fields that can't be selected in the response unless specified in the allowed query config.\nThis is useful to restrict sensitive fields from being exposed in the API."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    http: {\n      restrictedFields: {\n        store: [\"order\", \"orders\"],\n      }\n    }\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 36805,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 36806,
+													"name": "store",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														36806
+													]
+												}
+											]
+										}
+									}
 								}
 							],
 							"groups": [
 								{
 									"title": "Properties",
 									"children": [
-										34617,
-										34618,
-										34619,
-										34620,
-										34621,
-										34622,
-										34623,
-										34624
+										36796,
+										36797,
+										36798,
+										36799,
+										36800,
+										36801,
+										36802,
+										36803,
+										36804
 									]
 								}
 							]
@@ -1885,23 +1948,23 @@
 				{
 					"title": "Properties",
 					"children": [
-						34596,
-						34597,
-						34598,
-						34599,
-						34601,
-						34608,
-						34609,
-						34610,
-						34611,
-						34614,
-						34615
+						36777,
+						36778,
+						36779,
+						36780,
+						36781,
+						36788,
+						36789,
+						36790,
+						36791,
+						36793,
+						36794
 					]
 				}
 			]
 		},
 		{
-			"id": 34625,
+			"id": 36807,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1914,7 +1977,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "`medusa-config.js`"
+						"text": "`medusa-config.ts`"
 					},
 					{
 						"kind": "text",
@@ -1922,7 +1985,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "`medusa-config.js`"
+						"text": "`medusa-config.ts`"
 					},
 					{
 						"kind": "text",
@@ -1938,7 +2001,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "`@medusajs/utils`"
+						"text": "`@medusajs/framework/utils`"
 					},
 					{
 						"kind": "text",
@@ -1956,7 +2019,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 34626,
+						"target": 36808,
 						"tsLinkText": "projectConfig"
 					},
 					{
@@ -1967,7 +2030,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "admin",
-						"target": 34627,
+						"target": 36809,
 						"tsLinkText": "admin"
 					},
 					{
@@ -1978,7 +2041,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 34632,
+						"target": 36814,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1989,7 +2052,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 34633,
+						"target": 36815,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1998,7 +2061,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    // ...\n  },\n  admin: {\n    // ...\n  },\n  modules: {\n    // ...\n  },\n  featureFlags: {\n    // ...\n  }\n})\n```"
+						"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  projectConfig: {\n    // ...\n  },\n  admin: {\n    // ...\n  },\n  modules: {\n    // ...\n  },\n  featureFlags: {\n    // ...\n  }\n})\n```"
 					},
 					{
 						"kind": "text",
@@ -2006,7 +2069,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "`medusa-config.js`"
+						"text": "`medusa-config.ts`"
 					},
 					{
 						"kind": "text",
@@ -2024,7 +2087,7 @@
 			},
 			"children": [
 				{
-					"id": 34626,
+					"id": 36808,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2039,13 +2102,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 34595,
+						"target": 36776,
 						"name": "ProjectConfigOptions",
 						"package": "@medusajs/framework"
 					}
 				},
 				{
-					"id": 34627,
+					"id": 36809,
 					"name": "admin",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2065,7 +2128,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  admin: {\n    backendUrl: process.env.MEDUSA_BACKEND_URL ||\n      \"http://localhost:9000\"\n  },\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  admin: {\n    backendUrl: process.env.MEDUSA_BACKEND_URL ||\n      \"http://localhost:9000\"\n  },\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -2073,13 +2136,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 34581,
+						"target": 36762,
 						"name": "AdminOptions",
 						"package": "@medusajs/framework"
 					}
 				},
 				{
-					"id": 34632,
+					"id": 36814,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2090,7 +2153,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "This property holds all custom modules installed in your Medusa application.\n\n:::note\n\nMedusa's commerce modules are configured by default, so only\nadd them to this property if you're changing their configurations or adding providers to a module.\n\n:::\n\nThe keys of the "
+								"text": "This property holds all custom modules installed in your Medusa application.\n\n:::note\n\nMedusa's commerce modules are configured by default, so only\nadd them to this property if you're changing their configurations or adding providers to a module.\n\n:::\n\n"
 							},
 							{
 								"kind": "code",
@@ -2098,7 +2161,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " configuration object refer to the module's registration name. Its value can be one of the following:\n\n1. A boolean value indicating whether the module type is enabled. This is only supported for Medusa's commerce and architectural modules;\n2. Or an object having the following properties:\n    1. "
+								"text": " is an array of objects, each holding a module's registration configurations. Each object has the following properties:\n\n1. "
 							},
 							{
 								"kind": "code",
@@ -2122,7 +2185,7 @@
 							},
 							{
 								"kind": "text",
-								"text": ".\n    2. "
+								"text": ".\n2. "
 							},
 							{
 								"kind": "code",
@@ -2139,7 +2202,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  modules: {\n    helloModuleService: {\n      resolve: \"./modules/hello\"\n    }\n  }\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  modules: [\n    {\n      resolve: \"./modules/hello\"\n    }\n  ]\n  // ...\n})\n```"
 									}
 								]
 							}
@@ -2205,7 +2268,7 @@
 					}
 				},
 				{
-					"id": 34633,
+					"id": 36815,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2218,7 +2281,7 @@
 							},
 							{
 								"kind": "code",
-								"text": "`medusa-config.js`"
+								"text": "`medusa-config.ts`"
 							},
 							{
 								"kind": "text",
@@ -2239,7 +2302,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = defineConfig({\n  featureFlags: {\n    analytics: true,\n    // ...\n  }\n  // ...\n})\n```"
+										"text": "```ts title=\"medusa-config.ts\"\nmodule.exports = defineConfig({\n  featureFlags: {\n    analytics: true,\n    // ...\n  }\n  // ...\n})\n```"
 									},
 									{
 										"kind": "text",
@@ -2302,16 +2365,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						34626,
-						34627,
-						34632,
-						34633
+						36808,
+						36809,
+						36814,
+						36815
 					]
 				}
 			]
 		},
 		{
-			"id": 34634,
+			"id": 36816,
 			"name": "PluginDetails",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2319,14 +2382,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 34635,
+					"id": 36817,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 34636,
+							"id": 36818,
 							"name": "resolve",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2337,7 +2400,7 @@
 							}
 						},
 						{
-							"id": 34637,
+							"id": 36819,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2348,7 +2411,7 @@
 							}
 						},
 						{
-							"id": 34638,
+							"id": 36820,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2359,7 +2422,7 @@
 							}
 						},
 						{
-							"id": 34639,
+							"id": 36821,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2385,7 +2448,7 @@
 							}
 						},
 						{
-							"id": 34640,
+							"id": 36822,
 							"name": "version",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2400,11 +2463,11 @@
 						{
 							"title": "Properties",
 							"children": [
-								34636,
-								34637,
-								34638,
-								34639,
-								34640
+								36818,
+								36819,
+								36820,
+								36821,
+								36822
 							]
 						}
 					]
@@ -2416,244 +2479,256 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				34581,
-				34590,
-				34595,
-				34625
+				36762,
+				36771,
+				36776,
+				36807
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				34634
+				36816
 			]
 		}
 	],
 	"packageName": "@medusajs/framework",
 	"symbolIdMap": {
-		"34580": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36761": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": ""
 		},
-		"34581": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36762": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "AdminOptions"
 		},
-		"34582": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36763": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.disable"
 		},
-		"34583": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36764": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.path"
 		},
-		"34584": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36765": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.outDir"
 		},
-		"34585": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36766": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.backendUrl"
 		},
-		"34586": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36767": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.vite"
 		},
-		"34587": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36768": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34588": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36769": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34589": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36770": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "config"
 		},
-		"34590": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36771": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "HttpCompressionOptions"
 		},
-		"34591": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36772": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.enabled"
 		},
-		"34592": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36773": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.level"
 		},
-		"34593": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36774": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.memLevel"
 		},
-		"34594": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36775": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.threshold"
 		},
-		"34595": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36776": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "ProjectConfigOptions"
 		},
-		"34596": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36777": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.databaseName"
 		},
-		"34597": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36778": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.databaseUrl"
 		},
-		"34598": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36779": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.databaseSchema"
 		},
-		"34599": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36780": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.databaseLogging"
 		},
-		"34601": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36781": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.databaseDriverOptions"
 		},
-		"34602": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36782": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34603": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36783": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.connection"
 		},
-		"34604": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36784": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34605": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36785": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.ssl"
 		},
-		"34606": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36786": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34607": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36787": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.rejectUnauthorized"
 		},
-		"34608": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36788": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.redisUrl"
 		},
-		"34609": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36789": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.redisPrefix"
 		},
-		"34610": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36790": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.redisOptions"
 		},
-		"34611": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36791": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.sessionOptions"
 		},
-		"34614": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36793": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.workerMode"
 		},
-		"34615": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36794": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.http"
 		},
-		"34616": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36795": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34617": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36796": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.jwtSecret"
 		},
-		"34618": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36797": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.jwtExpiresIn"
 		},
-		"34619": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36798": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.cookieSecret"
 		},
-		"34620": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36799": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.authCors"
 		},
-		"34621": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36800": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.compression"
 		},
-		"34622": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36801": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.storeCors"
 		},
-		"34623": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36802": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.adminCors"
 		},
-		"34624": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36803": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.authMethodsPerActor"
 		},
-		"34625": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "ConfigModule"
+		"36804": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.restrictedFields"
 		},
-		"34626": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "__type.projectConfig"
-		},
-		"34627": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "__type.admin"
-		},
-		"34632": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "__type.modules"
-		},
-		"34633": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "__type.featureFlags"
-		},
-		"34634": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
-			"qualifiedName": "PluginDetails"
-		},
-		"34635": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36805": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type"
 		},
-		"34636": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36806": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.store"
+		},
+		"36807": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "ConfigModule"
+		},
+		"36808": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.projectConfig"
+		},
+		"36809": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.admin"
+		},
+		"36814": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.modules"
+		},
+		"36815": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type.featureFlags"
+		},
+		"36816": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "PluginDetails"
+		},
+		"36817": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
+			"qualifiedName": "__type"
+		},
+		"36818": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"34637": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36819": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.name"
 		},
-		"34638": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36820": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.id"
 		},
-		"34639": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36821": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.options"
 		},
-		"34640": {
-			"sourceFileName": "../../../../packages/framework/framework/src/config/types.ts",
+		"36822": {
+			"sourceFileName": "../../../../packages/core/framework/src/config/types.ts",
 			"qualifiedName": "__type.version"
 		}
 	},
 	"files": {
 		"entries": {
-			"1": "../../../../packages/framework/framework/src/config/types.ts"
+			"1": "../../../../packages/core/framework/src/config/types.ts"
 		},
 		"reflections": {
-			"1": 34580
+			"1": 36761
 		}
 	}
 }

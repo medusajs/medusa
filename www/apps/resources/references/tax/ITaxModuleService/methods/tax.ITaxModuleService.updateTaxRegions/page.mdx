@@ -1,0 +1,64 @@
+---
+displayed_sidebar: taxReference
+slug: /references/tax/updateTaxRegions
+sidebar_label: updateTaxRegions
+---
+
+import { TypeList } from "docs-ui"
+
+# updateTaxRegions - Tax Module Reference
+
+This documentation provides a reference to the `updateTaxRegions` method. This belongs to the Tax Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
+## updateTaxRegions(data, sharedContext?): Promise&#60;[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)&#62;
+
+This method updates a tax region.
+
+### Example
+
+```ts
+const taxRegion = await taxModule.updateTaxRegions({
+  province_code: "be",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateTaxRegionDTO](../../../interfaces/tax.UpdateTaxRegionDTO/page.mdx)","description":"The tax region to be updated.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the tax region to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"The province code of the tax region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../types/tax.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/tax.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/tax.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateTaxRegions"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated tax region.","expandable":false,"children":[{"name":"TaxRegionDTO","type":"[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)","optional":false,"defaultValue":"","description":"The tax region details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The ISO 2 character country code of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"The province code of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"The ID of the tax region's parent tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The creation date of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The update date of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"Who created the tax region. For example, the ID of the user\nthat created the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The deletion date of the tax region.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateTaxRegions"/>
+
+## updateTaxRegions(data, sharedContext?): Promise&#60;[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)[]&#62;
+
+This method updates tax regions.
+
+### Example
+
+```ts
+const taxRegions = await taxModule.updateTaxRegions([
+  {
+    id: "tx-1",
+    province_code: "be",
+  },
+  {
+    id: "tx-2",
+    province_code: "ca",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateTaxRegionDTO](../../../interfaces/tax.UpdateTaxRegionDTO/page.mdx)[]","description":"The tax regions to be updated.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the tax region to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"The province code of the tax region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../types/tax.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/tax.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/tax.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateTaxRegions"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The updated tax regions.","expandable":false,"children":[{"name":"TaxRegionDTO[]","type":"[TaxRegionDTO](../../../interfaces/tax.TaxRegionDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"TaxRegionDTO","type":"`object`","description":"The tax region details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateTaxRegions"/>
