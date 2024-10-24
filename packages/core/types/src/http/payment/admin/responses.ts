@@ -8,6 +8,9 @@ import {
 } from "./entities"
 
 export interface AdminPaymentCollectionResponse {
+  /**
+   * The payment collection's details.
+   */
   payment_collection: AdminPaymentCollection
 }
 
@@ -19,10 +22,16 @@ export interface AdminPaymentCollectionsResponse {
 }
 
 export interface AdminPaymentResponse {
+  /**
+   * The payment's details.
+   */
   payment: AdminPayment
 }
 
 export type AdminPaymentsResponse = PaginatedResponse<{
+  /**
+   * The list of payments.
+   */
   payments: AdminPayment[]
 }>
 
@@ -43,6 +52,9 @@ export type RefundReasonsResponse = PaginatedResponse<{
 }>
 
 export type AdminPaymentProviderListResponse = PaginatedResponse<{
+  /**
+   * The list of payment providers.
+   */
   payment_providers: AdminPaymentProvider[]
 }>
 

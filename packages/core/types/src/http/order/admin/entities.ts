@@ -17,13 +17,37 @@ import {
 } from "../common"
 
 export interface AdminOrder extends Omit<BaseOrder, "items"> {
+  /**
+   * The order's payment collections.
+   */
   payment_collections: AdminPaymentCollection[]
+  /**
+   * The order's fulfillments.
+   */
   fulfillments?: AdminOrderFulfillment[]
+  /**
+   * The associated sales channel's details.
+   */
   sales_channel?: AdminSalesChannel
+  /**
+   * The details of the customer that placed the order.
+   */
   customer?: AdminCustomer
+  /**
+   * The order's shipping address.
+   */
   shipping_address?: AdminOrderAddress | null
+  /**
+   * The order's billing address.
+   */
   billing_address?: AdminOrderAddress | null
+  /**
+   * The order's items.
+   */
   items: AdminOrderLineItem[]
+  /**
+   * The order's shipping methods.
+   */
   shipping_methods: AdminOrderShippingMethod[]
 }
 
@@ -54,19 +78,6 @@ export interface AdminOrderChange
   actions: AdminOrderChangeAction[]
 }
 
-export interface AdminOrderItem {
-  order_id: string
-  item_id: string
-  version: number
-  history: {
-    version: {
-      from: number
-      to: number
-    }
-  }
-  item: AdminOrderLineItem
-}
-
 export interface AdminOrderChangeAction
   extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
   /**
@@ -82,25 +93,58 @@ export interface AdminOrderChangeAction
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
 export interface AdminOrderItem {
+  /**
+   * The ID of the order that the item belongs to.
+   */
   order_id: string
+  /**
+   * The ID of the associated line item.
+   */
   item_id: string
+  /**
+   * The order version that the item belongs to.
+   */
   version: number
+  /**
+   * The item's history details.
+   */
   history: {
+    /**
+     * The item's version details.
+     */
     version: {
+      /**
+       * The version it was added in.
+       */
       from: number
+      /**
+       * The version it's still available in.
+       */
       to: number
     }
   }
+  /**
+   * The associated line item's details.
+   */
   item: AdminOrderLineItem
 }
 
 export interface AdminOrderLineItem
   extends Omit<BaseOrderLineItem, "variant" | "product"> {
+  /**
+   * The associated variant's details.
+   */
   variant?: AdminProductVariant
+  /**
+   * The associated product's details.
+   */
   product?: AdminProduct
 }
 
 export interface AdminOrderAddress extends BaseOrderAddress {
+  /**
+   * The address's country.
+   */
   country?: AdminRegionCountry
 }
 
