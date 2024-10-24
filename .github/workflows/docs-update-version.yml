@@ -1,0 +1,54 @@
+name: Update Version in Docs
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-docs-version:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs-update-version
+
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build Workspace packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Update Docs Version
+        run: yarn update:config-version
+        working-directory: www/utils/packages/scripts
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Update version in documentation (automated)"
+          base: "develop"
+          title: "chore(docs): Update version in documentation (automated)"
+          labels: "type: chore"
+          add-paths: www/packages/docs-ui/src/global-config.ts
+          branch: "docs/update-config-version"
+          branch-suffix: "timestamp"
