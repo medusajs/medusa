@@ -18,18 +18,38 @@ type InputSource = {
   alias?: string
   linkable: string
   primaryKey: string
+  args?: Record<string, any>
+  isList?: boolean
 }
 
-type ReadOnlyInputSource = {
-  linkable:
-    | CombinedSource
-    | InputSource
-    | {
-        serviceName: string
-        entity?: string
-      }
-  field?: string
+type RawBaseModuleInput = {
+  module: string
+  entity?: string
+  field: string
+  args?: Record<string, any>
 }
+
+type ReadOnlyInputFromSource =
+  | CombinedSource
+  | InputSource
+  | {
+      linkable: CombinedSource | InputSource
+      field?: string
+    }
+  | RawBaseModuleInput
+
+type ReadOnlyInputToSource =
+  | CombinedSource
+  | InputSource
+  | {
+      linkable: CombinedSource | InputSource
+      alias?: string
+      isList?: boolean
+    }
+  | (RawBaseModuleInput & {
+      alias: string
+      isList?: boolean
+    })
 
 type InputToJson = {
   toJSON: () => InputSource
@@ -40,6 +60,7 @@ type CombinedSource = Record<any, any> & InputToJson
 type InputOptions = {
   linkable: CombinedSource | InputSource
   field?: string
+  alias?: string
   isList?: boolean
   deleteCascade?: boolean
 }
@@ -63,18 +84,18 @@ type ExtraOptions = {
   readOnly?: boolean
 }
 
-type ReadOnlyExtraOptions = {
-  readOnly: true
+type ReadOnlyOptions = {
   isList?: boolean
   shortcut?: Shortcut | Shortcut[]
 }
 
+type ReadOnlyExtraOptions = {
+  readOnly: true
+} & ReadOnlyOptions
+
 type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
 
-type DefineReadOnlyLinkInputSource =
-  | ReadOnlyInputSource
-  | InputOptions
-  | CombinedSource
+type DefineReadOnlyLinkInputSource = InputOptions | CombinedSource
 
 type ModuleLinkableKeyConfig = {
   module: string
@@ -86,6 +107,11 @@ type ModuleLinkableKeyConfig = {
   primaryKey: string
   alias: string
   shortcut?: Shortcut | Shortcut[]
+  args?: Record<string, any>
+}
+
+function isRawBaseModuleSource(input: any): input is RawBaseModuleInput {
+  return isObject(input) && input?.["module"]
 }
 
 function isInputOptions(input: any): input is InputOptions {
@@ -125,11 +151,27 @@ function buildFieldAlias(fieldAliases?: Shortcut | Shortcut[]) {
 }
 
 function prepareServiceConfig(
-  input: DefineLinkInputSource | DefineReadOnlyLinkInputSource
+  input:
+    | DefineLinkInputSource
+    | DefineReadOnlyLinkInputSource
+    | ReadOnlyInputFromSource
+    | ReadOnlyInputToSource
 ) {
   let serviceConfig = {} as ModuleLinkableKeyConfig
 
-  if (isInputSource(input)) {
+  if (isRawBaseModuleSource(input)) {
+    const source_ = input as any
+    serviceConfig = {
+      key: source_.field! ?? source_.alias,
+      alias: source_.alias ?? camelToSnakeCase(source_.field ?? ""),
+      field: source_.field,
+      primaryKey: source_.field,
+      isList: source_.isList,
+      module: source_.module,
+      entity: source_.entity,
+      args: source_.args,
+    }
+  } else if (isInputSource(input)) {
     const source = isToJSON(input) ? input.toJSON() : input
 
     serviceConfig = {
@@ -137,10 +179,11 @@ function prepareServiceConfig(
       alias: source.alias ?? camelToSnakeCase(source.field ?? ""),
       field: input.field ?? source.field,
       primaryKey: source.primaryKey,
-      isList: false,
+      isList: input.isList ?? false,
       deleteCascade: false,
       module: source.serviceName,
       entity: source.entity,
+      args: source.args,
     }
   } else if (isInputOptions(input)) {
     const source = isToJSON(input.linkable)
@@ -149,13 +192,15 @@ function prepareServiceConfig(
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.alias ?? camelToSnakeCase(source.field ?? ""),
+      alias:
+        input.alias ?? source.alias ?? camelToSnakeCase(source.field ?? ""),
       field: input.field ?? source.field,
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
       module: source.serviceName,
       entity: source.entity,
+      args: source.args,
     }
   } else {
     throw new Error(
@@ -179,20 +224,27 @@ function prepareServiceConfig(
  * @param linkServiceOptions
  */
 export function defineLink(
-  leftService: DefineLinkInputSource | DefineReadOnlyLinkInputSource,
-  rightService: DefineLinkInputSource | DefineReadOnlyLinkInputSource,
+  leftService:
+    | DefineLinkInputSource
+    | DefineReadOnlyLinkInputSource
+    | ReadOnlyInputFromSource,
+  rightService:
+    | DefineLinkInputSource
+    | DefineReadOnlyLinkInputSource
+    | ReadOnlyInputToSource,
   linkServiceOptions?: ExtraOptions | ReadOnlyExtraOptions
 ): DefineLinkExport {
+  if (linkServiceOptions?.readOnly) {
+    defineReadOnlyLink(
+      leftService as ReadOnlyInputFromSource,
+      rightService as ReadOnlyInputToSource,
+      linkServiceOptions as ReadOnlyExtraOptions
+    )
+    return undefined as unknown as DefineLinkExport
+  }
+
   const serviceAObj = prepareServiceConfig(leftService)
   const serviceBObj = prepareServiceConfig(rightService)
-
-  if (linkServiceOptions?.readOnly) {
-    return defineReadOnlyLink(
-      serviceAObj,
-      serviceBObj,
-      linkServiceOptions as ReadOnlyExtraOptions
-    ) as unknown as DefineLinkExport
-  }
 
   const output = {
     [DefineLinkSymbol]: true,
@@ -370,6 +422,7 @@ ${serviceBObj.module}: {
           alias: aliasA,
           args: {
             methodSuffix: serviceAMethodSuffix,
+            ...serviceAObj.args,
           },
           deleteCascade: serviceAObj.deleteCascade,
         },
@@ -381,6 +434,7 @@ ${serviceBObj.module}: {
           alias: aliasB,
           args: {
             methodSuffix: serviceBMethodSuffix,
+            ...serviceBObj.args,
           },
           deleteCascade: serviceBObj.deleteCascade,
         },
@@ -440,11 +494,14 @@ ${serviceBObj.module}: {
   return output
 }
 
-function defineReadOnlyLink(
-  serviceAObj: ModuleLinkableKeyConfig,
-  serviceBObj: ModuleLinkableKeyConfig,
-  readOnlyLinkOptions?: ReadOnlyExtraOptions
-): void {
+export function defineReadOnlyLink(
+  from: ReadOnlyInputFromSource,
+  to: ReadOnlyInputToSource,
+  readOnlyLinkOptions?: ReadOnlyOptions
+): (...args) => ModuleJoinerConfig {
+  const serviceAObj = prepareServiceConfig(from)
+  const serviceBObj = prepareServiceConfig(to)
+
   const register = function (
     modules: ModuleJoinerConfig[]
   ): ModuleJoinerConfig {
@@ -482,6 +539,7 @@ ${serviceBObj.module}: {
       extends: [
         {
           serviceName: serviceAObj.module,
+          entity: serviceAObj.entity,
           fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
           relationship: {
             serviceName: serviceBObj.module,
@@ -489,7 +547,8 @@ ${serviceBObj.module}: {
             primaryKey: serviceBObj.primaryKey,
             foreignKey: serviceAObj.field,
             alias: serviceBObj.alias,
-            isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
+            isList: readOnlyLinkOptions?.isList ?? serviceBObj.isList ?? false,
+            args: serviceBObj.args,
           },
         },
       ],
@@ -497,4 +556,6 @@ ${serviceBObj.module}: {
   }
 
   global.MedusaModule.setCustomLink(register)
+
+  return register
 }

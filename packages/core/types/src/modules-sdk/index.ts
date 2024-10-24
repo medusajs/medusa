@@ -198,6 +198,7 @@ export type ModuleJoinerConfig = Omit<
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string
+    entity?: string
     fieldAlias?: Record<
       string,
       | string
