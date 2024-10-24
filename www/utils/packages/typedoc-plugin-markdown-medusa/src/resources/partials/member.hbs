@@ -1,4 +1,4 @@
-{{#unless hasOwnDocument}}
+{{#ifMemberShowTitle}}
 
 {{#if name}}
 
@@ -8,7 +8,7 @@
 
 {{/if}}
 
-{{/unless}}
+{{/ifMemberShowTitle}}
 
 {{#if signatures}}
 
@@ -64,7 +64,7 @@
 
 {{/if}}
 
-{{#unless hasOwnDocument}}
+{{#ifMemberShowTitle}}
 
 {{#if name}}
 
@@ -72,14 +72,14 @@
 
 {{/if}}
 
-{{/unless}}
+{{/ifMemberShowTitle}}
 
 {{#ifShowSeparatorForTitleLevel}}
 {{#unless @last}}
-{{#unless hasOwnDocument}}
+{{#ifMemberShowTitle}}
 {{#unless removeSeparator}}
 ___
 {{/unless}}
-{{/unless}}
+{{/ifMemberShowTitle}}
 {{/unless}}
 {{/ifShowSeparatorForTitleLevel}}

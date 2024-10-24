@@ -14,6 +14,7 @@ const baseSectionsOptions: Sections = {
   member_signature_returns: false,
   title_reflectionPath: false,
   member_declaration_children: false,
+  member_force_title: false,
 }
 
 export default baseSectionsOptions

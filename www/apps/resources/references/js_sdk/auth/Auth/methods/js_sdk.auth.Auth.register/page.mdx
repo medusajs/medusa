@@ -1,0 +1,34 @@
+---
+slug: /references/js-sdk/auth/register
+sidebar_label: register
+---
+
+import { TypeList } from "docs-ui"
+
+# register - JS SDK Auth Reference
+
+This documentation provides a reference to the `sdk.auth.register` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method is used to retrieve a registration JWT token for a user, customer, or custom actor type. It sends a request to the
+[Retrieve Registration Token API route](https://docs.medusajs.com/v2/api/store#auth\_postactor\_typeauth\_provider\_register).
+
+## Example
+
+```ts
+sdk.auth
+  .register("customer", "emailpass", {
+    email: "customer@gmail.com",
+    password: "supersecret",
+  }
+  .then((token) => {
+    console.log(token)
+  })
+```
+
+## Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"method","type":"`string`","description":"The authentication provider to use. For example, `emailpass` or `google`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"`AdminSignUpWithEmailPassword`","description":"The data to pass in the request's body for authentication. When using the `emailpass` provider,\nyou pass the email and password.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="register"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The JWT token used for registration later.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="register"/>

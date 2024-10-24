@@ -8527,7 +8527,496 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/js-sdk",
         "title": "JS SDK",
-        "children": []
+        "isChildSidebar": true,
+        "childSidebarTitle": "JS SDK Reference",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Auth",
+            "autogenerate_path": "/references/js_sdk/auth/Auth/methods",
+            "initialOpen": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/callback",
+                "title": "callback",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/login",
+                "title": "login",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/logout",
+                "title": "logout",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/refresh",
+                "title": "refresh",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/register",
+                "title": "register",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/resetPassword",
+                "title": "resetPassword",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/auth/updateProvider",
+                "title": "updateProvider",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Store",
+            "autogenerate_path": "/references/js_sdk/store/Store/properties",
+            "initialOpen": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/cart",
+                "title": "cart",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/category",
+                "title": "category",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/collection",
+                "title": "collection",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/customer",
+                "title": "customer",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/fulfillment",
+                "title": "fulfillment",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/order",
+                "title": "order",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/payment",
+                "title": "payment",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/product",
+                "title": "product",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/region",
+                "title": "region",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Admin",
+            "autogenerate_path": "/references/js_sdk/admin/Admin/properties",
+            "initialOpen": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/apiKey",
+                "title": "apiKey",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/campaign",
+                "title": "campaign",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/claim",
+                "title": "claim",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/currency",
+                "title": "currency",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/customer",
+                "title": "customer",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/customerGroup",
+                "title": "customerGroup",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/exchange",
+                "title": "exchange",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/fulfillment",
+                "title": "fulfillment",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/fulfillmentProvider",
+                "title": "fulfillmentProvider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/fulfillmentSet",
+                "title": "fulfillmentSet",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/inventoryItem",
+                "title": "inventoryItem",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/invite",
+                "title": "invite",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/notification",
+                "title": "notification",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/order",
+                "title": "order",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/orderEdit",
+                "title": "orderEdit",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/payment",
+                "title": "payment",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/paymentCollection",
+                "title": "paymentCollection",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/priceList",
+                "title": "priceList",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/pricePreference",
+                "title": "pricePreference",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/product",
+                "title": "product",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/productCategory",
+                "title": "productCategory",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/productCollection",
+                "title": "productCollection",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/productTag",
+                "title": "productTag",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/productType",
+                "title": "productType",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/productVariant",
+                "title": "productVariant",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/promotion",
+                "title": "promotion",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/refundReason",
+                "title": "refundReason",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/region",
+                "title": "region",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/reservation",
+                "title": "reservation",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/return",
+                "title": "return",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/returnReason",
+                "title": "returnReason",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/salesChannel",
+                "title": "salesChannel",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/shippingOption",
+                "title": "shippingOption",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/shippingProfile",
+                "title": "shippingProfile",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/stockLocation",
+                "title": "stockLocation",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/store",
+                "title": "store",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/taxRate",
+                "title": "taxRate",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/taxRegion",
+                "title": "taxRegion",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/upload",
+                "title": "upload",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/user",
+                "title": "user",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/js-sdk/admin/workflowExecution",
+                "title": "workflowExecution",
+                "children": []
+              }
+            ]
+          }
+        ]
       },
       {
         "loaded": true,
@@ -8761,14 +9250,6 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "path": "/troubleshooting/deployment",
-            "title": "Deployment",
-            "children": []
           }
         ]
       }

@@ -1,15 +1,16 @@
-import inquirer from "inquirer"
 import { exec } from "child_process"
+import fs from "fs"
+import inquirer from "inquirer"
+import { customAlphabet } from "nanoid"
+import path from "path"
+import { isAbortError } from "./create-abort-controller.js"
 import execute from "./execute.js"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
-import fs from "fs"
-import path from "path"
-import { customAlphabet } from "nanoid"
-import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
 import ProcessManager from "./process-manager.js"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
+const NEXTJS_BRANCH = "main"
 
 export async function askForNextjsStarter(): Promise<boolean> {
   const { installNextjs } = await inquirer.prompt([
@@ -62,7 +63,7 @@ export async function installNextjsStarter({
     // TODO change back to use create-next-app once Next.js v2 changes land on the main branch
     await execute(
       [
-        `git clone ${NEXTJS_REPO} -b v2 ${nextjsDirectory}`,
+        `git clone ${NEXTJS_REPO} -b ${NEXTJS_BRANCH} ${nextjsDirectory}`,
         {
           signal: abortController?.signal,
           env: process.env,

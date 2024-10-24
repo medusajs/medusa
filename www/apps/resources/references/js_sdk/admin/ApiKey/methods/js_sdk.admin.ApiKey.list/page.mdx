@@ -1,0 +1,53 @@
+import { TypeList } from "docs-ui"
+
+# list
+
+This methods retrieves a paginated list of API keys. It sends a request to the 
+[List API Keys](https://docs.medusajs.com/v2/api/admin#api-keys\_getapikeys) API route.
+
+## Example
+
+To retrieve the list of API keys:
+
+```ts
+sdk.admin.apiKey.list()
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.apiKey.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each API key:
+
+```ts
+sdk.admin.apiKey.list({
+  fields: "id,*sales_channels"
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/v2/api/store#select-fields-and-relations).
+
+## Parameters
+
+<TypeList types={[{"name":"queryParams","type":"`AdminGetApiKeysParams`","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AdminApiKeyListResponse&#62;","optional":false,"defaultValue":"","description":"The paginated list of API keys.","expandable":false,"children":[{"name":"AdminApiKeyListResponse","type":"`AdminApiKeyListResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>

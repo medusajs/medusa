@@ -980,10 +980,6 @@ export const filesMap = [
     "pathname": "/troubleshooting/database-errors"
   },
   {
-    "filePath": "/www/apps/resources/app/troubleshooting/deployment/page.mdx",
-    "pathname": "/troubleshooting/deployment"
-  },
-  {
     "filePath": "/www/apps/resources/app/troubleshooting/dist-imports/page.mdx",
     "pathname": "/troubleshooting/dist-imports"
   },
@@ -9188,6 +9184,1814 @@ export const filesMap = [
     "pathname": "/references/inventory_next_models/classes/inventory_next_models.ReservationItem"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.claim/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.claim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.currency/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.currency"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customer/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customerGroup/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.customerGroup"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.exchange/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.exchange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentProvider/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentSet/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.fulfillmentSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.inventoryItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.inventoryItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.invite/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.invite"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.order/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.order"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.orderEdit/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.orderEdit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.payment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.payment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.paymentCollection/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.paymentCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.priceList/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.priceList"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.pricePreference/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.pricePreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.product/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.product"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCategory/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCollection/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productTag/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productTag"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productType/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.productVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.refundReason/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.refundReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.region/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.region"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.reservation/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.reservation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.return/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.return"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.returnReason/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.returnReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingProfile/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.stockLocation/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.stockLocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.store/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.store"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRate/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRate"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRegion/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.taxRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.upload/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.upload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.user/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.user"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.workflowExecution/page.mdx",
+    "pathname": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.workflowExecution"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.batchSalesChannels/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.batchSalesChannels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.revoke/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.revoke"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/methods/js_sdk.admin.ApiKey.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/properties/js_sdk.admin.ApiKey.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ApiKey/properties/js_sdk.admin.ApiKey.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.batchPromotions/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.batchPromotions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/properties/js_sdk.admin.Campaign.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Campaign/properties/js_sdk.admin.Campaign.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addInboundItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addInboundItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addOutboundItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addOutboundItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.addOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.cancel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.cancelRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.cancelRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.deleteInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.deleteInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.deleteOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.deleteOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeInboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeInboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeOutboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.removeOutboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.request/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.request"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateInboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateInboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateOutboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateOutboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/methods/js_sdk.admin.Claim.updateOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Claim/properties/js_sdk.admin.Claim.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Claim/properties/js_sdk.admin.Claim.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.clearToken/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.clearToken"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.clearToken_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.clearToken_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.fetch/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.fetch"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.fetchStream/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.fetchStream"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getApiKeyHeader_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getApiKeyHeader_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getJwtHeader_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getJwtHeader_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getPublishableKeyHeader_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getPublishableKeyHeader_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getTokenStorageInfo_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getTokenStorageInfo_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getToken_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getToken_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.initClient/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.initClient"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.setToken/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.setToken"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.setToken_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/methods/js_sdk.admin.Client.setToken_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.DEFAULT_JWT_STORAGE_KEY/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.DEFAULT_JWT_STORAGE_KEY"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.config/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.config"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.fetch_/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.fetch_"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.logger/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.logger"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.token/page.mdx",
+    "pathname": "/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.token"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Currency/methods/js_sdk.admin.Currency.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Currency/methods/js_sdk.admin.Currency.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Currency/methods/js_sdk.admin.Currency.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Currency/methods/js_sdk.admin.Currency.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Currency/properties/js_sdk.admin.Currency.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Currency/properties/js_sdk.admin.Currency.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Customer/properties/js_sdk.admin.Customer.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Customer/properties/js_sdk.admin.Customer.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.batchCustomers/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.batchCustomers"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/methods/js_sdk.admin.CustomerGroup.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/CustomerGroup/properties/js_sdk.admin.CustomerGroup.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/CustomerGroup/properties/js_sdk.admin.CustomerGroup.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addInboundItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addInboundItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addOutboundItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addOutboundItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.addOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.cancel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.cancelRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.cancelRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.deleteInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.deleteInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.deleteOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.deleteOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.removeInboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.removeInboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.removeOutboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.removeOutboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.request/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.request"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateInboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateInboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateInboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateInboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateOutboundItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateOutboundItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateOutboundShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/methods/js_sdk.admin.Exchange.updateOutboundShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Exchange/properties/js_sdk.admin.Exchange.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Exchange/properties/js_sdk.admin.Exchange.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FetchStreamResponse/properties/js_sdk.admin.FetchStreamResponse.abort/page.mdx",
+    "pathname": "/references/js_sdk/admin/FetchStreamResponse/properties/js_sdk.admin.FetchStreamResponse.abort"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FetchStreamResponse/properties/js_sdk.admin.FetchStreamResponse.stream/page.mdx",
+    "pathname": "/references/js_sdk/admin/FetchStreamResponse/properties/js_sdk.admin.FetchStreamResponse.stream"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.cancel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.createShipment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Fulfillment/methods/js_sdk.admin.Fulfillment.createShipment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Fulfillment/properties/js_sdk.admin.Fulfillment.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Fulfillment/properties/js_sdk.admin.Fulfillment.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentProvider/methods/js_sdk.admin.FulfillmentProvider.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentProvider/methods/js_sdk.admin.FulfillmentProvider.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentProvider/properties/js_sdk.admin.FulfillmentProvider.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentProvider/properties/js_sdk.admin.FulfillmentProvider.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.createServiceZone/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.createServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.deleteServiceZone/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.deleteServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.retrieveServiceZone/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.retrieveServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.updateServiceZone/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/methods/js_sdk.admin.FulfillmentSet.updateServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/FulfillmentSet/properties/js_sdk.admin.FulfillmentSet.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/FulfillmentSet/properties/js_sdk.admin.FulfillmentSet.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.batchUpdateLevels/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.batchUpdateLevels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.deleteLevel/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.deleteLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.listLevels/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.listLevels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.updateLevel/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/methods/js_sdk.admin.InventoryItem.updateLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/InventoryItem/properties/js_sdk.admin.InventoryItem.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/InventoryItem/properties/js_sdk.admin.InventoryItem.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.accept/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.accept"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.resend/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.resend"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Invite/properties/js_sdk.admin.Invite.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Invite/properties/js_sdk.admin.Invite.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Notification/properties/js_sdk.admin.Notification.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Notification/properties/js_sdk.admin.Notification.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancelFulfillment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancelFulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.createFulfillment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.createFulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.createShipment/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.createShipment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.listChanges/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.listChanges"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.listLineItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.listLineItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.markAsDelivered/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.markAsDelivered"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.retrievePreview/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.retrievePreview"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/properties/js_sdk.admin.Order.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Order/properties/js_sdk.admin.Order.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.addItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.addItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.cancelRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.cancelRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.confirm/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.confirm"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.initiateRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.initiateRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.removeAddedItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.removeAddedItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.request/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.request"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.updateAddedItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.updateAddedItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.updateOriginalItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/methods/js_sdk.admin.OrderEdit.updateOriginalItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/OrderEdit/properties/js_sdk.admin.OrderEdit.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/OrderEdit/properties/js_sdk.admin.OrderEdit.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.capture/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.capture"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.listPaymentProviders/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.listPaymentProviders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.refund/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.refund"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/methods/js_sdk.admin.Payment.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Payment/properties/js_sdk.admin.Payment.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Payment/properties/js_sdk.admin.Payment.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.markAsPaid/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.markAsPaid"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/properties/js_sdk.admin.PaymentCollection.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/properties/js_sdk.admin.PaymentCollection.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.batchPrices/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.batchPrices"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.linkProducts/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.linkProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/methods/js_sdk.admin.PriceList.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PriceList/properties/js_sdk.admin.PriceList.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/PriceList/properties/js_sdk.admin.PriceList.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/methods/js_sdk.admin.PricePreference.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PricePreference/properties/js_sdk.admin.PricePreference.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/PricePreference/properties/js_sdk.admin.PricePreference.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batch/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batch"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batchVariantInventoryItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batchVariantInventoryItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batchVariants/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.batchVariants"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.confirmImport/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.confirmImport"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.createOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.createOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.createVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.createVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.deleteOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.deleteOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.deleteVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.deleteVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.export/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.export"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.import/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.import"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listOptions/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listVariants/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listVariants"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieveOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieveOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieveVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.retrieveVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.updateOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.updateOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.updateVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.updateVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Product/properties/js_sdk.admin.Product.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Product/properties/js_sdk.admin.Product.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.updateProducts/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/methods/js_sdk.admin.ProductCategory.updateProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCategory/properties/js_sdk.admin.ProductCategory.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCategory/properties/js_sdk.admin.ProductCategory.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.updateProducts/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.updateProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductCollection/properties/js_sdk.admin.ProductCollection.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductCollection/properties/js_sdk.admin.ProductCollection.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductTag/properties/js_sdk.admin.ProductTag.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductTag/properties/js_sdk.admin.ProductTag.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/methods/js_sdk.admin.ProductType.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductType/properties/js_sdk.admin.ProductType.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductType/properties/js_sdk.admin.ProductType.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductVariant/methods/js_sdk.admin.ProductVariant.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductVariant/methods/js_sdk.admin.ProductVariant.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ProductVariant/properties/js_sdk.admin.ProductVariant.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ProductVariant/properties/js_sdk.admin.ProductVariant.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.addRules/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.addRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleValues/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleValues"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRules/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.removeRules/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.removeRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.updateRules/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.updateRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/properties/js_sdk.admin.Promotion.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Promotion/properties/js_sdk.admin.Promotion.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RefundReason/properties/js_sdk.admin.RefundReason.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/RefundReason/properties/js_sdk.admin.RefundReason.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/methods/js_sdk.admin.Region.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Region/properties/js_sdk.admin.Region.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Region/properties/js_sdk.admin.Region.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/methods/js_sdk.admin.Reservation.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Reservation/properties/js_sdk.admin.Reservation.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Reservation/properties/js_sdk.admin.Reservation.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.addReturnItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.addReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.addReturnShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.addReturnShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancel/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancelReceive/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancelReceive"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancelRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.cancelRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.confirmReceive/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.confirmReceive"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.confirmRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.confirmRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.deleteReturnShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.deleteReturnShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.dismissItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.dismissItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.initiateReceive/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.initiateReceive"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.initiateRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.initiateRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.receiveItems/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.receiveItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeDismissItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeDismissItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeReceiveItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeReceiveItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeReturnItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.removeReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateDismissItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateDismissItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReceiveItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReceiveItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateRequest/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReturnItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReturnShipping/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/methods/js_sdk.admin.Return.updateReturnShipping"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Return/properties/js_sdk.admin.Return.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Return/properties/js_sdk.admin.Return.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/methods/js_sdk.admin.ReturnReason.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ReturnReason/properties/js_sdk.admin.ReturnReason.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ReturnReason/properties/js_sdk.admin.ReturnReason.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.batchProducts/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.batchProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.updateProducts/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/methods/js_sdk.admin.SalesChannel.updateProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/SalesChannel/properties/js_sdk.admin.SalesChannel.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/SalesChannel/properties/js_sdk.admin.SalesChannel.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.comment/page.mdx",
+    "pathname": "/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.comment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.data/page.mdx",
+    "pathname": "/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.data"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.event/page.mdx",
+    "pathname": "/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.id/page.mdx",
+    "pathname": "/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.id"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.retry/page.mdx",
+    "pathname": "/references/js_sdk/admin/ServerSentEventMessage/properties/js_sdk.admin.ServerSentEventMessage.retry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.updateRules/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/methods/js_sdk.admin.ShippingOption.updateRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingOption/properties/js_sdk.admin.ShippingOption.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingOption/properties/js_sdk.admin.ShippingOption.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/methods/js_sdk.admin.ShippingProfile.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/ShippingProfile/properties/js_sdk.admin.ShippingProfile.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/ShippingProfile/properties/js_sdk.admin.ShippingProfile.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.createFulfillmentSet/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.createFulfillmentSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.updateFulfillmentProviders/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.updateFulfillmentProviders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.updateSalesChannels/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/methods/js_sdk.admin.StockLocation.updateSalesChannels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/StockLocation/properties/js_sdk.admin.StockLocation.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/StockLocation/properties/js_sdk.admin.StockLocation.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/Store/methods/js_sdk.admin.Store.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Store/properties/js_sdk.admin.Store.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Store/properties/js_sdk.admin.Store.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/methods/js_sdk.admin.TaxRate.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRate/properties/js_sdk.admin.TaxRate.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRate/properties/js_sdk.admin.TaxRate.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/TaxRegion/properties/js_sdk.admin.TaxRegion.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/TaxRegion/properties/js_sdk.admin.TaxRegion.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Upload/properties/js_sdk.admin.Upload.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/Upload/properties/js_sdk.admin.Upload.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.create/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.delete/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.me/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.me"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.update/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/properties/js_sdk.admin.User.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/properties/js_sdk.admin.User.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/WorkflowExecution/methods/js_sdk.admin.WorkflowExecution.list/page.mdx",
+    "pathname": "/references/js_sdk/admin/WorkflowExecution/methods/js_sdk.admin.WorkflowExecution.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/WorkflowExecution/methods/js_sdk.admin.WorkflowExecution.retrieve/page.mdx",
+    "pathname": "/references/js_sdk/admin/WorkflowExecution/methods/js_sdk.admin.WorkflowExecution.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/WorkflowExecution/properties/js_sdk.admin.WorkflowExecution.client/page.mdx",
+    "pathname": "/references/js_sdk/admin/WorkflowExecution/properties/js_sdk.admin.WorkflowExecution.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Admin/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Admin"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ApiKey/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ApiKey"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Campaign/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Campaign"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Claim/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Claim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Client/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Currency/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Currency"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Customer/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Customer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.CustomerGroup/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.CustomerGroup"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Exchange/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Exchange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Fulfillment/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Fulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.FulfillmentProvider/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.FulfillmentProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.FulfillmentSet/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.FulfillmentSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.InventoryItem/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.InventoryItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Invite/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Invite"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Notification/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Notification"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Order/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Order"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.OrderEdit/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.OrderEdit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Payment/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Payment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.PaymentCollection/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.PaymentCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.PriceList/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.PriceList"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.PricePreference/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.PricePreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Product/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Product"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ProductCategory/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ProductCollection/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ProductCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ProductTag/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ProductTag"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ProductType/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ProductType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ProductVariant/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ProductVariant"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Promotion/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.RefundReason/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.RefundReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Region/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Region"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Reservation/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Reservation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Return/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Return"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ReturnReason/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ReturnReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.SalesChannel/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ShippingOption/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ShippingOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ShippingProfile/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ShippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.StockLocation/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.StockLocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Store/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Store"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.TaxRate/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.TaxRate"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.TaxRegion/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.TaxRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Upload/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Upload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.User/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.User"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.WorkflowExecution/page.mdx",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.WorkflowExecution"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/interfaces/js_sdk.admin.FetchStreamResponse/page.mdx",
+    "pathname": "/references/js_sdk/admin/interfaces/js_sdk.admin.FetchStreamResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/interfaces/js_sdk.admin.ServerSentEventMessage/page.mdx",
+    "pathname": "/references/js_sdk/admin/interfaces/js_sdk.admin.ServerSentEventMessage"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.ClientFetch/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.ClientFetch"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.ClientHeaders/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.ClientHeaders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.Config/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.Config"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.FetchArgs/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.FetchArgs"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.FetchInput/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.FetchInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.FetchParams/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.FetchParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/types/js_sdk.admin.Logger/page.mdx",
+    "pathname": "/references/js_sdk/admin/types/js_sdk.admin.Logger"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.logout/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.logout"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.updateProvider/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.updateProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/classes/js_sdk.auth.Auth/page.mdx",
+    "pathname": "/references/js_sdk/auth/classes/js_sdk.auth.Auth"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/modules/js_sdk.admin/page.mdx",
+    "pathname": "/references/js_sdk/modules/js_sdk.admin"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/modules/js_sdk.auth/page.mdx",
+    "pathname": "/references/js_sdk/modules/js_sdk.auth"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/modules/js_sdk.store/page.mdx",
+    "pathname": "/references/js_sdk/modules/js_sdk.store"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.cart/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.cart"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.category/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.category"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.collection/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.collection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.customer/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.customer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.fulfillment/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.fulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.order/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.order"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.payment/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.payment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.product/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.product"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/Store/properties/js_sdk.store.Store.region/page.mdx",
+    "pathname": "/references/js_sdk/store/Store/properties/js_sdk.store.Store.region"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/store/classes/js_sdk.store.Store/page.mdx",
+    "pathname": "/references/js_sdk/store/classes/js_sdk.store.Store"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.AuthContext/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.AuthContext"
   },
@@ -9430,6 +11234,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/inventory_next_models/page.mdx",
     "pathname": "/references/modules/inventory_next_models"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/js_sdk/page.mdx",
+    "pathname": "/references/modules/js_sdk"
   },
   {
     "filePath": "/www/apps/resources/references/modules/medusa/page.mdx",
