@@ -9,6 +9,7 @@ import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"
 import { siteConfig } from "../config/site"
 import { MainNavProvider } from "./main-nav"
+import { TooltipProvider } from "@medusajs/ui"
 
 type ProvidersProps = {
   children: React.ReactNode
@@ -21,7 +22,9 @@ const Providers = ({ children }: ProvidersProps) => {
         <ScrollControllerProvider scrollableSelector="#main">
           <SidebarProvider>
             <MainNavProvider>
-              <SearchProvider>{children}</SearchProvider>
+              <SearchProvider>
+                <TooltipProvider>{children}</TooltipProvider>
+              </SearchProvider>
             </MainNavProvider>
           </SidebarProvider>
         </ScrollControllerProvider>

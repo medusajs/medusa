@@ -9,7 +9,7 @@ component: true
 ## Usage
 
 ```tsx
-import { Tooltip } from "@medusajs/ui"
+import { Tooltip, TooltipProvider } from "@medusajs/ui"
 ```
 
 
@@ -23,3 +23,21 @@ import { Tooltip } from "@medusajs/ui"
 ---
 
 <ComponentReference mainComponent="Tooltip" />
+
+## Usage Outside Medusa Admin
+
+---
+
+If you're using the `Tooltip` component in a project other than the Medusa Admin, make sure to include the `TooltipProvider` somewhere up in your component tree:
+
+```tsx
+<TooltipProvider>
+  <Tooltip content="Tooltip content">Trigger</Tooltip>
+</TooltipProvider>
+```
+
+### TooltipProvider Reference
+
+---
+
+<ComponentReference mainComponent="TooltipProvider" />
