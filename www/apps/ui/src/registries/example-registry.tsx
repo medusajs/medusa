@@ -25,12 +25,12 @@ export const ExampleRegistry: Record<string, ExampleType> = {
   "alert-success": {
     name: "alert-success",
     component: React.lazy(async () => import("@/examples/alert-success")),
-    file: "src/examples/alert-demo.tsx",
+    file: "src/examples/alert-success.tsx",
   },
   "alert-warning": {
     name: "alert-warning",
     component: React.lazy(async () => import("@/examples/alert-warning")),
-    file: "src/examples/alert-demo.tsx",
+    file: "src/examples/alert-warning.tsx",
   },
   "avatar-demo": {
     name: "avatar-demo",
