@@ -2,7 +2,7 @@
 
 The Product Module gives you access Products, Variants, Categories, and more through a standalone package that can be installed and run in Next.js functions and other Node.js compatible runtimes.
 
-[Product Module documentation](https://docs.medusajs.com/modules/product/serverless-module) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
+[Product Module documentation](https://docs.medusajs.com/v2/resources/commerce-modules/product) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
 
 > The Product Module is currently in beta. The beta version comes with limited functionality, primarily centered around retrieving products. In the official version, the product module will be fully-fledged and on par with the product functionality in our core package.
 

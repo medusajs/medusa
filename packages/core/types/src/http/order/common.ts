@@ -282,7 +282,7 @@ export interface BaseOrderShippingMethod {
   /**
    * Data relevant for the fulfillment provider handling the shipping.
    * 
-   * Learn more in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property).
+   * Learn more in [this guide](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
    */
   data: Record<string, unknown> | null
   /**
@@ -686,7 +686,7 @@ export interface BaseOrderFulfillment {
   /**
    * Data necessary for the provider handling the fulfillment.
    * 
-   * Learn more in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property).
+   * Learn more in [this guide](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
    */
   data: Record<string, unknown> | null
   /**
