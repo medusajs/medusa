@@ -12,12 +12,12 @@ The `clx` function is a utility function for working with classNames. It is buil
 import { clx } from "@medusajs/ui"
 
 type BoxProps = {
-    className?: string
-    children: React.ReactNode
-    mt?: "sm" | "md" | "lg"
+  className?: string
+  children: React.ReactNode
+  mt: "sm" | "md" | "lg"
 }
 
-const Box = ({ className, children }: BoxProps) => {
+const Box = ({ className, children, mt }: BoxProps) => {
   return (
     <div
       className={clx(
@@ -34,6 +34,7 @@ const Box = ({ className, children }: BoxProps) => {
     </div>
   )
 }
+
 ```
 
 In the above example the utility is used to apply a base style, a margin top that is dependent on the `mt` prop and a custom className.
