@@ -38,12 +38,12 @@ export const MainNavDesktopMenu = () => {
         title: "Homepage",
         link: "https://medusajs.com",
       },
-      // {
-      //   type: "link",
-      //   icon: <BookIcon />,
-      //   title: "Medusa v1",
-      //   link: "https://docs.medusajs.com",
-      // },
+      {
+        type: "link",
+        icon: <BookIcon />,
+        title: "Medusa v1",
+        link: "https://docs.medusajs.com/v1",
+      },
       {
         type: "link",
         icon: <TimelineVertical />,
