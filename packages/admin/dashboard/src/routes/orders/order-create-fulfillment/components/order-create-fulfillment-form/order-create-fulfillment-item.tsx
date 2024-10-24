@@ -10,12 +10,14 @@ import { Thumbnail } from "../../../../../components/common/thumbnail/index"
 import { useProductVariant } from "../../../../../hooks/api/products"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { CreateFulfillmentSchema } from "./constants"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
 
 type OrderEditItemProps = {
   item: HttpTypes.AdminOrderLineItem
   currencyCode: string
   locationId?: string
   onItemRemove: (itemId: string) => void
+  itemReservedQuantitiesMap: Map<string, number>
   form: UseFormReturn<zod.infer<typeof CreateFulfillmentSchema>>
 }
 
@@ -23,6 +25,7 @@ export function OrderCreateFulfillmentItem({
   item,
   form,
   locationId,
+  itemReservedQuantitiesMap,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
@@ -49,11 +52,14 @@ export function OrderCreateFulfillmentItem({
       return {}
     }
 
+    const reservedQuantityForItem = itemReservedQuantitiesMap.get(item.id) ?? 0
+
     return {
-      availableQuantity: locationInventory.available_quantity,
+      availableQuantity:
+        locationInventory.available_quantity + reservedQuantityForItem,
       inStockQuantity: locationInventory.stocked_quantity,
     }
-  }, [variant, locationId])
+  }, [variant, locationId, itemReservedQuantitiesMap])
 
   const minValue = 0
   const maxValue = Math.min(

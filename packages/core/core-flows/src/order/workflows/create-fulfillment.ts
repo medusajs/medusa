@@ -202,20 +202,20 @@ function prepareInventoryUpdate({
 
     const inputQuantity = inputItemsMap[item.id]?.quantity ?? item.quantity
 
-    const quantity = reservation.quantity - inputQuantity
+    const remainingReservationQuantity = reservation.quantity - inputQuantity
 
     inventoryAdjustment.push({
       inventory_item_id: reservation.inventory_item_id,
       location_id: input.location_id ?? reservation.location_id,
-      adjustment: MathBN.mult(item.quantity, -1),
+      adjustment: MathBN.mult(inputQuantity, -1),
     })
 
-    if (quantity === 0) {
+    if (remainingReservationQuantity === 0) {
       toDelete.push(reservation.id)
     } else {
       toUpdate.push({
         id: reservation.id,
-        quantity: quantity,
+        quantity: remainingReservationQuantity,
         location_id: input.location_id ?? reservation.location_id,
       })
     }
