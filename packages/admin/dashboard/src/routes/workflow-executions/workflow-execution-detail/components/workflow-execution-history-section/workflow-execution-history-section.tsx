@@ -1,11 +1,11 @@
 import { Spinner, TriangleDownMini } from "@medusajs/icons"
 import {
+  clx,
   CodeBlock,
   Container,
   Heading,
   IconButton,
   Text,
-  clx,
 } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { format } from "date-fns"
@@ -14,8 +14,8 @@ import { useTranslation } from "react-i18next"
 import { useLocation } from "react-router-dom"
 import {
   STEP_ERROR_STATES,
-  STEP_INACTIVE_STATES,
   STEP_IN_PROGRESS_STATES,
+  STEP_INACTIVE_STATES,
   STEP_OK_STATES,
   STEP_SKIPPED_STATES,
 } from "../../../constants"
@@ -93,7 +93,7 @@ const Event = ({
   isUnreachable,
 }: {
   step: HttpTypes.AdminWorkflowExecutionStep
-  stepInvokeContext: HttpTypes.StepInvoke | undefined
+  stepInvokeContext: HttpTypes.StepInvokeResult | undefined
   stepError?: HttpTypes.StepError | undefined
   isLast: boolean
   isUnreachable?: boolean
@@ -114,8 +114,6 @@ const Event = ({
   }, [hash, stepId])
 
   const identifier = step.id.split(".").pop()
-
-  stepInvokeContext
 
   return (
     <div
@@ -217,7 +215,7 @@ const Event = ({
                 </CodeBlock>
               </div>
             )}
-            {!!stepInvokeContext?.output.compensateInput &&
+            {!!stepInvokeContext?.output?.compensateInput &&
               step.compensate.state === TransactionStepState.REVERTED && (
                 <div className="text-ui-fg-subtle flex flex-col gap-y-2">
                   <Text size="small" leading="compact">
