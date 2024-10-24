@@ -16,4 +16,5 @@ export interface CreateOrderFulfillmentWorkflowInput {
   no_notification?: boolean
   location_id?: string | null
   metadata?: Record<string, any> | null
+  requires_shipping?: boolean
 }
