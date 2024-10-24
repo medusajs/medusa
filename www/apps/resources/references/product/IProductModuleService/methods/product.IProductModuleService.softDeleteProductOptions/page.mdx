@@ -10,6 +10,12 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `softDeleteProductOptions` method. This belongs to the Product Module.
 
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
 This method is used to delete options. Unlike the delete method, this method won't completely remove the option. It can still be accessed or retrieved using methods like retrieve if you pass the `withDeleted` property to the `config` object parameter.
 
 The soft-deleted options can be restored using the restore method.

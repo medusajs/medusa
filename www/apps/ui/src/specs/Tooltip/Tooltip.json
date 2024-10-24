@@ -3,6 +3,53 @@
   "methods": [],
   "displayName": "Tooltip",
   "props": {
+    "content": {
+      "required": true,
+      "tsType": {
+        "name": "ReactReactNode",
+        "raw": "React.ReactNode"
+      },
+      "description": ""
+    },
+    "onClick": {
+      "required": false,
+      "tsType": {
+        "name": "ReactMouseEventHandler",
+        "raw": "React.MouseEventHandler<HTMLButtonElement>",
+        "elements": [
+          {
+            "name": "HTMLButtonElement"
+          }
+        ]
+      },
+      "description": ""
+    },
+    "side": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"bottom\" | \"left\" | \"top\" | \"right\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"bottom\""
+          },
+          {
+            "name": "literal",
+            "value": "\"left\""
+          },
+          {
+            "name": "literal",
+            "value": "\"top\""
+          },
+          {
+            "name": "literal",
+            "value": "\"right\""
+          }
+        ]
+      },
+      "description": ""
+    },
     "maxWidth": {
       "required": false,
       "tsType": {
@@ -13,6 +60,14 @@
         "value": "220",
         "computed": false
       }
+    },
+    "sideOffset": {
+      "defaultValue": {
+        "value": "8",
+        "computed": false
+      },
+      "description": "",
+      "required": false
     }
   },
   "composes": [

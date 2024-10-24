@@ -1,0 +1,15 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "DatePickerClearButton",
+  "props": {
+    "type": {
+      "defaultValue": {
+        "value": "\"button\"",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    }
+  }
+}
