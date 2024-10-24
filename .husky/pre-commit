@@ -1,4 +1,25 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-node_modules/.bin/lint-staged || node scripts/on-lint-error.js
+DOCS_DIRECTORY="www"
+CORE_DIRECTORY="packages"
+
+# Navigate to the core directory
+cd "$CORE_DIRECTORY" || exit
+
+# Perform action if there are changes
+if [[ -n $(git status --porcelain .) ]]; then
+    ../node_modules/.bin/lint-staged || node ../scripts/on-lint-error.js
+fi
+
+# Navigate back to root
+cd -
+
+# Navigate to docs
+cd "$DOCS_DIRECTORY" || exit
+
+# Perform action if there are changes
+if [[ -n $(git status --porcelain .) ]]; then
+    yarn prep
+    git add apps/**/generated
+fi
