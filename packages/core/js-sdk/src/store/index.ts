@@ -1083,22 +1083,20 @@ export class Store {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      let paymentCollectionId = (cart as any).payment_collection?.id
-      if (!paymentCollectionId) {
-        const collectionBody = {
-          cart_id: cart.id,
-        }
-        paymentCollectionId = (
-          await this.client.fetch<HttpTypes.StorePaymentCollectionResponse>(
-            `/store/payment-collections`,
-            {
-              method: "POST",
-              headers,
-              body: collectionBody,
-            }
-          )
-        ).payment_collection.id
+      const collectionBody = {
+        cart_id: cart.id,
       }
+      const paymentCollectionId = (
+        await this.client.fetch<HttpTypes.StorePaymentCollectionResponse>(
+          `/store/payment-collections`,
+          {
+            method: "POST",
+            headers,
+            body: collectionBody,
+          }
+        )
+      ).payment_collection.id
+
 
       return this.client.fetch<HttpTypes.StorePaymentCollectionResponse>(
         `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
