@@ -146,6 +146,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         ...cartFieldsForPricingContext,
         "items.*",
         "items.variant.manage_inventory",
+        "items.variant.allow_backorder",
         "items.variant.inventory_items.inventory_item_id",
         "items.variant.inventory_items.inventory.requires_shipping",
         "items.variant.inventory_items.inventory.location_levels.*",
@@ -331,6 +332,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           const itemsAtLocationWithoutAvailableQuantity = cart.items.filter(
             (item) => {
               if (!item.variant?.manage_inventory) {
+                return false
+              }
+
+              if (item.variant?.allow_backorder) {
                 return false
               }
 
