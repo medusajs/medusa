@@ -311,6 +311,10 @@ export interface ProductCategoryDTO {
    */
   rank: number
   /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id: string | null
+  /**
    * The ranking of the product category among sibling categories.
    */
   metadata?: MetadataType
@@ -385,6 +389,10 @@ export interface CreateProductCategoryDTO {
    */
   parent_category_id?: string | null
   /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id?: string | null
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: MetadataType
@@ -431,6 +439,10 @@ export interface UpdateProductCategoryDTO {
    * The ID of the parent product category, if it has any.
    */
   parent_category_id?: string | null
+  /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
@@ -989,6 +1001,10 @@ export interface FilterableProductCategoryProps
    * Filter product categories by whether they're internal.
    */
   is_internal?: boolean
+  /**
+   * Filter product categories by external ID.
+   */
+  external_id?: string | string[] | null
   /**
    * Whether to include children of retrieved product categories.
    */
