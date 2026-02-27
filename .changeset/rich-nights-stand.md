@@ -4,4 +4,4 @@
 "@medusajs/medusa": patch
 ---
 
-chore(api,types): allow filtering on variant sku/barcode/ean/upc on both /store and /admin apis
+chore(medusa,types): allow filtering on variant sku/barcode/ean/upc on both /store and /admin apis
