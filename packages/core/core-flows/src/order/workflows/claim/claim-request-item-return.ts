@@ -195,6 +195,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
         "id",
         "status",
         "version",
+        "claim_id",
         "canceled_at",
         "confirmed_at",
         "declined_at",

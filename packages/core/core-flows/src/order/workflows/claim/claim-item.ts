@@ -139,7 +139,7 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status", "version", "carry_over_promotions"],
+      fields: ["id", "status", "version", "claim_id", "carry_over_promotions"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
