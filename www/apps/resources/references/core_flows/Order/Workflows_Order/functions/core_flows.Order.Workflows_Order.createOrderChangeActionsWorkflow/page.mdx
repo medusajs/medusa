@@ -18,7 +18,7 @@ such as [requestItemReturnWorkflow](../core_flows.Order.Workflows_Order.requestI
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 creating an order change action.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/order/workflows/create-order-change-actions.ts#L25" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/create-order-change-actions.ts#L25" />
 
 ## Examples
 
@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await createOrderChangeActionsWorkflow(req.scope)
     .run({
       input: [{
-        "action": "UPDATE_ORDER_PROPERTIES"
+        "action": "SHIPPING_UPDATE"
       }]
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "UPDATE_ORDER_PROPERTIES"
+        "action": "SHIPPING_UPDATE"
       }]
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "UPDATE_ORDER_PROPERTIES"
+        "action": "SHIPPING_UPDATE"
       }]
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = createOrderChangeActionsWorkflow
       .runAsStep({
         input: [{
-          "action": "UPDATE_ORDER_PROPERTIES"
+          "action": "SHIPPING_UPDATE"
         }]
       })
   }

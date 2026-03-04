@@ -18,7 +18,7 @@ This workflow deletes one or more order change actions.
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 deleting an order change action.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/order/workflows/delete-order-change-actions.ts#L25" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/delete-order-change-actions.ts#L25" />
 
 ## Examples
 
@@ -40,7 +40,7 @@ export async function POST(
     .run({
       input: {
         "ids": [
-          "id_Pyr6KO79nx"
+          "id_pMAX0aO1pC34Hka"
         ]
       }
     })
@@ -67,7 +67,7 @@ export default async function handleOrderPlaced({
     .run({
       input: {
         "ids": [
-          "id_Pyr6KO79nx"
+          "id_pMAX0aO1pC34Hka"
         ]
       }
     })
@@ -94,7 +94,7 @@ export default async function myCustomJob(
     .run({
       input: {
         "ids": [
-          "id_Pyr6KO79nx"
+          "id_pMAX0aO1pC34Hka"
         ]
       }
     })
@@ -122,7 +122,7 @@ const myWorkflow = createWorkflow(
       .runAsStep({
         input: {
           "ids": [
-            "id_Pyr6KO79nx"
+            "id_pMAX0aO1pC34Hka"
           ]
         }
       })

@@ -18,7 +18,7 @@ This documentation provides a reference to the `refundPaymentAndRecreatePaymentS
 
 This workflow refunds a payment and creates a new payment session.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/cart/workflows/refund-payment-recreate-payment-session.ts#L67" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/cart/workflows/refund-payment-recreate-payment-session.ts#L67" />
 
 ## Examples
 
@@ -43,7 +43,7 @@ export async function POST(
         "payment_collection_id": "{value}",
         "provider_id": "{value}",
         "payment_id": "{value}",
-        "amount": 30
+        "amount": 0
       }
     })
 
@@ -72,7 +72,7 @@ export default async function handleOrderPlaced({
         "payment_collection_id": "{value}",
         "provider_id": "{value}",
         "payment_id": "{value}",
-        "amount": 30
+        "amount": 0
       }
     })
 
@@ -101,7 +101,7 @@ export default async function myCustomJob(
         "payment_collection_id": "{value}",
         "provider_id": "{value}",
         "payment_id": "{value}",
-        "amount": 30
+        "amount": 0
       }
     })
 
@@ -130,7 +130,7 @@ const myWorkflow = createWorkflow(
           "payment_collection_id": "{value}",
           "provider_id": "{value}",
           "payment_id": "{value}",
-          "amount": 30
+          "amount": 0
         }
       })
   }
