@@ -65,7 +65,7 @@ const DataTableTable = (props: DataTableTableProps) => {
     if (instance.columnOrder && instance.columnOrder.length > 0) {
       return instance.columnOrder
     }
-    return columns.map(col => col.id)
+    return columns.map((col) => col.id)
   }, [columns, instance.columnOrder])
 
   // Setup drag-and-drop sensors
@@ -98,9 +98,10 @@ const DataTableTable = (props: DataTableTableProps) => {
       }
 
       // Use the current column order from the instance
-      const currentOrder = instance.columnOrder && instance.columnOrder.length > 0
-        ? instance.columnOrder
-        : columns.map(col => col.id)
+      const currentOrder =
+        instance.columnOrder && instance.columnOrder.length > 0
+          ? instance.columnOrder
+          : columns.map((col) => col.id)
 
       const oldIndex = currentOrder.indexOf(activeId)
       const newIndex = currentOrder.indexOf(overId)
@@ -169,8 +170,8 @@ const DataTableTable = (props: DataTableTableProps) => {
 
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
-      {instance.emptyState === DataTableEmptyState.POPULATED && (
-        instance.enableColumnOrder ? (
+      {instance.emptyState === DataTableEmptyState.POPULATED &&
+        (instance.enableColumnOrder ? (
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -179,7 +180,7 @@ const DataTableTable = (props: DataTableTableProps) => {
             <div
               ref={scrollableRef}
               onScroll={handleHorizontalScroll}
-              className="min-h-0 w-full flex-1 overflow-auto overscroll-none border-y"
+              className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
             >
               <Table className="relative isolate w-full">
                 <Table.Header
@@ -203,22 +204,30 @@ const DataTableTable = (props: DataTableTableProps) => {
                         {headerGroup.headers.map((header, idx) => {
                           const canSort = header.column.getCanSort()
                           const sortDirection = header.column.getIsSorted()
-                          const sortHandler = header.column.getToggleSortingHandler()
+                          const sortHandler =
+                            header.column.getToggleSortingHandler()
 
                           const isActionHeader = header.id === "action"
                           const isSelectHeader = header.id === "select"
-                          const isSpecialHeader = isActionHeader || isSelectHeader
+                          const isSpecialHeader =
+                            isActionHeader || isSelectHeader
                           const isDraggable = !isSpecialHeader
 
                           const Wrapper = canSort ? "button" : "div"
-                          const isFirstColumn = hasSelect ? idx === 1 : idx === 0
+                          const isFirstColumn = hasSelect
+                            ? idx === 1
+                            : idx === 0
 
                           // Get header alignment from column metadata
-                          const headerAlign = (header.column.columnDef.meta as any)?.___alignMetaData?.headerAlign || 'left'
-                          const isRightAligned = headerAlign === 'right'
-                          const isCenterAligned = headerAlign === 'center'
+                          const headerAlign =
+                            (header.column.columnDef.meta as any)
+                              ?.___alignMetaData?.headerAlign || "left"
+                          const isRightAligned = headerAlign === "right"
+                          const isCenterAligned = headerAlign === "center"
 
-                          const HeaderCellComponent = isDraggable ? DataTableSortableHeaderCell : DataTableNonSortableHeaderCell
+                          const HeaderCellComponent = isDraggable
+                            ? DataTableSortableHeaderCell
+                            : DataTableNonSortableHeaderCell
 
                           return (
                             <HeaderCellComponent
@@ -237,44 +246,54 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 "bg-ui-bg-subtle sticky":
                                   isFirstColumn || isSelectHeader,
                                 "left-0":
-                                  isSelectHeader || (isFirstColumn && !hasSelect),
+                                  isSelectHeader ||
+                                  (isFirstColumn && !hasSelect),
                                 "left-[calc(20px+24px+24px)]":
                                   isFirstColumn && hasSelect,
                               })}
                               style={
                                 !isSpecialHeader
                                   ? {
-                                    width: header.column.columnDef.size,
-                                    maxWidth: header.column.columnDef.maxSize,
-                                    minWidth: header.column.columnDef.minSize,
-                                  }
+                                      width: header.column.columnDef.size,
+                                      maxWidth: header.column.columnDef.maxSize,
+                                      minWidth: header.column.columnDef.minSize,
+                                    }
                                   : undefined
                               }
                             >
                               <Wrapper
                                 type={canSort ? "button" : undefined}
                                 onClick={canSort ? sortHandler : undefined}
-                                onMouseDown={canSort ? (e) => e.stopPropagation() : undefined}
+                                onMouseDown={
+                                  canSort
+                                    ? (e) => e.stopPropagation()
+                                    : undefined
+                                }
                                 className={clx(
                                   "group flex cursor-default items-center gap-2",
                                   {
                                     "cursor-pointer": canSort,
                                     "w-full": isRightAligned || isCenterAligned,
-                                    "w-fit": !isRightAligned && !isCenterAligned,
+                                    "w-fit":
+                                      !isRightAligned && !isCenterAligned,
                                     "justify-end": isRightAligned,
                                     "justify-center": isCenterAligned,
                                   }
                                 )}
                               >
                                 {canSort && isRightAligned && (
-                                  <DataTableSortingIcon direction={sortDirection} />
+                                  <DataTableSortingIcon
+                                    direction={sortDirection}
+                                  />
                                 )}
                                 {flexRender(
                                   header.column.columnDef.header,
                                   header.getContext()
                                 )}
                                 {canSort && !isRightAligned && (
-                                  <DataTableSortingIcon direction={sortDirection} />
+                                  <DataTableSortingIcon
+                                    direction={sortDirection}
+                                  />
                                 )}
                               </Wrapper>
                             </HeaderCellComponent>
@@ -301,7 +320,9 @@ const DataTableTable = (props: DataTableTableProps) => {
                           const isActionCell = cell.column.id === "action"
                           const isSpecialCell = isSelectCell || isActionCell
 
-                          const isFirstColumn = hasSelect ? idx === 1 : idx === 0
+                          const isFirstColumn = hasSelect
+                            ? idx === 1
+                            : idx === 0
 
                           return (
                             <Table.Cell
@@ -320,7 +341,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                                   "after:bg-ui-border-base":
                                     showStickyBorder && isFirstColumn,
                                   "left-0":
-                                    isSelectCell || (isFirstColumn && !hasSelect),
+                                    isSelectCell ||
+                                    (isFirstColumn && !hasSelect),
                                   "left-[calc(20px+24px+24px)]":
                                     isFirstColumn && hasSelect,
                                 }
@@ -328,10 +350,10 @@ const DataTableTable = (props: DataTableTableProps) => {
                               style={
                                 !isSpecialCell
                                   ? {
-                                    width: cell.column.columnDef.size,
-                                    maxWidth: cell.column.columnDef.maxSize,
-                                    minWidth: cell.column.columnDef.minSize,
-                                  }
+                                      width: cell.column.columnDef.size,
+                                      maxWidth: cell.column.columnDef.maxSize,
+                                      minWidth: cell.column.columnDef.minSize,
+                                    }
                                   : undefined
                               }
                             >
@@ -353,7 +375,7 @@ const DataTableTable = (props: DataTableTableProps) => {
           <div
             ref={scrollableRef}
             onScroll={handleHorizontalScroll}
-            className="min-h-0 w-full flex-1 overflow-auto overscroll-none border-y"
+            className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
           >
             <Table className="relative isolate w-full">
               <Table.Header
@@ -373,7 +395,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                     {headerGroup.headers.map((header, idx) => {
                       const canSort = header.column.getCanSort()
                       const sortDirection = header.column.getIsSorted()
-                      const sortHandler = header.column.getToggleSortingHandler()
+                      const sortHandler =
+                        header.column.getToggleSortingHandler()
 
                       const isActionHeader = header.id === "action"
                       const isSelectHeader = header.id === "select"
@@ -383,9 +406,11 @@ const DataTableTable = (props: DataTableTableProps) => {
                       const isFirstColumn = hasSelect ? idx === 1 : idx === 0
 
                       // Get header alignment from column metadata
-                      const headerAlign = (header.column.columnDef.meta as any)?.___alignMetaData?.headerAlign || 'left'
-                      const isRightAligned = headerAlign === 'right'
-                      const isCenterAligned = headerAlign === 'center'
+                      const headerAlign =
+                        (header.column.columnDef.meta as any)?.___alignMetaData
+                          ?.headerAlign || "left"
+                      const isRightAligned = headerAlign === "right"
+                      const isCenterAligned = headerAlign === "center"
 
                       return (
                         <Table.HeaderCell
@@ -409,17 +434,19 @@ const DataTableTable = (props: DataTableTableProps) => {
                           style={
                             !isSpecialHeader
                               ? {
-                                width: header.column.columnDef.size,
-                                maxWidth: header.column.columnDef.maxSize,
-                                minWidth: header.column.columnDef.minSize,
-                              }
+                                  width: header.column.columnDef.size,
+                                  maxWidth: header.column.columnDef.maxSize,
+                                  minWidth: header.column.columnDef.minSize,
+                                }
                               : undefined
                           }
                         >
                           <Wrapper
                             type={canSort ? "button" : undefined}
                             onClick={canSort ? sortHandler : undefined}
-                            onMouseDown={canSort ? (e) => e.stopPropagation() : undefined}
+                            onMouseDown={
+                              canSort ? (e) => e.stopPropagation() : undefined
+                            }
                             className={clx(
                               "group flex cursor-default items-center gap-2",
                               {
@@ -492,10 +519,10 @@ const DataTableTable = (props: DataTableTableProps) => {
                             style={
                               !isSpecialCell
                                 ? {
-                                  width: cell.column.columnDef.size,
-                                  maxWidth: cell.column.columnDef.maxSize,
-                                  minWidth: cell.column.columnDef.minSize,
-                                }
+                                    width: cell.column.columnDef.size,
+                                    maxWidth: cell.column.columnDef.maxSize,
+                                    minWidth: cell.column.columnDef.minSize,
+                                  }
                                 : undefined
                             }
                           >
@@ -512,8 +539,7 @@ const DataTableTable = (props: DataTableTableProps) => {
               </Table.Body>
             </Table>
           </div>
-        )
-      )}
+        ))}
       <DataTableEmptyStateDisplay
         state={instance.emptyState}
         props={props.emptyState}
@@ -572,7 +598,7 @@ const DataTableTableSkeleton = ({
 }: DataTableTableSkeletonProps) => {
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
-      <div className="min-h-0 w-full flex-1 overscroll-none border-y">
+      <div className="min-h-0 w-full flex-1 overscroll-auto border-y">
         <div className="flex flex-col divide-y">
           <Skeleton className="h-12 w-full" />
           {Array.from({ length: pageSize }, (_, i) => i).map((row) => (
