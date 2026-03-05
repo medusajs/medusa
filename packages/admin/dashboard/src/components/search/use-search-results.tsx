@@ -632,7 +632,7 @@ const transformMap: TransformMap = {
     transform: (region: HttpTypes.AdminRegion) => ({
       id: region.id,
       title: region.name,
-      to: `/regions/${region.id}`,
+      to: `/settings/regions/${region.id}`,
       value: `region:${region.id}`,
     }),
   },
@@ -644,7 +644,7 @@ const transformMap: TransformMap = {
         taxRegion.province_code?.toUpperCase() ??
         taxRegion.country_code!.toUpperCase(),
       subtitle: taxRegion.province_code ? taxRegion.country_code! : undefined,
-      to: `/tax-regions/${taxRegion.id}`,
+      to: `/settings/tax-regions/${taxRegion.id}`,
       value: `taxRegion:${taxRegion.id}`,
     }),
   },
@@ -654,7 +654,7 @@ const transformMap: TransformMap = {
       id: returnReason.id,
       title: returnReason.label,
       subtitle: returnReason.value,
-      to: `/return-reasons/${returnReason.id}/edit`,
+      to: `/settings/return-reasons/${returnReason.id}/edit`,
       value: `returnReason:${returnReason.id}`,
     }),
   },
@@ -663,7 +663,7 @@ const transformMap: TransformMap = {
     transform: (salesChannel: HttpTypes.AdminSalesChannel) => ({
       id: salesChannel.id,
       title: salesChannel.name,
-      to: `/sales-channels/${salesChannel.id}`,
+      to: `/settings/sales-channels/${salesChannel.id}`,
       value: `salesChannel:${salesChannel.id}`,
     }),
   },
@@ -672,7 +672,7 @@ const transformMap: TransformMap = {
     transform: (productType: HttpTypes.AdminProductType) => ({
       id: productType.id,
       title: productType.value,
-      to: `/product-types/${productType.id}`,
+      to: `/settings/product-types/${productType.id}`,
       value: `productType:${productType.id}`,
     }),
   },
@@ -681,7 +681,7 @@ const transformMap: TransformMap = {
     transform: (productTag: HttpTypes.AdminProductTag) => ({
       id: productTag.id,
       title: productTag.value,
-      to: `/product-tags/${productTag.id}`,
+      to: `/settings/product-tags/${productTag.id}`,
       value: `productTag:${productTag.id}`,
     }),
   },
@@ -690,7 +690,7 @@ const transformMap: TransformMap = {
     transform: (location: HttpTypes.AdminStockLocation) => ({
       id: location.id,
       title: location.name,
-      to: `/locations/${location.id}`,
+      to: `/settings/locations/${location.id}`,
       value: `location:${location.id}`,
     }),
   },
