@@ -18,7 +18,7 @@ This workflow updates one or more order change actions.
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 updating order change actions.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/order/workflows/update-order-change-actions.ts#L23" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/update-order-change-actions.ts#L23" />
 
 ## Examples
 
@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await updateOrderChangeActionsWorkflow(req.scope)
     .run({
       input: [{
-        "id": "id_s9797j0Hzl8kP"
+        "id": "id_aBYq90TrixTZRGeTBINC"
       }]
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await updateOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "id": "id_s9797j0Hzl8kP"
+        "id": "id_aBYq90TrixTZRGeTBINC"
       }]
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await updateOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "id": "id_s9797j0Hzl8kP"
+        "id": "id_aBYq90TrixTZRGeTBINC"
       }]
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = updateOrderChangeActionsWorkflow
       .runAsStep({
         input: [{
-          "id": "id_s9797j0Hzl8kP"
+          "id": "id_aBYq90TrixTZRGeTBINC"
         }]
       })
   }

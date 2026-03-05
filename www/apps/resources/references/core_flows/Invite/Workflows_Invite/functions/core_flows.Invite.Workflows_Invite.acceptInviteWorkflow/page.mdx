@@ -4,11 +4,10 @@ sidebar_label: acceptInviteWorkflow
 sidebar_description: Accept invite and create user with roles.
 tags:
   - user
-  - link
   - auth
   - event bus
   - workflow
-  - rbac
+  - link
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -27,7 +26,7 @@ using the [Retrieve Registration JWT Token API Route](https://docs.medusajs.com/
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 accept invites within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/invite/workflows/accept-invite.ts#L46" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/invite/workflows/accept-invite.ts#L46" />
 
 ## Examples
 
@@ -160,7 +159,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"acceptInviteWorkflow","steps":[{"type":"step","name":"validateTokenStep","description":"This step validates a specified token and returns its associated invite.\nIf not valid, the step throws an error.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.validateTokenStep/page.mdx","depth":1},{"type":"step","name":"getInviteRolesStep","description":"This step retrieves the roles associated with an invite.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.getInviteRolesStep/page.mdx","depth":2},{"type":"workflow","name":"createUsersWorkflow","description":"Create one or more users with optional role assignment.","link":"../../../../User/Workflows_User/functions/core_flows.User.Workflows_User.createUsersWorkflow/page.mdx","depth":3},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity. This is useful to\nassociate a user (whether it's an admin user or customer) with an auth identity\nthat allows them to authenticate into Medusa.\n\nYou can learn more about auth identites in\n[this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).\n\nTo use this for a custom actor type, check out [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type)\nthat explains how to create a custom `manager` actor type and manage its users.","link":"../../../../Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx","depth":4},{"type":"step","name":"deleteInvitesStep","description":"This step deletes one or more invites.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.deleteInvitesStep/page.mdx","depth":4},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":4}]}} />
+<WorkflowDiagram workflow={{"name":"acceptInviteWorkflow","steps":[{"type":"step","name":"validateTokenStep","description":"This step validates a specified token and returns its associated invite.\nIf not valid, the step throws an error.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.validateTokenStep/page.mdx","depth":1},{"type":"workflow","name":"createUsersWorkflow","description":"Create one or more users with optional role assignment.","link":"../../../../User/Workflows_User/functions/core_flows.User.Workflows_User.createUsersWorkflow/page.mdx","depth":2},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity. This is useful to\nassociate a user (whether it's an admin user or customer) with an auth identity\nthat allows them to authenticate into Medusa.\n\nYou can learn more about auth identites in\n[this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).\n\nTo use this for a custom actor type, check out [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type)\nthat explains how to create a custom `manager` actor type and manage its users.","link":"../../../../Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx","depth":3},{"type":"step","name":"deleteInvitesStep","description":"This step deletes one or more invites.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.deleteInvitesStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
