@@ -699,7 +699,7 @@ const transformMap: TransformMap = {
     transform: (shippingProfile: HttpTypes.AdminShippingProfile) => ({
       id: shippingProfile.id,
       title: shippingProfile.name,
-      to: `/shipping-profiles/${shippingProfile.id}`,
+      to: `/settings/locations/shipping-profiles/${shippingProfile.id}`,
       value: `shippingProfile:${shippingProfile.id}`,
     }),
   },
