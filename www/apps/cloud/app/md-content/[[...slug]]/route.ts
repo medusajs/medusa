@@ -1,4 +1,4 @@
-import { getCleanMd } from "docs-utils"
+import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
 import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -88,7 +88,7 @@ export async function GET(req: NextRequest, { params }: Params) {
     )
   }
 
-  return new NextResponse(cleanMdContent, {
+  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
       "Content-Type": "text/markdown",
     },
