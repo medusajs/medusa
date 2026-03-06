@@ -23,6 +23,10 @@ export interface BaseProductTag {
    */
   deleted_at?: string | null
   /**
+   * An external ID for the tag.
+   */
+  external_id?: string | null
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown> | null
@@ -41,6 +45,10 @@ export interface BaseProductTagListParams extends FindParams {
    * Filter by value(s).
    */
   value?: string | string[]
+  /**
+   * Filter by external ID(s).
+   */
+  external_id?: string | string[]
   /**
    * Apply filters on the creation date.
    */

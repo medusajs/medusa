@@ -17,6 +17,10 @@ export interface AdminProductTypeListParams
    */
   value?: string | string[]
   /**
+   * Filter by external ID(s).
+   */
+  external_id?: string | string[]
+  /**
    * Apply filters on the creation date.
    */
   created_at?: OperatorMap<string>
