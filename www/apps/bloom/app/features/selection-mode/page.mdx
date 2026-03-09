@@ -1,0 +1,192 @@
+import { InlineIcon, InProductAction, InProductActions } from "docs-ui"
+import { CursorDefault, Palette, Typography, Gap, Expand, ImageSparkle, CloudArrowUp } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Use Selection Mode`,
+}
+
+# {metadata.title}
+
+<InProductAction product={"bloom"} type={"MEDUSA_AI_ENABLE_SELECTION_MODE"}>Selection Mode</InProductAction> lets you select and edit elements in your store directly. Use it to specify exactly what you want Bloom to change, or make quick edits yourself.
+
+## What is Selection Mode?
+
+Selection Mode is a feature in [Store view](../view-switcher/page.mdx#store-view) that lets you click on an element in your store to select it. Once selected, you can edit its text, colors, fonts, spacing, and images directly, or ask Bloom to make changes to that specific element.
+
+Selection Mode helps you work faster and more precisely:
+
+- **Be Specific**: Select exact elements you want Bloom to change, preventing confusion.
+- **Save Credits**: Make quick edits yourself without using Bloom prompts.
+- **Faster Changes**: Update colors, fonts, spacing, and images instantly.
+- **Visual Control**: See exactly what you're editing in real-time.
+
+Selection Mode is perfect for designers and store owners who want more control over their store's appearance and content. Use it to fine-tune your design and make quick updates without needing to ask Bloom for every change.
+
+### Selection Mode Limitations
+
+Selection Mode only works in Store view, not Admin view. For changes to customizations in the admin dashboard, ask Bloom to make the change with a prompt instead of using Selection Mode.
+
+You also can't edit admin-managed content with Selection Mode. Only edit content and elements that are part of your store's design. For changes to product information and other admin-managed data, use the admin dashboard or ask Bloom to make the change with a prompt.
+
+---
+
+## Turn Selection Mode On and Off
+
+To toggle <InProductAction product={"bloom"} type={"MEDUSA_AI_ENABLE_SELECTION_MODE"}>Selection Mode</InProductAction> while previewing your store:
+
+1. Make sure you're in Store view.
+2. Find the toolbar at the bottom of the preview.
+3. Click the <InlineIcon Icon={CursorDefault} alt="cursor" /> icon to turn Selection Mode on.
+4. The icon turns blue when Selection Mode is active.
+5. Click the <InlineIcon Icon={CursorDefault} alt="cursor" /> icon again to turn Selection Mode off.
+
+{/* TODO: Add image: Selection mode toggle in the preview toolbar */}
+
+### Saving Changes in Selection Mode
+
+When you make changes using Selection Mode manually, make sure to click the "Save All" button to save your changes. Otherwise, you lose your changes when you refresh the page.
+
+{/* TODO: Add image: Save All button in the preview toolbar */}
+
+---
+
+## Select Elements
+
+Once Selection Mode is on, you can select any element on your store to edit it.
+
+To select an element:
+
+1. Turn on Selection Mode using the <InlineIcon Icon={CursorDefault} alt="cursor" /> icon.
+2. Hover over any element on your store.
+3. Elements show a blue border when you hover over them.
+4. Click an element to select it.
+5. The preview toolbar will show options to edit the selected element.
+6. The element tag appears (like h1, div, section) in the Bloom chat input to help you reference it in prompts.
+
+The next sections explain how to edit selected elements.
+
+{/* TODO: Add image: Selecting a heading element with selection mode */}
+
+---
+
+## Ask Bloom to Edit Selected Elements
+
+Use Selection Mode to help Bloom understand exactly which element to edit when you make a request.
+
+To select an element and ask Bloom to edit it:
+
+1. Turn on Selection Mode.
+2. Select the element you want to change.
+3. Type your prompt in the chat. For example: "Make this heading bigger and bold"
+4. Bloom sees the selected element and applies your changes to it specifically.
+
+{/* TODO: Add image: Asking Bloom to edit a selected element */}
+
+---
+
+## Edit Text Directly
+
+With Selection Mode, make quick text changes without asking Bloom. This is useful to make edits quickly and save your Bloom credits for bigger changes.
+
+To edit text of an element:
+
+<Note>
+
+You can't edit text like product names, descriptions, or any data managed in the admin dashboard with Selection Mode. This only works for text elements in your store's design.
+
+</Note>
+
+1. Turn on Selection Mode.
+2. Select an element with text (heading, paragraph, button text).
+3. Double-click the text to edit it directly.
+4. Make your changes to the text.
+5. Click "Save All" in the toolbar to save your changes.
+
+{/* TODO: Add image: Editing text directly in selection mode */}
+
+---
+
+## Change Text and Background Colors
+
+With Selection Mode, you can change text and background colors instantly without using credits. This is useful for making quick design tweaks to improve the look of your store.
+
+To change colors for an element:
+
+1. Turn on Selection Mode.
+2. Select an element.
+3. Click the <InlineIcon Icon={Palette} alt="palette" /> icon in the preview toolbar.
+4. Choose the "Text" or "Background" tab.
+5. Click a color swatch to apply it. You can scroll horizontally to see more colors.
+    - If you want to use a custom color, ask Bloom instead with a prompt like "Change the background color of this section to #ff0000".
+6. Click "Save All" to save your changes.
+
+{/* TODO: Add image: Changing text and background colors in selection mode */}
+
+---
+
+## Change Font
+
+With Selection Mode, you can change the font family for text or sections without using credits. This is useful for quickly updating the typography of your store.
+
+To change fonts for an element:
+
+1. Turn on Selection Mode.
+2. Select a text element (heading, paragraph) or a section.
+3. Click the <InlineIcon Icon={Typography} alt="typography" /> icon in the preview toolbar.
+4. Choose from available fonts:
+    - **Default**: The default font for your store.
+    - **Serif**: A classic serif font.
+    - **Sans-serif**: A clean sans-serif font.
+    - **Mono**: A monospaced font.
+5. Click "Save All" to save your changes.
+
+{/* TODO: Add image: Changing fonts in selection mode */}
+
+---
+
+## Adjust Margin and Padding
+
+With Selection Mode, you can fine-tune spacing around and inside elements without using Bloom credits. This is useful for making quick layout adjustments to improve the look of your store.
+
+To adjust spacing for an element:
+
+1. Turn on Selection Mode.
+2. Select an element.
+3. Click the <InlineIcon Icon={Gap} alt="gap" /> icon in the preview toolbar.
+4. You can adjust:
+    - **Margin**: Space outside the element (pushes other elements away)
+    - **Padding**: Space inside the element (pushes content inward)
+    - Both margin and padding have two fields by default for left/right and top/bottom spacing. Click the <InlineIcon Icon={Expand} alt="expand" /> icon to adjust all four sides individually.
+    - All values are in px (pixels) for precise control.
+5. Click "Save All" to save your changes.
+
+<Note title="Heads up">
+
+When you adjust margin and padding, it affects both desktop and mobile views. If you want to make responsive spacing changes, ask Bloom to make the changes instead and clarify the need for responsive adjustments in your prompt.
+
+</Note>
+
+{/* TODO: Add image: Adjusting margin and padding in selection mode */}
+
+---
+
+## Replace Images
+
+Using Selection Mode, you can replace images quickly without using credits. This is useful for updating section images and banners across your store.
+
+To replace an image for an element:
+
+<Note>
+
+Image replacement only works for `img` elements. It also doesn't work for product images since those are managed in the admin dashboard. To change background or product images, ask Bloom to make the change with a prompt.
+
+</Note>
+
+1. Turn on Selection Mode.
+2. Select an `img` element.
+3. Click the <InlineIcon Icon={ImageSparkle} alt="image" /> icon in the preview toolbar.
+    - If the icon is disabled, make sure the selected element is an `img` element.
+4. Choose a replacement image from existing images in your store, or click the <InlineIcon Icon={CloudArrowUp} alt="upload" /> icon to upload your own image.
+5. Click "Save All" to save your changes.
+
+{/* TODO: Add image: Replacing an image in selection mode */}

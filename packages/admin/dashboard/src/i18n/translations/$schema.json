@@ -8376,6 +8376,98 @@
           ],
           "additionalProperties": false
         },
+        "templates": {
+          "type": "object",
+          "properties": {
+            "amount_off_products": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "amount_off_order": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "percentage_off_product": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "percentage_off_order": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "buy_get": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "shipping_discount": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "amount_off_products",
+            "amount_off_order",
+            "percentage_off_product",
+            "percentage_off_order",
+            "buy_get",
+            "shipping_discount"
+          ],
+          "additionalProperties": false
+        },
         "deleteWarning": {
           "type": "string"
         },
@@ -8419,6 +8511,7 @@
         "campaign",
         "campaign_currency",
         "form",
+        "templates",
         "deleteWarning",
         "createPromotionTitle",
         "type",

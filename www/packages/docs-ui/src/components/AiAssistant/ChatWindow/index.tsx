@@ -178,10 +178,10 @@ export const AiAssistantChatWindow = () => {
         ref={chatWindowRef}
       >
         <AiAssistantChatWindowHeader />
-        <div className="flex flex-auto overflow-auto relative">
+        <div className="flex flex-col flex-auto overflow-auto relative">
           <div
             className={clsx(
-              "overflow-y-auto flex-auto px-docs_0.5 py-docs_1.5"
+              "overflow-y-auto flex-auto px-docs_0.5 py-docs_1.5 relative"
             )}
           >
             <div ref={contentRef} className="flex flex-col gap-docs_2">
@@ -196,6 +196,9 @@ export const AiAssistantChatWindow = () => {
                 />
               )}
             </div>
+            <div className="sticky bottom-0 z-[11]">
+              <AiAssistantChatWindowCallout />
+            </div>
           </div>
           <span
             className={clsx(
@@ -205,7 +208,6 @@ export const AiAssistantChatWindow = () => {
             )}
           ></span>
         </div>
-        <AiAssistantChatWindowCallout />
         <AiAssistantChatWindowInput chatWindowRef={chatWindowRef} />
         <AiAssistantChatWindowFooter />
       </div>

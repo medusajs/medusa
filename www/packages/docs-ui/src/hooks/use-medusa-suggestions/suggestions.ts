@@ -30,6 +30,12 @@ const CLOUD_STOREFRONT_SUGGESTION: CardProps = {
   href: "https://cloud.medusajs.com/signup",
 }
 
+const BLOOM_SUGGESTION: CardProps = {
+  title: "Build with Bloom",
+  text: "Bring your business ideas to life with Bloom, our AI-powered commerce assistant.",
+  href: "https://bloom.medusajs.com",
+}
+
 type Suggestions = Map<string, CardProps>
 
 export const medusaSuggestions: Suggestions = new Map([
@@ -45,4 +51,9 @@ export const medusaSuggestions: Suggestions = new Map([
   ["caching", CLOUD_CACHE_SUGGESTION],
   ["vercel", CLOUD_STOREFRONT_SUGGESTION],
   ["netlify", CLOUD_STOREFRONT_SUGGESTION],
+  ["b2b", BLOOM_SUGGESTION],
+  ["ai", BLOOM_SUGGESTION],
+  ["marketplace", BLOOM_SUGGESTION],
+  ["subscriptions", BLOOM_SUGGESTION],
+  ["bloom", BLOOM_SUGGESTION],
 ])

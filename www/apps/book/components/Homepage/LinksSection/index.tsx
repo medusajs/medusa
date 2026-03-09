@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { HeadlineTags, ShadedBlock } from "docs-ui"
 import Link from "next/link"
+import { LinksSectionBloomIcon } from "./Icon"
 
 const HomepageLinksSection = () => {
   const links: {
@@ -61,17 +62,52 @@ const HomepageLinksSection = () => {
         },
       ],
     },
+    {
+      tag: "Medusa Cloud",
+      links: [
+        {
+          link: "https://docs.medusajs.com/cloud/projects",
+          text: "Deploy from GitHub",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/environments/preview",
+          text: "Preview environments",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/emails",
+          text: "Medusa Emails",
+        },
+      ],
+    },
+    {
+      tag: "Agentic Development",
+      links: [
+        {
+          link: "https://bloom.medusajs.com",
+          text: "Build with Bloom",
+        },
+        {
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai",
+          text: "Agent Skills",
+        },
+        {
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai#mcp-remote-server",
+          text: "Medusa Docs MCP",
+        },
+      ],
+    },
   ]
 
   return (
-    <div className="w-full flex gap-0 flex-col md:flex-row md:min-h-[320px] border-b border-medusa-border-base">
+    <div className="w-full flex gap-0 flex-col md:flex-row flex-wrap border-b border-medusa-border-base">
       {links.map((section, index) => (
         <div
           key={index}
           className={clsx(
-            "p-2 flex justify-between flex-col w-full md:w-1/3 gap-2",
+            "p-2 flex justify-between flex-col w-full md:w-1/3 gap-2 md:min-h-[320px]",
             "border-b border-medusa-border-base md:border-b-0",
-            index !== links.length - 1 && "md:border-r"
+            index !== 2 && "md:border-r",
+            index > 2 && "md:border-t"
           )}
         >
           <HeadlineTags tags={[section.tag]} className="!justify-start" />
@@ -92,6 +128,14 @@ const HomepageLinksSection = () => {
           </div>
         </div>
       ))}
+      <div
+        className={clsx(
+          "p-2 flex justify-center items-center w-full md:w-1/3 gap-2 md:min-h-[320px]",
+          "border-medusa-border-base md:border-t bg-medusa-bg-component"
+        )}
+      >
+        <LinksSectionBloomIcon />
+      </div>
     </div>
   )
 }

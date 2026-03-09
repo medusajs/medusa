@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  html {
+    @apply antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  *::selection {
+    @apply bg-medusa-fg-base text-medusa-fg-on-inverted;
+  }
+
+  *:not(.code-block-elm) {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-base);
+  }
+
+  .code-block-elm {
+    scrollbar-color: var(--docs-contrast-border-base) transparent;
+  }
+
+  aside * {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-subtle);
+  }
+
+  body[data-modal="opened"] {
+    @apply !overflow-hidden;
+  }
+
+  .text-wrap {
+    text-wrap: wrap;
+  }
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}

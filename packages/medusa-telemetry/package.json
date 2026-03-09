@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/telemetry",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {

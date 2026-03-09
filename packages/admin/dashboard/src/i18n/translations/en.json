@@ -2250,6 +2250,32 @@
         "description": "Maximum number of times this promotion can be used across all orders. Leave empty for unlimited usage."
       }
     },
+    "templates": {
+      "amount_off_products": {
+        "title": "Amount off products",
+        "description": "Discount specific products or collection of products"
+      },
+      "amount_off_order": {
+        "title": "Amount off order",
+        "description": "Discounts the total order amount"
+      },
+      "percentage_off_product": {
+        "title": "Percentage off product",
+        "description": "Discounts a percentage off selected products"
+      },
+      "percentage_off_order": {
+        "title": "Percentage off order",
+        "description": "Discounts a percentage of the total order amount"
+      },
+      "buy_get": {
+        "title": "Buy X Get Y",
+        "description": "Buy X product(s), get Y product(s)"
+      },
+      "shipping_discount": {
+        "title": "Free shipping",
+        "description": "Applies a 100% discount to shipping fees"
+      }
+    },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type",
