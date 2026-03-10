@@ -12,10 +12,21 @@ const TRANSACTION_NOT_STARTED = "TransactionNotStartedError"
 const API_ERROR = "api_error"
 const INVALID_REQUEST_ERROR = "invalid_request_error"
 const INVALID_STATE_ERROR = "invalid_state_error"
+const BODY_PARSER_ENTITY_PARSE_FAILED = "entity.parse.failed"
+
+function isBodyParserSyntaxError(
+  err: unknown
+): err is SyntaxError & { type: string } {
+  return (
+    err instanceof SyntaxError &&
+    "type" in err &&
+    err.type === BODY_PARSER_ENTITY_PARSE_FAILED
+  )
+}
 
 export function errorHandler() {
   return function coreErrorHandler(
-    err: MedusaError,
+    err: MedusaError | (SyntaxError & { type?: string }),
     req: MedusaRequest,
     res: Response,
     _: NextFunction
@@ -30,13 +41,22 @@ export function errorHandler() {
       )
     }
 
-    err = formatException(err)
+    if (isBodyParserSyntaxError(err)) {
+      logger.info("Invalid JSON in request body")
+      res.status(400).json({
+        type: MedusaError.Types.INVALID_DATA,
+        message: "Invalid JSON in request body",
+      })
+      return
+    }
 
-    const errorType = err.type || err.name
+    const formattedError = formatException(err) as MedusaError
+
+    const errorType = formattedError.type || formattedError.name
     const errObj = {
-      code: err.code,
-      type: err.type,
-      message: err.message,
+      code: formattedError.code,
+      type: formattedError.type,
+      message: formattedError.message,
     }
 
     let statusCode = 500
@@ -85,13 +105,15 @@ export function errorHandler() {
     }
 
     if (statusCode >= 500) {
-      logger.error(err)
+      logger.error(formattedError)
     } else {
-      logger.info(err.message)
+      logger.info(formattedError.message)
     }
 
-    if ("issues" in err && Array.isArray(err.issues)) {
-      const messages = err.issues.map((issue) => fromZodIssue(issue).toString())
+    if ("issues" in formattedError && Array.isArray(formattedError.issues)) {
+      const messages = formattedError.issues.map((issue) =>
+        fromZodIssue(issue).toString()
+      )
       res.status(statusCode).json({
         type: MedusaError.Types.INVALID_DATA,
         message: messages.join("\n"),
