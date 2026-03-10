@@ -42,3 +42,52 @@ export interface AdminBatchTranslations {
    */
   delete?: string[]
 }
+
+interface AdminCreateTranslationSettings {
+  /**
+   * The entity type (e.g., "product", "product_variant").
+   */
+  entity_type: string
+  /**
+   * The translatable fields for this entity type.
+   */
+  fields: string[]
+  /**
+   * Whether the entity translatable status is enabled.
+   */
+  is_active?: boolean
+}
+
+interface AdminUpdateTranslationSettings {
+  /**
+   * The ID of the settings.
+   */
+  id: string
+  /**
+   * The entity type (e.g., "product", "product_variant").
+   */
+  entity_type?: string
+  /**
+   * The translatable fields for this entity type.
+   */
+  fields?: string[]
+  /**
+   * Whether the entity translatable status is enabled.
+   */
+  is_active?: boolean
+}
+
+export interface AdminBatchTranslationSettings {
+  /**
+   * The translation settings to create.
+   */
+  create?: AdminCreateTranslationSettings[]
+  /**
+   * The translation settings to update.
+   */
+  update?: AdminUpdateTranslationSettings[]
+  /**
+   * The translation settings to delete (IDs).
+   */
+  delete?: string[]
+}

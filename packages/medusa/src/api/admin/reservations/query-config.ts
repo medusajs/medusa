@@ -1,3 +1,7 @@
+export enum Entities {
+  reservation_item = "reservation_item",
+}
+
 import { defaultAdminInventoryItemFields } from "../inventory-items/query-config"
 
 export const defaultAdminReservationFields = [
@@ -16,9 +20,11 @@ export const defaultAdminReservationFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminReservationFields,
   isList: false,
+  entity: Entities.reservation_item,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.reservation_item,
 }

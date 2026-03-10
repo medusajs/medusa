@@ -518,15 +518,6 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-region
     x-associatedSchema:
       $ref: '#/components/schemas/AdminTaxRegion'
-  - name: Transaction Groups
-    description: |
-      A transaction group is a group of transactions that belong to a store credit account. It allows you to group transactions together, such as all transactions related to a specific gift card.
-      These API routes allow admin users to list transaction groups.
-      <Note>
-      Transaction Group routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
-      </Note>
-    x-associatedSchema:
-      $ref: '#/components/schemas/AdminTransactionGroup'
   - name: Translations
     description: |
       A translation is a localized version of content in a specific locale. For example, a product description in French.
@@ -23051,6 +23042,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: created_at
         - name: updated_at
           in: query
           description: Filter by a gift card's update date.
@@ -23170,6 +23162,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: updated_at
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -23271,20 +23264,6 @@ paths:
       description: Create a gift card.
       x-authenticated: true
       x-ignoreCleanup: true
-      parameters:
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -23351,19 +23330,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -23412,19 +23378,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -23480,19 +23433,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -23508,77 +23448,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-badges:
-        - text: Cloud
-          description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
-  /admin/gift-cards/{id}/redeem:
-    post:
-      operationId: PostGiftCardsIdRedeem
-      summary: Redeem a Gift Card
-      description: Redeem a gift card and add it to the customer's store credit account.
-      x-authenticated: true
-      x-ignoreCleanup: true
-      parameters:
-        - name: id
-          in: path
-          description: The gift card's ID.
-          required: true
-          schema:
-            type: string
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminRedeemGiftCard'
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/admin/gift-cards/{id}/redeem' \
-            -H 'Authorization: Bearer {jwt_token}' \
-            -H 'Content-Type: application/json' \
-            --data-raw '{
-              "customer_id": "{value}"
-            }'
-      tags:
-        - Gift Cards
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminGiftCardResponse'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -27467,7 +27336,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27489,7 +27358,7 @@ paths:
               },
             })
 
-            sdk.admin.orderEdit.cancelRequest("ordch_123")
+            sdk.admin.orderEdit.cancelRequest("order_123")
             .then(({ deleted }) => {
               console.log(deleted)
             })
@@ -27560,7 +27429,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27582,7 +27451,7 @@ paths:
               },
             })
 
-            sdk.admin.orderEdit.confirm("ordch_123")
+            sdk.admin.orderEdit.confirm("order_123")
             .then(({ order_preview }) => {
               console.log(order_preview)
             })
@@ -27635,7 +27504,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27662,7 +27531,7 @@ paths:
               },
             })
 
-            sdk.admin.orderEdit.addItems("ordch_123", {
+            sdk.admin.orderEdit.addItems("order_123", {
               items: [
                 {
                   variant_id: "variant_123",
@@ -27713,7 +27582,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27747,7 +27616,7 @@ paths:
             })
 
             sdk.admin.orderEdit.updateOriginalItem(
-              "ordch_123", 
+              "order_123",
               "orli_123",
               {
                 quantity: 1
@@ -27801,7 +27670,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27835,7 +27704,7 @@ paths:
             })
 
             sdk.admin.orderEdit.updateAddedItem(
-              "ordch_123", 
+              "order_123",
               "orli_123",
               {
                 quantity: 1
@@ -27884,7 +27753,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27913,7 +27782,7 @@ paths:
             })
 
             sdk.admin.orderEdit.removeAddedItem(
-              "ordch_123", 
+              "order_123",
               "orli_123",
             )
             .then(({ order_preview }) => {
@@ -27956,7 +27825,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -27978,7 +27847,7 @@ paths:
               },
             })
 
-            sdk.admin.orderEdit.request("ordch_123")
+            sdk.admin.orderEdit.request("order_123")
             .then(({ order_preview }) => {
               console.log(order_preview)
             })
@@ -28031,7 +27900,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -28090,7 +27959,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -28150,7 +28019,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The order edit's ID.
+          description: The ID of the order that is being edited.
           required: true
           schema:
             type: string
@@ -43110,7 +42979,7 @@ paths:
               properties:
                 create:
                   type: array
-                  description: The The associations to create between product variants and inventory items.
+                  description: The associations to create between product variants and inventory items.
                   items:
                     type: object
                     description: The associations to create between a product variant and an inventory item.
@@ -59441,21 +59310,6 @@ paths:
                   type: string
                   title: customer_id
                   description: A customer ID.
-        - name: transaction_group_id
-          in: query
-          description: Filter by the associated transaction group's ID.
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: transaction_group_id
-                description: Filter by the associated transaction group ID.
-              - type: array
-                description: Filter by transaction group IDs.
-                items:
-                  type: string
-                  title: transaction_group_id
-                  description: A transaction group ID.
         - name: currency_code
           in: query
           description: Filter by currency code(s) to retrieve store credit accounts in specific currencies.
@@ -59592,6 +59446,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: created_at
         - name: updated_at
           in: query
           description: Filter by a store credit account's update date.
@@ -59711,6 +59566,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: updated_at
         - name: $and
           in: query
           description: An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
@@ -59761,6 +59617,20 @@ paths:
             description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
             externalDocs:
               url: '#pagination'
+        - name: code
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: code
+                description: Filter by a store credit account code.
+              - type: array
+                description: Filter by store credit account codes.
+                items:
+                  type: string
+                  title: code
+                  description: A store credit account code.
       security:
         - api_token: []
         - cookie_auth: []
@@ -59802,20 +59672,6 @@ paths:
       description: Create a store credit account.
       x-authenticated: true
       x-ignoreCleanup: true
-      parameters:
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -59921,21 +59777,6 @@ paths:
                   type: string
                   title: customer_id
                   description: A customer ID.
-        - name: transaction_group_id
-          in: query
-          description: Filter by the associated transaction group's ID.
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: transaction_group_id
-                description: Filter by the associated transaction group ID.
-              - type: array
-                description: Filter by transaction group IDs.
-                items:
-                  type: string
-                  title: transaction_group_id
-                  description: A transaction group ID.
         - name: currency_code
           in: query
           description: Filter by currency code(s) to retrieve store credit accounts in specific currencies.
@@ -60072,6 +59913,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: created_at
         - name: updated_at
           in: query
           description: Filter by a store credit account's update date.
@@ -60191,6 +60033,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: updated_at
         - name: $and
           in: query
           description: An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
@@ -60241,6 +60084,20 @@ paths:
             description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
             externalDocs:
               url: '#pagination'
+        - name: code
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: code
+                description: Filter by a store credit account's code.
+              - type: array
+                description: Filter by store credit account codes.
+                items:
+                  type: string
+                  title: code
+                  description: A store credit account code.
       security:
         - api_token: []
         - cookie_auth: []
@@ -60437,6 +60294,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: created_at
         - name: updated_at
           in: query
           description: Filter by a transaction's update date.
@@ -60556,6 +60414,7 @@ paths:
                 type: boolean
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
+            title: updated_at
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -63601,375 +63460,6 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: deleteTaxRegionsWorkflow
       x-events: []
-  /admin/transaction-groups:
-    get:
-      operationId: GetTransactionGroups
-      summary: List Transaction Groups
-      description: Retrieve a list of transaction groups. The transaction groups can be filtered by fields such as `id`. The transaction groups can also be sorted or paginated.
-      x-authenticated: true
-      x-ignoreCleanup: true
-      parameters:
-        - name: id
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: id
-                description: Filter by the transaction group's ID.
-              - type: array
-                description: Filter by the transaction group IDs.
-                items:
-                  type: string
-                  title: id
-                  description: A transaction group's ID.
-        - name: code
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: code
-                description: Filter by the transaction group's code.
-              - type: array
-                description: Filter by the transaction group codes.
-                items:
-                  type: string
-                  title: code
-                  description: A transaction group's code.
-        - name: created_at
-          in: query
-          description: Filter by a transaction group's creation date.
-          required: false
-          schema:
-            type: object
-            description: Filter by a transaction group's creation date.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by an exact match.
-                    items:
-                      type: string
-                      title: $eq
-                      description: Filter by an exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: Filter by values in this array.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: Filter by values not in this array.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: array
-                    description: Filter by values not matching the conditions in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: Filter arrays that have overlapping values with this parameter.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: Filter arrays that contain some of the values of this parameter.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: Filter arrays that contain all values of this parameter.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
-        - name: updated_at
-          in: query
-          description: Filter by a transaction group's update date.
-          required: false
-          schema:
-            type: object
-            description: Filter by a transaction group's update date.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by an exact match.
-                    items:
-                      type: string
-                      title: $eq
-                      description: Filter by an exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: Filter by values in this array.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: Filter by values not in this array.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: array
-                    description: Filter by values not matching the conditions in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: Filter arrays that have overlapping values with this parameter.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: Filter arrays that contain some of the values of this parameter.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: Filter arrays that contain all values of this parameter.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-            externalDocs:
-              url: '#pagination'
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-            externalDocs:
-              url: '#pagination'
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-            externalDocs:
-              url: '#pagination'
-        - name: fields
-          in: query
-          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
-        - name: $and
-          in: query
-          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-          required: false
-          schema:
-            type: array
-            description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-            items:
-              type: object
-            title: $and
-        - name: $or
-          in: query
-          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-          required: false
-          schema:
-            type: array
-            description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-            items:
-              type: object
-            title: $or
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl '{backend_url}/admin/transaction-groups' \
-            -H 'Authorization: Bearer {jwt_token}'
-      tags:
-        - Transaction Groups
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminTransactionGroupsResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-badges:
-        - text: Cloud
-          description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /admin/translations:
     get:
       operationId: GetTranslations
@@ -64302,7 +63792,6 @@ paths:
             .then(({ created, updated, deleted }) => {
               console.log(created, updated, deleted)
             })
-            ```
         - lang: Shell
           label: cURL
           source: |-
@@ -64512,7 +64001,7 @@ paths:
       operationId: GetTranslationsSettings
       summary: List Translation Settings
       x-sidebar-summary: List Settings
-      description: Retrieve the list of translatable fields for all entities, such as products and collections.
+      description: Retrieve the list of translatable fields for all entities, such as products and collections. You can also filter the results by entity type or active entities.
       x-authenticated: true
       parameters:
         - name: entity_type
@@ -64524,6 +64013,14 @@ paths:
             title: entity_type
             description: The entity to retrieve translation settings for.
             example: product
+        - name: is_active
+          in: query
+          description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
+          required: false
+          schema:
+            type: boolean
+            title: is_active
+            description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
       security:
         - api_token: []
         - cookie_auth: []
@@ -64545,8 +64042,8 @@ paths:
             sdk.admin.translation.settings({
               entity_type: "product"
             })
-            .then(({ translatable_fields }) => {
-              console.log(translatable_fields)
+            .then(({ translation_settings }) => {
+              console.log(translation_settings)
             })
         - lang: Shell
           label: cURL
@@ -64575,6 +64072,85 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
+      x-featureFlag: translation
+  /admin/translations/settings/batch:
+    post:
+      operationId: PostTranslationsSettingsBatch
+      summary: Manage Translation Settings
+      description: Create, update, or delete multiple translation settings.
+      x-authenticated: true
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminBatchTranslationSettings'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.translation.batchSettings({
+              create: [
+                {
+                  entity_type: "product",
+                  fields: ["title", "description"],
+                  is_active: true
+                }
+              ],
+              update: [
+                {
+                  id: "trset_123",
+                  fields: ["title", "description", "subtitle"],
+                  is_active: true
+                }
+              ],
+              delete: ["trset_456"]
+            })
+            .then(({ created, updated, deleted }) => {
+              console.log(created, updated, deleted)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/translations/settings/batch' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Translations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminBatchTranslationSettingsResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: batchTranslationSettingsWorkflow
+      x-events: []
+      x-since: 2.13.0
       x-featureFlag: translation
   /admin/translations/statistics:
     get:
@@ -65787,6 +65363,53 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
+  /admin/users/{id}/roles/{role_id}:
+    delete:
+      operationId: DeleteUsersIdRolesRole_id
+      summary: Remove Role from User
+      description: Remove a Role from a user.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+        - name: role_id
+          in: path
+          description: The user's role id.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/users/{id}/roles/{role_id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: removeUserRolesWorkflow
+      x-events: []
   /admin/views/{entity}/columns:
     get:
       operationId: GetViewsEntityColumns
@@ -68756,6 +68379,70 @@ components:
               type: boolean
               title: deleted
               description: Whether the product variants were deleted.
+    AdminBatchTranslationSettings:
+      type: object
+      description: The translation settings to create, update, or delete in batch.
+      x-schemaName: AdminBatchTranslationSettings
+      properties:
+        create:
+          type: array
+          description: The translation settings to create.
+          items:
+            $ref: '#/components/schemas/AdminCreateTranslationSettings'
+        update:
+          type: array
+          description: The translation settings to update.
+          items:
+            $ref: '#/components/schemas/AdminUpdateTranslationSettings'
+        delete:
+          type: array
+          description: The translation settings to delete.
+          items:
+            type: string
+            title: delete
+            description: The IDs of the translation settings to delete.
+    AdminBatchTranslationSettingsResponse:
+      type: object
+      description: The result of managing the translation settings in batch.
+      x-schemaName: AdminBatchTranslationSettingsResponse
+      required:
+        - created
+        - updated
+        - deleted
+      properties:
+        created:
+          type: array
+          description: The created translation settings.
+          items:
+            $ref: '#/components/schemas/AdminTranslationSettings'
+        updated:
+          type: array
+          description: The updated translation settings.
+          items:
+            $ref: '#/components/schemas/AdminTranslationSettings'
+        deleted:
+          type: object
+          description: The deletion result.
+          required:
+            - ids
+            - object
+            - deleted
+          properties:
+            ids:
+              type: array
+              description: The IDs of the deleted translation settings.
+              items:
+                type: string
+                title: ids
+                description: The ID of a deleted translation settings.
+            object:
+              type: string
+              title: object
+              description: The type of object deleted.
+            deleted:
+              type: boolean
+              title: deleted
+              description: Whether the deletion was successful.
     AdminBatchUpdateInventoryItemsLocationLevels:
       type: object
       description: The details of an inventory level to update.
@@ -71320,7 +71007,6 @@ components:
       x-schemaName: AdminCreateStoreCreditAccount
       required:
         - currency_code
-        - customer_id
       properties:
         currency_code:
           type: string
@@ -71469,6 +71155,31 @@ components:
           type: string
           title: provider_id
           description: The ID of the tax provider used to calculate the tax rate in this tax region.
+    AdminCreateTranslationSettings:
+      type: object
+      description: The translation settings to create.
+      x-schemaName: AdminCreateTranslationSettings
+      required:
+        - entity_type
+        - fields
+      properties:
+        entity_type:
+          type: string
+          title: entity_type
+          description: The entity type to create the translation settings for.
+          example: product
+        fields:
+          type: array
+          description: The fields to support translations for.
+          items:
+            type: string
+            title: fields
+            description: A field to support translations for.
+            example: title
+        is_active:
+          type: boolean
+          title: is_active
+          description: Whether translations are active for the given entity type.
     AdminCreateVariantInventoryItem:
       type: object
       description: The details of the variant-inventory item association.
@@ -71585,6 +71296,21 @@ components:
           type: string
           title: transaction_id
           description: The ID of the workflow execution's transaction.
+    AdminCreditStoreCreditAccountParams:
+      type: object
+      description: The details of the credits to add to the store credit account.
+      x-schemaName: AdminCreditStoreCreditAccountParams
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          title: amount
+          description: The credits to add to the store credit account.
+        note:
+          type: string
+          title: note
+          description: An internal note with more details on the credit addition.
     AdminCurrency:
       type: object
       description: The currency's currencies.
@@ -78774,7 +78500,6 @@ components:
         - ean
         - upc
         - thumbnail
-        - images
         - allow_backorder
         - manage_inventory
         - hs_code
@@ -79295,17 +79020,6 @@ components:
                 type: string
                 title: internal_note
                 description: A note viewed only by admin users.
-    AdminRedeemGiftCard:
-      type: object
-      description: The details of the gift card to redeem.
-      x-schemaName: AdminRedeemGiftCard
-      required:
-        - customer_id
-      properties:
-        customer_id:
-          type: string
-          title: customer_id
-          description: The ID of the customer that the gift card belongs to. The gift card's value will be added to the customer's store credit account.
     AdminRefund:
       type: object
       description: The refund's details.
@@ -80734,6 +80448,9 @@ components:
           externalDocs:
             url: https://en.wikipedia.org/wiki/ISO_3166-2
             description: Learn more about ISO 3166-2
+        metadata:
+          type: object
+          description: The address's metadata.
       required:
         - id
         - address_1
@@ -80744,6 +80461,7 @@ components:
         - phone
         - postal_code
         - province
+        - metadata
     AdminStockLocationDeleteResponse:
       type: object
       description: The details of the stock location's deletion.
@@ -80875,9 +80593,7 @@ components:
       x-schemaName: AdminStoreCreditAccount
       required:
         - customer
-        - transaction_groups
         - id
-        - customer_id
         - currency_code
         - credits
         - debits
@@ -80913,11 +80629,6 @@ components:
           type: number
           title: balance
           description: The account's balance.
-        transaction_groups:
-          type: array
-          description: The store credit account's transaction groups.
-          items:
-            $ref: '#/components/schemas/AdminTransactionGroup'
         metadata:
           type: object
           description: The store credit account's metadata, can hold custom key-value pairs.
@@ -80934,6 +80645,10 @@ components:
           format: date-time
           title: updated_at
           description: The date the store credit account was updated at.
+        code:
+          type: string
+          title: code
+          description: The store credit account's code.
     AdminStoreCreditAccountResponse:
       type: object
       description: The store credit account's details.
@@ -81370,7 +81085,6 @@ components:
         - account
         - id
         - account_id
-        - transaction_group_id
         - type
         - amount
         - metadata
@@ -81385,10 +81099,6 @@ components:
           type: string
           title: account_id
           description: The ID of the store credit account that the transaction belongs to.
-        transaction_group_id:
-          type: string
-          title: transaction_group_id
-          description: The ID of the transaction group that the transaction belongs to.
         type:
           type: string
           description: The transaction's type.
@@ -81429,79 +81139,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the transaction was updated at.
-    AdminTransactionGroup:
-      type: object
-      description: The transaction group's details.
-      x-schemaName: AdminTransactionGroup
-      required:
-        - account
-        - id
-        - code
-        - credits
-        - debits
-        - balance
-        - metadata
-      properties:
-        id:
-          type: string
-          title: id
-          description: The transaction group's ID.
-        code:
-          type: string
-          title: code
-          description: The transaction group's code.
-        credits:
-          type: number
-          title: credits
-          description: The transaction group's credits.
-        debits:
-          type: number
-          title: debits
-          description: The transaction group's debits.
-        balance:
-          type: number
-          title: balance
-          description: The transaction group's balance.
-        account:
-          type: object
-        metadata:
-          type: object
-          description: The transaction group's metadata, can hold custom key-value pairs.
-          externalDocs:
-            url: https://docs.medusajs.com/api/admin#manage-metadata
-            description: Learn how to manage metadata
-    AdminTransactionGroupsResponse:
-      type: object
-      description: The paginated list of transaction groups.
-      x-schemaName: AdminTransactionGroupsResponse
-      required:
-        - limit
-        - offset
-        - count
-        - transaction_groups
-      properties:
-        limit:
-          type: number
-          title: limit
-          description: The maximum number of transaction groups to return.
-        offset:
-          type: number
-          title: offset
-          description: The number of transaction groups to skip before retrieving the results.
-        count:
-          type: number
-          title: count
-          description: The total number of transaction groups available.
-        transaction_groups:
-          type: array
-          description: The list of transaction groups.
-          items:
-            $ref: '#/components/schemas/AdminTransactionGroup'
-        estimate_count:
-          type: number
-          title: estimate_count
-          description: The transaction group's estimate count.
-          x-featureFlag: index_engine
     AdminTransactionsResponse:
       type: object
       description: The paginated list of transactions.
@@ -81630,20 +81267,64 @@ components:
           type: number
           title: limit
           description: The maximum number of items returned in the response.
+    AdminTranslationSettings:
+      type: object
+      description: The translation settings details.
+      x-schemaName: AdminTranslationSettings
+      required:
+        - id
+        - created_at
+        - updated_at
+        - deleted_at
+        - entity_type
+        - fields
+        - is_active
+      properties:
+        id:
+          type: string
+          title: id
+          description: The ID of the translation settings.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the translation settings was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the translation settings was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the translation settings was deleted.
+        entity_type:
+          type: string
+          title: entity_type
+          description: The entity type the translation settings are for.
+          example: product
+        fields:
+          type: array
+          description: The fields supported for translations.
+          items:
+            type: string
+            title: fields
+            description: A field supported for translations.
+        is_active:
+          type: boolean
+          title: is_active
+          description: Whether translations are active for the given entity type.
     AdminTranslationSettingsResponse:
       type: object
       description: The translation settings' details.
       x-schemaName: AdminTranslationSettingsResponse
       required:
-        - translatable_fields
+        - translation_settings
       properties:
-        translatable_fields:
+        translation_settings:
           type: object
-          description: Key-value pairs of translatable fields for different entities. Each key is an entity type, and the value is an array of fields that can be translated for that entity.
-          example:
-            product:
-              - title
-              - description
+          description: The translation settings details.
     AdminTranslationStatisticsResponse:
       type: object
       description: The translation statistics details.
@@ -83297,6 +82978,32 @@ components:
           type: string
           title: provider_id
           description: The ID of the tax provider to use when calculating taxes for this tax region.
+    AdminUpdateTranslationSettings:
+      type: object
+      description: The translation settings to update.
+      x-schemaName: AdminUpdateTranslationSettings
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          title: id
+          description: The ID of the translation settings to update.
+        entity_type:
+          type: string
+          title: entity_type
+          description: The entity type to update the translation settings for.
+        fields:
+          type: array
+          description: The fields to update translations for.
+          items:
+            type: string
+            title: fields
+            description: A field to update translations for.
+        is_active:
+          type: boolean
+          title: is_active
+          description: Whether translations are active for the given entity type.
     AdminUpdateUser:
       type: object
       description: The properties to update in a user.
@@ -83502,6 +83209,9 @@ components:
           externalDocs:
             url: https://en.wikipedia.org/wiki/ISO_3166-2
             description: Learn more about ISO 3166-2
+        metadata:
+          type: object
+          description: The address's metadata.
     AdminUser:
       type: object
       description: The user's details.
@@ -86854,7 +86564,6 @@ components:
         - ean
         - upc
         - thumbnail
-        - images
         - allow_backorder
         - manage_inventory
         - hs_code
@@ -90966,6 +90675,26 @@ components:
           type: boolean
           title: insufficient_inventory
           description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
+    StoreClaimStoreCreditAccountParams:
+      type: object
+      description: The details of claiming the credit.
+      x-schemaName: StoreClaimStoreCreditAccountParams
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          title: code
+          description: The code of the store credit account to claim.
+    StoreClaimStoreCreditAccountResponse:
+      type: object
+      description: The claimed store credit account's details.
+      x-schemaName: StoreClaimStoreCreditAccountResponse
+      required:
+        - store_credit_account
+      properties:
+        store_credit_account:
+          $ref: '#/components/schemas/StoreStoreCreditAccount'
     StoreCollection:
       type: object
       description: The collection's details.
@@ -91657,15 +91386,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the gift card was updated.
-    StoreGiftCardResponse:
-      type: object
-      description: The gift card's details.
-      x-schemaName: StoreGiftCardResponse
-      required:
-        - gift_card
-      properties:
-        gift_card:
-          $ref: '#/components/schemas/StoreGiftCard'
     StoreInitializePaymentSession:
       type: object
       description: The payment session's details.
@@ -98504,6 +98224,45 @@ components:
           type: number
           title: rank
           description: The image's rank among its sibling images
+    StoreProductListResponse:
+      type: object
+      description: The paginated list of products.
+      x-schemaName: StoreProductListResponse
+      allOf:
+        - type: object
+          description: Pagination details
+          required:
+            - limit
+            - offset
+            - count
+          properties:
+            limit:
+              type: number
+              title: limit
+              description: The maximum number of items returned.
+            offset:
+              type: number
+              title: offset
+              description: The number of items skipped before retrieving the returned items.
+            count:
+              type: number
+              title: count
+              description: The total count of items.
+            estimate_count:
+              type: number
+              title: estimate_count
+              description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+              x-featureFlag: index_engine
+        - type: object
+          description: The list of products.
+          required:
+            - products
+          properties:
+            products:
+              type: array
+              description: The list of products.
+              items:
+                $ref: '#/components/schemas/StoreProduct'
     StoreProductOption:
       type: object
       description: The product option's details.
@@ -98905,7 +98664,6 @@ components:
         - hs_code
         - mid_code
         - material
-        - images
         - deleted_at
         - manage_inventory
         - allow_backorder
@@ -99470,9 +99228,7 @@ components:
       x-schemaName: StoreStoreCreditAccount
       required:
         - customer
-        - transaction_groups
         - id
-        - customer_id
         - currency_code
         - credits
         - debits
@@ -99508,11 +99264,6 @@ components:
           type: number
           title: balance
           description: The store credit account's balance.
-        transaction_groups:
-          type: array
-          description: The store credit account's transaction groups.
-          items:
-            $ref: '#/components/schemas/StoreTransactionGroup'
         metadata:
           type: object
           description: The store credit account's metadata, can hold custom key-value pairs.
@@ -99529,6 +99280,10 @@ components:
           format: date-time
           title: updated_at
           description: The date the store credit account was updated.
+        code:
+          type: string
+          title: code
+          description: The store credit account's code.
     StoreStoreCreditAccountResponse:
       type: object
       description: The store credit account's details.
@@ -99570,47 +99325,6 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
-    StoreTransactionGroup:
-      type: object
-      description: The transaction group's details.
-      required:
-        - account
-        - id
-        - code
-        - credits
-        - debits
-        - balance
-        - metadata
-      properties:
-        id:
-          type: string
-          title: id
-          description: The transaction group's ID.
-        code:
-          type: string
-          title: code
-          description: The transaction group's code.
-        credits:
-          type: number
-          title: credits
-          description: The transaction group's credits.
-        debits:
-          type: number
-          title: debits
-          description: The transaction group's debits.
-        balance:
-          type: number
-          title: balance
-          description: The transaction group's balance.
-        account:
-          type: object
-        metadata:
-          type: object
-          description: The transaction group's metadata, can hold custom key-value pairs.
-          externalDocs:
-            url: https://docs.medusajs.com/api/store#manage-metadata
-            description: Learn how to manage metadata
-      x-schemaName: StoreTransactionGroup
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.

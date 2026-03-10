@@ -49,7 +49,7 @@ API route.
 ### Example
 
 ```ts
-sdk.admin.orderEdit.request("ordch_123")
+sdk.admin.orderEdit.request("order_123")
 .then(({ order_preview }) => {
   console.log(order_preview)
 })
@@ -57,7 +57,7 @@ sdk.admin.orderEdit.request("ordch_123")
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="request"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="request"/>
 
 ### Returns
 
@@ -74,7 +74,7 @@ API route.
 ### Example
 
 ```ts
-sdk.admin.orderEdit.confirm("ordch_123")
+sdk.admin.orderEdit.confirm("order_123")
 .then(({ order_preview }) => {
   console.log(order_preview)
 })
@@ -82,7 +82,7 @@ sdk.admin.orderEdit.confirm("ordch_123")
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="confirm"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="confirm"/>
 
 ### Returns
 
@@ -99,7 +99,7 @@ API route.
 ### Example
 
 ```ts
-sdk.admin.orderEdit.cancelRequest("ordch_123")
+sdk.admin.orderEdit.cancelRequest("order_123")
 .then(({ deleted }) => {
   console.log(deleted)
 })
@@ -107,7 +107,7 @@ sdk.admin.orderEdit.cancelRequest("ordch_123")
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Query parameters","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelRequest"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Query parameters","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelRequest"/>
 
 ### Returns
 
@@ -125,7 +125,7 @@ API route.
 ### Example
 
 ```ts
-sdk.admin.orderEdit.addItems("ordch_123", {
+sdk.admin.orderEdit.addItems("order_123", {
   items: [
     {
       variant_id: "variant_123",
@@ -140,7 +140,7 @@ sdk.admin.orderEdit.addItems("ordch_123", {
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminAddOrderEditItems](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminAddOrderEditItems/page.mdx)","description":"The items to add.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"`object`[]","description":"The details of the items to add.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the product variant to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"A custom price to use for the item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"Whether the variant can be added even if it's out of stock.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addItems"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminAddOrderEditItems](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminAddOrderEditItems/page.mdx)","description":"The items to add.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"`object`[]","description":"The details of the items to add.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the product variant to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"A custom price to use for the item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"Whether the variant can be added even if it's out of stock.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addItems"/>
 
 ### Returns
 
@@ -160,7 +160,7 @@ You can also use this method to remove an item from an order by setting the `qua
 
 ```ts
 sdk.admin.orderEdit.updateOriginalItem(
-  "ordch_123", 
+  "order_123",
   "orli_123",
   {
     quantity: 1
@@ -173,7 +173,7 @@ sdk.admin.orderEdit.updateOriginalItem(
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"itemId","type":"`string`","description":"The item's ID in the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to edit in the item.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateOriginalItem"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"itemId","type":"`string`","description":"The item's ID in the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to edit in the item.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateOriginalItem"/>
 
 ### Returns
 
@@ -185,7 +185,7 @@ ___
 
 This method updates an added item in the order edit by the ID of the item's `ITEM_ADD` action.
 
-Every item has an `actions` property, whose value is an array of actions. 
+Every item has an `actions` property, whose value is an array of actions.
 You can check the action's name using its `action` property, and use the value of the `id` property.
 
 It sends a request
@@ -196,7 +196,7 @@ API route.
 
 ```ts
 sdk.admin.orderEdit.updateAddedItem(
-  "ordch_123", 
+  "order_123",
   "orli_123",
   {
     quantity: 1
@@ -209,7 +209,7 @@ sdk.admin.orderEdit.updateAddedItem(
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAddedItem"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAddedItem"/>
 
 ### Returns
 
@@ -221,14 +221,14 @@ ___
 
 This method removes an added item in the order edit by the ID of the item's `ITEM_ADD` action.
 
-Every item has an `actions` property, whose value is an array of actions. 
+Every item has an `actions` property, whose value is an array of actions.
 You can check the action's name using its `action` property, and use the value of the `id` property.
 
 ### Example
 
 ```ts
 sdk.admin.orderEdit.removeAddedItem(
-  "ordch_123", 
+  "order_123",
   "orli_123",
 )
 .then(({ order_preview }) => {
@@ -238,7 +238,7 @@ sdk.admin.orderEdit.removeAddedItem(
 
 ### Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeAddedItem"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeAddedItem"/>
 
 ### Returns
 

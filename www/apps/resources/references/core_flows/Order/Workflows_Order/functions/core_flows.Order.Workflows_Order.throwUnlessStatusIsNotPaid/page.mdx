@@ -23,15 +23,15 @@ const myWorkflow = createWorkflow(
   () => {
     const data = throwUnlessStatusIsNotPaid({
       "paymentCollection": {
-        "id": "id_M9O1lFeJjxOFLSU5jw4",
-        "currency_code": "bmd",
+        "id": "id_dpj2iiW2Unqucv",
+        "currency_code": "hnl",
         "amount": {
-          "numeric": 37
+          "numeric": 2
         },
-        "status": "partially_authorized",
+        "status": "partially_captured",
         "payment_providers": [{
-          "id": "id_HW7nncQHCe",
-          "is_enabled": true
+          "id": "id_ULUdVpki8c",
+          "is_enabled": false
         }]
       }
     })

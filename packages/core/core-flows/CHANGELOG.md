@@ -1,5 +1,91 @@
 # @medusajs/core-flows
 
+## 2.13.3
+
+### Patch Changes
+
+- [#14805](https://github.com/medusajs/medusa/pull/14805) [`5ccd523b41efaae2f2aaa6d5833b5ce88558d37b`](https://github.com/medusajs/medusa/commit/5ccd523b41efaae2f2aaa6d5833b5ce88558d37b) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): prevent exception when deleting product/variant with orphaned inventory
+
+- Updated dependencies [[`dbaae9630d26a0806751d5614beadef3e0b4bf07`](https://github.com/medusajs/medusa/commit/dbaae9630d26a0806751d5614beadef3e0b4bf07)]:
+  - @medusajs/framework@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14660](https://github.com/medusajs/medusa/pull/14660) [`05262c0197bcc3c9cec89a3d95863916dba47af3`](https://github.com/medusajs/medusa/commit/05262c0197bcc3c9cec89a3d95863916dba47af3) Thanks [@Fadyy22](https://github.com/Fadyy22)! - chore(core-flows,medusa): Pass `created_by` to `createOrderShipmentWorkflow` in create order shipment admin endpoint and pass `marked_shipped_by` to `createShipmentWorkflow`
+
+- [#14715](https://github.com/medusajs/medusa/pull/14715) [`09a80ab97aad62b65320c745899eb8517d256b40`](https://github.com/medusajs/medusa/commit/09a80ab97aad62b65320c745899eb8517d256b40) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,order): avoid returning recreated credit lines due to version bumping as new credit lines in createOrderCreditLinesWorkflow
+
+- [#14670](https://github.com/medusajs/medusa/pull/14670) [`29d3dee13700d36a70aa55b8f2a01a5cbc0b42d0`](https://github.com/medusajs/medusa/commit/29d3dee13700d36a70aa55b8f2a01a5cbc0b42d0) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): only consider captures amounts for credit line amount computation
+
+- [#14773](https://github.com/medusajs/medusa/pull/14773) [`7a27e8ad8d7771eeecd1fb648a458f56abab71f9`](https://github.com/medusajs/medusa/commit/7a27e8ad8d7771eeecd1fb648a458f56abab71f9) Thanks [@picardplaisimond](https://github.com/picardplaisimond)! - chore(core-flows): Expose product weight as fallback for shipping calculations
+
+- [#14665](https://github.com/medusajs/medusa/pull/14665) [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat: add forbidden error 403
+
+- [#14749](https://github.com/medusajs/medusa/pull/14749) [`fe529f214a789b7e94fd0438c631d9f6b5cf5290`](https://github.com/medusajs/medusa/commit/fe529f214a789b7e94fd0438c631d9f6b5cf5290) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(core-flows): include `stock_location` in validation context for flate rate shipping options
+
+- [#14539](https://github.com/medusajs/medusa/pull/14539) [`63b7d5f1bee265959db73236c509dc7c9d0c1525`](https://github.com/medusajs/medusa/commit/63b7d5f1bee265959db73236c509dc7c9d0c1525) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - chore(core-flows): Add original item totals for cart refresh
+
+- [#14781](https://github.com/medusajs/medusa/pull/14781) [`2b795b6cc1ca1b0787f014784c9cbf06d6ab6e96`](https://github.com/medusajs/medusa/commit/2b795b6cc1ca1b0787f014784c9cbf06d6ab6e96) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): credit only successful refunds upon order cancellation
+
+- Updated dependencies [[`7aca778ae56069371f5d26a757d3b2276d524776`](https://github.com/medusajs/medusa/commit/7aca778ae56069371f5d26a757d3b2276d524776), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8)]:
+  - @medusajs/framework@2.13.2
+
+## 2.13.1
+
+### Patch Changes
+
+- [#14511](https://github.com/medusajs/medusa/pull/14511) [`2e2fad6c62a51373f97adcd06941f9182657d9d0`](https://github.com/medusajs/medusa/commit/2e2fad6c62a51373f97adcd06941f9182657d9d0) Thanks [@fPolic](https://github.com/fPolic)! - fix(core-flows): recompute adjustments changes are added in some draft order flows
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+### Patch Changes
+
+- Updated dependencies [[`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7)]:
+  - @medusajs/framework@2.13.0
+
+## 2.12.6
+
+### Patch Changes
+
+- [#14561](https://github.com/medusajs/medusa/pull/14561) [`dfb27a638d913916ee534ecb0a06ae30f6f8a9de`](https://github.com/medusajs/medusa/commit/dfb27a638d913916ee534ecb0a06ae30f6f8a9de) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): pass created_by to fulfillment input
+
+- [#14536](https://github.com/medusajs/medusa/pull/14536) [`d60ea7268a00f386f803f0f9e6ffeec4bced50bf`](https://github.com/medusajs/medusa/commit/d60ea7268a00f386f803f0f9e6ffeec4bced50bf) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(translation,fulfillment,customer,product,region,tax,core-flows,medusa,types): Implement dynamic translation settings management
+
+- [#14567](https://github.com/medusajs/medusa/pull/14567) [`733026f96c23f01d1ceb2fb09f88aa2b9bb65841`](https://github.com/medusajs/medusa/commit/733026f96c23f01d1ceb2fb09f88aa2b9bb65841) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): Prevent calling list methods unnecessarily in various update workflows
+
+- [#14359](https://github.com/medusajs/medusa/pull/14359) [`cec8b8e428131d4743d6da98cd5fa0974b8ab9e1`](https://github.com/medusajs/medusa/commit/cec8b8e428131d4743d6da98cd5fa0974b8ab9e1) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,types,utils,medusa): Translate tax lines
+
+- [#14528](https://github.com/medusajs/medusa/pull/14528) [`28fae96ceed68e2c15c3f27316c5b8601f06c478`](https://github.com/medusajs/medusa/commit/28fae96ceed68e2c15c3f27316c5b8601f06c478) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): Avoid throwing if no prices found for variant when adding to cart custom price item
+
+- [#14466](https://github.com/medusajs/medusa/pull/14466) [`cbc9f3d059a65cc5ee26595e5cbccf7f05781e41`](https://github.com/medusajs/medusa/commit/cbc9f3d059a65cc5ee26595e5cbccf7f05781e41) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(core-flows): Emit cart updated event on `deleteLineItemsWorkflow`
+
+- [#14476](https://github.com/medusajs/medusa/pull/14476) [`7307a5e63fdf8ed6f0ff201a0383f0a0bbfc7002`](https://github.com/medusajs/medusa/commit/7307a5e63fdf8ed6f0ff201a0383f0a0bbfc7002) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(events): Implement priority-based event processing
+
+  - Internal events default to lowest priority (2,097,152) to prevent queue overload
+  - Normal events default to priority 100
+  - Order placed events explicitly set to priority 10 for immediate processing
+  - Support for priority overrides at message, emit, and module levels
+
+- [#14597](https://github.com/medusajs/medusa/pull/14597) [`b615b71a8e4e273018a09528a8b61116fca6de8b`](https://github.com/medusajs/medusa/commit/b615b71a8e4e273018a09528a8b61116fca6de8b) Thanks [@fPolic](https://github.com/fPolic)! - fix(core-flows, types): ensure promotion calculation context has required rules data
+
+- [#14527](https://github.com/medusajs/medusa/pull/14527) [`3df466dadde91b24f52504097c07e1ced4b2b8ff`](https://github.com/medusajs/medusa/commit/3df466dadde91b24f52504097c07e1ced4b2b8ff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows): Allow payment session status captured to be processable upon cart completion
+
+- [#14598](https://github.com/medusajs/medusa/pull/14598) [`89e6e3e5cbe96f1f64e2cdb33cc2e0d6a221f7a2`](https://github.com/medusajs/medusa/commit/89e6e3e5cbe96f1f64e2cdb33cc2e0d6a221f7a2) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows, types): improve product exports memory consumption
+
+- [#14441](https://github.com/medusajs/medusa/pull/14441) [`1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b`](https://github.com/medusajs/medusa/commit/1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(deps,framework): add zod as framework dependency
+
+- Updated dependencies [[`13476988763368b3b333fa5bc3f613e8eb174fdf`](https://github.com/medusajs/medusa/commit/13476988763368b3b333fa5bc3f613e8eb174fdf), [`8890f284705a4843a57a3800820208f593689a2a`](https://github.com/medusajs/medusa/commit/8890f284705a4843a57a3800820208f593689a2a), [`1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b`](https://github.com/medusajs/medusa/commit/1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b)]:
+  - @medusajs/framework@2.12.6
+
 ## 2.12.5
 
 ### Patch Changes

@@ -68,7 +68,7 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -448,7 +448,7 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 
 To create tables for the above data models in the database, start by generating the migrations for the Restaurant and Delivery Modules with the following commands:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate restaurantModuleService
 npx medusa db:generate deliveryModuleService
 ```
@@ -457,7 +457,7 @@ This generates migrations in the `src/modules/restaurant/migrations` and `src/mo
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -569,8 +569,14 @@ You’ll now create the API route that executes the workflow.
 
 Start by creating the file `src/api/restaurants/validation-schemas.ts` that holds the schema to validate the request body:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/restaurants/validation-schemas.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const restaurantSchema = z.object({
   name: z.string(),
@@ -935,7 +941,7 @@ You’ll now create the API route to create a new user using the `createUserWork
 Start by creating the file `src/api/users/validation-schemas.ts` that holds the schema necessary to validate the request body:
 
 ```ts title="src/api/users/validation-schemas.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const createUserSchema = z
   .object({
@@ -1369,7 +1375,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   createRestaurantProductsWorkflow,
 } from "../../../../workflows/restaurant/workflows/create-restaurant-products"
@@ -2201,14 +2207,14 @@ export const createDeliveryRouteHighlights = [
 ```ts title="src/api/store/deliveries/route.ts" highlights={createDeliveryRouteHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import zod from "zod"
+import { z } from "@medusajs/framework/zod"
 import { DELIVERY_MODULE } from "../../../modules/delivery"
 import { createDeliveryWorkflow } from "../../../workflows/delivery/workflows/create-delivery"
 import { handleDeliveryWorkflow } from "../../../workflows/delivery/workflows/handle-delivery"
 
-const schema = zod.object({
-  cart_id: zod.string(),
-  restaurant_id: zod.string(),
+const schema = z.object({
+  cart_id: z.string(),
+  restaurant_id: z.string(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {

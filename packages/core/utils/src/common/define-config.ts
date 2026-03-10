@@ -8,6 +8,7 @@ import {
   InternalModuleDeclaration,
   MedusaCloudOptions,
 } from "@medusajs/types"
+import { FeatureFlag } from "../feature-flags/flag-router"
 import {
   MODULE_PACKAGE_NAMES,
   Modules,
@@ -45,9 +46,7 @@ export const DEFAULT_STORE_RESTRICTED_FIELDS = [
  * make an application work seamlessly, but still provide you the ability
  * to override configuration as needed.
  */
-export function defineConfig(
-  config?: InputConfigWithArrayModules
-): ConfigModule
+export function defineConfig(config?: InputConfigWithArrayModules): ConfigModule
 /**
  * @deprecated Use array-based modules configuration instead
  */
@@ -197,8 +196,14 @@ function resolveModules(
     { resolve: MODULE_PACKAGE_NAMES[Modules.ORDER] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.SETTINGS] },
 
-    // TODO: re-enable this once we have the final release
-    // { resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION] },
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
+      disable: !FeatureFlag.isFeatureEnabled("translation"),
+    },
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.RBAC],
+      disable: !FeatureFlag.isFeatureEnabled("rbac"),
+    },
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
@@ -284,7 +289,7 @@ function resolveModules(
       resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
       options: {
         redisUrl: process.env.REDIS_URL,
-        workerOptions: { concurrency: 3 },
+        workerOptions: { concurrency: 1 },
       },
     },
     {
@@ -497,6 +502,7 @@ function normalizeAdminConfig(
   return {
     backendUrl: process.env.MEDUSA_BACKEND_URL || DEFAULT_ADMIN_URL,
     path: "/app",
+    maxUploadFileSize: 1024 * 1024, // 1MB default
     ...adminConfig,
   }
 }

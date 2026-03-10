@@ -1,9 +1,21 @@
 "use client"
 
-import { Link, VerticalCodeTab, VerticalCodeTabs } from "docs-ui"
-import { useState } from "react"
+import clsx from "clsx"
+import {
+  CodeBlock,
+  CodeBlockProps,
+  HeadlineTags,
+  ShadedBlock,
+  useMobile,
+  useScrollController,
+} from "docs-ui"
+import React, { useLayoutEffect, useRef, useState } from "react"
+import { HomepageHorizontalDottedSeparator } from "../DottedSeparator/Horizontal"
+import HomepageEdges from "../Edges"
 
-type Tab = VerticalCodeTab & {
+type Tab = {
+  title: string
+  code: CodeBlockProps
   textSection: {
     content: string
     link: {
@@ -15,6 +27,30 @@ type Tab = VerticalCodeTab & {
 
 const HomepageCodeTabs = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+  const { isMobile } = useMobile()
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const { scrollableElement, getScrolledTop } = useScrollController()
+
+  const handleTabClick = (index: number) => {
+    setSelectedTabIndex(index)
+  }
+
+  useLayoutEffect(() => {
+    if (!isMobile || !tabRefs.current[selectedTabIndex]) {
+      return
+    }
+    const element = tabRefs.current[selectedTabIndex]
+    if (element) {
+      const elementPosition = element.getBoundingClientRect().top
+      const scrollTop = getScrolledTop()
+      const offsetPosition = elementPosition + scrollTop - 52
+
+      scrollableElement?.scrollTo({
+        top: offsetPosition,
+        behavior: "auto",
+      })
+    }
+  }, [isMobile, selectedTabIndex, getScrolledTop, scrollableElement])
 
   const tabs: Tab[] = [
     {
@@ -30,21 +66,21 @@ const HomepageCodeTabs = () => {
       code: {
         lang: "ts",
         source: `export async function GET(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const query = req.scope.resolve("query")
-
-  const { data } = await query.graph({
-    entity: "company",
-    fields: ["id", "name"],
-    filters: { name: "ACME" },
-  })
-
-  res.json({
-    companies: data
-  })
-}`,
+    req: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const query = req.scope.resolve("query")
+  
+    const { data } = await query.graph({
+      entity: "company",
+      fields: ["id", "name"],
+      filters: { name: "ACME" },
+    })
+  
+    res.json({
+      companies: data
+    })
+  }`,
         highlights: [
           ["1", "GET", "Create a GET endpoint."],
           [
@@ -70,19 +106,19 @@ const HomepageCodeTabs = () => {
       code: {
         lang: "ts",
         source: `const handleDeliveryWorkflow = createWorkflow(
-  "handle-delivery",
-  function (input: WorkflowInput) {
-    notifyRestaurantStep(input.delivery_id);
-
-    const order = createOrderStep(input.delivery_id);
-
-    createFulfillmentStep(order);
-
-    awaitDeliveryStep();
-
-    return new WorkflowResponse("Delivery completed");
-  }
-)`,
+    "handle-delivery",
+    function (input: WorkflowInput) {
+      notifyRestaurantStep(input.delivery_id)
+  
+      const order = createOrderStep(input.delivery_id)
+  
+      createFulfillmentStep(order)
+  
+      awaitDeliveryStep()
+  
+      return new WorkflowResponse("Delivery completed")
+    }
+  )`,
         highlights: [
           [
             "1",
@@ -110,16 +146,17 @@ const HomepageCodeTabs = () => {
       },
       code: {
         lang: "ts",
-        source: `const DigitalProduct = model.define("digital_product", {
-  id: model.id().primaryKey(),
-  name: model.text(),
-  medias: model.hasMany(() => DigitalProductMedia, {
-    mappedBy: "digitalProduct"
+        source: `const DigitalProduct = model.define("digital_product", 
+  {
+    id: model.id().primaryKey(),
+    name: model.text(),
+    medias: model.hasMany(() => DigitalProductMedia, {
+      mappedBy: "digitalProduct"
+    })
   })
-})
-.cascades({
-  delete: ["medias"]
-})`,
+  .cascades({
+    delete: ["medias"]
+  })`,
         highlights: [
           [
             "1",
@@ -146,26 +183,26 @@ const HomepageCodeTabs = () => {
       },
       code: {
         lang: "ts",
-        source: `class DigitalProductModuleService extends MedusaService({
-  DigitalProduct,
-}) {
-  async authorizeLicense() {
-    console.log("License authorized!")
+        source: `class DigitalProductService extends MedusaService({
+    DigitalProduct,
+  }) {
+    async authorizeLicense() {
+      console.log("License authorized!")
+    }
   }
-}
-
-export async function POST(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const digitalProductModuleService = req.scope.resolve(
-    "digitalProductModuleService"
-  )
-
-  await digitalProductModuleService.authorizeLicense()
-
-  res.json({ success: true })
-}`,
+  
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const moduleService = req.scope.resolve(
+      "digitalProduct"
+    )
+  
+    await moduleService.authorizeLicense()
+  
+    res.json({ success: true })
+  }`,
         highlights: [
           [
             "1",
@@ -199,14 +236,14 @@ export async function POST(
       code: {
         lang: "ts",
         source: `const DigitalProduct = model.define("digital_product", {
-  id: model.id().primaryKey(),
-  name: model.text(),
-})
-
-export default defineLink(
-  DigitalProductModule.linkable.digitalProduct,
-  ProductModule.linkable.productVariant
-)`,
+    id: model.id().primaryKey(),
+    name: model.text(),
+  })
+  
+  export default defineLink(
+    DigitalProductModule.linkable.digitalProduct,
+    ProductModule.linkable.productVariant
+  )`,
         highlights: [
           [
             "6",
@@ -229,22 +266,22 @@ export default defineLink(
       code: {
         lang: "ts",
         source: `async function orderPlaced({
-  container,
-}: SubscriberArgs) {
-  const notificationModuleService = container.resolve(
-    Modules.NOTIFICATION
-  )
-
-  await notificationModuleService.createNotifications({
-    to: "customer@gmail.com",
-    channel: "email",
-    template: "order-placed"
-  })
-}
-
-export const config: SubscriberConfig = {
-  event: "order.placed",
-}`,
+    container,
+  }: SubscriberArgs) {
+    const moduleService = container.resolve(
+      Modules.NOTIFICATION
+    )
+  
+    await moduleService.createNotifications({
+      to: "customer@gmail.com",
+      channel: "email",
+      template: "order-placed"
+    })
+  }
+  
+  export const config: SubscriberConfig = {
+    event: "order.placed",
+  }`,
         highlights: [
           [
             "1",
@@ -278,21 +315,21 @@ export const config: SubscriberConfig = {
       code: {
         lang: "tsx",
         source: `const ProductBrandWidget = () => {
-  const [brand, setBrand] = useState({
-    name: "Acme"
-  })
-
-  return (
-    <Container>
-      <Heading level="h2">Brand</Heading>
-      {brand && <span>Name: {brand.name}</span>}
-    </Container>
-  )
-}
-
-export const config = defineWidgetConfig({
-  zone: "product.details.before",
-})`,
+    const [brand, setBrand] = useState({
+      name: "Acme"
+    })
+  
+    return (
+      <Container>
+        <Heading level="h2">Brand</Heading>
+        {brand && <span>Name: {brand.name}</span>}
+      </Container>
+    )
+  }
+  
+  export const config = defineWidgetConfig({
+    zone: "product.details.before",
+  })`,
         highlights: [
           [
             "1",
@@ -325,19 +362,19 @@ export const config = defineWidgetConfig({
       code: {
         lang: "tsx",
         source: `const syncBrandsFromSystemWorkflow = createWorkflow(
-  "sync-brands-from-system",
-  () => {
-    const toCreate = retrieveBrandsFromSystemStep()
-
-    const created = createBrandsInMedusaStep({ 
-      brands: toCreate
-    })
-
-    return new WorkflowResponse({
-      created,
-    })
-  }
-)`,
+    "sync-brands-from-system",
+    () => {
+      const toCreate = retrieveBrandsFromSystemStep()
+  
+      const created = createBrandsInMedusaStep({ 
+        brands: toCreate
+      })
+  
+      return new WorkflowResponse({
+        created,
+      })
+    }
+  )`,
         highlights: [
           ["1", "createWorkflow", "Integrate systems using workflows."],
           [
@@ -352,28 +389,97 @@ export const config = defineWidgetConfig({
   ]
 
   return (
-    <div className="row-span-2 pt-[56px] hidden lg:flex flex-col gap-1">
-      <VerticalCodeTabs
-        selectedTabIndex={selectedTabIndex}
-        setSelectedTabIndex={setSelectedTabIndex}
-        tabs={tabs}
-        className="h-[443px]"
-      />
-      <div className="flex gap-[6px] items-center mx-0.5">
-        <span className="text-medusa-fg-subtle text-small-plus">
-          {tabs[selectedTabIndex].textSection.content}
-        </span>
-        <span className="text-medusa-fg-subtle text-small">&#183;</span>
-        <Link
-          href={tabs[selectedTabIndex].textSection.link.link}
-          className="text-compact-small-plus"
-          withIcon
-        >
-          <span>{tabs[selectedTabIndex].textSection.link.title}</span>
-        </Link>
+    <div
+      className={clsx(
+        "w-full border-b border-medusa-border-base",
+        "flex gap-0 flex-col lg:flex-row"
+      )}
+    >
+      <div className="w-full lg:w-1/2 flex flex-col gap-0 border-r border-medusa-border-base">
+        {tabs.map((tab, index) => (
+          <React.Fragment key={index}>
+            <button
+              ref={(el) => {
+                tabRefs.current[index] = el
+              }}
+              className={clsx(
+                "px-2 py-1.5 appearance-none text-left",
+                "flex flex-col gap-0.5 group"
+              )}
+              onClick={() => handleTabClick(index)}
+            >
+              <div className="flex items-center gap-0.5">
+                <span
+                  className={clsx(
+                    "text-code-label group-hover:text-medusa-fg-interactive",
+                    index === selectedTabIndex && "text-medusa-fg-interactive",
+                    index !== selectedTabIndex && "text-medusa-fg-subtle"
+                  )}
+                >
+                  [ {index + 1} ]
+                </span>
+                <span className="text-medium-plus text-medusa-fg-base">
+                  {tab.title}
+                </span>
+              </div>
+              {index === selectedTabIndex && (
+                <p className="text-medusa-fg-subtle text-medium">
+                  {tab.textSection.content}
+                </p>
+              )}
+            </button>
+            {index !== tabs.length - 1 && <HomepageHorizontalDottedSeparator />}
+            {isMobile && index === selectedTabIndex && (
+              <>
+                <CodeSection tab={tab} />
+                <HomepageHorizontalDottedSeparator />
+              </>
+            )}
+          </React.Fragment>
+        ))}
       </div>
+      {!isMobile && <CodeSection tab={tabs[selectedTabIndex]} />}
     </div>
   )
 }
 
 export default HomepageCodeTabs
+
+type CodeSectionProps = {
+  tab: Tab
+}
+
+const CodeSection = ({ tab }: CodeSectionProps) => {
+  return (
+    <div
+      className={clsx(
+        "w-full lg:w-1/2 p-2 flex flex-col gap-2 justify-center bg-medusa-bg-component relative"
+      )}
+    >
+      <ShadedBlock className="!h-2" />
+      <CodeBlock
+        {...tab.code}
+        noCopy={true}
+        noReport={true}
+        noAskAi={true}
+        forceNoTitle={true}
+        wrapperClassName="h-full !rounded-none"
+        className={clsx("overflow-auto h-full max-h-full !mb-0 !rounded-none")}
+        innerClassName="h-full"
+        animateTokenHighlights
+        blockStyle="subtle"
+      />
+      <ShadedBlock className="!h-2" />
+      <HeadlineTags
+        tags={[
+          tab.textSection.link.title,
+          {
+            text: "Learn more",
+            link: tab.textSection.link.link,
+          },
+        ]}
+      />
+      <HomepageEdges />
+    </div>
+  )
+}

@@ -8,7 +8,7 @@
  * parameters:
  *   - name: id
  *     in: path
- *     description: The order edit's ID.
+ *     description: The ID of the order that is being edited.
  *     required: true
  *     schema:
  *       type: string

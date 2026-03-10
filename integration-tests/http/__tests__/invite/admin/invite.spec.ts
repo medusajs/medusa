@@ -6,6 +6,8 @@ import {
 
 jest.setTimeout(30000)
 
+process.env.MEDUSA_FF_RBAC = "true"
+
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer }) => {
     let invite
@@ -140,7 +142,7 @@ medusaIntegrationTestRunner({
           password: "secret_password",
         })
 
-        await api
+        const error = await api
           .post(
             `/admin/invites/accept?token=${invite.token}`,
             {
@@ -151,10 +153,10 @@ medusaIntegrationTestRunner({
               headers: { authorization: `Bearer ${signupAgain.data.token}` },
             }
           )
-          .catch((e) => {
-            expect(e.response.status).toEqual(401)
-            expect(e.response.data.message).toEqual("Unauthorized")
-          })
+          .catch((e) => e.response)
+
+        expect(error.status).toEqual(401)
+        expect(error.data.message).toEqual("Unauthorized")
       })
 
       it("should fail to accept with an expired token", async () => {
@@ -168,7 +170,7 @@ medusaIntegrationTestRunner({
         // Advance time by 25 hours
         jest.advanceTimersByTime(25 * 60 * 60 * 1000)
 
-        await api
+        const error = await api
           .post(
             `/admin/invites/accept?token=${invite.token}`,
             {
@@ -179,10 +181,10 @@ medusaIntegrationTestRunner({
               headers: { authorization: `Bearer ${signup.data.token}` },
             }
           )
-          .catch((e) => {
-            expect(e.response.status).toEqual(401)
-            expect(e.response.data.message).toEqual("Unauthorized")
-          })
+          .catch((e) => e.response)
+
+        expect(error.status).toEqual(401)
+        expect(error.data.message).toEqual("Unauthorized")
 
         jest.useRealTimers()
       })
@@ -206,6 +208,249 @@ medusaIntegrationTestRunner({
           object: "invite",
           deleted: true,
         })
+      })
+    })
+
+    describe("Admin invites with roles", () => {
+      let viewerRole, editorRole, superAdminRole
+
+      beforeEach(async () => {
+        // Create test roles
+        const viewerResponse = await api.post(
+          "/admin/rbac/roles",
+          {
+            name: "Product Viewer",
+            description: "Can view products",
+          },
+          adminHeaders
+        )
+        viewerRole = viewerResponse.data.role
+
+        const editorResponse = await api.post(
+          "/admin/rbac/roles",
+          {
+            name: "Product Editor",
+            description: "Can edit products",
+          },
+          adminHeaders
+        )
+        editorRole = editorResponse.data.role
+
+        // Get the super admin role created by migration
+        const superAdminResponse = await api.get(
+          "/admin/rbac/roles?id=role_super_admin",
+          adminHeaders
+        )
+        superAdminRole = superAdminResponse.data.roles[0]
+      })
+
+      it("should create invite with roles and assign them to user on acceptance", async () => {
+        // Create invite with multiple roles
+        const createdInvite = (
+          await api.post(
+            "/admin/invites",
+            {
+              email: "role-test@medusa-commerce.com",
+              roles: [viewerRole.id, editorRole.id],
+            },
+            adminHeaders
+          )
+        ).data.invite
+
+        expect(createdInvite).toEqual(
+          expect.objectContaining({
+            email: "role-test@medusa-commerce.com",
+          })
+        )
+
+        // Verify invite is linked to roles
+        const container = getContainer()
+        const {
+          ContainerRegistrationKeys,
+          Modules,
+        } = require("@medusajs/framework/utils")
+        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+        const inviteLinkService = remoteLink.getLinkModule(
+          Modules.USER,
+          "invite_id",
+          Modules.RBAC,
+          "rbac_role_id"
+        )
+
+        const inviteRoles = await inviteLinkService.list({
+          invite_id: createdInvite.id,
+        })
+
+        expect(inviteRoles).toHaveLength(2)
+        expect(inviteRoles.map((link) => link.rbac_role_id)).toEqual(
+          expect.arrayContaining([viewerRole.id, editorRole.id])
+        )
+
+        // Register and accept the invite
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "role-test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        expect(signup.status).toEqual(200)
+
+        const acceptedUser = (
+          await api.post(
+            `/admin/invites/accept?token=${createdInvite.token}`,
+            {
+              first_name: "Role",
+              last_name: "Test",
+            },
+            { headers: { authorization: `Bearer ${signup.data.token}` } }
+          )
+        ).data.user
+
+        expect(acceptedUser).toEqual(
+          expect.objectContaining({
+            email: "role-test@medusa-commerce.com",
+            first_name: "Role",
+            last_name: "Test",
+          })
+        )
+
+        const userLinkService = remoteLink.getLinkModule(
+          Modules.USER,
+          "user_id",
+          Modules.RBAC,
+          "rbac_role_id"
+        )
+
+        // Verify user was assigned the roles
+        const userRoles = await userLinkService.list({
+          user_id: acceptedUser.id,
+        })
+
+        expect(userRoles).toHaveLength(2)
+        expect(userRoles.map((link) => link.rbac_role_id)).toEqual(
+          expect.arrayContaining([viewerRole.id, editorRole.id])
+        )
+      })
+
+      it("should create invite with super admin role and assign it to user", async () => {
+        // Create invite with super admin role
+        const createdInvite = (
+          await api.post(
+            "/admin/invites",
+            {
+              email: "admin-test@medusa-commerce.com",
+              roles: [superAdminRole.id],
+            },
+            adminHeaders
+          )
+        ).data.invite
+
+        // Register and accept the invite
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "admin-test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const acceptedUser = (
+          await api.post(
+            `/admin/invites/accept?token=${createdInvite.token}`,
+            {
+              first_name: "Admin",
+              last_name: "Test",
+            },
+            { headers: { authorization: `Bearer ${signup.data.token}` } }
+          )
+        ).data.user
+
+        // Verify user was assigned the super admin role
+        const container = getContainer()
+        const {
+          ContainerRegistrationKeys,
+          Modules,
+        } = require("@medusajs/framework/utils")
+        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+        const linkService = remoteLink.getLinkModule(
+          Modules.USER,
+          "user_id",
+          Modules.RBAC,
+          "rbac_role_id"
+        )
+
+        const userRoles = await linkService.list({
+          user_id: acceptedUser.id,
+        })
+
+        expect(userRoles).toHaveLength(1)
+        expect(userRoles[0].rbac_role_id).toEqual(superAdminRole.id)
+      })
+
+      it("should create invite without roles and work normally", async () => {
+        // Create invite without roles (existing behavior)
+        const createdInvite = (
+          await api.post(
+            "/admin/invites",
+            {
+              email: "no-roles-test@medusa-commerce.com",
+            },
+            adminHeaders
+          )
+        ).data.invite
+
+        // Register and accept the invite
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "no-roles-test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const acceptedUser = (
+          await api.post(
+            `/admin/invites/accept?token=${createdInvite.token}`,
+            {
+              first_name: "No Roles",
+              last_name: "Test",
+            },
+            { headers: { authorization: `Bearer ${signup.data.token}` } }
+          )
+        ).data.user
+
+        // Verify user has no roles assigned
+        const container = getContainer()
+        const {
+          ContainerRegistrationKeys,
+          Modules,
+        } = require("@medusajs/framework/utils")
+        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+        const linkService = remoteLink.getLinkModule(
+          Modules.USER,
+          "user_id",
+          Modules.RBAC,
+          "rbac_role_id"
+        )
+
+        const userRoles = await linkService.list({
+          user_id: acceptedUser.id,
+        })
+
+        expect(userRoles).toHaveLength(0)
+      })
+
+      it("should handle invite with non-existent role gracefully", async () => {
+        // Try to create invite with non-existent role
+        const error = await api
+          .post(
+            "/admin/invites",
+            {
+              email: "invalid-role-test@medusa-commerce.com",
+              roles: ["non_existent_role_id"],
+            },
+            adminHeaders
+          )
+          .catch((e) => e.response)
+
+        expect(error.status).toEqual(400)
+        expect(error.data.message).toContain("role")
       })
     })
   },

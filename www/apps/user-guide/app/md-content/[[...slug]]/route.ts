@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
+import { posthog } from "posthog-js"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -58,6 +59,31 @@ export async function GET(req: NextRequest, { params }: Params) {
       [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
     ] as unknown as Plugin[],
   })
+
+  const acceptHeader = req.headers.get("accept") || ""
+  if (
+    acceptHeader.includes("text/plain") ||
+    acceptHeader.includes("text/markdown")
+  ) {
+    if (!posthog.__loaded) {
+      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+        person_profiles: "always",
+        defaults: "2025-05-24",
+      })
+    }
+
+    posthog.capture(
+      "md_content_requested_agents",
+      {
+        $current_url: req.url,
+        $raw_user_agent: req.headers.get("user-agent") || undefined,
+      },
+      {
+        send_instantly: true,
+      }
+    )
+  }
 
   return new NextResponse(cleanMdContent, {
     headers: {

@@ -230,6 +230,7 @@ export const createOrderShipmentWorkflow = createWorkflow(
       return {
         id: input.fulfillment_id,
         labels: input.labels ?? [],
+        marked_shipped_by: input.created_by,
       }
     })
 

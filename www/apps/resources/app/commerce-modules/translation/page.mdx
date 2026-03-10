@@ -44,6 +44,7 @@ Refer to the [Module Isolation](!docs!/learn/fundamentals/modules/isolation) gui
 - [Translation and Locale Management](./concepts/page.mdx): Manage locales and add translations for different resources in your store.
 - [Multi-Language Support](./storefront/page.mdx): Manage and serve resources like products in multiple languages to cater to a diverse customer base.
 - [Translation for Custom Models](./custom-data-models/page.mdx): Extend translation capabilities to custom data models in your Medusa application.
+- [Manage Translatable Resources from Medusa Admin](!user-guide!/settings/translations#manage-translatable-resources): Configure which resources and fields are translatable directly from the Medusa Admin dashboard.
 
 ---
 
@@ -70,7 +71,7 @@ module.exports = defineConfig({
 
 Then, run the following command to make the necessary database changes for the Translation Module:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 

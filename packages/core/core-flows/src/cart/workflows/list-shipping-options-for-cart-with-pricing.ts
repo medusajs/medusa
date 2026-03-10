@@ -379,6 +379,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               ...shippingOption,
               amount: price?.calculated_amount,
               is_tax_inclusive: !!price?.is_calculated_price_tax_inclusive,
+              stock_location:
+                fulfillmentSetLocationMap[
+                  shippingOption.service_zone.fulfillment_set_id
+                ],
             }
           }),
           ...shippingOptionsCalculated.map((shippingOption, index) => {

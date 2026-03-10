@@ -1,0 +1,47 @@
+import { TypeList } from "docs-ui"
+
+# batchSettings
+
+This method allows bulk operations on translation settings. It sends a request to the
+[Batch Translation Settings](https://docs.medusajs.com/api/admin#translations\_posttranslationssettingsbatch)
+API route.
+
+:::note
+
+This is available starting from [Medusa v2.12.6](https://github.com/medusajs/medusa/releases/tag/v2.12.6).
+
+:::
+
+## Example
+
+```ts
+sdk.admin.translation.batchSettings({
+  create: [
+    {
+      entity_type: "product",
+      fields: ["title", "description"],
+      is_active: true
+    }
+  ],
+  update: [
+    {
+      id: "trset_123",
+      fields: ["title", "description", "subtitle"],
+      is_active: true
+    }
+  ],
+  delete: ["trset_456"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+```
+
+## Parameters
+
+<TypeList types={[{"name":"body","type":"[AdminBatchTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettings/page.mdx)","description":"The translation settings to create, update, or delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"create","type":"[AdminCreateTranslationSettings](../../../../../types/interfaces/types.AdminCreateTranslationSettings/page.mdx)[]","description":"The translation settings to create.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"entity_type","type":"`string`","description":"The entity type (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields for this entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"update","type":"[AdminUpdateTranslationSettings](../../../../../types/interfaces/types.AdminUpdateTranslationSettings/page.mdx)[]","description":"The translation settings to update.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type (e.g., \"product\", \"product\\_variant\").","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields for this entity type.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"delete","type":"`string`[]","description":"The translation settings to delete (IDs).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSettings"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminBatchTranslationSettingsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettingsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation settings' details.","expandable":false,"children":[{"name":"created","type":"[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx)[]","description":"The created settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the settings were created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the settings were last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the settings were deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated","type":"[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx)[]","description":"The updated settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the settings were created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the settings were last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the settings were deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted","type":"`object`","description":"The deleted settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"translation_settings\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}],"since":"2.12.6"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSettings"/>

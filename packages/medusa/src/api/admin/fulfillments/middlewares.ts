@@ -1,9 +1,11 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreateFulfillment,
   AdminCreateShipment,
@@ -12,6 +14,15 @@ import {
 
 export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/fulfillments/*",
+    policies: [
+      {
+        resource: Entities.fulfillment,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/fulfillments/:id/cancel",
     middlewares: [
@@ -19,6 +30,12 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminFulfillmentParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.fulfillment,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -31,6 +48,12 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.fulfillment,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -41,6 +64,12 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminFulfillmentParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.fulfillment,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

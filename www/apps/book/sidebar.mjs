@@ -480,6 +480,11 @@ export const sidebars = [
                 path: "/learn/fundamentals/events-and-subscribers/emit-event",
                 title: "Emit Event",
               },
+              {
+                type: "link",
+                path: "/learn/fundamentals/events-and-subscribers/event-priority",
+                title: "Event Priority",
+              },
             ],
           },
           {
@@ -586,6 +591,11 @@ export const sidebars = [
         type: "category",
         title: "Configurations",
         children: [
+          {
+            type: "link",
+            title: "pnpm",
+            path: "/learn/configurations/pnpm",
+          },
           {
             type: "link",
             title: "Environment Variables",
@@ -751,6 +761,11 @@ export const sidebars = [
                 type: "link",
                 title: "Replace Imports (v2.11.0+)",
                 path: "/learn/codemods/replace-imports",
+              },
+              {
+                type: "link",
+                title: "Replace Zod Imports (v2.13.0+)",
+                path: "/learn/codemods/replace-zod-imports",
               },
             ],
           },

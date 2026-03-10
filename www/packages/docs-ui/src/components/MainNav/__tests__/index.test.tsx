@@ -1,12 +1,16 @@
 import React from "react"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
+import { NavigationItemDropdown, MenuItem } from "types"
 import { ButtonProps } from "../../Button"
 
 // mock data
 const mockConfig = {
   baseUrl: "https://docs.medusajs.com",
   logo: "/logo.png",
+  features: {
+    aiAssistant: true,
+  },
 }
 
 const defaultUseSiteConfigReturn = {
@@ -29,6 +33,19 @@ const defaultUseLayoutReturn = {
 const mockUseSidebar = vi.fn(() => defaultUseSidebarReturn)
 const mockUseLayout = vi.fn(() => defaultUseLayoutReturn)
 
+const defaultUseMainNavReturn = {
+  logo: undefined as React.ReactNode | undefined,
+  logoUrl: undefined as string | undefined,
+  helpNavItem: undefined as
+    | NavigationItemDropdown
+    | undefined,
+  additionalMenuItems: undefined as
+    | MenuItem[]
+    | undefined,
+  navItems: [],
+}
+const mockUseMainNav = vi.fn(() => defaultUseMainNavReturn)
+
 // mock components
 vi.mock("@/providers/SiteConfig", () => ({
   useSiteConfig: () => mockUseSiteConfig(),
@@ -40,6 +57,10 @@ vi.mock("@/providers/Sidebar", () => ({
 
 vi.mock("@/providers/Layout", () => ({
   useLayout: () => mockUseLayout(),
+}))
+
+vi.mock("@/providers/MainNav", () => ({
+  useMainNav: () => mockUseMainNav(),
 }))
 
 vi.mock("next/link", () => ({
@@ -58,31 +79,9 @@ vi.mock("next/link", () => ({
   ),
 }))
 
-vi.mock("@/components/BorderedIcon", () => ({
-  BorderedIcon: ({
-    icon,
-    iconWrapperClassName,
-    wrapperClassName,
-    iconWidth,
-    iconHeight,
-    ...props
-  }: {
-    icon: string
-    iconWrapperClassName?: string
-    wrapperClassName?: string
-    iconWidth?: number
-    iconHeight?: number
-    [key: string]: unknown
-  }) => (
-    <div
-      data-testid="bordered-icon"
-      data-icon={icon}
-      data-wrapper-class={wrapperClassName}
-      data-icon-width={iconWidth}
-      data-icon-height={iconHeight}
-      className={iconWrapperClassName}
-      {...props}
-    />
+vi.mock("@/components/Icons", () => ({
+  ColoredMedusaIcon: ({ variant }: { variant?: string }) => (
+    <svg data-testid="logo-icon" data-variant={variant} />
   ),
 }))
 
@@ -144,6 +143,10 @@ import { MainNav } from "../../MainNav"
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockUseSidebar.mockReturnValue(defaultUseSidebarReturn)
+  mockUseLayout.mockReturnValue(defaultUseLayoutReturn)
+  mockUseMainNav.mockReturnValue(defaultUseMainNavReturn)
+  mockUseSiteConfig.mockReturnValue(defaultUseSiteConfigReturn)
 })
 
 describe("rendering", () => {
@@ -173,6 +176,22 @@ describe("rendering", () => {
     )
     expect(version).toBeInTheDocument()
     expect(helpDropdown).toBeInTheDocument()
+  })
+
+  test("does not render ai assistant trigger when ai assistant feature is disabled", () => {
+    mockUseSiteConfig.mockReturnValueOnce({
+      config: {
+        ...mockConfig,
+        features: {
+          aiAssistant: false,
+        },
+      },
+    })
+    const { container } = render(<MainNav />)
+    const aiTrigger = container.querySelector(
+      "[data-testid='ai-assistant-trigger']"
+    )
+    expect(aiTrigger).not.toBeInTheDocument()
   })
 
   test("renders nav items when not collapsed", () => {
@@ -234,6 +253,76 @@ describe("rendering", () => {
       "[data-testid='collapsed-nav-items']"
     )
     expect(collapsedNavItems).toBeInTheDocument()
+  })
+
+  test("renders custom logo when provided", () => {
+    mockUseMainNav.mockReturnValueOnce({
+      ...defaultUseMainNavReturn,
+      logo: <div data-testid="custom-logo">Custom Logo</div>,
+    })
+    const { container } = render(<MainNav />)
+    const customLogo = container.querySelector("[data-testid='custom-logo']")
+    expect(customLogo).toBeInTheDocument()
+    expect(customLogo).toHaveTextContent("Custom Logo")
+    const defaultLogo = container.querySelector("[data-testid='logo-icon']")
+    expect(defaultLogo).not.toBeInTheDocument()
+  })
+
+  test("renders default logo when custom logo not provided", () => {
+    const { container } = render(<MainNav />)
+    const defaultLogo = container.querySelector("[data-testid='logo-icon']")
+    expect(defaultLogo).toBeInTheDocument()
+  })
+
+  test("uses custom logoUrl when provided", () => {
+    mockUseMainNav.mockReturnValueOnce({
+      ...defaultUseMainNavReturn,
+      logoUrl: "https://custom-url.com",
+    })
+    const { container } = render(<MainNav />)
+    const logoLink = container.querySelector("[data-testid='logo-link']")
+    expect(logoLink).toHaveAttribute("href", "https://custom-url.com")
+  })
+
+  test("uses baseUrl as logoUrl when custom logoUrl not provided", () => {
+    const { container } = render(<MainNav />)
+    const logoLink = container.querySelector("[data-testid='logo-link']")
+    expect(logoLink).toHaveAttribute("href", mockConfig.baseUrl)
+  })
+
+  test("renders custom helpNavItem when provided", () => {
+    const customHelpItem = {
+      type: "dropdown" as const,
+      title: "Custom Help",
+      children: [
+        {
+          type: "link" as const,
+          title: "Custom Support",
+          link: "https://custom-support.com",
+        },
+      ],
+    }
+    mockUseMainNav.mockReturnValueOnce({
+      ...defaultUseMainNavReturn,
+      helpNavItem: customHelpItem,
+    })
+    const { container } = render(<MainNav />)
+    const helpDropdown = container.querySelector(
+      "[data-testid='help-dropdown']"
+    )
+    expect(helpDropdown).toBeInTheDocument()
+    expect(helpDropdown?.textContent).toContain("Custom Help")
+    expect(helpDropdown?.textContent).toContain("Custom Support")
+  })
+
+  test("renders default help dropdown when custom helpNavItem not provided", () => {
+    const { container } = render(<MainNav />)
+    const helpDropdown = container.querySelector(
+      "[data-testid='help-dropdown']"
+    )
+    expect(helpDropdown).toBeInTheDocument()
+    expect(helpDropdown?.textContent).toContain("Help")
+    expect(helpDropdown?.textContent).toContain("Troubleshooting")
   })
 })
 

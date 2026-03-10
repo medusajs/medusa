@@ -19,7 +19,7 @@ export const updatePricePreferencesAsArrayStepId =
   "update-price-preferences-as-array"
 /**
  * This step creates or updates price preferences.
- * 
+ *
  * @example
  * const data = updatePricePreferencesAsArrayStep([
  *   {
@@ -33,6 +33,10 @@ export const updatePricePreferencesAsArrayStep = createStep(
   updatePricePreferencesAsArrayStepId,
   async (input: UpdatePricePreferencesAsArrayStepInput, { container }) => {
     const service = container.resolve<IPricingModuleService>(Modules.PRICING)
+
+    if (!input.length) {
+      return new StepResponse([], { prevData: [], newDataIds: [] })
+    }
 
     const prevData = await service.listPricePreferences({
       $or: input.map((entry) => {

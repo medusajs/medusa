@@ -17,10 +17,12 @@
     "payload": "```ts\n{\n  id, // The ID of the cart\n}\n```",
     "description": "Emitted when a cart's details are updated.",
     "workflows": [
+      "deleteLineItemsWorkflow",
       "updateLineItemInCartWorkflow",
       "updateCartWorkflow",
       "addToCartWorkflow",
-      "addShippingMethodToCartWorkflow"
+      "addShippingMethodToCartWorkflow",
+      "updateLineItemInCartWorkflow"
     ],
     "deprecated": false
   },

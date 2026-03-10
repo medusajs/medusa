@@ -560,6 +560,52 @@ medusaIntegrationTestRunner({
         )
         expect(stockAvailability.valueOf()).toEqual(1)
       })
+
+      it("should persist created_by field when creating a fulfillment", async () => {
+        const order = await createOrderFixture({ container, product, location })
+        const itemWithInventory = order.items!.find(
+          (o) => o.variant_sku === variantSkuWithInventory
+        )!
+
+        const createdByUserId = "user_test_123"
+
+        // Create a fulfillment with created_by
+        const createOrderFulfillmentData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
+          {
+            order_id: order.id,
+            created_by: createdByUserId,
+            items: [
+              {
+                id: itemWithInventory.id,
+                quantity: 1,
+              },
+            ],
+            no_notification: false,
+            location_id: undefined,
+          }
+
+        await createOrderFulfillmentWorkflow(container).run({
+          input: createOrderFulfillmentData,
+        })
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+        const remoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "order",
+          variables: {
+            id: order.id,
+          },
+          fields: ["*", "fulfillments.*"],
+        })
+
+        const [orderWithFulfillment] = await remoteQuery(remoteQueryObject)
+
+        expect(orderWithFulfillment.fulfillments).toHaveLength(1)
+        expect(orderWithFulfillment.fulfillments[0].created_by).toEqual(
+          createdByUserId
+        )
+      })
     })
   },
 })

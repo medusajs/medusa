@@ -47,11 +47,6 @@ import { columnRoutesMiddlewares } from "./admin/views/[entity]/columns/middlewa
 import { viewConfigurationRoutesMiddlewares } from "./admin/views/[entity]/configurations/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
-
-import { adminIndexRoutesMiddlewares } from "./admin/index/middlewares"
-import { adminLocalesRoutesMiddlewares } from "./admin/locales/middlewares"
-import { adminShippingOptionTypeRoutesMiddlewares } from "./admin/shipping-option-types/middlewares"
-import { adminTranslationsRoutesMiddlewares } from "./admin/translations/middlewares"
 import { cloudRoutesMiddlewares } from "./cloud/middlewares"
 import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
@@ -70,9 +65,18 @@ import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middlewares"
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
+import { adminShippingOptionTypeRoutesMiddlewares } from "./admin/shipping-option-types/middlewares"
+import { adminIndexRoutesMiddlewares } from "./admin/index/middlewares"
+import { setSecretApiKeyContext } from "@medusajs/framework"
+import { adminLocalesRoutesMiddlewares } from "./admin/locales/middlewares"
+import { adminTranslationsRoutesMiddlewares } from "./admin/translations/middlewares"
 
 export default defineMiddlewares([
   ...storeRoutesMiddlewares,
+  {
+    matcher: "/admin*",
+    middlewares: [setSecretApiKeyContext],
+  },
   ...adminCustomerGroupRoutesMiddlewares,
   ...adminCustomerRoutesMiddlewares,
   ...adminPromotionRoutesMiddlewares,

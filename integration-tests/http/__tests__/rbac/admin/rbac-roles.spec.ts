@@ -1,3 +1,4 @@
+import { createUsersWorkflow } from "@medusajs/core-flows"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -99,9 +100,14 @@ medusaIntegrationTestRunner({
           const response = await api.get("/admin/rbac/roles", adminHeaders)
 
           expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(3)
+          // 4 roles: Super Admin  + 3 created in beforeEach
+          expect(response.data.count).toEqual(4)
           expect(response.data.roles).toEqual(
             expect.arrayContaining([
+              expect.objectContaining({
+                id: "role_super_admin",
+                name: "Super Admin",
+              }),
               expect.objectContaining({
                 name: "Viewer",
                 description: "Can view resources",
@@ -333,6 +339,49 @@ medusaIntegrationTestRunner({
           editorRole = editor.data.role
         })
 
+        it("should create a user with roles using workflow", async () => {
+          // Create a user with roles using the workflow
+          const { result } = await createUsersWorkflow(container).run({
+            input: {
+              users: [
+                {
+                  email: "test-user@example.com",
+                  first_name: "Test",
+                  last_name: "User",
+                  roles: [viewerRole.id, editorRole.id],
+                },
+              ],
+            },
+          })
+
+          expect(result).toHaveLength(1)
+          const createdUser = result[0]
+          expect(createdUser.email).toEqual("test-user@example.com")
+          expect(createdUser.first_name).toEqual("Test")
+          expect(createdUser.last_name).toEqual("User")
+
+          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const linkService = remoteLink.getLinkModule(
+            Modules.USER,
+            "user_id",
+            Modules.RBAC,
+            "rbac_role_id"
+          )
+
+          const userRoles = await linkService.list({
+            user_id: createdUser.id,
+          })
+
+          expect(userRoles).toHaveLength(2)
+          expect(userRoles.map((link) => link.rbac_role_id)).toEqual(
+            expect.arrayContaining([viewerRole.id, editorRole.id])
+          )
+
+          const userModule = container.resolve(Modules.USER)
+          const retrievedUser = await userModule.retrieveUser(createdUser.id)
+          expect(retrievedUser.email).toEqual("test-user@example.com")
+        })
+
         it("should add policies to a role", async () => {
           const response = await api.post(
             `/admin/rbac/roles/${viewerRole.id}/policies`,
@@ -418,6 +467,293 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
           expect(finalResponse.data.role.policies).toHaveLength(0)
+        })
+      })
+
+      describe("GET /admin/rbac/roles/:id/users", () => {
+        let testRole
+        let testUser1
+        let testUser2
+
+        beforeEach(async () => {
+          const userModule = container.resolve(Modules.USER)
+          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+          // Create a role for testing
+          const roleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Test Role",
+              description: "Role for testing users endpoint",
+            },
+            adminHeaders
+          )
+          testRole = roleResponse.data.role
+
+          // Create test users using the workflow
+          const { result: users } = await createUsersWorkflow(container).run({
+            input: {
+              users: [
+                {
+                  email: "user1@example.com",
+                  first_name: "User",
+                  last_name: "One",
+                },
+                {
+                  email: "user2@example.com",
+                  first_name: "User",
+                  last_name: "Two",
+                },
+              ],
+            },
+          })
+
+          testUser1 = users[0]
+          testUser2 = users[1]
+
+          // Link users to the role
+          await remoteLink.create([
+            {
+              [Modules.USER]: { user_id: testUser1.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+            {
+              [Modules.USER]: { user_id: testUser2.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+          ])
+        })
+
+        it("should list users for a role", async () => {
+          const response = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(2)
+          expect(response.data.users).toHaveLength(2)
+          expect(response.data.users).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: testUser1.id,
+                email: "user1@example.com",
+              }),
+              expect.objectContaining({
+                id: testUser2.id,
+                email: "user2@example.com",
+              }),
+            ])
+          )
+        })
+
+        it("should filter users by user_id", async () => {
+          const response = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users?user_id=${testUser1.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.users).toHaveLength(1)
+          expect(response.data.users[0]).toEqual(
+            expect.objectContaining({
+              id: testUser1.id,
+              email: "user1@example.com",
+            })
+          )
+        })
+
+        it("should filter users by multiple user_ids", async () => {
+          const response = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users?user_id[]=${testUser1.id}&user_id[]=${testUser2.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(2)
+          expect(response.data.users).toHaveLength(2)
+        })
+
+        it("should paginate users", async () => {
+          const response = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users?limit=1&offset=0`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(2)
+          expect(response.data.users).toHaveLength(1)
+          expect(response.data.limit).toEqual(1)
+          expect(response.data.offset).toEqual(0)
+        })
+
+        it("should return empty array for role with no users", async () => {
+          const emptyRoleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Empty Role",
+              description: "Role with no users",
+            },
+            adminHeaders
+          )
+          const emptyRole = emptyRoleResponse.data.role
+
+          const response = await api.get(
+            `/admin/rbac/roles/${emptyRole.id}/users`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(0)
+          expect(response.data.users).toHaveLength(0)
+        })
+      })
+
+      describe("POST /admin/rbac/roles/:id/users", () => {
+        it("should assign multiple users to a role", async () => {
+          const userModule = container.resolve(Modules.USER)
+
+          // Create test users
+          const testUser1 = await userModule.createUsers({
+            email: "testuser1@example.com",
+            first_name: "Test",
+            last_name: "User1",
+          })
+          const testUser2 = await userModule.createUsers({
+            email: "testuser2@example.com",
+            first_name: "Test",
+            last_name: "User2",
+          })
+
+          // Create a role
+          const roleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Batch Test Role",
+              description: "Role for batch user assignment",
+            },
+            adminHeaders
+          )
+          const testRole = roleResponse.data.role
+
+          // Assign multiple users to the role
+          const response = await api.post(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            { users: [testUser1.id, testUser2.id] },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.users).toHaveLength(2)
+          expect(response.data.users).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: testUser1.id }),
+              expect.objectContaining({ id: testUser2.id }),
+            ])
+          )
+
+          // Verify users were assigned
+          const verifyResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(verifyResponse.data.count).toEqual(2)
+        })
+
+        it("should return 404 for non-existent role", async () => {
+          const error = await api
+            .post(
+              `/admin/rbac/roles/non_existent_id/users`,
+              { users: ["user_123"] },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+        })
+      })
+
+      describe("DELETE /admin/rbac/roles/:id/users", () => {
+        it("should remove multiple users from a role", async () => {
+          const userModule = container.resolve(Modules.USER)
+          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+          // Create test users
+          const testUser1 = await userModule.createUsers({
+            email: "removeuser1@example.com",
+            first_name: "Remove",
+            last_name: "User1",
+          })
+          const testUser2 = await userModule.createUsers({
+            email: "removeuser2@example.com",
+            first_name: "Remove",
+            last_name: "User2",
+          })
+
+          // Create a role
+          const roleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Batch Remove Test Role",
+              description: "Role for batch user removal",
+            },
+            adminHeaders
+          )
+          const testRole = roleResponse.data.role
+
+          // Assign users to the role
+          await remoteLink.create([
+            {
+              [Modules.USER]: { user_id: testUser1.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+            {
+              [Modules.USER]: { user_id: testUser2.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+          ])
+
+          // Verify users were assigned
+          const beforeResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(beforeResponse.data.count).toEqual(2)
+
+          // Remove multiple users from the role
+          const deleteResponse = await api.delete(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            {
+              ...adminHeaders,
+              data: { users: [testUser1.id, testUser2.id] },
+            }
+          )
+
+          expect(deleteResponse.status).toEqual(200)
+          expect(deleteResponse.data).toEqual({
+            ids: [testUser1.id, testUser2.id],
+            object: "role_user",
+            deleted: true,
+          })
+
+          // Verify users were removed
+          const afterResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(afterResponse.data.count).toEqual(0)
+        })
+
+        it("should return 404 for non-existent role", async () => {
+          const error = await api
+            .delete(`/admin/rbac/roles/non_existent_id/users`, {
+              ...adminHeaders,
+              data: { users: ["user_123"] },
+            })
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
         })
       })
     })

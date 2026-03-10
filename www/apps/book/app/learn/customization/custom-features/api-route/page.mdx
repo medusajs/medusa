@@ -94,7 +94,7 @@ You create a validation schema in a TypeScript or JavaScript file under a sub-di
 ![Directory structure of Medusa application after adding validators file](https://res.cloudinary.com/dza7lstvk/image/upload/v1732869806/Medusa%20Book/brand-route-dir-overview-1_yfyjss.jpg)
 
 ```ts title="src/api/admin/brands/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostAdminCreateBrand = z.object({
   name: z.string(),
@@ -107,7 +107,7 @@ You can then replace `PostAdminCreateBrandType` in `src/api/admin/brands/route.t
 
 ```ts title="src/api/admin/brands/route.ts"
 // ...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostAdminCreateBrand } from "./validators"
 
 type PostAdminCreateBrandType = z.infer<typeof PostAdminCreateBrand>

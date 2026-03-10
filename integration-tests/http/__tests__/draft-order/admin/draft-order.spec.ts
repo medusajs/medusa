@@ -1,6 +1,12 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { HttpTypes } from "@medusajs/types"
-import { ModuleRegistrationName, ProductStatus } from "@medusajs/utils"
+import {
+  ApiKeyType,
+  ModuleRegistrationName,
+  ProductStatus,
+  PromotionStatus,
+  PromotionType,
+} from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -17,12 +23,18 @@ medusaIntegrationTestRunner({
     let testDraftOrder: HttpTypes.AdminDraftOrder
     let shippingOption: HttpTypes.AdminShippingOption
     let shippingOptionHeavy: HttpTypes.AdminShippingOption
+    let apiKey: HttpTypes.AdminApiKeyResponse["api_key"]
+    let userId: string
 
     beforeEach(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
-      await createAdminUser(dbConnection, adminHeaders, container)
+      userId = await createAdminUser(
+        dbConnection,
+        adminHeaders,
+        container
+      ).then((res) => res.user.id)
 
       region = (
         await api.post(
@@ -219,6 +231,49 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toBe(200)
         expect(response.data.draft_order.email).toBe("test_new@test.com")
+      })
+
+      it("should use the secret key linked user to set created_by", async () => {
+        apiKey = (
+          await api.post(
+            "/admin/api-keys",
+            {
+              title: "secret-key",
+              type: ApiKeyType.SECRET,
+            },
+            adminHeaders
+          )
+        ).data.api_key
+
+        const draftOrderResponse = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}`,
+          {
+            email: "test_new@test.com",
+          },
+          {
+            headers: {
+              Authorization: `Basic ${apiKey.token}`,
+            },
+          }
+        )
+
+        expect(draftOrderResponse.status).toBe(200)
+        expect(draftOrderResponse.data.draft_order.email).toBe(
+          "test_new@test.com"
+        )
+
+        const orderChange = (
+          await api.get(
+            `/admin/orders/${testDraftOrder.id}/changes`,
+            adminHeaders
+          )
+        ).data.order_changes[0]
+
+        expect(orderChange).toEqual(
+          expect.objectContaining({
+            created_by: userId,
+          })
+        )
       })
     })
 
@@ -721,8 +776,7 @@ medusaIntegrationTestRunner({
 
         // Remove item
         await api.post(
-          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${
-            edit.items.find((i) => i.subtitle === "M shirt").id
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${edit.items.find((i) => i.subtitle === "M shirt").id
           }`,
           { quantity: 0 },
           adminHeaders
@@ -730,8 +784,7 @@ medusaIntegrationTestRunner({
 
         // Update item
         await api.post(
-          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${
-            edit.items.find((i) => i.subtitle === "L shirt").id
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${edit.items.find((i) => i.subtitle === "L shirt").id
           }`,
           { quantity: 2 },
           adminHeaders
@@ -839,6 +892,361 @@ medusaIntegrationTestRunner({
           updated: "metadata",
           initial: "value",
           custom_field: "modified",
+        })
+      })
+    })
+
+    describe("POST /draft-orders/:id/edit/promotions", () => {
+      describe("with recompute adjustments", () => {
+        let product
+        let promotion
+
+        beforeEach(async () => {
+          product = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Promo product",
+                status: ProductStatus.PUBLISHED,
+                sales_channels: [{ id: salesChannel.id }],
+                options: [{ title: "size", values: ["large", "small"] }],
+                variants: [
+                  {
+                    title: "L shirt",
+                    options: { size: "large" },
+                    manage_inventory: false,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 1000,
+                      },
+                    ],
+                  },
+                  {
+                    title: "S shirt",
+                    options: { size: "small" },
+                    manage_inventory: false,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 1000,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const promoCode = "recompute-test"
+
+          promotion = (
+            await api.post(
+              "/admin/promotions",
+              {
+                code: promoCode,
+                type: "standard",
+                status: "active",
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "each",
+                  currency_code: "usd",
+                  value: 100,
+                  max_quantity: 5,
+                },
+                is_automatic: false,
+                is_tax_inclusive: true,
+              },
+              adminHeaders
+            )
+          ).data.promotion
+        })
+
+        it("should recompute adjustments when adding items after promotions", async () => {
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+
+          let response = await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            {
+              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          let preview = response.data.draft_order_preview
+          let firstItem = preview.items.find(
+            (item) => item.variant_id === product.variants[0].id
+          )
+
+          expect(preview.discount_total).toBe(0)
+          expect(firstItem?.discount_total ?? 0).toBe(0)
+          expect(firstItem?.adjustments ?? []).toHaveLength(0)
+
+          response = await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+            {
+              promo_codes: [promotion.code],
+            },
+            adminHeaders
+          )
+
+          preview = response.data.draft_order_preview
+          firstItem = preview.items.find(
+            (item) => item.variant_id === product.variants[0].id
+          )
+
+          expect(preview.discount_total).toBe(100)
+          expect(firstItem?.discount_total).toBe(100)
+          expect(firstItem?.adjustments).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                code: promotion.code,
+                amount: 100,
+                promotion_id: promotion.id,
+              }),
+            ])
+          )
+
+          response = await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            {
+              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          preview = response.data.draft_order_preview
+          const itemsByVariant = new Map(
+            preview.items.map((item) => [item.variant_id, item])
+          )
+
+          const firstItemAfter = itemsByVariant.get(product.variants[0].id)
+          const secondItemAfter = itemsByVariant.get(product.variants[1].id)
+
+          expect(preview.discount_total).toBe(200)
+          expect(firstItemAfter?.discount_total).toBe(100)
+          expect(secondItemAfter?.discount_total).toBe(100)
+          expect(firstItemAfter?.adjustments).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                code: promotion.code,
+                amount: 100,
+                promotion_id: promotion.id,
+              }),
+            ])
+          )
+          expect(secondItemAfter?.adjustments).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                code: promotion.code,
+                amount: 100,
+                promotion_id: promotion.id,
+              }),
+            ])
+          )
+        })
+      })
+
+      describe("with promotion rules", () => {
+        let taggedProduct
+        let untaggedProduct
+        let taggedVariant
+        let untaggedVariant
+        let tag
+        let promotion
+
+        beforeEach(async () => {
+          tag = (
+            await api.post(
+              "/admin/product-tags",
+              { value: "promo-tag" },
+              adminHeaders
+            )
+          ).data.product_tag
+
+          taggedProduct = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Tagged Shirt",
+                status: ProductStatus.PUBLISHED,
+                tags: [{ id: tag.id }],
+                options: [{ title: "size", values: ["default"] }],
+                variants: [
+                  {
+                    title: "Tagged Variant",
+                    options: { size: "default" },
+                    manage_inventory: false,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 10,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          untaggedProduct = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Untagged Shirt",
+                status: ProductStatus.PUBLISHED,
+                options: [{ title: "size", values: ["default"] }],
+                variants: [
+                  {
+                    title: "Untagged Variant",
+                    options: { size: "default" },
+                    manage_inventory: false,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 10,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          taggedVariant = taggedProduct.variants[0]
+          untaggedVariant = untaggedProduct.variants[0]
+
+          promotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "TAG_ONLY_PROMO",
+                type: PromotionType.STANDARD,
+                status: PromotionStatus.ACTIVE,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "each",
+                  value: 5,
+                  max_quantity: 1,
+                  currency_code: "usd",
+                  target_rules: [
+                    {
+                      attribute: "items.product.tags.id",
+                      operator: "in",
+                      values: [tag.id],
+                    },
+                  ],
+                },
+              },
+              adminHeaders
+            )
+          ).data.promotion
+        })
+
+        it("should apply the promotion only to items matching the product tag rule", async () => {
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            {
+              items: [
+                {
+                  variant_id: taggedVariant.id,
+                  quantity: 1,
+                },
+                {
+                  variant_id: untaggedVariant.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+            {},
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+
+          const response = await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+            { promo_codes: [promotion.code] },
+            adminHeaders
+          )
+
+          expect(response.status).toBe(200)
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+            {},
+            adminHeaders
+          )
+
+          const order = (
+            await api.get(
+              `/admin/draft-orders/${testDraftOrder.id}?fields=+discount_total,+item_discount_total,+items.discount_total,+items.discount_tax_total,+items.adjustments.*`,
+              adminHeaders
+            )
+          ).data.draft_order
+
+          const preview = response.data.draft_order_preview
+          const taggedItem = preview.items.find(
+            (item) => item.product_id === taggedProduct.id
+          )
+          const untaggedItem = preview.items.find(
+            (item) => item.product_id === untaggedProduct.id
+          )
+
+          expect(taggedItem?.adjustments?.length).toBe(1)
+          expect(taggedItem?.adjustments?.[0]).toEqual(
+            expect.objectContaining({
+              code: promotion.code,
+            })
+          )
+          expect(untaggedItem?.adjustments?.length ?? 0).toBe(0)
+          const taggedDiscountTotal = taggedItem?.discount_total ?? 0
+          // 5 * (1 + taxRate / 100)
+          expect(taggedDiscountTotal).toBe(5.1)
+          expect(preview.item_discount_total).toBe(5.1)
+          expect(preview.discount_total).toBe(5.1)
+          expect(untaggedItem?.discount_total ?? 0).toBe(0)
+
+          const taggedOrderItem = order.items.find(
+            (item) => item.product_id === taggedProduct.id
+          )
+          const untaggedOrderItem = order.items.find(
+            (item) => item.product_id === untaggedProduct.id
+          )
+
+          expect(taggedOrderItem?.adjustments?.length).toBe(1)
+          expect(taggedOrderItem?.adjustments?.[0]).toEqual(
+            expect.objectContaining({
+              code: promotion.code,
+            })
+          )
+          expect(untaggedOrderItem?.adjustments?.length ?? 0).toBe(0)
+          expect(order.item_discount_total).toBe(5.1)
+          expect(order.discount_total).toBe(5.1)
         })
       })
     })
@@ -1066,12 +1474,10 @@ medusaIntegrationTestRunner({
         ).data.draft_order_preview
 
         const response = await api.delete(
-          `/admin/draft-orders/${
-            testDraftOrder.id
-          }/edit/shipping-methods/method/${
-            edit.shipping_methods.find(
-              (sm) => sm.shipping_option_id === shippingOptionHeavy.id
-            ).id
+          `/admin/draft-orders/${testDraftOrder.id
+          }/edit/shipping-methods/method/${edit.shipping_methods.find(
+            (sm) => sm.shipping_option_id === shippingOptionHeavy.id
+          ).id
           }`,
           adminHeaders
         )

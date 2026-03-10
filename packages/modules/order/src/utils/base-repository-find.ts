@@ -1,9 +1,50 @@
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
-import { toMikroORMEntity } from "@medusajs/framework/utils"
+import { MikroOrmBaseRepository, toMikroORMEntity } from "@medusajs/framework/utils"
 import { LoadStrategy } from "@medusajs/framework/mikro-orm/core"
 import { Order, OrderClaim, OrderLineItemAdjustment } from "@models"
 
 import { mapRepositoryToOrderModel } from "."
+
+function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
+  const populate = config.options?.populate ?? []
+  const fields = config.options?.fields ?? []
+
+  const hasItemsItemPopulate = populate.some(
+    (p: string) =>
+      p === "items.item" ||
+      p.startsWith("items.item.") ||
+      p === "order.items.item" ||
+      p.startsWith("order.items.item.")
+  )
+
+  if (!hasItemsItemPopulate) {
+    return
+  }
+
+  const hasOrderItemFields = fields.some((field: string) => {
+    if (field === "items.*" || field === "order.items.*") {
+      return true
+    }
+
+    if (field.startsWith("items.") && !field.startsWith("items.item.")) {
+      return true
+    }
+
+    if (
+      field.startsWith("order.items.") &&
+      !field.startsWith("order.items.item.")
+    ) {
+      return true
+    }
+
+    return false
+  })
+
+  if (!hasOrderItemFields) {
+    fields.push(isRelatedEntity ? "order.items.*" : "items.*")
+    config.options.fields = fields
+  }
+}
 
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
   klass.prototype.find = async function find(
@@ -103,6 +144,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     config.where ??= {}
 
+    if (strategy === LoadStrategy.SELECT_IN) {
+      ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
+        findOptions: config,
+      })
+    }
+
     const result = await manager.find(this.entity, config.where, config.options)
 
     if (loadAdjustments) {
@@ -196,6 +244,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
+    }
+
+    if (strategy === LoadStrategy.SELECT_IN) {
+      ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
+        findOptions: config,
+      })
     }
 
     const [result, count] = await manager.findAndCount(

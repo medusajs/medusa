@@ -33,8 +33,11 @@ function buildLocalCommands(cli, isLocalProject) {
   }
 
   function resolveLocalCommand(command) {
-    if (!isLocalProject) {
-      cli.showHelp((s: string) => console.log(s))
+    if (!isLocalProject && command !== "new") {
+      console.error(
+        `The "${command}" command must be run inside a Medusa project. Make sure you are in the root directory of a Medusa project and try again.`
+      )
+      process.exit(1)
     }
 
     try {
@@ -589,9 +592,14 @@ function isLocalMedusaProject() {
     const { dependencies, devDependencies } = require(path.resolve(
       `./package.json`
     ))
+    // Draft order plugin can't have @medusajs/medusa as dependency,
+    // so we also check for @medusajs/cli 
     inMedusaProject = !!(
-      (dependencies && dependencies["@medusajs/medusa"]) ||
-      (devDependencies && devDependencies["@medusajs/medusa"])
+      (dependencies &&
+        (dependencies["@medusajs/medusa"] || dependencies["@medusajs/cli"])) ||
+      (devDependencies &&
+        (devDependencies["@medusajs/medusa"] ||
+          devDependencies["@medusajs/cli"]))
     )
   } catch (err) {
     // ignore

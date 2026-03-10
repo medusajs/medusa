@@ -48,6 +48,7 @@ describe("Middleware file loader", () => {
         },
       ]
     `)
+
     expect(loader.getMiddlewares()).toMatchInlineSnapshot(`
       [
         {

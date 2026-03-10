@@ -1,4 +1,7 @@
-import { applyAndAndOrOperators } from "../../utils/common-validators"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createBatchBody,
   createFindParams,
@@ -70,6 +73,7 @@ export type AdminTranslationSettingsParamsType = z.infer<
 >
 export const AdminTranslationSettingsParams = z.object({
   entity_type: z.string().optional(),
+  is_active: booleanString().optional(),
 })
 
 const AdminUpdateTranslationSettings = z.object({

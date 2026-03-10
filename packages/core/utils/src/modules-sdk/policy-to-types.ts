@@ -1,11 +1,14 @@
 import { FileSystem } from "../common/file-system"
+import { promiseAll } from "../common/promise-all"
 import { Policy, PolicyOperation, PolicyResource } from "./define-policies"
 
 /**
  * Generates TypeScript type definitions for RBAC Resource, Operation, and Policy.
- * Creates a "policy-bindings.d.ts" file with type-safe autocomplete.
+ * Creates two files:
+ * - "policy-types.d.ts" - Ambient type declarations with global types
+ * - "policy-bindings.d.ts" - Module augmentation for @medusajs/framework/utils
  *
- * @param outputDir - Directory where the type definition file should be created
+ * @param outputDir - Directory where the type definition files should be created
  */
 export async function generatePolicyTypes({
   outputDir,
@@ -17,7 +20,7 @@ export async function generatePolicyTypes({
   // Generate type entries for each named policy from Policy object
   for (const [name, { resource, operation }] of Object.entries(Policy)) {
     policyTypeEntries.push(
-      `  ${name}: { resource: "${resource}"; operation: "${operation}" }`
+      `  ${name}: { resource: "${resource}"; operation: "${operation}" };`
     )
   }
 
@@ -28,51 +31,65 @@ export async function generatePolicyTypes({
       : "{}"
 
   const fileSystem = new FileSystem(outputDir)
-  const fileName = "policy-bindings.d.ts"
-  const fileContents = `declare module '@medusajs/framework/utils' {
-  /**
-   * RBAC Resource registry with lowercase keys for type-safe access.
-   * All resource names are normalized to lowercase.
-   * 
-   * @example
-   * import { PolicyResource } from '@medusajs/framework/utils'
-   * 
-   * const productResource = PolicyResource.product // "product"
-   * const apiKeyResource = PolicyResource.api_key // "api-key"
-   */
-  export const Resource: {
-${Object.entries(PolicyResource)
-  .map(([key, val]) => `    readonly ${key}: "${val}"`)
-  .join("\n")}
-  }
 
-  /**
-   * RBAC Operation registry with lowercase keys for type-safe access.
-   * All operation names are normalized to lowercase.
-   * 
-   * @example
-   * import { PolicyOperation } from '@medusajs/framework/utils'
-   * 
-   * const readOp = PolicyOperation.read // "read"
-   */
-  export const Operation: {
-${Object.entries(PolicyOperation)
-  .map(([key, val]) => `    readonly ${key}: "${val}"`)
-  .join("\n")}
-  }
+  const resourceKeys = Object.keys(PolicyResource).sort()
+  const operationKeys = Object.keys(PolicyOperation).sort()
 
-  /**
-   * RBAC Policy registry with all defined policies.
-   * Maps policy names to their resource and operation pairs.
-   * 
-   * @example
-   * import { Policy } from '@medusajs/framework/utils'
-   * 
-   * const readProduct = Policy.ReadProduct
-   * // { resource: "product", operation: "read" }
-   */
-  export const Policy: ${policyInterface}
-}`
+  // Generate PolicyResourceType entries
+  const resourceTypeEntries = resourceKeys
+    .map((key) => `  readonly ${key}: "${PolicyResource[key]}";`)
+    .join("\n")
 
-  await fileSystem.create(fileName, fileContents)
+  // Generate PolicyOperationType entries
+  const operationTypeEntries = operationKeys
+    .map(
+      (key) =>
+        `  readonly ${key === "*" ? `"*"` : key}: "${PolicyOperation[key]}";`
+    )
+    .join("\n")
+
+  // File 1: policy-types.d.ts - Ambient type declarations
+  const policyTypesContents = `/**
+ * RBAC Resource registry type
+ */
+type PolicyResourceType = {
+${resourceTypeEntries}
+};
+
+/**
+ * RBAC Operation registry type
+ */
+type PolicyOperationType = {
+${operationTypeEntries}
+};
+
+/**
+ * RBAC Policy registry type
+ */
+type PolicyType = ${policyInterface};
+
+// Global declarations
+declare const PolicyResource: PolicyResourceType;
+declare const PolicyOperation: PolicyOperationType;
+declare const Policy: PolicyType;
+`
+
+  // File 2: policy-bindings.d.ts - Module augmentation
+  const policyBindingsContents = `/// <reference path="./policy-types.d.ts" />
+
+// Module augmentation for @medusajs/framework/utils
+// Types and globals are defined in policy-types.d.ts
+declare module "@medusajs/framework/utils" {
+  export const PolicyResource: PolicyResourceType;
+  export const PolicyOperation: PolicyOperationType;
+  export const Policy: PolicyType;
+}
+
+export {};
+`
+
+  await promiseAll([
+    fileSystem.create("policy-types.d.ts", policyTypesContents),
+    fileSystem.create("policy-bindings.d.ts", policyBindingsContents),
+  ])
 }

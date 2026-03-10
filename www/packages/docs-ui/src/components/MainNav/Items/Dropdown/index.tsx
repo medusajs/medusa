@@ -35,7 +35,12 @@ export const MainNavItemDropdown = ({
           isActive={isActive}
           icon={
             <TriangleDownMini
-              className={clsx("transition-transform", isOpen && "rotate-180")}
+              className={clsx(
+                "transition-transform",
+                isOpen && "rotate-180",
+                isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
+                !isActive && "text-medusa-fg-subtle hover:text-medusa-fg-base"
+              )}
             />
           }
           className="!flex"
@@ -47,11 +52,12 @@ export const MainNavItemDropdown = ({
       <div
         className={clsx(
           "cursor-pointer flex gap-docs_0.25 items-center py-docs_0.25",
-          isActive && "text-medusa-fg-base",
+          isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
           !isActive && [
-            "text-medusa-fg-muted hover:text-medusa-fg-subtle",
+            "text-medusa-fg-subtle hover:text-medusa-fg-base",
             isOpen && "text-medusa-fg-subtle",
           ],
+          "hover:bg-medusa-button-transparent-hover rounded-docs_sm px-docs_0.5",
           className
         )}
         tabIndex={-1}
@@ -61,7 +67,12 @@ export const MainNavItemDropdown = ({
           {item.title}
         </span>
         <TriangleDownMini
-          className={clsx("transition-transform", isOpen && "rotate-180")}
+          className={clsx(
+            "transition-transform",
+            isOpen && "rotate-180",
+            isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
+            !isActive && "text-medusa-fg-subtle hover:text-medusa-fg-base"
+          )}
           data-testid="triangle-icon"
         />
       </div>
@@ -70,7 +81,7 @@ export const MainNavItemDropdown = ({
 
   return (
     <div
-      className={clsx("relative", wrapperClassName)}
+      className={clsx("relative z-10", wrapperClassName)}
       ref={ref}
       onMouseOver={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}

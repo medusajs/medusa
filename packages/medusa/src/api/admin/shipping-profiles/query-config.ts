@@ -1,3 +1,7 @@
+export enum Entities {
+  shipping_profile = "shipping_profile",
+}
+
 export const defaultAdminShippingProfileFields = [
   "id",
   "name",
@@ -10,9 +14,11 @@ export const defaultAdminShippingProfileFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminShippingProfileFields,
   isList: false,
+  entity: Entities.shipping_profile,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.shipping_profile,
 }

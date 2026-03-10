@@ -320,8 +320,14 @@ export default defineMiddlewares({
 
 1. Create a [Zod](https://zod.dev/) schema in the file `src/api/custom/validators.ts`:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.number(),
@@ -355,7 +361,7 @@ export default defineMiddlewares({
 
 ```ts title="src/api/custom/route.ts" highlights={[["14", "validatedBody"]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCustomSchema } from "./validators"
 
 type PostStoreCustomSchemaType = z.infer<
@@ -388,7 +394,7 @@ Find this example in details in [this documentation](!docs!/learn/customization/
 
 ```ts title="src/api/middlewares.ts" highlights={[["10", "brand_id", "Replace with your custom field."]]}
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [
@@ -771,7 +777,7 @@ module.exports = defineConfig({
 
 6. Generate and run migrations:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 npx medusa db:migrate
 ```
@@ -971,7 +977,7 @@ export default Post
 
 2. Generate and run migrations:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 npx medusa db:migrate
 ```
@@ -1717,7 +1723,7 @@ export default defineLink(
 
 2. Run the following command to sync the links:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 

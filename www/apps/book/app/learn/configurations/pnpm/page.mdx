@@ -1,0 +1,106 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Use pnpm with Medusa`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use `pnpm` as the package manager for your Medusa application.
+
+## What is pnpm?
+
+[pnpm](https://pnpm.io/) is a fast, disk space-efficient package manager. It uses a unique symlinked storage mechanism to save disk space and speed up installations.
+
+Medusa supports `pnpm`, `yarn`, and `npm` as package managers. Our team recommends using either `yarn` or `pnpm` for better performance and faster installations.
+
+To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps.
+
+### Who is This Guide For?
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), new Medusa projects support `pnpm`. You can create a new Medusa project with `pnpm` using the following command:
+
+```bash
+pnpm dlx create-medusa-app@latest
+```
+
+This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`.
+
+---
+
+<Prerequisites
+  items={[
+    {
+      text: "pnpm Installed",
+      link: "https://pnpm.io/installation",
+    }
+  ]}
+/>
+
+## Step 0: Update Medusa to the Latest Version
+
+If you're using a Medusa version prior to v2.13.0, you should update to the latest version to ensure compatibility with `pnpm`.
+
+Refer to the [Update Medusa](../../update/page.mdx) guide to learn how to update your Medusa project.
+
+If you're updating to v2.13.0, you also need to run the [replace-zod-imports codemod](../../codemods/replace-zod-imports/page.mdx).
+
+---
+
+## Step 1: Remove Existing Lock File
+
+The first step is to delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+
+When you install dependencies with `pnpm` later, a new `pnpm-lock.yaml` file will be created automatically.
+
+---
+
+## Step 2: Add .npmrc File
+
+Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, you need to create a `.npmrc` file that specifies the `public-hoist-pattern` configuration.
+
+Create a `.npmrc` file in the root of your Medusa project with the following content:
+
+```ini title=".npmrc"
+public-hoist-pattern[]=*@medusajs/*
+public-hoist-pattern[]=@tanstack/react-query
+public-hoist-pattern[]=react-i18next
+public-hoist-pattern[]=react-router-dom
+```
+
+This configuration tells `pnpm` to hoist the following packages to the top-level `node_modules` directory:
+
+1. All packages under the `@medusajs` scope.
+2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](../../fundamentals/admin/tips/page.mdx#send-requests-to-api-routes). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](../../fundamentals/admin/translations/page.mdx). It's hoisted to ensure compatibility with the Medusa Admin.
+4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](../../fundamentals/admin/routing/page.mdx). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+
+---
+
+## Step 3: Install Dependencies with pnpm
+
+Finally, install your project dependencies using `pnpm`. Run the following command in your project directory:
+
+```bash
+pnpm install
+```
+
+This will install all your dependencies in `node_modules` and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
+
+---
+
+## Test Your Setup
+
+You can now use `pnpm` for your Medusa development. For example, you can start the Medusa server in development with the following command:
+
+```bash
+pnpm dev
+```
+
+You can also run commands from the Medusa CLI tool with `pnpm`. For example, to run migrations:
+
+```bash
+pnpm medusa db:migrate
+```
+
+Refer to the [Medusa CLI reference](!resources!/medusa-cli) for a full list of available commands.

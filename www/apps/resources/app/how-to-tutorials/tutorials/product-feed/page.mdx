@@ -73,7 +73,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -531,9 +531,15 @@ A [middleware](!docs!/learn/fundamentals/api-routes/middlewares) is a function t
 
 To apply a middleware on the API route, create the file `src/api/middlewares.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares, validateAndTransformQuery } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [

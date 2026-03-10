@@ -713,6 +713,38 @@ moduleIntegrationTestRunner<ITranslationModuleService>({
 
             expect(fields).toEqual({})
           })
+
+          it("should return empty array when entity has fields configured but is_active is false", async () => {
+            const [productTranslationSettings] =
+              await service.listTranslationSettings({
+                entity_type: "product",
+              })
+            await service.updateTranslationSettings({
+              id: productTranslationSettings.id,
+              is_active: false,
+            })
+
+            const fields = await service.getTranslatableFields("product")
+
+            expect(fields).toEqual({
+              product: [],
+            })
+          })
+
+          it("should return empty array for inactive entity when getting all fields", async () => {
+            const [productTranslationSettings] =
+              await service.listTranslationSettings({
+                entity_type: "product",
+              })
+            await service.updateTranslationSettings({
+              id: productTranslationSettings.id,
+              is_active: false,
+            })
+
+            const fields = await service.getTranslatableFields()
+
+            expect(fields.product).toEqual([])
+          })
         })
 
         describe("listing translations filters by configured fields", () => {

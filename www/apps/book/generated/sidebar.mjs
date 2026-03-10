@@ -915,6 +915,16 @@ export const generatedSidebars = [
                 "children": [],
                 "chapterTitle": "3.8.2. Emit Event",
                 "number": "3.8.2."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/learn/fundamentals/events-and-subscribers/event-priority",
+                "title": "Event Priority",
+                "children": [],
+                "chapterTitle": "3.8.3. Event Priority",
+                "number": "3.8.3."
               }
             ],
             "chapterTitle": "3.8. Events and Subscribers",
@@ -1125,11 +1135,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "pnpm",
+            "path": "/learn/configurations/pnpm",
+            "children": [],
+            "chapterTitle": "6.1. pnpm",
+            "number": "6.1."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Environment Variables",
             "path": "/learn/fundamentals/environment-variables",
             "children": [],
-            "chapterTitle": "6.1. Environment Variables",
-            "number": "6.1."
+            "chapterTitle": "6.2. Environment Variables",
+            "number": "6.2."
           },
           {
             "loaded": true,
@@ -1145,12 +1165,12 @@ export const generatedSidebars = [
                 "title": "Asymmetric Encryption",
                 "path": "/learn/configurations/medusa-config/asymmetric-encryption",
                 "children": [],
-                "chapterTitle": "6.2.1. Asymmetric Encryption",
-                "number": "6.2.1."
+                "chapterTitle": "6.3.1. Asymmetric Encryption",
+                "number": "6.3.1."
               }
             ],
-            "chapterTitle": "6.2. Medusa Configuations",
-            "number": "6.2."
+            "chapterTitle": "6.3. Medusa Configuations",
+            "number": "6.3."
           },
           {
             "loaded": true,
@@ -1159,8 +1179,8 @@ export const generatedSidebars = [
             "title": "Type Aliases",
             "path": "/learn/configurations/ts-aliases",
             "children": [],
-            "chapterTitle": "6.3. Type Aliases",
-            "number": "6.3."
+            "chapterTitle": "6.4. Type Aliases",
+            "number": "6.4."
           }
         ],
         "chapterTitle": "6. Configurations",
@@ -1423,6 +1443,16 @@ export const generatedSidebars = [
                 "children": [],
                 "chapterTitle": "10.3.1. Replace Imports (v2.11.0+)",
                 "number": "10.3.1."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Replace Zod Imports (v2.13.0+)",
+                "path": "/learn/codemods/replace-zod-imports",
+                "children": [],
+                "chapterTitle": "10.3.2. Replace Zod Imports (v2.13.0+)",
+                "number": "10.3.2."
               }
             ],
             "chapterTitle": "10.3. Codemods",

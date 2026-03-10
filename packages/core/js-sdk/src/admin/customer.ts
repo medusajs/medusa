@@ -389,7 +389,7 @@ export class Customer {
    * })
    */
   async listAddresses(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<HttpTypes.AdminCustomerResponse>(
+    return await this.client.fetch<HttpTypes.AdminCustomerAddressListResponse>(
       `/admin/customers/${id}/addresses`,
       {
         headers,

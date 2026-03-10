@@ -894,7 +894,7 @@ The Medusa CLI tool provides a [build](https://docs.medusajs.com/resources/medus
 
 So, to create the production build, run the following command in the root of your Medusa application:
 
-```bash
+```bash npx2yarn
 npx medusa build
 ```
 
@@ -1005,7 +1005,7 @@ The admin dashboard is built with [Vite](!https://vitejs.dev/). If you need to c
 
 The `build` command accepts a `--admin-only` option that outputs the admin to the `.medusa/admin` directory. This is useful when deploying the admin dashboard separately, such as on Vercel:
 
-```bash
+```bash npx2yarn
 npx medusa build --admin-only
 ```
 
@@ -1304,6 +1304,58 @@ If everything is working correctly, you can remove the `replace-imports.js` file
 - `@opentelemetry/sdk-trace-node`
 
 
+# Replace Zod Imports Codemod (v2.13.0+)
+
+In this chapter, you'll learn about the codemod that helps you replace Zod imports in your codebase when upgrading to Medusa v2.13.0.
+
+## What is the Replace Zod Imports Codemod?
+
+As of [v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Medusa exports [Zod](https://zod.dev/) from the `@medusajs/framework` package.
+
+Zod is a validation library that you can use to validate request bodies, query parameters, and more in your Medusa application.
+
+Starting in v2.13.0, you can import Zod from `@medusajs/framework/zod` in your backend customizations. For example:
+
+```ts
+import { z } from "@medusajs/framework/zod"
+```
+
+For Medusa Admin customizations, you can install and import Zod as needed.
+
+The `replace-zod-imports` codemod automates the process of updating your import statements to use the new Zod import path. Use it after updating your Medusa project to v2.13.0 or later.
+
+***
+
+## How to Run the Codemod
+
+To use the replace imports codemod, update your Medusa project to v2.13.0 or later. Refer to the [Update Medusa](https://docs.medusajs.com/learn/update/index.html.md) guide for instructions.
+
+Then, run the following command in the root directory of your Medusa project:
+
+```bash npx2yarn
+npx medusa codemod replace-zod-imports
+```
+
+This command scans your codebase for Zod import statements in the backend customizations and replaces them with the new import path.
+
+All Zod imports will be changed to:
+
+```ts
+import { z } from "@medusajs/framework/zod"
+```
+
+***
+
+## Next Steps
+
+After running the codemod, review the changes made to your codebase. You can:
+
+- Use `git diff` to see the modifications.
+- Run your tests to ensure everything works as expected.
+
+If everything is working correctly, you can push the changes to your repository. If you've installed `zod` and you're not using it for Medusa Admin customizations, you can remove it from your `package.json` dependencies.
+
+
 # Asymmetric Encryption
 
 In this chapter, you'll learn how to configure asymmetric encryption in Medusa using public/private key pairs instead of a shared secret.
@@ -1328,7 +1380,17 @@ Asymmetric encryption is useful in several scenarios:
 
 ## How to Configure Asymmetric Encryption
 
-### Step 1: Set Asymmetric JWT Configuration
+### Step 1: Install Dependencies
+
+First, you need to install `jsonwebtoken` to handle JWT token creation and verification.
+
+Run the following command in your Medusa application:
+
+```bash npm2yarn
+npm install jsonwebtoken
+```
+
+### Step 2: Set Asymmetric JWT Configuration
 
 To configure asymmetric encryption, you need to set up both signing and verification options in your `medusa-config.ts` file.
 
@@ -1396,7 +1458,7 @@ You set the JWT configurations in the following options:
    - Refer to the [Medusa Configuration chapter](https://docs.medusajs.com/learn/configurations/medusa-config#http/index.html.md) for more details on these options and their default values.
 2. [User Module options](https://docs.medusajs.com/resources/commerce-modules/user/module-options/index.html.md): You set the JWT options specific to the User Module, which are used to sign and verify invite tokens.
 
-### Step 2: Generate Key Pair
+### Step 3: Generate Key Pair
 
 Next, generate an RSA key pair (private and public keys) for signing and verifying tokens. You can use OpenSSL to generate the keys:
 
@@ -1416,7 +1478,7 @@ private-key.pem
 *.pem
 ```
 
-### Step 3: Set Environment Variables
+### Step 4: Set Environment Variables
 
 Finally, set the following environment variables using the generated keys:
 
@@ -2747,6 +2809,103 @@ module.exports = defineConfig({
 ```
 
 
+# Use pnpm with Medusa
+
+In this chapter, you'll learn how to use `pnpm` as the package manager for your Medusa application.
+
+## What is pnpm?
+
+[pnpm](https://pnpm.io/) is a fast, disk space-efficient package manager. It uses a unique symlinked storage mechanism to save disk space and speed up installations.
+
+Medusa supports `pnpm`, `yarn`, and `npm` as package managers. Our team recommends using either `yarn` or `pnpm` for better performance and faster installations.
+
+To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps.
+
+### Who is This Guide For?
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), new Medusa projects support `pnpm`. You can create a new Medusa project with `pnpm` using the following command:
+
+```bash
+pnpm dlx create-medusa-app@latest
+```
+
+This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`.
+
+***
+
+### Prerequisites
+
+- [pnpm Installed](https://pnpm.io/installation)
+
+## Step 0: Update Medusa to the Latest Version
+
+If you're using a Medusa version prior to v2.13.0, you should update to the latest version to ensure compatibility with `pnpm`.
+
+Refer to the [Update Medusa](https://docs.medusajs.com/learn/update/index.html.md) guide to learn how to update your Medusa project.
+
+If you're updating to v2.13.0, you also need to run the [replace-zod-imports codemod](https://docs.medusajs.com/learn/codemods/replace-zod-imports/index.html.md).
+
+***
+
+## Step 1: Remove Existing Lock File
+
+The first step is to delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+
+When you install dependencies with `pnpm` later, a new `pnpm-lock.yaml` file will be created automatically.
+
+***
+
+## Step 2: Add .npmrc File
+
+Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, you need to create a `.npmrc` file that specifies the `public-hoist-pattern` configuration.
+
+Create a `.npmrc` file in the root of your Medusa project with the following content:
+
+```ini title=".npmrc"
+public-hoist-pattern[]=*@medusajs/*
+public-hoist-pattern[]=@tanstack/react-query
+public-hoist-pattern[]=react-i18next
+public-hoist-pattern[]=react-router-dom
+```
+
+This configuration tells `pnpm` to hoist the following packages to the top-level `node_modules` directory:
+
+1. All packages under the `@medusajs` scope.
+2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/tips#send-requests-to-api-routes/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations/index.html.md). It's hoisted to ensure compatibility with the Medusa Admin.
+4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+
+***
+
+## Step 3: Install Dependencies with pnpm
+
+Finally, install your project dependencies using `pnpm`. Run the following command in your project directory:
+
+```bash
+pnpm install
+```
+
+This will install all your dependencies in `node_modules` and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
+
+***
+
+## Test Your Setup
+
+You can now use `pnpm` for your Medusa development. For example, you can start the Medusa server in development with the following command:
+
+```bash
+pnpm dev
+```
+
+You can also run commands from the Medusa CLI tool with `pnpm`. For example, to run migrations:
+
+```bash
+pnpm medusa db:migrate
+```
+
+Refer to the [Medusa CLI reference](https://docs.medusajs.com/resources/medusa-cli/index.html.md) for a full list of available commands.
+
+
 # Using TypeScript Aliases
 
 In this chapter, you'll learn how to use TypeScript aliases in your Medusa application.
@@ -2979,7 +3138,7 @@ You create a validation schema in a TypeScript or JavaScript file under a sub-di
 ![Directory structure of Medusa application after adding validators file](https://res.cloudinary.com/dza7lstvk/image/upload/v1732869806/Medusa%20Book/brand-route-dir-overview-1_yfyjss.jpg)
 
 ```ts title="src/api/admin/brands/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostAdminCreateBrand = z.object({
   name: z.string(),
@@ -2992,7 +3151,7 @@ You can then replace `PostAdminCreateBrandType` in `src/api/admin/brands/route.t
 
 ```ts title="src/api/admin/brands/route.ts"
 // ...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostAdminCreateBrand } from "./validators"
 
 type PostAdminCreateBrandType = z.infer<typeof PostAdminCreateBrand>
@@ -3254,7 +3413,7 @@ A [migration](https://docs.medusajs.com/learn/fundamentals/modules#5-generate-mi
 
 [Medusa's CLI tool](https://docs.medusajs.com/resources/medusa-cli/index.html.md) allows you to generate migration files for your module, then run those migrations to reflect the changes in the database. So, run the following commands in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate brand
 npx medusa db:migrate
 ```
@@ -3274,7 +3433,39 @@ In the next chapter, you'll implement the functionality to create a brand in a w
 
 In the upcoming chapters, you'll follow step-by-step guides to build custom features in Medusa. These guides gradually introduce Medusa's concepts to help you understand what they are and how to use them.
 
-By following these guides, you'll add brands to the Medusa application that you can associate with products.
+## Interactive Learning with Claude Code
+
+If you use Claude Code, you can learn the same concepts explained in the upcoming chapters through an interactive learning experience.
+
+Install the `learn-medusa` plugin to use the interactive learning experience:
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+```
+
+Then, start the learning experience with this prompt:
+
+```bash title="Claude Code Prompt"
+I want to learn Medusa.
+```
+
+You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the next chapters. You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. [Link brands to products to associate products with brands](https://docs.medusajs.com/learn/customization/extend-features/index.html.md).
+3. [Customize the Medusa Admin dashboard to allow admin users to manage brands](https://docs.medusajs.com/learn/customization/customize-admin/index.html.md).
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+
+***
+
+## Tutorial Summary
+
+By following the guides in the upcoming chapters, you'll add brands to the Medusa application and associate them with products.
 
 To build a custom feature in Medusa, you need three main [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) tools:
 
@@ -4031,7 +4222,7 @@ So, in the above code snippet, you define a link between the `Product` and `Bran
 
 A module link is represented in the database as a table that stores the IDs of linked records. So, after defining the link, run the following command to create the module link's table in the database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -4181,7 +4372,7 @@ You configure the properties accepted in `additional_data` in the `src/api/middl
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 // ...
 
@@ -6638,10 +6829,15 @@ Then, in the test, you pass an object as the last parameter to `api.get` with a 
 
 If your custom route is accessible by authenticated users only, such as routes prefixed by `/admin` or `/store/customers/me`, you can create a test customer or user, generate a JWT token for them, and pass the token in the request's Authorization header.
 
-For example:
+First, install the `jsonwebtoken` package to generate JWT tokens:
 
-- The `jsonwebtoken` is available in your application by default.
-- For custom actor types, you only need to change the `actorType` value in the `jwt.sign` method.
+```bash npm2yarn
+npm install jsonwebtoken
+```
+
+Then, use it in your test to create a user or customer, generate a JWT token for them, and pass the token in the request's headers:
+
+For custom actor types, you only need to change the `actorType` value in the `jwt.sign` method.
 
 ### Admin User
 
@@ -6802,11 +6998,15 @@ You also create and pass a publishable API key in the header for the customer as
 
 ## Upload Files in Test Requests
 
-If your API route requires uploading a file, create a `FormData` object imported from the `form-data` object, then pass the form data headers in the request.
+If your API route requires uploading a file, you can use the `form-data` library to create a `FormData` object, then pass the form data headers in the request.
 
-For example:
+First, run the following command to install the `form-data` package:
 
-The `form-data` package is available by default.
+```bash npm2yarn
+npm install form-data
+```
+
+Then, use it in your test to upload files:
 
 ```ts title="integration-tests/http/custom-routes.spec.ts"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
@@ -8104,7 +8304,7 @@ The Medusa Admin is also available at `<APP_URL>/app`.
 
 If your hosting provider supports running commands in your Medusa application's directory, run the following command to create an admin user:
 
-```bash
+```bash npx2yarn
 npx medusa user -e admin-medusa@test.com -p supersecret
 ```
 
@@ -9961,9 +10161,11 @@ To do that, use the middleware route object defined in `src/api/middlewares.ts`.
 
 For example, create the file `src/api/middlewares.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [
@@ -11932,8 +12134,10 @@ To create a validation schema with Zod, create a `validators.ts` file in any `sr
 
 For example, create the file `src/api/custom/validators.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.number(),
@@ -11989,7 +12193,7 @@ For example, create the file `src/api/custom/route.ts` with the following conten
 
 ```ts title="src/api/custom/route.ts" highlights={routeHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCustomSchema } from "./validators"
 
 type PostStoreCustomSchemaType = z.infer<
@@ -12038,7 +12242,7 @@ Consider that the API route accepts two query parameters `a` and `b` that are nu
 Create the file `src/api/custom/validators.ts` with the following content:
 
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.preprocess(
@@ -12199,7 +12403,7 @@ The function receives as a parameter an object with a `container` property, whic
 
 To run a custom CLI script, run the Medusa CLI's `exec` command:
 
-```bash
+```bash npx2yarn
 npx medusa exec ./src/scripts/my-script.ts
 ```
 
@@ -12221,7 +12425,7 @@ export default async function myScript({ args }: ExecArgs) {
 
 Then, run the script with the `exec` command and pass arguments after the script's path.
 
-```bash
+```bash npx2yarn
 npx medusa exec ./src/scripts/my-script.ts arg1 arg2
 ```
 
@@ -12433,7 +12637,7 @@ Finally, you use the `createInventoryLevelsWorkflow` from Medusa's core workflow
 
 To test out the script, run the following command in your project's directory:
 
-```bash
+```bash npx2yarn
 npx medusa exec ./src/scripts/demo-products.ts
 ```
 
@@ -12504,7 +12708,7 @@ After adding the check constraint, make sure to generate and run migrations if y
 
 To generate a migration for the data model's module then reflect it on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate custom_module
 npx medusa db:migrate
 ```
@@ -13234,7 +13438,7 @@ For example, to generate a migration for the Blog Module, run the following comm
 
 If you're creating the module in a plugin, use the [plugin:db:generate command](https://docs.medusajs.com/resources/medusa-cli/commands/plugin#plugindbgenerate/index.html.md) instead.
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 ```
 
@@ -13266,7 +13470,7 @@ To reflect the changes in the generated migration file on the database, run the 
 
 If you're creating the module in a plugin, run this command on the Medusa application that the plugin is installed in.
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -13667,6 +13871,37 @@ const posts = await blogModuleService.listPosts({
 
 This retrieves records that include `New Products` in their `title` property.
 
+***
+
+## Make Property Translatable
+
+### Prerequisites
+
+- [Medusa v2.13.0+](https://github.com/medusajs/medusa/releases/tag/v2.13.0)
+- [Translation Module Configured](https://docs.medusajs.com/resources/commerce-modules/translation#configure-translation-module/index.html.md)
+
+Use the `translatable` method on a `text` property to indicate that the property can have different values per locale. This only works if the [Translation Module](https://docs.medusajs.com/resources/commerce-modules/translation/index.html.md) is configured in your application.
+
+When a property is marked as translatable, merchants can manage translations for these fields through the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/translations/index.html.md).
+
+For example:
+
+```ts highlights={translatableHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  title: model.text().translatable(),
+  description: model.text().translatable(),
+  // ...
+})
+
+export default Post
+```
+
+In this example, the `title` and `description` properties are translatable. So, admin users can translate the values of these properties into different locales.
+
+Learn more in the [Translate Custom Data Models](https://docs.medusajs.com/resources/commerce-modules/translation/custom-data-models/index.html.md) guide.
+
 
 # Data Model Relationships
 
@@ -13997,7 +14232,7 @@ Instead of you writing the migration manually, the Medusa CLI tool provides a [d
 
 For example, assuming you have a `blog` Module, you can generate a migration for it by running the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 ```
 
@@ -14049,7 +14284,7 @@ To run your migration, run the following command:
 
 This command also syncs module links. If you don't want that, use the `--skip-links` option.
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -14061,7 +14296,7 @@ This reflects the changes in the database as implemented in the migration's `up`
 
 To rollback or revert the last migration you ran for a module, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback blog
 ```
 
@@ -14087,7 +14322,7 @@ To learn more about the Medusa CLI's database commands, refer to [this CLI refer
 
 In some use cases, you may need to perform data migration after updates to the database. For example, after you added a `Site` data model to the Blog Module, you want to assign all existing posts and authors to a default site. Another example is updating data stored in a third-party system.
 
-In those scenarios, you can instead create a data migration script. They are asynchronous function that the Medusa application executes once when you run the `npx medusa db:migrate command`.
+In those scenarios, you can instead create a data migration script. They are asynchronous function that the Medusa application executes once when you run migrations.
 
 ### How to Create a Data Migration Script
 
@@ -14129,7 +14364,7 @@ In the function, you first ensure that the Blog Module is installed to avoid err
 
 To test out the data migration script, run the migration command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -14562,6 +14797,39 @@ const helloWorldWorkflow = createWorkflow(
 
 The event `custom.created` will be emitted three times, once per each object in the array passed to the `data` property. The subscriber listening to the event will be executed three times, each time receiving one of the objects in the array as the event's payload.
 
+### Emit Event with Custom Priority
+
+Event priority is available since [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+You can specify a priority level when emitting events to control when the event is processed relative to other events in the queue. This is useful to ensure that critical business events are handled promptly, while less important events can be deferred.
+
+To emit an event with custom priority, pass the `priority` property in the `options` parameter:
+
+```ts highlights={priorityHighlights}
+import {
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "@medusajs/medusa/core-flows"
+import { EventPriority } from "@medusajs/framework/utils"
+
+const criticalWorkflow = createWorkflow(
+  "critical-operation",
+  () => {
+    emitEventStep({
+      eventName: "payment.processed",
+      data: { id: "123" },
+      options: {
+        priority: EventPriority.CRITICAL
+      },
+    })
+  }
+)
+```
+
+In the above example, the `payment.processed` event is emitted with the `CRITICAL` priority level, ensuring it is processed before other lower-priority events.
+
+Learn more in the [Event Processing Priority guide](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/event-priority/index.html.md).
+
 ***
 
 ## Emit Event in a Service
@@ -14684,6 +14952,101 @@ If a module has providers, the dependencies are also injected into the providers
 If you execute the `performAction` method of your service, the event is emitted and you can see it in your application's logs.
 
 Any subscribers listening to the event are also executed.
+
+
+# Event Processing Priority
+
+Priority-based event processing is available since [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+## How Event Priority Works
+
+Medusa uses a priority queue system for event processing to ensure that critical business events are processed first. This improves system responsiveness and prevents internal operations from blocking customer-facing functionality.
+
+For example, if you're adding a large number of products to the catalog, and a user places an order at the same time, Medusa will prioritize processing the `order.placed` event and its subscribers before handling the product addition events.
+
+```mermaid
+graph TD
+    D["1. order.placed emitted<br/>(Priority: CRITICAL - 10)"] --> B[Event Queue]
+    E["2. product.created emitted<br/>(Priority: DEFAULT - 100)"] --> B
+
+    B --> C{Priority Check}
+
+    C -->|"Step 1: Process CRITICAL first"| F[order.placed Subscriber]
+    C -->|"Step 2: Process DEFAULT after"| G[product.created Subscriber]
+
+    F --> H[Send confirmation email]
+    G --> I[Update search index]
+
+    style G fill:#F4F4F5
+    style I fill:#F4F4F5
+```
+
+In this example, even though both events are emitted around the same time, Medusa processes the `order.placed` event (priority 10) before the `product.created` event (priority 100), ensuring the customer receives their order confirmation promptly.
+
+***
+
+## Event Priority Levels
+
+Events are assigned a priority level that determines their processing order. Lower numbers indicate higher priority and are processed first.
+
+|Priority Level (Numeric Value)|Description|
+|---|---|
+|\`CRITICAL\`|Highest priority for critical business events. Medusa uses this for the order placement event.|
+|\`HIGH\`|High priority for important operations. For example, you can assign this priority to customer account-related events.|
+|\`DEFAULT\`|The default priority used if no specific priority is assigned. All Medusa business events except for order placement use this priority.|
+|\`LOW\`|Low priority for background operations. For example, you can assign this priority to third-party sync events.|
+|\`LOWEST\`|Lowest priority. Medusa assigns this to internal system events.|
+
+***
+
+## Emit Events with Custom Priority
+
+When emitting custom events in your application, you can specify a priority level to control when the event is processed relative to other events in the queue.
+
+For example, to emit a `payment.processed` event with `CRITICAL` priority in a custom workflow:
+
+```ts title="src/workflows/handle-payment.ts" highlights={emitHighlights}
+import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "@medusajs/medusa/core-flows"
+import { EventPriority } from "@medusajs/framework/utils"
+
+export const handlePaymentWorkflow = createWorkflow(
+  "handle-payment",
+  (input: { paymentId: string }) => {
+    emitEventStep({
+      eventName: "payment.processed",
+      data: {
+        id: input.paymentId
+      },
+      options: {
+        priority: EventPriority.CRITICAL
+      }
+    })
+
+    return new WorkflowResponse({ success: true })
+  }
+)
+```
+
+You pass the priority level in the `options` parameter of the `emitEventStep`. You can use the `EventPriority` enum to specify the desired priority:
+
+- `EventPriority.CRITICAL` (10): For critical business events.
+- `EventPriority.HIGH` (50): For high-priority operations.
+- `EventPriority.DEFAULT` (100): The default priority level. If you don't specify a priority, this level is used.
+- `EventPriority.LOW` (500): For low-priority background tasks.
+- `EventPriority.LOWEST` (2,097,152): For the lowest priority events like internal system operations.
+
+***
+
+## When to Emit Events with Custom Priority
+
+Specify a custom priority for your custom events based on their importance to your business operations:
+
+- **Critical business operations**: Events that directly impact customer experience. For example, payment processing or order fulfillment.
+- **High-priority integrations**: Real-time syncs with external systems that customers depend on, such as inventory management or CRM updates.
+- **Low-priority background tasks**: Cleanup operations, analytics processing, or batch jobs that can be deferred. For example, syncing data to a data warehouse.
+
+If you're unsure about the priority level to assign, don't assign a custom priority. Medusa will use the `DEFAULT` priority level, which is suitable for most use cases.
 
 
 # Events and Subscribers
@@ -16159,9 +16522,9 @@ The Index Module solves this problem by ingesting data into a central data store
 
 ### Ingested Data Models
 
-Data models are ingested if they're linked to other data models with the `filterable` property set, as you'll learn in the [Ingest Custom Data Models](#how-to-ingest-custom-data-models) section. Medusa also ingests some core data models by default, such as `Product`, `ProductVariant`, `Price`, and `SalesChannel`.
+By default, Medusa only ingests the `Product`, `ProductVariant`, `Price`, `PriceSet`, and `SalesChannel` data models into the Index Module's data store.
 
-Prior to [Medusa v2.10.2](https://github.com/medusajs/medusa/releases/tag/v2.10.2), only the `Product`, `ProductVariant`, `Price`, and `SalesChannel` data models were ingested. Make sure to update to the latest version to ingest all core data models.
+You can also ingest custom data models into the Index Module, as explained in the [How to Ingest Custom Data Models](#how-to-ingest-custom-data-models) section. Medusa will then ingest the custom and core data models into the Index Module's data store.
 
 ***
 
@@ -16189,7 +16552,7 @@ module.exports = defineConfig({
 
 Finally, run the migrations to create the necessary tables for the Index Module in your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -16300,7 +16663,7 @@ The `index` method accepts an object with the same properties as the `graph` met
 
 ## How to Ingest Custom Data Models
 
-You can ingest core and custom data models into the Index Module. You can do so by defining a link between your custom data model and one of the core data models, and setting the `filterable` property in the link definition.
+You can ingest core and custom data models into the Index Module by defining a link between them and setting the `filterable` property in the link definition.
 
 Read-only links are not supported by the Index Module.
 
@@ -16325,10 +16688,15 @@ export default defineLink(
 
 The `filterable` property is an array of property names in the data model that can be filtered using the `index` method. When the `filterable` property is set, the Index Module will ingest into its data store the custom data model.
 
-But first, you must run the migrations to sync the link, then start the Medusa application:
+But first, you must run the migrations to sync the link:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+Then, start the Medusa application:
 
 ```bash npm2yarn
-npx medusa db:migrate
 npm run dev
 ```
 
@@ -17366,7 +17734,7 @@ In this example, you define a module link between the `blog` module's `post` dat
 
 After defining the link, run the `db:sync-links` command:
 
-```bash
+```bash npx2yarn
 npx medusa db:sync-links
 ```
 
@@ -17525,7 +17893,7 @@ In this example, you set the `table` property in the `database` object to the ol
 
 This is enough to rename the link table when you rename a module. If you renamed a data model's table, you need to also run the `db:sync-links` or `db:migrate` commands, which will update the column names in the link table automatically:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -17535,7 +17903,7 @@ npx medusa db:migrate
 
 To delete a module link definition, remove the link file from the `src/links` directory. Then, run the `db:sync-links` or `db:migrate` command to delete the link table from the database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -21570,7 +21938,7 @@ To generate a migration for the Blog Module, run the following command in your M
 
 If you're creating the module in a plugin, use the [plugin:db:generate command](https://docs.medusajs.com/resources/medusa-cli/commands/plugin#plugindbgenerate/index.html.md) instead.
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 ```
 
@@ -21602,7 +21970,7 @@ To reflect the changes in the generated migration file on the database, run the 
 
 If you're creating the module in a plugin, run this command on the Medusa application that the plugin is installed in.
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -21996,7 +22364,7 @@ Plugins are created in a separate Medusa project. This makes the development and
 
 Medusa's `create-medusa-app` CLI tool provides the option to create a plugin project. Run the following command to create a new plugin project:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app my-plugin --plugin
 ```
 
@@ -22148,7 +22516,7 @@ The first time you create your plugin, you need to publish the package into a lo
 
 To publish the plugin to the local registry, run the following command in your plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:publish
 ```
 
@@ -22170,7 +22538,7 @@ npm install --save-dev yalc
 
 After that, run the following Medusa CLI command to install the plugin:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa plugin:add @myorg/plugin-name
 ```
 
@@ -22224,7 +22592,7 @@ While developing your plugin, you can watch for changes in the plugin and automa
 
 To do that, run the following command in your plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:develop
 ```
 
@@ -22283,7 +22651,7 @@ You can add these environment variables in a `.env` file in your plugin project.
 
 Then, run the following command in your plugin project to generate migrations for the modules in your plugin:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:db:generate
 ```
 
@@ -22291,7 +22659,7 @@ This command generates migrations for all modules in the plugin.
 
 Finally, run these migrations on the Medusa application that the plugin is installed in using the `db:migrate` command:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa db:migrate
 ```
 
@@ -22364,7 +22732,7 @@ Make sure to add the keywords mentioned in the [Package Keywords](#package-keywo
 
 Medusa's CLI tool provides a command that bundles your plugin to be published to npm. Once you're ready to publish your plugin publicly, run the following command in your plugin project:
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
 ```
 
@@ -22408,8 +22776,11 @@ Where `<type>` indicates the type of version update you’re publishing. For exa
 
 Then, re-run the same commands for publishing a plugin:
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
+```
+
+```bash npm2yarn
 npm publish
 ```
 
@@ -23504,6 +23875,121 @@ const myWorkflow = createWorkflow(
 In a workflow, don't use try-catch blocks to handle errors.
 
 Instead, refer to the [Error Handling](https://docs.medusajs.com/learn/fundamentals/workflows/errors/index.html.md) chapter for alternative ways to handle errors.
+
+### No Object Property Spreading
+
+You can’t spread object properties using the spread operator (`...`) in a workflow's constructor function.
+
+Instead, use `transform` to create new objects with the desired properties.
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const { prop1, ...rest } = input
+    
+    // use rest
+})
+
+// Do
+import { transform } from "@medusajs/framework/workflows-sdk"
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const rest = transform(
+      {
+        input,
+      },
+      (data) => {
+        const { prop1, ...rest } = data.input
+        return rest
+      }
+    )
+
+    // use rest
+})
+```
+
+### No Loops
+
+You can't use loops, such as `for` or `while`, in a workflow's constructor function. There are two alternatives based on your use case:
+
+1. To repeat all the actions of a workflow multiple times, wrap the workflow execution in a loop in the code that calls the workflow. This is common if the workflow receives an array as input and you want to execute the workflow for each item in the array.
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    for (const item of input.items) {
+      step1(item)
+    }
+})
+
+// Do
+// API route that calls the workflow
+import { 
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import myWorkflow from "../../workflows/my-workflow"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { items } = req.body
+
+  for (const item of items) {
+    await myWorkflow(req.scope)
+      .run({ item })
+  }
+
+  res.status(200).send({ success: true })
+}
+
+// Workflow definition
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    step1(input.item)
+})
+```
+
+2. To iterate over an array within the workflow to prepare step inputs, use `transform` to map over the array and create the desired inputs.
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const stepInputs = []
+    for (const item of input.items) {
+      stepInputs.push({ id: item.id })
+    }
+    step1(stepInputs)
+})
+
+// Do
+import { transform } from "@medusajs/framework/workflows-sdk"
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const stepInputs = transform(
+      {
+        input,
+      },
+      (data) => {
+        return data.input.items.map((item) => ({ id: item.id }))
+      }
+    )
+
+    step1(stepInputs)
+})
+```
 
 ***
 
@@ -25754,13 +26240,29 @@ Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Win
 
 # Run migrations and start server
 echo "Running database migrations..."
-npx medusa db:migrate
+yarn medusa db:migrate
 
 echo "Seeding database..."
 yarn seed || echo "Seeding failed, continuing..."
 
 echo "Starting Medusa development server..."
 yarn dev
+```
+
+### pnpm
+
+```shell title="start.sh"
+#!/bin/sh
+
+# Run migrations and start server
+echo "Running database migrations..."
+pnpm medusa db:migrate
+
+echo "Seeding database..."
+pnpm seed || echo "Seeding failed, continuing..."
+
+echo "Starting Medusa development server..."
+pnpm dev
 ```
 
 ### NPM
@@ -25805,7 +26307,7 @@ FROM node:20-alpine
 WORKDIR /server
 
 # Copy package files and yarn config
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json yarn.lock .yarnrc.yml .yarn/releases ./
 
 # Install all dependencies using yarn
 RUN yarn install
@@ -25814,10 +26316,38 @@ RUN yarn install
 COPY . .
 
 # Expose the port Medusa runs on
-EXPOSE 9000
+EXPOSE 9000 5173
 
 # Start with migrations and then the development server
 CMD ["./start.sh"]
+```
+
+### pnpm
+
+```dockerfile title="Dockerfile"
+# Development Dockerfile for Medusa
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /server
+
+# Install pnpm globally
+RUN npm install pnpm -g
+
+# Copy package files and yarn config
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies using pnpm
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Expose the port Medusa runs on
+EXPOSE 9000 5173
+
+# Start with migrations and then the development server
+ENTRYPOINT ["./start.sh"]
 ```
 
 ### NPM
@@ -25839,10 +26369,10 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Expose the port Medusa runs on
-EXPOSE 9000
+EXPOSE 9000 5173
 
 # Start with migrations and then the development server
-CMD ["./start.sh"]
+ENTRYPOINT ["./start.sh"]
 ```
 
 In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20 or later.
@@ -25879,7 +26409,7 @@ yarn install
 pnpm install
 ```
 
-This will update `yarn.lock` or generate a `package-lock.json` file, depending on your package manager.
+This will update `yarn.lock` or generate a `package-lock.json` or `pnpm-lock.yaml` files, depending on your package manager.
 
 ***
 
@@ -25942,9 +26472,7 @@ module.exports = defineConfig({
   admin: {
     vite: (config) => {
       return {
-        ...config,
         server: {
-          ...config.server,
           host: "0.0.0.0",
           // Allow all hosts when running in Docker (development mode)
           // In production, this should be more restrictive
@@ -25954,9 +26482,8 @@ module.exports = defineConfig({
             "127.0.0.1",
           ],
           hmr: {
-            ...config.server?.hmr,
             // HMR websocket port inside container
-            port: 5173, 
+            port: 5173,
             // Port browser connects to (exposed in docker-compose.yml)
             clientPort: 5173,
           },
@@ -26023,7 +26550,7 @@ docker compose logs -f
 Once you see the following message, the Medusa server and admin are ready:
 
 ```shell
-✔ Server is ready on port: 9000 – 3ms
+✔ Server is ready on port: 9000 - 3ms
 info:    Admin URL → http://localhost:9000/app
 ```
 
@@ -26034,6 +26561,20 @@ You can now access the Medusa server at `http://localhost:9000` and the Medusa A
 ## Create Admin User
 
 To create an admin user, run the following command:
+
+### yarn
+
+```bash
+docker compose run --rm medusa yarn medusa user -e admin@example.com -p supersecret
+```
+
+### pnpm
+
+```bash
+docker compose run --rm medusa pnpm medusa user -e admin@example.com -p supersecret
+```
+
+### npm
 
 ```bash
 docker compose run --rm medusa npx medusa user -e admin@example.com -p supersecret
@@ -26149,6 +26690,24 @@ While this is the recommended way to create a Medusa application, you can altern
 
 To create a Medusa application, use the `create-medusa-app` command:
 
+Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+
+### yarn
+
+```bash
+yarn dlx create-medusa-app@latest my-medusa-store
+# npx create-medusa-app@latest my-medusa-store --use-yarn
+```
+
+### pnpm
+
+```bash
+pnpm dlx create-medusa-app@latest my-medusa-store
+# npx create-medusa-app@latest my-medusa-store --use-pnpm
+```
+
+### npm
+
 ```bash
 npx create-medusa-app@latest my-medusa-store
 ```
@@ -26208,13 +26767,93 @@ The application will restart if you make any changes to code under the `src` dir
 
 ***
 
+## Start Building with Claude Code
+
+Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
+
+This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md) chapter for more details on using Medusa with AI tools.
+
+### Interactive Learning
+
+If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - learning-medusa
+```
+
+Then, start the learning experience with this prompt:
+
+```bash title="Claude Code Prompt"
+I want to learn Medusa.
+```
+
+You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. Link brands to products to associate products with brands.
+3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+
+### Medusa Development Assistance
+
+If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-dev@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skills:
+# - building-with-medusa
+# - building-admin-dashboard-customizations
+# - building-storefronts
+# - db-generate
+# - db-migrate
+# - new-user
+```
+
+Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
+
+Examples of prompts you can use:
+
+```bash title="Claude Code Prompts"
+Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
+Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
+Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
+Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
+```
+
+***
+
 ## Create Medusa Admin User
 
 Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
 
 Run the following command in your Medusa application's directory to create a new admin user:
 
-```bash
+```bash npx2yarn
 npx medusa user -e admin@medusajs.com -p supersecret
 ```
 
@@ -26354,11 +26993,138 @@ The following diagram illustrates Medusa's architecture including all its layers
 
 In this chapter, you'll learn how you can use AI assistants and LLMs effectively in your Medusa development.
 
+## Agent Skills for Medusa
+
+Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. These plugins include skills that you can use in Claude Code, or copy into other AI tools that support custom skills.
+
+If you use AI agents in your development workflow, our team recommends installing these plugins to enhance your development experience with Medusa.
+
+The following sections explain how to use the plugins with Claude Code or other AI agents.
+
+|Plugin|Description|Example Prompt|
+|---|---|---|
+|\`medusa-dev\`|Knowledge to help you build Medusa features, fix bugs, and more.|Implement a product reviews feature.|
+|\`ecommerce-storefront\`|Knowledge to help you build storefronts for any ecommerce platform, including Medusa.|Implement a product reviews feature.|
+|\`learn-medusa\`|An interactive learning experience to learn Medusa concepts step-by-step by building a brands feature.|I want to learn Medusa.|
+
+### Medusa Development Assistance
+
+If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-dev@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skills:
+# - building-with-medusa
+# - building-admin-dashboard-customizations
+# - building-storefronts
+# - db-generate
+# - db-migrate
+# - new-user
+```
+
+Then, you can ask Claude Code (or other AI agents) to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
+
+Examples of prompts you can use:
+
+```bash title="Example Prompts"
+Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
+Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
+Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
+Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
+```
+
+#### Available Commands
+
+The plugin also provides the following commands (as skills) you can use in Claude Code:
+
+|Command|Description|
+|---|---|
+|\`/medusa-dev:db-migrate\`|Run database migrations for the Medusa project.|
+|\`/medusa-dev:db-generate \<module-name>\`|Generate migrations for a custom module.|
+|\`/medusa-dev:new-user \<email> \<password>\`|Create an admin user with the specified email and password.|
+
+### Ecommerce Storefront Best Practices
+
+Medusa provides the `ecommerce-storefront` plugin with a `storefront-best-practices` skill to help you build ecommerce storefronts for any ecommerce platform, including Medusa, and any frontend framework, such as Next.js or Tanstack Start.
+
+To install the plugin in Claude Code (or other AI agents), run the following commands:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install ecommerce-storefront@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - storefront-best-practices
+```
+
+You can then run prompts to make changes to your ecommerce storefront or build it from scratch. For example:
+
+```bash title="Example Prompts"
+Build a Next.js ecommerce storefront that uses Medusa as the backend. The storefront should have product listing, product detail, cart, and checkout pages.
+Add a megamenu to the storefront's header that displays product categories and subcategories. The menu should be responsive and work well on mobile devices.
+```
+
+### Interactive Learning
+
+If you're a Medusa beginner, install the `learn-medusa` plugin to start an interactive learning experience:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - learning-medusa
+```
+
+Then, start the learning experience with this prompt:
+
+```bash title="Claude Code Prompt"
+I want to learn Medusa.
+```
+
+You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. Link brands to products to associate products with brands.
+3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+
+***
+
 ## MCP Remote Server
 
 The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
 
-Medusa hosts a Streamable HTTP MCP server available at `https://docs.medusajs.com/mcp`. you can add it to AI agents that support connecting to MCP servers.
+Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
 
 ### Cursor
 
@@ -26401,7 +27167,7 @@ For example, you can ask:
 
 ## AI Assistant in Documentation
 
-The Medusa documentation is equipped with an AI Assistant that can answer your questions and help you build customizations with Medusa.
+The Medusa documentation includes an AI Assistant that answers your questions and helps you build customizations with Medusa.
 
 ### Open the AI Assistant
 
@@ -26445,7 +27211,7 @@ You can add new lines using the `Shift + Enter` shortcut.
 
 ## Plain Text Documentation
 
-The Medusa documentation is available in plain text format, which allows LLMs and AI tools to easily parse and understand the content.
+The Medusa documentation is available in plain text format, allowing LLMs and AI tools to easily parse and understand the content.
 
 You can access the following plain text documentation files:
 
@@ -26453,7 +27219,7 @@ You can access the following plain text documentation files:
 - [llms-full.txt](https://docs.medusajs.com/llms-full.txt/index.html.md) - Contains the full documentation content, including all pages and sections.
 - **Markdown version of any page** - You can access the Markdown version of any documentation page by appending `/index.html.md` to the page URL. For example, the plain text content of the current page is available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
 
-You can provide these files to your AI tools or LLM editors like [Cursor](https://docs.cursor.com/context/@-symbols/@-docs). This will help them understand the Medusa documentation and provide better assistance when building customizations or answering questions.
+You can provide these files to your AI tools or LLM editors like [Cursor](https://docs.cursor.com/context/@-symbols/@-docs). This helps them understand the Medusa documentation and provide better assistance when building customizations or answering questions.
 
 
 # From Medusa v1 to v2: Conceptual Differences
@@ -26697,7 +27463,7 @@ You can change `medusa-v2` to any database name you prefer.
 
 Then, run the following commands to create the database and tables:
 
-```bash npm2yarn
+```bash npx2yarn
 npx medusa db:setup
 ```
 
@@ -26770,7 +27536,7 @@ In addition, you can build the Medusa Admin separately from the Medusa applicati
 
 ## Medusa CLI Changes
 
-The Medusa CLI for v2 is now in the `@medusajs/cli` package. However, you don't need to install it globally. You can just use `npx medusa` in your Medusa projects.
+The Medusa CLI for v2 is now in the `@medusajs/cli` package. However, you don't need to install it globally. You can just use `npx medusa`, `yarn medusa`, or `pnpm medusa` in your Medusa projects.
 
 Refer to the [Medusa CLI reference](https://docs.medusajs.com/resources/medusa-cli/index.html.md) for the full list of commands and options. The following table highlights the main changes between v1 and v2:
 
@@ -26934,7 +27700,7 @@ In Medusa v1, you had to write migrations manually to create or update tables in
 
 In Medusa v2, you can use the Medusa CLI to generate migrations based on MikroORM. For example:
 
-```bash npm2yarn
+```bash npx2yarn
 npx medusa db:generate brand
 ```
 
@@ -27344,7 +28110,7 @@ For example:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [
@@ -27978,7 +28744,7 @@ The `--servers` and `--workers` options were introduced in [Medusa v2.11.0](http
 
 When running Medusa in [cluster mode](https://docs.medusajs.com/resources/medusa-cli/commands/start#starting-medusa-in-cluster-mode/index.html.md), you can specify the number or percentage of instances that are servers or workers by passing the `--servers` and `--workers` options:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
 npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
 npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)
@@ -28482,7 +29248,7 @@ MEDUSA_DISABLE_TELEMETRY=true
 
 Or, you can run the following command in the root of your Medusa application project to disable it:
 
-```bash
+```bash npx2yarn
 npx medusa telemetry --disable
 ```
 
@@ -28575,7 +29341,7 @@ Medusa updates the version number `major.minor.patch` according to the following
 
 To check the currently installed version of Medusa in your project, run the following command in your Medusa application:
 
-```bash
+```bash npx2yarn
 npx medusa -v
 ```
 
@@ -28609,7 +29375,7 @@ Releases may include changes to the database, such as new tables, updates to exi
 
 So, after updating Medusa, run the following command to migrate the latest changes to your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -28621,19 +29387,19 @@ Before reverting an update, if you already ran the migrations, you have to first
 
 For example, if the version you updated to had migrations for the Cart and Product Modules, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback cart product
 ```
 
 Then, revert the update by changing the version of all `@medusajs/*` dependencies in your `package.json` to the previous version and re-installing dependencies:
 
 ```bash npm2yarn
-npm  install
+npm install
 ```
 
 Finally, run the migrations to sync link changes:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -34620,7 +35386,7 @@ This enables the feature's flag.
 
 Next, run the necessary migrations:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -43487,9 +44253,34 @@ module.exports = defineConfig({
 
 ***
 
-## Step 1: Configure Translatable Entities
+## Step 1: Configure Translatable Data Models
 
-The first step is to configure the Translation Module with the custom entities you want to support translations for.
+The `translatable` method is available since [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0). Previous versions required [configuring translatable data models](#deprecated-manage-from-medusa-configts) in `medusa-config.ts`, which is now deprecated.
+
+The first step is to configure the properties of your custom data models that you want to support translations for. This will allow admin users to translate the data model's records from the Medusa Admin, and manage whether the model and its properties are translatable.
+
+For example, update your `Post` data model to mark its `title` property as translatable:
+
+```ts title="src/modules/blog/models/post.ts" highlights={translatableModifierHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text().translatable(),
+})
+
+export default Post
+```
+
+When you add the `.translatable()` method to a property, the data model automatically appears in Settings → Translations in the Medusa Admin.
+
+Next, go to [Step 2: Manage Translations from Medusa Admin](#step-2-manage-translations-from-medusa-admin).
+
+### Deprecated: Manage From medusa-config.ts
+
+### Before Medusa v2.13.0
+
+If you're using a Medusa version prior to v2.13.0, you need to configure the Translation Module in `medusa-config.ts` to support translations for your custom data models.
 
 Before proceeding, run the `build` command to ensure the generated types are up-to-date:
 
@@ -43868,6 +44659,7 @@ Refer to the [Module Isolation](https://docs.medusajs.com/docs/learn/fundamental
 - [Translation and Locale Management](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/concepts/index.html.md): Manage locales and add translations for different resources in your store.
 - [Multi-Language Support](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/storefront/index.html.md): Manage and serve resources like products in multiple languages to cater to a diverse customer base.
 - [Translation for Custom Models](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/custom-data-models/index.html.md): Extend translation capabilities to custom data models in your Medusa application.
+- [Manage Translatable Resources from Medusa Admin](https://docs.medusajs.com/user-guide/settings/translations#manage-translatable-resources/index.html.md): Configure which resources and fields are translatable directly from the Medusa Admin dashboard.
 
 ***
 
@@ -43894,7 +44686,7 @@ module.exports = defineConfig({
 
 Then, run the following command to make the necessary database changes for the Translation Module:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -46986,7 +47778,7 @@ You can then check that the data is cached in Memcached using the [memcached-cli
 
 First, establish a connection to your Memcached server:
 
-```bash
+```bash npx2yarn
 npx memcached-cli localhost:11211 # Replace with your Memcached server URL
 ```
 
@@ -48439,7 +49231,7 @@ module.exports = defineConfig({
 
 The PostgreSQL Locking Module Provider requires a new `locking` table in the database to store the locks. So, you must run the migrations after registering the provider:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -48740,7 +49532,7 @@ Cloud offers [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.m
 
 ## What is the Notification Module?
 
-The Notification Module exposes the functionalities to send a notification to a customer or user. For example, sending an order confirmation email. Medusa uses the Notification Module in its core commerce features for notification operations, and you an use it in your custom features as well.
+The Notification Module exposes the functionalities to send a notification to a customer or user. For example, sending an order confirmation email. Medusa uses the Notification Module in its core commerce features for notification operations, and you can use it in your custom features as well.
 
 ***
 
@@ -50049,6 +50841,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [setTaxRateRulesWorkflow](https://docs.medusajs.com/references/medusa-workflows/setTaxRateRulesWorkflow/index.html.md)
 - [updateTaxRatesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxRatesWorkflow/index.html.md)
 - [updateTaxRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxRegionsWorkflow/index.html.md)
+- [batchTranslationSettingsWorkflow](https://docs.medusajs.com/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow/index.html.md)
 - [batchTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchTranslationsWorkflow/index.html.md)
 - [createTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTranslationsWorkflow/index.html.md)
 - [deleteTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteTranslationsWorkflow/index.html.md)
@@ -50267,6 +51060,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [deleteProductVariantsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteProductVariantsStep/index.html.md)
 - [deleteProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteProductsStep/index.html.md)
 - [dismissProductVariantsInventoryStep](https://docs.medusajs.com/references/medusa-workflows/steps/dismissProductVariantsInventoryStep/index.html.md)
+- [exportProductsStep](https://docs.medusajs.com/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep/index.html.md)
 - [generateProductCsvStep](https://docs.medusajs.com/references/medusa-workflows/steps/generateProductCsvStep/index.html.md)
 - [getAllProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/getAllProductsStep/index.html.md)
 - [getProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/getProductsStep/index.html.md)
@@ -50343,8 +51137,11 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [listTaxRateRuleIdsStep](https://docs.medusajs.com/references/medusa-workflows/steps/listTaxRateRuleIdsStep/index.html.md)
 - [updateTaxRatesStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTaxRatesStep/index.html.md)
 - [updateTaxRegionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTaxRegionsStep/index.html.md)
+- [createTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep/index.html.md)
 - [createTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTranslationsStep/index.html.md)
+- [deleteTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep/index.html.md)
 - [deleteTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteTranslationsStep/index.html.md)
+- [updateTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep/index.html.md)
 - [updateTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTranslationsStep/index.html.md)
 - [validateTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateTranslationsStep/index.html.md)
 - [createUsersStep](https://docs.medusajs.com/references/medusa-workflows/steps/createUsersStep/index.html.md)
@@ -50437,10 +51234,12 @@ Emitted when a cart's details are updated.
 
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
+- [deleteLineItemsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteLineItemsWorkflow/index.html.md)
 - [updateLineItemInCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateLineItemInCartWorkflow/index.html.md)
 - [updateCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartWorkflow/index.html.md)
 - [addToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addToCartWorkflow/index.html.md)
 - [addShippingMethodToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addShippingMethodToCartWorkflow/index.html.md)
+- [updateLineItemInCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateLineItemInCartWorkflow/index.html.md)
 
 ***
 
@@ -52045,7 +52844,7 @@ This creates a build that:
 
 The build is output to a new `.medusa/server` directory.
 
-```bash
+```bash npx2yarn
 npx medusa build
 ```
 
@@ -52066,6 +52865,25 @@ By default, the Medusa Admin is built to the `.medusa/server/public/admin` direc
 If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
 
 
+# codemod Command - Medusa CLI Reference
+
+The `codemod` command is available from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+Run a codemod to update your Medusa project to the latest version.
+
+Learn more about codemods and available transformations in the [Codemods](https://docs.medusajs.com/docs/learn/codemods/index.html.md) guide.
+
+```bash npx2yarn
+npx medusa codemod <transformation>
+```
+
+## Arguments
+
+|Argument|Description|
+|---|---|---|
+|\`\<transformation>\`|The name of the codemod transformation to run. For example, |
+
+
 # db Commands - Medusa CLI Reference
 
 Commands in the Medusa CLI starting with `db:` perform actions on the database.
@@ -52076,7 +52894,7 @@ Creates a database for the Medusa application with the specified name, if it doe
 
 It also updates your `.env` file with the database name.
 
-```bash
+```bash npx2yarn
 npx medusa db:setup --db <name>
 ```
 
@@ -52100,7 +52918,7 @@ Creates a database for the Medusa application with the specified name, if it doe
 
 It also updates your `.env` file with the database name.
 
-```bash
+```bash npx2yarn
 npx medusa db:create --db <name>
 ```
 
@@ -52119,7 +52937,7 @@ Use this command if you want to only create a database.
 
 Generate a migration file for the latest changes in one or more modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:generate <module_names...>
 ```
 
@@ -52135,7 +52953,7 @@ npx medusa db:generate <module_names...>
 
 Run the latest migrations to reflect changes on the database, sync link definitions with the database, and run migration data scripts.
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -52158,7 +52976,7 @@ Use this command if you've updated the Medusa packages, or you've created custom
 
 Revert the last migrations run on one or more modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback <module_names...>
 ```
 
@@ -52174,7 +52992,7 @@ npx medusa db:rollback <module_names...>
 
 Sync the database with the link definitions in your application, including the definitions in Medusa's modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:sync-links
 ```
 
@@ -52192,7 +53010,7 @@ Start the Medusa application in development.
 
 This command watches files for any changes, then rebuilds the files and restarts the Medusa application.
 
-```bash
+```bash npx2yarn
 npx medusa develop
 ```
 
@@ -52208,7 +53026,7 @@ npx medusa develop
 
 Run a custom CLI script using Medusa's CLI tool. Learn more about it in [Custom CLI Scripts guide](https://docs.medusajs.com/docs/learn/fundamentals/custom-cli-scripts/index.html.md).
 
-```bash
+```bash npx2yarn
 npx medusa exec [file] [args...]
 ```
 
@@ -52259,7 +53077,7 @@ These commands are available starting from [Medusa v2.3.0](https://github.com/me
 
 Publish a plugin into the local packages registry. The command uses [Yalc](https://github.com/wclr/yalc) under the hood to publish the plugin to a local package registry. You can then install the plugin in a local Medusa project using the [plugin:add](#pluginadd) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:publish
 ```
 
@@ -52269,7 +53087,7 @@ npx medusa plugin:publish
 
 Install the specified plugins from the local package registry into a local Medusa application. Plugins can be added to the local package registry using the [plugin:publish](#pluginpublish) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:add [names...]
 ```
 
@@ -52285,7 +53103,7 @@ npx medusa plugin:add [names...]
 
 Start a development server for a plugin. The command will watch for changes in the plugin's source code and automatically re-publish the changes into the local package registry.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:develop
 ```
 
@@ -52295,7 +53113,7 @@ npx medusa plugin:develop
 
 Generate migrations for all modules in a plugin.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:db:generate
 ```
 
@@ -52305,7 +53123,7 @@ npx medusa plugin:db:generate
 
 Build a plugin before publishing it to NPM. The command will compile the output in the `.medusa/server` directory.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
 ```
 
@@ -52314,7 +53132,7 @@ npx medusa plugin:build
 
 Start the Medusa application in production.
 
-```bash
+```bash npx2yarn
 npx medusa start
 ```
 
@@ -52336,7 +53154,7 @@ Medusa supports starting the Node.js server in [cluster mode](https://expressjs.
 
 Cluster mode is disabled by default. To enable it, pass the `--cluster` option when starting Medusa:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster
 ```
 
@@ -52346,7 +53164,7 @@ When the `--cluster` option is passed without a number or percentage value, Medu
 
 You can specify the number or percentage of CPU cores to be used by passing a number or percentage value to the `--cluster` option:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 2       # Use 2 CPU cores
 npx medusa start --cluster 50%      # Use 50% of available CPU
 ```
@@ -52355,7 +53173,7 @@ npx medusa start --cluster 50%      # Use 50% of available CPU
 
 When running Medusa in cluster mode, you can specify the number or percentage of instances that are [servers or workers](https://docs.medusajs.com/docs/learn/production/worker-mode/index.html.md) by passing the `--servers` and `--workers` options:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
 npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
 npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)
@@ -52370,7 +53188,7 @@ Learn more in the [Worker Mode](https://docs.medusajs.com/docs/learn/production/
 
 Enable or disable the collection of anonymous usage data. If no option is provided, the command enables the collection of anonymous usage data.
 
-```bash
+```bash npx2yarn
 npx medusa telemetry
 ```
 
@@ -52386,7 +53204,7 @@ npx medusa telemetry
 
 Create a new admin user.
 
-```bash
+```bash npx2yarn
 npx medusa user --email <email> [--password <password>]
 ```
 
@@ -52407,7 +53225,7 @@ The `user` command accepts the `--invite` option to create a user invite. The us
 
 For example:
 
-```bash
+```bash npx2yarn
 npx medusa user --email user@example.com --invite
 ```
 
@@ -52433,7 +53251,7 @@ In your Medusa application's directory, you can use the Medusa CLI tool using NP
 
 For example:
 
-```bash
+```bash npx2yarn
 npx medusa --help
 ```
 
@@ -52451,7 +53269,7 @@ This creates a build that:
 
 The build is output to a new `.medusa/server` directory.
 
-```bash
+```bash npx2yarn
 npx medusa build
 ```
 
@@ -52472,6 +53290,25 @@ By default, the Medusa Admin is built to the `.medusa/server/public/admin` direc
 If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
 
 
+# codemod Command - Medusa CLI Reference
+
+The `codemod` command is available from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+Run a codemod to update your Medusa project to the latest version.
+
+Learn more about codemods and available transformations in the [Codemods](https://docs.medusajs.com/docs/learn/codemods/index.html.md) guide.
+
+```bash npx2yarn
+npx medusa codemod <transformation>
+```
+
+## Arguments
+
+|Argument|Description|
+|---|---|---|
+|\`\<transformation>\`|The name of the codemod transformation to run. For example, |
+
+
 # db Commands - Medusa CLI Reference
 
 Commands in the Medusa CLI starting with `db:` perform actions on the database.
@@ -52482,7 +53319,7 @@ Creates a database for the Medusa application with the specified name, if it doe
 
 It also updates your `.env` file with the database name.
 
-```bash
+```bash npx2yarn
 npx medusa db:setup --db <name>
 ```
 
@@ -52506,7 +53343,7 @@ Creates a database for the Medusa application with the specified name, if it doe
 
 It also updates your `.env` file with the database name.
 
-```bash
+```bash npx2yarn
 npx medusa db:create --db <name>
 ```
 
@@ -52525,7 +53362,7 @@ Use this command if you want to only create a database.
 
 Generate a migration file for the latest changes in one or more modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:generate <module_names...>
 ```
 
@@ -52541,7 +53378,7 @@ npx medusa db:generate <module_names...>
 
 Run the latest migrations to reflect changes on the database, sync link definitions with the database, and run migration data scripts.
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -52564,7 +53401,7 @@ Use this command if you've updated the Medusa packages, or you've created custom
 
 Revert the last migrations run on one or more modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback <module_names...>
 ```
 
@@ -52580,7 +53417,7 @@ npx medusa db:rollback <module_names...>
 
 Sync the database with the link definitions in your application, including the definitions in Medusa's modules.
 
-```bash
+```bash npx2yarn
 npx medusa db:sync-links
 ```
 
@@ -52598,7 +53435,7 @@ Start the Medusa application in development.
 
 This command watches files for any changes, then rebuilds the files and restarts the Medusa application.
 
-```bash
+```bash npx2yarn
 npx medusa develop
 ```
 
@@ -52614,7 +53451,7 @@ npx medusa develop
 
 Run a custom CLI script using Medusa's CLI tool. Learn more about it in [Custom CLI Scripts guide](https://docs.medusajs.com/docs/learn/fundamentals/custom-cli-scripts/index.html.md).
 
-```bash
+```bash npx2yarn
 npx medusa exec [file] [args...]
 ```
 
@@ -52665,7 +53502,7 @@ These commands are available starting from [Medusa v2.3.0](https://github.com/me
 
 Publish a plugin into the local packages registry. The command uses [Yalc](https://github.com/wclr/yalc) under the hood to publish the plugin to a local package registry. You can then install the plugin in a local Medusa project using the [plugin:add](#pluginadd) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:publish
 ```
 
@@ -52675,7 +53512,7 @@ npx medusa plugin:publish
 
 Install the specified plugins from the local package registry into a local Medusa application. Plugins can be added to the local package registry using the [plugin:publish](#pluginpublish) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:add [names...]
 ```
 
@@ -52691,7 +53528,7 @@ npx medusa plugin:add [names...]
 
 Start a development server for a plugin. The command will watch for changes in the plugin's source code and automatically re-publish the changes into the local package registry.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:develop
 ```
 
@@ -52701,7 +53538,7 @@ npx medusa plugin:develop
 
 Generate migrations for all modules in a plugin.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:db:generate
 ```
 
@@ -52711,7 +53548,7 @@ npx medusa plugin:db:generate
 
 Build a plugin before publishing it to NPM. The command will compile the output in the `.medusa/server` directory.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
 ```
 
@@ -52720,7 +53557,7 @@ npx medusa plugin:build
 
 Start the Medusa application in production.
 
-```bash
+```bash npx2yarn
 npx medusa start
 ```
 
@@ -52742,7 +53579,7 @@ Medusa supports starting the Node.js server in [cluster mode](https://expressjs.
 
 Cluster mode is disabled by default. To enable it, pass the `--cluster` option when starting Medusa:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster
 ```
 
@@ -52752,7 +53589,7 @@ When the `--cluster` option is passed without a number or percentage value, Medu
 
 You can specify the number or percentage of CPU cores to be used by passing a number or percentage value to the `--cluster` option:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 2       # Use 2 CPU cores
 npx medusa start --cluster 50%      # Use 50% of available CPU
 ```
@@ -52761,7 +53598,7 @@ npx medusa start --cluster 50%      # Use 50% of available CPU
 
 When running Medusa in cluster mode, you can specify the number or percentage of instances that are [servers or workers](https://docs.medusajs.com/docs/learn/production/worker-mode/index.html.md) by passing the `--servers` and `--workers` options:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
 npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
 npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)
@@ -52776,7 +53613,7 @@ Learn more in the [Worker Mode](https://docs.medusajs.com/docs/learn/production/
 
 Enable or disable the collection of anonymous usage data. If no option is provided, the command enables the collection of anonymous usage data.
 
-```bash
+```bash npx2yarn
 npx medusa telemetry
 ```
 
@@ -52792,7 +53629,7 @@ npx medusa telemetry
 
 Create a new admin user.
 
-```bash
+```bash npx2yarn
 npx medusa user --email <email> [--password <password>]
 ```
 
@@ -52813,7 +53650,7 @@ The `user` command accepts the `--invite` option to create a user invite. The us
 
 For example:
 
-```bash
+```bash npx2yarn
 npx medusa user --email user@example.com --invite
 ```
 
@@ -52839,7 +53676,7 @@ In your Medusa application's directory, you can use the Medusa CLI tool using NP
 
 For example:
 
-```bash
+```bash npx2yarn
 npx medusa --help
 ```
 
@@ -53702,7 +54539,7 @@ This guide will teach you how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -54519,7 +55356,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -54688,7 +55525,7 @@ Learn more about migrations in [this documentation](https://docs.medusajs.com/do
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Quote Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate quote
 ```
 
@@ -54698,7 +55535,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -55183,8 +56020,10 @@ In Medusa, you create validation schemas using [Zod](https://zod.dev/) in a Type
 
 ![Directory structure after adding the validators file](https://res.cloudinary.com/dza7lstvk/image/upload/v1741089363/Medusa%20Resources/quote-15_iy6jem.jpg)
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export type CreateQuoteType = z.infer<typeof CreateQuote>;
 export const CreateQuote = z
@@ -58648,8 +59487,10 @@ export default defineMiddlewares({
 
 1. Create a [Zod](https://zod.dev/) schema in the file `src/api/custom/validators.ts`:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.number(),
@@ -58683,7 +59524,7 @@ export default defineMiddlewares({
 
 ```ts title="src/api/custom/route.ts" highlights={[["14", "validatedBody"]]}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCustomSchema } from "./validators"
 
 type PostStoreCustomSchemaType = z.infer<
@@ -58712,7 +59553,7 @@ Find this example in details in [this documentation](https://docs.medusajs.com/d
 
 ```ts title="src/api/middlewares.ts" highlights={[["10", "brand_id", "Replace with your custom field."]]}
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [
@@ -59075,7 +59916,7 @@ module.exports = defineConfig({
 
 6. Generate and run migrations:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 npx medusa db:migrate
 ```
@@ -59271,7 +60112,7 @@ export default Post
 
 2. Generate and run migrations:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 npx medusa db:migrate
 ```
@@ -59991,7 +60832,7 @@ export default defineLink(
 
 2. Run the following command to sync the links:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -62276,7 +63117,7 @@ Refer to the [JS SDK Authentication guide](https://docs.medusajs.com/Users/shahe
 
 Next, you need to create an [API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) with a [workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md) that handles creating the admin user after they authenticate through the third-party provider.
 
-Note that this API route will allow any user with a valid authentication token to create an admin user. Therefore, ensure that only authorized users can obtain an authentication token from the third-party provider.
+You will protect this API route so that only users authenticated through the custom Authentication Module Provider can access it. This prevents users from creating admin users through other authentication methods, such as email and password.
 
 ### Create User Workflow
 
@@ -62341,9 +63182,11 @@ Next, you need to create the API route that calls the workflow to create the use
 
 Create the file `src/api/custom-auth/admin/users/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/custom-auth/admin/users/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createUserWorkflow } from "../../../../workflows/create-user"
 
 export const CreateUserSchema = z.object({
@@ -62385,6 +63228,7 @@ export default defineMiddlewares({
         authenticate("user", "bearer", {
           allowUnregistered: true,
         }),
+        // TODO add custom validation middleware
       ],
     },
   ],
@@ -62394,6 +63238,90 @@ export default defineMiddlewares({
 This middleware applies the `authenticate` middleware to the `/custom-auth/admin/users` `POST` route, allowing only authenticated users to access it. By enabling the `allowUnregistered` option, users who are authenticated through the third-party provider but don't yet have an associated Medusa user can still access the route to create their user.
 
 Refer to the [Protected Routes](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes/index.html.md) guide to learn more about protecting API routes with the `authentication` middleware.
+
+### Create Custom Validation Middleware
+
+Finally, you should create a custom validation middleware that ensures only users authenticated through the custom Authentication Module Provider can access the API route. If you don't add this middleware, users authenticated through other methods, such as email and password, can also access the route and create accounts.
+
+To create the custom validation middleware, create thefile `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
+
+```ts title="src/api/middlewares/validate-custom-auth-provider.ts"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaResponse,
+  MedusaNextFunction,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default async function validateCustomAuthProvider(
+  req: AuthenticatedMedusaRequest, 
+  res: MedusaResponse, 
+  next: MedusaNextFunction
+) {
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "User already exists"
+    )
+  }
+
+  const query = req.scope.resolve("query")
+  const { data: [authIdentity] } = await query.graph({
+    entity: "auth_identity",
+    fields: [
+      "provider_identities.provider",
+    ],
+    filters: {
+      id: req.auth_context!.auth_identity_id!,
+    },
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  const isCustomAuthProvider = authIdentity.provider_identities.some((identity) => identity?.provider === "custom")
+
+  if (!isCustomAuthProvider) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid provider"
+    )
+  }
+
+  next()
+}
+```
+
+You create a middleware function that checks if:
+
+- The user already has an associated Medusa user. If so, you throw an error since the user shouldn't access the route.
+- The user's auth identity was authenticated by the custom Authentication Module Provider. You use [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md) to retrieve the user's auth identity with its provider identities, then check whether the custom provider is one of the providers. If not, you throw an unauthorized error.
+
+If both checks pass, you call the `next` function to proceed to the next middleware or route handler.
+
+Next, import this middleware at the top of the file `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import validateCustomAuthProvider from "./middlewares/validate-custom-auth-provider"
+```
+
+Then, replace the `// TODO add custom validation middleware` comment with the new middleware:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom-auth/admin/users",
+      methods: ["POST"],
+      middlewares: [
+        // ...
+        validateCustomAuthProvider,
+      ],
+    },
+  ],
+})
+```
+
+Only users authenticated through the custom Authentication Module Provider can now access the `/custom-auth/admin/users` API route to create their admin user.
 
 ***
 
@@ -62610,7 +63538,7 @@ By following this tutorial, you will:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -63243,7 +64171,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Begin by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -64524,9 +65452,11 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 So, to create an API route, create the file `src/api/checkout_sessions/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/checkout_sessions/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createCheckoutSessionWorkflow } from "../../workflows/create-checkout-session"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -65107,7 +66037,7 @@ Create the file `src/api/checkout_sessions/[id]/route.ts` with the following con
 ```ts title="src/api/checkout_sessions/[id]/route.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { updateCheckoutSessionWorkflow } from "../../../workflows/update-checkout-session"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { MedusaError } from "@medusajs/framework/utils"
 import { prepareCheckoutSessionDataWorkflow } from "../../../workflows/prepare-checkout-session-data"
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
@@ -65653,7 +66583,7 @@ Create the file `src/api/checkout_sessions/[id]/complete/route.ts` with the foll
 
 ```ts title="src/api/checkout_sessions/[id]/complete/route.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { completeCheckoutSessionWorkflow } from "../../../../workflows/complete-checkout-session"
 import { MedusaError } from "@medusajs/framework/utils"
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
@@ -66387,7 +67317,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -66537,7 +67467,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate migrations for you. To generate a migration for the Product Media Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productMedia
 ```
 
@@ -66545,7 +67475,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -66831,10 +67761,12 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 Create the file `src/api/admin/categories/[category_id]/images/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/categories/[category_id]/images/route.ts" highlights={createApiRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createCategoryImagesWorkflow } from "../../../../../workflows/create-category-images"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateCategoryImagesSchema = z.object({
   images: z.array(
@@ -67822,7 +68754,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   updateCategoryImagesWorkflow,
 } from "../../../../../../workflows/update-category-images"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const UpdateCategoryImagesSchema = z.object({
   updates: z.array(z.object({
@@ -69359,7 +70291,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -69541,7 +70473,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Tier Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate tier
 ```
 
@@ -69549,7 +70481,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -69852,12 +70784,14 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 Create the file `src/api/admin/tiers/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/tiers/route.ts"
 import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createTierWorkflow } from "../../../workflows/create-tier"
 
 export const CreateTierSchema = z.object({
@@ -70847,7 +71781,7 @@ Next, you'll create the API route that exposes the workflow's functionality to c
 In `src/api/admin/tiers/[id]/route.ts`, add the following imports at the top of the file:
 
 ```ts title="src/api/admin/tiers/[id]/route.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { updateTierWorkflow } from "../../../../workflows/update-tier"
 ```
 
@@ -71040,7 +71974,7 @@ npx medusa db:migrate
 
 Lastly, start the Medusa application to ingest the data into the Index Module:
 
-```bash npm2yarn
+```bash npx2yarn
 npm run dev
 ```
 
@@ -72547,7 +73481,7 @@ import {
 } from "@medusajs/framework/http"
 import { TIER_MODULE } from "../../../../../modules/tier"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { OrderStatus } from "@medusajs/framework/utils"
 
 export const NextTierSchema = z.object({
@@ -73149,7 +74083,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -73740,7 +74674,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -74374,7 +75308,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -74553,15 +75487,15 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Invoice Generator Module, run the following command in your Medusa application's directory:
 
-```bash
-npx medusa db:generate invoice-generator
+```bash npx2yarn
+npx medusa db:generate invoiceGenerator
 ```
 
 The `db:generate` command of the Medusa CLI accepts the name of the module to generate the migration for. You'll now have a `migrations` directory under `src/modules/invoice-generator` that holds the generated migration.
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -74824,7 +75758,7 @@ Next, you'll add the API route to update the invoice configurations.
 In the same file, add the following imports at the top of the file:
 
 ```ts title="src/api/admin/invoice-config/route.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   updateInvoiceConfigWorkflow,
 } from "../../../workflows/update-invoice-config"
@@ -74928,6 +75862,8 @@ Settings pages are [UI routes](https://docs.medusajs.com/docs/learn/fundamentals
 Refer to the [UI Routes](https://docs.medusajs.com/docs/learn/fundamentals/admin/ui-routes/index.html.md) documentation to learn more.
 
 Create the file `src/admin/routes/settings/invoice-config/page.tsx` with the following content:
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
 
 ```tsx title="src/admin/routes/settings/invoice-config/page.tsx" highlights={invoiceConfigPageHighlights}
 import { defineRouteConfig } from "@medusajs/admin-sdk"
@@ -76720,7 +77656,7 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -76988,7 +77924,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Loyalty Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate loyalty
 ```
 
@@ -76996,7 +77932,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -78544,7 +79480,7 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -80592,7 +81528,7 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -80791,7 +81727,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Preorder Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate preorder
 ```
 
@@ -80799,7 +81735,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -80880,7 +81816,7 @@ This doesn't apply to read-only links, as they don't require database changes.
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -81156,6 +82092,8 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 Create the file `src/api/admin/variants/[id]/preorders/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/variants/[id]/preorders/route.ts" highlights={upsertPreorderVariantRouteHighlights}
 import { 
   AuthenticatedMedusaRequest, 
@@ -81164,7 +82102,7 @@ import {
 import { 
   upsertProductVariantPreorderWorkflow, 
 } from "../../../../../workflows/upsert-product-variant-preorder"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const UpsertPreorderVariantSchema = z.object({
   available_date: z.string().datetime(),
@@ -83879,7 +84817,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -84134,7 +85072,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Product Builder Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productBuilder
 ```
 
@@ -84142,7 +85080,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -84233,7 +85171,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -85274,7 +86212,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { upsertProductBuilderWorkflow } from "../../../../../workflows/upsert-product-builder"
 
 export const UpsertProductBuilderSchema = z.object({
@@ -85423,7 +86361,7 @@ To create the API route, create the file `src/api/admin/products/complementary/r
 ```ts title="src/api/admin/products/complementary/route.ts" highlights={getComplementaryProductsRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { createFindParams } from "@medusajs/medusa/api/utils/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetComplementaryProductsSchema = z.object({
   exclude_product_id: z.string(),
@@ -88031,7 +88969,7 @@ To create the API route, create the file `src/api/store/carts/[id]/product-build
 ```ts title="src/api/store/carts/[id]/product-builder/route.ts" highlights={addToCartApiHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { addProductBuilderToCartWorkflow } from "../../../../../workflows/add-product-builder-to-cart"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const AddBuilderProductSchema = z.object({
   product_id: z.string(),
@@ -89656,7 +90594,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -90054,9 +90992,11 @@ A [middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/midd
 
 To apply a middleware on the API route, create the file `src/api/middlewares.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares, validateAndTransformQuery } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [
@@ -90205,7 +91145,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -90399,7 +91339,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Rental Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate rental
 ```
 
@@ -90407,7 +91347,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -90552,7 +91492,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -90839,6 +91779,8 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 To create an API route that upserts rental configurations of a product, create the file `src/api/admin/products/[id]/rental-config/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/products/[id]/rental-config/route.ts"
 import type { 
   MedusaRequest, 
@@ -90847,7 +91789,7 @@ import type {
 import { 
   upsertRentalConfigWorkflow,
 } from "../../../../../workflows/upsert-rental-config"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostRentalConfigBodySchema = z.object({
   min_rental_days: z.number().optional(),
@@ -91411,7 +92353,7 @@ To create the API route, create the file `src/api/store/products/[id]/rental-ava
 ```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError, QueryContext } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { RENTAL_MODULE } from "../../../../../modules/rental"
 import RentalModuleService from "../../../../../modules/rental/service"
 import validateRentalDates from "../../../../../utils/validate-rental-dates"
@@ -92601,7 +93543,7 @@ import type {
 import { 
   addToCartWithRentalWorkflow,
 } from "../../../../../../workflows/add-to-cart-with-rental"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostCartItemsRentalsBody = z.object({
   variant_id: z.string(),
@@ -93453,7 +94395,7 @@ Create the file `src/api/admin/rentals/[id]/route.ts` with the following content
 ```ts title="src/api/admin/rentals/[id]/route.ts" badgeLabel="Medusa Application" badgeColor="green"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { updateRentalWorkflow } from "../../../../workflows/update-rental"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostRentalStatusBodySchema = z.object({
   status: z.enum(["active", "returned", "cancelled"]),
@@ -94376,7 +95318,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -94535,7 +95477,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Review Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productReview
 ```
 
@@ -94543,7 +95485,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -94770,6 +95712,8 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 
 So, to create an API route at the path `/store/reviews`, create the file `src/api/store/reviews/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/reviews/route.ts" highlights={PostStoreReviewHighlights}
 import type {
   AuthenticatedMedusaRequest,
@@ -94777,7 +95721,7 @@ import type {
 } from "@medusajs/framework/http"
 import { createReviewWorkflow } from "../../../workflows/create-review"
 
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreReviewSchema = z.object({
   title: z.string().optional(),
@@ -95391,13 +96335,15 @@ The workflow receives an array of objects, each with the ID of the review to upd
 
 Next, you'll create the API route that exposes the workflow's functionality. Create the file `src/api/admin/reviews/status/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/reviews/status/route.ts" highlights={PostAdminUpdateReviewsStatusHighlights}
 import type {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { updateReviewWorkflow } from "../../../../workflows/update-review"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostAdminUpdateReviewsStatusSchema = z.object({
   ids: z.array(z.string()),
@@ -96244,7 +97190,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -96750,7 +97696,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -98528,11 +99474,13 @@ While you can implement the search functionality directly in the storefront to i
 
 To implement the API Route, create the file `src/api/store/products/search/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/products/search/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ALGOLIA_MODULE } from "../../../../modules/algolia"
 import AlgoliaModuleService from "../../../../modules/algolia/service"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const SearchSchema = z.object({
   query: z.string(),
@@ -104929,9 +105877,11 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 
 So, to create an API route at the path `/store/newsletter`, create the file `src/api/store/newsletter/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/newsletter/route.ts" highlights={apiRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const newsletterSignupSchema = z.object({
   email: z.string().email(),
@@ -107357,9 +108307,11 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 
 So, create the file `src/api/okta/users/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/okta/users/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createUserWorkflow } from "../../../workflows/create-user"
 
 export const CreateUserSchema = z.object({
@@ -111334,7 +112286,7 @@ Add the following method to the `PayPalPaymentProviderService` class:
 
 ```ts title="src/modules/paypal/service.ts"
 import { 
-  MedusaError
+  MedusaError,
 } from "@medusajs/framework/utils"
 
 class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
@@ -111441,7 +112393,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
           status: order.status,
           approval_url: approvalUrl,
           session_id: input.data?.session_id,
-          currency_code
+          currency_code,
         },
       }
     } catch (error: any) {
@@ -111682,7 +112634,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
           currencyCode: (input.data?.currency_code as string | undefined)
             ?.toUpperCase() || "",
           value: new BigNumber(input.amount).numeric.toString(),
-        }
+        },
       }
 
       const response = await this.paymentsController_.refundCapturedPayment({
@@ -111767,8 +112719,8 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
             op: PatchOp.Replace,
             path: "/purchase_units/@reference_id=='default'/amount/value",
             value: new BigNumber(input.amount).numeric.toString(),
-          }
-        ]
+          },
+        ],
       })
 
       return {
@@ -112243,7 +113195,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
 
       // Extract order ID and amount from webhook payload
       const resource = (data as any)?.resource
-      let sessionId: string | undefined = (data as any)?.resource?.custom_id
+      const sessionId: string | undefined = (data as any)?.resource?.custom_id
 
       if (!sessionId) {
         this.logger_.warn("Session ID not found in PayPal webhook resource")
@@ -123034,7 +123986,7 @@ You'll first install a Medusa application that exposes core commerce features th
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -123060,7 +124012,7 @@ A Medusa plugin is set up in a different project, giving you the flexibility in 
 
 To create a new Medusa plugin project, run the following command in a directory different than that of the Medusa application:
 
-```bash npm2yarn
+```bash npx2yarnExec
 npx create-medusa-app@latest medusa-plugin-wishlist --plugin
 ```
 
@@ -123078,7 +124030,7 @@ Before you start your development, you'll set up the plugin in the Medusa applic
 
 In the plugin's directory, run the following command to publish the plugin to the local package registry:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:publish
 ```
 
@@ -123090,7 +124042,7 @@ If you've installed your Medusa project before v2.3.1, you must install [yalc](h
 
 Run the following command in the Medusa application's directory to install the plugin:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa plugin:add medusa-plugin-wishlist
 ```
 
@@ -123112,7 +124064,7 @@ module.exports = defineConfig({
 
 Finally, to ensure your plugin's changes are constantly published to the local registry, simplifying your testing process, keep the following command running in the plugin project during development:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:develop
 ```
 
@@ -123273,7 +124225,7 @@ Learn more about migrations in [this documentation](https://docs.medusajs.com/do
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Wishlist Module, run the following command in the plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:db:generate
 ```
 
@@ -123281,9 +124233,9 @@ You'll now have a `migrations` directory under `src/modules/wishlist` that holds
 
 Then, to reflect these migrations on the database of the Medusa application using this module, run the following command:
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa db:migrate
 ```
 
@@ -123617,7 +124569,7 @@ In the route handler function, you execute the `createWishlistWorkflow`, passing
 
 You'll now test that this API route defined in the plugin is working as expected using the Medusa application you installed in the first step.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 In the Medusa application's directory, run the following command to start the development server:
 
@@ -123733,7 +124685,7 @@ If the wishlist doesn't exist, you throw an error. Otherwise, you return the wis
 
 To test the API route, start the Medusa application.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 Then, send a `GET` request to the `/store/customers/me/wishlists` API route:
 
@@ -124080,8 +125032,10 @@ In Medusa, you create validation schemas using [Zod](https://zod.dev/) in a Type
 
 ![Directory structure after adding the validation schema file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737471383/Medusa%20Resources/wishlist-18_hj9iom.jpg)
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/customers/me/wishlists/items/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCreateWishlistItem = z.object({
   variant_id: z.string(),
@@ -124094,9 +125048,11 @@ Learn more about creating schemas in [Zod's documentation](https://zod.dev/).
 
 You can now replace the `PostStoreCreateWishlistItemType` type in `src/api/store/customers/me/wishlists/items/route.ts` with the following:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/customers/me/wishlists/items/route.ts"
 // ...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCreateWishlistItem } from "./validators"
 
 type PostStoreCreateWishlistItemType = z.infer<
@@ -124151,7 +125107,7 @@ Any request sent to `/store/customers/me/wishlists/items` will now automatically
 
 Start the Medusa application to test out the API route.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 #### Retrieve Variant ID
 
@@ -124390,7 +125346,7 @@ In the route handler function, you execute the `deleteWishlistItemWorkflow` work
 
 Start the Medusa application to test out the API route.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 #### Retrieve Wishlist Item ID
 
@@ -124511,7 +125467,7 @@ You first retrieve the [http Medusa configuration](https://docs.medusajs.com/doc
 
 Start the Medusa application to test out the API route.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 Then, send a `POST` request to the `/store/customers/me/wishlists/share` API route to generate a share token for the authenticated customer's wishlist:
 
@@ -124605,7 +125561,7 @@ You return in the response the shared wishlist.
 
 Start the Medusa application to test out the API route.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 Then, send a `GET` request to the `/store/wishlists/:token` API route to retrieve the shared wishlist:
 
@@ -124811,7 +125767,7 @@ Finally, you display the widget's content using components from [Medusa UI](http
 
 To test it out, start the Medusa application.
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 Then:
 
@@ -125174,6 +126130,7 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [retrieve](https://docs.medusajs.com/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.retrieve/index.html.md)
 - [update](https://docs.medusajs.com/references/js_sdk/admin/TaxRegion/methods/js_sdk.admin.TaxRegion.update/index.html.md)
 - [batch](https://docs.medusajs.com/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batch/index.html.md)
+- [batchSettings](https://docs.medusajs.com/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/index.html.md)
 - [entities](https://docs.medusajs.com/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.entities/index.html.md)
 - [list](https://docs.medusajs.com/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.list/index.html.md)
 - [settings](https://docs.medusajs.com/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.settings/index.html.md)
@@ -128646,7 +129603,7 @@ In this step, you'll set up a Medusa application and configure the Stripe Module
 
 To install the Medusa application, run the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -130916,7 +131873,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -132531,6 +133488,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/translations/batch](https://docs.medusajs.com/api/admin#translations_posttranslationsbatch)
 - [GET /admin/translations/entities](https://docs.medusajs.com/api/admin#translations_gettranslationsentities)
 - [GET /admin/translations/settings](https://docs.medusajs.com/api/admin#translations_gettranslationssettings)
+- [POST /admin/translations/settings/batch](https://docs.medusajs.com/api/admin#translations_posttranslationssettingsbatch)
 - [GET /admin/translations/statistics](https://docs.medusajs.com/api/admin#translations_gettranslationsstatistics)
 - [POST /admin/uploads](https://docs.medusajs.com/api/admin#uploads_postuploads)
 - [POST /admin/uploads/presigned-urls](https://docs.medusajs.com/api/admin#uploads_postuploadspresignedurls)
@@ -140922,7 +141880,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -141090,7 +142048,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Bundled Product Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate bundledProduct
 ```
 
@@ -141098,7 +142056,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -141169,7 +142127,7 @@ You define the link in the same way as the previous one, but you pass an object 
 
 Medusa creates a table in the database for each link you define. So, you must run the migrations again to create the necessary tables:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -141446,12 +142404,14 @@ So, to create an API route at the path `/admin/bundled-products`, create the fil
 
 API routes starting with `/admin` are protected by default. So, only authenticated admin users can access them.
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/bundled-products/route.ts" highlights={bundledProductsRouteHighlights}
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
@@ -142539,9 +143499,11 @@ You'll now create the API route that exposes the workflow's functionalities to s
 
 To create the API route, create the file `src/api/store/carts/[id]/line-item-bundles/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/carts/[id]/line-item-bundles/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   addBundleToCartWorkflow,
 } from "../../../../../workflows/add-bundle-to-cart"
@@ -143815,7 +144777,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -143980,7 +144942,7 @@ Learn more about migrations in [this documentation](https://docs.medusajs.com/do
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Restock Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate restock
 ```
 
@@ -143990,7 +144952,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -144455,8 +145417,10 @@ In Medusa, you create validation schemas using [Zod](https://zod.dev/) in a Type
 
 ![The directory structure of the Medusa application after adding the validator file.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733229734/Medusa%20Resources/restock-dir-overview-14_au0h15.jpg)
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/restock-subscriptions/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCreateRestockSubscription = z.object({
   variant_id: z.string(),
@@ -144475,9 +145439,11 @@ Learn more about creating schemas in [Zod's documentation](https://zod.dev/).
 
 You can now replace the `PostStoreCreateRestockSubscription` type in `src/api/store/restock-subscriptions/route.ts` with the following:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/restock-subscriptions/route.ts"
 // ...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCreateRestockSubscription } from "./validators"
 
 type PostStoreCreateRestockSubscription = z.infer<
@@ -145047,7 +146013,7 @@ This guide provides an example of an approach to implement digital products. You
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -145289,7 +146255,7 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 
 To create tables for the digital product data models in the database, start by generating the migrations for the Digital Product Module with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate digitalProductModuleService
 ```
 
@@ -145297,7 +146263,7 @@ This generates a migration in the `src/modules/digital-product/migrations` direc
 
 Then, reflect the migrations and links in the database with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -145322,11 +146288,6 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { 
-    fields, 
-    limit = 20, 
-    offset = 0,
-  } = req.validatedQuery || {}
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { 
@@ -145334,16 +146295,7 @@ export const GET = async (
     metadata: { count, take, skip } = {},
   } = await query.graph({
     entity: "digital_product",
-    fields: [
-      "*",
-      "medias.*",
-      "product_variant.*",
-      ...(fields || []),
-    ],
-    pagination: {
-      skip: offset,
-      take: limit,
-    },
+    ...req.queryConfig,
   })
 
   res.json({
@@ -145358,6 +146310,45 @@ export const GET = async (
 This adds a `GET` API route at `/admin/digital-products`.
 
 In the route handler, you use Query to retrieve the list of digital products and their relations. The route handler also supports pagination.
+
+Then, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { validateAndTransformQuery } from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+const GetDigitalProductsSchema = createFindParams()
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/digital-products",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          GetDigitalProductsSchema,
+          {
+            defaults: [
+              "id",
+              "name",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+              "medias.*",
+              "product_variant.*",
+            ],
+            isList: true,
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+### Further Read
+
+- [How to Create a Middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/middlewares/index.html.md)
 
 ### Test API Route
 
@@ -145566,13 +146557,18 @@ type CreateDigitalProductWorkflowInput = {
 const createDigitalProductWorkflow = createWorkflow(
   "create-digital-product",
   (input: CreateDigitalProductWorkflowInput) => {
-    const { medias, ...digitalProductData } = input.digital_product
-
     const product = createProductsWorkflow.runAsStep({
       input: {
         products: [input.product],
       },
     })
+
+    const digitalProductData = transform(
+      input,
+      (data) => ({
+        name: data.digital_product.name,
+      })
+    )
 
     const { digital_product } = createDigitalProductStep(
       digitalProductData
@@ -145581,10 +146577,10 @@ const createDigitalProductWorkflow = createWorkflow(
     const { digital_product_medias } = createDigitalProductMediasStep(
       transform({
         digital_product,
-        medias,
+        input,
       },
       (data) => ({
-        medias: data.medias.map((media) => ({
+        medias: data.input.digital_product.medias.map((media) => ({
           ...media,
           digital_product_id: data.digital_product.id,
         })),
@@ -145601,12 +146597,20 @@ const createDigitalProductWorkflow = createWorkflow(
       },
     }])
 
-    return new WorkflowResponse({
-      digital_product: {
-        ...digital_product,
-        medias: digital_product_medias,
+    const returnData = transform(
+      {
+        digital_product,
+        digital_product_medias,
       },
-    })
+      (data) => ({
+        digital_product: {
+          ...data.digital_product,
+          medias: data.digital_product_medias,
+        },
+      })
+    )
+
+    return new WorkflowResponse(returnData)
   }
 )
 
@@ -145638,9 +146642,11 @@ In this step, you’ll add the API route to create a digital product using the `
 
 In the file `src/api/admin/digital-products/route.ts` add a new route handler:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/digital-products/route.ts"
 // other imports...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import createDigitalProductWorkflow from "../../../workflows/create-digital-product"
 import { CreateDigitalProductMediaInput } from "../../../workflows/create-digital-product/steps/create-digital-product-medias"
 import { createDigitalProductsSchema } from "../../validation-schemas"
@@ -145670,7 +146676,7 @@ export const POST = async (
         medias: req.validatedBody.medias.map((media) => ({
           fileId: media.file_id,
           mimeType: media.mime_type,
-          ...media,
+          type: media.type,
         })) as Omit<CreateDigitalProductMediaInput, "digital_product_id">[],
       },
       product: {
@@ -145696,7 +146702,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { MediaType } from "../modules/digital-product/types"
 
 export const createDigitalProductsSchema = z.object({
@@ -145712,7 +146718,7 @@ export const createDigitalProductsSchema = z.object({
 
 This defines the expected request body schema.
 
-Finally, create the file `src/api/middlewares.ts` with the following content:
+Finally, add to the file `src/api/middlewares.ts` the following content:
 
 ```ts title="src/api/middlewares.ts"
 import { 
@@ -148205,7 +149211,7 @@ Businesses can also power-up their store by integrating third-party services for
 
 You can use the following command to install an ecommerce store with Medusa:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest --with-nextjs-starter
 ```
 
@@ -148273,7 +149279,7 @@ This guide will teach you how to implement the general integration between Medus
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -149102,7 +150108,7 @@ If you don't have a Medusa application yet, you can install it with the followin
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -149799,7 +150805,7 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -150171,7 +151177,7 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 
 To create tables for the above data models in the database, start by generating the migrations for the Restaurant and Delivery Modules with the following commands:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate restaurantModuleService
 npx medusa db:generate deliveryModuleService
 ```
@@ -150180,7 +151186,7 @@ This generates migrations in the `src/modules/restaurant/migrations` and `src/mo
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -150283,8 +151289,10 @@ You’ll now create the API route that executes the workflow.
 
 Start by creating the file `src/api/restaurants/validation-schemas.ts` that holds the schema to validate the request body:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/restaurants/validation-schemas.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const restaurantSchema = z.object({
   name: z.string(),
@@ -150634,7 +151642,7 @@ You’ll now create the API route to create a new user using the `createUserWork
 Start by creating the file `src/api/users/validation-schemas.ts` that holds the schema necessary to validate the request body:
 
 ```ts title="src/api/users/validation-schemas.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const createUserSchema = z
   .object({
@@ -151058,7 +152066,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   createRestaurantProductsWorkflow,
 } from "../../../../workflows/restaurant/workflows/create-restaurant-products"
@@ -151777,14 +152785,14 @@ Create the file `src/api/store/deliveries/route.ts` with the following content:
 ```ts title="src/api/store/deliveries/route.ts" highlights={createDeliveryRouteHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import zod from "zod"
+import { z } from "@medusajs/framework/zod"
 import { DELIVERY_MODULE } from "../../../modules/delivery"
 import { createDeliveryWorkflow } from "../../../workflows/delivery/workflows/create-delivery"
 import { handleDeliveryWorkflow } from "../../../workflows/delivery/workflows/handle-delivery"
 
-const schema = zod.object({
-  cart_id: zod.string(),
-  restaurant_id: zod.string(),
+const schema = z.object({
+  cart_id: z.string(),
+  restaurant_id: z.string(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -153115,7 +154123,7 @@ This guide provides an example of an approach to implement marketplaces. You're 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -153293,7 +154301,7 @@ Learn more about migrations in [this documentation](https://docs.medusajs.com/do
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Marketplace Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate marketplace
 ```
 
@@ -153301,7 +154309,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -153368,7 +154376,7 @@ In the next steps, you'll see how these link allows you to retrieve and manage a
 
 Medusa represents the links you define in link tables similar to pivot tables. So, to sync the defined links to the database, run the `db:migrate` command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -153651,13 +154659,15 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 
 The path of the API route is the file's path relative to `src/api`. So, to create the `/vendors` API route, create the file `src/api/vendors/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/vendors/route.ts" highlights={vendorRouteSchemaHighlights}
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import createVendorWorkflow, { 
   CreateVendorWorkflowInput,
 } from "../../workflows/marketplace/create-vendor"
@@ -155097,7 +156107,7 @@ Once the item is fulfilled, the reserved quantity is deducted from the item's in
 
 ## Handle Returns, Exchanges, and Changes
 
-Customers can return or exchaneg items in an order. A merchant can also edit an order to add, update, or delete items.
+Customers can return or exchange items in an order. A merchant can also edit an order to add, update, or delete items.
 
 When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment module providers are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
 
@@ -155168,7 +156178,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -155380,10 +156390,12 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 Create the file `src/api/store/variants/[id]/price/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/variants/[id]/price/route.ts" highlights={getPriceApiRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { getCustomPriceWorkflow } from "../../../../../workflows/get-custom-price"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostCustomPriceSchema = z.object({
   region_id: z.string(),
@@ -155848,9 +156860,11 @@ Next, you'll create an API route that executes the custom add-to-cart workflow.
 
 Create the file `src/api/store/carts/[id]/line-items-custom/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/store/carts/[id]/line-items-custom/route.ts" highlights={PostAddCustomLineItemSchemaHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   customAddToCartWorkflow,
 } from "../../../../../workflows/custom-add-to-cart"
@@ -156439,7 +157453,7 @@ This guide provides an example of an approach to implement subscriptions. You're
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -156728,7 +157742,7 @@ This defines a list link to the `Order` data model since a subscription has mult
 
 To create a table for the `Subscription` data model in the database, start by generating the migrations for the Subscription Module with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate subscriptionModuleService
 ```
 
@@ -156736,7 +157750,7 @@ This generates a migration in the `src/modules/subscriptions/migrations` directo
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -159079,7 +160093,7 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -159418,7 +160432,7 @@ Refer to the [Migrations documentation](https://docs.medusajs.com/docs/learn/fun
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Ticket Booking Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate ticketBooking
 ```
 
@@ -159426,7 +160440,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -159520,7 +160534,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -159743,11 +160757,13 @@ Refer to the [API routes](https://docs.medusajs.com/docs/learn/fundamentals/api-
 
 Create the file `src/api/admin/venues/route.ts` with the following content:
 
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
 ```ts title="src/api/admin/venues/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createVenueWorkflow } from "../../../workflows/create-venue"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateVenueSchema = z.object({
   name: z.string(),
@@ -161151,7 +162167,7 @@ import {
   createTicketProductWorkflow,
 } from "../../../workflows/create-ticket-product"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateTicketProductSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -162987,7 +164003,7 @@ Create the file `src/api/store/ticket-products/[id]/seats/route.ts` with the fol
 ```ts title="src/api/store/ticket-products/[id]/seats/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetTicketProductSeatsSchema = z.object({
   date: z.string(),

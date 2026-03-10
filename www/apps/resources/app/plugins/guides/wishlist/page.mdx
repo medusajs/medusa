@@ -95,7 +95,7 @@ You'll first install a Medusa application that exposes core commerce features th
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -133,7 +133,7 @@ A Medusa plugin is set up in a different project, giving you the flexibility in 
 
 To create a new Medusa plugin project, run the following command in a directory different than that of the Medusa application:
 
-```bash npm2yarn
+```bash npx2yarnExec
 npx create-medusa-app@latest medusa-plugin-wishlist --plugin
 ```
 
@@ -151,7 +151,7 @@ Before you start your development, you'll set up the plugin in the Medusa applic
 
 In the plugin's directory, run the following command to publish the plugin to the local package registry:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:publish
 ```
 
@@ -167,7 +167,7 @@ If you've installed your Medusa project before v2.3.1, you must install [yalc](h
 
 Run the following command in the Medusa application's directory to install the plugin:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa plugin:add medusa-plugin-wishlist
 ```
 
@@ -189,7 +189,7 @@ module.exports = defineConfig({
 
 Finally, to ensure your plugin's changes are constantly published to the local registry, simplifying your testing process, keep the following command running in the plugin project during development:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:develop
 ```
 
@@ -378,7 +378,7 @@ Learn more about migrations in [this documentation](!docs!/learn/fundamentals/mo
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Wishlist Module, run the following command in the plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:db:generate
 ```
 
@@ -388,11 +388,11 @@ Then, to reflect these migrations on the database of the Medusa application usin
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa db:migrate
 ```
 
@@ -787,7 +787,7 @@ You'll now test that this API route defined in the plugin is working as expected
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -907,7 +907,7 @@ To test the API route, start the Medusa application.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -1321,8 +1321,14 @@ In Medusa, you create validation schemas using [Zod](https://zod.dev/) in a Type
 
 ![Directory structure after adding the validation schema file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737471383/Medusa%20Resources/wishlist-18_hj9iom.jpg)
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/store/customers/me/wishlists/items/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCreateWishlistItem = z.object({
   variant_id: z.string(),
@@ -1339,9 +1345,15 @@ Learn more about creating schemas in [Zod's documentation](https://zod.dev/).
 
 You can now replace the `PostStoreCreateWishlistItemType` type in `src/api/store/customers/me/wishlists/items/route.ts` with the following:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/store/customers/me/wishlists/items/route.ts"
 // ...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCreateWishlistItem } from "./validators"
 
 type PostStoreCreateWishlistItemType = z.infer<
@@ -1402,7 +1414,7 @@ Start the Medusa application to test out the API route.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -1693,7 +1705,7 @@ Start the Medusa application to test out the API route.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -1818,7 +1830,7 @@ Start the Medusa application to test out the API route.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -1916,7 +1928,7 @@ Start the Medusa application to test out the API route.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 
@@ -2154,7 +2166,7 @@ To test it out, start the Medusa application.
 
 <Note>
 
-Make sure that `npx medusa plugin:develop` is running in the plugin project to publish the changes to the local registry.
+Make sure that `plugin:develop` is running in the plugin project to publish the changes to the local registry.
 
 </Note>
 

@@ -8,7 +8,7 @@ export const sdk = new Medusa({
   },
 })
 
-sdk.admin.orderEdit.cancelRequest("ordch_123")
+sdk.admin.orderEdit.cancelRequest("order_123")
 .then(({ deleted }) => {
   console.log(deleted)
 })

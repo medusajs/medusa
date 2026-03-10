@@ -87,7 +87,7 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -462,7 +462,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Ticket Booking Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate ticketBooking
 ```
 
@@ -470,7 +470,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -572,7 +572,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -831,11 +831,17 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) documentation to
 
 Create the file `src/api/admin/venues/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/admin/venues/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createVenueWorkflow } from "../../../workflows/create-venue"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateVenueSchema = z.object({
   name: z.string(),
@@ -2307,7 +2313,7 @@ import {
   createTicketProductWorkflow,
 } from "../../../workflows/create-ticket-product"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateTicketProductSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -4217,7 +4223,7 @@ Create the file `src/api/store/ticket-products/[id]/seats/route.ts` with the fol
 ```ts title="src/api/store/ticket-products/[id]/seats/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetTicketProductSeatsSchema = z.object({
   date: z.string(),

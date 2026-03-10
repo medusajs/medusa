@@ -165,6 +165,99 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("Step timeout with continueOnPermanentFailure", () => {
+        it("should continue the workflow when an async step with retryIntervalAwaiting reaches timeout and continueOnPermanentFailure is set", async () => {
+          const invokeSpy = jest.fn()
+          const invokeSpyB = jest.fn()
+
+          const step1 = createStep(
+            {
+              name: "step-sync",
+            },
+            async () => {
+              return new StepResponse({ result: "from-step-1" })
+            }
+          )
+
+          const step2b = createStep(
+            {
+              name: "step-async-timeout-b",
+              async: true,
+              timeout: 1,
+              retryIntervalAwaiting: 0.3,
+              maxAwaitingRetries: 2,
+              continueOnPermanentFailure: true,
+            },
+            async () => {
+              invokeSpyB()
+            }
+          )
+
+          const step2 = createStep(
+            {
+              name: "step-async-timeout",
+              async: true,
+              timeout: 1,
+              retryIntervalAwaiting: 0.3,
+              maxAwaitingRetries: 2,
+              continueOnPermanentFailure: true,
+              noCompensation: true,
+            },
+            async () => {
+              invokeSpy()
+            }
+          )
+
+          const step3 = createStep(
+            {
+              name: "step-after-timeout",
+            },
+            async () => {
+              return new StepResponse({ result: "from-step-3" })
+            }
+          )
+
+          createWorkflow(
+            {
+              name: "wf-timeout-continue",
+              retentionTime: 50,
+            },
+            function () {
+              step1()
+              step2()
+              step2b()
+              const res3 = step3()
+              return new WorkflowResponse(res3)
+            }
+          )
+
+          const container = getContainer()
+          const engine = container.resolve(Modules.WORKFLOW_ENGINE)
+
+          const transactionId = "trx-timeout-continue"
+          const { transaction } = await engine.run("wf-timeout-continue", {
+            transactionId,
+            throwOnError: false,
+          })
+
+          // The workflow should be waiting for the async step
+          expect(transaction.getState()).toBe(TransactionState.INVOKING)
+
+          // Wait for the step timeout to fire plus some buffer
+          await new Promise((resolve) => global.setTimeout(resolve, 4000))
+
+          const executions = await engine.listWorkflowExecutions({
+            transaction_id: transactionId,
+          })
+
+          expect(executions.length).toBe(1)
+          expect(executions[0].state).toBe(TransactionState.DONE)
+
+          expect(invokeSpy).toHaveBeenCalled()
+          expect(invokeSpyB).toHaveBeenCalled()
+        })
+      })
     })
   },
 })
