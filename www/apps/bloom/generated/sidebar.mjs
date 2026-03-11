@@ -8,6 +8,7 @@ export const generatedSidebars = [
         "isPathHref": true,
         "type": "category",
         "title": "Get Started",
+        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -56,6 +57,14 @@ export const generatedSidebars = [
             "title": "FAQ",
             "path": "/faq",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Preview Tabs",
+            "path": "/preview-tabs",
+            "children": []
           }
         ]
       },
@@ -87,30 +96,39 @@ export const generatedSidebars = [
         "loaded": true,
         "isPathHref": true,
         "type": "category",
-        "title": "Account Management",
+        "title": "Account & Organization",
         "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "title": "Profile",
-            "path": "/profile-management",
-            "children": []
-          },
           {
             "loaded": true,
             "isPathHref": true,
             "type": "link",
             "title": "Organization",
             "path": "/organization-management",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Team",
+                "path": "/organization-management/team",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Manage Billing",
+                "path": "/manage-billing",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Manage Billing",
-            "path": "/manage-billing",
+            "title": "Profile",
+            "path": "/profile-management",
             "children": []
           }
         ]
@@ -142,13 +160,14 @@ export const generatedSidebars = [
         "isPathHref": true,
         "type": "category",
         "title": "Agent Features",
+        "initialOpen": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Mode Switcher",
-            "path": "/features/mode-switcher",
+            "title": "View Switcher",
+            "path": "/features/view-switcher",
             "children": []
           },
           {
@@ -198,6 +217,14 @@ export const generatedSidebars = [
             "title": "Demo Data",
             "path": "/features/demo-data",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Team Collaboration",
+            "path": "/features/team-collaboration",
+            "children": []
           }
         ]
       }
@@ -230,13 +257,92 @@ export const generatedSidebars = [
         "title": "Ecommerce Operations",
         "path": "/prompting/ecommerce-operations-prompting",
         "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Fix Errors",
+        "path": "/prompting/fix-errors-and-issues",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Integrate Services",
+        "path": "/prompting/service-integrations-prompting",
+        "sort_sidebar": "alphabetize",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Algolia",
+            "path": "/prompting/service-integrations-prompting/guides/algolia",
+            "description": "Add search and discovery features",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Avalara",
+            "path": "/prompting/service-integrations-prompting/guides/avalara",
+            "description": "Add tax calculation features",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "ShipStation",
+            "path": "/prompting/service-integrations-prompting/guides/shipstation",
+            "description": "Add shipping and fulfillment features",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Stripe",
+            "path": "/prompting/service-integrations-prompting/guides/stripe",
+            "description": "Add payment processing features",
+            "children": []
+          }
+        ]
       }
     ]
   },
   {
     "sidebar_id": "developers",
     "title": "Developers",
-    "items": []
+    "items": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Code Editor",
+        "path": "/developers/code-editor",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Sync with GitHub",
+        "path": "/developers/export-to-github",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Environment Variables",
+        "path": "/developers/environment-variables",
+        "children": []
+      }
+    ]
   },
   {
     "sidebar_id": "changelog",

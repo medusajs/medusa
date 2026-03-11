@@ -127,7 +127,7 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   transpilePackages: ["docs-ui"],
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/docs",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": ["./app/**/*.mdx"],
   },

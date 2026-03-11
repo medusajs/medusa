@@ -1,5 +1,5 @@
 {
-	"id": 5478,
+	"id": 5479,
 	"name": "fulfillment-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 5479,
+			"id": 5480,
 			"name": "FulfillmentAddress",
 			"variant": "declaration",
 			"kind": 32,
@@ -30,7 +30,7 @@
 					"fileName": "address.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L3"
 				}
 			],
 			"type": {
@@ -50,14 +50,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5480,
+									"id": 5481,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5481,
+											"id": 5482,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -75,7 +75,7 @@
 													"fileName": "address.ts",
 													"line": 4,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L4"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L4"
 												}
 											],
 											"type": {
@@ -101,7 +101,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5482,
+											"id": 5483,
 											"name": "company",
 											"variant": "declaration",
 											"kind": 1024,
@@ -121,7 +121,7 @@
 													"fileName": "address.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L5"
 												}
 											],
 											"type": {
@@ -136,7 +136,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5483,
+											"id": 5484,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -156,7 +156,7 @@
 													"fileName": "address.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L6"
 												}
 											],
 											"type": {
@@ -171,7 +171,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5484,
+											"id": 5485,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -191,7 +191,7 @@
 													"fileName": "address.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L7"
 												}
 											],
 											"type": {
@@ -206,7 +206,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5485,
+											"id": 5486,
 											"name": "address_1",
 											"variant": "declaration",
 											"kind": 1024,
@@ -226,7 +226,7 @@
 													"fileName": "address.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L8"
 												}
 											],
 											"type": {
@@ -241,7 +241,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5486,
+											"id": 5487,
 											"name": "address_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -261,7 +261,7 @@
 													"fileName": "address.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L9"
 												}
 											],
 											"type": {
@@ -276,7 +276,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5487,
+											"id": 5488,
 											"name": "city",
 											"variant": "declaration",
 											"kind": 1024,
@@ -296,42 +296,7 @@
 													"fileName": "address.ts",
 													"line": 10,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L10"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-													"qualifiedName": "TextProperty"
-												},
-												"name": "TextProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 5488,
-											"name": "country_code",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {
-												"isOptional": true
-											},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The country code of the fulfillment address.\n\n@example us"
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "address.ts",
-													"line": 11,
-													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L10"
 												}
 											],
 											"type": {
@@ -347,6 +312,52 @@
 										},
 										{
 											"id": 5489,
+											"name": "country_code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The country code of the fulfillment address."
+													}
+												],
+												"blockTags": [
+													{
+														"tag": "@example",
+														"content": [
+															{
+																"kind": "text",
+																"text": "us"
+															}
+														]
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "address.ts",
+													"line": 11,
+													"character": 2,
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L11"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 5490,
 											"name": "province",
 											"variant": "declaration",
 											"kind": 1024,
@@ -366,7 +377,7 @@
 													"fileName": "address.ts",
 													"line": 12,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L12"
 												}
 											],
 											"type": {
@@ -381,7 +392,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5490,
+											"id": 5491,
 											"name": "postal_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -401,7 +412,7 @@
 													"fileName": "address.ts",
 													"line": 13,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L13"
 												}
 											],
 											"type": {
@@ -416,7 +427,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5491,
+											"id": 5492,
 											"name": "phone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -436,7 +447,7 @@
 													"fileName": "address.ts",
 													"line": 14,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L14"
 												}
 											],
 											"type": {
@@ -451,7 +462,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5492,
+											"id": 5493,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -471,7 +482,7 @@
 													"fileName": "address.ts",
 													"line": 15,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L15"
 												}
 											],
 											"type": {
@@ -490,7 +501,6 @@
 										{
 											"title": "Properties",
 											"children": [
-												5481,
 												5482,
 												5483,
 												5484,
@@ -501,7 +511,8 @@
 												5489,
 												5490,
 												5491,
-												5492
+												5492,
+												5493
 											]
 										}
 									],
@@ -510,7 +521,7 @@
 											"fileName": "address.ts",
 											"line": 3,
 											"character": 70,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/address.ts#L3"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/address.ts#L3"
 										}
 									]
 								}
@@ -530,7 +541,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5630,
+			"id": 5631,
 			"name": "FulfillmentItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -542,7 +553,7 @@
 					"fileName": "fulfillment-item.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L5"
 				}
 			],
 			"type": {
@@ -562,14 +573,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5631,
+									"id": 5632,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5632,
+											"id": 5633,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -587,7 +598,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L7"
 												}
 											],
 											"type": {
@@ -613,7 +624,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5633,
+											"id": 5634,
 											"name": "title",
 											"variant": "declaration",
 											"kind": 1024,
@@ -631,7 +642,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L8"
 												}
 											],
 											"type": {
@@ -646,7 +657,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5634,
+											"id": 5635,
 											"name": "sku",
 											"variant": "declaration",
 											"kind": 1024,
@@ -664,7 +675,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L9"
 												}
 											],
 											"type": {
@@ -679,7 +690,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5635,
+											"id": 5636,
 											"name": "barcode",
 											"variant": "declaration",
 											"kind": 1024,
@@ -697,7 +708,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L10"
 												}
 											],
 											"type": {
@@ -712,7 +723,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5636,
+											"id": 5637,
 											"name": "quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -730,7 +741,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L11"
 												}
 											],
 											"type": {
@@ -745,7 +756,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5637,
+											"id": 5638,
 											"name": "line_item_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -765,7 +776,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L12"
 												}
 											],
 											"type": {
@@ -780,7 +791,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5638,
+											"id": 5639,
 											"name": "inventory_item_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -800,7 +811,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L13"
 												}
 											],
 											"type": {
@@ -815,7 +826,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5639,
+											"id": 5640,
 											"name": "fulfillment",
 											"variant": "declaration",
 											"kind": 1024,
@@ -836,7 +847,7 @@
 													"fileName": "fulfillment-item.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L14"
 												}
 											],
 											"type": {
@@ -848,7 +859,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5493,
+														"target": 5494,
 														"name": "Fulfillment"
 													}
 												],
@@ -862,14 +873,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												5632,
 												5633,
 												5634,
 												5635,
 												5636,
 												5637,
 												5638,
-												5639
+												5639,
+												5640
 											]
 										}
 									],
@@ -878,7 +889,7 @@
 											"fileName": "fulfillment-item.ts",
 											"line": 6,
 											"character": 30,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-item.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-item.ts#L6"
 										}
 									]
 								}
@@ -898,7 +909,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5675,
+			"id": 5676,
 			"name": "FulfillmentLabel",
 			"variant": "declaration",
 			"kind": 32,
@@ -910,7 +921,7 @@
 					"fileName": "fulfillment-label.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L5"
 				}
 			],
 			"type": {
@@ -930,14 +941,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5676,
+									"id": 5677,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5677,
+											"id": 5678,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -955,7 +966,7 @@
 													"fileName": "fulfillment-label.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L6"
 												}
 											],
 											"type": {
@@ -981,7 +992,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5678,
+											"id": 5679,
 											"name": "tracking_number",
 											"variant": "declaration",
 											"kind": 1024,
@@ -999,7 +1010,7 @@
 													"fileName": "fulfillment-label.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L7"
 												}
 											],
 											"type": {
@@ -1014,7 +1025,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5679,
+											"id": 5680,
 											"name": "tracking_url",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1032,7 +1043,7 @@
 													"fileName": "fulfillment-label.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L8"
 												}
 											],
 											"type": {
@@ -1047,7 +1058,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5680,
+											"id": 5681,
 											"name": "label_url",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1065,7 +1076,7 @@
 													"fileName": "fulfillment-label.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L9"
 												}
 											],
 											"type": {
@@ -1080,7 +1091,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5681,
+											"id": 5682,
 											"name": "fulfillment",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1101,7 +1112,7 @@
 													"fileName": "fulfillment-label.ts",
 													"line": 10,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L10"
 												}
 											],
 											"type": {
@@ -1113,7 +1124,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5493,
+														"target": 5494,
 														"name": "Fulfillment"
 													}
 												],
@@ -1127,11 +1138,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												5677,
 												5678,
 												5679,
 												5680,
-												5681
+												5681,
+												5682
 											]
 										}
 									],
@@ -1140,7 +1151,7 @@
 											"fileName": "fulfillment-label.ts",
 											"line": 5,
 											"character": 66,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-label.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-label.ts#L5"
 										}
 									]
 								}
@@ -1160,7 +1171,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5717,
+			"id": 5718,
 			"name": "FulfillmentProvider",
 			"variant": "declaration",
 			"kind": 32,
@@ -1172,7 +1183,7 @@
 					"fileName": "fulfillment-provider.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L3"
 				}
 			],
 			"type": {
@@ -1192,14 +1203,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5718,
+									"id": 5719,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5719,
+											"id": 5720,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1217,7 +1228,7 @@
 													"fileName": "fulfillment-provider.ts",
 													"line": 4,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L4"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L4"
 												}
 											],
 											"type": {
@@ -1243,7 +1254,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5720,
+											"id": 5721,
 											"name": "is_enabled",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1261,7 +1272,7 @@
 													"fileName": "fulfillment-provider.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L5"
 												}
 											],
 											"type": {
@@ -1280,8 +1291,8 @@
 										{
 											"title": "Properties",
 											"children": [
-												5719,
-												5720
+												5720,
+												5721
 											]
 										}
 									],
@@ -1290,7 +1301,7 @@
 											"fileName": "fulfillment-provider.ts",
 											"line": 3,
 											"character": 72,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L3"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-provider.ts#L3"
 										}
 									]
 								}
@@ -1310,7 +1321,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5721,
+			"id": 5722,
 			"name": "FulfillmentSet",
 			"variant": "declaration",
 			"kind": 32,
@@ -1322,7 +1333,7 @@
 					"fileName": "fulfillment-set.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L5"
 				}
 			],
 			"type": {
@@ -1342,14 +1353,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5722,
+									"id": 5723,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5723,
+											"id": 5724,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1367,7 +1378,7 @@
 													"fileName": "fulfillment-set.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L7"
 												}
 											],
 											"type": {
@@ -1393,7 +1404,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5724,
+											"id": 5725,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1411,7 +1422,7 @@
 													"fileName": "fulfillment-set.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L8"
 												}
 											],
 											"type": {
@@ -1426,7 +1437,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5725,
+											"id": 5726,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1444,7 +1455,7 @@
 													"fileName": "fulfillment-set.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L9"
 												}
 											],
 											"type": {
@@ -1459,7 +1470,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5726,
+											"id": 5727,
 											"name": "service_zones",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1480,7 +1491,7 @@
 													"fileName": "fulfillment-set.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L10"
 												}
 											],
 											"type": {
@@ -1492,7 +1503,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5743,
+														"target": 5744,
 														"name": "ServiceZone"
 													}
 												],
@@ -1502,7 +1513,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5729,
+											"id": 5730,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1522,7 +1533,7 @@
 													"fileName": "fulfillment-set.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L13"
 												}
 											],
 											"type": {
@@ -1541,11 +1552,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												5723,
 												5724,
 												5725,
 												5726,
-												5729
+												5727,
+												5730
 											]
 										}
 									],
@@ -1554,7 +1565,7 @@
 											"fileName": "fulfillment-set.ts",
 											"line": 6,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment-set.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment-set.ts#L6"
 										}
 									]
 								}
@@ -1574,7 +1585,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5493,
+			"id": 5494,
 			"name": "Fulfillment",
 			"variant": "declaration",
 			"kind": 32,
@@ -1586,7 +1597,7 @@
 					"fileName": "fulfillment.ts",
 					"line": 9,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L9"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L9"
 				}
 			],
 			"type": {
@@ -1606,14 +1617,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5494,
+									"id": 5495,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5495,
+											"id": 5496,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1631,7 +1642,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L11"
 												}
 											],
 											"type": {
@@ -1657,7 +1668,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5496,
+											"id": 5497,
 											"name": "location_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1675,7 +1686,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L12"
 												}
 											],
 											"type": {
@@ -1690,7 +1701,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5497,
+											"id": 5498,
 											"name": "packed_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1710,7 +1721,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L13"
 												}
 											],
 											"type": {
@@ -1725,7 +1736,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5498,
+											"id": 5499,
 											"name": "shipped_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1745,7 +1756,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L14"
 												}
 											],
 											"type": {
@@ -1760,7 +1771,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5499,
+											"id": 5500,
 											"name": "marked_shipped_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1780,7 +1791,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L15"
 												}
 											],
 											"type": {
@@ -1795,7 +1806,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5500,
+											"id": 5501,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1815,7 +1826,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L16"
 												}
 											],
 											"type": {
@@ -1830,7 +1841,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5501,
+											"id": 5502,
 											"name": "delivered_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1850,7 +1861,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L17"
 												}
 											],
 											"type": {
@@ -1865,7 +1876,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5502,
+											"id": 5503,
 											"name": "canceled_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1885,7 +1896,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L18"
 												}
 											],
 											"type": {
@@ -1900,7 +1911,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5503,
+											"id": 5504,
 											"name": "data",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1920,7 +1931,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L19"
 												}
 											],
 											"type": {
@@ -1935,7 +1946,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5504,
+											"id": 5505,
 											"name": "requires_shipping",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1953,7 +1964,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L20"
 												}
 											],
 											"type": {
@@ -1968,7 +1979,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5505,
+											"id": 5506,
 											"name": "items",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1989,7 +2000,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L21"
 												}
 											],
 											"type": {
@@ -2001,7 +2012,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5630,
+														"target": 5631,
 														"name": "FulfillmentItem"
 													}
 												],
@@ -2011,7 +2022,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5519,
+											"id": 5520,
 											"name": "labels",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2032,7 +2043,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 24,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L24"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L24"
 												}
 											],
 											"type": {
@@ -2044,7 +2055,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5675,
+														"target": 5676,
 														"name": "FulfillmentLabel"
 													}
 												],
@@ -2054,7 +2065,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5530,
+											"id": 5531,
 											"name": "provider",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2077,7 +2088,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 27,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L27"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L27"
 												}
 											],
 											"type": {
@@ -2089,7 +2100,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5717,
+														"target": 5718,
 														"name": "FulfillmentProvider"
 													}
 												],
@@ -2099,7 +2110,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5541,
+											"id": 5542,
 											"name": "shipping_option",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2122,7 +2133,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 33,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L33"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L33"
 												}
 											],
 											"type": {
@@ -2134,7 +2145,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5758,
+														"target": 5759,
 														"name": "ShippingOption"
 													}
 												],
@@ -2144,7 +2155,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5598,
+											"id": 5599,
 											"name": "delivery_address",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2167,7 +2178,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 38,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L38"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L38"
 												}
 											],
 											"type": {
@@ -2179,7 +2190,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5479,
+														"target": 5480,
 														"name": "FulfillmentAddress"
 													}
 												],
@@ -2189,7 +2200,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5629,
+											"id": 5630,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2209,7 +2220,7 @@
 													"fileName": "fulfillment.ts",
 													"line": 44,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L44"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L44"
 												}
 											],
 											"type": {
@@ -2228,7 +2239,6 @@
 										{
 											"title": "Properties",
 											"children": [
-												5495,
 												5496,
 												5497,
 												5498,
@@ -2239,11 +2249,12 @@
 												5503,
 												5504,
 												5505,
-												5519,
-												5530,
-												5541,
-												5598,
-												5629
+												5506,
+												5520,
+												5531,
+												5542,
+												5599,
+												5630
 											]
 										}
 									],
@@ -2252,7 +2263,7 @@
 											"fileName": "fulfillment.ts",
 											"line": 10,
 											"character": 25,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/fulfillment.ts#L10"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/fulfillment.ts#L10"
 										}
 									]
 								}
@@ -2272,7 +2283,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5731,
+			"id": 5732,
 			"name": "GeoZoneSchema",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2282,20 +2293,20 @@
 					"fileName": "geo-zone.ts",
 					"line": 16,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L16"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L16"
 				}
 			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5732,
+					"id": 5733,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5733,
+							"id": 5734,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2305,7 +2316,7 @@
 									"fileName": "geo-zone.ts",
 									"line": 17,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L17"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L17"
 								}
 							],
 							"type": {
@@ -2330,7 +2341,7 @@
 							}
 						},
 						{
-							"id": 5734,
+							"id": 5735,
 							"name": "type",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2340,31 +2351,7 @@
 									"fileName": "geo-zone.ts",
 									"line": 18,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L18"
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-									"qualifiedName": "TextProperty"
-								},
-								"name": "TextProperty",
-								"package": "@medusajs/utils"
-							}
-						},
-						{
-							"id": 5735,
-							"name": "country_code",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"sources": [
-								{
-									"fileName": "geo-zone.ts",
-									"line": 19,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L19"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L18"
 								}
 							],
 							"type": {
@@ -2379,18 +2366,16 @@
 						},
 						{
 							"id": 5736,
-							"name": "province_code",
+							"name": "country_code",
 							"variant": "declaration",
 							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
+							"flags": {},
 							"sources": [
 								{
 									"fileName": "geo-zone.ts",
-									"line": 20,
+									"line": 19,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L20"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L19"
 								}
 							],
 							"type": {
@@ -2405,7 +2390,7 @@
 						},
 						{
 							"id": 5737,
-							"name": "city",
+							"name": "province_code",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {
@@ -2414,9 +2399,9 @@
 							"sources": [
 								{
 									"fileName": "geo-zone.ts",
-									"line": 21,
+									"line": 20,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L21"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L20"
 								}
 							],
 							"type": {
@@ -2431,6 +2416,32 @@
 						},
 						{
 							"id": 5738,
+							"name": "city",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "geo-zone.ts",
+									"line": 21,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L21"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+									"qualifiedName": "TextProperty"
+								},
+								"name": "TextProperty",
+								"package": "@medusajs/utils"
+							}
+						},
+						{
+							"id": 5739,
 							"name": "postal_expression",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2442,7 +2453,7 @@
 									"fileName": "geo-zone.ts",
 									"line": 22,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L22"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L22"
 								}
 							],
 							"type": {
@@ -2456,7 +2467,7 @@
 							}
 						},
 						{
-							"id": 5739,
+							"id": 5740,
 							"name": "service_zone",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2466,7 +2477,7 @@
 									"fileName": "geo-zone.ts",
 									"line": 23,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L23"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L23"
 								}
 							],
 							"type": {
@@ -2478,7 +2489,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5743,
+										"target": 5744,
 										"name": "ServiceZone"
 									}
 								],
@@ -2487,7 +2498,7 @@
 							}
 						},
 						{
-							"id": 5742,
+							"id": 5743,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2499,7 +2510,7 @@
 									"fileName": "geo-zone.ts",
 									"line": 24,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L24"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L24"
 								}
 							],
 							"type": {
@@ -2517,14 +2528,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								5733,
 								5734,
 								5735,
 								5736,
 								5737,
 								5738,
 								5739,
-								5742
+								5740,
+								5743
 							]
 						}
 					],
@@ -2533,14 +2544,14 @@
 							"fileName": "geo-zone.ts",
 							"line": 16,
 							"character": 28,
-							"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L16"
+							"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L16"
 						}
 					]
 				}
 			}
 		},
 		{
-			"id": 5730,
+			"id": 5731,
 			"name": "GeoZone",
 			"variant": "declaration",
 			"kind": 32,
@@ -2552,7 +2563,7 @@
 					"fileName": "geo-zone.ts",
 					"line": 27,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/geo-zone.ts#L27"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/geo-zone.ts#L27"
 				}
 			],
 			"type": {
@@ -2571,7 +2582,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 5731,
+								"target": 5732,
 								"name": "GeoZoneSchema",
 								"package": "@medusajs/fulfillment"
 							}
@@ -2590,7 +2601,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5744,
+			"id": 5745,
 			"name": "ServiceZoneSchema",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2600,20 +2611,20 @@
 					"fileName": "service-zone.ts",
 					"line": 18,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L18"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L18"
 				}
 			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5745,
+					"id": 5746,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5746,
+							"id": 5747,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2623,7 +2634,7 @@
 									"fileName": "service-zone.ts",
 									"line": 19,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L19"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L19"
 								}
 							],
 							"type": {
@@ -2648,7 +2659,7 @@
 							}
 						},
 						{
-							"id": 5747,
+							"id": 5748,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2658,7 +2669,7 @@
 									"fileName": "service-zone.ts",
 									"line": 20,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L20"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L20"
 								}
 							],
 							"type": {
@@ -2672,7 +2683,7 @@
 							}
 						},
 						{
-							"id": 5748,
+							"id": 5749,
 							"name": "fulfillment_set",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2682,7 +2693,7 @@
 									"fileName": "service-zone.ts",
 									"line": 21,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L21"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L21"
 								}
 							],
 							"type": {
@@ -2694,7 +2705,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5721,
+										"target": 5722,
 										"name": "FulfillmentSet"
 									}
 								],
@@ -2703,7 +2714,7 @@
 							}
 						},
 						{
-							"id": 5751,
+							"id": 5752,
 							"name": "geo_zones",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2713,7 +2724,7 @@
 									"fileName": "service-zone.ts",
 									"line": 22,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L22"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L22"
 								}
 							],
 							"type": {
@@ -2725,7 +2736,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5730,
+										"target": 5731,
 										"name": "GeoZone"
 									}
 								],
@@ -2734,7 +2745,7 @@
 							}
 						},
 						{
-							"id": 5754,
+							"id": 5755,
 							"name": "shipping_options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2744,7 +2755,7 @@
 									"fileName": "service-zone.ts",
 									"line": 23,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L23"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L23"
 								}
 							],
 							"type": {
@@ -2756,7 +2767,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5758,
+										"target": 5759,
 										"name": "ShippingOption"
 									}
 								],
@@ -2765,7 +2776,7 @@
 							}
 						},
 						{
-							"id": 5757,
+							"id": 5758,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2777,7 +2788,7 @@
 									"fileName": "service-zone.ts",
 									"line": 24,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L24"
+									"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L24"
 								}
 							],
 							"type": {
@@ -2795,12 +2806,12 @@
 						{
 							"title": "Properties",
 							"children": [
-								5746,
 								5747,
 								5748,
-								5751,
-								5754,
-								5757
+								5749,
+								5752,
+								5755,
+								5758
 							]
 						}
 					],
@@ -2809,14 +2820,14 @@
 							"fileName": "service-zone.ts",
 							"line": 18,
 							"character": 32,
-							"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L18"
+							"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L18"
 						}
 					]
 				}
 			}
 		},
 		{
-			"id": 5743,
+			"id": 5744,
 			"name": "ServiceZone",
 			"variant": "declaration",
 			"kind": 32,
@@ -2828,7 +2839,7 @@
 					"fileName": "service-zone.ts",
 					"line": 27,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/service-zone.ts#L27"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/service-zone.ts#L27"
 				}
 			],
 			"type": {
@@ -2847,7 +2858,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 5744,
+								"target": 5745,
 								"name": "ServiceZoneSchema",
 								"package": "@medusajs/fulfillment"
 							}
@@ -2866,7 +2877,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5858,
+			"id": 5859,
 			"name": "ShippingOptionRule",
 			"variant": "declaration",
 			"kind": 32,
@@ -2878,7 +2889,7 @@
 					"fileName": "shipping-option-rule.ts",
 					"line": 4,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L4"
 				}
 			],
 			"type": {
@@ -2898,14 +2909,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5859,
+									"id": 5860,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5860,
+											"id": 5861,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2923,7 +2934,7 @@
 													"fileName": "shipping-option-rule.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L5"
 												}
 											],
 											"type": {
@@ -2949,7 +2960,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5861,
+											"id": 5862,
 											"name": "attribute",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2958,7 +2969,18 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "The name of a property or table that the rule applies to.\n\n@example customer_group"
+														"text": "The name of a property or table that the rule applies to."
+													}
+												],
+												"blockTags": [
+													{
+														"tag": "@example",
+														"content": [
+															{
+																"kind": "text",
+																"text": "customer_group"
+															}
+														]
 													}
 												]
 											},
@@ -2967,7 +2989,7 @@
 													"fileName": "shipping-option-rule.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L6"
 												}
 											],
 											"type": {
@@ -2982,7 +3004,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5862,
+											"id": 5863,
 											"name": "operator",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2991,7 +3013,18 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "The operator used in the condition.\n\n@example eq"
+														"text": "The operator used in the condition."
+													}
+												],
+												"blockTags": [
+													{
+														"tag": "@example",
+														"content": [
+															{
+																"kind": "text",
+																"text": "eq"
+															}
+														]
 													}
 												]
 											},
@@ -3000,7 +3033,7 @@
 													"fileName": "shipping-option-rule.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L7"
 												}
 											],
 											"type": {
@@ -3030,7 +3063,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5863,
+											"id": 5864,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3050,7 +3083,7 @@
 													"fileName": "shipping-option-rule.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L8"
 												}
 											],
 											"type": {
@@ -3065,7 +3098,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5864,
+											"id": 5865,
 											"name": "shipping_option",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3086,7 +3119,7 @@
 													"fileName": "shipping-option-rule.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L9"
 												}
 											],
 											"type": {
@@ -3098,7 +3131,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5758,
+														"target": 5759,
 														"name": "ShippingOption"
 													}
 												],
@@ -3112,11 +3145,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												5860,
 												5861,
 												5862,
 												5863,
-												5864
+												5864,
+												5865
 											]
 										}
 									],
@@ -3125,7 +3158,7 @@
 											"fileName": "shipping-option-rule.ts",
 											"line": 4,
 											"character": 71,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-rule.ts#L4"
 										}
 									]
 								}
@@ -3145,7 +3178,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5895,
+			"id": 5896,
 			"name": "ShippingOptionType",
 			"variant": "declaration",
 			"kind": 32,
@@ -3157,7 +3190,7 @@
 					"fileName": "shipping-option-type.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L5"
 				}
 			],
 			"type": {
@@ -3177,14 +3210,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5896,
+									"id": 5897,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5897,
+											"id": 5898,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3202,7 +3235,7 @@
 													"fileName": "shipping-option-type.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L6"
 												}
 											],
 											"type": {
@@ -3228,7 +3261,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5898,
+											"id": 5899,
 											"name": "label",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3246,7 +3279,7 @@
 													"fileName": "shipping-option-type.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L7"
 												}
 											],
 											"type": {
@@ -3261,7 +3294,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5899,
+											"id": 5900,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3281,7 +3314,7 @@
 													"fileName": "shipping-option-type.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L8"
 												}
 											],
 											"type": {
@@ -3296,7 +3329,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5900,
+											"id": 5901,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3314,7 +3347,7 @@
 													"fileName": "shipping-option-type.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L9"
 												}
 											],
 											"type": {
@@ -3329,7 +3362,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5901,
+											"id": 5902,
 											"name": "shipping_options",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3350,7 +3383,7 @@
 													"fileName": "shipping-option-type.ts",
 													"line": 10,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L10"
 												}
 											],
 											"type": {
@@ -3362,7 +3395,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5758,
+														"target": 5759,
 														"name": "ShippingOption"
 													}
 												],
@@ -3376,11 +3409,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												5897,
 												5898,
 												5899,
 												5900,
-												5901
+												5901,
+												5902
 											]
 										}
 									],
@@ -3389,7 +3422,7 @@
 											"fileName": "shipping-option-type.ts",
 											"line": 5,
 											"character": 71,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option-type.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option-type.ts#L5"
 										}
 									]
 								}
@@ -3409,7 +3442,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5758,
+			"id": 5759,
 			"name": "ShippingOption",
 			"variant": "declaration",
 			"kind": 32,
@@ -3421,7 +3454,7 @@
 					"fileName": "shipping-option.ts",
 					"line": 10,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L10"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L10"
 				}
 			],
 			"type": {
@@ -3441,14 +3474,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5759,
+									"id": 5760,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5760,
+											"id": 5761,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3466,7 +3499,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L12"
 												}
 											],
 											"type": {
@@ -3492,7 +3525,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5761,
+											"id": 5762,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3510,7 +3543,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L13"
 												}
 											],
 											"type": {
@@ -3525,7 +3558,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5762,
+											"id": 5763,
 											"name": "price_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3543,7 +3576,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L14"
 												}
 											],
 											"type": {
@@ -3573,7 +3606,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5763,
+											"id": 5764,
 											"name": "data",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3593,7 +3626,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L17"
 												}
 											],
 											"type": {
@@ -3608,7 +3641,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5764,
+											"id": 5765,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3628,7 +3661,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L18"
 												}
 											],
 											"type": {
@@ -3643,7 +3676,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5765,
+											"id": 5766,
 											"name": "service_zone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3664,7 +3697,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L19"
 												}
 											],
 											"type": {
@@ -3676,7 +3709,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5743,
+														"target": 5744,
 														"name": "ServiceZone"
 													}
 												],
@@ -3686,7 +3719,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5768,
+											"id": 5769,
 											"name": "shipping_profile",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3709,7 +3742,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L22"
 												}
 											],
 											"type": {
@@ -3721,7 +3754,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5932,
+														"target": 5933,
 														"name": "ShippingProfile"
 													}
 												],
@@ -3731,7 +3764,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5789,
+											"id": 5790,
 											"name": "provider",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3754,7 +3787,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 27,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L27"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L27"
 												}
 											],
 											"type": {
@@ -3766,7 +3799,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5717,
+														"target": 5718,
 														"name": "FulfillmentProvider"
 													}
 												],
@@ -3776,7 +3809,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5800,
+											"id": 5801,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3797,7 +3830,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 28,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L28"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L28"
 												}
 											],
 											"type": {
@@ -3809,7 +3842,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5895,
+														"target": 5896,
 														"name": "ShippingOptionType"
 													}
 												],
@@ -3819,7 +3852,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5811,
+											"id": 5812,
 											"name": "rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3840,7 +3873,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 33,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L33"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L33"
 												}
 											],
 											"type": {
@@ -3852,7 +3885,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5858,
+														"target": 5859,
 														"name": "ShippingOptionRule"
 													}
 												],
@@ -3862,7 +3895,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5822,
+											"id": 5823,
 											"name": "fulfillments",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3883,7 +3916,7 @@
 													"fileName": "shipping-option.ts",
 													"line": 36,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L36"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L36"
 												}
 											],
 											"type": {
@@ -3895,7 +3928,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5493,
+														"target": 5494,
 														"name": "Fulfillment"
 													}
 												],
@@ -3909,17 +3942,17 @@
 										{
 											"title": "Properties",
 											"children": [
-												5760,
 												5761,
 												5762,
 												5763,
 												5764,
 												5765,
-												5768,
-												5789,
-												5800,
-												5811,
-												5822
+												5766,
+												5769,
+												5790,
+												5801,
+												5812,
+												5823
 											]
 										}
 									],
@@ -3928,7 +3961,7 @@
 											"fileName": "shipping-option.ts",
 											"line": 11,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-option.ts#L11"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-option.ts#L11"
 										}
 									]
 								}
@@ -3948,7 +3981,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5932,
+			"id": 5933,
 			"name": "ShippingProfile",
 			"variant": "declaration",
 			"kind": 32,
@@ -3960,7 +3993,7 @@
 					"fileName": "shipping-profile.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L5"
 				}
 			],
 			"type": {
@@ -3980,14 +4013,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 5933,
+									"id": 5934,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 5934,
+											"id": 5935,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4005,7 +4038,7 @@
 													"fileName": "shipping-profile.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L7"
 												}
 											],
 											"type": {
@@ -4031,7 +4064,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5935,
+											"id": 5936,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4049,7 +4082,7 @@
 													"fileName": "shipping-profile.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L8"
 												}
 											],
 											"type": {
@@ -4064,7 +4097,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5936,
+											"id": 5937,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4082,7 +4115,7 @@
 													"fileName": "shipping-profile.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L9"
 												}
 											],
 											"type": {
@@ -4097,7 +4130,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5937,
+											"id": 5938,
 											"name": "shipping_options",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4118,7 +4151,7 @@
 													"fileName": "shipping-profile.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L10"
 												}
 											],
 											"type": {
@@ -4130,7 +4163,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 5758,
+														"target": 5759,
 														"name": "ShippingOption"
 													}
 												],
@@ -4140,7 +4173,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5968,
+											"id": 5969,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4160,7 +4193,7 @@
 													"fileName": "shipping-profile.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L13"
 												}
 											],
 											"type": {
@@ -4179,11 +4212,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												5934,
 												5935,
 												5936,
 												5937,
-												5968
+												5938,
+												5969
 											]
 										}
 									],
@@ -4192,7 +4225,7 @@
 											"fileName": "shipping-profile.ts",
 											"line": 6,
 											"character": 30,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/fulfillment/src/models/shipping-profile.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/fulfillment/src/models/shipping-profile.ts#L6"
 										}
 									]
 								}
@@ -4216,325 +4249,321 @@
 		{
 			"title": "Type Aliases",
 			"children": [
-				5731,
-				5744
+				5732,
+				5745
 			]
 		},
 		{
 			"title": "Variables",
 			"children": [
-				5479,
-				5630,
-				5675,
-				5717,
-				5721,
-				5493,
-				5730,
-				5743,
-				5858,
-				5895,
-				5758,
-				5932
+				5480,
+				5631,
+				5676,
+				5718,
+				5722,
+				5494,
+				5731,
+				5744,
+				5859,
+				5896,
+				5759,
+				5933
 			]
 		}
 	],
 	"packageName": "@medusajs/fulfillment",
 	"symbolIdMap": {
-		"5478": {
+		"5479": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"5479": {
+		"5480": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "FulfillmentAddress"
 		},
-		"5480": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object"
-		},
 		"5481": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5482": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.company"
+			"qualifiedName": "__object.id"
 		},
 		"5483": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.first_name"
+			"qualifiedName": "__object.company"
 		},
 		"5484": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.last_name"
+			"qualifiedName": "__object.first_name"
 		},
 		"5485": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_1"
+			"qualifiedName": "__object.last_name"
 		},
 		"5486": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_2"
+			"qualifiedName": "__object.address_1"
 		},
 		"5487": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.city"
+			"qualifiedName": "__object.address_2"
 		},
 		"5488": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.country_code"
+			"qualifiedName": "__object.city"
 		},
 		"5489": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.province"
+			"qualifiedName": "__object.country_code"
 		},
 		"5490": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.postal_code"
+			"qualifiedName": "__object.province"
 		},
 		"5491": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.phone"
+			"qualifiedName": "__object.postal_code"
 		},
 		"5492": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.phone"
 		},
 		"5493": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "Fulfillment"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5494": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "Fulfillment"
 		},
 		"5495": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5496": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.location_id"
+			"qualifiedName": "__object.id"
 		},
 		"5497": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.packed_at"
+			"qualifiedName": "__object.location_id"
 		},
 		"5498": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipped_at"
+			"qualifiedName": "__object.packed_at"
 		},
 		"5499": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.marked_shipped_by"
+			"qualifiedName": "__object.shipped_at"
 		},
 		"5500": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.created_by"
+			"qualifiedName": "__object.marked_shipped_by"
 		},
 		"5501": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivered_at"
+			"qualifiedName": "__object.created_by"
 		},
 		"5502": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.canceled_at"
+			"qualifiedName": "__object.delivered_at"
 		},
 		"5503": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.canceled_at"
 		},
 		"5504": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.requires_shipping"
+			"qualifiedName": "__object.data"
 		},
 		"5505": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.items"
+			"qualifiedName": "__object.requires_shipping"
 		},
 		"5506": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.items"
 		},
 		"5507": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5508": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5509": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5510": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.title"
+			"qualifiedName": "__object.id"
 		},
 		"5511": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.sku"
+			"qualifiedName": "__object.title"
 		},
 		"5512": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.barcode"
+			"qualifiedName": "__object.sku"
 		},
 		"5513": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.quantity"
+			"qualifiedName": "__object.barcode"
 		},
 		"5514": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.line_item_id"
+			"qualifiedName": "__object.quantity"
 		},
 		"5515": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.inventory_item_id"
+			"qualifiedName": "__object.line_item_id"
 		},
 		"5516": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.fulfillment"
+			"qualifiedName": "__object.inventory_item_id"
 		},
 		"5517": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillment"
 		},
 		"5518": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
 			"qualifiedName": "__function"
 		},
 		"5519": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.labels"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "__function"
 		},
 		"5520": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.labels"
 		},
 		"5521": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5522": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5523": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5524": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.tracking_number"
+			"qualifiedName": "__object.id"
 		},
 		"5525": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.tracking_url"
+			"qualifiedName": "__object.tracking_number"
 		},
 		"5526": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.label_url"
+			"qualifiedName": "__object.tracking_url"
 		},
 		"5527": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.fulfillment"
+			"qualifiedName": "__object.label_url"
 		},
 		"5528": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillment"
 		},
 		"5529": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
 			"qualifiedName": "__function"
 		},
 		"5530": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.provider"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "__function"
 		},
 		"5531": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5532": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5533": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5534": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5535": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.is_enabled"
+			"qualifiedName": "__object.id"
 		},
 		"5536": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "__object.is_enabled"
 		},
 		"5537": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5538": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5539": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5540": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.is_enabled"
+			"qualifiedName": "__object.id"
 		},
 		"5541": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipping_option"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "__object.is_enabled"
 		},
 		"5542": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5543": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5544": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5545": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5546": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5547": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5548": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5549": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5550": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5551": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5552": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4542,11 +4571,11 @@
 		},
 		"5553": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5554": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5555": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4562,11 +4591,11 @@
 		},
 		"5558": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5559": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5560": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4582,11 +4611,11 @@
 		},
 		"5563": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__function"
 		},
 		"5564": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5565": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4594,11 +4623,11 @@
 		},
 		"5566": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__function"
 		},
 		"5567": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5568": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4606,18 +4635,18 @@
 		},
 		"5569": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"qualifiedName": "__function"
 		},
 		"5570": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5571": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5572": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5573": {
@@ -4625,36 +4654,36 @@
 			"qualifiedName": "__function"
 		},
 		"5574": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5575": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5576": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5577": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5578": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5579": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5580": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5581": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5582": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4662,11 +4691,11 @@
 		},
 		"5583": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5584": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5585": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4674,11 +4703,11 @@
 		},
 		"5586": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5587": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5588": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4686,11 +4715,11 @@
 		},
 		"5589": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__function"
 		},
 		"5590": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5591": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4698,11 +4727,11 @@
 		},
 		"5592": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__function"
 		},
 		"5593": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5594": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -4710,243 +4739,243 @@
 		},
 		"5595": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"qualifiedName": "__function"
 		},
 		"5596": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5597": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5598": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivery_address"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5599": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.delivery_address"
 		},
 		"5600": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5601": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5602": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5603": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.company"
+			"qualifiedName": "__object.id"
 		},
 		"5604": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.first_name"
+			"qualifiedName": "__object.company"
 		},
 		"5605": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.last_name"
+			"qualifiedName": "__object.first_name"
 		},
 		"5606": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_1"
+			"qualifiedName": "__object.last_name"
 		},
 		"5607": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_2"
+			"qualifiedName": "__object.address_1"
 		},
 		"5608": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.city"
+			"qualifiedName": "__object.address_2"
 		},
 		"5609": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.country_code"
+			"qualifiedName": "__object.city"
 		},
 		"5610": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.province"
+			"qualifiedName": "__object.country_code"
 		},
 		"5611": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.postal_code"
+			"qualifiedName": "__object.province"
 		},
 		"5612": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.phone"
+			"qualifiedName": "__object.postal_code"
 		},
 		"5613": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.phone"
 		},
 		"5614": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5615": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
 			"qualifiedName": "__function"
 		},
 		"5616": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__function"
 		},
 		"5617": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5618": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.company"
+			"qualifiedName": "__object.id"
 		},
 		"5619": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.first_name"
+			"qualifiedName": "__object.company"
 		},
 		"5620": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.last_name"
+			"qualifiedName": "__object.first_name"
 		},
 		"5621": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_1"
+			"qualifiedName": "__object.last_name"
 		},
 		"5622": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.address_2"
+			"qualifiedName": "__object.address_1"
 		},
 		"5623": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.city"
+			"qualifiedName": "__object.address_2"
 		},
 		"5624": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.country_code"
+			"qualifiedName": "__object.city"
 		},
 		"5625": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.province"
+			"qualifiedName": "__object.country_code"
 		},
 		"5626": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.postal_code"
+			"qualifiedName": "__object.province"
 		},
 		"5627": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.phone"
+			"qualifiedName": "__object.postal_code"
 		},
 		"5628": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.phone"
 		},
 		"5629": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "__object.metadata"
 		},
 		"5630": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "FulfillmentItem"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5631": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "FulfillmentItem"
 		},
 		"5632": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5633": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.title"
+			"qualifiedName": "__object.id"
 		},
 		"5634": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.sku"
+			"qualifiedName": "__object.title"
 		},
 		"5635": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.barcode"
+			"qualifiedName": "__object.sku"
 		},
 		"5636": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.quantity"
+			"qualifiedName": "__object.barcode"
 		},
 		"5637": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.line_item_id"
+			"qualifiedName": "__object.quantity"
 		},
 		"5638": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.inventory_item_id"
+			"qualifiedName": "__object.line_item_id"
 		},
 		"5639": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__object.fulfillment"
+			"qualifiedName": "__object.inventory_item_id"
 		},
 		"5640": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillment"
 		},
 		"5641": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
 			"qualifiedName": "__function"
 		},
 		"5642": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "__function"
 		},
 		"5643": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5644": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.location_id"
+			"qualifiedName": "__object.id"
 		},
 		"5645": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.packed_at"
+			"qualifiedName": "__object.location_id"
 		},
 		"5646": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipped_at"
+			"qualifiedName": "__object.packed_at"
 		},
 		"5647": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.marked_shipped_by"
+			"qualifiedName": "__object.shipped_at"
 		},
 		"5648": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.created_by"
+			"qualifiedName": "__object.marked_shipped_by"
 		},
 		"5649": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivered_at"
+			"qualifiedName": "__object.created_by"
 		},
 		"5650": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.canceled_at"
+			"qualifiedName": "__object.delivered_at"
 		},
 		"5651": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.canceled_at"
 		},
 		"5652": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.requires_shipping"
+			"qualifiedName": "__object.data"
 		},
 		"5653": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.items"
+			"qualifiedName": "__object.requires_shipping"
 		},
 		"5654": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.items"
 		},
 		"5655": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -4954,11 +4983,11 @@
 		},
 		"5656": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.labels"
+			"qualifiedName": "__function"
 		},
 		"5657": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.labels"
 		},
 		"5658": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -4966,11 +4995,11 @@
 		},
 		"5659": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5660": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5661": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -4986,11 +5015,11 @@
 		},
 		"5664": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipping_option"
+			"qualifiedName": "__function"
 		},
 		"5665": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5666": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5006,11 +5035,11 @@
 		},
 		"5669": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivery_address"
+			"qualifiedName": "__function"
 		},
 		"5670": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.delivery_address"
 		},
 		"5671": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5026,95 +5055,95 @@
 		},
 		"5674": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5675": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "FulfillmentLabel"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5676": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "FulfillmentLabel"
 		},
 		"5677": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5678": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.tracking_number"
+			"qualifiedName": "__object.id"
 		},
 		"5679": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.tracking_url"
+			"qualifiedName": "__object.tracking_number"
 		},
 		"5680": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.label_url"
+			"qualifiedName": "__object.tracking_url"
 		},
 		"5681": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__object.fulfillment"
+			"qualifiedName": "__object.label_url"
 		},
 		"5682": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillment"
 		},
 		"5683": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
 			"qualifiedName": "__function"
 		},
 		"5684": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "__function"
 		},
 		"5685": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5686": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.location_id"
+			"qualifiedName": "__object.id"
 		},
 		"5687": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.packed_at"
+			"qualifiedName": "__object.location_id"
 		},
 		"5688": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipped_at"
+			"qualifiedName": "__object.packed_at"
 		},
 		"5689": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.marked_shipped_by"
+			"qualifiedName": "__object.shipped_at"
 		},
 		"5690": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.created_by"
+			"qualifiedName": "__object.marked_shipped_by"
 		},
 		"5691": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivered_at"
+			"qualifiedName": "__object.created_by"
 		},
 		"5692": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.canceled_at"
+			"qualifiedName": "__object.delivered_at"
 		},
 		"5693": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.canceled_at"
 		},
 		"5694": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.requires_shipping"
+			"qualifiedName": "__object.data"
 		},
 		"5695": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.items"
+			"qualifiedName": "__object.requires_shipping"
 		},
 		"5696": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.items"
 		},
 		"5697": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5122,11 +5151,11 @@
 		},
 		"5698": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.labels"
+			"qualifiedName": "__function"
 		},
 		"5699": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.labels"
 		},
 		"5700": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5134,11 +5163,11 @@
 		},
 		"5701": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5702": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5703": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5154,11 +5183,11 @@
 		},
 		"5706": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipping_option"
+			"qualifiedName": "__function"
 		},
 		"5707": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5708": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5174,11 +5203,11 @@
 		},
 		"5711": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivery_address"
+			"qualifiedName": "__function"
 		},
 		"5712": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.delivery_address"
 		},
 		"5713": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5194,51 +5223,51 @@
 		},
 		"5716": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5717": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "FulfillmentProvider"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5718": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "FulfillmentProvider"
 		},
 		"5719": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5720": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.is_enabled"
+			"qualifiedName": "__object.id"
 		},
 		"5721": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "FulfillmentSet"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "__object.is_enabled"
 		},
 		"5722": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "FulfillmentSet"
 		},
 		"5723": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5724": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5725": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__object.name"
 		},
 		"5726": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object.service_zones"
+			"qualifiedName": "__object.type"
 		},
 		"5727": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zones"
 		},
 		"5728": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
@@ -5246,51 +5275,51 @@
 		},
 		"5729": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5730": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "GeoZone"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5731": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "GeoZoneSchema"
+			"qualifiedName": "GeoZone"
 		},
 		"5732": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "GeoZoneSchema"
 		},
 		"5733": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.id"
+			"qualifiedName": "__type"
 		},
 		"5734": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.type"
+			"qualifiedName": "__type.id"
 		},
 		"5735": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.country_code"
+			"qualifiedName": "__type.type"
 		},
 		"5736": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.province_code"
+			"qualifiedName": "__type.country_code"
 		},
 		"5737": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.city"
+			"qualifiedName": "__type.province_code"
 		},
 		"5738": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.postal_expression"
+			"qualifiedName": "__type.city"
 		},
 		"5739": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.service_zone"
+			"qualifiedName": "__type.postal_expression"
 		},
 		"5740": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.service_zone"
 		},
 		"5741": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
@@ -5298,35 +5327,35 @@
 		},
 		"5742": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type"
 		},
 		"5743": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "ServiceZone"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "__type.metadata"
 		},
 		"5744": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "ServiceZoneSchema"
+			"qualifiedName": "ServiceZone"
 		},
 		"5745": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "ServiceZoneSchema"
 		},
 		"5746": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.id"
+			"qualifiedName": "__type"
 		},
 		"5747": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.name"
+			"qualifiedName": "__type.id"
 		},
 		"5748": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.fulfillment_set"
+			"qualifiedName": "__type.name"
 		},
 		"5749": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.fulfillment_set"
 		},
 		"5750": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
@@ -5334,11 +5363,11 @@
 		},
 		"5751": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.geo_zones"
+			"qualifiedName": "__type"
 		},
 		"5752": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.geo_zones"
 		},
 		"5753": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
@@ -5346,11 +5375,11 @@
 		},
 		"5754": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.shipping_options"
+			"qualifiedName": "__type"
 		},
 		"5755": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.shipping_options"
 		},
 		"5756": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
@@ -5358,43 +5387,43 @@
 		},
 		"5757": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type"
 		},
 		"5758": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "__type.metadata"
 		},
 		"5759": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "ShippingOption"
 		},
 		"5760": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5761": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5762": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5763": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5764": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5765": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5766": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5767": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5402,39 +5431,39 @@
 		},
 		"5768": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5769": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5770": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5771": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5772": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5773": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5774": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__object.name"
 		},
 		"5775": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.shipping_options"
+			"qualifiedName": "__object.type"
 		},
 		"5776": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_options"
 		},
 		"5777": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
@@ -5442,39 +5471,39 @@
 		},
 		"5778": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5779": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5780": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5781": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5782": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5783": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5784": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__object.name"
 		},
 		"5785": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.shipping_options"
+			"qualifiedName": "__object.type"
 		},
 		"5786": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_options"
 		},
 		"5787": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
@@ -5482,203 +5511,203 @@
 		},
 		"5788": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5789": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5790": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5791": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5792": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5793": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5794": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.is_enabled"
+			"qualifiedName": "__object.id"
 		},
 		"5795": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "__object.is_enabled"
 		},
 		"5796": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5797": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5798": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5799": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "__object.is_enabled"
+			"qualifiedName": "__object.id"
 		},
 		"5800": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "__object.is_enabled"
 		},
 		"5801": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5802": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5803": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5804": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5805": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.label"
+			"qualifiedName": "__object.id"
 		},
 		"5806": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.description"
+			"qualifiedName": "__object.label"
 		},
 		"5807": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.code"
+			"qualifiedName": "__object.description"
 		},
 		"5808": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.shipping_options"
+			"qualifiedName": "__object.code"
 		},
 		"5809": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_options"
 		},
 		"5810": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "__function"
 		},
 		"5811": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "__function"
 		},
 		"5812": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5813": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5814": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5815": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5816": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"qualifiedName": "__object.id"
 		},
 		"5817": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.operator"
+			"qualifiedName": "__object.attribute"
 		},
 		"5818": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.value"
+			"qualifiedName": "__object.operator"
 		},
 		"5819": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.shipping_option"
+			"qualifiedName": "__object.value"
 		},
 		"5820": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5821": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"5822": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"5823": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5824": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5825": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5826": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5827": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.location_id"
+			"qualifiedName": "__object.id"
 		},
 		"5828": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.packed_at"
+			"qualifiedName": "__object.location_id"
 		},
 		"5829": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipped_at"
+			"qualifiedName": "__object.packed_at"
 		},
 		"5830": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.marked_shipped_by"
+			"qualifiedName": "__object.shipped_at"
 		},
 		"5831": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.created_by"
+			"qualifiedName": "__object.marked_shipped_by"
 		},
 		"5832": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivered_at"
+			"qualifiedName": "__object.created_by"
 		},
 		"5833": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.canceled_at"
+			"qualifiedName": "__object.delivered_at"
 		},
 		"5834": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.canceled_at"
 		},
 		"5835": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.requires_shipping"
+			"qualifiedName": "__object.data"
 		},
 		"5836": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.items"
+			"qualifiedName": "__object.requires_shipping"
 		},
 		"5837": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.items"
 		},
 		"5838": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5686,11 +5715,11 @@
 		},
 		"5839": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.labels"
+			"qualifiedName": "__function"
 		},
 		"5840": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.labels"
 		},
 		"5841": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5698,11 +5727,11 @@
 		},
 		"5842": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5843": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5844": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5718,11 +5747,11 @@
 		},
 		"5847": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.shipping_option"
+			"qualifiedName": "__function"
 		},
 		"5848": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5849": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5738,11 +5767,11 @@
 		},
 		"5852": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.delivery_address"
+			"qualifiedName": "__function"
 		},
 		"5853": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.delivery_address"
 		},
 		"5854": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
@@ -5758,75 +5787,75 @@
 		},
 		"5857": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"5858": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "ShippingOptionRule"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"5859": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "ShippingOptionRule"
 		},
 		"5860": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5861": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"qualifiedName": "__object.id"
 		},
 		"5862": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.operator"
+			"qualifiedName": "__object.attribute"
 		},
 		"5863": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.value"
+			"qualifiedName": "__object.operator"
 		},
 		"5864": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__object.shipping_option"
+			"qualifiedName": "__object.value"
 		},
 		"5865": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_option"
 		},
 		"5866": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"5867": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"5868": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5869": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5870": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5871": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5872": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5873": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5874": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5875": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5834,11 +5863,11 @@
 		},
 		"5876": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5877": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5878": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5854,11 +5883,11 @@
 		},
 		"5881": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5882": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5883": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5874,11 +5903,11 @@
 		},
 		"5886": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__function"
 		},
 		"5887": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5888": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5886,11 +5915,11 @@
 		},
 		"5889": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__function"
 		},
 		"5890": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5891": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5898,83 +5927,83 @@
 		},
 		"5892": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"qualifiedName": "__function"
 		},
 		"5893": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5894": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5895": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "ShippingOptionType"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5896": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "ShippingOptionType"
 		},
 		"5897": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5898": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.label"
+			"qualifiedName": "__object.id"
 		},
 		"5899": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.description"
+			"qualifiedName": "__object.label"
 		},
 		"5900": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.code"
+			"qualifiedName": "__object.description"
 		},
 		"5901": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__object.shipping_options"
+			"qualifiedName": "__object.code"
 		},
 		"5902": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_options"
 		},
 		"5903": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "__function"
 		},
 		"5904": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "__function"
 		},
 		"5905": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5906": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5907": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5908": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5909": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5910": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5911": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5912": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -5982,11 +6011,11 @@
 		},
 		"5913": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5914": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5915": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6002,11 +6031,11 @@
 		},
 		"5918": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5919": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5920": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6022,11 +6051,11 @@
 		},
 		"5923": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__function"
 		},
 		"5924": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5925": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6034,11 +6063,11 @@
 		},
 		"5926": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__function"
 		},
 		"5927": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5928": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6046,79 +6075,79 @@
 		},
 		"5929": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"qualifiedName": "__function"
 		},
 		"5930": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5931": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5932": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
 		},
 		"5933": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "ShippingProfile"
 		},
 		"5934": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5935": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5936": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__object.name"
 		},
 		"5937": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__object.shipping_options"
+			"qualifiedName": "__object.type"
 		},
 		"5938": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_options"
 		},
 		"5939": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "__function"
 		},
 		"5940": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "__function"
 		},
 		"5941": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"5942": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.id"
 		},
 		"5943": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.price_type"
+			"qualifiedName": "__object.name"
 		},
 		"5944": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.data"
+			"qualifiedName": "__object.price_type"
 		},
 		"5945": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.data"
 		},
 		"5946": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.service_zone"
+			"qualifiedName": "__object.metadata"
 		},
 		"5947": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.service_zone"
 		},
 		"5948": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6126,11 +6155,11 @@
 		},
 		"5949": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.shipping_profile"
+			"qualifiedName": "__function"
 		},
 		"5950": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.shipping_profile"
 		},
 		"5951": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6146,11 +6175,11 @@
 		},
 		"5954": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.provider"
+			"qualifiedName": "__function"
 		},
 		"5955": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider"
 		},
 		"5956": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6166,11 +6195,11 @@
 		},
 		"5959": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.type"
+			"qualifiedName": "__function"
 		},
 		"5960": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.type"
 		},
 		"5961": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6178,11 +6207,11 @@
 		},
 		"5962": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__function"
 		},
 		"5963": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.rules"
 		},
 		"5964": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
@@ -6190,17 +6219,21 @@
 		},
 		"5965": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__object.fulfillments"
+			"qualifiedName": "__function"
 		},
 		"5966": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.fulfillments"
 		},
 		"5967": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "__function"
 		},
 		"5968": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "__function"
+		},
+		"5969": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "__object.metadata"
 		}
@@ -6210,7 +6243,7 @@
 			"1": "../../../../packages/modules/fulfillment/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 5478
+			"1": 5479
 		}
 	}
 }

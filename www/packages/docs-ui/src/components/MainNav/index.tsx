@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx"
-import React from "react"
+import React, { useMemo } from "react"
 import { Button } from "@/components/Button"
 import { GITHUB_ISSUES_LINK } from "@/constants"
 import { SearchModalOpener } from "@/components/Search/ModalOpener"
@@ -27,8 +27,12 @@ type MainNavProps = {
 export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
   const { logo, logoUrl, helpNavItem } = useMainNav()
   const { setMobileSidebarOpen, isSidebarShown } = useSidebar()
-  const { config } = useSiteConfig()
+  const { config, isInProduct } = useSiteConfig()
   const { showCollapsedNavbar } = useLayout()
+
+  const collapseNavbar = useMemo(() => {
+    return showCollapsedNavbar && !isInProduct
+  }, [showCollapsedNavbar, isInProduct])
 
   return (
     <div
@@ -38,7 +42,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
       <div
         className={clsx(
           "flex justify-between items-center px-docs_1 w-full gap-docs_0.5",
-          showCollapsedNavbar && "border-b border-medusa-border-base"
+          collapseNavbar && "border-b border-medusa-border-base"
         )}
         data-testid="main-nav-content"
       >
@@ -57,62 +61,64 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
             {logo || <ColoredMedusaIcon variant="subtle" />}
           </Link>
         </div>
-        {!showCollapsedNavbar && (
+        {!collapseNavbar && (
           <MainNavItems className={clsx("flex-grow", itemsClassName)} />
         )}
-        <div
-          className={clsx(
-            "flex items-center my-docs_0.75",
-            showCollapsedNavbar && "flex-grow justify-between"
-          )}
-          data-testid="main-nav-actions"
-        >
-          <div className="lg:flex items-center gap-docs_0.25 text-medusa-fg-subtle hidden">
-            <MainNavVersion />
-            <MainNavItemDropdown
-              item={
-                helpNavItem || {
-                  type: "dropdown",
-                  title: "Help",
-                  children: [
-                    {
-                      type: "link",
-                      title: "Troubleshooting",
-                      link: "https://docs.medusajs.com/resources/troubleshooting",
-                    },
-                    {
-                      type: "link",
-                      title: "Report Issue",
-                      link: GITHUB_ISSUES_LINK,
-                    },
-                    {
-                      type: "link",
-                      title: "Discord Community",
-                      link: "https://discord.gg/medusajs",
-                    },
-                    {
-                      type: "divider",
-                    },
-                    {
-                      type: "link",
-                      title: "Contact Sales",
-                      link: "https://medusajs.com/contact/",
-                    },
-                  ],
+        {!isInProduct && (
+          <div
+            className={clsx(
+              "flex items-center my-docs_0.75",
+              collapseNavbar && "flex-grow justify-between"
+            )}
+            data-testid="main-nav-actions"
+          >
+            <div className="lg:flex items-center gap-docs_0.25 text-medusa-fg-subtle hidden">
+              <MainNavVersion />
+              <MainNavItemDropdown
+                item={
+                  helpNavItem || {
+                    type: "dropdown",
+                    title: "Help",
+                    children: [
+                      {
+                        type: "link",
+                        title: "Troubleshooting",
+                        link: "https://docs.medusajs.com/resources/troubleshooting",
+                      },
+                      {
+                        type: "link",
+                        title: "Report Issue",
+                        link: GITHUB_ISSUES_LINK,
+                      },
+                      {
+                        type: "link",
+                        title: "Discord Community",
+                        link: "https://discord.gg/medusajs",
+                      },
+                      {
+                        type: "divider",
+                      },
+                      {
+                        type: "link",
+                        title: "Contact Sales",
+                        link: "https://medusajs.com/contact/",
+                      },
+                    ],
+                  }
                 }
-              }
-              isActive={false}
-            />
+                isActive={false}
+              />
+            </div>
+            <div className="flex items-center">
+              {config.features?.aiAssistant && <AiAssistantTriggerButton />}
+              <SearchModalOpener />
+              <MainNavDesktopMenu />
+              <MainNavMobileMenu />
+            </div>
           </div>
-          <div className="flex items-center">
-            <AiAssistantTriggerButton />
-            <SearchModalOpener />
-            <MainNavDesktopMenu />
-            <MainNavMobileMenu />
-          </div>
-        </div>
+        )}
       </div>
-      {showCollapsedNavbar && (
+      {collapseNavbar && (
         <div
           className={clsx("border-b border-medusa-border-base px-docs_1")}
           data-testid="collapsed-nav-items"

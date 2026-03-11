@@ -384,6 +384,10 @@ export interface BaseProductListParams
    */
   handle?: string | string[]
   /**
+   * Filter by the product's external ID(s).
+   */
+  external_id?: string | string[]
+  /**
    * Filter by the product's id(s).
    */
   id?: string | string[]

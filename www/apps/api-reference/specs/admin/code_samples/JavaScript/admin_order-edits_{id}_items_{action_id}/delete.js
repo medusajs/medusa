@@ -9,7 +9,7 @@ export const sdk = new Medusa({
 })
 
 sdk.admin.orderEdit.removeAddedItem(
-  "order_123", 
+  "order_123",
   "orli_123",
 )
 .then(({ order_preview }) => {

@@ -349,8 +349,6 @@ paths:
     $ref: paths/store_shipping-options_{id}_calculate.yaml
   /store/store-credit-accounts:
     $ref: paths/store_store-credit-accounts.yaml
-  /store/store-credit-accounts/claim:
-    $ref: paths/store_store-credit-accounts_claim.yaml
   /store/store-credit-accounts/{id}:
     $ref: paths/store_store-credit-accounts_{id}.yaml
 components:

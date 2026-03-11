@@ -13,7 +13,7 @@ interface AdminUpsertStockLocationAddress {
   company?: string
   /**
    * The country code of the address.
-   * 
+   *
    * @example
    * "us"
    */
@@ -34,6 +34,11 @@ interface AdminUpsertStockLocationAddress {
    * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state of the address.
    */
   province?: string
+
+  /**
+   * Custom key-value pairs that can be added to the address.
+   */
+  metadata?: Record<string, unknown>
 }
 
 export interface AdminCreateStockLocation {

@@ -56,8 +56,6 @@ medusaIntegrationTestRunner({
         order = seeder.order
       })
 
-
-
       it("should search orders by display_id", async () => {
         let response = await api.get(`/admin/orders`, adminHeaders)
 
@@ -342,6 +340,84 @@ medusaIntegrationTestRunner({
             id: order.id,
           }),
         ])
+      })
+
+      describe("filter by total using operators", () => {
+        it.each([
+          {
+            operator: "$eq",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$eq",
+            matchType: "non-matching",
+            getValue: (orderTotal: number) => orderTotal + 1000,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+          {
+            operator: "$gte",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal - 100,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$gte",
+            matchType: "non-matching",
+            getValue: (orderTotal: number) => orderTotal + 1000,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+          {
+            operator: "$lte",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal + 100,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$lte",
+            matchType: "non-matching",
+            getValue: (_orderTotal: number) => 0,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+        ])(
+          "should filter orders by total using $operator operator - $matchType value",
+          async ({ operator, getValue, expectedLength, shouldMatchOrder }) => {
+            let filterValue: number
+
+            const orderResponse = await api.get(
+              `/admin/orders/${order.id}?fields=+summary`,
+              adminHeaders
+            )
+            const orderTotal =
+              orderResponse.data.order.summary.current_order_total
+            filterValue = getValue(orderTotal)
+
+            const queryParams = `total[${operator}]=${filterValue}`
+
+            const response = await api.get(
+              `/admin/orders?${queryParams}`,
+              adminHeaders
+            )
+
+            expect(response.data.orders).toHaveLength(expectedLength)
+            if (shouldMatchOrder) {
+              expect(response.data.orders).toEqual([
+                expect.objectContaining({
+                  id: order.id,
+                }),
+              ])
+            } else {
+              expect(response.data.orders).toEqual([])
+            }
+          }
+        )
       })
 
       it("should return shipping_address when pagination included", async () => {
@@ -1135,6 +1211,113 @@ medusaIntegrationTestRunner({
             ],
           })
         )
+      })
+
+      it("should only create credit lines for successfully refunded payments when some refunds fail", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const payment = order.payment_collections[0].payments[0]
+        const paymentCollectionId = order.payment_collections[0].id
+
+        // Capture the original payment for 50
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 50 },
+          adminHeaders
+        )
+
+        // Create a second payment session, authorize it, and capture it for 30
+        const session2 = await paymentModule.createPaymentSession(
+          paymentCollectionId,
+          {
+            provider_id: "pp_system_default",
+            amount: 100,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+        const payment2 = await paymentModule.authorizePaymentSession(
+          session2.id,
+          {}
+        )
+        await paymentModule.capturePayment({
+          payment_id: payment2.id,
+          amount: 30,
+        })
+
+        // Verify both payments are captured before canceling
+        const orderBeforeCancel = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*payment_collections.payments.amount,*payment_collections.payments.captures.amount`,
+            adminHeaders
+          )
+        ).data.order
+
+        const capturedPayments =
+          orderBeforeCancel.payment_collections[0].payments.filter(
+            (p) => p.captures.length > 0
+          )
+        expect(capturedPayments).toHaveLength(2)
+
+        // Mock refundPayment to fail for the second payment
+        const originalRefundPayment =
+          paymentModule.refundPayment.bind(paymentModule)
+        jest
+          .spyOn(paymentModule, "refundPayment")
+          .mockImplementation(async (data: any, sharedContext?: any) => {
+            if (data.payment_id === payment2.id) {
+              throw new Error("Refund failed at payment provider")
+            }
+            return originalRefundPayment(data, sharedContext)
+          })
+
+        // Cancel the order
+        const cancelResponse = await api.post(
+          `/admin/orders/${order.id}/cancel`,
+          {},
+          adminHeaders
+        )
+
+        expect(cancelResponse.status).toBe(200)
+
+        // Restore the mock
+        jest.restoreAllMocks()
+
+        // Get the canceled order with credit lines and summary
+        const canceledOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*credit_lines.amount,*payment_collections.payments.amount,*payment_collections.payments.captures.amount,*payment_collections.payments.refunds.amount`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(canceledOrder.status).toBe("canceled")
+
+        // Only the first payment (50) was successfully refunded
+        // The second payment (30) refund failed, so it should NOT be in credit lines
+        const totalCreditLineAmount = canceledOrder.credit_lines.reduce(
+          (sum, cl) => sum + cl.amount,
+          0
+        )
+
+        // Credit line should only reflect the successful refund (50), not both (50 + 30)
+        expect(totalCreditLineAmount).toBe(50)
+        expect(canceledOrder.summary.credit_line_total).toBe(50)
+
+        // Verify only the first payment has a refund record
+        const originalPaymentAfter =
+          canceledOrder.payment_collections[0].payments.find(
+            (p) => p.id === payment.id
+          )
+        const payment2After =
+          canceledOrder.payment_collections[0].payments.find(
+            (p) => p.id === payment2.id
+          )
+
+        expect(originalPaymentAfter.refunds).toHaveLength(1)
+        expect(originalPaymentAfter.refunds[0].amount).toBe(50)
+
+        // The failed payment should have no refund records
+        expect(payment2After.refunds).toHaveLength(0)
       })
     })
 

@@ -31,4 +31,7 @@ export const config: DocsConfig = {
     ...globalConfig.version,
     hide: true,
   },
+  features: {
+    aiAssistant: false,
+  },
 }

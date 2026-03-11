@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, InProductAction, InProductActions } from "docs-ui"
 import { CursorDefault, Palette, Typography, Gap, Expand, ImageSparkle, CloudArrowUp } from "@medusajs/icons"
 
 export const metadata = {
@@ -7,11 +7,11 @@ export const metadata = {
 
 # {metadata.title}
 
-Selection Mode lets you select and edit elements in your store directly. Use it to specify exactly what you want Bloom to change, or make quick edits yourself.
+<InProductAction product={"bloom"} type={"MEDUSA_AI_ENABLE_SELECTION_MODE"}>Selection Mode</InProductAction> lets you select and edit elements in your store directly. Use it to specify exactly what you want Bloom to change, or make quick edits yourself.
 
 ## What is Selection Mode?
 
-Selection Mode is a feature in [Store mode](../mode-switcher/page.mdx#store-mode) that lets you click on an element in your store to select it. Once selected, you can edit its text, colors, fonts, spacing, and images directly, or ask Bloom to make changes to that specific element.
+Selection Mode is a feature in [Store view](../view-switcher/page.mdx#store-view) that lets you click on an element in your store to select it. Once selected, you can edit its text, colors, fonts, spacing, and images directly, or ask Bloom to make changes to that specific element.
 
 Selection Mode helps you work faster and more precisely:
 
@@ -24,7 +24,7 @@ Selection Mode is perfect for designers and store owners who want more control o
 
 ### Selection Mode Limitations
 
-Selection Mode only works in Store mode, not Admin mode. For changes to customizations in the admin dashboard, ask Bloom to make the change with a prompt instead of using Selection Mode.
+Selection Mode only works in Store view, not Admin view. For changes to customizations in the admin dashboard, ask Bloom to make the change with a prompt instead of using Selection Mode.
 
 You also can't edit admin-managed content with Selection Mode. Only edit content and elements that are part of your store's design. For changes to product information and other admin-managed data, use the admin dashboard or ask Bloom to make the change with a prompt.
 
@@ -32,21 +32,21 @@ You also can't edit admin-managed content with Selection Mode. Only edit content
 
 ## Turn Selection Mode On and Off
 
-To toggle Selection Mode while previewing your store:
+To toggle <InProductAction product={"bloom"} type={"MEDUSA_AI_ENABLE_SELECTION_MODE"}>Selection Mode</InProductAction> while previewing your store:
 
-1. Make sure you're in Store mode.
+1. Make sure you're in Store view.
 2. Find the toolbar at the bottom of the preview.
 3. Click the <InlineIcon Icon={CursorDefault} alt="cursor" /> icon to turn Selection Mode on.
 4. The icon turns blue when Selection Mode is active.
 5. Click the <InlineIcon Icon={CursorDefault} alt="cursor" /> icon again to turn Selection Mode off.
 
-![Selection mode toggle in the preview toolbar](https://res.cloudinary.com/dza7lstvk/image/upload/v1770725563/Bloom/CleanShot_2026-02-10_at_14.12.26_2x_lzku38.png)
+{/* TODO: Add image: Selection mode toggle in the preview toolbar */}
 
 ### Saving Changes in Selection Mode
 
 When you make changes using Selection Mode manually, make sure to click the "Save All" button to save your changes. Otherwise, you lose your changes when you refresh the page.
 
-![Save All button in the preview toolbar](https://res.cloudinary.com/dza7lstvk/image/upload/v1770725391/Bloom/CleanShot_2026-02-10_at_14.09.33_2x_aw28gv.png)
+{/* TODO: Add image: Save All button in the preview toolbar */}
 
 ---
 
@@ -65,7 +65,7 @@ To select an element:
 
 The next sections explain how to edit selected elements.
 
-![Selecting a heading element with selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770725503/Bloom/CleanShot_2026-02-10_at_14.11.37_2x_anrmk1.png)
+{/* TODO: Add image: Selecting a heading element with selection mode */}
 
 ---
 
@@ -80,7 +80,7 @@ To select an element and ask Bloom to edit it:
 3. Type your prompt in the chat. For example: "Make this heading bigger and bold"
 4. Bloom sees the selected element and applies your changes to it specifically.
 
-![Asking Bloom to edit a selected element](https://res.cloudinary.com/dza7lstvk/image/upload/v1770728134/Bloom/CleanShot_2026-02-10_at_14.55.24_2x_yzvpqe.png)
+{/* TODO: Add image: Asking Bloom to edit a selected element */}
 
 ---
 
@@ -102,7 +102,7 @@ You can't edit text like product names, descriptions, or any data managed in the
 4. Make your changes to the text.
 5. Click "Save All" in the toolbar to save your changes.
 
-![Editing text directly in selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770725886/Bloom/CleanShot_2026-02-10_at_14.18.00_2x_olpcel.png)
+{/* TODO: Add image: Editing text directly in selection mode */}
 
 ---
 
@@ -120,7 +120,7 @@ To change colors for an element:
     - If you want to use a custom color, ask Bloom instead with a prompt like "Change the background color of this section to #ff0000".
 6. Click "Save All" to save your changes.
 
-![Changing text and background colors in selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770726181/Bloom/CleanShot_2026-02-10_at_14.22.46_2x_bc8jvx.png)
+{/* TODO: Add image: Changing text and background colors in selection mode */}
 
 ---
 
@@ -140,7 +140,7 @@ To change fonts for an element:
     - **Mono**: A monospaced font.
 5. Click "Save All" to save your changes.
 
-![Changing fonts in selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770726380/Bloom/CleanShot_2026-02-10_at_14.26.14_2x_hqy7w8.png)
+{/* TODO: Add image: Changing fonts in selection mode */}
 
 ---
 
@@ -166,7 +166,7 @@ When you adjust margin and padding, it affects both desktop and mobile views. If
 
 </Note>
 
-![Adjusting margin and padding in selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770726635/Bloom/CleanShot_2026-02-10_at_14.30.26_2x_iwzdzh.png)
+{/* TODO: Add image: Adjusting margin and padding in selection mode */}
 
 ---
 
@@ -189,4 +189,4 @@ Image replacement only works for `img` elements. It also doesn't work for produc
 4. Choose a replacement image from existing images in your store, or click the <InlineIcon Icon={CloudArrowUp} alt="upload" /> icon to upload your own image.
 5. Click "Save All" to save your changes.
 
-![Replacing an image in selection mode](https://res.cloudinary.com/dza7lstvk/image/upload/v1770727031/Bloom/CleanShot_2026-02-10_at_14.37.03_2x_rlbmyd.png)
+{/* TODO: Add image: Replacing an image in selection mode */}

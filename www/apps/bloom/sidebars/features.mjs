@@ -12,12 +12,18 @@ export const featuresSidebar = [
       {
         type: "category",
         title: "Agent Features",
+        initialOpen: true,
         children: [
           {
             type: "link",
-            title: "Mode Switcher",
-            path: "/features/mode-switcher",
+            title: "View Switcher",
+            path: "/features/view-switcher",
           },
+          // {
+          //   type: "link",
+          //   title: "Emails",
+          //   path: "/features/emails",
+          // },
           {
             type: "link",
             title: "Selection Mode",
@@ -47,6 +53,11 @@ export const featuresSidebar = [
             type: "link",
             title: "Demo Data",
             path: "/features/demo-data",
+          },
+          {
+            type: "link",
+            title: "Team Collaboration",
+            path: "/features/team-collaboration",
           },
         ],
       },

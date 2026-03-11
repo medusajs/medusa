@@ -4,12 +4,16 @@ import { fireEvent, render } from "@testing-library/react"
 import * as AiAssistantMocks from "../../../AiAssistant/__mocks__"
 
 // mock functions
-const mockUseSiteConfig = vi.fn(() => ({
+const mockUseSiteConfig = vi.fn()
+const defaultUseSiteConfigReturn = {
   config: {
     baseUrl: "https://docs.medusajs.com",
     basePath: "",
+    features: {
+      aiAssistant: true,
+    },
   },
-}))
+}
 const mockUsePathname = vi.fn(() => "")
 
 // mock components
@@ -37,9 +41,26 @@ beforeEach(() => {
   AiAssistantMocks.mockUseChat.mockReturnValue(
     AiAssistantMocks.defaultUseChatReturn
   )
+  mockUseSiteConfig.mockReturnValue(defaultUseSiteConfigReturn)
 })
 
 describe("render", () => {
+  test("does not render ai assistant button when ai assistant feature is disabled", () => {
+    mockUseSiteConfig.mockReturnValueOnce({
+      config: {
+        ...defaultUseSiteConfigReturn.config,
+        features: {
+          aiAssistant: false,
+        },
+      },
+    })
+    const { container } = render(<ContentMenuActions />)
+    const aiAssistantButton = container.querySelector(
+      "button[data-testid='ai-assistant-button']"
+    )
+    expect(aiAssistantButton).not.toBeInTheDocument()
+  })
+
   test("render action menu", () => {
     const { container } = render(<ContentMenuActions />)
     expect(container).toBeInTheDocument()

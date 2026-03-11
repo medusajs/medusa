@@ -1168,8 +1168,6 @@ paths:
     $ref: paths/admin_store-credit-accounts.yaml
   /admin/store-credit-accounts/{id}:
     $ref: paths/admin_store-credit-accounts_{id}.yaml
-  /admin/store-credit-accounts/{id}/credit:
-    $ref: paths/admin_store-credit-accounts_{id}_credit.yaml
   /admin/store-credit-accounts/{id}/transactions:
     $ref: paths/admin_store-credit-accounts_{id}_transactions.yaml
   /admin/stores:
@@ -1214,6 +1212,8 @@ paths:
     $ref: paths/admin_users_me.yaml
   /admin/users/{id}:
     $ref: paths/admin_users_{id}.yaml
+  /admin/users/{id}/roles/{role_id}:
+    $ref: paths/admin_users_{id}_roles_{role_id}.yaml
   /admin/views/{entity}/columns:
     $ref: paths/admin_views_{entity}_columns.yaml
   /admin/views/{entity}/configurations:

@@ -3,12 +3,26 @@ import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
 import * as AiAssistantMocks from "../../../../AiAssistant/__mocks__"
 
+// mock functions
+const mockUseSiteConfig = vi.fn()
+
+const defaultUseSiteConfigReturn = {
+  config: {
+    features: {
+      aiAssistant: true,
+    },
+  },
+}
+
 // mock components
 vi.mock("@/providers/AiAssistant", () => ({
   useAiAssistant: () => AiAssistantMocks.mockUseAiAssistant(),
 }))
 vi.mock("@kapaai/react-sdk", () => ({
   useChat: () => AiAssistantMocks.mockUseChat(),
+}))
+vi.mock("@/providers/SiteConfig", () => ({
+  useSiteConfig: () => mockUseSiteConfig(),
 }))
 vi.mock("@/components/Tooltip", () => ({
   Tooltip: ({
@@ -39,9 +53,27 @@ beforeEach(() => {
   AiAssistantMocks.mockUseChat.mockReturnValue(
     AiAssistantMocks.defaultUseChatReturn
   )
+  mockUseSiteConfig.mockReturnValue(defaultUseSiteConfigReturn)
 })
 
 describe("rendering", () => {
+  test("does not render when ai assistant feature is disabled", () => {
+    mockUseSiteConfig.mockReturnValueOnce({
+      config: {
+        features: {
+          aiAssistant: false,
+        },
+      },
+    })
+    const { container } = render(
+      <CodeBlockAskAiAction
+        source="console.log('Hello, world!');"
+        inHeader={false}
+      />
+    )
+    expect(container).toBeEmptyDOMElement()
+  })
+
   test("render code block ask ai action in header", () => {
     const { container } = render(
       <CodeBlockAskAiAction

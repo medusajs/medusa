@@ -623,13 +623,6 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
-      "title": "Rbac",
-      "children": [],
-      "loaded": false,
-      "showLoadingIfEmpty": true
-    },
-    {
-      "type": "category",
       "title": "Refund Reasons",
       "children": [
         {
@@ -888,24 +881,6 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "tax-regions_taxregion_schema",
           "title": "TaxRegion Object",
-          "loaded": true,
-          "badge": {
-            "variant": "neutral",
-            "text": "Schema"
-          }
-        }
-      ],
-      "loaded": false,
-      "showLoadingIfEmpty": true
-    },
-    {
-      "type": "category",
-      "title": "Transaction Groups",
-      "children": [
-        {
-          "type": "link",
-          "path": "transaction-groups_transactiongroup_schema",
-          "title": "TransactionGroup Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",

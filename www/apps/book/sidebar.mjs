@@ -484,7 +484,7 @@ export const sidebars = [
                 type: "link",
                 path: "/learn/fundamentals/events-and-subscribers/event-priority",
                 title: "Event Priority",
-              }
+              },
             ],
           },
           {

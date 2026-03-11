@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/framework",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "Framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -71,18 +71,18 @@
     "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
   },
   "devDependencies": {
-    "@medusajs/cli": "2.13.1"
+    "@medusajs/cli": "2.13.3"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.218.0",
     "@jercle/yargonaut": "^1.1.5",
-    "@medusajs/deps": "2.13.1",
-    "@medusajs/modules-sdk": "2.13.1",
-    "@medusajs/orchestration": "2.13.1",
-    "@medusajs/telemetry": "2.13.1",
-    "@medusajs/types": "2.13.1",
-    "@medusajs/utils": "2.13.1",
-    "@medusajs/workflows-sdk": "2.13.1",
+    "@medusajs/deps": "2.13.3",
+    "@medusajs/modules-sdk": "2.13.3",
+    "@medusajs/orchestration": "2.13.3",
+    "@medusajs/telemetry": "2.13.3",
+    "@medusajs/types": "2.13.3",
+    "@medusajs/utils": "2.13.3",
+    "@medusajs/workflows-sdk": "2.13.3",
     "@types/express": "^4.17.21",
     "chokidar": "^4.0.3",
     "compression": "^1.8.1",
@@ -101,7 +101,7 @@
     "zod-validation-error": "3.5.1"
   },
   "peerDependencies": {
-    "@medusajs/cli": "2.13.1",
+    "@medusajs/cli": "2.13.3",
     "ioredis": "^5.4.1"
   },
   "peerDependenciesMeta": {

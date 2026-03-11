@@ -39,6 +39,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+  other: {
+    "algolia-site-verification":
+      process.env.NEXT_PUBLIC_ALGOLIA_SITE_VERIFICATION || "",
+  },
 }
 
 export default function RootLayout({

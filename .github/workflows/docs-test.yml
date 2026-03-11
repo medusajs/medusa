@@ -439,7 +439,7 @@ jobs:
 
       - name: Get Directories to Scan
         working-directory: www/vale
-        run: ./get-files.sh bloom/app going-live
+        run: ./get-files.sh bloom/app going-live faq
         id: directories
 
       - name: Vale Linter
