@@ -13,7 +13,8 @@
     "check:release-commit": "node ./dist/check-release-commit.js",
     "generate:changeset": "node ./dist/run-changeset.js",
     "check:pr-files-count": "node ./dist/check-pr-files-count.js",
-    "update:config-version": "node ./dist/change-config-version.js"
+    "update:config-version": "node ./dist/change-config-version.js",
+    "create:cloud-announcement": "node ./dist/create-cloud-announcement.js"
   },
   "version": "0.0.0",
   "type": "module",

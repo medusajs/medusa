@@ -196,6 +196,8 @@ module.exports = {
           alphas: {
             alpha: {
               250: "var(--docs-alphas-alpha-250)",
+              6: "var(--docs-alphas-alpha-6)",
+              16: "var(--docs-alphas-alpha-16)",
             }
           }
         },
@@ -222,7 +224,7 @@ module.exports = {
         "elevation-modal-dark":
           "0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.06) inset, 0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.10), 0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 8px 16px 0px rgba(0, 0, 0, 0.32)",
         "button-neutral":
-          "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08)",
+          "0 1px 2px 0 rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)",
         "button-neutral-dark":
           "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
         "button-neutral-focused":
@@ -280,8 +282,16 @@ module.exports = {
         "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
         "border-dotted":
           "linear-gradient(90deg,var(--docs-border-strong) 1px,transparent 1px)",
+        "border-dotted-disabled":
+          "linear-gradient(90deg,var(--docs-fg-disabled) 1px,transparent 1px)",
+        "border-dotted-disabled-vertical":
+          "linear-gradient(180deg,var(--docs-fg-disabled) 1px,transparent 1px)",
         "ai-assistant-bottom":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, var(--docs-bg-base) 100%)",
+        "bg-stripes": "url('/images/bg-stripes.png')",
+        "bg-stripes-dark": "url('/images/bg-stripes-dark.png')",
+        "bg-bloom-callout": "linear-gradient(90deg, var(--docs-tags-orange-bg) 0%, var(--docs-tags-red-bg) 33%, var(--docs-tags-purple-bg) 66%, var(--docs-tags-blue-bg) 100%)",
+        "bg-bloom-callout-text": "linear-gradient(90deg, var(--docs-tags-orange-text) 0%, var(--docs-tags-red-text) 33%, var(--docs-tags-purple-text) 66%, var(--docs-tags-blue-text) 100%)",
       },
       screens: {
         xs: "568px",
@@ -342,6 +352,13 @@ module.exports = {
         xl: "1419px",
       },
       fontSize: {
+        display: [
+          "44px",
+          {
+            lineHeight: "110%",
+            fontWeight: "500",
+          }
+        ],
         h1: [
           "24px",
           {
@@ -524,6 +541,27 @@ module.exports = {
             fontWeight: "400",
           },
         ],
+        "code-paragraph-xsmall-plus": [
+          "12px",
+          {
+            lineHeight: "160%",
+            fontWeight: "500",
+          }
+        ],
+        "code-paragraph-xsmall": [
+          "12px",
+          {
+            lineHeight: "160%",
+            fontWeight: "400",
+          }
+        ],
+        "code-paragraph-2xsmall": [
+          "11px",
+          {
+            lineHeight: "160%",
+            fontWeight: "400",
+          }
+        ]
       },
       keyframes: {
         fadeIn: {
@@ -650,6 +688,11 @@ module.exports = {
           },
           "100%": {
             opacity: 0.3,
+          },
+        },
+        pulsingCursor: {
+          "50%": {
+            opacity: 0,
           },
         },
         minimize: {
@@ -854,7 +897,8 @@ module.exports = {
           },
           ".code-block-highlight-light": {
             "*::selection": {
-              "background-color": "var(--docs-bg-highlight) !important",
+              "background-color": "var(--docs-code-subtle-highlight-bg) !important",
+              color: "var(--docs-code-subtle-highlight-text)",
             },
           },
           ".badge": {

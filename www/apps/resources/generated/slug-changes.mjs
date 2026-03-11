@@ -2960,6 +2960,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.dismissProductVariantsInventoryStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep",
+    "newSlug": "/references/medusa-workflows/steps/exportProductsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.generateProductCsvStep",
     "newSlug": "/references/medusa-workflows/steps/generateProductCsvStep",
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.generateProductCsvStep/page.mdx"
@@ -3760,14 +3765,29 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Tax/Workflows_Tax/functions/core_flows.Tax.Workflows_Tax.updateTaxRegionsWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep",
+    "newSlug": "/references/medusa-workflows/steps/createTranslationSettingsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep",
     "newSlug": "/references/medusa-workflows/steps/createTranslationsStep",
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep",
+    "newSlug": "/references/medusa-workflows/steps/deleteTranslationSettingsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationsStep",
     "newSlug": "/references/medusa-workflows/steps/deleteTranslationsStep",
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationsStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep",
+    "newSlug": "/references/medusa-workflows/steps/updateTranslationSettingsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationsStep",
@@ -3778,6 +3798,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.validateTranslationsStep",
     "newSlug": "/references/medusa-workflows/steps/validateTranslationsStep",
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.validateTranslationsStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow",
+    "newSlug": "/references/medusa-workflows/batchTranslationSettingsWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationsWorkflow",
@@ -4013,6 +4038,11 @@ export const slugChanges = [
     "origSlug": "/references/dml/Model_Methods/methods/dml.Model_Methods.cascades",
     "newSlug": "/references/data-model/model-methods/cascades",
     "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.cascades/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Model_Methods/methods/dml.Model_Methods.getTranslatableEntities",
+    "newSlug": "/references/data-model/model-methods/gettranslatableentities",
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.getTranslatableEntities/page.mdx"
   },
   {
     "origSlug": "/references/dml/Model_Methods/methods/dml.Model_Methods.indexes",
@@ -7725,6 +7755,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createLocales/page.mdx"
   },
   {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslationSettings",
+    "newSlug": "/references/translation/createTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslationSettings/page.mdx"
+  },
+  {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslations",
     "newSlug": "/references/translation/createTranslations",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslations/page.mdx"
@@ -7735,9 +7770,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteLocales/page.mdx"
   },
   {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslationSettings",
+    "newSlug": "/references/translation/deleteTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslationSettings/page.mdx"
+  },
+  {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslations",
     "newSlug": "/references/translation/deleteTranslations",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslations/page.mdx"
+  },
+  {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getInactiveTranslatableFields",
+    "newSlug": "/references/translation/getInactiveTranslatableFields",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getInactiveTranslatableFields/page.mdx"
   },
   {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getStatistics",
@@ -7755,6 +7800,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountLocales/page.mdx"
   },
   {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslationSettings",
+    "newSlug": "/references/translation/listAndCountTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslationSettings/page.mdx"
+  },
+  {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslations",
     "newSlug": "/references/translation/listAndCountTranslations",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslations/page.mdx"
@@ -7763,6 +7813,11 @@ export const slugChanges = [
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listLocales",
     "newSlug": "/references/translation/listLocales",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listLocales/page.mdx"
+  },
+  {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslationSettings",
+    "newSlug": "/references/translation/listTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslationSettings/page.mdx"
   },
   {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslations",
@@ -7790,6 +7845,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslation/page.mdx"
   },
   {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslationSettings",
+    "newSlug": "/references/translation/retrieveTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslationSettings/page.mdx"
+  },
+  {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.softDeleteLocales",
     "newSlug": "/references/translation/softDeleteLocales",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.softDeleteLocales/page.mdx"
@@ -7803,6 +7863,11 @@ export const slugChanges = [
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateLocales",
     "newSlug": "/references/translation/updateLocales",
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateLocales/page.mdx"
+  },
+  {
+    "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslationSettings",
+    "newSlug": "/references/translation/updateTranslationSettings",
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslationSettings/page.mdx"
   },
   {
     "origSlug": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslations",

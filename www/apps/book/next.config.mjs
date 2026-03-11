@@ -26,6 +26,9 @@ const withMDX = mdx({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             resources: {
               projectPath: path.resolve("..", "resources"),
               hasGeneratedSlugs: true,
@@ -51,6 +54,9 @@ const withMDX = mdx({
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
             },

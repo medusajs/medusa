@@ -1,98 +1,141 @@
 import clsx from "clsx"
-import { Link } from "docs-ui"
+import { HeadlineTags, ShadedBlock } from "docs-ui"
+import Link from "next/link"
+import { LinksSectionBloomIcon } from "./Icon"
 
 const HomepageLinksSection = () => {
-  const sections: SectionProps[] = [
+  const links: {
+    tag: string
+    links: {
+      text: string
+      link: string
+    }[]
+  }[] = [
     {
-      title: "Customize Medusa Application",
+      tag: "Customize Medusa Application",
       links: [
         {
-          href: "/learn/installation",
-          text: "Create your first application",
+          link: "/learn/installation",
+          text: "Install Medusa",
         },
         {
-          href: "https://docs.medusajs.com/cloud/sign-up",
-          text: "Deploy to Medusa Cloud",
+          link: "https://docs.medusajs.com/cloud/sign-up",
+          text: "Deploy to Cloud",
         },
         {
-          href: "https://docs.medusajs.com/resources/integrations",
-          text: "Browse third-party integrations",
+          link: "https://docs.medusajs.com/resources/integrations",
+          text: "Browse integrations",
         },
       ],
     },
     {
-      title: "Admin Development",
+      tag: "Admin Development",
       links: [
         {
-          href: "/learn/fundamentals/admin/widgets",
-          text: "Build a UI Widget",
+          link: "/learn/fundamentals/admin/widgets",
+          text: "Build a UI widget",
         },
         {
-          href: "/learn/fundamentals/admin/ui-routes",
-          text: "Add a UI Route",
+          link: "/learn/fundamentals/admin/ui-routes",
+          text: "Add a UI route",
         },
         {
-          href: "https://docs.medusajs.com/ui",
-          text: "Browse the UI component library",
+          link: "https://docs.medusajs.com/ui",
+          text: "Browse the UI library",
         },
       ],
     },
     {
-      title: "Storefront Development",
+      tag: "Storefront Development",
       links: [
         {
-          href: "https://docs.medusajs.com/resources/nextjs-starter",
-          text: "Explore our storefront starter",
+          link: "https://docs.medusajs.com/resources/nextjs-starter",
+          text: "Explore storefront starter",
         },
         {
-          href: "https://docs.medusajs.com/resources/storefront-development",
-          text: "Build a custom storefront",
+          link: "https://docs.medusajs.com/resources/storefront-development",
+          text: "Build custom storefront",
         },
         {
-          href: "https://docs.medusajs.com/ui",
-          text: "Browse the UI component library",
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai#ecommerce-storefront-best-practices",
+          text: "Use agent skills",
+        },
+      ],
+    },
+    {
+      tag: "Medusa Cloud",
+      links: [
+        {
+          link: "https://docs.medusajs.com/cloud/projects",
+          text: "Deploy from GitHub",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/environments/preview",
+          text: "Preview environments",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/emails",
+          text: "Medusa Emails",
+        },
+      ],
+    },
+    {
+      tag: "Agentic Development",
+      links: [
+        {
+          link: "https://bloom.medusajs.com",
+          text: "Build with Bloom",
+        },
+        {
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai",
+          text: "Agent Skills",
+        },
+        {
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai#mcp-remote-server",
+          text: "Medusa Docs MCP",
         },
       ],
     },
   ]
-  return (
-    <div
-      className={clsx(
-        "hidden lg:block py-4 w-full",
-        "border-y border-medusa-border-base xl:mx-auto"
-      )}
-    >
-      <div className="flex gap-4 flex-wrap xl:mx-auto xl:max-w-[1136px] w-full px-4 xl:px-0">
-        {sections.map((section, index) => (
-          <Section {...section} key={index} />
-        ))}
-      </div>
-    </div>
-  )
-}
 
-type SectionProps = {
-  title: string
-  links: {
-    text: string
-    href: string
-  }[]
-}
-
-const Section = ({ title, links }: SectionProps) => {
   return (
-    <div className="flex flex-col gap-0.5 flex-1">
-      <h3 className="text-h3 text-medusa-fg-base">{title}</h3>
-      {links.map((link, index) => (
-        <Link
+    <div className="w-full flex gap-0 flex-col md:flex-row flex-wrap border-b border-medusa-border-base">
+      {links.map((section, index) => (
+        <div
           key={index}
-          className="text-compact-small-plus"
-          href={link.href}
-          prefetch={false}
+          className={clsx(
+            "p-2 flex justify-between flex-col w-full md:w-1/3 gap-2 md:min-h-[320px]",
+            "border-b border-medusa-border-base md:border-b-0",
+            index !== 2 && "md:border-r",
+            index > 2 && "md:border-t"
+          )}
         >
-          {link.text}
-        </Link>
+          <HeadlineTags tags={[section.tag]} className="!justify-start" />
+          <div className="flex flex-col gap-0.75">
+            {section.links.map((link, linkIndex) => (
+              <div className="flex gap-0.75" key={linkIndex}>
+                <ShadedBlock className="!w-2 min-h-2" />
+                <Link
+                  href={link.link}
+                  className={clsx(
+                    "flex-1 text-medusa-fg-base text-h2 hover:underline hover:text-medusa-fg-interactive"
+                  )}
+                >
+                  {link.text}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
       ))}
+      <div
+        className={clsx(
+          "p-2 flex justify-center items-center w-full md:w-1/3 gap-2 md:min-h-[320px]",
+          "border-medusa-border-base md:border-t bg-medusa-bg-component"
+        )}
+      >
+        <LinksSectionBloomIcon />
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import {
 } from "@medusajs/framework/utils"
 import { defaultPolicyOperations } from "../utils/default-policy-operations"
 
-const userResources = ["user", "api_key", "invite", "role", "permission"]
+const userResources = ["user", "api_key", "invite", "rbac_role"]
 
 const policies: PolicyDefinition[] = []
 

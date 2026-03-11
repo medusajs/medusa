@@ -26,8 +26,8 @@ const light = {
   "--docs-fg-disabled": "rgba(161, 161, 170, 1)",
   "--docs-fg-on-color": "rgba(255, 255, 255, 1)",
   "--docs-fg-on-inverted": "rgba(255, 255, 255, 1)",
-  "--docs-fg-interactive": "rgba(59, 130, 246, 1)",
-  "--docs-fg-interactive-hover": "rgba(37, 99, 235, 1)",
+  "--docs-fg-interactive": "rgba(37, 99, 235, 1)",
+  "--docs-fg-interactive-hover": "rgba(59, 130, 246, 1)",
   "--docs-fg-error": "rgba(225, 29, 72, 1)",
 
   "--docs-border-base": "rgba(228, 228, 231, 1)",
@@ -88,6 +88,9 @@ const light = {
   "--docs-code-bg-base": "rgba(24, 24, 27, 1)",
   "--docs-code-bg-header": "rgba(31, 41, 55, 1)",
   "--docs-code-border": "rgba(55, 65, 81, 1)",
+  
+  "--docs-code-subtle-highlight-bg": "rgba(82, 82, 91, 1)",
+  "--docs-code-subtle-highlight-text": "rgba(255, 255, 255, 1)",
 
   "--docs-contrast-bg-base": "rgba(24, 24, 27, 1)",
   "--docs-contrast-bg-base-pressed": "rgba(63, 63, 70, 1)",
@@ -104,6 +107,9 @@ const light = {
   "--docs-alpha-white-alpha-6": "rgba(255, 255, 255, 0.06)",
   "--docs-alpha-white-alpha-12": "rgba(255, 255, 255, 0.12)",
   "--docs-alphas-alpha-250": "rgba(24, 24, 27, 0.1)",
+  "--docs-alphas-alpha-6": "rgba(24, 24, 27, 0.06)",
+  "--docs-alphas-alpha-10": "rgba(24, 24, 27, 0.10)",
+  "--docs-alphas-alpha-16": "rgba(24, 24, 27, 0.16)",
 }
 
 const dark = {
@@ -196,6 +202,9 @@ const dark = {
   "--docs-code-bg-base": "rgba(9, 9, 11, 1)",
   "--docs-code-bg-header": "rgba(24, 24, 26, 1)",
   "--docs-code-border": "rgba(46, 48, 53, 1)",
+  
+  "--docs-code-subtle-highlight-bg": "rgba(161, 161, 170, 1)",
+  "--docs-code-subtle-highlight-text": "rgba(24, 24, 27, 1)",
 
   "--docs-contrast-bg-base": "rgba(39, 39, 42, 1)",
   "--docs-contrast-bg-base-pressed": "rgba(82, 82, 91, 1)",
@@ -210,6 +219,9 @@ const dark = {
   "--docs-contrast-border-bot": "rgba(255, 255, 255, 0.08)",
 
   "--docs-alphas-alpha-250": "rgba(255, 255, 255, 0.1)",
+  "--docs-alphas-alpha-6": "rgba(255, 255, 255, 0.06)",
+  "--docs-alphas-alpha-10": "rgba(255, 255, 255, 0.10)",
+  "--docs-alphas-alpha-16": "rgba(255, 255, 255, 0.16)"
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/draft-order",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "A draft order plugin for Medusa.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "@ariakit/react": "^0.4.15",
     "@babel/runtime": "^7.26.10",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/js-sdk": "2.13.1",
+    "@medusajs/js-sdk": "2.13.3",
     "@tanstack/react-query": "5.64.2",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
     "date-fns": "^3.6.0",
@@ -53,22 +53,22 @@
     "react-hook-form": "7.49.1"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.13.1",
-    "@medusajs/cli": "2.13.1",
-    "@medusajs/framework": "2.13.1",
-    "@medusajs/icons": "2.13.1",
-    "@medusajs/test-utils": "2.13.1",
-    "@medusajs/types": "2.13.1",
-    "@medusajs/ui": "4.1.1",
-    "@medusajs/ui-preset": "2.13.1"
+    "@medusajs/admin-sdk": "2.13.3",
+    "@medusajs/cli": "2.13.3",
+    "@medusajs/framework": "2.13.3",
+    "@medusajs/icons": "2.13.3",
+    "@medusajs/test-utils": "2.13.3",
+    "@medusajs/types": "2.13.3",
+    "@medusajs/ui": "4.1.3",
+    "@medusajs/ui-preset": "2.13.3"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.13.1",
-    "@medusajs/cli": "2.13.1",
-    "@medusajs/framework": "2.13.1",
-    "@medusajs/icons": "2.13.1",
-    "@medusajs/test-utils": "2.13.1",
-    "@medusajs/ui": "4.1.1",
+    "@medusajs/admin-sdk": "2.13.3",
+    "@medusajs/cli": "2.13.3",
+    "@medusajs/framework": "2.13.3",
+    "@medusajs/icons": "2.13.3",
+    "@medusajs/test-utils": "2.13.3",
+    "@medusajs/ui": "4.1.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "6.30.3"

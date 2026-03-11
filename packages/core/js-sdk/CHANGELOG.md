@@ -1,5 +1,13 @@
 # @medusajs/js-sdk
 
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14712](https://github.com/medusajs/medusa/pull/14712) [`6e994dcd6559ece5e79cb5375965f69c640d56b1`](https://github.com/medusajs/medusa/commit/6e994dcd6559ece5e79cb5375965f69c640d56b1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(js-sdk): fix return type of listAddresses
+
 ## 2.13.1
 
 ## 2.13.0

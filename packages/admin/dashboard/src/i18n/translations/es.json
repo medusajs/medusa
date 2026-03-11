@@ -2205,6 +2205,32 @@
         }
       }
     },
+    "templates": {
+      "amount_off_products": {
+        "title": "Descuento en productos",
+        "description": "Descuenta productos específicos o colecciones de productos"
+      },
+      "amount_off_order": {
+        "title": "Descuento en pedido",
+        "description": "Descuenta el monto total del pedido"
+      },
+      "percentage_off_product": {
+        "title": "Porcentaje de descuento en producto",
+        "description": "Descuenta un porcentaje de los productos seleccionados"
+      },
+      "percentage_off_order": {
+        "title": "Porcentaje de descuento en pedido",
+        "description": "Descuenta un porcentaje del monto total del pedido"
+      },
+      "buy_get": {
+        "title": "Compra X Lleva Y",
+        "description": "Compra X producto(s), lleva Y producto(s)"
+      },
+      "shipping_discount": {
+        "title": "Envío gratis",
+        "description": "Aplica un 100% de descuento en los gastos de envío"
+      }
+    },
     "deleteWarning": "Estás a punto de eliminar la promoción {{code}}. Esta acción no puede deshacerse.",
     "createPromotionTitle": "Crear Promoción",
     "type": "Tipo de promoción",

@@ -152,19 +152,34 @@ The application will restart if you make any changes to code under the `src` dir
 
 ## Start Building with Claude Code
 
-Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa.
+Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
 
 This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](../introduction/build-with-llms-ai/page.mdx) chapter for more details on using Medusa with AI tools.
 
-### Interactive Learning with Claude Code
+### Interactive Learning
 
 If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
 
 ```bash
 claude # start claude code
 /plugin marketplace add medusajs/medusa-agent-skills
 /plugin install learn-medusa@medusa
 ```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="other-agents">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - learning-medusa
+```
+
+  </CodeTab>
+</CodeTabs>
 
 Then, start the learning experience with this prompt:
 
@@ -186,15 +201,35 @@ This starts the interactive learning experience where you'll learn Medusa concep
 
 By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
 
-### Medusa Development Assistant
+### Medusa Development Assistance
 
-If you want assistance in your Medusa development and use Claude Code, install the `medusa-dev` plugin:
+If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
 
 ```bash
 claude # start claude code
 /plugin marketplace add medusajs/medusa-agent-skills
 /plugin install medusa-dev@medusa
 ```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="other-agents">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skills:
+# - building-with-medusa
+# - building-admin-dashboard-customizations
+# - building-storefronts
+# - db-generate
+# - db-migrate
+# - new-user
+```
+
+  </CodeTab>
+</CodeTabs>
 
 Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
 

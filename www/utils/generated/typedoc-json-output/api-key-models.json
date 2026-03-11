@@ -18,7 +18,7 @@
 					"fileName": "api-key.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L3"
 				}
 			],
 			"type": {
@@ -63,7 +63,7 @@
 													"fileName": "api-key.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L5"
 												}
 											],
 											"type": {
@@ -107,7 +107,7 @@
 													"fileName": "api-key.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L6"
 												}
 											],
 											"type": {
@@ -140,7 +140,7 @@
 													"fileName": "api-key.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L7"
 												}
 											],
 											"type": {
@@ -173,7 +173,7 @@
 													"fileName": "api-key.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L8"
 												}
 											],
 											"type": {
@@ -206,7 +206,7 @@
 													"fileName": "api-key.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L9"
 												}
 											],
 											"type": {
@@ -239,7 +239,7 @@
 													"fileName": "api-key.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L10"
 												}
 											],
 											"type": {
@@ -289,7 +289,7 @@
 													"fileName": "api-key.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L11"
 												}
 											],
 											"type": {
@@ -322,7 +322,7 @@
 													"fileName": "api-key.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L12"
 												}
 											],
 											"type": {
@@ -357,7 +357,7 @@
 													"fileName": "api-key.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L13"
 												}
 											],
 											"type": {
@@ -392,7 +392,7 @@
 													"fileName": "api-key.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L14"
 												}
 											],
 											"type": {
@@ -429,7 +429,7 @@
 											"fileName": "api-key.ts",
 											"line": 4,
 											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/de08ea732b599374a071c016fa8af2e4f3e31075/packages/modules/api-key/src/models/api-key.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/modules/api-key/src/models/api-key.ts#L4"
 										}
 									]
 								}

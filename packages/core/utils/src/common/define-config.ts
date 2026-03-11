@@ -502,6 +502,7 @@ function normalizeAdminConfig(
   return {
     backendUrl: process.env.MEDUSA_BACKEND_URL || DEFAULT_ADMIN_URL,
     path: "/app",
+    maxUploadFileSize: 1024 * 1024, // 1MB default
     ...adminConfig,
   }
 }

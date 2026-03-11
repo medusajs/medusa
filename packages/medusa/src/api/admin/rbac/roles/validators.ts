@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../../utils/common-validators"
 import {
   createFindParams,
@@ -72,3 +72,13 @@ export const AdminGetRoleUsersParams = createFindParams({
 })
   .merge(AdminGetRoleUsersParamsFields)
   .merge(applyAndAndOrOperators(AdminGetRoleUsersParamsFields))
+
+export type AdminAssignRoleUsersType = z.infer<typeof AdminAssignRoleUsers>
+export const AdminAssignRoleUsers = z.object({
+  users: z.array(z.string().min(1)).min(1),
+})
+
+export type AdminRemoveRoleUsersType = z.infer<typeof AdminRemoveRoleUsers>
+export const AdminRemoveRoleUsers = z.object({
+  users: z.array(z.string().min(1)).min(1),
+})

@@ -47,7 +47,14 @@ export function ConfigurableDataTable<TData>({
 
   const entity = adapter.entity
   const entityName = adapter.entityName
-  const filters = adapter.filters || []
+  const rawFilters = adapter.filters || []
+  const filters = rawFilters.map((filter) => {
+    // If filter has 'key' but no 'id', use 'key' as 'id' for compatibility
+    if ((filter as any).key && !(filter as any).id) {
+      return { ...filter, id: (filter as any).key as string }
+    }
+    return filter
+  })
   const pageSize = pageSizeProp || adapter.pageSize || 20
   const queryPrefix = queryPrefixProp || adapter.queryPrefix || ""
 
@@ -76,9 +83,9 @@ export function ConfigurableDataTable<TData>({
   })
 
   const parsedQueryParams = { ...queryParams }
-  filters.forEach(filter => {
+  filters.forEach((filter) => {
     const filterKey = filter.id
-    if (parsedQueryParams[filterKey] !== undefined) {
+    if (filterKey && parsedQueryParams[filterKey] !== undefined) {
       try {
         parsedQueryParams[filterKey] = JSON.parse(parsedQueryParams[filterKey])
       } catch {

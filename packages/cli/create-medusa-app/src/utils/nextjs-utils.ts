@@ -74,10 +74,21 @@ export async function installNextjsStarter({
       { verbose }
     )
 
+    const packageJsonPath = path.join(nextjsDirectory, "package.json")
+    let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
+
     if (version) {
-      const packageJsonPath = path.join(nextjsDirectory, "package.json")
-      updatePackageVersions(packageJsonPath, version, { applyChanges: true })
+      packageJson = updatePackageVersions(packageJsonPath, version, {
+        applyChanges: false,
+      })
     }
+
+    // Update packageManager field to match user's chosen package manager
+    const packageManagerString = await packageManager.getPackageManagerString()
+    if (packageManagerString) {
+      packageJson.packageManager = packageManagerString
+    }
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
     const execOptions = {
       signal: abortController?.signal,

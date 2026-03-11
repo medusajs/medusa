@@ -28,7 +28,7 @@ export const MainContentLayout = ({
   const { isBrowser } = useIsBrowser()
   const { desktopSidebarOpen } = useSidebar()
   const { mainContentRef, showCollapsedNavbar } = useLayout()
-  const { frontmatter } = useSiteConfig()
+  const { frontmatter, isInProduct } = useSiteConfig()
   const { chatOpened } = useAiAssistant()
 
   useEffect(() => {
@@ -70,17 +70,21 @@ export const MainContentLayout = ({
         <MainNav />
         <div
           className={clsx(
-            "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4",
-            showContentMenu && "grid grid-cols-1 lg:mx-auto",
+            "pb-docs_8 lg:pb-docs_4",
+            showContentMenu && !isInProduct && "grid grid-cols-1 lg:mx-auto",
             desktopSidebarOpen && "lg:grid-cols-[1fr_221px]",
             chatOpened && showCollapsedNavbar && "pl-docs_1",
+            !isInProduct && "pt-docs_4 lg:pt-docs_6",
+            isInProduct && "pt-docs_2",
             contentClassName
           )}
           id="content"
         >
           <div className="flex justify-center">{children}</div>
         </div>
-        {showContentMenu && !frontmatter.hide_content_menu && <ContentMenu />}
+        {showContentMenu && !frontmatter.hide_content_menu && !isInProduct && (
+          <ContentMenu />
+        )}
       </div>
     </div>
   )

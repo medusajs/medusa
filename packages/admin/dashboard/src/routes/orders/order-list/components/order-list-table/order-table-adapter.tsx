@@ -80,7 +80,13 @@ const useOrderTableFilters = () => {
   // Until we migrate to the new DataTable component, we can't use `createDataTableFilterHelper` filter structure, since the identifier there is `id`
   // while the deprecated component expects `key`. Will be ready to migrate once SUP-2651 is done
   return useMemo(() => {
-    const filters: DataTableFilter[] = [...dateFilters]
+    const filters: DataTableFilter[] = [
+      filterHelper.accessor("total", {
+        label: t("fields.total"),
+        type: "number",
+      }),
+      ...dateFilters,
+    ]
 
     if (regions?.length) {
       filters.push(

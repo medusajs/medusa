@@ -1,0 +1,80 @@
+export const metadata = {
+  title: `Stripe Integration`,
+}
+
+# {metadata.title}
+
+Add [Stripe](https://stripe.com/) to accept payments in your Bloom store.
+
+Stripe lets you accept credit cards, Apple Pay, Google Pay, and more from customers worldwide. Bloom sets it up for you in minutes.
+
+{/* TODO: Add screenshot of Stripe dashboard showing successful payments */}
+
+## Prerequisites
+
+Before adding Stripe, you need a [Stripe account](https://stripe.com/) and API keys.
+
+To get your Stripe API keys:
+
+1. Log in to your Stripe dashboard.
+2. Switch to sandbox or test mode (look for the toggle at the top).
+3. Click Developers in the bottom toolbar, then choose API keys.
+4. Copy your Publishable key and Secret key.
+
+Test keys start with `sk_test_` (secret) and `pk_test_` (publishable). You'll need both keys when Bloom asks for them.
+
+---
+
+## Add Stripe to Your Store
+
+Tell Bloom to add Stripe with details about how you want it to work. For example:
+
+```bash
+Add Stripe as a payment provider. Enable Stripe in the Europe and United States regions.
+Allow customers to pay with credit cards, Apple Pay, and Google Pay.
+```
+
+Bloom will set up Stripe as a payment provider in your store with the specified features.
+
+---
+
+## Enter Your Stripe Credentials
+
+When Bloom asks, paste in your Stripe API keys. Enter the publishable key and secret key exactly as shown in your Stripe dashboard.
+
+Bloom stores these keys securely and uses them to connect your store to Stripe.
+
+<Note title="Technical Information">
+
+Bloom stores your Stripe credentials as environment variables in your store. They are never exposed in your code or logs. See [Environment Variables](../../../../developers/environment-variables/page.mdx) for more details.
+
+</Note>
+
+---
+
+## Test Stripe
+
+After Bloom adds Stripe, test the checkout in your preview store using [Stripe's test card numbers](https://docs.stripe.com/testing).
+
+Place a test order. Check that you can see it in your admin dashboard and in your Stripe dashboard. If both show the order, Stripe is working.
+
+---
+
+## Publish Stripe Integration
+
+Once you've tested the integration and you're ready to go live, you can publish your changes with your live credentials.
+
+To publish the changes:
+
+1. Click on the "Publish" button at the top right.
+2. If you haven't published your store before, Bloom will ask you for some details about your store.
+3. In the "Missing production values" section, enter the live credentials for Stripe. You can find them the same way as the [test keys](#prerequisites), but switch your Stripe dashboard to live mode first.
+4. Click "Publish" to make your changes live.
+
+Your Stripe integration will be published to your live store, and customers can start using it to make payments.
+
+---
+
+## Need Help?
+
+If you face any issues while adding Stripe to your Bloom store, [contact support or submit feedback](../../../../help-and-feedback/page.mdx).

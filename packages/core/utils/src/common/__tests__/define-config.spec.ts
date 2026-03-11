@@ -7,6 +7,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -185,6 +186,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -369,6 +371,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -559,6 +562,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -745,6 +749,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -926,6 +931,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -1110,6 +1116,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -1345,6 +1352,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -1596,6 +1604,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -1926,6 +1935,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -2119,6 +2129,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "test-backend-url",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -2339,6 +2350,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "test-backend-url",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},
@@ -2568,6 +2580,7 @@ describe("defineConfig", function () {
       {
         "admin": {
           "backendUrl": "/",
+          "maxUploadFileSize": 1048576,
           "path": "/app",
         },
         "featureFlags": {},

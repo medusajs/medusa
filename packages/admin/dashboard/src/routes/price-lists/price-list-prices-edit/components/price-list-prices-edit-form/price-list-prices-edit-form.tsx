@@ -162,8 +162,10 @@ function initRecord(
       variants:
         product.variants?.reduce((variants, variant) => {
           const prices = variantPrices[variant.id] || {}
-          variants[variant.id] = prices
-
+          variants[variant.id] = {
+            currency_prices: prices.currency_prices || {},
+            region_prices: prices.region_prices || {},
+          }
           return variants
         }, {} as PriceListUpdateProductVariantsSchema) || {},
     }

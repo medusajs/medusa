@@ -1,5 +1,21 @@
 # @medusajs/ui
 
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.3
+
+## 4.1.2
+
+### Patch Changes
+
+- [#14160](https://github.com/medusajs/medusa/pull/14160) [`63e50fd6a4430dbb7737d1223818f8d27bb3d53b`](https://github.com/medusajs/medusa/commit/63e50fd6a4430dbb7737d1223818f8d27bb3d53b) Thanks [@adevinwild](https://github.com/adevinwild)! - fix(ui): stale filters when selecting a view (VIEW_CONFIUGRATIONS_FF)
+
+- Updated dependencies [[`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e)]:
+  - @medusajs/icons@2.13.2
+
 ## 4.1.1
 
 ### Patch Changes

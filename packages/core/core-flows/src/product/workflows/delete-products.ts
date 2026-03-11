@@ -87,7 +87,10 @@ export const deleteProductsWorkflow = createWorkflow(
           }
 
           for (const inventoryItem of variant.inventory) {
-            if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
+            if (
+              !!inventoryItem &&
+              inventoryItem.variants.every((v) => variantsMap.has(v.id))
+            ) {
               toDeleteIds.add(inventoryItem.id)
             }
           }
