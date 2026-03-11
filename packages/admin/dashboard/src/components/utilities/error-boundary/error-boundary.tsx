@@ -1,5 +1,6 @@
-import { ExclamationCircle } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
+import { ExclamationCircle, SquareTwoStack } from "@medusajs/icons"
+import { toast, Text, IconButton, Tooltip } from "@medusajs/ui"
+import copy from "copy-to-clipboard"
 import { useTranslation } from "react-i18next"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"
 
@@ -52,6 +53,22 @@ export const ErrorBoundary = () => {
       break
   }
 
+  // In development mode, show detailed error information
+  const isDevelopment = process.env.NODE_ENV === "development"
+  const errorMessage = error instanceof Error ? error.message : String(error)
+  const errorStack = error instanceof Error ? error.stack : undefined
+
+  const handleCopyError = () => {
+    const errorText = `Error: ${errorMessage}\n\n${errorStack || "No stack trace available"}`
+    const success = copy(errorText)
+    
+    if (success) {
+      toast.success("Error details copied to clipboard")
+    } else {
+      toast.error("Failed to copy error details")
+    }
+  }
+
   return (
     <div className="flex size-full min-h-[calc(100vh-57px-24px)] items-center justify-center">
       <div className="flex flex-col gap-y-6">
@@ -69,6 +86,51 @@ export const ErrorBoundary = () => {
             </Text>
           </div>
         </div>
+        {isDevelopment && errorMessage && (
+          <div className="bg-ui-bg-disabled border-ui-border-subtle max-w-3xl overflow-scroll max-h-[400px] rounded-lg border p-4">
+            <div className="flex flex-col gap-y-4">
+              <div className="flex items-center justify-between">
+                <Text
+                  size="small"
+                  weight="plus"
+                  className="text-ui-fg-base"
+                >
+                  Error Details (Development Mode)
+                </Text>
+                <Tooltip content="Copy error details">
+                  <IconButton
+                    onClick={handleCopyError}
+                    variant="transparent"
+                  >
+                    <SquareTwoStack className="text-ui-fg-muted" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div>
+                <Text
+                  size="xsmall"
+                  className="text-ui-fg-subtle font-mono break-words"
+                >
+                  {errorMessage}
+                </Text>
+              </div>
+              {errorStack && (
+                <div>
+                  <Text
+                    size="small"
+                    weight="plus"
+                    className="text-ui-fg-base mb-2"
+                  >
+                    Stack Trace
+                  </Text>
+                  <pre className="text-ui-fg-subtle overflow-auto whitespace-pre-wrap break-words text-xs">
+                    {errorStack}
+                  </pre>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
