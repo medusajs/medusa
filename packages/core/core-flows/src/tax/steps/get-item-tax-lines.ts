@@ -12,9 +12,8 @@ import {
   TaxableShippingDTO,
   TaxCalculationContext,
 } from "@medusajs/framework/types"
-import { isDefined, MedusaError, Modules } from "@medusajs/framework/utils"
+import { isDefined, isTruthy, MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { isTruthy } from "@medusajs/framework/utils"
 
 /**
  * The data to retrieve tax lines for an order or cart's line items and shipping methods.
