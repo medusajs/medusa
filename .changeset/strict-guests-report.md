@@ -5,4 +5,4 @@
 "@medusajs/medusa": patch
 ---
 
-feat(product-collection,product-tag,product-type): add external_id to both admin and store apis
+feat(product,medusa,types): add external id to product tags, collections and types
