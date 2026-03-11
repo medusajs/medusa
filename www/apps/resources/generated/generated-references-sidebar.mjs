@@ -2142,7 +2142,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/acceptInviteWorkflow",
                   "title": "acceptInviteWorkflow",
-                  "description": "Accept invite and create user.",
+                  "description": "Accept invite and create user with roles.",
                   "children": []
                 },
                 {
@@ -2151,7 +2151,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/createInvitesWorkflow",
                   "title": "createInvitesWorkflow",
-                  "description": "Create one or more user invites.",
+                  "description": "Create one or more user invites with optional role assignment.",
                   "children": []
                 },
                 {
@@ -5219,6 +5219,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/exportProductsStep",
+                  "title": "exportProductsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/generateProductCsvStep",
                   "title": "generateProductCsvStep",
                   "description": "",
@@ -6711,6 +6720,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/batchTranslationSettingsWorkflow",
+                  "title": "batchTranslationSettingsWorkflow",
+                  "description": "Create, update, and delete translation settings.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/batchTranslationsWorkflow",
                   "title": "batchTranslationsWorkflow",
                   "description": "Create, update, and delete translations.",
@@ -6755,6 +6773,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/createTranslationSettingsStep",
+                  "title": "createTranslationSettingsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/createTranslationsStep",
                   "title": "createTranslationsStep",
                   "description": "",
@@ -6764,8 +6791,26 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/deleteTranslationSettingsStep",
+                  "title": "deleteTranslationSettingsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteTranslationsStep",
                   "title": "deleteTranslationsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/updateTranslationSettingsStep",
+                  "title": "updateTranslationSettingsStep",
                   "description": "",
                   "children": []
                 },
@@ -6818,7 +6863,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/createUsersWorkflow",
                   "title": "createUsersWorkflow",
-                  "description": "Create one or more users.",
+                  "description": "Create one or more users with optional role assignment.",
                   "children": []
                 },
                 {
@@ -7077,6 +7122,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "link",
               "path": "/references/data-model/model-methods/cascades",
               "title": "cascades",
+              "description": "",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/references/data-model/model-methods/gettranslatableentities",
+              "title": "getTranslatableEntities",
               "description": "",
               "children": []
             },

@@ -18,6 +18,10 @@ import {
   AdminRemoveRoleUsersType,
 } from "../../validators"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -42,6 +46,10 @@ export const GET = async (
   })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminAssignRoleUsersType>,
   res: MedusaResponse
@@ -85,6 +93,10 @@ export const POST = async (
   res.status(200).json({ users: roleUsers })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<AdminRemoveRoleUsersType>,
   res: MedusaResponse

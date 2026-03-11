@@ -1,5 +1,53 @@
 # @medusajs/dashboard
 
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.13.3
+  - @medusajs/admin-shared@2.13.3
+  - @medusajs/icons@2.13.3
+  - @medusajs/ui@4.1.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14720](https://github.com/medusajs/medusa/pull/14720) [`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363) Thanks [@arjusmoon860](https://github.com/arjusmoon860)! - feat(dashboard, admin-bundler, utils, types): add configurable maximum file upload size
+
+- [#14146](https://github.com/medusajs/medusa/pull/14146) [`d2ce360875bafc3fc0c367384b9b631e77130726`](https://github.com/medusajs/medusa/commit/d2ce360875bafc3fc0c367384b9b631e77130726) Thanks [@adevinwild](https://github.com/adevinwild)! - Introduce filtering orders by total price on the API and Admin UI
+
+- [#14523](https://github.com/medusajs/medusa/pull/14523) [`c1cc9a71507ec51ba5bdfecf8243d3e355c03fdc`](https://github.com/medusajs/medusa/commit/c1cc9a71507ec51ba5bdfecf8243d3e355c03fdc) Thanks [@bqst](https://github.com/bqst)! - fix(dashboard): handle undefined payment_collections in order table calculations
+
+- [#14631](https://github.com/medusajs/medusa/pull/14631) [`337a7bbea3b7b0d677077f939d56afc5c3b01c22`](https://github.com/medusajs/medusa/commit/337a7bbea3b7b0d677077f939d56afc5c3b01c22) Thanks [@marlinjai](https://github.com/marlinjai)! - fix(dashboard): pass product ID explicitly to edit option form
+
+  The edit product option form was using `option.product_id` which is undefined when options are fetched as part of a product response. Now passes the product ID from the parent component via props.
+
+- [#14461](https://github.com/medusajs/medusa/pull/14461) [`b87899f1121c8577757dc96236869b19f68f51f3`](https://github.com/medusajs/medusa/commit/b87899f1121c8577757dc96236869b19f68f51f3) Thanks [@chuxi](https://github.com/chuxi)! - fix(dashboard): settingsRoutes from multiple plugins only show the first one
+
+  Previously, when multiple plugins registered settings routes, only the first plugin's routes were displayed. This fix uses `flatMap` to properly merge all settings routes from all plugins.
+
+- [#14273](https://github.com/medusajs/medusa/pull/14273) [`bc36968049412fcec515c4141cd911a5bfb51283`](https://github.com/medusajs/medusa/commit/bc36968049412fcec515c4141cd911a5bfb51283) Thanks [@docloulou](https://github.com/docloulou)! - fix(dashboard): Initialize complete price structure for variants in price list edit
+
+- [#14568](https://github.com/medusajs/medusa/pull/14568) [`a74623de7d545205da7340ede6286853c1bcfb2d`](https://github.com/medusajs/medusa/commit/a74623de7d545205da7340ede6286853c1bcfb2d) Thanks [@iharshyadav](https://github.com/iharshyadav)! - fix(dashboard): Use start-[68px] for RTL table sticky cells.
+
+- [#14619](https://github.com/medusajs/medusa/pull/14619) [`08f79d7403d7f2311ee93753f2f870658b951d7b`](https://github.com/medusajs/medusa/commit/08f79d7403d7f2311ee93753f2f870658b951d7b) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): fix toggeable number cell set value
+
+- [#14620](https://github.com/medusajs/medusa/pull/14620) [`4c4d2a533c8fe11ec8bf7e0d4f7a8b4888305137`](https://github.com/medusajs/medusa/commit/4c4d2a533c8fe11ec8bf7e0d4f7a8b4888305137) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): fix view configurations order filters
+
+- [#14677](https://github.com/medusajs/medusa/pull/14677) [`19fdb0cf2ce9f444d80149208b2fa1d4e3e7c17c`](https://github.com/medusajs/medusa/commit/19fdb0cf2ce9f444d80149208b2fa1d4e3e7c17c) Thanks [@webgodo](https://github.com/webgodo)! - fix(admin): use is_tax_inclusive as column id in store add-currencies form
+
+- [#14780](https://github.com/medusajs/medusa/pull/14780) [`a4c420e75cbed3e5f618849d2622045982377c96`](https://github.com/medusajs/medusa/commit/a4c420e75cbed3e5f618849d2622045982377c96) Thanks [@mokivan](https://github.com/mokivan)! - chore(dashboard): Add i18n support for promotion template titles and descriptions
+
+- [#14118](https://github.com/medusajs/medusa/pull/14118) [`da1aa3df16735460bb584be815ea27d2436942ae`](https://github.com/medusajs/medusa/commit/da1aa3df16735460bb584be815ea27d2436942ae) Thanks [@adevinwild](https://github.com/adevinwild)! - Fix DataTable row click to always prepend **BASE** (or "/") to row URLs when opening new tabs or windows.
+
+- Updated dependencies [[`63e50fd6a4430dbb7737d1223818f8d27bb3d53b`](https://github.com/medusajs/medusa/commit/63e50fd6a4430dbb7737d1223818f8d27bb3d53b), [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e), [`6e994dcd6559ece5e79cb5375965f69c640d56b1`](https://github.com/medusajs/medusa/commit/6e994dcd6559ece5e79cb5375965f69c640d56b1)]:
+  - @medusajs/ui@4.1.2
+  - @medusajs/icons@2.13.2
+  - @medusajs/js-sdk@2.13.2
+  - @medusajs/admin-shared@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

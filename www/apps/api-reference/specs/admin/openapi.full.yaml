@@ -27616,7 +27616,7 @@ paths:
             })
 
             sdk.admin.orderEdit.updateOriginalItem(
-              "order_123", 
+              "order_123",
               "orli_123",
               {
                 quantity: 1
@@ -27704,7 +27704,7 @@ paths:
             })
 
             sdk.admin.orderEdit.updateAddedItem(
-              "order_123", 
+              "order_123",
               "orli_123",
               {
                 quantity: 1
@@ -27782,7 +27782,7 @@ paths:
             })
 
             sdk.admin.orderEdit.removeAddedItem(
-              "order_123", 
+              "order_123",
               "orli_123",
             )
             .then(({ order_preview }) => {
@@ -60133,63 +60133,6 @@ paths:
         - text: Cloud
           description: |
             This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
-  /admin/store-credit-accounts/{id}/credit:
-    post:
-      operationId: PostStoreCreditAccountsIdCredit
-      summary: Add Credit
-      description: Add credit to a store credit account.
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The store credit account's ID.
-          required: true
-          schema:
-            type: string
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminCreditStoreCreditAccountParams'
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/admin/store-credit-accounts/{id}/credit' \
-            -H 'Authorization: Bearer {access_token}' \
-            -H 'Content-Type: application/json' \
-            --data-raw '{
-              "amount": 0
-            }'
-      tags:
-        - Store Credit Accounts
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminStoreCreditAccountResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-badges:
-        - text: Cloud
-          description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /admin/store-credit-accounts/{id}/transactions:
     get:
       operationId: GetStoreCreditAccountsIdTransactions
@@ -63849,7 +63792,6 @@ paths:
             .then(({ created, updated, deleted }) => {
               console.log(created, updated, deleted)
             })
-            ```
         - lang: Shell
           label: cURL
           source: |-
@@ -65421,6 +65363,53 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
+  /admin/users/{id}/roles/{role_id}:
+    delete:
+      operationId: DeleteUsersIdRolesRole_id
+      summary: Remove Role from User
+      description: Remove a Role from a user.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+        - name: role_id
+          in: path
+          description: The user's role id.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/users/{id}/roles/{role_id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: removeUserRolesWorkflow
+      x-events: []
   /admin/views/{entity}/columns:
     get:
       operationId: GetViewsEntityColumns
@@ -78511,7 +78500,6 @@ components:
         - ean
         - upc
         - thumbnail
-        - images
         - allow_backorder
         - manage_inventory
         - hs_code
@@ -80460,6 +80448,9 @@ components:
           externalDocs:
             url: https://en.wikipedia.org/wiki/ISO_3166-2
             description: Learn more about ISO 3166-2
+        metadata:
+          type: object
+          description: The address's metadata.
       required:
         - id
         - address_1
@@ -80470,6 +80461,7 @@ components:
         - phone
         - postal_code
         - province
+        - metadata
     AdminStockLocationDeleteResponse:
       type: object
       description: The details of the stock location's deletion.
@@ -81147,47 +81139,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the transaction was updated at.
-    AdminTransactionGroup:
-      type: object
-      description: The transaction group's details.
-      x-schemaName: AdminTransactionGroup
-      required:
-        - account
-        - id
-        - code
-        - credits
-        - debits
-        - balance
-        - metadata
-      properties:
-        id:
-          type: string
-          title: id
-          description: The transaction group's ID.
-        code:
-          type: string
-          title: code
-          description: The transaction group's code.
-        credits:
-          type: number
-          title: credits
-          description: The transaction group's credits.
-        debits:
-          type: number
-          title: debits
-          description: The transaction group's debits.
-        balance:
-          type: number
-          title: balance
-          description: The transaction group's balance.
-        account:
-          type: object
-        metadata:
-          type: object
-          description: The transaction group's metadata, can hold custom key-value pairs.
-          externalDocs:
-            url: https://docs.medusajs.com/api/admin#manage-metadata
-            description: Learn how to manage metadata
     AdminTransactionsResponse:
       type: object
       description: The paginated list of transactions.
@@ -83258,6 +83209,9 @@ components:
           externalDocs:
             url: https://en.wikipedia.org/wiki/ISO_3166-2
             description: Learn more about ISO 3166-2
+        metadata:
+          type: object
+          description: The address's metadata.
     AdminUser:
       type: object
       description: The user's details.
@@ -86610,7 +86564,6 @@ components:
         - ean
         - upc
         - thumbnail
-        - images
         - allow_backorder
         - manage_inventory
         - hs_code
@@ -98711,7 +98664,6 @@ components:
         - hs_code
         - mid_code
         - material
-        - images
         - deleted_at
         - manage_inventory
         - allow_backorder

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/fulfillment-manual",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "Manual fulfillment for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -25,10 +25,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.13.1"
+    "@medusajs/framework": "2.13.3"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.1"
+    "@medusajs/framework": "2.13.3"
   },
   "keywords": [
     "medusa-plugin",
