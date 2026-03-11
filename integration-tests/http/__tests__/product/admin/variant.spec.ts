@@ -1,4 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -1076,6 +1077,114 @@ medusaIntegrationTestRunner({
         expect(deletedLinkVariant.inventory_items[0].id).not.toEqual(
           inventoryItemToDelete.id
         )
+      })
+    })
+
+    describe("DELETE /admin/products/:id/variants/:variant_id", () => {
+      it("successfully deletes a variant when a linked inventory item was already deleted", async () => {
+        const stockLocation = (
+          await api.post(
+            `/admin/stock-locations`,
+            { name: "loc" },
+            adminHeaders
+          )
+        ).data.stock_location
+
+        const inventoryItem1 = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "variant-orphan-1" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        const inventoryItem2 = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "variant-orphan-2" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+          {
+            location_id: stockLocation.id,
+            stocked_quantity: 10,
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+          {
+            location_id: stockLocation.id,
+            stocked_quantity: 5,
+          },
+          adminHeaders
+        )
+
+        const product = (
+          await api.post(
+            `/admin/products`,
+            {
+              title: "Product with orphan variant link",
+              handle: "product-orphan-variant-link",
+              options: [{ title: "size", values: ["m"] }],
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Variant with orphan inventory link",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  manage_inventory: true,
+                  options: { size: "m" },
+                  inventory_items: [
+                    {
+                      inventory_item_id: inventoryItem1.id,
+                      required_quantity: 1,
+                    },
+                    {
+                      inventory_item_id: inventoryItem2.id,
+                      required_quantity: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        const variantId = product.variants[0].id
+
+        // Delete one inventory item directly via the module service,
+        // bypassing the workflow that would clean up the link.
+        // This creates an orphan link (variant still references a
+        // deleted inventory item).
+        const inventoryModule = getContainer().resolve(Modules.INVENTORY)
+        await inventoryModule.deleteInventoryItems(inventoryItem1.id)
+
+        // Deleting the variant should succeed despite the orphan link
+        const response = await api.delete(
+          `/admin/products/${product.id}/variants/${variantId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            id: variantId,
+            deleted: true,
+          })
+        )
+
+        // The remaining inventory item should also be deleted since it
+        // was only associated with this variant
+        const item2Response = await api
+          .get(`/admin/inventory-items/${inventoryItem2.id}`, adminHeaders)
+          .catch((err) => err.response)
+
+        expect(item2Response.status).toEqual(404)
       })
     })
   },

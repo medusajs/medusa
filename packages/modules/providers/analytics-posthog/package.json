@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics-posthog",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "Posthog analytics provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -25,11 +25,11 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.13.1",
+    "@medusajs/framework": "2.13.3",
     "posthog-node": "^5.11.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.1",
+    "@medusajs/framework": "2.13.3",
     "posthog-node": "^5.11.0"
   },
   "keywords": [

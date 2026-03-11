@@ -25,6 +25,7 @@ export const cartFieldsForRefreshSteps = [
   "items.product.categories.id",
   "items.product.tags.id",
   "items.product.type_id",
+  "items.product.weight",
   "items.variant.id",
   "items.variant.product.id",
   "items.variant.weight",
@@ -204,5 +205,6 @@ export const cartFieldsForCalculateShippingOptionsPrices = [
   "items.product.collection_id",
   "items.product.categories.id",
   "items.product.tags.id",
+  "items.product.weight",
   "shipping_address.*",
 ]

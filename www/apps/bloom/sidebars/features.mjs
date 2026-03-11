@@ -19,11 +19,11 @@ export const featuresSidebar = [
             title: "View Switcher",
             path: "/features/view-switcher",
           },
-          {
-            type: "link",
-            title: "Emails",
-            path: "/features/emails",
-          },
+          // {
+          //   type: "link",
+          //   title: "Emails",
+          //   path: "/features/emails",
+          // },
           {
             type: "link",
             title: "Selection Mode",

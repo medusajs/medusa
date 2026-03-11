@@ -174,14 +174,6 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Emails",
-            "path": "/features/emails",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
             "title": "Selection Mode",
             "path": "/features/selection-mode",
             "children": []
@@ -348,14 +340,6 @@ export const generatedSidebars = [
         "type": "link",
         "title": "Environment Variables",
         "path": "/developers/environment-variables",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "title": "Email Templates",
-        "path": "/developers/email-templates",
         "children": []
       }
     ]

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/core-flows",
-  "version": "2.13.1",
+  "version": "2.13.3",
   "description": "Set of workflow definitions for Medusa",
   "main": "dist/index.js",
   "exports": {
@@ -26,14 +26,14 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.13.1"
+    "@medusajs/framework": "2.13.3"
   },
   "dependencies": {
     "csv-parse": "^5.6.0",
     "json-2-csv": "^5.5.4"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.1"
+    "@medusajs/framework": "2.13.3"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
