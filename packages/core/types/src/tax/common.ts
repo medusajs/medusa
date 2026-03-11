@@ -523,7 +523,7 @@ export interface TaxCalculationContext {
   /**
    * Whether the tax lines are exempt from VAT.
    */
-  vat_exempt: boolean
+  vat_exempt?: boolean
 }
 
 /**
