@@ -518,6 +518,16 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: "typegen",
+      desc: "Generate TypeScript types for your modules into the .medusa/types directory.",
+      handler: handlerP(
+        getCommandHandler(`typegen`, async (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: "build",
       desc: "Build your project.",
       builder: (_) =>
