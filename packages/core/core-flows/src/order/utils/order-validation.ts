@@ -20,13 +20,6 @@ export function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
       `Order with id ${order.id} has been canceled.`
     )
   }
-
-  if (order.status === OrderStatus.COMPLETED) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      `Cannot cancel a completed order. Please use the return process to handle refunds or exchanges.`
-    )
-  }
 }
 
 export function throwIfManagedItemsNotStockedAtReturnLocation({
