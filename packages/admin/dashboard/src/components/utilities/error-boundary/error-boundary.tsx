@@ -21,6 +21,11 @@ export const ErrorBoundary = () => {
     code = error.status ?? null
   }
 
+  // In development mode, show detailed error information
+  const isDevelopment = process.env.NODE_ENV === "development"
+  const errorMessage = error instanceof Error ? error.message : String(error)
+  const errorStack = error instanceof Error ? error.stack : undefined
+
   /**
    * Log error in development mode.
    *
@@ -29,6 +34,22 @@ export const ErrorBoundary = () => {
    */
   if (process.env.NODE_ENV === "development") {
     console.error(error)
+    const fileDetails = errorStack?.split("\n")[1].trim()
+    const filename = fileDetails?.match(/([^\/\\?]+)(?:\?[^:]*)?:\d+:\d+\)/)?.[1] || "unknown"
+    const lineno = fileDetails?.match(/(?:\?[^:]*)?:(\d+):\d+\)/)?.[1] || "unknown"
+    const colno = fileDetails?.match(/(?:\?[^:]*)?:\d+:(\d+)\)/)?.[1] || "unknown"
+    window.parent.postMessage({
+      data: {
+        type: "CONSOLE_OUTPUT",
+        level: "error",
+        message: errorMessage,
+        stack: errorStack,
+        logged_at: new Date().toISOString(),
+        filename,
+        lineno,
+        colno,
+      }
+    }, "*")
   }
 
   let title: string
@@ -52,11 +73,6 @@ export const ErrorBoundary = () => {
       message = t("errorBoundary.defaultMessage")
       break
   }
-
-  // In development mode, show detailed error information
-  const isDevelopment = process.env.NODE_ENV === "development"
-  const errorMessage = error instanceof Error ? error.message : String(error)
-  const errorStack = error instanceof Error ? error.stack : undefined
 
   const handleCopyError = () => {
     const errorText = `Error: ${errorMessage}\n\n${errorStack || "No stack trace available"}`
