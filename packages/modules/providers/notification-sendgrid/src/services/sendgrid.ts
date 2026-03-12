@@ -79,6 +79,17 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       }
     }
 
+    const rawCustomArgs = notification.provider_data?.custom_args as
+      | Record<string, unknown>
+      | undefined;
+    const customArgs = rawCustomArgs
+      ? Object.fromEntries(
+          Object.entries(rawCustomArgs)
+            .filter(([, v]) => v != null)
+            .map(([k, v]) => [k, String(v)]),
+        )
+      : undefined
+
     const message: sendgrid.MailDataRequired = {
       to: notification.to,
       from: from,
@@ -86,6 +97,12 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
+      personalizations: [
+        {
+          to: [{ email: notification.to as string }],
+          ...(customArgs && { customArgs }),
+        },
+      ],
       ...mailContent,
     }
 
