@@ -1708,6 +1708,97 @@ medusaIntegrationTestRunner({
         expect(iitem.reserved_quantity).toBe(0)
       })
 
+      it("should handle partial fulfillment when stocked equals reserved (available = 0)", async () => {
+        const orderItemId = order.items.find(
+          (i) => i.variant_id === productOverride3.variants[0].id
+        ).id
+
+        // Reduce stocked_quantity to match reserved (3) so available = 0
+        await api.post(
+          `/admin/inventory-items/${inventoryItemOverride3.id}/location-levels/${stockChannelOverride.id}`,
+          { stocked_quantity: 3 },
+          adminHeaders
+        )
+
+        let iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(3)
+        expect(iitem.reserved_quantity).toBe(3)
+
+        // Partial fulfillment: fulfill 1 of 3 — this triggers the bug when
+        // adjustInventoryLevelsStep runs before updateReservationsStep
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            shipping_option_id: seeder.shippingOption.id,
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(2)
+        expect(iitem.reserved_quantity).toBe(2)
+
+        // Fulfill another 1
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            shipping_option_id: seeder.shippingOption.id,
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(1)
+        expect(iitem.reserved_quantity).toBe(1)
+
+        // Fulfill remaining 1
+        const {
+          data: { order: fulfilledOrder },
+        } = await api.post(
+          `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id`,
+          {
+            shipping_option_id: seeder.shippingOption.id,
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        expect(fulfilledOrder.fulfillments).toHaveLength(3)
+
+        iitem = (
+          await api.get(
+            `/admin/inventory-items/${inventoryItemOverride3.id}?fields=stocked_quantity,reserved_quantity`,
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        expect(iitem.stocked_quantity).toBe(0)
+        expect(iitem.reserved_quantity).toBe(0)
+      })
+
       it("should throw if trying to fulfillment more items than it is reserved", async () => {
         const orderItemId = order.items.find(
           (i) => i.variant_id === productOverride3.variants[0].id
