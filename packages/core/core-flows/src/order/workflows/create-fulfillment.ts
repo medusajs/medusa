@@ -33,12 +33,10 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
-import { adjustInventoryLevelsStep } from "../../inventory"
 import {
-  deleteReservationsStep,
-  updateReservationsStep,
-} from "../../reservation"
-import { registerOrderFulfillmentStep } from "../steps"
+  adjustFulfillmentInventoryStep,
+  registerOrderFulfillmentStep,
+} from "../steps"
 import { buildReservationsMap } from "../utils/build-reservations-map"
 import {
   throwIfItemsAreNotGroupedByShippingRequirement,
@@ -563,12 +561,15 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
-    adjustInventoryLevelsStep(inventoryAdjustment)
+    adjustFulfillmentInventoryStep({
+      toUpdate,
+      toDelete,
+      inventoryAdjustment,
+    })
+
     parallelize(
       registerOrderFulfillmentStep(registerOrderFulfillmentData),
       createRemoteLinkStep(link),
-      updateReservationsStep(toUpdate),
-      deleteReservationsStep(toDelete),
       emitEventStep({
         eventName: OrderWorkflowEvents.FULFILLMENT_CREATED,
         data: {

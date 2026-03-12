@@ -1,3 +1,4 @@
+export * from "./adjust-fulfillment-inventory"
 export * from "./add-order-transaction"
 export * from "./archive-orders"
 export * from "./cancel-fulfillment"
