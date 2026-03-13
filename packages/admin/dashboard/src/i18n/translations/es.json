@@ -3238,7 +3238,7 @@
     "personalViews": "Vistas personales",
     "prompts": {
       "deleteView": {
-        "description": "¿Seguro que quieres eliminar \"{{view.name}}\"? Esta acción no se puede deshacer.",
+        "description": "¿Seguro que quieres eliminar \"{{view}}\"? Esta acción no se puede deshacer.",
         "title": "Eliminar vista"
       },
       "resetSystemDefault": {

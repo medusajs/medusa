@@ -2842,7 +2842,7 @@
     "personalViews": "Persönliche Ansichten",
     "prompts": {
       "deleteView": {
-        "description": "Möchtest du \"{{view.name}}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "description": "Möchtest du \"{{view}}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
         "title": "Ansicht löschen"
       },
       "resetSystemDefault": {

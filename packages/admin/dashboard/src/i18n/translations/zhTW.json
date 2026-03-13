@@ -3272,7 +3272,7 @@
         }
       },
       "deleteView": {
-        "description": "確定要刪除「{{view.name}}」嗎？此操作無法復原。",
+        "description": "確定要刪除「{{view}}」嗎？此操作無法復原。",
         "title": "刪除檢視"
       },
       "resetSystemDefault": {

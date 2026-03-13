@@ -3061,7 +3061,7 @@
     "personalViews": "Asmeniniai rodiniai",
     "prompts": {
       "deleteView": {
-        "description": "Ar tikrai norite ištrinti „{{view.name}}“? Šio veiksmo atšaukti negalima.",
+        "description": "Ar tikrai norite ištrinti „{{view}}“? Šio veiksmo atšaukti negalima.",
         "title": "Ištrinti rodinį"
       },
       "resetSystemDefault": {

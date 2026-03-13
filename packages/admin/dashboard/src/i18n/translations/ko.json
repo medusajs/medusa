@@ -3077,7 +3077,7 @@
     "personalViews": "개인 보기",
     "prompts": {
       "deleteView": {
-        "description": "\"{{view.name}}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "description": "\"{{view}}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
         "title": "보기 삭제"
       },
       "resetSystemDefault": {

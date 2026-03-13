@@ -3388,7 +3388,7 @@
       },
       "deleteView": {
         "title": "Delete view",
-        "description": "Are you sure you want to delete \"{{view.name}}\"? This action cannot be undone."
+        "description": "Are you sure you want to delete \"{{view}}\"? This action cannot be undone."
       },
       "saveAsSystemDefault": {
         "title": "Save as system default",

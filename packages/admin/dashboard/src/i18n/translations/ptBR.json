@@ -2842,7 +2842,7 @@
     "personalViews": "Visualizações pessoais",
     "prompts": {
       "deleteView": {
-        "description": "Tem certeza de que deseja excluir \"{{view.name}}\"? Essa ação não pode ser desfeita.",
+        "description": "Tem certeza de que deseja excluir \"{{view}}\"? Essa ação não pode ser desfeita.",
         "title": "Excluir visualização"
       },
       "resetSystemDefault": {

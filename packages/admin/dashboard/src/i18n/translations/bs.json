@@ -3069,7 +3069,7 @@
     "personalViews": "Lični prikazi",
     "prompts": {
       "deleteView": {
-        "description": "Jeste li sigurni da želite obrisati \"{{view.name}}\"? Ova radnja se ne može poništiti.",
+        "description": "Jeste li sigurni da želite obrisati \"{{view}}\"? Ova radnja se ne može poništiti.",
         "title": "Obriši prikaz"
       },
       "resetSystemDefault": {

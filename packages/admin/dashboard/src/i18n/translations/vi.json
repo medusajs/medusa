@@ -3104,7 +3104,7 @@
     "personalViews": "Chế độ xem cá nhân",
     "prompts": {
       "deleteView": {
-        "description": "Bạn có chắc chắn muốn xóa \"{{view.name}}\" không? Hành động này không thể hoàn tác.",
+        "description": "Bạn có chắc chắn muốn xóa \"{{view}}\" không? Hành động này không thể hoàn tác.",
         "title": "Xóa chế độ xem"
       },
       "resetSystemDefault": {

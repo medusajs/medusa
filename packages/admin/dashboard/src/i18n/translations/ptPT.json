@@ -3243,7 +3243,7 @@
         }
       },
       "deleteView": {
-        "description": "Tem a certeza de que pretende eliminar \"{{view.name}}\"? Esta ação não pode ser anulada.",
+        "description": "Tem a certeza de que pretende eliminar \"{{view}}\"? Esta ação não pode ser anulada.",
         "title": "Eliminar vista"
       },
       "resetSystemDefault": {

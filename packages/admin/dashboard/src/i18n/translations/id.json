@@ -3071,7 +3071,7 @@
     "personalViews": "Tampilan pribadi",
     "prompts": {
       "deleteView": {
-        "description": "Apakah Anda yakin ingin menghapus \"{{view.name}}\"? Tindakan ini tidak dapat dibatalkan.",
+        "description": "Apakah Anda yakin ingin menghapus \"{{view}}\"? Tindakan ini tidak dapat dibatalkan.",
         "title": "Hapus tampilan"
       },
       "resetSystemDefault": {

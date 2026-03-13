@@ -2841,7 +2841,7 @@
         }
       },
       "deleteView": {
-        "description": "Êtes-vous sûr de vouloir supprimer \"{{view.name}}\" ? Cette action ne peut pas être annulée.",
+        "description": "Êtes-vous sûr de vouloir supprimer \"{{view}}\" ? Cette action ne peut pas être annulée.",
         "title": "Supprimer la vue"
       },
       "resetSystemDefault": {

@@ -2875,7 +2875,7 @@
     "personalViews": "個人ビュー",
     "prompts": {
       "deleteView": {
-        "description": "\"{{view.name}}\" を削除してもよろしいですか？この操作は元に戻せません。",
+        "description": "\"{{view}}\" を削除してもよろしいですか？この操作は元に戻せません。",
         "title": "ビューを削除"
       },
       "resetSystemDefault": {

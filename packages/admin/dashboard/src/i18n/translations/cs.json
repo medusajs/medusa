@@ -3105,7 +3105,7 @@
     "personalViews": "Osobní zobrazení",
     "prompts": {
       "deleteView": {
-        "description": "Opravdu chcete smazat „{{view.name}}“? Tuto akci nelze vrátit zpět.",
+        "description": "Opravdu chcete smazat „{{view}}“? Tuto akci nelze vrátit zpět.",
         "title": "Smazat zobrazení"
       },
       "resetSystemDefault": {

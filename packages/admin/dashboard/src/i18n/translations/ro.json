@@ -2985,7 +2985,7 @@
     "personalViews": "Vizualizări personale",
     "prompts": {
       "deleteView": {
-        "description": "Sigur vrei să ștergi \"{{view.name}}\"? Această acțiune nu poate fi anulată.",
+        "description": "Sigur vrei să ștergi \"{{view}}\"? Această acțiune nu poate fi anulată.",
         "title": "Șterge vizualizarea"
       },
       "resetSystemDefault": {

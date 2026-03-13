@@ -3278,7 +3278,7 @@
     "personalViews": "Widoki osobiste",
     "prompts": {
       "deleteView": {
-        "description": "Czy na pewno chcesz usunąć „{{view.name}}”? Tej akcji nie można cofnąć.",
+        "description": "Czy na pewno chcesz usunąć „{{view}}”? Tej akcji nie można cofnąć.",
         "title": "Usuń widok"
       },
       "resetSystemDefault": {

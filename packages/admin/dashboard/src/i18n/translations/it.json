@@ -2855,7 +2855,7 @@
     "personalViews": "Viste personali",
     "prompts": {
       "deleteView": {
-        "description": "Sei sicuro di voler eliminare \"{{view.name}}\"? Questa azione non può essere annullata.",
+        "description": "Sei sicuro di voler eliminare \"{{view}}\"? Questa azione non può essere annullata.",
         "title": "Elimina vista"
       },
       "resetSystemDefault": {

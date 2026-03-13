@@ -3059,7 +3059,7 @@
     "personalViews": "Személyes nézetek",
     "prompts": {
       "deleteView": {
-        "description": "Biztosan törölni szeretné a(z) \"{{view.name}}\" elemet? Ez a művelet nem vonható vissza.",
+        "description": "Biztosan törölni szeretné a(z) \"{{view}}\" elemet? Ez a művelet nem vonható vissza.",
         "title": "Nézet törlése"
       },
       "resetSystemDefault": {

@@ -3010,7 +3010,7 @@
     "personalViews": "العروض الشخصية",
     "prompts": {
       "deleteView": {
-        "description": "هل أنت متأكد أنك تريد حذف \"{{view.name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+        "description": "هل أنت متأكد أنك تريد حذف \"{{view}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
         "title": "حذف العرض"
       },
       "resetSystemDefault": {

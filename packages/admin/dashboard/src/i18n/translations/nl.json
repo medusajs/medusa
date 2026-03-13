@@ -3058,7 +3058,7 @@
     "personalViews": "Persoonlijke weergaven",
     "prompts": {
       "deleteView": {
-        "description": "Weet je zeker dat je \"{{view.name}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "description": "Weet je zeker dat je \"{{view}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
         "title": "Weergave verwijderen"
       },
       "resetSystemDefault": {

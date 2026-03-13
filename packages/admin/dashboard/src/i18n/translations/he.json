@@ -3071,7 +3071,7 @@
     "personalViews": "תצוגות אישיות",
     "prompts": {
       "deleteView": {
-        "description": "האם אתה בטוח שברצונך למחוק את \"{{view.name}}\"? לא ניתן לבטל פעולה זו.",
+        "description": "האם אתה בטוח שברצונך למחוק את \"{{view}}\"? לא ניתן לבטל פעולה זו.",
         "title": "מחק תצוגה"
       },
       "resetSystemDefault": {

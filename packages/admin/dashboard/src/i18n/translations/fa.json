@@ -2986,7 +2986,7 @@
     "personalViews": "نماهای شخصی",
     "prompts": {
       "deleteView": {
-        "description": "آیا مطمئن هستید که می‌خواهید \"{{view.name}}\" را حذف کنید؟ این عمل قابل بازگشت نیست.",
+        "description": "آیا مطمئن هستید که می‌خواهید \"{{view}}\" را حذف کنید؟ این عمل قابل بازگشت نیست.",
         "title": "حذف نما"
       },
       "resetSystemDefault": {

@@ -3011,7 +3011,7 @@
     "personalViews": "Kişisel görünümler",
     "prompts": {
       "deleteView": {
-        "description": "\"{{view.name}}\" silinsin mi? Bu işlem geri alınamaz.",
+        "description": "\"{{view}}\" silinsin mi? Bu işlem geri alınamaz.",
         "title": "Görünümü sil"
       },
       "resetSystemDefault": {
