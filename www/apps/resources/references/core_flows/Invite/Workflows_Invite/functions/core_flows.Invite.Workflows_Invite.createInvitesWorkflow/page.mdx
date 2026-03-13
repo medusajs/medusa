@@ -3,7 +3,6 @@ slug: /references/medusa-workflows/createInvitesWorkflow
 sidebar_label: createInvitesWorkflow
 sidebar_description: Create one or more user invites with optional role assignment.
 tags:
-  - rbac
   - user
   - link
   - event bus
@@ -24,7 +23,7 @@ You can provide roles to be assigned to each user when the invite is accepted.
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 create invites within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87b5b454afdf7533a167fcb48e069f8c28e4b7e9/packages/core/core-flows/src/invite/workflows/create-invites.ts#L39" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/invite/workflows/create-invites.ts#L39" />
 
 ## Examples
 
@@ -145,7 +144,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createInvitesWorkflow","steps":[{"type":"step","name":"validateRolesExistStep","description":"This step validates that the provided role IDs exist in the RBAC module.\nThrows an error if any role is not found.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.validateRolesExistStep/page.mdx","depth":1},{"type":"step","name":"createInviteStep","description":"This step creates one or more invites.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.createInviteStep/page.mdx","depth":2},{"type":"step","name":"createRemoteLinkStep","description":"This step creates links between two records of linked data models.\n\nLearn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#create-link).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.createRemoteLinkStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":4}]}} />
+<WorkflowDiagram workflow={{"name":"createInvitesWorkflow","steps":[{"type":"step","name":"createInviteStep","description":"This step creates one or more invites.","link":"../../../Steps_Invite/functions/core_flows.Invite.Steps_Invite.createInviteStep/page.mdx","depth":1},{"type":"step","name":"createRemoteLinkStep","description":"This step creates links between two records of linked data models.\n\nLearn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#create-link).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.createRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 

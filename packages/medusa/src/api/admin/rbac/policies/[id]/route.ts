@@ -13,6 +13,10 @@ import {
 
 import { AdminUpdateRbacPolicyType } from "../validators"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -36,6 +40,10 @@ export const GET = async (
   res.status(200).json({ policy })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateRbacPolicyType>,
   res: MedusaResponse
@@ -73,6 +81,10 @@ export const POST = async (
   res.status(200).json({ policy })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
