@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "У вас є незбережені зміни, які будуть втрачені, якщо ви вийдете з форми.",
     "includesTaxTooltip": "Ціни в цій колонці включають податки.",
     "excludesTaxTooltip": "Ціни в цій колонці без податків.",
-    "noMoreData": "Немає більше даних"
+    "noMoreData": "Немає більше даних",
+    "loading": "Завантаження...",
+    "no": "немає",
+    "notAvailable": "N/A",
+    "yes": "Так"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "Приховати",
     "export": "Експортувати",
     "import": "Імпортувати",
-    "cannotUndo": "Цю дію не можна скасувати"
+    "cannotUndo": "Цю дію не можна скасувати",
+    "resetCanvas": "Скинути полотно",
+    "zoomIn": "Збільшити",
+    "zoomOut": "Зменшити"
   },
   "operators": {
     "in": "У"
@@ -411,7 +418,8 @@
         "heading": "Комплекти на складі",
         "label": "Додайте елементи складу до комплекту інвентарю варіанту.",
         "itemPlaceholder": "Виберіть елемент складу",
-        "quantityPlaceholder": "Скільки з цих елементів потрібно для комплекту?"
+        "quantityPlaceholder": "Скільки з цих елементів потрібно для комплекту?",
+        "descriptionPlaceholder": "Опис товару"
       },
       "variants": {
         "header": "Варіанти",
@@ -434,7 +442,8 @@
           "hint": "Визначте опції для продукту, наприклад, колір, розмір тощо."
         }
       },
-      "successToast": "Продукт {{title}} успішно створено."
+      "successToast": "Продукт {{title}} успішно створено.",
+      "unsupportedExtensionMessage": "Цей тип поля не підтримує рендеринг запасного компонента. Вкажіть prop component."
     },
     "export": {
       "header": "Експорт списку продуктів",
@@ -990,7 +999,9 @@
       "createRefundWrongQuantity": "Кількість повинна бути числом від 1 до {{number}}",
       "refundAmount": "Відшкодування {{ amount }}",
       "paymentLink": "Скопіювати посилання для платежу на {{ amount }}",
-      "selectPaymentToRefund": "Виберіть платіж для відшкодування"
+      "selectPaymentToRefund": "Виберіть платіж для відшкодування",
+      "storeCreditRefund": "Повернення як кредит магазину",
+      "totalPending": "Усього в очікуванні"
     },
     "edits": {
       "title": "Редагувати замовлення",
@@ -1246,7 +1257,8 @@
       },
       "trackingLabel": "Відстеження",
       "shippingFromLabel": "Відправка з",
-      "itemsLabel": "Товари"
+      "itemsLabel": "Товари",
+      "label": "Мітка"
     },
     "refund": {
       "title": "Створити повернення коштів",
@@ -1347,7 +1359,8 @@
       "displayId": "ID відображення",
       "refundableAmount": "Сума для повернення",
       "returnableQuantity": "Кількість для повернення"
-    }
+    },
+    "emptyOrders": "Замовлень не знайдено"
   },
   "draftOrders": {
     "domain": "Чернетки замовлень",
@@ -1862,7 +1875,8 @@
           "title": "Що повинно бути в кошику, щоб активувати акцію?",
           "description": "Якщо ці умови виконуються, ми активуємо акцію для цільових товарів."
         }
-      }
+      },
+      "operator": "Виберіть оператор"
     },
     "tooltips": {
       "campaignType": "Код валюти повинен бути вибраний в акції для встановлення бюджету витрат."
@@ -1894,7 +1908,12 @@
         "successToast": "Кампанія акції успішно оновлена."
       },
       "actions": {
-        "goToCampaign": "Перейти до кампанії"
+        "goToCampaign": "Перейти до кампанії",
+        "addToCampaign": "Додати до кампанії"
+      },
+      "notPartOfCampaign": {
+        "message": "Додайте цю акцію до наявної кампанії",
+        "title": "Не є частиною кампанії"
       }
     },
     "campaign_currency": {
@@ -2102,11 +2121,17 @@
         "list": {
           "noRecordsMessage": "Створіть спочатку продукт."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Цей товар уже є в прайс-листі.",
+        "productHasNoVariants": "Цей товар не має варіантів."
       }
     },
     "edit": {
       "header": "Редагувати ціновий список",
-      "successToast": "Ціновий список {{title}} був успішно оновлений."
+      "successToast": "Ціновий список {{title}} був успішно оновлений.",
+      "editPricesForDescription": "Оновіть ціни товарів у прайс-листі",
+      "editPricesForTitle": "Редагувати ціни для {{title}}"
     },
     "configuration": {
       "header": "Конфігурація",
@@ -2480,7 +2505,8 @@
       "lastUsedAtLabel": "Останнє використання",
       "revokedByLabel": "Анулював",
       "revokedAtLabel": "Анулювано",
-      "createdByLabel": "Створено"
+      "createdByLabel": "Створено",
+      "token": "Токен"
     }
   },
   "returnReasons": {
@@ -2509,7 +2535,10 @@
         "placeholder": "неправильний_розмір",
         "tooltip": "Значення має бути унікальним ідентифікатором для причини повернення."
       },
-      "label": { "label": "Мітка", "placeholder": "Неправильний розмір" },
+      "label": {
+        "label": "Мітка",
+        "placeholder": "Неправильний розмір"
+      },
       "description": {
         "label": "Опис",
         "placeholder": "Клієнт отримав неправильний розмір"
@@ -2852,5 +2881,61 @@
     "minutes_other": "Хвилини",
     "seconds_one": "Секунда",
     "seconds_other": "Секунди"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Немає сутностей, що відповідають фільтрам"
+    },
+    "title": "Керування перекладами"
+  },
+  "views": {
+    "createNewViewDescription": "Збережіть поточну конфігурацію як нове подання",
+    "createNewViewTitle": "Зберегти як нове подання",
+    "creationSuccess": "Подання створено",
+    "defaultView": "Подання за замовчуванням",
+    "deleteSuccess": "Подання успішно видалено",
+    "editName": "Редагувати назву",
+    "editView": "Редагувати подання",
+    "editViewNameDescription": "Змініть назву збереженого подання",
+    "editViewNameTitle": "Редагувати назву подання",
+    "enterViewNamePlaceholder": "Введіть назву подання",
+    "errors": {
+      "emptyName": "Назва не може бути порожньою",
+      "failedToCreateView": "Не вдалося створити подання",
+      "failedToDeleteView": "Не вдалося видалити подання",
+      "failedToUpdateActiveView": "Не вдалося оновити активне подання",
+      "failedToUpdateView": "Не вдалося оновити подання",
+      "nameRequired": "Назва обов'язкова"
+    },
+    "personalViews": "Особисті подання",
+    "prompts": {
+      "deleteView": {
+        "description": "Ви впевнені, що хочете видалити «{{view.name}}»? Цю дію неможливо скасувати.",
+        "title": "Видалити подання"
+      },
+      "resetSystemDefault": {
+        "description": "Це видалить збережене системне значення за замовчуванням і поверне початкові значення за замовчуванням на рівні коду. Це вплине на всіх користувачів. Ви впевнені?",
+        "title": "Скинути системне значення за замовчуванням"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Зберегти як значення за замовчуванням",
+        "description": "Це збереже поточну конфігурацію як системне значення за замовчуванням. Усі користувачі бачитимуть цю конфігурацію за замовчуванням, якщо не мають власних особистих подань. Ви впевнені?",
+        "title": "Зберегти як системне значення за замовчуванням"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Оновити «{{view}}» поточною конфігурацією?",
+          "title": "Оновити наявне подання"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Скинути до значень за замовчуванням у коді",
+    "saveCurrentView": "Зберегти поточне подання",
+    "success": "Подання «{{view}}» успішно збережено",
+    "systemDefault": "Системне значення за замовчуванням",
+    "updateSuccess": "Подання оновлено",
+    "updateView": "Оновити подання",
+    "viewName": "Назва подання",
+    "updateViewName": "Оновити «{{view}}»"
   }
 }

@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je dit formulier verlaat.",
     "includesTaxTooltip": "Prijzen in deze kolom zijn inclusief belasting.",
     "excludesTaxTooltip": "Prijzen in deze kolom zijn exclusief belasting.",
-    "noMoreData": "Geen verdere gegevens"
+    "noMoreData": "Geen verdere gegevens",
+    "loading": "Laden...",
+    "no": "Nee",
+    "notAvailable": "N/A",
+    "yes": "Ja"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "Verbergen",
     "export": "Exporteren",
     "import": "Importeren",
-    "cannotUndo": "Deze actie kan niet ongedaan worden gemaakt"
+    "cannotUndo": "Deze actie kan niet ongedaan worden gemaakt",
+    "resetCanvas": "Canvas resetten",
+    "zoomIn": "Inzoomen",
+    "zoomOut": "Uitzoomen"
   },
   "operators": {
     "in": "In"
@@ -424,7 +431,8 @@
         "heading": "Voorraadsets",
         "label": "Voeg voorraaditems toe aan de voorraadset van de variant.",
         "itemPlaceholder": "Selecteer voorraaditem",
-        "quantityPlaceholder": "Hoeveel zijn er nodig voor deze set?"
+        "quantityPlaceholder": "Hoeveel zijn er nodig voor deze set?",
+        "descriptionPlaceholder": "De artikelbeschrijving"
       },
       "variants": {
         "header": "Varianten",
@@ -447,7 +455,8 @@
           "hint": "Definieer de opties voor het product, zoals kleur, maat, etc."
         }
       },
-      "successToast": "Product {{title}} is succesvol aangemaakt."
+      "successToast": "Product {{title}} is succesvol aangemaakt.",
+      "unsupportedExtensionMessage": "Dit veldtype ondersteunt het renderen van een fallbackcomponent niet. Geef een component-prop op."
     },
     "export": {
       "header": "Productlijst exporteren",
@@ -1079,7 +1088,9 @@
       "createRefundWrongQuantity": "Hoeveelheid moet een getal zijn tussen 1 en {{number}}",
       "refundAmount": "Terugbetalen {{ amount }}",
       "paymentLink": "Betaallink kopiëren voor {{ amount }}",
-      "selectPaymentToRefund": "Selecteer betaling om terug te betalen"
+      "selectPaymentToRefund": "Selecteer betaling om terug te betalen",
+      "storeCreditRefund": "Terugbetaling als winkeltegoed",
+      "totalPending": "Totaal in behandeling"
     },
     "edits": {
       "title": "Bestelling bewerken",
@@ -1341,7 +1352,8 @@
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Verzonden vanaf",
-      "itemsLabel": "Items"
+      "itemsLabel": "Items",
+      "label": "Label"
     },
     "refund": {
       "title": "Terugbetaling aanmaken",
@@ -1442,7 +1454,8 @@
       "displayId": "Weergave-ID",
       "refundableAmount": "Terug te betalen bedrag",
       "returnableQuantity": "Retourneerbare hoeveelheid"
-    }
+    },
+    "emptyOrders": "Geen bestellingen gevonden"
   },
   "draftOrders": {
     "domain": "Conceptbestellingen",
@@ -1972,7 +1985,8 @@
           "title": "Wat moet er in de winkelwagen zitten om de promotie te ontgrendelen?",
           "description": "Als aan deze voorwaarden wordt voldaan, activeren we de promotie op de doelitems."
         }
-      }
+      },
+      "operator": "Operator selecteren"
     },
     "tooltips": {
       "campaignType": "De valutacode moet in de promotie worden geselecteerd om een uitgavenbudget in te stellen."
@@ -2004,7 +2018,12 @@
         "successToast": "De campagne van de promotie is succesvol bijgewerkt."
       },
       "actions": {
-        "goToCampaign": "Naar campagne gaan"
+        "goToCampaign": "Naar campagne gaan",
+        "addToCampaign": "Aan campagne toevoegen"
+      },
+      "notPartOfCampaign": {
+        "message": "Voeg deze promotie toe aan een bestaande campagne",
+        "title": "Geen onderdeel van een campagne"
       }
     },
     "campaign_currency": {
@@ -2224,11 +2243,17 @@
         "list": {
           "noRecordsMessage": "Maak eerst een product aan."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Dit product staat al in de prijslijst.",
+        "productHasNoVariants": "Dit product heeft geen varianten."
       }
     },
     "edit": {
       "header": "Prijslijst bewerken",
-      "successToast": "Prijslijst {{title}} is succesvol bijgewerkt."
+      "successToast": "Prijslijst {{title}} is succesvol bijgewerkt.",
+      "editPricesForDescription": "Werk de prijzen voor producten in de prijslijst bij",
+      "editPricesForTitle": "Prijzen bewerken voor {{title}}"
     },
     "configuration": {
       "header": "Configuratie",
@@ -2625,7 +2650,8 @@
       "lastUsedAtLabel": "Laatst gebruikt op",
       "revokedByLabel": "Ingetrokken door",
       "revokedAtLabel": "Ingetrokken op",
-      "createdByLabel": "Aangemaakt door"
+      "createdByLabel": "Aangemaakt door",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -2654,7 +2680,10 @@
         "placeholder": "verkeerde_maat",
         "tooltip": "De waarde moet een unieke identificatie zijn voor de retourreden."
       },
-      "label": { "label": "Label", "placeholder": "Verkeerde maat" },
+      "label": {
+        "label": "Label",
+        "placeholder": "Verkeerde maat"
+      },
       "description": {
         "label": "Beschrijving",
         "placeholder": "Klant ontving de verkeerde maat"
@@ -3001,5 +3030,61 @@
     "minutes_other": "Minuten",
     "seconds_one": "Seconde",
     "seconds_other": "Seconden"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Geen entiteiten die overeenkomen met de filters"
+    },
+    "title": "Vertalingen beheren"
+  },
+  "views": {
+    "createNewViewDescription": "Sla je huidige configuratie op als een nieuwe weergave",
+    "creationSuccess": "Weergave gemaakt",
+    "defaultView": "Standaardweergave",
+    "deleteSuccess": "Weergave succesvol verwijderd",
+    "editName": "Naam bewerken",
+    "editView": "Weergave bewerken",
+    "editViewNameDescription": "Wijzig de naam van je opgeslagen weergave",
+    "editViewNameTitle": "Naam van weergave bewerken",
+    "enterViewNamePlaceholder": "Voer een naam voor de weergave in",
+    "errors": {
+      "emptyName": "Naam mag niet leeg zijn",
+      "failedToCreateView": "Weergave maken mislukt",
+      "failedToDeleteView": "Weergave verwijderen mislukt",
+      "failedToUpdateActiveView": "Actieve weergave bijwerken mislukt",
+      "failedToUpdateView": "Weergave bijwerken mislukt",
+      "nameRequired": "Naam is verplicht"
+    },
+    "personalViews": "Persoonlijke weergaven",
+    "prompts": {
+      "deleteView": {
+        "description": "Weet je zeker dat je \"{{view.name}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "title": "Weergave verwijderen"
+      },
+      "resetSystemDefault": {
+        "description": "Hiermee wordt de opgeslagen systeemstandaard verwijderd en worden de oorspronkelijke standaardwaarden uit de code hersteld. Dit heeft invloed op alle gebruikers. Weet je het zeker?",
+        "title": "Systeemstandaard resetten"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Opslaan als standaard",
+        "description": "Hiermee wordt de huidige configuratie opgeslagen als systeemstandaard. Alle gebruikers zien deze configuratie standaard, tenzij ze hun eigen persoonlijke weergaven hebben. Weet je het zeker?",
+        "title": "Opslaan als systeemstandaard"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "\"{{view}}\" bijwerken met de huidige configuratie?",
+          "title": "Bestaande weergave bijwerken"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Terugzetten naar code-standaardwaarden",
+    "saveCurrentView": "Huidige weergave opslaan",
+    "success": "Weergave \"{{view}}\" succesvol opgeslagen",
+    "systemDefault": "Systeemstandaard",
+    "updateSuccess": "Weergave bijgewerkt",
+    "viewName": "Naam van weergave",
+    "updateViewName": "\"{{view}}\" bijwerken",
+    "createNewViewTitle": "Opslaan als nieuwe weergave",
+    "updateView": "Weergave bijwerken"
   }
 }

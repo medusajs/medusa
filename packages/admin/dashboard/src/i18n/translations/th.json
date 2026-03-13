@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก และจะสูญหายหากคุณออกจากฟอร์มนี้",
     "includesTaxTooltip": "ราคาคอลัมน์นี้รวมภาษีแล้ว",
     "excludesTaxTooltip": "ราคาคอลัมน์นี้ยังไม่รวมภาษี",
-    "noMoreData": "ไม่มีข้อมูลเพิ่มเติม"
+    "noMoreData": "ไม่มีข้อมูลเพิ่มเติม",
+    "loading": "กำลังโหลด...",
+    "no": "ไม่",
+    "notAvailable": "N/A",
+    "yes": "ใช่"
   },
   "json": {
     "header": "JSON",
@@ -136,7 +140,10 @@
     "logout": "ออกจากระบบ",
     "hide": "ซ่อน",
     "export": "ส่งออก",
-    "import": "นำเข้า"
+    "import": "นำเข้า",
+    "resetCanvas": "รีเซ็ตแคนวาส",
+    "zoomIn": "ซูมเข้า",
+    "zoomOut": "ซูมออก"
   },
   "operators": {
     "in": "ใน"
@@ -410,7 +417,8 @@
         "heading": "ชุดสินค้าคงคลัง",
         "label": "เพิ่มรายการสินค้าคงคลังในชุดคงคลังของตัวเลือก",
         "itemPlaceholder": "เลือกสินค้าคงคลัง",
-        "quantityPlaceholder": "จำนวนที่ต้องการสำหรับชุดนี้"
+        "quantityPlaceholder": "จำนวนที่ต้องการสำหรับชุดนี้",
+        "descriptionPlaceholder": "คำอธิบายสินค้า"
       },
       "variants": {
         "header": "ตัวเลือก",
@@ -433,7 +441,8 @@
           "hint": "กำหนดตัวเลือกสำหรับสินค้า เช่น สี ขนาด เป็นต้น"
         }
       },
-      "successToast": "สินค้า {{title}} ถูกสร้างเรียบร้อยแล้ว"
+      "successToast": "สินค้า {{title}} ถูกสร้างเรียบร้อยแล้ว",
+      "unsupportedExtensionMessage": "ประเภทฟิลด์นี้ไม่รองรับการแสดงผลคอมโพเนนต์สำรอง โปรดระบุ prop component"
     },
     "export": {
       "header": "ส่งออกรายการสินค้า",
@@ -984,7 +993,9 @@
       "createRefundWrongQuantity": "จำนวนควรอยู่ระหว่าง 1 ถึง {{number}}",
       "refundAmount": "คืนเงิน {{amount}}",
       "paymentLink": "คัดลอกลิงก์การชำระเงินสำหรับ {{amount}}",
-      "selectPaymentToRefund": "เลือกการชำระเงินที่จะคืน"
+      "selectPaymentToRefund": "เลือกการชำระเงินที่จะคืน",
+      "storeCreditRefund": "คืนเงินเป็นเครดิตร้านค้า",
+      "totalPending": "ยอดรวมที่รอดำเนินการ"
     },
     "edits": {
       "title": "แก้ไขคำสั่งซื้อ",
@@ -1226,7 +1237,8 @@
       },
       "trackingLabel": "หมายเลขติดตามพัสดุ",
       "shippingFromLabel": "จัดส่งจาก",
-      "itemsLabel": "รายการสินค้า"
+      "itemsLabel": "รายการสินค้า",
+      "label": "ป้ายกำกับ"
     },
     "refund": {
       "title": "สร้างการคืนเงิน",
@@ -1321,7 +1333,8 @@
       "displayId": "หมายเลขคำสั่งซื้อที่แสดง",
       "refundableAmount": "จำนวนเงินที่สามารถคืนได้",
       "returnableQuantity": "จำนวนสินค้าที่สามารถคืนได้"
-    }
+    },
+    "emptyOrders": "ไม่พบคำสั่งซื้อ"
   },
   "draftOrders": {
     "domain": "คำสั่งซื้อแบบร่าง",
@@ -1801,7 +1814,8 @@
           "title": "อะไรต้องอยู่ในตะกร้าเพื่อปลดล็อกโปรโมชั่น?",
           "description": "หากเงื่อนไขเหล่านี้ตรงกัน เราจะเปิดใช้งานโปรโมชั่นกับสินค้าที่เป็นเป้าหมาย"
         }
-      }
+      },
+      "operator": "เลือกตัวดำเนินการ"
     },
     "tooltips": {
       "campaignType": "ต้องเลือกสกุลเงินในโปรโมชั่นเพื่อกำหนดงบประมาณการใช้จ่าย"
@@ -1833,7 +1847,12 @@
         "successToast": "อัปเดตแคมเปญของโปรโมชั่นเรียบร้อยแล้ว"
       },
       "actions": {
-        "goToCampaign": "ไปที่แคมเปญ"
+        "goToCampaign": "ไปที่แคมเปญ",
+        "addToCampaign": "เพิ่มไปยังแคมเปญ"
+      },
+      "notPartOfCampaign": {
+        "message": "เพิ่มโปรโมชันนี้ไปยังแคมเปญที่มีอยู่",
+        "title": "ไม่ได้เป็นส่วนหนึ่งของแคมเปญ"
       }
     },
     "campaign_currency": {
@@ -2041,11 +2060,17 @@
         "list": {
           "noRecordsMessage": "กรุณาสร้างสินค้าก่อน"
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "สินค้านี้อยู่ในรายการราคาแล้ว",
+        "productHasNoVariants": "สินค้านี้ไม่มีตัวเลือกสินค้า"
       }
     },
     "edit": {
       "header": "แก้ไขรายการราคา",
-      "successToast": "อัปเดตรายการราคา {{title}} เรียบร้อยแล้ว"
+      "successToast": "อัปเดตรายการราคา {{title}} เรียบร้อยแล้ว",
+      "editPricesForDescription": "อัปเดตราคาสินค้าในรายการราคา",
+      "editPricesForTitle": "แก้ไขราคาสำหรับ {{title}}"
     },
     "configuration": {
       "header": "การกำหนดค่า",
@@ -2416,7 +2441,8 @@
       "lastUsedAtLabel": "ใช้งานล่าสุดเมื่อ",
       "revokedByLabel": "เพิกถอนโดย",
       "revokedAtLabel": "เพิกถอนเมื่อ",
-      "createdByLabel": "สร้างโดย"
+      "createdByLabel": "สร้างโดย",
+      "token": "โทเค็น"
     }
   },
   "returnReasons": {
@@ -2788,5 +2814,61 @@
     "minutes_other": "นาที",
     "seconds_one": "วินาที",
     "seconds_other": "วินาที"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "ไม่มีเอนทิตีที่ตรงกับตัวกรอง"
+    },
+    "title": "จัดการคำแปล"
+  },
+  "views": {
+    "createNewViewDescription": "บันทึกการกำหนดค่าปัจจุบันของคุณเป็นมุมมองใหม่",
+    "createNewViewTitle": "บันทึกเป็นมุมมองใหม่",
+    "creationSuccess": "สร้างมุมมองแล้ว",
+    "defaultView": "มุมมองเริ่มต้น",
+    "deleteSuccess": "ลบมุมมองสำเร็จ",
+    "editName": "แก้ไขชื่อ",
+    "editView": "แก้ไขมุมมอง",
+    "editViewNameDescription": "เปลี่ยนชื่อมุมมองที่บันทึกไว้",
+    "editViewNameTitle": "แก้ไขชื่อมุมมอง",
+    "enterViewNamePlaceholder": "ป้อนชื่อมุมมอง",
+    "errors": {
+      "emptyName": "ชื่อห้ามว่างเปล่า",
+      "failedToCreateView": "สร้างมุมมองไม่สำเร็จ",
+      "failedToDeleteView": "ลบมุมมองไม่สำเร็จ",
+      "failedToUpdateActiveView": "อัปเดตมุมมองที่ใช้งานอยู่ไม่สำเร็จ",
+      "failedToUpdateView": "อัปเดตมุมมองไม่สำเร็จ",
+      "nameRequired": "จำเป็นต้องระบุชื่อ"
+    },
+    "personalViews": "มุมมองส่วนตัว",
+    "prompts": {
+      "deleteView": {
+        "description": "คุณแน่ใจหรือไม่ว่าต้องการลบ \"{{view.name}}\"? การดำเนินการนี้ไม่สามารถยกเลิกได้",
+        "title": "ลบมุมมอง"
+      },
+      "resetSystemDefault": {
+        "description": "การดำเนินการนี้จะลบค่าเริ่มต้นของระบบที่บันทึกไว้และย้อนกลับไปใช้ค่าเริ่มต้นระดับโค้ดเดิม ผู้ใช้ทุกคนจะได้รับผลกระทบ คุณแน่ใจหรือไม่?",
+        "title": "รีเซ็ตค่าเริ่มต้นของระบบ"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "บันทึกเป็นค่าเริ่มต้น",
+        "description": "การดำเนินการนี้จะบันทึกการกำหนดค่าปัจจุบันเป็นค่าเริ่มต้นของระบบ ผู้ใช้ทุกคนจะเห็นการกำหนดค่านี้เป็นค่าเริ่มต้น เว้นแต่จะมีมุมมองส่วนตัวของตนเอง คุณแน่ใจหรือไม่?",
+        "title": "บันทึกเป็นค่าเริ่มต้นของระบบ"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "อัปเดต \"{{view}}\" ด้วยการกำหนดค่าปัจจุบันหรือไม่?",
+          "title": "อัปเดตมุมมองที่มีอยู่"
+        }
+      }
+    },
+    "resetToCodeDefaults": "รีเซ็ตเป็นค่าเริ่มต้นของโค้ด",
+    "saveCurrentView": "บันทึกมุมมองปัจจุบัน",
+    "success": "บันทึกมุมมอง \"{{view}}\" สำเร็จแล้ว",
+    "systemDefault": "ค่าเริ่มต้นของระบบ",
+    "updateSuccess": "อัปเดตมุมมองแล้ว",
+    "updateView": "อัปเดตมุมมอง",
+    "viewName": "ชื่อมุมมอง",
+    "updateViewName": "อัปเดต \"{{view}}\""
   }
 }

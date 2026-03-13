@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "您有未保存的更改,离开后这些更改将丢失。",
     "includesTaxTooltip": "此列中的价格包含税费。",
     "excludesTaxTooltip": "此列中的价格不含税费。",
-    "noMoreData": "没有更多数据"
+    "noMoreData": "没有更多数据",
+    "loading": "加载中...",
+    "no": "No",
+    "notAvailable": "N/A",
+    "yes": "Yes"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "隐藏",
     "export": "导出",
     "import": "导入",
-    "cannotUndo": "此操作无法撤销"
+    "cannotUndo": "此操作无法撤销",
+    "resetCanvas": "重置画布",
+    "zoomIn": "放大",
+    "zoomOut": "缩小"
   },
   "operators": {
     "in": "包含"
@@ -424,7 +431,8 @@
         "heading": "库存套件",
         "label": "将库存项目添加到变体的库存套件中。",
         "itemPlaceholder": "选择库存项目",
-        "quantityPlaceholder": "套件需要多少这种商品？"
+        "quantityPlaceholder": "套件需要多少这种商品？",
+        "descriptionPlaceholder": "商品描述"
       },
       "variants": {
         "header": "变体",
@@ -447,7 +455,8 @@
           "hint": "定义产品的选项,例如颜色、尺寸等。"
         }
       },
-      "successToast": "产品 {{title}} 创建成功。"
+      "successToast": "产品 {{title}} 创建成功。",
+      "unsupportedExtensionMessage": "该字段类型不支持渲染回退组件。请提供 component 属性。"
     },
     "export": {
       "header": "导出产品列表",
@@ -965,7 +974,7 @@
   "customerGroups": {
     "domain": "客户群组",
     "subtitle": "将客户组织成群组。群组可以有不同的促销和价格。",
-   "list": {
+    "list": {
       "empty": {
         "heading": "暂无客户组",
         "description": "当前没有可显示的客户组。"
@@ -1083,7 +1092,9 @@
       "createRefundWrongQuantity": "数量应该在 1 和 {{number}} 之间",
       "refundAmount": "退款 {{ amount }}",
       "paymentLink": "复制 {{ amount }} 的支付链接",
-      "selectPaymentToRefund": "选择要退款的支付"
+      "selectPaymentToRefund": "选择要退款的支付",
+      "storeCreditRefund": "商店余额退款",
+      "totalPending": "待处理总额"
     },
     "edits": {
       "title": "编辑订单",
@@ -1345,7 +1356,8 @@
       },
       "trackingLabel": "追踪",
       "shippingFromLabel": "发货地",
-      "itemsLabel": "商品"
+      "itemsLabel": "商品",
+      "label": "标签"
     },
     "refund": {
       "title": "创建退款",
@@ -1446,7 +1458,8 @@
       "displayId": "显示ID",
       "refundableAmount": "可退款金额",
       "returnableQuantity": "可退货数量"
-    }
+    },
+    "emptyOrders": "未找到订单"
   },
   "draftOrders": {
     "domain": "草稿订单",
@@ -1985,7 +1998,8 @@
           "title": "购物车需要满足什么条件才能解锁促销？",
           "description": "如果满足这些条件,我们将在目标商品上启用促销。"
         }
-      }
+      },
+      "operator": "选择运算符"
     },
     "tooltips": {
       "campaignType": "必须在促销中选择货币代码才能设置消费预算。"
@@ -1997,7 +2011,7 @@
     "toasts": {
       "promotionCreateSuccess": "促销活动 ({{code}}) 创建成功。"
     },
-    "create": { },
+    "create": {},
     "edit": {
       "title": "编辑促销详情",
       "rules": {
@@ -2017,7 +2031,12 @@
         "successToast": "促销活动的营销活动更新成功。"
       },
       "actions": {
-        "goToCampaign": "前往营销活动"
+        "goToCampaign": "前往营销活动",
+        "addToCampaign": "添加到活动"
+      },
+      "notPartOfCampaign": {
+        "message": "将此促销加入现有活动",
+        "title": "不属于任何活动"
       }
     },
     "campaign_currency": {
@@ -2237,11 +2256,17 @@
         "list": {
           "noRecordsMessage": "首先创建产品。"
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "该商品已在价格列表中。",
+        "productHasNoVariants": "该商品没有变体。"
       }
     },
     "edit": {
       "header": "编辑价格列表",
-      "successToast": "价格列表 {{title}} 更新成功。"
+      "successToast": "价格列表 {{title}} 更新成功。",
+      "editPricesForDescription": "更新价格列表中商品的价格",
+      "editPricesForTitle": "编辑 {{title}} 的价格"
     },
     "configuration": {
       "header": "配置",
@@ -2637,7 +2662,8 @@
       "lastUsedAtLabel": "上次使用时间",
       "revokedByLabel": "撤销者",
       "revokedAtLabel": "撤销时间",
-      "createdByLabel": "创建者"
+      "createdByLabel": "创建者",
+      "token": "令牌"
     }
   },
   "returnReasons": {
@@ -2666,7 +2692,10 @@
         "placeholder": "wrong_size",
         "tooltip": "值应该是退货原因的唯一标识符。"
       },
-      "label": { "label": "标签", "placeholder": "错误尺寸" },
+      "label": {
+        "label": "标签",
+        "placeholder": "错误尺寸"
+      },
       "description": {
         "label": "描述",
         "placeholder": "客户收到错误尺寸"
@@ -3013,5 +3042,61 @@
     "minutes_other": "分钟",
     "seconds_one": "秒",
     "seconds_other": "秒"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "没有符合筛选条件的实体"
+    },
+    "title": "管理翻译"
+  },
+  "views": {
+    "createNewViewDescription": "将当前配置保存为新视图",
+    "createNewViewTitle": "另存为新视图",
+    "creationSuccess": "视图已创建",
+    "defaultView": "默认视图",
+    "deleteSuccess": "视图已成功删除",
+    "editName": "编辑名称",
+    "editView": "编辑视图",
+    "editViewNameDescription": "更改已保存视图的名称",
+    "editViewNameTitle": "编辑视图名称",
+    "enterViewNamePlaceholder": "输入视图名称",
+    "errors": {
+      "emptyName": "名称不能为空",
+      "failedToCreateView": "创建视图失败",
+      "failedToDeleteView": "删除视图失败",
+      "failedToUpdateActiveView": "更新当前视图失败",
+      "failedToUpdateView": "更新视图失败",
+      "nameRequired": "名称为必填项"
+    },
+    "personalViews": "个人视图",
+    "prompts": {
+      "deleteView": {
+        "description": "确定要删除“{{view.name}}”吗？此操作无法撤销。",
+        "title": "删除视图"
+      },
+      "resetSystemDefault": {
+        "description": "这将删除已保存的系统默认值，并恢复为原始代码级默认值。所有用户都会受到影响。确定吗？",
+        "title": "重置系统默认值"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "保存为默认值",
+        "description": "这将把当前配置保存为系统默认值。除非用户拥有自己的个人视图，否则所有用户都会默认看到此配置。确定吗？",
+        "title": "保存为系统默认值"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "是否使用当前配置更新“{{view}}”？",
+          "title": "更新现有视图"
+        }
+      }
+    },
+    "resetToCodeDefaults": "重置为代码默认值",
+    "saveCurrentView": "保存当前视图",
+    "success": "视图“{{view}}”已成功保存",
+    "systemDefault": "系统默认值",
+    "updateSuccess": "视图已更新",
+    "updateView": "更新视图",
+    "viewName": "视图名称",
+    "updateViewName": "更新“{{view}}”"
   }
 }

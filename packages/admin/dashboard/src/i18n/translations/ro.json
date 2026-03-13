@@ -55,7 +55,11 @@
     "excludesTaxTooltip": "Prețurile din această coloană sunt fără taxe.",
     "noMoreData": "Nu mai sunt date",
     "items_one": "{{count}} articol",
-    "items_other": "{{count}} articole"
+    "items_other": "{{count}} articole",
+    "no": "Nu",
+    "notAvailable": "N/A",
+    "yes": "Da",
+    "loading": "Se încarcă..."
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "Ascunde",
     "export": "Export",
     "import": "Import",
-    "cannotUndo": "Această acțiune nu poate fi anulată"
+    "cannotUndo": "Această acțiune nu poate fi anulată",
+    "resetCanvas": "Resetează planșa",
+    "zoomIn": "Mărește",
+    "zoomOut": "Micșorează"
   },
   "operators": {
     "in": "În"
@@ -422,7 +429,8 @@
         "heading": "Truse de inventar",
         "label": "Adăugați articole de inventar la kitul de inventar al variantei.",
         "itemPlaceholder": "Selectați obiectul de inventar",
-        "quantityPlaceholder": "Câte dintre acestea sunt necesare pentru kit?"
+        "quantityPlaceholder": "Câte dintre acestea sunt necesare pentru kit?",
+        "descriptionPlaceholder": "Descrierea articolului"
       },
       "variants": {
         "header": "Variante",
@@ -445,7 +453,8 @@
           "hint": "Definiți opțiunile pentru produs, de ex. "
         }
       },
-      "successToast": "Produs {{title}} a fost creat cu succes."
+      "successToast": "Produs {{title}} a fost creat cu succes.",
+      "unsupportedExtensionMessage": "Tipul de câmp nu acceptă randarea unui component de rezervă. Furnizează o proprietate component."
     },
     "export": {
       "header": "Exportați lista de produse",
@@ -1040,7 +1049,9 @@
       "createRefundWrongQuantity": "Cantitatea ar trebui să fie un număr între 1 și {{number}}",
       "refundAmount": "Restituire {{ amount }}",
       "paymentLink": "Copiați linkul de plată pentru {{ amount }}",
-      "selectPaymentToRefund": "Selectați plata pentru rambursare"
+      "selectPaymentToRefund": "Selectați plata pentru rambursare",
+      "storeCreditRefund": "Rambursare ca credit în magazin",
+      "totalPending": "Total în așteptare"
     },
     "edits": {
       "title": "Editați comanda",
@@ -1296,7 +1307,8 @@
       },
       "trackingLabel": "Urmărire",
       "shippingFromLabel": "Livrare de la",
-      "itemsLabel": "Articole"
+      "itemsLabel": "Articole",
+      "label": "Eticheta"
     },
     "refund": {
       "title": "Creați rambursare",
@@ -1397,7 +1409,8 @@
       "displayId": "ID afișat",
       "refundableAmount": "Sumă rambursabilă",
       "returnableQuantity": "Cantitate returnabilă"
-    }
+    },
+    "emptyOrders": "Nu au fost găsite comenzi"
   },
   "draftOrders": {
     "domain": "Proiecte de ordine",
@@ -1913,7 +1926,8 @@
           "title": "Ce trebuie să fie în coș pentru a debloca promoția?",
           "description": "Dacă aceste condiții se potrivesc, activăm promovarea pe articolele țintă."
         }
-      }
+      },
+      "operator": "Selectează operatorul"
     },
     "tooltips": {
       "campaignType": "Codul monedei trebuie selectat în promoție pentru a seta un buget de cheltuieli."
@@ -1945,7 +1959,12 @@
         "successToast": "Am actualizat cu succes campania promoției."
       },
       "actions": {
-        "goToCampaign": "Mergi la campanie"
+        "goToCampaign": "Mergi la campanie",
+        "addToCampaign": "Adaugă la campanie"
+      },
+      "notPartOfCampaign": {
+        "message": "Adaugă această promoție la o campanie existentă",
+        "title": "Nu face parte dintr-o campanie"
       }
     },
     "campaign_currency": {
@@ -2165,11 +2184,17 @@
         "list": {
           "noRecordsMessage": "Creați mai întâi un produs."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Acest produs este deja în lista de prețuri.",
+        "productHasNoVariants": "Acest produs nu are variante."
       }
     },
     "edit": {
       "header": "Editați lista de prețuri",
-      "successToast": "Lista de preturi {{title}} a fost actualizat cu succes."
+      "successToast": "Lista de preturi {{title}} a fost actualizat cu succes.",
+      "editPricesForDescription": "Actualizează prețurile produselor din lista de prețuri",
+      "editPricesForTitle": "Editează prețurile pentru {{title}}"
     },
     "configuration": {
       "header": "Configurare",
@@ -2554,7 +2579,8 @@
       "lastUsedAtLabel": "Ultima utilizare la",
       "revokedByLabel": "Revocat de",
       "revokedAtLabel": "Revocat la",
-      "createdByLabel": "Creat de"
+      "createdByLabel": "Creat de",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -2931,5 +2957,61 @@
     "minutes_other": "Minute",
     "seconds_one": "Doilea",
     "seconds_other": "secunde"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Nicio entitate nu corespunde filtrelor"
+    },
+    "title": "Gestionează traducerile"
+  },
+  "views": {
+    "createNewViewDescription": "Salvează configurația curentă ca o vizualizare nouă",
+    "creationSuccess": "Vizualizare creată",
+    "defaultView": "Vizualizare implicită",
+    "deleteSuccess": "Vizualizare ștearsă cu succes",
+    "editName": "Editează numele",
+    "editView": "Editează vizualizarea",
+    "editViewNameDescription": "Schimbă numele vizualizării salvate",
+    "editViewNameTitle": "Editează numele vizualizării",
+    "enterViewNamePlaceholder": "Introdu numele vizualizării",
+    "errors": {
+      "emptyName": "Numele nu poate fi gol",
+      "failedToCreateView": "Nu s-a putut crea vizualizarea",
+      "failedToDeleteView": "Nu s-a putut șterge vizualizarea",
+      "failedToUpdateActiveView": "Nu s-a putut actualiza vizualizarea activă",
+      "failedToUpdateView": "Nu s-a putut actualiza vizualizarea",
+      "nameRequired": "Numele este obligatoriu"
+    },
+    "personalViews": "Vizualizări personale",
+    "prompts": {
+      "deleteView": {
+        "description": "Sigur vrei să ștergi \"{{view.name}}\"? Această acțiune nu poate fi anulată.",
+        "title": "Șterge vizualizarea"
+      },
+      "resetSystemDefault": {
+        "description": "Această acțiune va șterge valoarea implicită de sistem salvată și va reveni la valorile implicite originale din cod. Toți utilizatorii vor fi afectați. Ești sigur?",
+        "title": "Resetează valoarea implicită de sistem"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Salvează ca implicit",
+        "description": "Această acțiune va salva configurația curentă ca valoare implicită de sistem. Toți utilizatorii vor vedea această configurație în mod implicit, cu excepția cazului în care au propriile vizualizări personale. Ești sigur?",
+        "title": "Salvează ca implicit de sistem"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Actualizezi „{{view}}” cu configurația curentă?",
+          "title": "Actualizează vizualizarea existentă"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Resetează la valorile implicite din cod",
+    "saveCurrentView": "Salvează vizualizarea curentă",
+    "success": "Vizualizarea „{{view}}” a fost salvată cu succes",
+    "systemDefault": "Implicit de sistem",
+    "updateSuccess": "Vizualizare actualizată",
+    "viewName": "Nume vizualizare",
+    "updateViewName": "Actualizează „{{view}}”",
+    "createNewViewTitle": "Salvează ca vizualizare nouă",
+    "updateView": "Actualizează vizualizarea"
   }
 }

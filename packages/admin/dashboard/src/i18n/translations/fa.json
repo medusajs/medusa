@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "شما تغییرات ذخیره نشده دارید که در صورت خروج از فرم از دست خواهند رفت.",
     "includesTaxTooltip": "قیمت‌های این ستون شامل مالیات هستند.",
     "excludesTaxTooltip": "قیمت‌های این ستون بدون مالیات هستند.",
-    "noMoreData": "داده‌ی بیشتری وجود ندارد"
+    "noMoreData": "داده‌ی بیشتری وجود ندارد",
+    "loading": "در حال بارگذاری...",
+    "no": "خیر",
+    "notAvailable": "N/A",
+    "yes": "بله"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "مخفی کردن",
     "export": "گرفتن خروجی",
     "import": "وارد کردن",
-    "cannotUndo": "این عمل قابل بازگشت نیست"
+    "cannotUndo": "این عمل قابل بازگشت نیست",
+    "resetCanvas": "بازنشانی بوم",
+    "zoomIn": "بزرگ‌نمایی",
+    "zoomOut": "کوچک‌نمایی"
   },
   "operators": {
     "in": "در"
@@ -422,7 +429,8 @@
         "heading": "کیت‌های موجودی",
         "label": "آیتم‌های موجودی را به کیت موجودی متغیر اضافه کنید.",
         "itemPlaceholder": "آیتم موجودی را انتخاب کنید",
-        "quantityPlaceholder": "چند عدد از این آیتم برای کیت نیاز است؟"
+        "quantityPlaceholder": "چند عدد از این آیتم برای کیت نیاز است؟",
+        "descriptionPlaceholder": "توضیح آیتم"
       },
       "variants": {
         "header": "متغیرها",
@@ -445,7 +453,8 @@
           "hint": "گزینه‌های محصول مانند رنگ، اندازه و غیره را تعریف کنید."
         }
       },
-      "successToast": "محصول {{title}} با موفقیت ایجاد شد."
+      "successToast": "محصول {{title}} با موفقیت ایجاد شد.",
+      "unsupportedExtensionMessage": "این نوع فیلد از رندر کردن یک مؤلفه جایگزین پشتیبانی نمی‌کند. لطفاً یک prop component ارائه کنید."
     },
     "export": {
       "header": "خروجی گرفتن لیست محصولات",
@@ -1040,7 +1049,9 @@
       "createRefundWrongQuantity": "مقدار باید عددی بین 1 و {{number}} باشد",
       "refundAmount": "استرداد {{amount}}",
       "paymentLink": "لینک پرداخت برای {{amount}} را کپی کنید",
-      "selectPaymentToRefund": "پرداخت را برای استرداد انتخاب کنید"
+      "selectPaymentToRefund": "پرداخت را برای استرداد انتخاب کنید",
+      "storeCreditRefund": "بازپرداخت اعتبار فروشگاه",
+      "totalPending": "مجموع در انتظار"
     },
     "edits": {
       "title": "ویرایش سفارش",
@@ -1296,7 +1307,8 @@
       },
       "trackingLabel": "رهگیری",
       "shippingFromLabel": "ارسال از",
-      "itemsLabel": "آیتم‌ها"
+      "itemsLabel": "آیتم‌ها",
+      "label": "برچسب"
     },
     "refund": {
       "title": "ایجاد بازپرداخت",
@@ -1397,7 +1409,8 @@
       "displayId": "شناسه نمایشی",
       "refundableAmount": "مبلغ قابل بازپرداخت",
       "returnableQuantity": "تعداد قابل مرجوع"
-    }
+    },
+    "emptyOrders": "سفارشی یافت نشد"
   },
   "draftOrders": {
     "domain": "سفارشات پیش‌نویس",
@@ -1913,7 +1926,8 @@
           "title": "برای فعال‌سازی تبلیغ چه چیزی باید در سبد خرید باشد؟",
           "description": "اگر این شرایط مطابقت داشته باشند، تبلیغ روی آیتم‌های هدف فعال می‌شود."
         }
-      }
+      },
+      "operator": "انتخاب عملگر"
     },
     "tooltips": {
       "campaignType": "برای تنظیم بودجه، کد ارز باید در تبلیغ انتخاب شود."
@@ -1945,7 +1959,12 @@
         "successToast": "کمپین تبلیغ با موفقیت به‌روزرسانی شد."
       },
       "actions": {
-        "goToCampaign": "برو به کمپین"
+        "goToCampaign": "برو به کمپین",
+        "addToCampaign": "افزودن به کمپین"
+      },
+      "notPartOfCampaign": {
+        "message": "این پروموشن را به یک کمپین موجود اضافه کنید",
+        "title": "بخشی از کمپین نیست"
       }
     },
     "campaign_currency": {
@@ -2165,11 +2184,17 @@
         "list": {
           "noRecordsMessage": "ابتدا یک محصول ایجاد کنید."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "این محصول از قبل در لیست قیمت وجود دارد.",
+        "productHasNoVariants": "این محصول هیچ گونه‌ای ندارد."
       }
     },
     "edit": {
       "header": "ویرایش لیست قیمت",
-      "successToast": "لیست قیمت {{title}} با موفقیت به‌روزرسانی شد."
+      "successToast": "لیست قیمت {{title}} با موفقیت به‌روزرسانی شد.",
+      "editPricesForDescription": "قیمت محصولات در لیست قیمت را به‌روزرسانی کنید",
+      "editPricesForTitle": "ویرایش قیمت‌های {{title}}"
     },
     "configuration": {
       "header": "پیکربندی",
@@ -2554,7 +2579,8 @@
       "lastUsedAtLabel": "آخرین استفاده در",
       "revokedByLabel": "لغو شده توسط",
       "revokedAtLabel": "لغو شده در",
-      "createdByLabel": "ایجاد شده توسط"
+      "createdByLabel": "ایجاد شده توسط",
+      "token": "توکن"
     }
   },
   "returnReasons": {
@@ -2583,7 +2609,10 @@
         "placeholder": "wrong_size",
         "tooltip": "مقدار باید یک شناسه منحصر به فرد برای دلیل بازگشت باشد."
       },
-      "label": { "label": "برچسب", "placeholder": "سایز اشتباه" },
+      "label": {
+        "label": "برچسب",
+        "placeholder": "سایز اشتباه"
+      },
       "description": {
         "label": "توضیحات",
         "placeholder": "مشتری سایز اشتباه دریافت کرده است"
@@ -2928,5 +2957,61 @@
     "minutes_other": "دقیقه",
     "seconds_one": "ثانیه",
     "seconds_other": "ثانیه"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "هیچ موجودیتی با فیلترها مطابقت ندارد"
+    },
+    "title": "مدیریت ترجمه‌ها"
+  },
+  "views": {
+    "createNewViewDescription": "پیکربندی فعلی را به‌عنوان نمای جدید ذخیره کنید",
+    "createNewViewTitle": "ذخیره به‌عنوان نمای جدید",
+    "creationSuccess": "نما ایجاد شد",
+    "defaultView": "نمای پیش‌فرض",
+    "deleteSuccess": "نما با موفقیت حذف شد",
+    "editName": "ویرایش نام",
+    "editView": "ویرایش نما",
+    "editViewNameDescription": "نام نمای ذخیره‌شده خود را تغییر دهید",
+    "editViewNameTitle": "ویرایش نام نما",
+    "enterViewNamePlaceholder": "نام نما را وارد کنید",
+    "errors": {
+      "emptyName": "نام نمی‌تواند خالی باشد",
+      "failedToCreateView": "ایجاد نما ناموفق بود",
+      "failedToDeleteView": "حذف نما ناموفق بود",
+      "failedToUpdateActiveView": "به‌روزرسانی نمای فعال ناموفق بود",
+      "failedToUpdateView": "به‌روزرسانی نما ناموفق بود",
+      "nameRequired": "نام الزامی است"
+    },
+    "personalViews": "نماهای شخصی",
+    "prompts": {
+      "deleteView": {
+        "description": "آیا مطمئن هستید که می‌خواهید \"{{view.name}}\" را حذف کنید؟ این عمل قابل بازگشت نیست.",
+        "title": "حذف نما"
+      },
+      "resetSystemDefault": {
+        "description": "این کار مقدار پیش‌فرض سیستم ذخیره‌شده را حذف می‌کند و به مقادیر پیش‌فرض اصلی در سطح کد بازمی‌گردد. همه کاربران تحت تأثیر قرار می‌گیرند. مطمئن هستید؟",
+        "title": "بازنشانی پیش‌فرض سیستم"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "ذخیره به‌عنوان پیش‌فرض",
+        "description": "این کار پیکربندی فعلی را به‌عنوان پیش‌فرض سیستم ذخیره می‌کند. همه کاربران این پیکربندی را به‌طور پیش‌فرض خواهند دید، مگر اینکه نماهای شخصی خود را داشته باشند. مطمئن هستید؟",
+        "title": "ذخیره به‌عنوان پیش‌فرض سیستم"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "\"{{view}}\" را با پیکربندی فعلی به‌روزرسانی می‌کنید؟",
+          "title": "به‌روزرسانی نمای موجود"
+        }
+      }
+    },
+    "resetToCodeDefaults": "بازنشانی به پیش‌فرض‌های کد",
+    "saveCurrentView": "ذخیره نمای فعلی",
+    "success": "نمای \"{{view}}\" با موفقیت ذخیره شد",
+    "systemDefault": "پیش‌فرض سیستم",
+    "updateSuccess": "نما به‌روزرسانی شد",
+    "updateView": "به‌روزرسانی نما",
+    "viewName": "نام نما",
+    "updateViewName": "به‌روزرسانی \"{{view}}\""
   }
 }

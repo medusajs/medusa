@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "Kaydedilmemiş değişiklikleriniz kaybolacak.",
     "includesTaxTooltip": "Bu sütundaki fiyatlar vergiler dahil fiyatlardır.",
     "excludesTaxTooltip": "Bu sütundaki fiyatlar vergiler hariç fiyatlardır.",
-    "noMoreData": "Daha fazla veri yok"
+    "noMoreData": "Daha fazla veri yok",
+    "loading": "Yükleniyor...",
+    "no": "Hayır",
+    "notAvailable": "N/A",
+    "yes": "Evet"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "Gizle",
     "export": "Dışa Aktar",
     "import": "İçe Aktar",
-    "cannotUndo": "Bu işlem geri alınamaz"
+    "cannotUndo": "Bu işlem geri alınamaz",
+    "resetCanvas": "Tuvali sıfırla",
+    "zoomIn": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır"
   },
   "operators": {
     "in": "İçinde"
@@ -422,7 +429,8 @@
         "heading": "Envanter Kitleri",
         "label": "Varyantın envanter kitine envanter öğeleri ekleyin.",
         "itemPlaceholder": "Envanter öğesi seçin",
-        "quantityPlaceholder": "Kit için kaç tane gerektiğini belirtin."
+        "quantityPlaceholder": "Kit için kaç tane gerektiğini belirtin.",
+        "descriptionPlaceholder": "Ürün açıklaması"
       },
       "variants": {
         "header": "Varyantlar",
@@ -445,7 +453,8 @@
           "hint": "Ürün için seçenekleri belirleyin, örneğin renk, boyut vb."
         }
       },
-      "successToast": "Ürün {{title}} başarıyla oluşturuldu."
+      "successToast": "Ürün {{title}} başarıyla oluşturuldu.",
+      "unsupportedExtensionMessage": "Bu alan türü bir yedek bileşenin işlenmesini desteklemiyor. Lütfen bir component prop'u sağlayın."
     },
     "export": {
       "header": "Ürün Listesini Dışa Aktar",
@@ -1048,7 +1057,9 @@
       "createRefundWrongQuantity": "Miktar 1 ile {{number}} arasında bir sayı olmalıdır",
       "refundAmount": "{{ amount }} tutarını iade et",
       "paymentLink": "{{ amount }} için ödeme bağlantısını kopyala",
-      "selectPaymentToRefund": "İade edilecek ödemeyi seçin"
+      "selectPaymentToRefund": "İade edilecek ödemeyi seçin",
+      "storeCreditRefund": "Mağaza kredisi iadesi",
+      "totalPending": "Toplam bekleyen"
     },
     "edits": {
       "title": "Siparişi düzenle",
@@ -1294,7 +1305,8 @@
       "shippingFromLabel": "Gönderen",
       "itemsLabel": "Ürünler",
       "differentOptionSelected": "Seçilen kargo seçeneği müşterinin seçtiğinden farklı.",
-      "disabledItemTooltip": "Seçtiğiniz kargo seçeneği bu ürünün tamamlanmasına izin vermiyor"
+      "disabledItemTooltip": "Seçtiğiniz kargo seçeneği bu ürünün tamamlanmasına izin vermiyor",
+      "label": "Etiket"
     },
     "refund": {
       "title": "İade Oluştur",
@@ -1419,7 +1431,8 @@
         "title": "Fatura adresini düzenle",
         "requestSuccess": "Sipariş fatura adresi güncellendi."
       }
-    }
+    },
+    "emptyOrders": "Sipariş bulunamadı"
   },
   "draftOrders": {
     "domain": "Taslak Siparişler",
@@ -1935,7 +1948,8 @@
           "title": "Promosyonu açmak için sepette ne olmalı?",
           "description": "Bu koşullar sağlandığında, hedef ürünlerde promosyon etkinleştirilir."
         }
-      }
+      },
+      "operator": "Operatör seçin"
     },
     "tooltips": {
       "campaignType": "Bir harcama bütçesi belirlemek için promosyonda para birimi kodu seçilmelidir."
@@ -1967,7 +1981,12 @@
         "successToast": "Promosyonun kampanyası başarıyla güncellendi."
       },
       "actions": {
-        "goToCampaign": "Kampanyaya git"
+        "goToCampaign": "Kampanyaya git",
+        "addToCampaign": "Kampanyaya ekle"
+      },
+      "notPartOfCampaign": {
+        "message": "Bu promosyonu mevcut bir kampanyaya ekleyin",
+        "title": "Bir kampanyanın parçası değil"
       }
     },
     "campaign_currency": {
@@ -2187,11 +2206,17 @@
         "list": {
           "noRecordsMessage": "Önce bir ürün oluşturun."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Bu ürün zaten fiyat listesinde.",
+        "productHasNoVariants": "Bu ürünün varyantı yok."
       }
     },
     "edit": {
       "header": "Fiyat Listesini Düzenle",
-      "successToast": "{{title}} fiyat listesi başarıyla güncellendi."
+      "successToast": "{{title}} fiyat listesi başarıyla güncellendi.",
+      "editPricesForDescription": "Fiyat listesindeki ürünlerin fiyatlarını güncelle",
+      "editPricesForTitle": "{{title}} için fiyatları düzenle"
     },
     "configuration": {
       "header": "Yapılandırma",
@@ -2578,7 +2603,8 @@
       "lastUsedAtLabel": "Son kullanıldığı zaman",
       "revokedByLabel": "İptal eden",
       "revokedAtLabel": "İptal zamanı",
-      "createdByLabel": "Oluşturan"
+      "createdByLabel": "Oluşturan",
+      "token": "Belirteç"
     }
   },
   "returnReasons": {
@@ -2957,5 +2983,61 @@
     "minutes_other": "Dakikalar",
     "seconds_one": "Saniye",
     "seconds_other": "Saniyeler"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Filtrelerle eşleşen varlık yok"
+    },
+    "title": "Çevirileri yönet"
+  },
+  "views": {
+    "createNewViewDescription": "Geçerli yapılandırmanızı yeni bir görünüm olarak kaydedin",
+    "creationSuccess": "Görünüm oluşturuldu",
+    "defaultView": "Varsayılan görünüm",
+    "deleteSuccess": "Görünüm başarıyla silindi",
+    "editName": "Adı düzenle",
+    "editView": "Görünümü düzenle",
+    "editViewNameDescription": "Kaydedilmiş görünümünüzün adını değiştirin",
+    "editViewNameTitle": "Görünüm adını düzenle",
+    "enterViewNamePlaceholder": "Görünüm adını girin",
+    "errors": {
+      "emptyName": "Ad boş olamaz",
+      "failedToCreateView": "Görünüm oluşturulamadı",
+      "failedToDeleteView": "Görünüm silinemedi",
+      "failedToUpdateActiveView": "Etkin görünüm güncellenemedi",
+      "failedToUpdateView": "Görünüm güncellenemedi",
+      "nameRequired": "Ad gerekli"
+    },
+    "personalViews": "Kişisel görünümler",
+    "prompts": {
+      "deleteView": {
+        "description": "\"{{view.name}}\" silinsin mi? Bu işlem geri alınamaz.",
+        "title": "Görünümü sil"
+      },
+      "resetSystemDefault": {
+        "description": "Bu işlem kayıtlı sistem varsayılanını silecek ve özgün kod düzeyi varsayılanlara geri dönecektir. Tüm kullanıcılar etkilenecektir. Emin misiniz?",
+        "title": "Sistem varsayılanını sıfırla"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Varsayılan olarak kaydet",
+        "description": "Bu işlem geçerli yapılandırmayı sistem varsayılanı olarak kaydedecektir. Kendi kişisel görünümleri olmayan tüm kullanıcılar bu yapılandırmayı varsayılan olarak görecektir. Emin misiniz?",
+        "title": "Sistem varsayılanı olarak kaydet"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "\"{{view}}\" geçerli yapılandırmayla güncellensin mi?",
+          "title": "Mevcut görünümü güncelle"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Kod varsayılanlarına sıfırla",
+    "saveCurrentView": "Geçerli görünümü kaydet",
+    "success": "\"{{view}}\" görünümü başarıyla kaydedildi",
+    "systemDefault": "Sistem varsayılanı",
+    "updateSuccess": "Görünüm güncellendi",
+    "viewName": "Görünüm adı",
+    "updateViewName": "\"{{view}}\" öğesini güncelle",
+    "createNewViewTitle": "Yeni görünüm olarak kaydet",
+    "updateView": "Görünümü güncelle"
   }
 }

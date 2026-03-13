@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "Imate nesačuvane promjene koje će biti izgubljene ako izađete iz ovog obrasca.",
     "includesTaxTooltip": "Cijene u ovoj koloni uključuju porez.",
     "excludesTaxTooltip": "Cijene u ovoj koloni ne uključuju porez.",
-    "noMoreData": "Nema više podataka"
+    "noMoreData": "Nema više podataka",
+    "loading": "Učitavanje...",
+    "no": "Ne",
+    "notAvailable": "N/A",
+    "yes": "Da"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "Sakrij",
     "export": "Izvezi",
     "import": "Uvezi",
-    "cannotUndo": "Ova akcija se ne može poništiti"
+    "cannotUndo": "Ova akcija se ne može poništiti",
+    "resetCanvas": "Poništi platno",
+    "zoomIn": "Uvećaj",
+    "zoomOut": "Umanji"
   },
   "operators": {
     "in": "U"
@@ -424,7 +431,8 @@
         "heading": "Kits inventara",
         "label": "Dodajte inventarne stavke u kit inventara varijante.",
         "itemPlaceholder": "Odaberite inventarnu stavku",
-        "quantityPlaceholder": "Koliko vam je ovih potrebnih za kit?"
+        "quantityPlaceholder": "Koliko vam je ovih potrebnih za kit?",
+        "descriptionPlaceholder": "Opis artikla"
       },
       "variants": {
         "header": "Varijante",
@@ -447,7 +455,8 @@
           "hint": "Definišite opcije za proizvod, npr. boja, veličina, itd."
         }
       },
-      "successToast": "Proizvod {{title}} je uspješno kreiran."
+      "successToast": "Proizvod {{title}} je uspješno kreiran.",
+      "unsupportedExtensionMessage": "Ovaj tip polja ne podržava prikaz rezervne komponente. Navedite component prop."
     },
     "export": {
       "header": "Izvoz liste proizvoda",
@@ -598,7 +607,6 @@
       "weight": {
         "label": "Težina"
       },
-
       "options": {
         "label": "Opcije proizvoda",
         "hint": "Opcije se koriste za definisanje boje, veličine itd. proizvoda",
@@ -1084,7 +1092,9 @@
       "createRefundWrongQuantity": "Količina treba biti broj između 1 i {{number}}",
       "refundAmount": "Povrat {{ amount }}",
       "paymentLink": "Kopiraj link za uplatu za {{ amount }}",
-      "selectPaymentToRefund": "Odaberite uplatu za povrat"
+      "selectPaymentToRefund": "Odaberite uplatu za povrat",
+      "storeCreditRefund": "Povrat kao kredit trgovine",
+      "totalPending": "Ukupno na čekanju"
     },
     "edits": {
       "title": "Uredi narudžbu",
@@ -1346,7 +1356,8 @@
       },
       "trackingLabel": "Praćenje",
       "shippingFromLabel": "Dostava s",
-      "itemsLabel": "Artikli"
+      "itemsLabel": "Artikli",
+      "label": "Oznaka"
     },
     "refund": {
       "title": "Kreiraj povrat",
@@ -1447,7 +1458,8 @@
       "displayId": "ID za prikaz",
       "refundableAmount": "Iznos koji se može refundirati",
       "returnableQuantity": "Količina koja se može vratiti"
-    }
+    },
+    "emptyOrders": "Nema pronađenih narudžbi"
   },
   "draftOrders": {
     "domain": "Nacrt narudžbi",
@@ -1984,7 +1996,8 @@
           "title": "Šta mora biti u košarici da bi se otključala promocija?",
           "description": "Ako ovi uvjeti budu zadovoljeni, omogućit ćemo promociju na ciljnim artiklima."
         }
-      }
+      },
+      "operator": "Odaberite operator"
     },
     "tooltips": {
       "campaignType": "Šifra valute mora biti odabrana u promociji da biste postavili budžet za potrošnju."
@@ -2016,7 +2029,12 @@
         "successToast": "Kampanja promocije je uspješno ažurirana."
       },
       "actions": {
-        "goToCampaign": "Idite na kampanju"
+        "goToCampaign": "Idite na kampanju",
+        "addToCampaign": "Dodaj u kampanju"
+      },
+      "notPartOfCampaign": {
+        "message": "Dodajte ovu promociju postojećoj kampanji",
+        "title": "Nije dio kampanje"
       }
     },
     "campaign_currency": {
@@ -2236,11 +2254,17 @@
         "list": {
           "noRecordsMessage": "Prvo kreirajte proizvod."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Ovaj proizvod je već na cjenovniku.",
+        "productHasNoVariants": "Ovaj proizvod nema varijante."
       }
     },
     "edit": {
       "header": "Izmijeni cjenovni popis",
-      "successToast": "Cjenovni popis {{title}} je uspješno ažuriran."
+      "successToast": "Cjenovni popis {{title}} je uspješno ažuriran.",
+      "editPricesForDescription": "Ažurirajte cijene proizvoda na cjenovniku",
+      "editPricesForTitle": "Uredi cijene za {{title}}"
     },
     "configuration": {
       "header": "Konfiguracija",
@@ -2636,7 +2660,8 @@
       "lastUsedAtLabel": "Posljednja upotreba",
       "revokedByLabel": "Opozvao",
       "revokedAtLabel": "Datum opoziva",
-      "createdByLabel": "Kreirao"
+      "createdByLabel": "Kreirao",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -2665,7 +2690,10 @@
         "placeholder": "pogrešna_veličina",
         "tooltip": "Vrijednost treba biti jedinstveni identifikator za razlog povrata."
       },
-      "label": { "label": "Oznaka", "placeholder": "Pogrešna veličina" },
+      "label": {
+        "label": "Oznaka",
+        "placeholder": "Pogrešna veličina"
+      },
       "description": {
         "label": "Opis",
         "placeholder": "Kupac je primio pogrešnu veličinu"
@@ -3012,5 +3040,61 @@
     "minutes_other": "Minute",
     "seconds_one": "Sekunda",
     "seconds_other": "Sekunde"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Nema entiteta koji odgovaraju filterima"
+    },
+    "title": "Upravljaj prijevodima"
+  },
+  "views": {
+    "createNewViewDescription": "Sačuvajte trenutnu konfiguraciju kao novi prikaz",
+    "createNewViewTitle": "Sačuvaj kao novi prikaz",
+    "creationSuccess": "Prikaz je kreiran",
+    "defaultView": "Podrazumijevani prikaz",
+    "deleteSuccess": "Prikaz je uspješno obrisan",
+    "editName": "Uredi naziv",
+    "editView": "Uredi prikaz",
+    "editViewNameDescription": "Promijenite naziv sačuvanog prikaza",
+    "editViewNameTitle": "Uredi naziv prikaza",
+    "enterViewNamePlaceholder": "Unesite naziv prikaza",
+    "errors": {
+      "emptyName": "Naziv ne može biti prazan",
+      "failedToCreateView": "Kreiranje prikaza nije uspjelo",
+      "failedToDeleteView": "Brisanje prikaza nije uspjelo",
+      "failedToUpdateActiveView": "Ažuriranje aktivnog prikaza nije uspjelo",
+      "failedToUpdateView": "Ažuriranje prikaza nije uspjelo",
+      "nameRequired": "Naziv je obavezan"
+    },
+    "personalViews": "Lični prikazi",
+    "prompts": {
+      "deleteView": {
+        "description": "Jeste li sigurni da želite obrisati \"{{view.name}}\"? Ova radnja se ne može poništiti.",
+        "title": "Obriši prikaz"
+      },
+      "resetSystemDefault": {
+        "description": "Ovo će obrisati sačuvanu sistemsku zadanu vrijednost i vratiti originalne zadane vrijednosti iz koda. Svi korisnici će biti pogođeni. Jeste li sigurni?",
+        "title": "Poništi sistemsku zadanu vrijednost"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Sačuvaj kao zadano",
+        "description": "Ovo će sačuvati trenutnu konfiguraciju kao sistemsku zadanu vrijednost. Svi korisnici će ovu konfiguraciju vidjeti kao zadanu, osim ako imaju vlastite lične prikaze. Jeste li sigurni?",
+        "title": "Sačuvaj kao sistemsku zadanu vrijednost"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Ažurirati \"{{view}}\" trenutnom konfiguracijom?",
+          "title": "Ažuriraj postojeći prikaz"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Vrati na zadane vrijednosti iz koda",
+    "saveCurrentView": "Sačuvaj trenutni prikaz",
+    "success": "Prikaz \"{{view}}\" je uspješno sačuvan",
+    "systemDefault": "Sistemska zadana vrijednost",
+    "updateSuccess": "Prikaz je ažuriran",
+    "updateView": "Ažuriraj prikaz",
+    "viewName": "Naziv prikaza",
+    "updateViewName": "Ažuriraj \"{{view}}\""
   }
 }

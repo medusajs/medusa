@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "Имате незачувани промени што ќе се изгубат ако излезете од овој формулар.",
     "includesTaxTooltip": "Цените во оваа колона се со вклучен данок.",
     "excludesTaxTooltip": "Цените во оваа колона се без данок.",
-    "noMoreData": "Нема повеќе податоци"
+    "noMoreData": "Нема повеќе податоци",
+    "loading": "Се вчитува...",
+    "no": "Не",
+    "notAvailable": "N/A",
+    "yes": "Да"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "Скриј",
     "export": "Извоз",
     "import": "Увоз",
-    "cannotUndo": "Ова дејство не може да се врати"
+    "cannotUndo": "Ова дејство не може да се врати",
+    "resetCanvas": "Ресетирај го платното",
+    "zoomIn": "Зголеми",
+    "zoomOut": "Намали"
   },
   "operators": {
     "in": "Во"
@@ -422,7 +429,8 @@
         "heading": "Инвентар комплети",
         "label": "Додадете инвентарни ставки во комплетот за инвентар на варијантата.",
         "itemPlaceholder": "Изберете ставка за залиха",
-        "quantityPlaceholder": "Колку од нив се потребни за комплетот?"
+        "quantityPlaceholder": "Колку од нив се потребни за комплетот?",
+        "descriptionPlaceholder": "Опис на ставката"
       },
       "variants": {
         "header": "Варијанти",
@@ -445,7 +453,8 @@
           "hint": "Дефинирајте ги опциите за производот, на пр. "
         }
       },
-      "successToast": "Производ {{title}} беше успешно создаден."
+      "successToast": "Производ {{title}} беше успешно создаден.",
+      "unsupportedExtensionMessage": "Овој тип на поле не поддржува рендерирање резервна компонента. Ве молиме наведете component prop."
     },
     "export": {
       "header": "Листа на производи за експортирање",
@@ -1040,7 +1049,9 @@
       "createRefundWrongQuantity": "Количеството треба да биде број помеѓу 1 и {{number}}",
       "refundAmount": "Рефундирање {{ amount }}",
       "paymentLink": "Копирај го линкот за плаќање за {{ amount }}",
-      "selectPaymentToRefund": "Изберете плаќање за рефундирање"
+      "selectPaymentToRefund": "Изберете плаќање за рефундирање",
+      "storeCreditRefund": "Поврат како кредит во продавницата",
+      "totalPending": "Вкупно на чекање"
     },
     "edits": {
       "title": "Уреди редослед",
@@ -1296,7 +1307,8 @@
       },
       "trackingLabel": "Следење",
       "shippingFromLabel": "Испорака од",
-      "itemsLabel": "Ставки"
+      "itemsLabel": "Ставки",
+      "label": "Етикета"
     },
     "refund": {
       "title": "Креирај рефундирање",
@@ -1397,7 +1409,8 @@
       "displayId": "Прикажи ID",
       "refundableAmount": "Повратен износ",
       "returnableQuantity": "Количина што може да се врати"
-    }
+    },
+    "emptyOrders": "Не се пронајдени нарачки"
   },
   "draftOrders": {
     "domain": "Драфт нарачки",
@@ -1913,7 +1926,8 @@
           "title": "Што треба да има во количката за да ја отклучите промоцијата?",
           "description": "Доколку овие услови се совпаѓаат, ја овозможуваме промоцијата на целните ставки."
         }
-      }
+      },
+      "operator": "Изберете оператор"
     },
     "tooltips": {
       "campaignType": "Кодот на валутата мора да биде избран во промоцијата за да се постави буџет за трошење."
@@ -1945,7 +1959,12 @@
         "successToast": "Успешно ажурирана кампањата на промоцијата."
       },
       "actions": {
-        "goToCampaign": "Одете во кампања"
+        "goToCampaign": "Одете во кампања",
+        "addToCampaign": "Додај во кампања"
+      },
+      "notPartOfCampaign": {
+        "message": "Додајте ја оваа промоција во постоечка кампања",
+        "title": "Не е дел од кампања"
       }
     },
     "campaign_currency": {
@@ -2165,11 +2184,17 @@
         "list": {
           "noRecordsMessage": "Прво креирајте производ."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Овој производ веќе е во ценовникот.",
+        "productHasNoVariants": "Овој производ нема варијанти."
       }
     },
     "edit": {
       "header": "Уредете го ценовникот",
-      "successToast": "Ценовник {{title}} беше успешно ажуриран."
+      "successToast": "Ценовник {{title}} беше успешно ажуриран.",
+      "editPricesForDescription": "Ажурирајте ги цените на производите во ценовникот",
+      "editPricesForTitle": "Уреди ги цените за {{title}}"
     },
     "configuration": {
       "header": "Конфигурација",
@@ -2544,7 +2569,8 @@
       "lastUsedAtLabel": "Последен пат користен во",
       "revokedByLabel": "Отповикан од",
       "revokedAtLabel": "Отповикан во",
-      "createdByLabel": "Создаден од"
+      "createdByLabel": "Создаден од",
+      "token": "Токен"
     }
   },
   "returnReasons": {
@@ -2921,5 +2947,61 @@
     "minutes_other": "Минути",
     "seconds_one": "Второ",
     "seconds_other": "Секунди"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Нема ентитети што одговараат на филтрите"
+    },
+    "title": "Управувај со преводи"
+  },
+  "views": {
+    "createNewViewDescription": "Зачувајте ја тековната конфигурација како нов приказ",
+    "createNewViewTitle": "Зачувај како нов приказ",
+    "creationSuccess": "Приказот е создаден",
+    "defaultView": "Стандарден приказ",
+    "deleteSuccess": "Приказот е избришан успешно",
+    "editName": "Уреди име",
+    "editView": "Уреди приказ",
+    "editViewNameDescription": "Променете го името на зачуваниот приказ",
+    "editViewNameTitle": "Уреди име на приказ",
+    "enterViewNamePlaceholder": "Внесете име на приказ",
+    "errors": {
+      "emptyName": "Името не може да биде празно",
+      "failedToCreateView": "Неуспешно создавање приказ",
+      "failedToDeleteView": "Неуспешно бришење приказ",
+      "failedToUpdateActiveView": "Неуспешно ажурирање на активниот приказ",
+      "failedToUpdateView": "Неуспешно ажурирање на приказ",
+      "nameRequired": "Името е задолжително"
+    },
+    "personalViews": "Лични прикази",
+    "prompts": {
+      "deleteView": {
+        "description": "Дали сте сигурни дека сакате да го избришете \"{{view.name}}\"? Ова дејство не може да се врати.",
+        "title": "Избриши приказ"
+      },
+      "resetSystemDefault": {
+        "description": "Ова ќе ја избрише зачуваната системска стандардна вредност и ќе ги врати оригиналните стандардни вредности на кодот. Сите корисници ќе бидат засегнати. Дали сте сигурни?",
+        "title": "Ресетирај системски стандард"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Зачувај како стандардно",
+        "description": "Ова ќе ја зачува тековната конфигурација како системски стандард. Сите корисници ќе ја гледаат оваа конфигурација како стандардна, освен ако имаат свои лични прикази. Дали сте сигурни?",
+        "title": "Зачувај како системски стандард"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Да се ажурира ли \"{{view}}\" со тековната конфигурација?",
+          "title": "Ажурирај постоечки приказ"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Ресетирај на стандардите од кодот",
+    "saveCurrentView": "Зачувај тековен приказ",
+    "success": "Приказот \"{{view}}\" е зачуван успешно",
+    "systemDefault": "Системски стандард",
+    "updateSuccess": "Приказот е ажуриран",
+    "updateView": "Ажурирај приказ",
+    "viewName": "Име на приказ",
+    "updateViewName": "Ажурирај \"{{view}}\""
   }
 }

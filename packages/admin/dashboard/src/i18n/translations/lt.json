@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "Turite neišsaugotų pakeitimų, kurie bus prarasti jei išeisite iš šios formos.",
     "includesTaxTooltip": "Kainos šiame stulpelyje nurodytos su mokesčiais.",
     "excludesTaxTooltip": "Kainos šiame stulpelyje nurodytos be mokesčių.",
-    "noMoreData": "Daugiau duomenų nėra"
+    "noMoreData": "Daugiau duomenų nėra",
+    "loading": "Kraunama...",
+    "no": "Ne",
+    "notAvailable": "N/A",
+    "yes": "Taip"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "Paslėpti",
     "export": "Eksportuoti",
     "import": "Importuoti",
-    "cannotUndo": "Šio veiksmo pasekmės neatstatomos"
+    "cannotUndo": "Šio veiksmo pasekmės neatstatomos",
+    "resetCanvas": "Atstatyti drobę",
+    "zoomIn": "Priartinti",
+    "zoomOut": "Nutolinti"
   },
   "operators": {
     "in": "Iš"
@@ -424,7 +431,8 @@
         "heading": "Atsargų rinkiniai",
         "label": "Pridėti atsargas prie varianto atsargų rinkinio.",
         "itemPlaceholder": "Pasirinkite atsargą",
-        "quantityPlaceholder": "Koks kiekis reikalingas rinkiniui?"
+        "quantityPlaceholder": "Koks kiekis reikalingas rinkiniui?",
+        "descriptionPlaceholder": "Prekės aprašymas"
       },
       "variants": {
         "header": "Variantai",
@@ -447,7 +455,8 @@
           "hint": "Apibrėžkite prekės parinktis, pvz. spalva, dydis ir kt."
         }
       },
-      "successToast": "Prekė {{title}} sėkmingai sukurta."
+      "successToast": "Prekė {{title}} sėkmingai sukurta.",
+      "unsupportedExtensionMessage": "Šio lauko tipas nepalaiko atsarginio komponento atvaizdavimo. Pateikite component savybę."
     },
     "export": {
       "header": "Esportuoti prekių sąrašą",
@@ -1081,7 +1090,9 @@
       "createRefundWrongQuantity": "Kiekis turi būti skaičius tarp 1 ir {{number}}",
       "refundAmount": "Grąžinti {{ amount }}",
       "paymentLink": "Kopijuoti mokėjimo, kurio suma {{ amount }}, nuorodą",
-      "selectPaymentToRefund": "Pasirinkite mokėjimą grąžinimui"
+      "selectPaymentToRefund": "Pasirinkite mokėjimą grąžinimui",
+      "storeCreditRefund": "Parduotuvės kredito grąžinimas",
+      "totalPending": "Iš viso laukia"
     },
     "edits": {
       "title": "Keisti užsakymą",
@@ -1343,7 +1354,8 @@
       },
       "trackingLabel": "Sekimas",
       "shippingFromLabel": "Siunčiama iš",
-      "itemsLabel": "Prekės"
+      "itemsLabel": "Prekės",
+      "label": "Antraštė"
     },
     "refund": {
       "title": "Sukurti pinigų grąžinimą",
@@ -1444,7 +1456,8 @@
       "displayId": "Rodyti ID",
       "refundableAmount": "Grąžinama suma",
       "returnableQuantity": "Grąžinamas kiekis"
-    }
+    },
+    "emptyOrders": "Užsakymų nerasta"
   },
   "draftOrders": {
     "domain": "Užsakymų juodraščiai",
@@ -1974,7 +1987,8 @@
           "title": "Kas turi būti krepšelyje, kad galiotų akcija?",
           "description": "Jei šios sąlygos atitinka, taikome akciją nurodytoms prekėms."
         }
-      }
+      },
+      "operator": "Pasirinkite operatorių"
     },
     "tooltips": {
       "campaignType": "Valiutos kodas turi būti pasirinktas prie akcijos, kad nustatyti išlaidų biudžetą."
@@ -2006,7 +2020,12 @@
         "successToast": "Akcijos kampanija sėkmingai atnauinta."
       },
       "actions": {
-        "goToCampaign": "Eiti į kampaniją"
+        "goToCampaign": "Eiti į kampaniją",
+        "addToCampaign": "Pridėti prie kampanijos"
+      },
+      "notPartOfCampaign": {
+        "message": "Pridėkite šią akciją prie esamos kampanijos",
+        "title": "Nepriklauso kampanijai"
       }
     },
     "campaign_currency": {
@@ -2226,11 +2245,17 @@
         "list": {
           "noRecordsMessage": "Pirmiausia sukurkite prekę."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Šis produktas jau yra kainoraštyje.",
+        "productHasNoVariants": "Šis produktas neturi variantų."
       }
     },
     "edit": {
       "header": "Keisti kainoraštį",
-      "successToast": "Kainoraštis {{title}} sėkmingai pakeistas."
+      "successToast": "Kainoraštis {{title}} sėkmingai pakeistas.",
+      "editPricesForDescription": "Atnaujinkite produktų kainas kainoraštyje",
+      "editPricesForTitle": "Redaguoti {{title}} kainas"
     },
     "configuration": {
       "header": "Konfigūracija",
@@ -2627,7 +2652,8 @@
       "lastUsedAtLabel": "Paskutinį kartą naudotas",
       "revokedByLabel": "Atšaukė",
       "revokedAtLabel": "Atšauktas",
-      "createdByLabel": "Sukūrė"
+      "createdByLabel": "Sukūrė",
+      "token": "Žetonas"
     }
   },
   "returnReasons": {
@@ -2656,7 +2682,10 @@
         "placeholder": "klaidingas_dydis",
         "tooltip": "Vertė turėtų būti unikalus grąžinimo priežasties identifikatorius."
       },
-      "label": { "label": "Antraštė", "placeholder": "Klaidingas dydis" },
+      "label": {
+        "label": "Antraštė",
+        "placeholder": "Klaidingas dydis"
+      },
       "description": {
         "label": "Aprašymas",
         "placeholder": "Klientas gavo netinkamą dydį"
@@ -3003,5 +3032,61 @@
     "minutes_other": "Minutės",
     "seconds_one": "Sekundė",
     "seconds_other": "Sekundės"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Nėra filtrus atitinkančių objektų"
+    },
+    "title": "Tvarkyti vertimus"
+  },
+  "views": {
+    "createNewViewDescription": "Išsaugokite dabartinę konfigūraciją kaip naują rodinį",
+    "createNewViewTitle": "Išsaugoti kaip naują rodinį",
+    "creationSuccess": "Rodinys sukurtas",
+    "defaultView": "Numatytasis rodinys",
+    "deleteSuccess": "Rodinys sėkmingai ištrintas",
+    "editName": "Redaguoti pavadinimą",
+    "editView": "Redaguoti rodinį",
+    "editViewNameDescription": "Pakeiskite išsaugoto rodinio pavadinimą",
+    "editViewNameTitle": "Redaguoti rodinio pavadinimą",
+    "enterViewNamePlaceholder": "Įveskite rodinio pavadinimą",
+    "errors": {
+      "emptyName": "Pavadinimas negali būti tuščias",
+      "failedToCreateView": "Nepavyko sukurti rodinio",
+      "failedToDeleteView": "Nepavyko ištrinti rodinio",
+      "failedToUpdateActiveView": "Nepavyko atnaujinti aktyvaus rodinio",
+      "failedToUpdateView": "Nepavyko atnaujinti rodinio",
+      "nameRequired": "Pavadinimas yra privalomas"
+    },
+    "personalViews": "Asmeniniai rodiniai",
+    "prompts": {
+      "deleteView": {
+        "description": "Ar tikrai norite ištrinti „{{view.name}}“? Šio veiksmo atšaukti negalima.",
+        "title": "Ištrinti rodinį"
+      },
+      "resetSystemDefault": {
+        "description": "Tai ištrins išsaugotą sistemos numatytąją reikšmę ir grąžins originalias kodo lygio numatytąsias reikšmes. Tai paveiks visus naudotojus. Ar tikrai?",
+        "title": "Atstatyti sistemos numatytąsias reikšmes"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Išsaugoti kaip numatytąją",
+        "description": "Tai išsaugos dabartinę konfigūraciją kaip sistemos numatytąją. Visi naudotojai matys šią konfigūraciją kaip numatytąją, nebent turės savo asmeninius rodinius. Ar tikrai?",
+        "title": "Išsaugoti kaip sistemos numatytąją"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Atnaujinti „{{view}}“ naudojant dabartinę konfigūraciją?",
+          "title": "Atnaujinti esamą rodinį"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Atstatyti į kodo numatytąsias reikšmes",
+    "saveCurrentView": "Išsaugoti dabartinį rodinį",
+    "success": "Rodinys „{{view}}“ sėkmingai išsaugotas",
+    "systemDefault": "Sistemos numatytoji reikšmė",
+    "updateSuccess": "Rodinys atnaujintas",
+    "updateView": "Atnaujinti rodinį",
+    "viewName": "Rodinio pavadinimas",
+    "updateViewName": "Atnaujinti „{{view}}”"
   }
 }

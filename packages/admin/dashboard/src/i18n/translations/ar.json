@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "لديك تغييرات غير محفوظة ستفقد إذا خرجت من هذا النموذج.",
     "includesTaxTooltip": "الأسعار في هذا العمود تشمل الضرائب.",
     "excludesTaxTooltip": "الأسعار في هذا العمود لا تشمل الضرائب.",
-    "noMoreData": "لا توجد بيانات أخرى"
+    "noMoreData": "لا توجد بيانات أخرى",
+    "loading": "جاري التحميل......",
+    "no": "لا",
+    "notAvailable": "N/A",
+    "yes": "نعم"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "إخفاء",
     "export": "تصدير",
     "import": "استيراد",
-    "cannotUndo": "لا يمكن التراجع عن هذا الإجراء"
+    "cannotUndo": "لا يمكن التراجع عن هذا الإجراء",
+    "resetCanvas": "إعادة تعيين اللوحة",
+    "zoomIn": "تكبير",
+    "zoomOut": "تصغير"
   },
   "operators": {
     "in": "في"
@@ -445,7 +452,8 @@
         "heading": "مجموعات المخزون",
         "label": "أضف عناصر المخزون إلى مجموعة المخزون الخاصة بالبديل.",
         "itemPlaceholder": "اختر عنصر المخزون",
-        "quantityPlaceholder": "كم عدد هذه العناصر المطلوبة للمجموعة؟"
+        "quantityPlaceholder": "كم عدد هذه العناصر المطلوبة للمجموعة؟",
+        "descriptionPlaceholder": "وصف العنصر"
       },
       "variants": {
         "header": "البدائل",
@@ -468,7 +476,8 @@
           "hint": "حدد الخيارات للمنتج، مثل اللون، الحجم، إلخ."
         }
       },
-      "successToast": "تم إنشاء المنتج {{title}} بنجاح."
+      "successToast": "تم إنشاء المنتج {{title}} بنجاح.",
+      "unsupportedExtensionMessage": "هذا النوع من الحقول لا يدعم عرض مكوّن احتياطي. يرجى توفير خاصية component."
     },
     "export": {
       "header": "تصدير قائمة المنتجات",
@@ -1058,7 +1067,9 @@
       "createRefundWrongQuantity": "يجب أن تكون الكمية رقمًا بين 1 و {{number}}",
       "refundAmount": "استرداد {{ amount }}",
       "paymentLink": "نسخ رابط الدفع لـ {{ amount }}",
-      "selectPaymentToRefund": "اختر الدفع للاسترداد"
+      "selectPaymentToRefund": "اختر الدفع للاسترداد",
+      "storeCreditRefund": "استرداد رصيد المتجر",
+      "totalPending": "الإجمالي المعلّق"
     },
     "edits": {
       "title": "تحرير الطلب",
@@ -1318,7 +1329,8 @@
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
-      "itemsLabel": "Items"
+      "itemsLabel": "Items",
+      "label": "التسمية"
     },
     "refund": {
       "title": "إنشاء استرداد",
@@ -1419,7 +1431,8 @@
       "displayId": "معرف العرض",
       "refundableAmount": "المبلغ القابل للاسترداد",
       "returnableQuantity": "الكمية القابلة للإرجاع"
-    }
+    },
+    "emptyOrders": "لم يتم العثور على طلبات"
   },
   "draftOrders": {
     "domain": "الطلبات المسودة",
@@ -1935,7 +1948,8 @@
           "title": "ما الذي يجب أن يكون في السلة لتفعيل العرض الترويجي؟",
           "description": "إذا تطابقت هذه الشروط، سنقوم بتفعيل العرض الترويجي على العناصر المستهدفة."
         }
-      }
+      },
+      "operator": "اختر المعامل"
     },
     "tooltips": {
       "campaignType": "يجب اختيار رمز العملة في العرض الترويجي لتحديد ميزانية الإنفاق."
@@ -1967,7 +1981,12 @@
         "successToast": "تم تحديث حملة العرض الترويجي بنجاح."
       },
       "actions": {
-        "goToCampaign": "الذهاب إلى الحملة"
+        "goToCampaign": "الذهاب إلى الحملة",
+        "addToCampaign": "إضافة إلى الحملة"
+      },
+      "notPartOfCampaign": {
+        "message": "أضف هذا العرض الترويجي إلى حملة موجودة",
+        "title": "ليس جزءًا من حملة"
       }
     },
     "campaign_currency": {
@@ -2187,11 +2206,17 @@
         "list": {
           "noRecordsMessage": "أنشئ منتجًا أولاً."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "هذا المنتج موجود بالفعل في قائمة الأسعار.",
+        "productHasNoVariants": "هذا المنتج ليس له متغيرات."
       }
     },
     "edit": {
       "header": "تحرير قائمة الأسعار",
-      "successToast": "تم تحديث قائمة الأسعار {{title}} بنجاح."
+      "successToast": "تم تحديث قائمة الأسعار {{title}} بنجاح.",
+      "editPricesForDescription": "تحديث أسعار المنتجات في قائمة الأسعار",
+      "editPricesForTitle": "تعديل أسعار {{title}}"
     },
     "configuration": {
       "header": "التكوين",
@@ -2576,7 +2601,8 @@
       "lastUsedAtLabel": "آخر استخدام في",
       "revokedByLabel": "تم الإلغاء بواسطة",
       "revokedAtLabel": "تم الإلغاء في",
-      "createdByLabel": "تم الإنشاء بواسطة"
+      "createdByLabel": "تم الإنشاء بواسطة",
+      "token": "رمز مميز"
     }
   },
   "returnReasons": {
@@ -2605,7 +2631,10 @@
         "placeholder": "خطأ في الحجم",
         "tooltip": "يجب أن تكون القيمة معرفًا فريدًا لسبب الإرجاع."
       },
-      "label": { "label": "التسمية", "placeholder": "خطأ في الحجم" },
+      "label": {
+        "label": "التسمية",
+        "placeholder": "خطأ في الحجم"
+      },
       "description": {
         "label": "الوصف",
         "placeholder": "تلقى العميل الحجم الخطأ"
@@ -2952,5 +2981,61 @@
     "minutes_other": "دقائق",
     "seconds_one": "ثانية",
     "seconds_other": "ثواني"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "لا توجد كيانات مطابقة لعوامل التصفية"
+    },
+    "title": "إدارة الترجمات"
+  },
+  "views": {
+    "createNewViewDescription": "احفظ التكوين الحالي كعرض جديد",
+    "createNewViewTitle": "حفظ كعرض جديد",
+    "creationSuccess": "تم إنشاء العرض",
+    "defaultView": "العرض الافتراضي",
+    "deleteSuccess": "تم حذف العرض بنجاح",
+    "editName": "تعديل الاسم",
+    "editView": "تعديل العرض",
+    "editViewNameDescription": "غيّر اسم العرض المحفوظ",
+    "editViewNameTitle": "تعديل اسم العرض",
+    "enterViewNamePlaceholder": "أدخل اسم العرض",
+    "errors": {
+      "emptyName": "لا يمكن أن يكون الاسم فارغًا",
+      "failedToCreateView": "فشل إنشاء العرض",
+      "failedToDeleteView": "فشل حذف العرض",
+      "failedToUpdateActiveView": "فشل تحديث العرض النشط",
+      "failedToUpdateView": "فشل تحديث العرض",
+      "nameRequired": "الاسم مطلوب"
+    },
+    "personalViews": "العروض الشخصية",
+    "prompts": {
+      "deleteView": {
+        "description": "هل أنت متأكد أنك تريد حذف \"{{view.name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+        "title": "حذف العرض"
+      },
+      "resetSystemDefault": {
+        "description": "سيؤدي هذا إلى حذف الإعداد الافتراضي المحفوظ للنظام والرجوع إلى الإعدادات الافتراضية الأصلية في الشفرة. سيتأثر جميع المستخدمين. هل أنت متأكد؟",
+        "title": "إعادة تعيين الإعداد الافتراضي للنظام"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "حفظ كافتراضي",
+        "description": "سيؤدي هذا إلى حفظ التكوين الحالي كإعداد افتراضي للنظام. سيرى جميع المستخدمين هذا التكوين بشكل افتراضي ما لم تكن لديهم عروضهم الشخصية الخاصة. هل أنت متأكد؟",
+        "title": "حفظ كإعداد افتراضي للنظام"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "هل تريد تحديث \"{{view}}\" بالتكوين الحالي؟",
+          "title": "تحديث عرض موجود"
+        }
+      }
+    },
+    "resetToCodeDefaults": "إعادة التعيين إلى الإعدادات الافتراضية في الشفرة",
+    "saveCurrentView": "حفظ العرض الحالي",
+    "success": "تم حفظ العرض \"{{view}}\" بنجاح",
+    "systemDefault": "الإعداد الافتراضي للنظام",
+    "updateSuccess": "تم تحديث العرض",
+    "updateView": "تحديث العرض",
+    "viewName": "اسم العرض",
+    "updateViewName": "تحديث \"{{view}}\""
   }
 }

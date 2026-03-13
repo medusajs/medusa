@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "Az Ön által végzett változtatások nem lesznek mentve.",
     "includesTaxTooltip": "Az oszlopban szereplő árak adót tartalmaznak.",
     "excludesTaxTooltip": "Az oszlopban szereplő árak nem tartalmaznak adót.",
-    "noMoreData": "Nincs több adat"
+    "noMoreData": "Nincs több adat",
+    "loading": "Betöltés...",
+    "no": "Nem",
+    "notAvailable": "N/A",
+    "yes": "Igen"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "Elrejtés",
     "export": "Export",
     "import": "Import",
-    "cannotUndo": "Nem vonható vissza"
+    "cannotUndo": "Nem vonható vissza",
+    "resetCanvas": "Vászon visszaállítása",
+    "zoomIn": "Nagyítás",
+    "zoomOut": "Kicsinyítés"
   },
   "operators": {
     "in": "In"
@@ -424,7 +431,8 @@
         "heading": "Készlet",
         "label": "Elemek hozzáadása a készlethez",
         "itemPlaceholder": "Készletelem kiválasztása",
-        "quantityPlaceholder": "Mennyi szükséges a készlethez?"
+        "quantityPlaceholder": "Mennyi szükséges a készlethez?",
+        "descriptionPlaceholder": "A tétel leírása"
       },
       "variants": {
         "header": "Variánsok",
@@ -447,7 +455,8 @@
           "hint": "Az opciók segítségével meghatározhatja a termék tulajdonságait, például a színt vagy a méretet."
         }
       },
-      "successToast": "A {{title}} termék sikeresen létrehozva."
+      "successToast": "A {{title}} termék sikeresen létrehozva.",
+      "unsupportedExtensionMessage": "Ez a mezőtípus nem támogatja a tartalék komponens megjelenítését. Kérjük, adjon meg egy component propot."
     },
     "export": {
       "header": "Terméklista exportálása",
@@ -1079,7 +1088,9 @@
       "createRefundWrongQuantity": "A mennyiség egy 1 és {{number}} közötti szám lehet",
       "refundAmount": "{{ amount }} visszatérítése",
       "paymentLink": "Fizetési link másolása {{ amount }}",
-      "selectPaymentToRefund": "Válassza ki a visszatérítendő fizetést"
+      "selectPaymentToRefund": "Válassza ki a visszatérítendő fizetést",
+      "storeCreditRefund": "Visszatérítés bolti jóváírásként",
+      "totalPending": "Összes függőben"
     },
     "edits": {
       "title": "Rendelés szerkesztése",
@@ -1341,7 +1352,8 @@
       },
       "trackingLabel": "Nyomkövetés",
       "shippingFromLabel": "Szállítás innen",
-      "itemsLabel": "Tételek"
+      "itemsLabel": "Tételek",
+      "label": "Címke"
     },
     "refund": {
       "title": "Visszatérítés létrehozása",
@@ -1442,7 +1454,8 @@
       "displayId": "Megjelenítési azonosító",
       "refundableAmount": "Visszatérítendő összeg",
       "returnableQuantity": "Visszaküldendő mennyiség"
-    }
+    },
+    "emptyOrders": "Nem találhatók rendelések"
   },
   "draftOrders": {
     "domain": "Piszkozat Rendelések",
@@ -1972,7 +1985,8 @@
           "title": "Mi szükséges a kosárban a promóció feloldásához?",
           "description": "Ha ezek a feltételek megfelelnek, engedélyezzük a promóciót a cél tételeken."
         }
-      }
+      },
+      "operator": "Operátor kiválasztása"
     },
     "tooltips": {
       "campaignType": "A pénznem kódját ki kell választani a promócióban a költségvetési limit beállításához."
@@ -2004,7 +2018,12 @@
         "successToast": "A promóció kampánya sikeresen frissítve."
       },
       "actions": {
-        "goToCampaign": "Ugrás a kampányhoz"
+        "goToCampaign": "Ugrás a kampányhoz",
+        "addToCampaign": "Hozzáadás a kampányhoz"
+      },
+      "notPartOfCampaign": {
+        "message": "Adja hozzá ezt a promóciót egy meglévő kampányhoz",
+        "title": "Nem része kampánynak"
       }
     },
     "campaign_currency": {
@@ -2224,11 +2243,17 @@
         "list": {
           "noRecordsMessage": "Először hozzon létre egy terméket."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Ez a termék már szerepel az árlistában.",
+        "productHasNoVariants": "Ennek a terméknek nincsenek változatai."
       }
     },
     "edit": {
       "header": "Árlista Szerkesztése",
-      "successToast": "A(z) {{title}} árlista sikeresen frissítve."
+      "successToast": "A(z) {{title}} árlista sikeresen frissítve.",
+      "editPricesForDescription": "Frissítse a termékek árait az árlistában",
+      "editPricesForTitle": "{{title}} árainak szerkesztése"
     },
     "configuration": {
       "header": "Konfiguráció",
@@ -2625,7 +2650,8 @@
       "lastUsedAtLabel": "Utolsó használat ekkor",
       "revokedByLabel": "Visszavonva által",
       "revokedAtLabel": "Visszavonva ekkor",
-      "createdByLabel": "Létrehozva által"
+      "createdByLabel": "Létrehozva által",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -2654,7 +2680,10 @@
         "placeholder": "wrong_size",
         "tooltip": "Az értéknek egyedi azonosítónak kell lennie a visszaküldési okhoz."
       },
-      "label": { "label": "Címke", "placeholder": "Rossz méret" },
+      "label": {
+        "label": "Címke",
+        "placeholder": "Rossz méret"
+      },
       "description": {
         "label": "Leírás",
         "placeholder": "A vásárló rossz méretet kapott"
@@ -3001,5 +3030,61 @@
     "minutes_other": "Percek",
     "seconds_one": "Másodperc",
     "seconds_other": "Másodpercek"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Nincsenek a szűrőknek megfelelő entitások"
+    },
+    "title": "Fordítások kezelése"
+  },
+  "views": {
+    "createNewViewDescription": "Mentse el a jelenlegi konfigurációt új nézetként",
+    "createNewViewTitle": "Mentés új nézetként",
+    "creationSuccess": "Nézet létrehozva",
+    "defaultView": "Alapértelmezett nézet",
+    "deleteSuccess": "A nézet sikeresen törölve",
+    "editName": "Név szerkesztése",
+    "editView": "Nézet szerkesztése",
+    "editViewNameDescription": "Módosítsa a mentett nézet nevét",
+    "editViewNameTitle": "Nézet nevének szerkesztése",
+    "enterViewNamePlaceholder": "Adja meg a nézet nevét",
+    "errors": {
+      "emptyName": "A név nem lehet üres",
+      "failedToCreateView": "Nem sikerült létrehozni a nézetet",
+      "failedToDeleteView": "Nem sikerült törölni a nézetet",
+      "failedToUpdateActiveView": "Nem sikerült frissíteni az aktív nézetet",
+      "failedToUpdateView": "Nem sikerült frissíteni a nézetet",
+      "nameRequired": "A név megadása kötelező"
+    },
+    "personalViews": "Személyes nézetek",
+    "prompts": {
+      "deleteView": {
+        "description": "Biztosan törölni szeretné a(z) \"{{view.name}}\" elemet? Ez a művelet nem vonható vissza.",
+        "title": "Nézet törlése"
+      },
+      "resetSystemDefault": {
+        "description": "Ez törli a mentett rendszeralapértelmezést, és visszaállítja az eredeti kódszintű alapértelmezéseket. Minden felhasználót érinteni fog. Biztos benne?",
+        "title": "Rendszeralapértelmezés visszaállítása"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Mentés alapértelmezettként",
+        "description": "Ez a jelenlegi konfigurációt rendszeralapértelmezettként menti. Minden felhasználó ezt a konfigurációt fogja alapértelmezés szerint látni, kivéve ha saját személyes nézetei vannak. Biztos benne?",
+        "title": "Mentés rendszeralapértelmezettként"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Frissíti a(z) \"{{view}}\" nézetet a jelenlegi konfigurációval?",
+          "title": "Meglévő nézet frissítése"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Visszaállítás a kód alapértelmezéseire",
+    "saveCurrentView": "Jelenlegi nézet mentése",
+    "success": "A(z) \"{{view}}\" nézet mentése sikeres",
+    "systemDefault": "Rendszeralapértelmezés",
+    "updateSuccess": "Nézet frissítve",
+    "updateView": "Nézet frissítése",
+    "viewName": "Nézet neve",
+    "updateViewName": "\"{{view}}\" frissítése"
   }
 }

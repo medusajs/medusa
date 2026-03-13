@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "Vous avez des modifications non enregistrées qui seront perdues si vous quittez ce formulaire.",
     "includesTaxTooltip": "Les prix de cette colonne sont TTC (toutes taxes comprises).",
     "excludesTaxTooltip": "Les prix de cette colonne sont HT (Hors Taxes).",
-    "noMoreData": "Aucune donnée supplémentaire"
+    "noMoreData": "Aucune donnée supplémentaire",
+    "no": "Non",
+    "notAvailable": "N/A",
+    "yes": "Oui",
+    "loading": "Chargement..."
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "Masquer",
     "export": "Exporter",
     "import": "Importer",
-    "cannotUndo": "Cette action ne peut pas être annulée"
+    "cannotUndo": "Cette action ne peut pas être annulée",
+    "resetCanvas": "Réinitialiser le canevas",
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière"
   },
   "operators": {
     "in": "inclus"
@@ -411,7 +418,8 @@
         "heading": "Inventaires",
         "label": "Ajouter des articles d'inventaire à l'inventaire du kit de la variante.",
         "itemPlaceholder": "Sélectionner un article d'inventaire",
-        "quantityPlaceholder": "Combien de ces articles sont nécessaires pour le kit ?"
+        "quantityPlaceholder": "Combien de ces articles sont nécessaires pour le kit ?",
+        "descriptionPlaceholder": "La description de l'article"
       },
       "variants": {
         "header": "Variants",
@@ -434,7 +442,8 @@
           "hint": "Définissez les options du produit, par exemple la couleur, la taille, etc."
         }
       },
-      "successToast": "Le produit {{title}} a été créé avec succès."
+      "successToast": "Le produit {{title}} a été créé avec succès.",
+      "unsupportedExtensionMessage": "Ce type de champ ne prend pas en charge le rendu d'un composant de secours. Veuillez fournir une prop component."
     },
     "export": {
       "header": "Exporter la liste des produits",
@@ -985,7 +994,9 @@
       "createRefundWrongQuantity": "La quantité doit être un nombre entre 1 et {{number}}",
       "refundAmount": "Remboursement de {{amount}}",
       "paymentLink": "Copier le lien de paiement pour {{amount}}",
-      "selectPaymentToRefund": "Sélectionner le paiement à rembourser"
+      "selectPaymentToRefund": "Sélectionner le paiement à rembourser",
+      "storeCreditRefund": "Remboursement en crédit boutique",
+      "totalPending": "Total en attente"
     },
     "edits": {
       "title": "Editer la commande",
@@ -1227,7 +1238,8 @@
       },
       "trackingLabel": "Suivi",
       "shippingFromLabel": "Expédié depuis",
-      "itemsLabel": "Articles"
+      "itemsLabel": "Articles",
+      "label": "Label"
     },
     "refund": {
       "title": "Créer un remboursement",
@@ -1323,7 +1335,8 @@
       "displayId": "Display ID",
       "refundableAmount": "Montant remboursable",
       "returnableQuantity": "Quantité retournable"
-    }
+    },
+    "emptyOrders": "Aucune commande trouvée"
   },
   "draftOrders": {
     "domain": "Commandes à rédiger",
@@ -1803,7 +1816,8 @@
           "title": "Quels éléments doivent être dans le panier pour déverrouiller la promotion?",
           "description": "Si ces conditions correspondent, nous activons la promotion sur les articles cibles."
         }
-      }
+      },
+      "operator": "Sélectionner l'opérateur"
     },
     "tooltips": {
       "campaignType": "Le code de devise doit être sélectionné dans la promotion pour définir un budget de dépense."
@@ -1835,7 +1849,12 @@
         "successToast": "La campagne de la promotion a été mise à jour avec succès."
       },
       "actions": {
-        "goToCampaign": "Aller à la campagne"
+        "goToCampaign": "Aller à la campagne",
+        "addToCampaign": "Ajouter à la campagne"
+      },
+      "notPartOfCampaign": {
+        "message": "Ajoutez cette promotion à une campagne existante",
+        "title": "Ne fait pas partie d'une campagne"
       }
     },
     "campaign_currency": {
@@ -2043,11 +2062,17 @@
         "list": {
           "noRecordsMessage": "Créer un produit d'abord."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Ce produit est déjà dans la liste de prix.",
+        "productHasNoVariants": "Ce produit n'a pas de variantes."
       }
     },
     "edit": {
       "header": "Modifier la liste de prix",
-      "successToast": "La liste de prix {{title}} a été mise à jour avec succès."
+      "successToast": "La liste de prix {{title}} a été mise à jour avec succès.",
+      "editPricesForDescription": "Mettre à jour les prix des produits dans la liste de prix",
+      "editPricesForTitle": "Modifier les prix de {{title}}"
     },
     "configuration": {
       "header": "Configuration",
@@ -2418,7 +2443,8 @@
       "lastUsedAtLabel": "Dernière utilisation",
       "revokedByLabel": "Annuler par",
       "revokedAtLabel": "Annuler à",
-      "createdByLabel": "Créée par"
+      "createdByLabel": "Créée par",
+      "token": "Jeton"
     }
   },
   "returnReasons": {
@@ -2447,7 +2473,10 @@
         "placeholder": "mauvaise_taille",
         "tooltip": "La valeur doit être un identifiant unique pour la raison de retour."
       },
-      "label": { "label": "Label", "placeholder": "Mauvaise taille" },
+      "label": {
+        "label": "Label",
+        "placeholder": "Mauvaise taille"
+      },
       "description": {
         "label": "Description",
         "placeholder": "Le client a reçu la mauvaise taille"
@@ -2787,5 +2816,73 @@
     "minutes_other": "Minutes",
     "seconds_one": "Seconde",
     "seconds_other": "Secondes"
+  },
+  "views": {
+    "save": "Enregistrer",
+    "saveAsNew": "Enregistrer comme nouvelle vue",
+    "viewName": "Nom de la vue",
+    "saveAsSystemDefault": "Enregistrer comme vue par défaut du système",
+    "updateDefaultForEveryone": "Mettre à jour par défaut pour tout le monde",
+    "updateView": "Mettre à jour la vue",
+    "updateViewName": "Mettre à jour \"{{view}}\"",
+    "prompts": {
+      "updateDefault": {
+        "title": "Mettre à jour la vue par défaut",
+        "description": "Cela mettra à jour la vue par défaut pour tous les utilisateurs. Êtes-vous sûr ?",
+        "confirmText": "Mettre à jour pour tout le monde"
+      },
+      "updateView": {
+        "title": "Mettre à jour la vue",
+        "description": "Êtes-vous sûr de vouloir mettre à jour « {{name}} » ?",
+        "confirmText": "Mettre à jour",
+        "existingView": {
+          "description": "Mettre à jour \"{{view}}\" avec la configuration actuelle ?",
+          "title": "Mettre à jour une vue existante"
+        }
+      },
+      "deleteView": {
+        "description": "Êtes-vous sûr de vouloir supprimer \"{{view.name}}\" ? Cette action ne peut pas être annulée.",
+        "title": "Supprimer la vue"
+      },
+      "resetSystemDefault": {
+        "description": "Cela supprimera la vue par défaut du système enregistrée et rétablira les valeurs par défaut définies dans le code. Tous les utilisateurs seront concernés. Êtes-vous sûr ?",
+        "title": "Réinitialiser la vue par défaut du système"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Enregistrer comme valeur par défaut",
+        "description": "Cela enregistrera la configuration actuelle comme vue par défaut du système. Tous les utilisateurs verront cette configuration par défaut, sauf s'ils ont leurs propres vues personnelles. Êtes-vous sûr ?",
+        "title": "Enregistrer comme vue par défaut du système"
+      }
+    },
+    "createNewViewDescription": "Enregistrez votre configuration actuelle en tant que nouvelle vue",
+    "createNewViewTitle": "Enregistrer comme nouvelle vue",
+    "creationSuccess": "Vue créée",
+    "defaultView": "Vue par défaut",
+    "deleteSuccess": "Vue supprimée avec succès",
+    "editName": "Modifier le nom",
+    "editView": "Modifier la vue",
+    "editViewNameDescription": "Modifiez le nom de votre vue enregistrée",
+    "editViewNameTitle": "Modifier le nom de la vue",
+    "enterViewNamePlaceholder": "Saisissez le nom de la vue",
+    "errors": {
+      "emptyName": "Le nom ne peut pas être vide",
+      "failedToCreateView": "Échec de la création de la vue",
+      "failedToDeleteView": "Échec de la suppression de la vue",
+      "failedToUpdateActiveView": "Échec de la mise à jour de la vue active",
+      "failedToUpdateView": "Échec de la mise à jour de la vue",
+      "nameRequired": "Le nom est requis"
+    },
+    "personalViews": "Vues personnelles",
+    "resetToCodeDefaults": "Réinitialiser aux valeurs par défaut du code",
+    "saveCurrentView": "Enregistrer la vue actuelle",
+    "success": "Vue \"{{view}}\" enregistrée avec succès",
+    "systemDefault": "Par défaut du système",
+    "updateSuccess": "Vue mise à jour"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Aucune entité ne correspond aux filtres"
+    },
+    "title": "Gérer les traductions"
   }
 }

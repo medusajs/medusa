@@ -58,7 +58,11 @@
     "unsavedChangesDescription": "Masz niezapisane zmiany, które zostaną utracone po wyjściu.",
     "includesTaxTooltip": "Ceny w tej kolumnie zawierają podatek.",
     "excludesTaxTooltip": "Ceny w tej kolumnie są bez podatku.",
-    "noMoreData": "Brak dodatkowych danych"
+    "noMoreData": "Brak dodatkowych danych",
+    "loading": "Ładowanie...",
+    "no": "Nie",
+    "notAvailable": "N/A",
+    "yes": "Tak"
   },
   "json": {
     "header": "JSON",
@@ -146,7 +150,10 @@
     "hide": "Ukryj",
     "export": "Eksportuj",
     "import": "Importuj",
-    "cannotUndo": "Tego działania nie można cofnąć"
+    "cannotUndo": "Tego działania nie można cofnąć",
+    "resetCanvas": "Zresetuj obszar roboczy",
+    "zoomIn": "Powiększ",
+    "zoomOut": "Pomniejsz"
   },
   "operators": {
     "in": "W"
@@ -434,7 +441,8 @@
         "heading": "Zestawy magazynowe",
         "label": "Dodaj pozycje magazynowe do zestawu wariantu.",
         "itemPlaceholder": "Wybierz pozycję magazynową",
-        "quantityPlaceholder": "Ile z tych elementów jest potrzebnych do zestawu?"
+        "quantityPlaceholder": "Ile z tych elementów jest potrzebnych do zestawu?",
+        "descriptionPlaceholder": "Opis pozycji"
       },
       "variants": {
         "header": "Warianty",
@@ -457,7 +465,8 @@
           "hint": "Określ opcje dla produktu, np. kolor, rozmiar, itp."
         }
       },
-      "successToast": "Produkt {{title}} został pomyślnie utworzony."
+      "successToast": "Produkt {{title}} został pomyślnie utworzony.",
+      "unsupportedExtensionMessage": "Ten typ pola nie obsługuje renderowania komponentu zastępczego. Podaj prop component."
     },
     "export": {
       "header": "Eksportuj listę produktów",
@@ -1183,7 +1192,9 @@
       "createRefundWrongQuantity": "Ilość powinna być liczbą od 1 do {{number}}",
       "refundAmount": "Zwróć {{ amount }}",
       "paymentLink": "Kopiuj link do płatności dla {{ amount }}",
-      "selectPaymentToRefund": "Wybierz płatność do zwrotu"
+      "selectPaymentToRefund": "Wybierz płatność do zwrotu",
+      "storeCreditRefund": "Zwrot jako kredyt sklepu",
+      "totalPending": "Łącznie oczekujące"
     },
     "edits": {
       "title": "Edytuj zamówienie",
@@ -1446,7 +1457,8 @@
       },
       "trackingLabel": "Śledzenie przesyłki",
       "shippingFromLabel": "Wysyłka z",
-      "itemsLabel": "Produkty"
+      "itemsLabel": "Produkty",
+      "label": "Etykieta"
     },
     "refund": {
       "title": "Utwórz zwrot",
@@ -1553,7 +1565,8 @@
       "displayId": "Indeks zamówienia",
       "refundableAmount": "Kwota do zwrotu",
       "returnableQuantity": "Ilość do zwrotu"
-    }
+    },
+    "emptyOrders": "Nie znaleziono zamówień"
   },
   "draftOrders": {
     "domain": "Wstępne zamówienia",
@@ -2123,7 +2136,8 @@
           "title": "Co musi znaleźć się w koszyku, aby odblokować promocję?",
           "description": "Jeżeli te warunki są zgodne, włączamy promocję na wybrane pozycje."
         }
-      }
+      },
+      "operator": "Wybierz operator"
     },
     "tooltips": {
       "campaignType": "Aby ustawić budżet wydatków, w promocji należy wybrać kod waluty."
@@ -2155,7 +2169,12 @@
         "successToast": "Pomyślnie zaktualizowano kampanię promocyjną."
       },
       "actions": {
-        "goToCampaign": "Przejdź do kampanii"
+        "goToCampaign": "Przejdź do kampanii",
+        "addToCampaign": "Dodaj do kampanii"
+      },
+      "notPartOfCampaign": {
+        "message": "Dodaj tę promocję do istniejącej kampanii",
+        "title": "Nie jest częścią kampanii"
       }
     },
     "campaign_currency": {
@@ -2380,11 +2399,17 @@
         "list": {
           "noRecordsMessage": "Najpierw utwórz produkt."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Ten produkt jest już na liście cenowej.",
+        "productHasNoVariants": "Ten produkt nie ma wariantów."
       }
     },
     "edit": {
       "header": "Edytuj Cennik",
-      "successToast": "Cennik {{title}} został pomyślnie zaktualizowany."
+      "successToast": "Cennik {{title}} został pomyślnie zaktualizowany.",
+      "editPricesForDescription": "Zaktualizuj ceny produktów na liście cenowej",
+      "editPricesForTitle": "Edytuj ceny dla {{title}}"
     },
     "configuration": {
       "header": "Konfiguracja",
@@ -2798,7 +2823,8 @@
       "lastUsedAtLabel": "Ostatnio używany o godz",
       "revokedByLabel": "Odwołane przez",
       "revokedAtLabel": "Odwołane o godz",
-      "createdByLabel": "Stworzony przez"
+      "createdByLabel": "Stworzony przez",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -3223,5 +3249,61 @@
     "seconds_few": "Sekundy",
     "seconds_many": "Sekund",
     "seconds_other": "Sekund"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Brak encji pasujących do filtrów"
+    },
+    "title": "Zarządzaj tłumaczeniami"
+  },
+  "views": {
+    "createNewViewDescription": "Zapisz bieżącą konfigurację jako nowy widok",
+    "createNewViewTitle": "Zapisz jako nowy widok",
+    "creationSuccess": "Widok utworzony",
+    "defaultView": "Widok domyślny",
+    "deleteSuccess": "Widok został pomyślnie usunięty",
+    "editName": "Edytuj nazwę",
+    "editView": "Edytuj widok",
+    "editViewNameDescription": "Zmień nazwę zapisanego widoku",
+    "editViewNameTitle": "Edytuj nazwę widoku",
+    "enterViewNamePlaceholder": "Wprowadź nazwę widoku",
+    "errors": {
+      "emptyName": "Nazwa nie może być pusta",
+      "failedToCreateView": "Nie udało się utworzyć widoku",
+      "failedToDeleteView": "Nie udało się usunąć widoku",
+      "failedToUpdateActiveView": "Nie udało się zaktualizować aktywnego widoku",
+      "failedToUpdateView": "Nie udało się zaktualizować widoku",
+      "nameRequired": "Nazwa jest wymagana"
+    },
+    "personalViews": "Widoki osobiste",
+    "prompts": {
+      "deleteView": {
+        "description": "Czy na pewno chcesz usunąć „{{view.name}}”? Tej akcji nie można cofnąć.",
+        "title": "Usuń widok"
+      },
+      "resetSystemDefault": {
+        "description": "Spowoduje to usunięcie zapisanego domyślnego ustawienia systemowego i przywrócenie oryginalnych ustawień domyślnych z kodu. Wpłynie to na wszystkich użytkowników. Czy na pewno?",
+        "title": "Resetuj domyślne ustawienie systemowe"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Zapisz jako domyślne",
+        "description": "Spowoduje to zapisanie bieżącej konfiguracji jako domyślnego ustawienia systemowego. Wszyscy użytkownicy będą widzieć tę konfigurację domyślnie, chyba że mają własne widoki osobiste. Czy na pewno?",
+        "title": "Zapisz jako domyślne ustawienie systemowe"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Zaktualizować „{{view}}” bieżącą konfiguracją?",
+          "title": "Zaktualizuj istniejący widok"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Przywróć domyślne wartości z kodu",
+    "saveCurrentView": "Zapisz bieżący widok",
+    "success": "Widok „{{view}}” został pomyślnie zapisany",
+    "systemDefault": "Domyślne ustawienie systemowe",
+    "updateSuccess": "Widok zaktualizowany",
+    "updateView": "Zaktualizuj widok",
+    "viewName": "Nazwa widoku",
+    "updateViewName": "Zaktualizuj „{{view}}”"
   }
 }

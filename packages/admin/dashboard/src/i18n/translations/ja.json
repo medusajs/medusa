@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "保存されていない変更があります。このフォームを終了すると、これらの変更は失われます。",
     "includesTaxTooltip": "この列の価格は税込みです。",
     "excludesTaxTooltip": "この列の価格は税抜きです。",
-    "noMoreData": "これ以上データはありません"
+    "noMoreData": "これ以上データはありません",
+    "loading": "読み込み中...",
+    "no": "いいえ",
+    "notAvailable": "N/A",
+    "yes": "はい"
   },
   "json": {
     "header": "JSON",
@@ -137,7 +141,10 @@
     "hide": "非表示",
     "export": "エクスポート",
     "import": "インポート",
-    "cannotUndo": "この操作は元に戻せません"
+    "cannotUndo": "この操作は元に戻せません",
+    "resetCanvas": "キャンバスをリセット",
+    "zoomIn": "拡大",
+    "zoomOut": "縮小"
   },
   "operators": {
     "in": "含む"
@@ -411,7 +418,8 @@
         "heading": "在庫キット",
         "label": "バリエーションの在庫キットに在庫アイテムを追加します。",
         "itemPlaceholder": "在庫アイテムを選択",
-        "quantityPlaceholder": "このキットに必要な数量は？"
+        "quantityPlaceholder": "このキットに必要な数量は？",
+        "descriptionPlaceholder": "商品の説明"
       },
       "variants": {
         "header": "バリエーション",
@@ -434,7 +442,8 @@
           "hint": "色、サイズなど、商品のオプションを定義します。"
         }
       },
-      "successToast": "商品「{{title}}」が正常に作成されました。"
+      "successToast": "商品「{{title}}」が正常に作成されました。",
+      "unsupportedExtensionMessage": "このフィールドタイプはフォールバックコンポーネントのレンダリングをサポートしていません。component prop を指定してください。"
     },
     "export": {
       "header": "商品リストをエクスポート",
@@ -990,7 +999,9 @@
       "createRefundWrongQuantity": "数量は1から{{number}}の間の数字である必要があります",
       "refundAmount": "{{ amount }}を返金",
       "paymentLink": "{{ amount }}の支払いリンクをコピー",
-      "selectPaymentToRefund": "返金する支払いを選択"
+      "selectPaymentToRefund": "返金する支払いを選択",
+      "storeCreditRefund": "ストアクレジットで返金",
+      "totalPending": "保留中の合計"
     },
     "edits": {
       "title": "注文を編集",
@@ -1246,7 +1257,8 @@
       },
       "trackingLabel": "追跡",
       "shippingFromLabel": "発送元",
-      "itemsLabel": "アイテム"
+      "itemsLabel": "アイテム",
+      "label": "ラベル"
     },
     "refund": {
       "title": "返金を作成",
@@ -1347,7 +1359,8 @@
       "displayId": "表示ID",
       "refundableAmount": "返金可能金額",
       "returnableQuantity": "返品可能数量"
-    }
+    },
+    "emptyOrders": "注文が見つかりません"
   },
   "draftOrders": {
     "domain": "下書き注文",
@@ -1827,7 +1840,8 @@
           "title": "プロモーションを有効にするためにカートに必要なものは？",
           "description": "これらの条件が一致した場合、ターゲット商品に対してプロモーションが有効になります。"
         }
-      }
+      },
+      "operator": "演算子を選択"
     },
     "tooltips": {
       "campaignType": "支出予算を設定するには、プロモーションで通貨コードを選択する必要があります。"
@@ -1859,7 +1873,12 @@
         "successToast": "プロモーションのキャンペーンが正常に更新されました。"
       },
       "actions": {
-        "goToCampaign": "キャンペーンに移動"
+        "goToCampaign": "キャンペーンに移動",
+        "addToCampaign": "キャンペーンに追加"
+      },
+      "notPartOfCampaign": {
+        "message": "このプロモーションを既存のキャンペーンに追加します",
+        "title": "キャンペーンに含まれていません"
       }
     },
     "campaign_currency": {
@@ -2067,11 +2086,17 @@
         "list": {
           "noRecordsMessage": "最初に商品を作成してください。"
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "この商品はすでに価格リストに追加されています。",
+        "productHasNoVariants": "この商品にはバリアントがありません。"
       }
     },
     "edit": {
       "header": "価格リストを編集",
-      "successToast": "価格リスト「{{title}}」が正常に更新されました。"
+      "successToast": "価格リスト「{{title}}」が正常に更新されました。",
+      "editPricesForDescription": "価格リスト内の商品の価格を更新",
+      "editPricesForTitle": "{{title}} の価格を編集"
     },
     "configuration": {
       "header": "設定",
@@ -2445,7 +2470,8 @@
       "lastUsedAtLabel": "最終使用日時",
       "revokedByLabel": "無効化者",
       "revokedAtLabel": "無効化日時",
-      "createdByLabel": "作成者"
+      "createdByLabel": "作成者",
+      "token": "トークン"
     }
   },
   "returnReasons": {
@@ -2474,7 +2500,10 @@
         "placeholder": "wrong_size",
         "tooltip": "値は返品理由の一意の識別子である必要があります。"
       },
-      "label": { "label": "ラベル", "placeholder": "サイズが合わない" },
+      "label": {
+        "label": "ラベル",
+        "placeholder": "サイズが合わない"
+      },
       "description": {
         "label": "説明",
         "placeholder": "顧客が間違ったサイズを受け取った"
@@ -2817,5 +2846,61 @@
     "minutes_other": "分",
     "seconds_one": "秒",
     "seconds_other": "秒"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "フィルターに一致するエンティティがありません"
+    },
+    "title": "翻訳を管理"
+  },
+  "views": {
+    "createNewViewDescription": "現在の設定を新しいビューとして保存",
+    "createNewViewTitle": "新しいビューとして保存",
+    "creationSuccess": "ビューを作成しました",
+    "defaultView": "デフォルトビュー",
+    "deleteSuccess": "ビューを正常に削除しました",
+    "editName": "名前を編集",
+    "editView": "ビューを編集",
+    "editViewNameDescription": "保存したビューの名前を変更します",
+    "editViewNameTitle": "ビュー名を編集",
+    "enterViewNamePlaceholder": "ビュー名を入力",
+    "errors": {
+      "emptyName": "名前は空にできません",
+      "failedToCreateView": "ビューの作成に失敗しました",
+      "failedToDeleteView": "ビューの削除に失敗しました",
+      "failedToUpdateActiveView": "アクティブなビューの更新に失敗しました",
+      "failedToUpdateView": "ビューの更新に失敗しました",
+      "nameRequired": "名前は必須です"
+    },
+    "personalViews": "個人ビュー",
+    "prompts": {
+      "deleteView": {
+        "description": "\"{{view.name}}\" を削除してもよろしいですか？この操作は元に戻せません。",
+        "title": "ビューを削除"
+      },
+      "resetSystemDefault": {
+        "description": "保存されたシステムデフォルトを削除し、元のコード既定値に戻します。すべてのユーザーに影響します。よろしいですか？",
+        "title": "システムデフォルトをリセット"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "デフォルトとして保存",
+        "description": "現在の設定をシステムデフォルトとして保存します。個人ビューを持つユーザーを除き、すべてのユーザーにこの設定が既定で表示されます。よろしいですか？",
+        "title": "システムデフォルトとして保存"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "現在の設定で \"{{view}}\" を更新しますか？",
+          "title": "既存のビューを更新"
+        }
+      }
+    },
+    "resetToCodeDefaults": "コードの既定値にリセット",
+    "saveCurrentView": "現在のビューを保存",
+    "success": "ビュー \"{{view}}\" を正常に保存しました",
+    "systemDefault": "システムデフォルト",
+    "updateSuccess": "ビューを更新しました",
+    "updateView": "ビューを更新",
+    "viewName": "ビュー名",
+    "updateViewName": "\"{{view}}\" を更新"
   }
 }

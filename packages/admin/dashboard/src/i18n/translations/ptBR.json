@@ -55,7 +55,11 @@
     "unsavedChangesDescription": "Você tem alterações não salvas que serão perdidas se sair deste formulário.",
     "includesTaxTooltip": "Os preços nesta coluna incluem impostos.",
     "excludesTaxTooltip": "Os preços nesta coluna não incluem impostos.",
-    "noMoreData": "Sem mais dados"
+    "noMoreData": "Sem mais dados",
+    "no": "Não",
+    "notAvailable": "N/A",
+    "yes": "Sim",
+    "loading": "Carregando..."
   },
   "json": {
     "header": "JSON",
@@ -136,7 +140,10 @@
     "logout": "Sair",
     "hide": "Ocultar",
     "export": "Exportar",
-    "import": "Importar"
+    "import": "Importar",
+    "resetCanvas": "Redefinir tela",
+    "zoomIn": "Ampliar",
+    "zoomOut": "Reduzir zoom"
   },
   "operators": {
     "in": "Em"
@@ -410,7 +417,8 @@
         "heading": "Kits de inventário",
         "label": "Adicione itens de inventário ao kit de inventário da variante.",
         "itemPlaceholder": "Selecione o item de inventário",
-        "quantityPlaceholder": "Quantos desses são necessários para o kit?"
+        "quantityPlaceholder": "Quantos desses são necessários para o kit?",
+        "descriptionPlaceholder": "A descrição do item"
       },
       "variants": {
         "header": "Variantes",
@@ -433,7 +441,8 @@
           "hint": "Defina as opções para o produto, por exemplo, cor, tamanho, etc."
         }
       },
-      "successToast": "Produto {{title}} foi criado com sucesso."
+      "successToast": "Produto {{title}} foi criado com sucesso.",
+      "unsupportedExtensionMessage": "Esse tipo de campo não oferece suporte à renderização de um componente de fallback. Forneça uma prop component."
     },
     "export": {
       "header": "Exportar lista de produtos",
@@ -984,7 +993,9 @@
       "createRefundWrongQuantity": "A quantidade deve ser um número entre 1 e {{number}}",
       "refundAmount": "Reembolso de {{amount}}",
       "paymentLink": "Copiar link de pagamento para {{amount}}",
-      "selectPaymentToRefund": "Selecione o pagamento para reembolso"
+      "selectPaymentToRefund": "Selecione o pagamento para reembolso",
+      "storeCreditRefund": "Reembolso em crédito da loja",
+      "totalPending": "Total pendente"
     },
     "edits": {
       "title": "Editar pedido",
@@ -1226,7 +1237,8 @@
       },
       "trackingLabel": "Rastreamento",
       "shippingFromLabel": "Enviado de",
-      "itemsLabel": "Itens"
+      "itemsLabel": "Itens",
+      "label": "Rótulo"
     },
     "refund": {
       "title": "Criar Reembolso",
@@ -1321,7 +1333,8 @@
       "displayId": "ID de exibição",
       "refundableAmount": "Valor reembolsável",
       "returnableQuantity": "Quantidade retornável"
-    }
+    },
+    "emptyOrders": "Nenhum pedido encontrado"
   },
   "draftOrders": {
     "domain": "Pedidos em Rascunho",
@@ -1801,7 +1814,8 @@
           "title": "O que precisa estar no carrinho para ativar a promoção?",
           "description": "Se estas condições forem atendidas, a promoção será habilitada para os itens-alvo."
         }
-      }
+      },
+      "operator": "Selecionar operador"
     },
     "tooltips": {
       "campaignType": "O código da moeda deve ser selecionado na promoção para definir um orçamento de gasto."
@@ -1833,7 +1847,12 @@
         "successToast": "Campanha da promoção atualizada com sucesso."
       },
       "actions": {
-        "goToCampaign": "Ir para a campanha"
+        "goToCampaign": "Ir para a campanha",
+        "addToCampaign": "Adicionar à campanha"
+      },
+      "notPartOfCampaign": {
+        "message": "Adicione esta promoção a uma campanha existente",
+        "title": "Não faz parte de uma campanha"
       }
     },
     "campaign_currency": {
@@ -2041,11 +2060,17 @@
         "list": {
           "noRecordsMessage": "Crie um produto primeiro."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Este produto já está na lista de preços.",
+        "productHasNoVariants": "Este produto não tem variantes."
       }
     },
     "edit": {
       "header": "Editar Lista de Preços",
-      "successToast": "Lista de preços {{title}} foi atualizada com sucesso."
+      "successToast": "Lista de preços {{title}} foi atualizada com sucesso.",
+      "editPricesForDescription": "Atualize os preços dos produtos na lista de preços",
+      "editPricesForTitle": "Editar preços de {{title}}"
     },
     "configuration": {
       "header": "Configuração",
@@ -2416,7 +2441,8 @@
       "lastUsedAtLabel": "Último uso em",
       "revokedByLabel": "Revogado por",
       "revokedAtLabel": "Revogado em",
-      "createdByLabel": "Criado por"
+      "createdByLabel": "Criado por",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -2445,7 +2471,10 @@
         "placeholder": "tamanho_errado",
         "tooltip": "O valor deve ser um identificador único para a razão da devolução."
       },
-      "label": { "label": "Etiqueta", "placeholder": "Tamanho errado" },
+      "label": {
+        "label": "Etiqueta",
+        "placeholder": "Tamanho errado"
+      },
       "description": {
         "label": "Descrição",
         "placeholder": "O cliente recebeu o tamanho errado"
@@ -2785,5 +2814,61 @@
     "minutes_other": "Minutos",
     "seconds_one": "Segundo",
     "seconds_other": "Segundos"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Nenhuma entidade corresponde aos filtros"
+    },
+    "title": "Gerenciar traduções"
+  },
+  "views": {
+    "createNewViewDescription": "Salve sua configuração atual como uma nova visualização",
+    "creationSuccess": "Visualização criada",
+    "defaultView": "Visualização padrão",
+    "deleteSuccess": "Visualização excluída com sucesso",
+    "editName": "Editar nome",
+    "editView": "Editar visualização",
+    "editViewNameDescription": "Altere o nome da sua visualização salva",
+    "editViewNameTitle": "Editar nome da visualização",
+    "enterViewNamePlaceholder": "Digite o nome da visualização",
+    "errors": {
+      "emptyName": "O nome não pode estar vazio",
+      "failedToCreateView": "Falha ao criar visualização",
+      "failedToDeleteView": "Falha ao excluir visualização",
+      "failedToUpdateActiveView": "Falha ao atualizar a visualização ativa",
+      "failedToUpdateView": "Falha ao atualizar visualização",
+      "nameRequired": "O nome é obrigatório"
+    },
+    "personalViews": "Visualizações pessoais",
+    "prompts": {
+      "deleteView": {
+        "description": "Tem certeza de que deseja excluir \"{{view.name}}\"? Essa ação não pode ser desfeita.",
+        "title": "Excluir visualização"
+      },
+      "resetSystemDefault": {
+        "description": "Isso excluirá o padrão do sistema salvo e reverterá para os padrões originais definidos no código. Todos os usuários serão afetados. Tem certeza?",
+        "title": "Redefinir padrão do sistema"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Salvar como padrão",
+        "description": "Isso salvará a configuração atual como padrão do sistema. Todos os usuários verão essa configuração por padrão, a menos que tenham suas próprias visualizações pessoais. Tem certeza?",
+        "title": "Salvar como padrão do sistema"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Atualizar \"{{view}}\" com a configuração atual?",
+          "title": "Atualizar visualização existente"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Redefinir para os padrões do código",
+    "saveCurrentView": "Salvar visualização atual",
+    "success": "Visualização \"{{view}}\" salva com sucesso",
+    "systemDefault": "Padrão do sistema",
+    "updateSuccess": "Visualização atualizada",
+    "viewName": "Nome da visualização",
+    "updateViewName": "Atualizar \"{{view}}\"",
+    "createNewViewTitle": "Salvar como nova visualização",
+    "updateView": "Atualizar visualização"
   }
 }

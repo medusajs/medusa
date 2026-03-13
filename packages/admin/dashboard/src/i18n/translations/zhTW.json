@@ -57,7 +57,11 @@
     "unsavedChangesDescription": "您有未儲存的變更，離開此表單將會遺失這些變更。",
     "includesTaxTooltip": "此欄位的價格含稅。",
     "excludesTaxTooltip": "此欄位的價格不含稅。",
-    "noMoreData": "沒有更多資料"
+    "noMoreData": "沒有更多資料",
+    "loading": "載入中...",
+    "no": "否",
+    "notAvailable": "N/A",
+    "yes": "是"
   },
   "json": {
     "header": "JSON",
@@ -141,7 +145,10 @@
     "hide": "隱藏",
     "export": "匯出",
     "import": "匯入",
-    "cannotUndo": "此操作無法復原"
+    "cannotUndo": "此操作無法復原",
+    "resetCanvas": "重設畫布",
+    "zoomIn": "放大",
+    "zoomOut": "縮小"
   },
   "operators": {
     "in": "包含於"
@@ -395,7 +402,6 @@
       "required": "新擁有者為必填項。"
     }
   },
-
   "sales_channels": {
     "availableIn": "在 <1>{{y}}</1> 個銷售管道中的 <0>{{x}}</0> 個可用"
   },
@@ -428,7 +434,8 @@
         "heading": "庫存套件",
         "label": "將庫存項目加入變體的庫存套件。",
         "itemPlaceholder": "選擇庫存項目",
-        "quantityPlaceholder": "此套件需要多少個？"
+        "quantityPlaceholder": "此套件需要多少個？",
+        "descriptionPlaceholder": "商品描述"
       },
       "variants": {
         "header": "變體",
@@ -451,7 +458,8 @@
           "hint": "定義商品的選項，例如顏色、尺寸等。"
         }
       },
-      "successToast": "商品 {{title}} 已成功建立。"
+      "successToast": "商品 {{title}} 已成功建立。",
+      "unsupportedExtensionMessage": "此欄位類型不支援呈現後備元件。請提供 component prop。"
     },
     "export": {
       "header": "匯出商品清單",
@@ -1158,7 +1166,9 @@
       "createRefundWrongQuantity": "數量應為 1 到 {{number}} 之間的數字",
       "refundAmount": "退款 {{ amount }}",
       "paymentLink": "複製 {{ amount }} 的付款連結",
-      "selectPaymentToRefund": "選擇要退款的付款"
+      "selectPaymentToRefund": "選擇要退款的付款",
+      "storeCreditRefund": "商店點數退款",
+      "totalPending": "待處理總額"
     },
     "edits": {
       "title": "編輯訂單",
@@ -1426,7 +1436,8 @@
       },
       "trackingLabel": "追蹤",
       "shippingFromLabel": "出貨地點",
-      "itemsLabel": "項目"
+      "itemsLabel": "項目",
+      "label": "標籤"
     },
     "refund": {
       "title": "建立退款",
@@ -1527,7 +1538,8 @@
       "displayId": "顯示 ID",
       "refundableAmount": "可退款金額",
       "returnableQuantity": "可退貨數量"
-    }
+    },
+    "emptyOrders": "找不到訂單"
   },
   "draftOrders": {
     "domain": "訂單草稿",
@@ -2092,7 +2104,8 @@
           "title": "購物車中需要有哪些項目才能解鎖促銷？",
           "description": "如果符合這些條件，我們會在目標項目上啟用促銷。"
         }
-      }
+      },
+      "operator": "選擇運算子"
     },
     "tooltips": {
       "campaignType": "必須在促銷中選擇貨幣代碼才能設定支出預算。"
@@ -2124,7 +2137,12 @@
         "successToast": "已成功更新促銷的行銷活動。"
       },
       "actions": {
-        "goToCampaign": "前往行銷活動"
+        "goToCampaign": "前往行銷活動",
+        "addToCampaign": "加入活動"
+      },
+      "notPartOfCampaign": {
+        "message": "將此促銷加入現有活動",
+        "title": "不屬於任何活動"
       }
     },
     "campaign_currency": {
@@ -2373,11 +2391,17 @@
         "list": {
           "noRecordsMessage": "請先建立商品。"
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "此商品已在價格清單中。",
+        "productHasNoVariants": "此商品沒有變體。"
       }
     },
     "edit": {
       "header": "編輯價格清單",
-      "successToast": "價格清單 {{title}} 已成功更新。"
+      "successToast": "價格清單 {{title}} 已成功更新。",
+      "editPricesForDescription": "更新價格清單中商品的價格",
+      "editPricesForTitle": "編輯 {{title}} 的價格"
     },
     "configuration": {
       "header": "配置",
@@ -2780,7 +2804,8 @@
       "lastUsedAtLabel": "最後使用於",
       "revokedByLabel": "撤銷者",
       "revokedAtLabel": "撤銷於",
-      "createdByLabel": "建立者"
+      "createdByLabel": "建立者",
+      "token": "權杖"
     }
   },
   "returnReasons": {
@@ -3235,15 +3260,62 @@
       "updateDefault": {
         "title": "更新預設視圖",
         "description": "此操作將為所有使用者更新預設視圖。您確定嗎？",
-        "confirmText": "為所有人更新",
-        "cancelText": "取消"
+        "confirmText": "為所有人更新"
       },
       "updateView": {
         "title": "更新視圖",
         "description": "您確定要更新「{{name}}」嗎？",
         "confirmText": "更新",
-        "cancelText": "取消"
+        "existingView": {
+          "description": "要用目前的設定更新「{{view}}」嗎？",
+          "title": "更新現有檢視"
+        }
+      },
+      "deleteView": {
+        "description": "確定要刪除「{{view.name}}」嗎？此操作無法復原。",
+        "title": "刪除檢視"
+      },
+      "resetSystemDefault": {
+        "description": "這將刪除已儲存的系統預設值，並還原為原始程式碼層級的預設值。所有使用者都會受到影響。確定嗎？",
+        "title": "重設系統預設值"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "儲存為預設值",
+        "description": "這將把目前的設定儲存為系統預設值。除非使用者有自己的個人檢視，否則所有使用者都會預設看到這個設定。確定嗎？",
+        "title": "儲存為系統預設值"
       }
-    }
+    },
+    "createNewViewDescription": "將目前的設定儲存為新檢視",
+    "createNewViewTitle": "儲存為新視圖",
+    "creationSuccess": "已建立檢視",
+    "defaultView": "預設檢視",
+    "deleteSuccess": "已成功刪除檢視",
+    "editName": "編輯名稱",
+    "editView": "編輯檢視",
+    "editViewNameDescription": "變更已儲存檢視的名稱",
+    "editViewNameTitle": "編輯檢視名稱",
+    "enterViewNamePlaceholder": "輸入檢視名稱",
+    "errors": {
+      "emptyName": "名稱不可為空",
+      "failedToCreateView": "建立檢視失敗",
+      "failedToDeleteView": "刪除檢視失敗",
+      "failedToUpdateActiveView": "更新目前檢視失敗",
+      "failedToUpdateView": "更新檢視失敗",
+      "nameRequired": "名稱為必填"
+    },
+    "personalViews": "個人檢視",
+    "resetToCodeDefaults": "重設為程式碼預設值",
+    "saveCurrentView": "儲存目前檢視",
+    "success": "檢視「{{view}}」已成功儲存",
+    "systemDefault": "系統預設值",
+    "updateSuccess": "已更新檢視",
+    "viewName": "檢視名稱",
+    "updateViewName": "更新「{{view}}」"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "沒有符合篩選條件的實體"
+    },
+    "title": "管理翻譯"
   }
 }

@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "저장되지 않은 변경 사항이 있으며, 이 양식을 나가면 변경 사항이 손실됩니다.",
     "includesTaxTooltip": "이 열의 가격은 세금이 포함된 금액입니다.",
     "excludesTaxTooltip": "이 열의 가격은 세금이 제외된 금액입니다.",
-    "noMoreData": "더 이상 데이터가 없습니다"
+    "noMoreData": "더 이상 데이터가 없습니다",
+    "loading": "로딩 중...",
+    "no": "아니오",
+    "notAvailable": "N/A",
+    "yes": "예"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "숨기기",
     "export": "내보내기",
     "import": "가져오기",
-    "cannotUndo": "이 작업은 취소할 수 없습니다"
+    "cannotUndo": "이 작업은 취소할 수 없습니다",
+    "resetCanvas": "캔버스 재설정",
+    "zoomIn": "확대",
+    "zoomOut": "축소"
   },
   "operators": {
     "in": "포함"
@@ -424,7 +431,8 @@
         "heading": "구성 상품",
         "label": "상품 구성에 필요한 개별 상품들을 추가합니다.",
         "itemPlaceholder": "재고 상품 선택",
-        "quantityPlaceholder": "구성에 필요한 수량을 입력하세요"
+        "quantityPlaceholder": "구성에 필요한 수량을 입력하세요",
+        "descriptionPlaceholder": "상품 설명"
       },
       "variants": {
         "header": "변형",
@@ -447,7 +455,8 @@
           "hint": "색상, 크기 등과 같은 제품 옵션을 정의합니다."
         }
       },
-      "successToast": "제품 {{title}}이(가) 성공적으로 생성되었습니다."
+      "successToast": "제품 {{title}}이(가) 성공적으로 생성되었습니다.",
+      "unsupportedExtensionMessage": "이 필드 유형은 대체 컴포넌트 렌더링을 지원하지 않습니다. component prop을 제공하세요."
     },
     "export": {
       "header": "제품 목록 내보내기",
@@ -1084,7 +1093,9 @@
       "createRefundWrongQuantity": "수량은 1에서 {{number}} 사이의 숫자여야 합니다",
       "refundAmount": "{{ amount }} 환불",
       "paymentLink": "{{ amount }}에 대한 결제 링크 복사",
-      "selectPaymentToRefund": "환불할 결제 선택"
+      "selectPaymentToRefund": "환불할 결제 선택",
+      "storeCreditRefund": "스토어 크레딧 환불",
+      "totalPending": "총 대기 중"
     },
     "edits": {
       "title": "주문 편집",
@@ -1346,7 +1357,8 @@
       },
       "trackingLabel": "추적",
       "shippingFromLabel": "출발지",
-      "itemsLabel": "상품"
+      "itemsLabel": "상품",
+      "label": "라벨"
     },
     "refund": {
       "title": "환불 생성",
@@ -1447,7 +1459,8 @@
       "displayId": "표시 ID",
       "refundableAmount": "환불 가능 금액",
       "returnableQuantity": "반품 가능 수량"
-    }
+    },
+    "emptyOrders": "주문을 찾을 수 없습니다"
   },
   "draftOrders": {
     "domain": "주문 초안",
@@ -1987,7 +2000,8 @@
           "title": "프로모션을 활성화하기 위해 장바구니에 무엇이 필요한가요?",
           "description": "이러한 조건이 일치하면 대상 항목에 프로모션을 활성화합니다."
         }
-      }
+      },
+      "operator": "연산자 선택"
     },
     "tooltips": {
       "campaignType": "지출 예산을 설정하려면 프로모션에서 통화 코드를 선택해야 합니다."
@@ -2019,7 +2033,12 @@
         "successToast": "프로모션의 캠페인이 성공적으로 업데이트되었습니다."
       },
       "actions": {
-        "goToCampaign": "캠페인으로 이동"
+        "goToCampaign": "캠페인으로 이동",
+        "addToCampaign": "캠페인에 추가"
+      },
+      "notPartOfCampaign": {
+        "message": "이 프로모션을 기존 캠페인에 추가하세요",
+        "title": "캠페인에 포함되지 않음"
       }
     },
     "campaign_currency": {
@@ -2243,11 +2262,17 @@
         "list": {
           "noRecordsMessage": "먼저 제품을 생성하세요."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "이 상품은 이미 가격표에 있습니다.",
+        "productHasNoVariants": "이 상품에는 변형이 없습니다."
       }
     },
     "edit": {
       "header": "가격 목록 편집",
-      "successToast": "가격 목록 {{title}}이(가) 성공적으로 업데이트되었습니다."
+      "successToast": "가격 목록 {{title}}이(가) 성공적으로 업데이트되었습니다.",
+      "editPricesForDescription": "가격표에 있는 상품 가격을 업데이트합니다",
+      "editPricesForTitle": "{{title}} 가격 편집"
     },
     "configuration": {
       "header": "구성",
@@ -2643,7 +2668,8 @@
       "lastUsedAtLabel": "마지막 사용 시간",
       "revokedByLabel": "취소자",
       "revokedAtLabel": "취소 시간",
-      "createdByLabel": "생성자"
+      "createdByLabel": "생성자",
+      "token": "토큰"
     }
   },
   "returnReasons": {
@@ -3022,5 +3048,61 @@
     "minutes_other": "분",
     "seconds_one": "초",
     "seconds_other": "초"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "필터와 일치하는 엔터티가 없습니다"
+    },
+    "title": "번역 관리"
+  },
+  "views": {
+    "createNewViewDescription": "현재 구성을 새 보기로 저장합니다",
+    "createNewViewTitle": "새 보기로 저장",
+    "creationSuccess": "보기가 생성되었습니다",
+    "defaultView": "기본 보기",
+    "deleteSuccess": "보기가 성공적으로 삭제되었습니다",
+    "editName": "이름 편집",
+    "editView": "보기 편집",
+    "editViewNameDescription": "저장된 보기의 이름을 변경합니다",
+    "editViewNameTitle": "보기 이름 편집",
+    "enterViewNamePlaceholder": "보기 이름 입력",
+    "errors": {
+      "emptyName": "이름은 비워 둘 수 없습니다",
+      "failedToCreateView": "보기를 생성하지 못했습니다",
+      "failedToDeleteView": "보기를 삭제하지 못했습니다",
+      "failedToUpdateActiveView": "활성 보기를 업데이트하지 못했습니다",
+      "failedToUpdateView": "보기를 업데이트하지 못했습니다",
+      "nameRequired": "이름은 필수입니다"
+    },
+    "personalViews": "개인 보기",
+    "prompts": {
+      "deleteView": {
+        "description": "\"{{view.name}}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "title": "보기 삭제"
+      },
+      "resetSystemDefault": {
+        "description": "저장된 시스템 기본값을 삭제하고 원래 코드 수준 기본값으로 되돌립니다. 모든 사용자에게 영향을 줍니다. 계속하시겠습니까?",
+        "title": "시스템 기본값 재설정"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "기본값으로 저장",
+        "description": "현재 구성을 시스템 기본값으로 저장합니다. 사용자가 자신의 개인 보기를 가지고 있지 않은 한 모든 사용자는 이 구성을 기본으로 보게 됩니다. 계속하시겠습니까?",
+        "title": "시스템 기본값으로 저장"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "현재 구성으로 \"{{view}}\"을(를) 업데이트하시겠습니까?",
+          "title": "기존 보기 업데이트"
+        }
+      }
+    },
+    "resetToCodeDefaults": "코드 기본값으로 재설정",
+    "saveCurrentView": "현재 보기 저장",
+    "success": "보기 \"{{view}}\"이(가) 성공적으로 저장되었습니다",
+    "systemDefault": "시스템 기본값",
+    "updateSuccess": "보기가 업데이트되었습니다",
+    "updateView": "보기 업데이트",
+    "viewName": "보기 이름",
+    "updateViewName": "\"{{view}}\" 업데이트"
   }
 }

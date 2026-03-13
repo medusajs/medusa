@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "Bạn có những thay đổi chưa lưu sẽ bị mất nếu thoát khỏi biểu mẫu này.",
     "includesTaxTooltip": "Giá trong cột này đã bao gồm thuế.",
     "excludesTaxTooltip": "Giá trong cột này chưa bao gồm thuế.",
-    "noMoreData": "Không còn dữ liệu"
+    "noMoreData": "Không còn dữ liệu",
+    "loading": "Đang tải...",
+    "no": "Không",
+    "notAvailable": "N/A",
+    "yes": "Có"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "Ẩn",
     "export": "Xuất",
     "import": "Nhập",
-    "cannotUndo": "Hành động này không thể hoàn tác"
+    "cannotUndo": "Hành động này không thể hoàn tác",
+    "resetCanvas": "Đặt lại khung vẽ",
+    "zoomIn": "Phóng to",
+    "zoomOut": "Thu nhỏ"
   },
   "operators": {
     "in": "Trong"
@@ -424,7 +431,8 @@
         "heading": "Bộ thành phần trong kho",
         "label": "Thêm các mục hàng từ kho để tạo thành bộ thành phần cho biến thể này.",
         "itemPlaceholder": "Chọn mục hàng trong kho",
-        "quantityPlaceholder": "Cần bao nhiêu cái cho bộ này?"
+        "quantityPlaceholder": "Cần bao nhiêu cái cho bộ này?",
+        "descriptionPlaceholder": "Mô tả của mặt hàng"
       },
       "variants": {
         "header": "Biến thể",
@@ -447,7 +455,8 @@
           "hint": "Xác định các tùy chọn cho sản phẩm, ví dụ: màu sắc, kích thước, v.v."
         }
       },
-      "successToast": "Sản phẩm {{title}} đã được tạo thành công."
+      "successToast": "Sản phẩm {{title}} đã được tạo thành công.",
+      "unsupportedExtensionMessage": "Loại trường này không hỗ trợ hiển thị một thành phần dự phòng. Vui lòng cung cấp prop component."
     },
     "export": {
       "header": "Xuất danh sách sản phẩm",
@@ -1109,7 +1118,9 @@
       "createRefundWrongQuantity": "Số lượng phải là một số từ 1 đến {{number}}",
       "refundAmount": "Hoàn tiền {{amount}}",
       "paymentLink": "Sao chép liên kết thanh toán cho {{amount}}",
-      "selectPaymentToRefund": "Chọn thanh toán để hoàn tiền"
+      "selectPaymentToRefund": "Chọn thanh toán để hoàn tiền",
+      "storeCreditRefund": "Hoàn tiền bằng tín dụng cửa hàng",
+      "totalPending": "Tổng đang chờ"
     },
     "edits": {
       "title": "Chỉnh sửa đơn hàng",
@@ -1371,7 +1382,8 @@
       },
       "trackingLabel": "Theo dõi",
       "shippingFromLabel": "Gửi từ",
-      "itemsLabel": "Mục hàng"
+      "itemsLabel": "Mục hàng",
+      "label": "Nhãn"
     },
     "refund": {
       "title": "Tạo hoàn tiền",
@@ -1472,7 +1484,8 @@
       "displayId": "ID hiển thị",
       "refundableAmount": "Số tiền có thể hoàn lại",
       "returnableQuantity": "Số lượng có thể trả lại"
-    }
+    },
+    "emptyOrders": "Không tìm thấy đơn hàng nào"
   },
   "draftOrders": {
     "domain": "Đơn hàng nháp",
@@ -2012,7 +2025,8 @@
           "title": "Giỏ hàng cần có gì để kích hoạt khuyến mãi?",
           "description": "Nếu các điều kiện này khớp, chúng tôi sẽ kích hoạt khuyến mãi cho các mục hàng mục tiêu."
         }
-      }
+      },
+      "operator": "Chọn toán tử"
     },
     "tooltips": {
       "campaignType": "Phải chọn mã tiền tệ trong khuyến mãi để đặt ngân sách chi tiêu."
@@ -2044,7 +2058,12 @@
         "successToast": "Đã cập nhật thành công chiến dịch của khuyến mãi."
       },
       "actions": {
-        "goToCampaign": "Đi đến chiến dịch"
+        "goToCampaign": "Đi đến chiến dịch",
+        "addToCampaign": "Thêm vào chiến dịch"
+      },
+      "notPartOfCampaign": {
+        "message": "Thêm chương trình khuyến mãi này vào một chiến dịch hiện có",
+        "title": "Không thuộc một chiến dịch"
       }
     },
     "campaign_currency": {
@@ -2268,11 +2287,17 @@
         "list": {
           "noRecordsMessage": "Hãy tạo một sản phẩm trước."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Sản phẩm này đã có trong bảng giá.",
+        "productHasNoVariants": "Sản phẩm này không có biến thể."
       }
     },
     "edit": {
       "header": "Chỉnh sửa bảng giá",
-      "successToast": "Bảng giá {{title}} đã được cập nhật thành công."
+      "successToast": "Bảng giá {{title}} đã được cập nhật thành công.",
+      "editPricesForDescription": "Cập nhật giá của các sản phẩm trong bảng giá",
+      "editPricesForTitle": "Chỉnh sửa giá cho {{title}}"
     },
     "configuration": {
       "header": "Cấu hình",
@@ -2668,7 +2693,8 @@
       "lastUsedAtLabel": "Lần sử dụng cuối",
       "revokedByLabel": "Được thu hồi bởi",
       "revokedAtLabel": "Thời gian thu hồi",
-      "createdByLabel": "Được tạo bởi"
+      "createdByLabel": "Được tạo bởi",
+      "token": "Mã thông báo"
     }
   },
   "returnReasons": {
@@ -2697,7 +2723,10 @@
         "placeholder": "wrong_size",
         "tooltip": "Giá trị nên là một định danh duy nhất cho lý do trả hàng."
       },
-      "label": { "label": "Nhãn", "placeholder": "Kích thước sai" },
+      "label": {
+        "label": "Nhãn",
+        "placeholder": "Kích thước sai"
+      },
       "description": {
         "label": "Mô tả",
         "placeholder": "Khách hàng nhận nhầm kích thước"
@@ -3047,5 +3076,61 @@
     "minutes_other": "Phút",
     "seconds_one": "Giây",
     "seconds_other": "Giây"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "Không có thực thể nào khớp với bộ lọc"
+    },
+    "title": "Quản lý bản dịch"
+  },
+  "views": {
+    "createNewViewDescription": "Lưu cấu hình hiện tại của bạn dưới dạng một chế độ xem mới",
+    "creationSuccess": "Đã tạo chế độ xem",
+    "defaultView": "Chế độ xem mặc định",
+    "deleteSuccess": "Đã xóa chế độ xem thành công",
+    "editName": "Chỉnh sửa tên",
+    "editView": "Chỉnh sửa chế độ xem",
+    "editViewNameDescription": "Thay đổi tên của chế độ xem đã lưu",
+    "editViewNameTitle": "Chỉnh sửa tên chế độ xem",
+    "enterViewNamePlaceholder": "Nhập tên chế độ xem",
+    "errors": {
+      "emptyName": "Tên không được để trống",
+      "failedToCreateView": "Không thể tạo chế độ xem",
+      "failedToDeleteView": "Không thể xóa chế độ xem",
+      "failedToUpdateActiveView": "Không thể cập nhật chế độ xem đang hoạt động",
+      "failedToUpdateView": "Không thể cập nhật chế độ xem",
+      "nameRequired": "Tên là bắt buộc"
+    },
+    "personalViews": "Chế độ xem cá nhân",
+    "prompts": {
+      "deleteView": {
+        "description": "Bạn có chắc chắn muốn xóa \"{{view.name}}\" không? Hành động này không thể hoàn tác.",
+        "title": "Xóa chế độ xem"
+      },
+      "resetSystemDefault": {
+        "description": "Thao tác này sẽ xóa cấu hình mặc định hệ thống đã lưu và trở về các giá trị mặc định gốc ở cấp mã. Tất cả người dùng sẽ bị ảnh hưởng. Bạn có chắc không?",
+        "title": "Đặt lại mặc định hệ thống"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Lưu làm mặc định",
+        "description": "Thao tác này sẽ lưu cấu hình hiện tại làm mặc định hệ thống. Tất cả người dùng sẽ thấy cấu hình này theo mặc định, trừ khi họ có các chế độ xem cá nhân của riêng mình. Bạn có chắc không?",
+        "title": "Lưu làm mặc định hệ thống"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "Cập nhật \"{{view}}\" bằng cấu hình hiện tại?",
+          "title": "Cập nhật chế độ xem hiện có"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Đặt lại về mặc định trong mã",
+    "saveCurrentView": "Lưu chế độ xem hiện tại",
+    "success": "Đã lưu chế độ xem \"{{view}}\" thành công",
+    "systemDefault": "Mặc định hệ thống",
+    "updateSuccess": "Đã cập nhật chế độ xem",
+    "viewName": "Tên chế độ xem",
+    "updateViewName": "Cập nhật \"{{view}}\"",
+    "createNewViewTitle": "Lưu dưới dạng chế độ xem mới",
+    "updateView": "Cập nhật chế độ xem"
   }
 }

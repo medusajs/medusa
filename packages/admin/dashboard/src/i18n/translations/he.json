@@ -56,7 +56,11 @@
     "unsavedChangesDescription": "יש לך שינויים שלא נשמרו שיאבדו אם תצא מטופס זה.",
     "includesTaxTooltip": "המחירים בעמודה זו כוללים מס.",
     "excludesTaxTooltip": "המחירים בעמודה זו אינם כוללים מס.",
-    "noMoreData": "אין עוד נתונים"
+    "noMoreData": "אין עוד נתונים",
+    "loading": "טוען...",
+    "no": "לא",
+    "notAvailable": "N/A",
+    "yes": "כן"
   },
   "json": {
     "header": "JSON",
@@ -138,7 +142,10 @@
     "hide": "הסתר",
     "export": "ייצא",
     "import": "ייבא",
-    "cannotUndo": "פעולה זו אינה ניתנת לביטול"
+    "cannotUndo": "פעולה זו אינה ניתנת לביטול",
+    "resetCanvas": "אפס קנבס",
+    "zoomIn": "הגדל",
+    "zoomOut": "הקטן"
   },
   "operators": {
     "in": "ב"
@@ -424,7 +431,8 @@
         "heading": "ערכות מלאי",
         "label": "הוסף פריטי מלאי לערכת המלאי של הוריאנט.",
         "itemPlaceholder": "בחר פריט מלאי",
-        "quantityPlaceholder": "כמה מאלה נדרשים לערכה?"
+        "quantityPlaceholder": "כמה מאלה נדרשים לערכה?",
+        "descriptionPlaceholder": "תיאור הפריט"
       },
       "variants": {
         "header": "וריאנטים",
@@ -447,7 +455,8 @@
           "hint": "הגדר את האפשרויות למוצר, לדוגמה צבע, גודל וכו'"
         }
       },
-      "successToast": "המוצר {{title}} נוצר בהצלחה."
+      "successToast": "המוצר {{title}} נוצר בהצלחה.",
+      "unsupportedExtensionMessage": "סוג שדה זה אינו תומך ברינדור של רכיב חלופי. נא לספק prop בשם component."
     },
     "export": {
       "header": "ייצא רשימת מוצרים",
@@ -1083,7 +1092,9 @@
       "createRefundWrongQuantity": "הכמות צריכה להיות מספר בין 1 ל{{number}}",
       "refundAmount": "החזר {{amount}}",
       "paymentLink": "העתק קישור תשלום עבור {{amount}}",
-      "selectPaymentToRefund": "בחר תשלום להחזר"
+      "selectPaymentToRefund": "בחר תשלום להחזר",
+      "storeCreditRefund": "החזר כזיכוי לחנות",
+      "totalPending": "סך הכול ממתין"
     },
     "edits": {
       "title": "ערוך הזמנה",
@@ -1345,7 +1356,8 @@
       },
       "trackingLabel": "מעקב",
       "shippingFromLabel": "משלוח מ",
-      "itemsLabel": "פריטים"
+      "itemsLabel": "פריטים",
+      "label": "תווית"
     },
     "refund": {
       "title": "צור החזר",
@@ -1446,7 +1458,8 @@
       "displayId": "מספר תצוגה",
       "refundableAmount": "סכום להחזר",
       "returnableQuantity": "כמות להחזרה"
-    }
+    },
+    "emptyOrders": "לא נמצאו הזמנות"
   },
   "draftOrders": {
     "domain": "טיוטות הזמנות",
@@ -1985,7 +1998,8 @@
           "title": "מה צריך להיות בעגלה כדי לפתוח את המבצע?",
           "description": "אם תנאים אלו מתקיימים, נאפשר את המבצע על הפריטים המיועדים."
         }
-      }
+      },
+      "operator": "בחר אופרטור"
     },
     "tooltips": {
       "campaignType": "יש לבחור את קוד המטבע במבצע כדי להגדיר תקציב הוצאה."
@@ -2017,7 +2031,12 @@
         "successToast": "הקמפיין של המבצע עודכן בהצלחה."
       },
       "actions": {
-        "goToCampaign": "עבור לקמפיין"
+        "goToCampaign": "עבור לקמפיין",
+        "addToCampaign": "הוסף לקמפיין"
+      },
+      "notPartOfCampaign": {
+        "message": "הוסף את המבצע הזה לקמפיין קיים",
+        "title": "לא חלק מקמפיין"
       }
     },
     "campaign_currency": {
@@ -2237,11 +2256,17 @@
         "list": {
           "noRecordsMessage": "צור מוצר תחילה."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "מוצר זה כבר נמצא ברשימת המחירים.",
+        "productHasNoVariants": "למוצר זה אין וריאציות."
       }
     },
     "edit": {
       "header": "ערוך רשימת מחירים",
-      "successToast": "רשימת המחירים {{title}} עודכנה בהצלחה."
+      "successToast": "רשימת המחירים {{title}} עודכנה בהצלחה.",
+      "editPricesForDescription": "עדכן את מחירי המוצרים ברשימת המחירים",
+      "editPricesForTitle": "ערוך מחירים עבור {{title}}"
     },
     "configuration": {
       "header": "הגדרות",
@@ -2637,7 +2662,8 @@
       "lastUsedAtLabel": "שימוש אחרון בתאריך",
       "revokedByLabel": "בוטל על ידי",
       "revokedAtLabel": "בוטל בתאריך",
-      "createdByLabel": "נוצר על ידי"
+      "createdByLabel": "נוצר על ידי",
+      "token": "אסימון"
     }
   },
   "returnReasons": {
@@ -2666,7 +2692,10 @@
         "placeholder": "wrong_size",
         "tooltip": "הערך צריך להיות מזהה ייחודי לסיבת ההחזרה."
       },
-      "label": { "label": "תווית", "placeholder": "מידה שגויה" },
+      "label": {
+        "label": "תווית",
+        "placeholder": "מידה שגויה"
+      },
       "description": {
         "label": "תיאור",
         "placeholder": "הלקוח קיבל את המידה הלא נכונה"
@@ -3013,5 +3042,61 @@
     "minutes_other": "דקות",
     "seconds_one": "שנייה",
     "seconds_other": "שניות"
+  },
+  "translations": {
+    "settings": {
+      "noEntitiesMatchingFilters": "אין ישויות שתואמות למסננים"
+    },
+    "title": "ניהול תרגומים"
+  },
+  "views": {
+    "createNewViewDescription": "שמור את התצורה הנוכחית שלך כתצוגה חדשה",
+    "createNewViewTitle": "שמור כתצוגה חדשה",
+    "creationSuccess": "התצוגה נוצרה",
+    "defaultView": "תצוגת ברירת מחדל",
+    "deleteSuccess": "התצוגה נמחקה בהצלחה",
+    "editName": "ערוך שם",
+    "editView": "ערוך תצוגה",
+    "editViewNameDescription": "שנה את שם התצוגה השמורה שלך",
+    "editViewNameTitle": "ערוך שם תצוגה",
+    "enterViewNamePlaceholder": "הזן שם תצוגה",
+    "errors": {
+      "emptyName": "השם לא יכול להיות ריק",
+      "failedToCreateView": "יצירת התצוגה נכשלה",
+      "failedToDeleteView": "מחיקת התצוגה נכשלה",
+      "failedToUpdateActiveView": "עדכון התצוגה הפעילה נכשל",
+      "failedToUpdateView": "עדכון התצוגה נכשל",
+      "nameRequired": "השם הוא שדה חובה"
+    },
+    "personalViews": "תצוגות אישיות",
+    "prompts": {
+      "deleteView": {
+        "description": "האם אתה בטוח שברצונך למחוק את \"{{view.name}}\"? לא ניתן לבטל פעולה זו.",
+        "title": "מחק תצוגה"
+      },
+      "resetSystemDefault": {
+        "description": "פעולה זו תמחק את ברירת המחדל המערכתית השמורה ותחזיר את ברירות המחדל המקוריות ברמת הקוד. כל המשתמשים יושפעו. האם אתה בטוח?",
+        "title": "אפס ברירת מחדל מערכתית"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "שמור כברירת מחדל",
+        "description": "פעולה זו תשמור את התצורה הנוכחית כברירת המחדל המערכתית. כל המשתמשים יראו תצורה זו כברירת מחדל, אלא אם יש להם תצוגות אישיות משלהם. האם אתה בטוח?",
+        "title": "שמור כברירת מחדל מערכתית"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "לעדכן את \"{{view}}\" עם התצורה הנוכחית?",
+          "title": "עדכן תצוגה קיימת"
+        }
+      }
+    },
+    "resetToCodeDefaults": "אפס לברירות המחדל של הקוד",
+    "saveCurrentView": "שמור תצוגה נוכחית",
+    "success": "התצוגה \"{{view}}\" נשמרה בהצלחה",
+    "systemDefault": "ברירת מחדל מערכתית",
+    "updateSuccess": "התצוגה עודכנה",
+    "updateView": "עדכן תצוגה",
+    "viewName": "שם התצוגה",
+    "updateViewName": "עדכן את \"{{view}}\""
   }
 }

@@ -61,7 +61,11 @@
     "unsavedChangesDescription": "Tienes cambios no guardados que se perderán si sales de este formulario.",
     "includesTaxTooltip": "Los precios en esta columna incluyen impuestos.",
     "excludesTaxTooltip": "Los precios en esta columna no incluyen impuestos.",
-    "noMoreData": "No hay más datos"
+    "noMoreData": "No hay más datos",
+    "loading": "Cargando...",
+    "no": "No",
+    "notAvailable": "N/A",
+    "yes": "Sí"
   },
   "shippingOptionTypes": {
     "domain": "Tipos de Opciones de Envío",
@@ -167,7 +171,10 @@
     "logout": "Cerrar sesión",
     "hide": "Ocultar",
     "export": "Exportar",
-    "import": "Importar"
+    "import": "Importar",
+    "resetCanvas": "Restablecer lienzo",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar"
   },
   "operators": {
     "in": "En"
@@ -456,7 +463,8 @@
         "heading": "Kits de inventario",
         "label": "Agrega ítems de inventario al kit de inventario de la variante.",
         "itemPlaceholder": "Selecciona ítem de inventario",
-        "quantityPlaceholder": "¿Cuántos de estos se necesitan para el kit?"
+        "quantityPlaceholder": "¿Cuántos de estos se necesitan para el kit?",
+        "descriptionPlaceholder": "La descripción del artículo"
       },
       "variants": {
         "header": "Variantes",
@@ -479,7 +487,8 @@
           "hint": "Define las opciones del producto, por ejemplo, color, tamaño, etc."
         }
       },
-      "successToast": "Producto {{title}} creado correctamente."
+      "successToast": "Producto {{title}} creado correctamente.",
+      "unsupportedExtensionMessage": "El tipo de campo no admite mostrar un componente alternativo. Proporciona una prop component."
     },
     "export": {
       "header": "Exportar lista de productos",
@@ -1161,7 +1170,9 @@
       "refundAmount": "Reembolso {{ amount }}",
       "paymentLink": "Copiar enlace de pago para {{ amount }}",
       "selectPaymentToRefund": "Selecciona el pago a reembolsar",
-      "totalStoreCreditRefunds": "Total de reembolsos de crédito de tienda"
+      "totalStoreCreditRefunds": "Total de reembolsos de crédito de tienda",
+      "storeCreditRefund": "Reembolso en crédito de la tienda",
+      "totalPending": "Total pendiente"
     },
     "edits": {
       "title": "Editar pedido",
@@ -1410,7 +1421,8 @@
       },
       "trackingLabel": "Seguimiento",
       "shippingFromLabel": "Enviado desde",
-      "itemsLabel": "Artículos"
+      "itemsLabel": "Artículos",
+      "label": "Etiqueta"
     },
     "refund": {
       "title": "Crear Reembolso",
@@ -1506,7 +1518,8 @@
           "email": "Correo electrónico actualizado"
         }
       }
-    }
+    },
+    "emptyOrders": "No se encontraron pedidos"
   },
   "draftOrders": {
     "domain": "Pedidos Borradores",
@@ -2072,7 +2085,8 @@
           "title": "¿Qué debe haber en el carrito para desbloquear la promoción?",
           "description": "Si estas condiciones coinciden, habilitaremos la promoción en los artículos objetivo."
         }
-      }
+      },
+      "operator": "Seleccionar operador"
     },
     "tooltips": {
       "campaignType": "El código de moneda debe ser seleccionado en la promoción para establecer un presupuesto de gasto."
@@ -2104,7 +2118,12 @@
         "successToast": "La campaña de la promoción se actualizó correctamente."
       },
       "actions": {
-        "goToCampaign": "Ir a la campaña"
+        "goToCampaign": "Ir a la campaña",
+        "addToCampaign": "Agregar a la campaña"
+      },
+      "notPartOfCampaign": {
+        "message": "Agrega esta promoción a una campaña existente",
+        "title": "No forma parte de una campaña"
       }
     },
     "campaign_currency": {
@@ -2355,11 +2374,17 @@
         "list": {
           "noRecordsMessage": "Crea un producto primero."
         }
+      },
+      "errors": {
+        "productAlreadyInPriceList": "Este producto ya está en la lista de precios.",
+        "productHasNoVariants": "Este producto no tiene variantes."
       }
     },
     "edit": {
       "header": "Editar Lista de Precios",
-      "successToast": "La lista de precios {{title}} fue actualizada exitosamente."
+      "successToast": "La lista de precios {{title}} fue actualizada exitosamente.",
+      "editPricesForDescription": "Actualiza los precios de los productos en la lista de precios",
+      "editPricesForTitle": "Editar precios de {{title}}"
     },
     "configuration": {
       "header": "Configuración",
@@ -2494,7 +2519,8 @@
     },
     "settings": {
       "header": "Administrar entidades traducibles",
-      "successToast": "Configuraciones actualizadas exitosamente"
+      "successToast": "Configuraciones actualizadas exitosamente",
+      "noEntitiesMatchingFilters": "No hay entidades que coincidan con los filtros"
     },
     "actions": {
       "manage": "Gestionar traducciones",
@@ -2802,7 +2828,8 @@
       "lastUsedAtLabel": "Último uso",
       "revokedByLabel": "Revocado por",
       "revokedAtLabel": "Revocado en",
-      "createdByLabel": "Creado por"
+      "createdByLabel": "Creado por",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -3189,5 +3216,55 @@
     "minutes_other": "Minutos",
     "seconds_one": "Segundo",
     "seconds_other": "Segundos"
+  },
+  "views": {
+    "createNewViewDescription": "Guarda tu configuración actual como una vista nueva",
+    "creationSuccess": "Vista creada",
+    "defaultView": "Vista predeterminada",
+    "deleteSuccess": "Vista eliminada correctamente",
+    "editName": "Editar nombre",
+    "editView": "Editar vista",
+    "editViewNameDescription": "Cambia el nombre de tu vista guardada",
+    "editViewNameTitle": "Editar nombre de la vista",
+    "enterViewNamePlaceholder": "Introduce el nombre de la vista",
+    "errors": {
+      "emptyName": "El nombre no puede estar vacío",
+      "failedToCreateView": "No se pudo crear la vista",
+      "failedToDeleteView": "No se pudo eliminar la vista",
+      "failedToUpdateActiveView": "No se pudo actualizar la vista activa",
+      "failedToUpdateView": "No se pudo actualizar la vista",
+      "nameRequired": "El nombre es obligatorio"
+    },
+    "personalViews": "Vistas personales",
+    "prompts": {
+      "deleteView": {
+        "description": "¿Seguro que quieres eliminar \"{{view.name}}\"? Esta acción no se puede deshacer.",
+        "title": "Eliminar vista"
+      },
+      "resetSystemDefault": {
+        "description": "Esto eliminará el valor predeterminado del sistema guardado y volverá a los valores predeterminados originales del código. Todos los usuarios se verán afectados. ¿Estás seguro?",
+        "title": "Restablecer valor predeterminado del sistema"
+      },
+      "saveAsSystemDefault": {
+        "confirmText": "Guardar como predeterminado",
+        "description": "Esto guardará la configuración actual como valor predeterminado del sistema. Todos los usuarios verán esta configuración por defecto, a menos que tengan sus propias vistas personales. ¿Estás seguro?",
+        "title": "Guardar como predeterminado del sistema"
+      },
+      "updateView": {
+        "existingView": {
+          "description": "¿Actualizar \"{{view}}\" con la configuración actual?",
+          "title": "Actualizar vista existente"
+        }
+      }
+    },
+    "resetToCodeDefaults": "Restablecer a los valores predeterminados del código",
+    "saveCurrentView": "Guardar vista actual",
+    "success": "La vista \"{{view}}\" se guardó correctamente",
+    "systemDefault": "Predeterminado del sistema",
+    "updateSuccess": "Vista actualizada",
+    "viewName": "Nombre de la vista",
+    "updateViewName": "Actualizar \"{{view}}\"",
+    "createNewViewTitle": "Guardar como nueva vista",
+    "updateView": "Actualizar vista"
   }
 }
