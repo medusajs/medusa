@@ -200,7 +200,7 @@ export const PromotionGeneralSection = ({
       {typeof promotion.limit === "number" && (
         <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
           <Text size="small" weight="plus" leading="compact">
-            Usage Limit
+            {t("promotions.fields.usageLimit")}
           </Text>
 
           <div className="flex items-center gap-x-2">

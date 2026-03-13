@@ -28,7 +28,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
       title: t("views.prompts.updateDefault.title"),
       description: t("views.prompts.updateDefault.description"),
       confirmText: t("views.prompts.updateDefault.confirmText"),
-      cancelText: t("views.prompts.updateDefault.cancelText"),
+      cancelText: t("actions.cancel"),
     })
 
     if (result) {
@@ -41,7 +41,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
       title: t("views.prompts.updateView.title"),
       description: t("views.prompts.updateView.description", { name: currentViewName }),
       confirmText: t("views.prompts.updateView.confirmText"),
-      cancelText: t("views.prompts.updateView.cancelText"),
+      cancelText: t("actions.cancel"),
     })
 
     if (result) {
@@ -74,7 +74,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
         ) : (
           <>
             <DropdownMenu.Item onClick={handleUpdateExisting}>
-              {t("views.updateViewName")}
+              {t("views.updateView")}
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={onSaveAsNew}>
               {t("views.saveAsNew")}

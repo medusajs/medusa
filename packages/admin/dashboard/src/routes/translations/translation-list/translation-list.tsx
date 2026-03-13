@@ -126,7 +126,7 @@ export const TranslationList = () => {
       <TwoColumnPage.Main>
         <Container className="flex items-center justify-between px-6 py-4">
           <div className="flex flex-col">
-            <Heading>Manage {t("translations.domain")}</Heading>
+            <Heading>{t("translations.title")}</Heading>
             <Text className="text-ui-fg-subtle" size="small">
               {t("translations.subtitle")}
             </Text>

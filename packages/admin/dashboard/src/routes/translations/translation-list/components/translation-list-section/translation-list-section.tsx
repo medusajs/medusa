@@ -38,7 +38,7 @@ export const TranslationListSection = ({
               size="small"
               disabled={!hasLocales || !entity.totalCount}
             >
-              Edit
+              {t("actions.edit")}
             </Button>
           </Link>
         </div>

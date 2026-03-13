@@ -45,7 +45,7 @@ export const TaxRegionCard = ({
   const country = getCountryByIso2(country_code)
   const province = getProvinceByIso2(province_code)
 
-  let name = "N/A"
+  let name = t("general.notAvailable")
   let misconfiguredSublevelTooltip: string | null = null
 
   if (province || province_code) {

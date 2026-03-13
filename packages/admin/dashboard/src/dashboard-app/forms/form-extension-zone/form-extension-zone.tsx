@@ -107,8 +107,7 @@ const FormExtensionFieldComponent = ({
     default: {
       return (
         <InlineTip variant="warning" label={t("general.warning")}>
-          The field type does not support rendering a fallback component. Please
-          provide a component prop.
+          {t("products.create.unsupportedExtensionMessage")}
         </InlineTip>
       )
     }

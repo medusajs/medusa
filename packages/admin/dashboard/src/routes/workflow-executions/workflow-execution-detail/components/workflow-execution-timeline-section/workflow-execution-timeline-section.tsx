@@ -85,7 +85,8 @@ const Canvas = ({
   execution,
 }: {
   execution: HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
-}) => {
+  }) => {
+  const { t } = useTranslation()
   const [zoom, setZoom] = useState<number>(1)
   const [isDragging, setIsDragging] = useState(false)
   const direction = useDocumentDirection()
@@ -212,7 +213,7 @@ const Canvas = ({
               onClick={zoomIn}
               type="button"
               disabled={!canZoomIn}
-              aria-label="Zoom in"
+              aria-label={t("actions.zoomIn")}
               className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
             >
               <PlusMini />
@@ -245,7 +246,7 @@ const Canvas = ({
               onClick={zoomOut}
               type="button"
               disabled={!canZoomOut}
-              aria-label="Zoom out"
+              aria-label={t("actions.zoomOut")}
               className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
             >
               <MinusMini />
@@ -254,7 +255,7 @@ const Canvas = ({
           <button
             onClick={resetCanvas}
             type="button"
-            aria-label="Reset canvas"
+            aria-label={t("actions.resetCanvas")}
             className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed p-1 outline-none"
           >
             <ArrowPathMini />

@@ -290,6 +290,7 @@ cellRenderers.set("country_code", CountryCodeRenderer)
 cellRenderers.set("display_id", DisplayIdRenderer)
 
 export function getCellRenderer(
+  t: TFunction,
   renderType?: string,
   dataType?: string
 ): CellRenderer {
@@ -304,11 +305,8 @@ export function getCellRenderer(
     case "date":
       return DateRenderer
     case "boolean":
-      return (value, _row, _column, t) => {
-        if (t) {
-          return value ? t("fields.yes", "Yes") : t("fields.no", "No")
-        }
-        return value ? "Yes" : "No"
+      return (value, _row, _column, _) => {
+        return value ? t("general.yes") : t("general.no")
       }
     case "enum":
       return StatusRenderer

@@ -3,8 +3,10 @@ import { Spinner } from "@medusajs/icons"
 import { RouteDrawer } from "../../../components/modals"
 import { useTranslationSettings } from "../../../hooks/api/translations"
 import { BatchTranslationSettingsForm } from "./components/batch-translation-settings-form/batch-translation-settings-form"
+import { useTranslation } from "react-i18next"
 
 export const Settings = () => {
+  const { t } = useTranslation()
   const { translation_settings, isPending, isError, error } =
     useTranslationSettings()
 
@@ -16,7 +18,7 @@ export const Settings = () => {
     <RouteDrawer>
       <RouteDrawer.Header>
         <RouteDrawer.Title asChild>
-          <Heading>Manage translatable entities</Heading>
+          <Heading>{t("translations.settings.header")}</Heading>
         </RouteDrawer.Title>
       </RouteDrawer.Header>
       {isPending ? (

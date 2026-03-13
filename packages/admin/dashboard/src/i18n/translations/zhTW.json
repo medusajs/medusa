@@ -3230,7 +3230,7 @@
     "save": "儲存",
     "saveAsNew": "儲存為新視圖",
     "updateDefaultForEveryone": "為所有人更新預設值",
-    "updateViewName": "更新視圖",
+    "updateView": "更新視圖",
     "prompts": {
       "updateDefault": {
         "title": "更新預設視圖",

@@ -31,7 +31,7 @@ export const ReservationGeneralSection = ({
     isLoadingLocation ||
     !location
   ) {
-    return <div>Loading...</div>
+    return <div>{t("general.loading")}</div>
   }
 
   const locationLevel = inventoryItem.location_levels!.find(

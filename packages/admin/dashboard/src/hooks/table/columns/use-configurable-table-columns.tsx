@@ -39,6 +39,7 @@ export function useConfigurableTableColumns<TData = any>(
       }
 
       const renderer = getCellRenderer(
+        t,
         renderType,
         apiColumn.data_type
       )

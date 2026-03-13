@@ -437,7 +437,7 @@ const Fulfillment = ({
                           className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
                         >
                           <Text size="small" leading="compact" as="span">
-                            Label
+                            {t("orders.fulfillment.label")}
                           </Text>
                         </a>
                       )}

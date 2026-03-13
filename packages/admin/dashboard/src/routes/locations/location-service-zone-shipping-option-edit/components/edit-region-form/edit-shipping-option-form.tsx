@@ -269,7 +269,7 @@ export const EditShippingOptionForm = ({
                               {
                                 label: `${formatProvider(
                                   shippingOption.provider_id
-                                )} (${shippingOption?.data?.id || "N/A"})`, // FO is stored in so.data and only guaranteed proeprty is `id`
+                                )} (${shippingOption?.data?.id || t("general.notAvailable")})`, // FO is stored in so.data and only guaranteed proeprty is `id`
                                 value: shippingOption.provider_id,
                               },
                             ]}

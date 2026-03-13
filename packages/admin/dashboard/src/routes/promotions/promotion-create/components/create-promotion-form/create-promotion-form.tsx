@@ -83,9 +83,10 @@ export const CreatePromotionForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const direction = useDocumentDirection()
-  const form = useForm<z.infer<typeof CreatePromotionSchema>>({
+  const createPromotionSchema = CreatePromotionSchema(t)
+  const form = useForm<z.infer<typeof createPromotionSchema>>({
     defaultValues,
-    resolver: zodResolver(CreatePromotionSchema),
+    resolver: zodResolver(createPromotionSchema),
   })
   const { setValue, reset, getValues } = form
 
@@ -614,46 +615,46 @@ export const CreatePromotionForm = () => {
                   {!currentTemplate?.hiddenFields?.includes(
                     "is_tax_inclusive"
                   ) && (
-                    <>
-                      <Divider />
-                      <div className="flex gap-x-2 gap-y-4">
-                        <Form.Field
-                          control={form.control}
-                          name="is_tax_inclusive"
+                      <>
+                        <Divider />
+                        <div className="flex gap-x-2 gap-y-4">
+                          <Form.Field
+                            control={form.control}
+                            name="is_tax_inclusive"
                           render={({
-                            field: { onChange, value, ...field },
+                              field: { onChange, value, ...field },
                           }) => {
-                            return (
-                              <Form.Item className="basis-full">
-                                <div className="flex items-center justify-between">
-                                  <div className="block">
-                                    <Form.Label>
+                              return (
+                                <Form.Item className="basis-full">
+                                  <div className="flex items-center justify-between">
+                                    <div className="block">
+                                      <Form.Label>
                                       {t("promotions.form.taxInclusive.title")}
-                                    </Form.Label>
-                                    <Form.Hint className="!mt-1">
-                                      {t(
-                                        "promotions.form.taxInclusive.description"
-                                      )}
-                                    </Form.Hint>
+                                      </Form.Label>
+                                      <Form.Hint className="!mt-1">
+                                        {t(
+                                          "promotions.form.taxInclusive.description"
+                                        )}
+                                      </Form.Hint>
+                                    </div>
+                                    <Form.Control className="mr-2 self-center">
+                                      <Switch
+                                        dir="ltr"
+                                        className="mt-[2px] rtl:rotate-180"
+                                        checked={!!value}
+                                        onCheckedChange={onChange}
+                                        {...field}
+                                      />
+                                    </Form.Control>
                                   </div>
-                                  <Form.Control className="mr-2 self-center">
-                                    <Switch
-                                      dir="ltr"
-                                      className="mt-[2px] rtl:rotate-180"
-                                      checked={!!value}
-                                      onCheckedChange={onChange}
-                                      {...field}
-                                    />
-                                  </Form.Control>
-                                </div>
-                                <Form.ErrorMessage />
-                              </Form.Item>
-                            )
-                          }}
-                        />
-                      </div>
-                    </>
-                  )}
+                                  <Form.ErrorMessage />
+                                </Form.Item>
+                              )
+                            }}
+                          />
+                        </div>
+                      </>
+                    )}
 
                   {!currentTemplate?.hiddenFields?.includes("type") && (
                     <Form.Field
@@ -707,195 +708,195 @@ export const CreatePromotionForm = () => {
                   {!currentTemplate?.hiddenFields?.includes(
                     "application_method.type"
                   ) && (
-                    <>
-                      <Divider />
-                      <Form.Field
-                        control={form.control}
-                        name="application_method.type"
+                      <>
+                        <Divider />
+                        <Form.Field
+                          control={form.control}
+                          name="application_method.type"
                         render={({ field }) => {
-                          return (
-                            <Form.Item>
-                              <Form.Label>
+                            return (
+                              <Form.Item>
+                                <Form.Label>
                                 {t("promotions.fields.value_type")}
-                              </Form.Label>
-                              <Form.Control>
-                                <RadioGroup
-                                  dir={direction}
-                                  className="flex gap-y-3"
-                                  {...field}
-                                  onValueChange={field.onChange}
-                                >
-                                  <RadioGroup.ChoiceBox
-                                    value={"fixed"}
-                                    label={t(
-                                      "promotions.form.value_type.fixed.title"
-                                    )}
-                                    description={t(
-                                      "promotions.form.value_type.fixed.description"
-                                    )}
+                                </Form.Label>
+                                <Form.Control>
+                                  <RadioGroup
+                                    dir={direction}
+                                    className="flex gap-y-3"
+                                    {...field}
+                                    onValueChange={field.onChange}
+                                  >
+                                    <RadioGroup.ChoiceBox
+                                      value={"fixed"}
+                                      label={t(
+                                        "promotions.form.value_type.fixed.title"
+                                      )}
+                                      description={t(
+                                        "promotions.form.value_type.fixed.description"
+                                      )}
                                     className={clx("basis-1/2")}
-                                  />
+                                    />
 
-                                  <RadioGroup.ChoiceBox
-                                    value={"percentage"}
-                                    label={t(
-                                      "promotions.form.value_type.percentage.title"
-                                    )}
-                                    description={t(
-                                      "promotions.form.value_type.percentage.description"
-                                    )}
+                                    <RadioGroup.ChoiceBox
+                                      value={"percentage"}
+                                      label={t(
+                                        "promotions.form.value_type.percentage.title"
+                                      )}
+                                      description={t(
+                                        "promotions.form.value_type.percentage.description"
+                                      )}
                                     className={clx("basis-1/2")}
-                                  />
-                                </RadioGroup>
-                              </Form.Control>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                    </>
-                  )}
+                                    />
+                                  </RadioGroup>
+                                </Form.Control>
+                                <Form.ErrorMessage />
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      </>
+                    )}
 
                   {!currentTemplate?.hiddenFields?.includes(
                     "application_method.value"
                   ) && (
-                    <>
-                      <Divider />
-                      <Form.Field
-                        control={form.control}
-                        name="application_method.value"
+                      <>
+                        <Divider />
+                        <Form.Field
+                          control={form.control}
+                          name="application_method.value"
                         render={({ field: { onChange, value, ...field } }) => {
-                          const currencyCode =
-                            form.getValues().application_method.currency_code
+                            const currencyCode =
+                              form.getValues().application_method.currency_code
 
-                          const currencyInfo =
-                            currencies[currencyCode?.toUpperCase() || "USD"]
+                            const currencyInfo =
+                              currencies[currencyCode?.toUpperCase() || "USD"]
 
-                          return (
-                            <Form.Item className="basis-1/2">
-                              <Form.Label
-                                tooltip={
-                                  currencyCode || !isFixedValueType
-                                    ? undefined
+                            return (
+                              <Form.Item className="basis-1/2">
+                                <Form.Label
+                                  tooltip={
+                                    currencyCode || !isFixedValueType
+                                      ? undefined
                                     : t("promotions.fields.amount.tooltip")
-                                }
-                              >
+                                  }
+                                >
                                 {t("promotions.form.value.title")}
-                              </Form.Label>
+                                </Form.Label>
 
-                              <Form.Control>
-                                {isFixedValueType ? (
-                                  <CurrencyInput
-                                    {...field}
-                                    min={0}
-                                    code={currencyCode || "USD"}
+                                <Form.Control>
+                                  {isFixedValueType ? (
+                                    <CurrencyInput
+                                      {...field}
+                                      min={0}
+                                      code={currencyCode || "USD"}
                                     onValueChange={(_value, _name, values) =>
                                       onChange(values?.value)
-                                    }
-                                    decimalScale={
-                                      currencyInfo?.decimal_digits ?? 2
-                                    }
-                                    decimalsLimit={
-                                      currencyInfo?.decimal_digits ?? 2
-                                    }
-                                    symbol={
-                                      currencyCode
+                                      }
+                                      decimalScale={
+                                        currencyInfo?.decimal_digits ?? 2
+                                      }
+                                      decimalsLimit={
+                                        currencyInfo?.decimal_digits ?? 2
+                                      }
+                                      symbol={
+                                        currencyCode
                                         ? getCurrencySymbol(currencyCode)
-                                        : "$"
-                                    }
-                                    value={value}
-                                    disabled={!currencyCode}
-                                  />
-                                ) : (
-                                  <DeprecatedPercentageInput
-                                    key="amount"
-                                    className="text-right"
-                                    min={0}
-                                    max={100}
-                                    {...field}
-                                    value={value}
+                                          : "$"
+                                      }
+                                      value={value}
+                                      disabled={!currencyCode}
+                                    />
+                                  ) : (
+                                    <DeprecatedPercentageInput
+                                      key="amount"
+                                      className="text-right"
+                                      min={0}
+                                      max={100}
+                                      {...field}
+                                      value={value}
                                     onChange={(e) => {
-                                      onChange(
-                                        e.target.value === ""
-                                          ? null
+                                        onChange(
+                                          e.target.value === ""
+                                            ? null
                                           : parseFloat(e.target.value)
-                                      )
-                                    }}
+                                        )
+                                      }}
+                                    />
+                                  )}
+                                </Form.Control>
+                                <Text
+                                  size="small"
+                                  leading="compact"
+                                  className="text-ui-fg-subtle"
+                                >
+                                  <Trans
+                                    t={t}
+                                    i18nKey={
+                                      isFixedValueType
+                                        ? "promotions.form.value_type.fixed.description"
+                                        : "promotions.form.value_type.percentage.description"
+                                    }
+                                    components={[<br key="break" />]}
                                   />
-                                )}
-                              </Form.Control>
-                              <Text
-                                size="small"
-                                leading="compact"
-                                className="text-ui-fg-subtle"
-                              >
-                                <Trans
-                                  t={t}
-                                  i18nKey={
-                                    isFixedValueType
-                                      ? "promotions.form.value_type.fixed.description"
-                                      : "promotions.form.value_type.percentage.description"
-                                  }
-                                  components={[<br key="break" />]}
-                                />
-                              </Text>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                    </>
-                  )}
+                                </Text>
+                                <Form.ErrorMessage />
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      </>
+                    )}
 
                   {((isTypeStandard &&
                     (watchAllocation === "each" ||
                       watchAllocation === "once")) ||
                     isTypeBuyGet) && (
-                    <>
-                      {isTypeBuyGet && (
-                        <>
-                          <Divider />
-                        </>
-                      )}
-                      <Form.Field
-                        control={form.control}
-                        name="application_method.max_quantity"
+                      <>
+                        {isTypeBuyGet && (
+                          <>
+                            <Divider />
+                          </>
+                        )}
+                        <Form.Field
+                          control={form.control}
+                          name="application_method.max_quantity"
                         render={({ field }) => {
-                          return (
-                            <Form.Item className="basis-1/2">
-                              <Form.Label>
+                            return (
+                              <Form.Item className="basis-1/2">
+                                <Form.Label>
                                 {t("promotions.form.max_quantity.title")}
-                              </Form.Label>
+                                </Form.Label>
 
-                              <Form.Control>
-                                <Input
-                                  {...form.register(
-                                    "application_method.max_quantity",
-                                    { valueAsNumber: true }
-                                  )}
-                                  type="number"
-                                  min={1}
-                                  placeholder="3"
-                                />
-                              </Form.Control>
+                                <Form.Control>
+                                  <Input
+                                    {...form.register(
+                                      "application_method.max_quantity",
+                                      { valueAsNumber: true }
+                                    )}
+                                    type="number"
+                                    min={1}
+                                    placeholder="3"
+                                  />
+                                </Form.Control>
 
-                              <Text
-                                size="small"
-                                leading="compact"
-                                className="text-ui-fg-subtle"
-                              >
-                                <Trans
-                                  t={t}
-                                  i18nKey="promotions.form.max_quantity.description"
-                                  components={[<br key="break" />]}
-                                />
-                              </Text>
-                            </Form.Item>
-                          )
-                        }}
-                      />
-                    </>
-                  )}
+                                <Text
+                                  size="small"
+                                  leading="compact"
+                                  className="text-ui-fg-subtle"
+                                >
+                                  <Trans
+                                    t={t}
+                                    i18nKey="promotions.form.max_quantity.description"
+                                    components={[<br key="break" />]}
+                                  />
+                                </Text>
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      </>
+                    )}
 
                   {isTypeStandard &&
                     !currentTemplate?.hiddenFields?.includes(
@@ -925,47 +926,47 @@ export const CreatePromotionForm = () => {
                                   {!currentTemplate?.hiddenFields?.includes(
                                     "application_method.allocation.each"
                                   ) && (
-                                    <RadioGroup.ChoiceBox
-                                      value={"each"}
-                                      label={t(
-                                        "promotions.form.allocation.each.title"
-                                      )}
-                                      description={t(
-                                        "promotions.form.allocation.each.description"
-                                      )}
+                                      <RadioGroup.ChoiceBox
+                                        value={"each"}
+                                        label={t(
+                                          "promotions.form.allocation.each.title"
+                                        )}
+                                        description={t(
+                                          "promotions.form.allocation.each.description"
+                                        )}
                                       className={clx("basis-1/3")}
-                                    />
-                                  )}
+                                      />
+                                    )}
 
                                   {!currentTemplate?.hiddenFields?.includes(
                                     "application_method.allocation.across"
                                   ) && (
-                                    <RadioGroup.ChoiceBox
-                                      value={"across"}
-                                      label={t(
-                                        "promotions.form.allocation.across.title"
-                                      )}
-                                      description={t(
-                                        "promotions.form.allocation.across.description"
-                                      )}
+                                      <RadioGroup.ChoiceBox
+                                        value={"across"}
+                                        label={t(
+                                          "promotions.form.allocation.across.title"
+                                        )}
+                                        description={t(
+                                          "promotions.form.allocation.across.description"
+                                        )}
                                       className={clx("basis-1/3")}
-                                    />
-                                  )}
+                                      />
+                                    )}
 
                                   {!currentTemplate?.hiddenFields?.includes(
                                     "application_method.allocation.once"
                                   ) && (
-                                    <RadioGroup.ChoiceBox
-                                      value={"once"}
-                                      label={t(
-                                        "promotions.form.allocation.once.title"
-                                      )}
-                                      description={t(
-                                        "promotions.form.allocation.once.description"
-                                      )}
+                                      <RadioGroup.ChoiceBox
+                                        value={"once"}
+                                        label={t(
+                                          "promotions.form.allocation.once.title"
+                                        )}
+                                        description={t(
+                                          "promotions.form.allocation.once.description"
+                                        )}
                                       className={clx("basis-1/3")}
-                                    />
-                                  )}
+                                      />
+                                    )}
                                 </RadioGroup>
                               </Form.Control>
                               <Form.ErrorMessage />

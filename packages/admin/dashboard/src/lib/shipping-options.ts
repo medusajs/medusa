@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import { TFunction } from "i18next"
 
 export function isReturnOption(shippingOption: HttpTypes.AdminShippingOption) {
   return !!shippingOption.rules?.find(
@@ -22,12 +23,13 @@ export function isOptionEnabledInStore(
  * Return a name for the shipping option location or generate one based on the locations address
  */
 export function getFormattedShippingOptionLocationName(
-  shippingOption: HttpTypes.AdminShippingOption
+  shippingOption: HttpTypes.AdminShippingOption,
+  t: TFunction
 ) {
   const location = shippingOption.service_zone.fulfillment_set.location
 
   if (!location) {
-    return "N/A"
+    return t("general.notAvailable")
   }
 
   if (location.name) {
@@ -58,5 +60,5 @@ export function getFormattedShippingOptionLocationName(
     }
   }
 
-  return name || "N/A"
+  return name || t("general.notAvailable")
 }

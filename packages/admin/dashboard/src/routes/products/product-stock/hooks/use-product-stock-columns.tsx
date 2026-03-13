@@ -59,7 +59,7 @@ export const useProductStockColumns = (
       helper.column({
         id: "title",
         name: "Title",
-        header: "Title",
+        header: t("fields.title"),
         cell: (context) => {
           const item = context.row.original
 
@@ -116,7 +116,7 @@ export const useProductStockColumns = (
       helper.column({
         id: "sku",
         name: "SKU",
-        header: "SKU",
+        header: t("fields.sku"),
         cell: (context) => {
           const item = context.row.original
 

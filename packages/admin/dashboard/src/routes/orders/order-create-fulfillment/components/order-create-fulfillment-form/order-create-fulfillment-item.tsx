@@ -170,7 +170,7 @@ export function OrderCreateFulfillmentItem({
                 {t("orders.fulfillment.available")}
               </span>
               <span className="text-ui-fg-subtle">
-                {availableQuantity || "N/A"}
+                {availableQuantity || t("general.notAvailable")}
               </span>
             </div>
 
@@ -182,7 +182,7 @@ export function OrderCreateFulfillmentItem({
                   {t("orders.fulfillment.inStock")}
                 </span>
                 <span className="text-ui-fg-subtle">
-                  {inStockQuantity || "N/A"}{" "}
+                  {inStockQuantity || t("general.notAvailable")}{" "}
                   {inStockQuantity && (
                     <span className="font-medium text-red-500">
                       -{form.getValues(`quantity.${item.id}`)}

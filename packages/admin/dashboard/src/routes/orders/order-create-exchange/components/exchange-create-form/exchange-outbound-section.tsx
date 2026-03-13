@@ -421,7 +421,7 @@ export const ExchangeOutboundSection = ({
                         }}
                         {...field}
                         options={outboundShippingOptions.map((so) => ({
-                          label: `${so.name} (${getFormattedShippingOptionLocationName(so)})`,
+                          label: `${so.name} (${getFormattedShippingOptionLocationName(so, t)})`,
                           value: so.id,
                         }))}
                         disabled={!outboundShippingOptions.length}

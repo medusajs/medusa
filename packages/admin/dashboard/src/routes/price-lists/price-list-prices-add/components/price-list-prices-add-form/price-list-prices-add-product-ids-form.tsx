@@ -163,6 +163,7 @@ export const PriceListPricesAddProductIdsForm = ({
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = () => {
+  const { t } = useTranslation()
   const base = useProductTableColumns()
 
   return useMemo(
@@ -207,7 +208,7 @@ const useColumns = () => {
 
           if (isPreselected) {
             return (
-              <Tooltip content="This product is already in the price list">
+              <Tooltip content={t("priceLists.create.errors.productAlreadyInPriceList")}>
                 {Component}
               </Tooltip>
             )
@@ -215,7 +216,7 @@ const useColumns = () => {
 
           if (isDisabled) {
             return (
-              <Tooltip content="This product has no variants">
+              <Tooltip content={t("priceLists.create.errors.productAlreadyInPriceList")}>
                 {Component}
               </Tooltip>
             )

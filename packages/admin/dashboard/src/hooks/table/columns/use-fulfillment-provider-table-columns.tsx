@@ -16,7 +16,7 @@ export const useFulfillmentProviderTableColumns = () => {
   return useMemo(
     () => [
       columnHelper.accessor("id", {
-        header: () => <TextHeader text={"Provider"} />,
+        header: () => <TextHeader text={t("fields.provider")} />,
         cell: ({ getValue }) => <TextCell text={formatProvider(getValue())} />,
       }),
     ],

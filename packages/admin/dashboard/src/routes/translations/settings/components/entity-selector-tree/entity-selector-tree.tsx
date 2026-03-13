@@ -1,6 +1,7 @@
 import { TriangleRightMini } from "@medusajs/icons"
 import { Checkbox, clx, Divider, Text } from "@medusajs/ui"
 import React, { useImperativeHandle, useMemo, useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 
 export type EntityField = {
   id: string
@@ -69,7 +70,8 @@ type EntitySelectorTreeProps = {
 export const EntitySelectorTree = React.forwardRef<
   EntitySelectorTreeRef,
   EntitySelectorTreeProps
->(({ entities, onSelectionChange, searchQuery, viewMode, sortOrder }, ref) => {
+  >(({ entities, onSelectionChange, searchQuery, viewMode, sortOrder }, ref) => {
+  const { t } = useTranslation()
   const [expandedEntities, setExpandedEntities] = useState<Set<string>>(
     new Set()
   )
@@ -216,7 +218,7 @@ export const EntitySelectorTree = React.forwardRef<
       <div className="flex-1 overflow-y-auto">
         {filteredAndSortedEntities.length === 0 ? (
           <div className="text-ui-fg-subtle flex items-center justify-center py-12 text-sm">
-            No entities matching filters
+            {t("translations.settings.noEntitiesMatchingFilters")}
           </div>
         ) : (
           <div>

@@ -1,15 +1,16 @@
 import { z } from "zod"
 import { CreateCampaignSchema } from "../../../../campaigns/campaign-create/components/create-campaign-form"
+import { TFunction } from "i18next"
 
-const RuleSchema = z.array(
+const RuleSchema = (t: TFunction) => z.array(
   z.object({
     id: z.string().optional(),
-    attribute: z.string().min(1, { message: "Required field" }),
-    operator: z.string().min(1, { message: "Required field" }),
+    attribute: z.string().min(1, { message: t("promotions.errors.requiredField") }),
+    operator: z.string().min(1, { message: t("promotions.errors.requiredField") }),
     values: z.union([
-      z.number().min(1, { message: "Required field" }),
-      z.string().min(1, { message: "Required field" }),
-      z.array(z.string()).min(1, { message: "Required field" }),
+      z.number().min(1, { message: t("promotions.errors.requiredField") }),
+      z.string().min(1, { message: t("promotions.errors.requiredField") }),
+      z.array(z.string()).min(1, { message: t("promotions.errors.requiredField") }),
     ]),
     required: z.boolean().optional(),
     disguised: z.boolean().optional(),
@@ -17,7 +18,7 @@ const RuleSchema = z.array(
   })
 )
 
-export const CreatePromotionSchema = z
+export const CreatePromotionSchema = (t: TFunction) => z
   .object({
     template_id: z.string().optional(),
     campaign_id: z.string().optional(),
@@ -26,7 +27,7 @@ export const CreatePromotionSchema = z
     code: z.string().min(1),
     type: z.enum(["buyget", "standard"]),
     status: z.enum(["draft", "active", "inactive"]),
-    rules: RuleSchema,
+    rules: RuleSchema(t),
     is_tax_inclusive: z.boolean().optional(),
     limit: z.number().int().min(1).nullable().optional(),
     application_method: z.object({
@@ -34,8 +35,8 @@ export const CreatePromotionSchema = z
       value: z.number().min(0).or(z.string().min(1)),
       currency_code: z.string().optional(),
       max_quantity: z.number().optional().nullable(),
-      target_rules: RuleSchema,
-      buy_rules: RuleSchema,
+      target_rules: RuleSchema(t),
+      buy_rules: RuleSchema(t),
       type: z.enum(["fixed", "percentage"]),
       target_type: z.enum(["order", "shipping_methods", "items"]),
     }),
@@ -59,4 +60,6 @@ export const CreatePromotionSchema = z
     }
   )
 
-export type CreatePromotionSchemaType = z.infer<typeof CreatePromotionSchema>
+export type CreatePromotionSchemaType = z.infer<
+  ReturnType<typeof CreatePromotionSchema>
+>

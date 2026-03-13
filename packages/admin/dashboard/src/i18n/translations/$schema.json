@@ -193,6 +193,18 @@
         },
         "noMoreData": {
           "type": "string"
+        },
+        "yes": {
+          "type": "string"
+        },
+        "no": {
+          "type": "string"
+        },
+        "notAvailable": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "string"
         }
       },
       "required": [
@@ -257,7 +269,11 @@
         "unsavedChangesDescription",
         "includesTaxTooltip",
         "excludesTaxTooltip",
-        "noMoreData"
+        "noMoreData",
+        "yes",
+        "no",
+        "notAvailable",
+        "loading"
       ],
       "additionalProperties": false
     },
@@ -535,6 +551,15 @@
         },
         "cannotUndo": {
           "type": "string"
+        },
+        "zoomIn": {
+          "type": "string"
+        },
+        "zoomOut": {
+          "type": "string"
+        },
+        "resetCanvas": {
+          "type": "string"
         }
       },
       "required": [
@@ -583,7 +608,10 @@
         "hide",
         "export",
         "import",
-        "cannotUndo"
+        "cannotUndo",
+        "zoomIn",
+        "zoomOut",
+        "resetCanvas"
       ],
       "additionalProperties": false
     },
@@ -1658,13 +1686,17 @@
                 },
                 "quantityPlaceholder": {
                   "type": "string"
+                },
+                "descriptionPlaceholder": {
+                  "type": "string"
                 }
               },
               "required": [
                 "heading",
                 "label",
                 "itemPlaceholder",
-                "quantityPlaceholder"
+                "quantityPlaceholder",
+                "descriptionPlaceholder"
               ],
               "additionalProperties": false
             },
@@ -1746,6 +1778,9 @@
             },
             "successToast": {
               "type": "string"
+            },
+            "unsupportedExtensionMessage": {
+              "type": "string"
             }
           },
           "required": [
@@ -1756,7 +1791,8 @@
             "errors",
             "inventory",
             "variants",
-            "successToast"
+            "successToast",
+            "unsupportedExtensionMessage"
           ],
           "additionalProperties": false
         },
@@ -3961,6 +3997,9 @@
     "orders": {
       "type": "object",
       "properties": {
+        "emptyOrders": {
+          "type": "string"
+        },
         "giftCardsStoreCreditLines": {
           "type": "string"
         },
@@ -4369,6 +4408,12 @@
             },
             "selectPaymentToRefund": {
               "type": "string"
+            },
+            "storeCreditRefund": {
+              "type": "string"
+            },
+            "totalPending": {
+              "type": "string"
             }
           },
           "required": [
@@ -4392,7 +4437,9 @@
             "createRefundWrongQuantity",
             "refundAmount",
             "paymentLink",
-            "selectPaymentToRefund"
+            "selectPaymentToRefund",
+            "storeCreditRefund",
+            "totalPending"
           ],
           "additionalProperties": false
         },
@@ -5386,6 +5433,9 @@
             "trackingLabel": {
               "type": "string"
             },
+            "label": {
+              "type": "string"
+            },
             "shippingFromLabel": {
               "type": "string"
             },
@@ -5420,6 +5470,7 @@
             "status",
             "toast",
             "trackingLabel",
+            "label",
             "shippingFromLabel",
             "itemsLabel"
           ],
@@ -5807,6 +5858,7 @@
         }
       },
       "required": [
+        "emptyOrders",
         "giftCardsStoreCreditLines",
         "creditLines",
         "balanceSettlement",
@@ -7882,6 +7934,9 @@
               },
               "required": ["rules", "target-rules", "buy-rules"],
               "additionalProperties": false
+            },
+            "operator": {
+              "type": "string"
             }
           },
           "required": [
@@ -7898,7 +7953,8 @@
             "usageLimit",
             "usage",
             "amount",
-            "conditions"
+            "conditions",
+            "operator"
           ],
           "additionalProperties": false
         },
@@ -8005,13 +8061,29 @@
               "properties": {
                 "goToCampaign": {
                   "type": "string"
+                },
+                "addToCampaign": {
+                  "type": "string"
                 }
               },
-              "required": ["goToCampaign"],
+              "required": ["goToCampaign", "addToCampaign"],
               "additionalProperties": false
+            },
+            "notPartOfCampaign": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "message"],
+              "additionalProperties": false 
             }
           },
-          "required": ["header", "edit", "actions"],
+          "required": ["header", "edit", "actions", "notPartOfCampaign"],
           "additionalProperties": false
         },
         "campaign_currency": {
@@ -8998,6 +9070,18 @@
               },
               "required": ["list"],
               "additionalProperties": false
+            },
+            "errors": {
+              "type": "object",
+              "properties": {
+                "productAlreadyInPriceList": {
+                  "type": "string"
+                },
+                "productHasNoVariants": {
+                  "type": "string"
+                }
+              },
+              "required": ["productAlreadyInPriceList", "productHasNoVariants"], "additionalProperties": false
             }
           },
           "required": [
@@ -9005,7 +9089,8 @@
             "subheader",
             "tabs",
             "successToast",
-            "products"
+            "products",
+            "errors"
           ],
           "additionalProperties": false
         },
@@ -9017,9 +9102,15 @@
             },
             "successToast": {
               "type": "string"
+            },
+            "editPricesForTitle": {
+              "type": "string"
+            },
+            "editPricesForDescription": {
+              "type": "string"
             }
           },
-          "required": ["header", "successToast"],
+          "required": ["header", "successToast", "editPricesForTitle", "editPricesForDescription"],
           "additionalProperties": false
         },
         "configuration": {
@@ -9489,6 +9580,9 @@
     "translations": {
       "type": "object",
       "properties": {
+        "title": {
+          "type": "string"
+        },
         "domain": {
           "type": "string"
         },
@@ -9512,9 +9606,12 @@
                 },
                 "successToast": {
                     "type": "string"
+                },
+                "noEntitiesMatchingFilters": {
+                  "type": "string"
                 }
             },
-            "required": ["header", "successToast"],
+            "required": ["header", "successToast", "noEntitiesMatchingFilters"],
             "additionalProperties": false
         },
         "actions": {
@@ -10643,13 +10740,17 @@
             },
             "createdByLabel": {
               "type": "string"
+            },
+            "token": {
+              "type": "string"
             }
           },
           "required": [
             "lastUsedAtLabel",
             "revokedByLabel",
             "revokedAtLabel",
-            "createdByLabel"
+            "createdByLabel",
+            "token"
           ],
           "additionalProperties": false
         }
@@ -12348,11 +12449,97 @@
         "saveAsNew": {
           "type": "string"
         },
+        "success": {
+          "type": "string"
+        },
+        "creationSuccess": {
+          "type": "string"
+        },
+        "updateSuccess": {
+          "type": "string"
+        },
+        "deleteSuccess": {
+          "type": "string"
+        },
+        "editView": {
+          "type": "string"
+        },
+        "defaultView": {
+          "type": "string"
+        },
+        "enterViewNamePlaceholder": {
+          "type": "string"
+        },
+        "createNewViewTitle": {
+          "type": "string"
+        },
+        "createNewViewDescription": {
+          "type": "string"
+        },
+        "viewName": {
+          "type": "string"
+        },
         "updateDefaultForEveryone": {
+          "type": "string"
+        },
+        "updateView": {
           "type": "string"
         },
         "updateViewName": {
           "type": "string"
+        },
+        "editName": {
+          "type": "string"
+        },
+        "editViewNameTitle": {
+          "type": "string"
+        },
+        "editViewNameDescription": {
+          "type": "string"
+        },
+        "resetToCodeDefaults": {
+          "type": "string"
+        },
+        "systemDefault": {
+          "type": "string"
+        },
+        "personalViews": {
+          "type": "string"
+        },
+        "saveCurrentView": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "object",
+          "properties": {
+            "nameRequired": {
+              "type": "string"
+            },
+            "emptyName": {
+              "type": "string"
+            },
+            "failedToCreateView": {
+                "type": "string"
+            },
+            "failedToUpdateActiveView": {
+                "type": "string"
+            },
+            "failedToUpdateView": {
+                "type": "string"
+            },
+            "failedToDeleteView": {
+                "type": "string"
+            }
+          },
+          "required": [
+            "nameRequired",
+            "emptyName",
+            "failedToCreateView",
+            "failedToUpdateActiveView",
+            "failedToUpdateView",
+            "failedToDeleteView"
+          ],
+          "additionalProperties": false
         },
         "prompts": {
           "type": "object",
@@ -12368,12 +12555,9 @@
                 },
                 "confirmText": {
                   "type": "string"
-                },
-                "cancelText": {
-                  "type": "string"
                 }
               },
-              "required": ["title", "description", "confirmText", "cancelText"],
+              "required": ["title", "description", "confirmText"],
               "additionalProperties": false
             },
             "updateView": {
@@ -12388,24 +12572,94 @@
                 "confirmText": {
                   "type": "string"
                 },
-                "cancelText": {
+                "existingView": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["title", "description", "confirmText", "existingView"],
+              "additionalProperties": false
+            },
+            "deleteView": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
                   "type": "string"
                 }
               },
-              "required": ["title", "description", "confirmText", "cancelText"],
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "saveAsSystemDefault": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "confirmText": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description", "confirmText"], "additionalProperties": false
+            },
+            "resetSystemDefault": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
               "additionalProperties": false
             }
           },
-          "required": ["updateDefault", "updateView"],
+          "required": ["updateDefault", "updateView", "deleteView", "saveAsSystemDefault", "resetSystemDefault"],
           "additionalProperties": false
         }
       },
       "required": [
         "save",
         "saveAsNew",
+        "success",
+        "creationSuccess",
+        "updateSuccess",
+        "deleteSuccess",
+        "enterViewNamePlaceholder",
+        "createNewViewTitle",
+        "createNewViewDescription",
+        "viewName",
+        "editView",
+        "editName",
+        "editViewNameTitle",
+        "editViewNameDescription",
         "updateDefaultForEveryone",
+        "updateView",
         "updateViewName",
-        "prompts"
+        "errors",
+        "prompts",
+        "resetToCodeDefaults",
+        "systemDefault",
+        "defaultView",
+        "personalViews",
+        "saveCurrentView"
       ],
       "additionalProperties": false
     },

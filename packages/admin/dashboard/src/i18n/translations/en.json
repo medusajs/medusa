@@ -62,7 +62,11 @@
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive.",
-    "noMoreData": "No more data"
+    "noMoreData": "No more data",
+    "yes": "Yes",
+    "no": "No",
+    "notAvailable": "N/A",
+    "loading": "Loading..."
   },
   "json": {
     "header": "JSON",
@@ -148,7 +152,10 @@
     "hide": "Hide",
     "export": "Export",
     "import": "Import",
-    "cannotUndo": "This action cannot be undone"
+    "cannotUndo": "This action cannot be undone",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetCanvas": "Reset canvas"
   },
   "operators": {
     "in": "In"
@@ -437,7 +444,8 @@
         "heading": "Inventory kits",
         "label": "Add inventory items to the variant's inventory kit.",
         "itemPlaceholder": "Select inventory item",
-        "quantityPlaceholder": "How many of these are needed for the kit?"
+        "quantityPlaceholder": "How many of these are needed for the kit?",
+        "descriptionPlaceholder": "The item description"
       },
       "variants": {
         "header": "Variants",
@@ -460,7 +468,8 @@
           "hint": "Define the options for the product, e.g. color, size, etc."
         }
       },
-      "successToast": "Product {{title}} was successfully created."
+      "successToast": "Product {{title}} was successfully created.",
+      "unsupportedExtensionMessage": "The field type does not support rendering a fallback component. Please provide a component prop."
     },
     "export": {
       "header": "Export Product List",
@@ -1056,6 +1065,7 @@
   },
   "orders": {
     "giftCardsStoreCreditLines": "Gift cards & credit lines",
+    "emptyOrders": "No orders found",
     "creditLines": {
       "title": "Credit lines",
       "total": "Sum of all credit lines",
@@ -1167,7 +1177,9 @@
       "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
       "refundAmount": "Refund {{ amount }}",
       "paymentLink": "Copy payment link for {{ amount }}",
-      "selectPaymentToRefund": "Select payment to refund"
+      "selectPaymentToRefund": "Select payment to refund",
+      "storeCreditRefund": "Store credit refund",
+      "totalPending": "Total Pending"
     },
     "edits": {
       "title": "Edit order",
@@ -1434,6 +1446,7 @@
         "fulfillmentPickedUp": "Fulfillment marked as picked up successfully"
       },
       "trackingLabel": "Tracking",
+      "label": "Label",
       "shippingFromLabel": "Shipping from",
       "itemsLabel": "Items"
     },
@@ -2086,6 +2099,7 @@
       "amount": {
         "tooltip": "Select the currency code to enable setting the amount"
       },
+      "operator": "Select Operator",
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -2140,8 +2154,13 @@
         "header": "Edit Campaign",
         "successToast": "Successfully updated the campaign of the promotion."
       },
+      "notPartOfCampaign": {
+        "title": "Not part of a campaign",
+        "message": "Add this promotion to an existing campaign"
+      },
       "actions": {
-        "goToCampaign": "Go to campaign"
+        "goToCampaign": "Go to campaign",
+        "addToCampaign": "Add to Campaign"
       }
     },
     "campaign_currency": {
@@ -2411,6 +2430,10 @@
         "products": "Products",
         "prices": "Prices"
       },
+      "errors": {
+        "productAlreadyInPriceList": "This product is already in the price list.",
+        "productHasNoVariants": "This product has no variants."
+      },
       "successToast": "Price list {{title}} was successfully created.",
       "products": {
         "list": {
@@ -2420,7 +2443,9 @@
     },
     "edit": {
       "header": "Edit Price List",
-      "successToast": "Price list {{title}} was successfully updated."
+      "successToast": "Price list {{title}} was successfully updated.",
+      "editPricesForTitle": "Edit prices for {{title}}",
+      "editPricesForDescription": "Update prices for products in the price list"
     },
     "configuration": {
       "header": "Configuration",
@@ -2549,10 +2574,13 @@
     "invite": "Invite"
   },
   "translations": {
+    "title": "Manage Translations",
     "domain": "Translations",
     "settings": {
       "header": "Manage translatable entities",
-      "successToast": "Settings updated successfully"
+      "successToast": 
+      "Settings updated successfully",
+      "noEntitiesMatchingFilters": "No entities matching filters"
     },
     "actions": {
       "manage": "Manage translations",
@@ -2862,7 +2890,8 @@
       "lastUsedAtLabel": "Last used at",
       "revokedByLabel": "Revoked by",
       "revokedAtLabel": "Revoked at",
-      "createdByLabel": "Created by"
+      "createdByLabel": "Created by",
+      "token": "Token"
     }
   },
   "returnReasons": {
@@ -3311,20 +3340,61 @@
   "views": {
     "save": "Save",
     "saveAsNew": "Save as new view",
+    "success": "View \"{{view}}\" saved successfully",
+    "creationSuccess": "View created",
+    "updateSuccess": "View updated",
+    "deleteSuccess": "View deleted successfully",
+    "enterViewNamePlaceholder": "Enter view name",
+    "createNewViewTitle": "Save as New View",
+    "createNewViewDescription": "Save your current configuration as a new view",
+    "viewName": "View Name",
     "updateDefaultForEveryone": "Update default for everyone",
-    "updateViewName": "Update view",
+    "updateView": "Update view",
+    "updateViewName": "Update \"{{view}}\"",
+    "resetToCodeDefaults": "Reset to code defaults",
+    "editView": "Edit view",
+    "editName": "Edit name",
+    "editViewNameTitle": "Edit View Name",
+    "editViewNameDescription": "Change the name of your saved view",
+    "systemDefault": "System Default",
+    "defaultView": "Default View",
+    "personalViews": "Personal Views",
+    "saveCurrentView": "Save current view",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emptyName": "Name cannot be empty",
+      "failedToCreateView": "Failed to create view",
+      "failedToUpdateActiveView": "Failed to update active view",
+      "failedToUpdateView": "Failed to update view",
+      "failedToDeleteView": "Failed to delete view"
+    },
     "prompts": {
       "updateDefault": {
         "title": "Update default view",
         "description": "This will update the default view for all users. Are you sure?",
-        "confirmText": "Update for everyone",
-        "cancelText": "Cancel"
+        "confirmText": "Update for everyone"
       },
       "updateView": {
         "title": "Update view",
         "description": "Are you sure you want to update \"{{name}}\"?",
         "confirmText": "Update",
-        "cancelText": "Cancel"
+        "existingView": {
+          "title": "Update existing view",
+          "description": "Update \"{{view}}\" with the current configuration?"
+        }
+      },
+      "deleteView": {
+        "title": "Delete view",
+        "description": "Are you sure you want to delete \"{{view.name}}\"? This action cannot be undone."
+      },
+      "saveAsSystemDefault": {
+        "title": "Save as system default",
+        "description": "This will save the current configuration as the system default. All users will see this configuration by default unless they have their own personal views. Are you sure?",
+        "confirmText": "Save as default"
+      },
+      "resetSystemDefault": {
+        "title": "Reset system default",
+        "description": "This will delete the saved system default and revert to the original code-level defaults. All users will be affected. Are you sure?"
       }
     }
   },

@@ -3200,7 +3200,7 @@
     "save": "Guardar",
     "saveAsNew": "Guardar como nova vista",
     "updateDefaultForEveryone": "Atualizar predefinição para todos",
-    "updateViewName": "Atualizar vista",
+    "updateView": "Atualizar vista",
     "prompts": {
       "updateDefault": {
         "title": "Atualizar vista predefinida",

@@ -10,6 +10,7 @@ import {
 import { useForm } from "react-hook-form"
 import { useViewConfigurations, useViewConfiguration } from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
+import { useTranslation } from "react-i18next"
 
 
 type SaveViewFormData = {
@@ -40,6 +41,7 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
   onClose,
   onSaved,
 }) => {
+  const { t } = useTranslation()
   const { createView } = useViewConfigurations(entity)
   const { updateView } = useViewConfiguration(entity, editingView?.id || '')
   const [isLoading, setIsLoading] = useState(false)
@@ -102,14 +104,14 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
         <Drawer.Header>
           <Drawer.Title asChild>
             <Heading>
-              {editingView ? "Edit View Name" : "Save as New View"}
+              {editingView ? t("views.editViewNameTitle") : t("views.createNewViewTitle")}
             </Heading>
           </Drawer.Title>
           <Drawer.Description asChild>
             <Text>
               {editingView
-                ? "Change the name of your saved view"
-                : "Save your current configuration as a new view"}
+                ? t("views.editViewNameDescription")
+                : t("views.createNewViewDescription")}
             </Text>
           </Drawer.Description>
         </Drawer.Header>
@@ -118,15 +120,15 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
           <Drawer.Body className="flex-1">
             <div className="flex flex-col gap-y-2">
               <Label htmlFor="name" weight="plus">
-                View Name
+                {t("views.viewName")}
               </Label>
               <Input
                 {...register("name", {
-                  required: "Name is required",
-                  validate: value => value.trim().length > 0 || "Name cannot be empty"
+                  required: t("views.errors.nameRequired"),
+                  validate: value => value.trim().length > 0 || t("views.errors.emptyName")
                 })}
                 type="text"
-                placeholder="Enter view name"
+                placeholder={t("views.enterViewNamePlaceholder")}
                 autoFocus
               />
               {errors.name && (
@@ -144,7 +146,7 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
                 size="small"
                 type="button"
               >
-                Cancel
+                {t("actions.cancel")}
               </Button>
             </Drawer.Close>
             <Button
@@ -153,7 +155,9 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
               type="submit"
               isLoading={isLoading}
             >
-              {editingView ? "Update" : "Save"}
+              {editingView
+                ? t("views.prompts.updateView.confirmText")
+                : t("actions.save")}
             </Button>
           </Drawer.Footer>
         </form>

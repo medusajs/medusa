@@ -10,6 +10,7 @@ import {
   CloudArrowUp,
   SquarePlusMicro,
 } from "@medusajs/icons"
+import { useTranslation } from "react-i18next"
 
 interface SaveViewDropdownProps {
   isDefaultView: boolean
@@ -27,15 +28,16 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   onSaveAsDefault,
   onUpdateExisting,
   onSaveAsNew,
-}) => {
+} ) => {
+  const { t } = useTranslation()
   const prompt = usePrompt()
 
   const handleSaveAsDefault = async () => {
     const result = await prompt({
-      title: "Save as system default",
-      description: "This will save the current configuration as the system default. All users will see this configuration by default unless they have their own personal views. Are you sure?",
-      confirmText: "Save as default",
-      cancelText: "Cancel",
+      title: t("views.prompts.saveAsSystemDefault.title"),
+      description: t("views.prompts.saveAsSystemDefault.description"),
+      confirmText: t("views.prompts.saveAsSystemDefault.confirmText"),
+      cancelText: t("actions.cancel"),
     })
 
     if (result && onSaveAsDefault) {
@@ -45,10 +47,10 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
 
   const handleUpdateExisting = async () => {
     const result = await prompt({
-      title: "Update existing view",
-      description: `Update "${currentViewName}" with the current configuration?`,
-      confirmText: "Update",
-      cancelText: "Cancel",
+      title: t("views.prompts.updateView.existingView.title"),
+      description: t("views.prompts.updateView.existingView.description", { view: currentViewName }),
+      confirmText: t("views.prompts.updateView.confirmText"),
+      cancelText: t("actions.cancel"),
     })
 
     if (result && onUpdateExisting) {
@@ -60,26 +62,26 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
         <Button variant="secondary" size="small">
-          Save
+          {t("actions.save")}
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {isDefaultView && onSaveAsDefault && (
           <DropdownMenu.Item onClick={handleSaveAsDefault}>
             <CloudArrowUp className="h-4 w-4" />
-            Save as system default
+            {t("views.prompts.saveAsSystemDefault.title")}
           </DropdownMenu.Item>
         )}
         {!isDefaultView && currentViewId && onUpdateExisting && (
           <DropdownMenu.Item onClick={handleUpdateExisting}>
             <CloudArrowUp className="h-4 w-4" />
-            Update "{currentViewName}"
+            {t("views.updateViewName", { view: currentViewName })}
           </DropdownMenu.Item>
         )}
         {onSaveAsNew && (
           <DropdownMenu.Item onClick={onSaveAsNew}>
             <SquarePlusMicro className="h-4 w-4" />
-            Save as new view
+            {t("views.saveAsNew")}
           </DropdownMenu.Item>
         )}
       </DropdownMenu.Content>

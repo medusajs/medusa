@@ -78,11 +78,11 @@ export const CampaignSection = ({
       ) : (
         <NoRecords
           className="h-[180px] pt-4 text-center"
-          title="Not part of a campaign"
-          message="Add this promotion to an existing campaign"
+          title={t("promotions.campaign.notPartOfCampaign.title")}
+          message={t("promotions.campaign.notPartOfCampaign.message")}
           action={{
             to: `/promotions/${id}/add-to-campaign`,
-            label: "Add to Campaign",
+            label: t("promotions.campaign.actions.addToCampaign"),
           }}
           buttonVariant="transparentIconLeft"
         />

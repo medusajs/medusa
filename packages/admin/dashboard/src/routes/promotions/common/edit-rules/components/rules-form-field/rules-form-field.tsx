@@ -306,7 +306,7 @@ export const RulesFormField = ({
                                   ref={ref}
                                   className="bg-ui-bg-base"
                                 >
-                                  <Select.Value placeholder="Select Operator" />
+                                  <Select.Value placeholder={t("promotions.fields.operator")} />
                                 </Select.Trigger>
 
                                 <Select.Content>

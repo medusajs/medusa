@@ -4,8 +4,10 @@ import { usePriceList } from "../../../hooks/api/price-lists"
 import { useProducts } from "../../../hooks/api/products"
 import { usePriceListCurrencyData } from "../common/hooks/use-price-list-currency-data"
 import { PriceListPricesEditForm } from "./components/price-list-prices-edit-form"
+import { useTranslation } from "react-i18next"
 
 export const PriceListPricesEdit = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
   const [searchParams] = useSearchParams()
   const ids = searchParams.get("ids[]")
@@ -46,10 +48,10 @@ export const PriceListPricesEdit = () => {
   return (
     <RouteFocusModal>
       <RouteFocusModal.Title asChild>
-        <span className="sr-only">Edit Prices for {price_list?.title}</span>
+        <span className="sr-only">{t("priceLists.edit.editPricesForTitle", { title: price_list?.title })}</span>
       </RouteFocusModal.Title>
       <RouteFocusModal.Description className="sr-only">
-        Update prices for products in the price list
+        {t("priceLists.edit.editPricesForDescription")}
       </RouteFocusModal.Description>
       {ready && (
         <PriceListPricesEditForm

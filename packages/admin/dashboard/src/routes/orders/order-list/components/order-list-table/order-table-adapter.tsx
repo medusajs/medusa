@@ -10,11 +10,12 @@ import { useTranslation } from "react-i18next"
 import { useRegions, useSalesChannels } from "../../../../../hooks/api"
 import { createDataTableFilterHelper, DataTableFilter } from "@medusajs/ui"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
+import { TFunction } from "i18next"
 
 /**
  * Create the order table adapter with all order-specific logic
  */
-export function createOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
+export function createOrderTableAdapter(t: TFunction): TableAdapter<HttpTypes.AdminOrder> {
   return createTableAdapter<HttpTypes.AdminOrder>({
     entity: "orders",
     queryPrefix: "o",
@@ -55,7 +56,7 @@ export function createOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
 
     emptyState: {
       empty: {
-        heading: "No orders found",
+        heading: t("orders.emptyOrders"),
       },
     },
   })
@@ -127,8 +128,9 @@ const useOrderTableFilters = () => {
  * Hook to get the order table adapter with filters
  */
 export function useOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
+  const { t } = useTranslation()
   const filters = useOrderTableFilters()
-  const adapter = createOrderTableAdapter()
+  const adapter = createOrderTableAdapter(t)
 
   // Add dynamic filters to the adapter
   return {
