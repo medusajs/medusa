@@ -9104,6 +9104,20 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: The product's external id.
+              - type: array
+                description: The product's external id.
+                items:
+                  type: string
+                  title: external_id
+                  description: The external id's details.
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -14445,21 +14459,6 @@ components:
           type: string
           title: transaction_id
           description: The ID of the workflow execution's transaction.
-    AdminCreditStoreCreditAccountParams:
-      type: object
-      description: The details of the credits to add to the store credit account.
-      x-schemaName: AdminCreditStoreCreditAccountParams
-      required:
-        - amount
-      properties:
-        amount:
-          type: number
-          title: amount
-          description: The credits to add to the store credit account.
-        note:
-          type: string
-          title: note
-          description: An internal note with more details on the credit addition.
     AdminCurrency:
       type: object
       description: The currency's currencies.
@@ -24390,7 +24389,9 @@ components:
           items:
             allOf:
               - type: object
-                description: The entity's data.
+                description: The datum's data.
+              - type: object
+                description: The datum's data.
                 required:
                   - id
                   - translations
@@ -24398,12 +24399,58 @@ components:
                   id:
                     type: string
                     title: id
-                    description: The entity's ID.
+                    description: The datum's ID.
                   translations:
                     type: array
-                    description: The entity's translations.
+                    description: The datum's translations.
                     items:
-                      $ref: '#/components/schemas/AdminTranslation'
+                      type: object
+                      description: The translation's translations.
+                      x-schemaName: AdminTranslation
+                      required:
+                        - id
+                        - reference_id
+                        - reference
+                        - locale_code
+                        - translations
+                        - created_at
+                        - updated_at
+                        - deleted_at
+                      properties:
+                        id:
+                          type: string
+                          title: id
+                          description: The translation's ID.
+                        reference_id:
+                          type: string
+                          title: reference_id
+                          description: The translation's reference id.
+                        reference:
+                          type: string
+                          title: reference
+                          description: The translation's reference.
+                        locale_code:
+                          type: string
+                          title: locale_code
+                          description: The translation's locale code.
+                        translations:
+                          type: object
+                          description: The translation's translations.
+                        created_at:
+                          type: string
+                          format: date-time
+                          title: created_at
+                          description: The translation's created at.
+                        updated_at:
+                          type: string
+                          format: date-time
+                          title: updated_at
+                          description: The translation's updated at.
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          title: deleted_at
+                          description: The translation's deleted at.
         count:
           type: number
           title: count
@@ -33824,26 +33871,6 @@ components:
           type: boolean
           title: insufficient_inventory
           description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
-    StoreClaimStoreCreditAccountParams:
-      type: object
-      description: The details of claiming the credit.
-      x-schemaName: StoreClaimStoreCreditAccountParams
-      required:
-        - code
-      properties:
-        code:
-          type: string
-          title: code
-          description: The code of the store credit account to claim.
-    StoreClaimStoreCreditAccountResponse:
-      type: object
-      description: The claimed store credit account's details.
-      x-schemaName: StoreClaimStoreCreditAccountResponse
-      required:
-        - store_credit_account
-      properties:
-        store_credit_account:
-          $ref: '#/components/schemas/StoreStoreCreditAccount'
     StoreCollection:
       type: object
       description: The collection's details.

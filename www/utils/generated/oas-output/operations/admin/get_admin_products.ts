@@ -1029,6 +1029,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted products.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: The product's external id.
+ *         - type: array
+ *           description: The product's external id.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: The external id's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -25500,6 +25500,13 @@ paths:
                 metadata:
                   type: object
                   description: The invite's metadata. Can be custom data in key-value pairs.
+                roles:
+                  type: array
+                  description: The invite's roles.
+                  items:
+                    type: string
+                    title: roles
+                    description: The role's roles.
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -39915,6 +39922,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted products.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: The product's external id.
+              - type: array
+                description: The product's external id.
+                items:
+                  type: string
+                  title: external_id
+                  description: The external id's details.
       security:
         - api_token: []
         - cookie_auth: []
@@ -40880,6 +40901,20 @@ paths:
                   type: string
                   title: price_list_id
                   description: A price list ID.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: The product's external id.
+              - type: array
+                description: The product's external id.
+                items:
+                  type: string
+                  title: external_id
+                  description: The external id's details.
       security:
         - api_token: []
         - cookie_auth: []
@@ -64122,6 +64157,7 @@ paths:
             .then(({ created, updated, deleted }) => {
               console.log(created, updated, deleted)
             })
+            ```
         - lang: Shell
           label: cURL
           source: |-
@@ -65363,53 +65399,6 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
-  /admin/users/{id}/roles/{role_id}:
-    delete:
-      operationId: DeleteUsersIdRolesRole_id
-      summary: Remove Role from User
-      description: Remove a Role from a user.
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The user's ID.
-          required: true
-          schema:
-            type: string
-        - name: role_id
-          in: path
-          description: The user's role id.
-          required: true
-          schema:
-            type: string
-      security:
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X DELETE '{backend_url}/admin/users/{id}/roles/{role_id}' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-workflow: removeUserRolesWorkflow
-      x-events: []
   /admin/views/{entity}/columns:
     get:
       operationId: GetViewsEntityColumns
@@ -71296,21 +71285,6 @@ components:
           type: string
           title: transaction_id
           description: The ID of the workflow execution's transaction.
-    AdminCreditStoreCreditAccountParams:
-      type: object
-      description: The details of the credits to add to the store credit account.
-      x-schemaName: AdminCreditStoreCreditAccountParams
-      required:
-        - amount
-      properties:
-        amount:
-          type: number
-          title: amount
-          description: The credits to add to the store credit account.
-        note:
-          type: string
-          title: note
-          description: An internal note with more details on the credit addition.
     AdminCurrency:
       type: object
       description: The currency's currencies.
@@ -81241,7 +81215,9 @@ components:
           items:
             allOf:
               - type: object
-                description: The entity's data.
+                description: The datum's data.
+              - type: object
+                description: The datum's data.
                 required:
                   - id
                   - translations
@@ -81249,12 +81225,58 @@ components:
                   id:
                     type: string
                     title: id
-                    description: The entity's ID.
+                    description: The datum's ID.
                   translations:
                     type: array
-                    description: The entity's translations.
+                    description: The datum's translations.
                     items:
-                      $ref: '#/components/schemas/AdminTranslation'
+                      type: object
+                      description: The translation's translations.
+                      x-schemaName: AdminTranslation
+                      required:
+                        - id
+                        - reference_id
+                        - reference
+                        - locale_code
+                        - translations
+                        - created_at
+                        - updated_at
+                        - deleted_at
+                      properties:
+                        id:
+                          type: string
+                          title: id
+                          description: The translation's ID.
+                        reference_id:
+                          type: string
+                          title: reference_id
+                          description: The translation's reference id.
+                        reference:
+                          type: string
+                          title: reference
+                          description: The translation's reference.
+                        locale_code:
+                          type: string
+                          title: locale_code
+                          description: The translation's locale code.
+                        translations:
+                          type: object
+                          description: The translation's translations.
+                        created_at:
+                          type: string
+                          format: date-time
+                          title: created_at
+                          description: The translation's created at.
+                        updated_at:
+                          type: string
+                          format: date-time
+                          title: updated_at
+                          description: The translation's updated at.
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          title: deleted_at
+                          description: The translation's deleted at.
         count:
           type: number
           title: count
@@ -90675,26 +90697,6 @@ components:
           type: boolean
           title: insufficient_inventory
           description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
-    StoreClaimStoreCreditAccountParams:
-      type: object
-      description: The details of claiming the credit.
-      x-schemaName: StoreClaimStoreCreditAccountParams
-      required:
-        - code
-      properties:
-        code:
-          type: string
-          title: code
-          description: The code of the store credit account to claim.
-    StoreClaimStoreCreditAccountResponse:
-      type: object
-      description: The claimed store credit account's details.
-      x-schemaName: StoreClaimStoreCreditAccountResponse
-      required:
-        - store_credit_account
-      properties:
-        store_credit_account:
-          $ref: '#/components/schemas/StoreStoreCreditAccount'
     StoreCollection:
       type: object
       description: The collection's details.
