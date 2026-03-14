@@ -5,6 +5,8 @@ sidebar_description: Add order items to a claim as claim items.
 tags:
   - order
   - workflow
+  - promotion
+  - query
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -19,7 +21,7 @@ This workflow adds order items to a claim as claim items. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to add items to a claim
 for an order in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/claim/claim-item.ts#L112" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/order/workflows/claim/claim-item.ts#L115" />
 
 ## Examples
 
@@ -144,7 +146,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"orderClaimItemWorkflow","steps":[{"type":"step","name":"orderClaimItemValidationStep","description":"This step validates that claim items can be added to a claim. If the\norder or claim is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimItemValidationStep/page.mdx","depth":1},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":2},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"orderClaimItemWorkflow","steps":[{"type":"step","name":"orderClaimItemValidationStep","description":"This step validates that claim items can be added to a claim. If the\norder or claim is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimItemValidationStep/page.mdx","depth":1},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":2},{"type":"workflow","name":"computeAdjustmentsForPreviewWorkflow","description":"Compute adjustments for an order edit, exchange, claim, or return.","link":"../core_flows.Order.Workflows_Order.computeAdjustmentsForPreviewWorkflow/page.mdx","depth":3},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":4}]}} />
 
 ## Input
 

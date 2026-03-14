@@ -8,6 +8,8 @@ tags:
   - customer
   - inventory
   - tax
+  - promotion
+  - query
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -22,7 +24,7 @@ This workflow adds outbound (or new) items to a claim. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to add outbound items to a claim
 in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/claim/claim-add-new-item.ts#L111" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/order/workflows/claim/claim-add-new-item.ts#L114" />
 
 ## Examples
 
@@ -147,7 +149,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"orderClaimAddNewItemWorkflow","steps":[{"type":"step","name":"orderClaimAddNewItemValidationStep","description":"This step validates that new items can be added to the claim. If the\norder or claim is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimAddNewItemValidationStep/page.mdx","depth":1},{"type":"workflow","name":"addOrderLineItemsWorkflow","description":"Add line items to an order.","link":"../core_flows.Order.Workflows_Order.addOrderLineItemsWorkflow/page.mdx","depth":2},{"type":"workflow","name":"updateOrderTaxLinesWorkflow","description":"Update the tax lines of items and shipping methods in an order.","link":"../core_flows.Order.Workflows_Order.updateOrderTaxLinesWorkflow/page.mdx","depth":3},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":4},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":5}]}} />
+<WorkflowDiagram workflow={{"name":"orderClaimAddNewItemWorkflow","steps":[{"type":"step","name":"orderClaimAddNewItemValidationStep","description":"This step validates that new items can be added to the claim. If the\norder or claim is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimAddNewItemValidationStep/page.mdx","depth":1},{"type":"workflow","name":"addOrderLineItemsWorkflow","description":"Add line items to an order.","link":"../core_flows.Order.Workflows_Order.addOrderLineItemsWorkflow/page.mdx","depth":2},{"type":"workflow","name":"updateOrderTaxLinesWorkflow","description":"Update the tax lines of items and shipping methods in an order.","link":"../core_flows.Order.Workflows_Order.updateOrderTaxLinesWorkflow/page.mdx","depth":3},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":4},{"type":"workflow","name":"computeAdjustmentsForPreviewWorkflow","description":"Compute adjustments for an order edit, exchange, claim, or return.","link":"../core_flows.Order.Workflows_Order.computeAdjustmentsForPreviewWorkflow/page.mdx","depth":5},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":6}]}} />
 
 ## Input
 
