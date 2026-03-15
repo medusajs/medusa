@@ -1,5 +1,12 @@
 # @medusajs/inventory-next
 
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
 ## 2.13.3
 
 ### Patch Changes

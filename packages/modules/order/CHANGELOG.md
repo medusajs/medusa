@@ -1,5 +1,14 @@
 # @medusajs/order
 
+## 2.13.4
+
+### Patch Changes
+
+- [#14797](https://github.com/medusajs/medusa/pull/14797) [`c191ea5ede6e9b35a2764093ed00057e200e800f`](https://github.com/medusajs/medusa/commit/c191ea5ede6e9b35a2764093ed00057e200e800f) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(order,payment): make return and refund reason translatable
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
 ## 2.13.3
 
 ### Patch Changes
