@@ -649,13 +649,6 @@ post:
             metadata:
               type: object
               description: The invite's metadata. Can be custom data in key-value pairs.
-            roles:
-              type: array
-              description: The invite's roles.
-              items:
-                type: string
-                title: roles
-                description: The role's roles.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK

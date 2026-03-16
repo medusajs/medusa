@@ -1234,13 +1234,13 @@ get:
         oneOf:
           - type: string
             title: external_id
-            description: The product's external id.
+            description: Filter by the product's external ID.
           - type: array
-            description: The product's external id.
+            description: Filter by external IDs.
             items:
               type: string
               title: external_id
-              description: The external id's details.
+              description: The external ID.
   security:
     - api_token: []
     - cookie_auth: []

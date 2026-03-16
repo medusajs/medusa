@@ -768,13 +768,13 @@
  *       oneOf:
  *         - type: string
  *           title: external_id
- *           description: The product's external id.
+ *           description: Filter by a product's external ID.
  *         - type: array
- *           description: The product's external id.
+ *           description: Filter by external IDs.
  *           items:
  *             type: string
  *             title: external_id
- *             description: The external id's details.
+ *             description: The external ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
