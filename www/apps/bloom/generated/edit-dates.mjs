@@ -6,7 +6,7 @@ export const generatedEditDates = {
   "app/starters/page.mdx": "2026-02-24T08:58:17.126Z",
   "app/credits-and-plans/page.mdx": "2026-02-24T08:53:20.566Z",
   "app/manage-projects/page.mdx": "2026-02-24T08:55:18.423Z",
-  "app/going-live/page.mdx": "2026-02-24T08:54:26.761Z",
+  "app/going-live/page.mdx": "2026-03-16T13:20:13.286Z",
   "app/custom-domains/page.mdx": "2026-02-13T14:54:19.235Z",
   "app/profile-management/page.mdx": "2026-02-13T14:54:19.241Z",
   "app/organization-management/page.mdx": "2026-02-16T08:12:50.174Z",
@@ -42,6 +42,6 @@ export const generatedEditDates = {
   "app/organization-management/team/page.mdx": "2026-02-18T10:24:38.994Z",
   "app/features/team-collaboration/page.mdx": "2026-02-17T14:30:51.065Z",
   "app/preview-tabs/page.mdx": "2026-02-24T08:56:07.482Z",
-  "app/developers/_email-templates/page.mdx": "2026-02-16T15:35:31.906Z",
-  "app/features/_emails/page.mdx": "2026-02-18T13:53:16.758Z"
+  "app/developers/email-templates/page.mdx": "2026-03-16T13:19:23.033Z",
+  "app/features/emails/page.mdx": "2026-03-16T13:10:48.784Z"
 }
