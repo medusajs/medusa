@@ -4863,6 +4863,15 @@
             "refundAmount": {
               "type": "string"
             },
+            "carryOverPromotion": {
+              "type": "string"
+            },
+            "carryOverPromotionHint": {
+              "type": "string"
+            },
+            "carryOverPromotionTooltip": {
+              "type": "string"
+            },
             "activeChangeError": {
               "type": "string"
             },
@@ -4944,6 +4953,9 @@
             "outboundShipping",
             "outboundShippingHint",
             "refundAmount",
+            "carryOverPromotion",
+            "carryOverPromotionHint",
+            "carryOverPromotionTooltip",
             "activeChangeError",
             "actions",
             "cancel",

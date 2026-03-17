@@ -1,10 +1,13 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { IPromotionModuleService } from "@medusajs/types"
 import {
   ClaimReason,
   ClaimType,
   ContainerRegistrationKeys,
   Modules,
   ProductStatus,
+  PromotionStatus,
+  PromotionType,
   RuleOperator,
 } from "@medusajs/utils"
 import {
@@ -1271,6 +1274,464 @@ medusaIntegrationTestRunner({
           expect(updatedReturnItems).toHaveLength(0)
           expect(updatedReturnShippingMethods).toHaveLength(0)
         })
+      })
+    })
+
+    describe("Claim adjustments", () => {
+      let appliedPromotion
+      let promotionModule: IPromotionModuleService
+      let orderModule
+      let remoteLink
+      let orderWithPromotion
+      let productForAdjustmentTest
+
+      beforeEach(async () => {
+        const container = getContainer()
+        promotionModule = container.resolve(Modules.PROMOTION)
+        orderModule = container.resolve(Modules.ORDER)
+        remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+        productForAdjustmentTest = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Product for adjustment test",
+              status: ProductStatus.PUBLISHED,
+              shipping_profile_id: shippingProfile.id,
+              options: [{ title: "size", values: ["large", "small"] }],
+              variants: [
+                {
+                  title: "Test variant",
+                  sku: "test-variant-adjustment-claim",
+                  manage_inventory: false,
+                  options: { size: "large" },
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 12,
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        appliedPromotion = await promotionModule.createPromotions({
+          code: "PROMOTION_APPLIED_CLAIM",
+          type: PromotionType.STANDARD,
+          status: PromotionStatus.ACTIVE,
+          application_method: {
+            type: "percentage",
+            target_type: "order",
+            allocation: "each",
+            value: 10,
+            max_quantity: 5,
+            currency_code: "usd",
+            target_rules: [],
+          },
+        })
+
+        await remoteLink.create([
+          {
+            [Modules.SALES_CHANNEL]: {
+              sales_channel_id: (
+                await api.get("/admin/sales-channels", adminHeaders)
+              ).data.sales_channels[0].id,
+            },
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+          },
+        ])
+
+        // @ts-ignore
+        orderWithPromotion = await orderModule.createOrders({
+          email: "foo@bar.com",
+          region_id: (
+            await api.get("/admin/regions", adminHeaders)
+          ).data.regions[0].id,
+          sales_channel_id: (
+            await api.get("/admin/sales-channels", adminHeaders)
+          ).data.sales_channels[0].id,
+          items: [
+            {
+              // @ts-ignore
+              id: "item-1",
+              title: "Custom Item",
+              quantity: 1,
+              unit_price: 10,
+            },
+          ],
+          shipping_address: {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+            phone: "12345",
+          },
+          billing_address: {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+          },
+          currency_code: "usd",
+        })
+
+        await orderModule.createOrderLineItemTaxLines(orderWithPromotion.id, [
+          {
+            // @ts-ignore
+            item_id: "item-1",
+            code: "standard",
+            rate: 10,
+            description: "tax-1",
+            provider_id: "system",
+            total: 1.2,
+            subtotal: 1.2,
+          },
+        ])
+
+        await orderModule.createOrderLineItemAdjustments([
+          {
+            version: 1,
+            code: appliedPromotion.code!,
+            amount: 1,
+            item_id: "item-1",
+            promotion_id: appliedPromotion.id,
+          },
+        ])
+
+        await remoteLink.create({
+          [Modules.ORDER]: { order_id: orderWithPromotion.id },
+          [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+        })
+
+        await api.post(
+          `/admin/orders/${orderWithPromotion.id}/fulfillments`,
+          {
+            items: [
+              {
+                id: orderWithPromotion.items[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+      })
+
+      it("should enable carry_over_promotions flag and apply promotions to outbound items (flag disabled before request)", async () => {
+        let result = await api.post(
+          "/admin/claims",
+          {
+            order_id: orderWithPromotion.id,
+            type: ClaimType.REPLACE,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const claimId = result.data.claim.id
+
+        await api.post(
+          `/admin/claims/${claimId}/inbound/items`,
+          {
+            items: [
+              {
+                id: orderWithPromotion.items[0].id,
+                reason_id: returnReason.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/claims/${claimId}/outbound/items`,
+          {
+            items: [
+              {
+                variant_id: productForAdjustmentTest.variants[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        const orderChange = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order.order_change
+
+        const orderChangeId = orderChange.id
+
+        let orderPreview = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderPreview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [],
+            }),
+          ])
+        )
+
+        await api.post(
+          `/admin/order-changes/${orderChangeId}`,
+          {
+            carry_over_promotions: true,
+          },
+          adminHeaders
+        )
+
+        orderPreview = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderPreview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1.2,
+                }),
+              ],
+            }),
+          ])
+        )
+
+        await api.post(
+          `/admin/order-changes/${orderChangeId}`,
+          {
+            carry_over_promotions: false,
+          },
+          adminHeaders
+        )
+
+        orderPreview = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderPreview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [],
+            }),
+          ])
+        )
+
+        await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+        const finalOrder = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(finalOrder.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [],
+            }),
+          ])
+        )
+      })
+
+      it("should enable carry_over_promotions flag and apply promotions to outbound items (flag enabled before request)", async () => {
+        let result = await api.post(
+          "/admin/claims",
+          {
+            order_id: orderWithPromotion.id,
+            type: ClaimType.REPLACE,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const claimId = result.data.claim.id
+
+        await api.post(
+          `/admin/claims/${claimId}/inbound/items`,
+          {
+            items: [
+              {
+                id: orderWithPromotion.items[0].id,
+                reason_id: returnReason.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/claims/${claimId}/outbound/items`,
+          {
+            items: [
+              {
+                variant_id: productForAdjustmentTest.variants[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        const orderChange = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order.order_change
+
+        const orderChangeId = orderChange.id
+
+        let orderPreview = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderPreview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [],
+            }),
+          ])
+        )
+
+        await api.post(
+          `/admin/order-changes/${orderChangeId}`,
+          {
+            carry_over_promotions: true,
+          },
+          adminHeaders
+        )
+
+        orderPreview = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}/preview`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderPreview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1.2,
+                }),
+              ],
+            }),
+          ])
+        )
+
+        await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+        const finalOrder = (
+          await api.get(
+            `/admin/orders/${orderWithPromotion.id}`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(finalOrder.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              variant_id: productForAdjustmentTest.variants[0].id,
+              adjustments: [
+                expect.objectContaining({
+                  amount: 1.2,
+                }),
+              ],
+            }),
+          ])
+        )
       })
     })
 

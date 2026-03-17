@@ -4,6 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
   ReturnDTO,
 } from "@medusajs/framework/types"
 import {
@@ -31,7 +32,9 @@ import {
   throwIfManagedItemsNotStockedAtReturnLocation,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 import { refreshClaimShippingWorkflow } from "./refresh-shipping"
 
 /**
@@ -175,9 +178,8 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
-        "id",
+        ...fieldsToComputeAdjustmentsForPreview,
         "status",
-        "items.*",
         "items.variant.manage_inventory",
         "items.variant.inventory_items.inventory_item_id",
         "items.variant.inventory_items.inventory.location_levels.location_id",
@@ -189,7 +191,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status", "canceled_at", "confirmed_at", "declined_at"],
+      fields: [
+        "id",
+        "status",
+        "version",
+        "claim_id",
+        "canceled_at",
+        "confirmed_at",
+        "declined_at",
+        "carry_over_promotions",
+      ],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -302,6 +313,20 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     const refreshArgs = transform(

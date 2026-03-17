@@ -4,18 +4,28 @@ import {
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type ValidateUserRolePermissionsStepInput = {
   actor_id: string
   actor?: string
   role_ids: string[]
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const validateUserRolePermissionsStepId =
   "validate-user-role-permissions"
 
 /**
  * Validates that the actor has all the policies from the roles being assigned.
  * A user can only assign roles whose policies they themselves have.
+ * @ignore
+ * @featureFlag rbac
  */
 export const validateUserRolePermissionsStep = createStep(
   validateUserRolePermissionsStepId,
