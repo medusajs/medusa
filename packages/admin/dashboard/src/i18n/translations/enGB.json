@@ -475,7 +475,7 @@
       },
       "columns": {
         "title": "Columns",
-        "description": "Customize the exported data to meet specific needs"
+        "description": "Customise the exported data to meet specific needs"
       }
     },
     "import": {
@@ -598,7 +598,7 @@
       "description": {
         "label": "Description",
         "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines.",
-        "placeholder": "A warm and cozy jacket"
+        "placeholder": "A warm and cosy jacket"
       },
       "discountable": {
         "label": "Discountable",
@@ -653,7 +653,7 @@
       },
       "variants": {
         "label": "Product variants",
-        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+        "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend."
       },
       "mid_code": {
         "label": "Mid code"
@@ -720,16 +720,16 @@
     "organization": {
       "header": "Organise",
       "edit": {
-        "header": "Edit Organization",
+        "header": "Edit Organisation",
         "toasts": {
-          "success": "Successfully updated the organization of {{title}}."
+          "success": "Successfully updated the organisation of {{title}}."
         }
       }
     },
     "stock": {
       "heading": "Manage product stock levels and locations",
       "description": "Update the stocked inventory levels for all of the product's variants.",
-      "loading": "Hang on this may take a moment...",
+      "loading": "Hang on, this may take a moment...",
       "tooltips": {
         "alreadyManaged": "This inventory item is already editable under {{title}}.",
         "alreadyManagedWithSku": "This inventory item is already editable under {{title}} ({{sku}})."
@@ -949,7 +949,7 @@
     "groups": {
       "label": "Customer groups",
       "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
-      "removeMany": "Are you sure you want to remove customer from following customer groups: {{groups}}?",
+      "removeMany": "Are you sure you want to remove the customer from the following customer groups: {{groups}}?",
       "alreadyAddedTooltip": "The customer is already in this customer group.",
       "list": {
         "noRecordsMessage": "This customer doesn't belong to any group."
@@ -1085,7 +1085,7 @@
     "exchange": "Exchange",
     "return": "Return",
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
-    "orderCanceled": "Order canceled successfully",
+    "orderCanceled": "Order cancelled successfully",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "list": {
       "noRecordsMessage": "Your orders will show up here."
@@ -1108,7 +1108,7 @@
       "completed": "Completed",
       "draft": "Draft",
       "archived": "Archived",
-      "canceled": "Canceled",
+      "canceled": "Cancelled",
       "requires_action": "Requires action"
     },
     "summary": {
@@ -1148,14 +1148,14 @@
       "statusTitle": "Payment Status",
       "status": {
         "notPaid": "Not paid",
-        "authorized": "Authorized",
-        "partiallyAuthorized": "Partially authorized",
+        "authorized": "Authorised",
+        "partiallyAuthorized": "Partially authorised",
         "awaiting": "Awaiting",
         "captured": "Captured",
         "partiallyRefunded": "Partially refunded",
         "partiallyCaptured": "Partially captured",
         "refunded": "Refunded",
-        "canceled": "Canceled",
+        "canceled": "Cancelled",
         "requiresAction": "Requires action"
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
@@ -1184,9 +1184,9 @@
       "create": "Edit Order",
       "currentTotal": "Current total",
       "noteHint": "Add an internal note for the edit",
-      "cancelSuccessToast": "Order edit canceled",
+      "cancelSuccessToast": "Order edit cancelled",
       "createSuccessToast": "Order edit request created",
-      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
+      "activeChangeError": "There is already an active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
       "panel": {
         "title": "Order edit requested",
         "titlePending": "Order edit pending"
@@ -1196,7 +1196,7 @@
         "confirmedSuccessfully": "Order edit confirmed"
       },
       "validation": {
-        "quantityLowerThanFulfillment": "Cannot set quantity to be less then or equal to fulfiled quantity"
+        "quantityLowerThanFulfillment": "Cannot set quantity to be less than or equal to fulfilled quantity"
       }
     },
     "edit": {
@@ -1226,7 +1226,7 @@
       "estDifference": "Estimated difference",
       "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
-      "reasonHint": "Choose why the customer want to return items.",
+      "reasonHint": "Choose why the customer wants to return items.",
       "note": "Note",
       "noInventoryLevel": "No inventory level",
       "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
@@ -1271,11 +1271,11 @@
           "success": "Return received successfully.",
           "errorLargeValue": "Quantity is greater than requested item quantity.",
           "errorNegativeValue": "Quantity cannot be a negative value.",
-          "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
+          "errorLargeDamagedValue": "Damaged items quantity + non-damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non-damaged items."
         }
       },
       "toast": {
-        "canceledSuccessfully": "Return canceled successfully",
+        "canceledSuccessfully": "Return cancelled successfully",
         "confirmedSuccessfully": "Return confirmed successfully"
       },
       "panel": {
@@ -1300,7 +1300,7 @@
       "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
       "actions": {
         "cancelClaim": {
-          "successToast": "Claim was successfully canceled."
+          "successToast": "Claim was successfully cancelled."
         }
       },
       "cancel": {
@@ -1311,7 +1311,7 @@
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       },
       "toast": {
-        "canceledSuccessfully": "Claim canceled successfully",
+        "canceledSuccessfully": "Claim cancelled successfully",
         "confirmedSuccessfully": "Claim confirmed successfully"
       },
       "panel": {
@@ -1336,7 +1336,7 @@
       "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
       "actions": {
         "cancelExchange": {
-          "successToast": "Exchange was successfully canceled."
+          "successToast": "Exchange was successfully cancelled."
         }
       },
       "cancel": {
@@ -1347,7 +1347,7 @@
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       },
       "toast": {
-        "canceledSuccessfully": "Exchange canceled successfully",
+        "canceledSuccessfully": "Exchange cancelled successfully",
         "confirmedSuccessfully": "Exchange confirmed successfully"
       },
       "panel": {
@@ -1390,8 +1390,8 @@
       "cancelWarning": "You are about to cancel a fulfilment. This action cannot be undone.",
       "markAsDeliveredWarning": "You are about to mark fulfilment as delivered. This action cannot be undone.",
       "differentOptionSelected": "The selected shipping option is different from the one selected by the customer.",
-      "disabledItemTooltip": "The shipping option you have selected don’t allow fulfilment of this item",
-      "unfulfilledItems": "Unfulfiled Items",
+      "disabledItemTooltip": "The shipping option you have selected doesn’t allow fulfilment of this item",
+      "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfilment status",
       "statusTitle": "Fulfilment Status",
       "fulfillItems": "Fulfil items",
@@ -1417,21 +1417,21 @@
         "noLocation": "Location is required"
       },
       "status": {
-        "notFulfilled": "Not fulfiled",
-        "partiallyFulfilled": "Partially fulfiled",
-        "fulfilled": "Fulfiled",
+        "notFulfilled": "Not fulfilled",
+        "partiallyFulfilled": "Partially fulfilled",
+        "fulfilled": "Fulfilled",
         "partiallyShipped": "Partially shipped",
         "shipped": "Shipped",
         "delivered": "Delivered",
         "partiallyDelivered": "Partially delivered",
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
-        "canceled": "Canceled",
+        "canceled": "Cancelled",
         "requiresAction": "Requires action"
       },
       "toast": {
         "created": "Fulfilment created successfully",
-        "canceled": "Fulfilment successfully canceled",
+        "canceled": "Fulfilment successfully cancelled",
         "fulfillmentShipped": "Cannot cancel an already shipped fulfilment",
         "fulfillmentDelivered": "Fulfilment marked as delivered successfully",
         "fulfillmentPickedUp": "Fulfilment marked as picked up successfully"
@@ -1480,17 +1480,17 @@
           "fromSalesChannel": "from {{salesChannel}}"
         },
         "canceled": {
-          "title": "Order canceled"
+          "title": "Order cancelled"
         },
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
-          "canceled": "Payment canceled",
+          "canceled": "Payment cancelled",
           "refunded": "Payment refunded"
         },
         "fulfillment": {
-          "created": "Items fulfiled",
-          "canceled": "Fulfilment canceled",
+          "created": "Items fulfilled",
+          "canceled": "Fulfilment cancelled",
           "shipped": "Items shipped",
           "delivered": "Items delivered",
           "items_one": "{{count}} item",
@@ -1498,7 +1498,7 @@
         },
         "return": {
           "created": "Return #{{returnId}} requested",
-          "canceled": "Return #{{returnId}} canceled",
+          "canceled": "Return #{{returnId}} cancelled",
           "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"
@@ -1509,13 +1509,13 @@
         },
         "claim": {
           "created": "Claim #{{claimId}} requested",
-          "canceled": "Claim #{{claimId}} canceled",
+          "canceled": "Claim #{{claimId}} cancelled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
         "exchange": {
           "created": "Exchange #{{exchangeId}} requested",
-          "canceled": "Exchange #{{exchangeId}} canceled",
+          "canceled": "Exchange #{{exchangeId}} cancelled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
@@ -2511,7 +2511,7 @@
       "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
     },
     "toast": {
-      "edit": "Profiles changes saved"
+      "edit": "Profile changes saved"
     }
   },
   "users": {
@@ -2871,12 +2871,12 @@
   "returnReasons": {
     "domain": "Return Reasons",
     "subtitle": "Manage reasons for returned items.",
-    "calloutHint": "Manage the reasons to categorize returns.",
+    "calloutHint": "Manage the reasons to categorise returns.",
     "editReason": "Edit Return Reason",
     "create": {
       "header": "Add Return Reason",
       "subtitle": "Specify the most common reasons for returns.",
-      "hint": "Create a new return reason to categorize returns.",
+      "hint": "Create a new return reason to categorise returns.",
       "successToast": "Return reason {{label}} was successfully created."
     },
     "edit": {
@@ -2907,12 +2907,12 @@
   "refundReasons": {
     "domain": "Refund Reasons",
     "subtitle": "Manage reasons for issuing refunds.",
-    "calloutHint": "Manage the reasons to categorize refunds.",
+    "calloutHint": "Manage the reasons to categorise refunds.",
     "editReason": "Edit Refund Reason",
     "create": {
       "header": "Add Refund Reason",
       "subtitle": "Specify the most common reasons for refunds.",
-      "hint": "Create a new refund reason to categorize refunds.",
+      "hint": "Create a new refund reason to categorise refunds.",
       "successToast": "Refund reason {{label}} was successfully created."
     },
     "edit": {
@@ -2980,8 +2980,8 @@
     "successfulRequestTitle": "Successfully sent you an email",
     "successfulRequest": "We've sent you an email which you can use to reset your password. Check your spam folder if you haven't received it after a few minutes.",
     "successfulResetTitle": "Password reset successful",
-    "successfulReset": "Please login in on the login page.",
-    "passwordMismatch": "Passwords do no match",
+    "successfulReset": "Please log in on the login page.",
+    "passwordMismatch": "Passwords do not match",
     "invalidLinkTitle": "Your reset link is invalid",
     "invalidLinkHint": "Try resetting your password again."
   },
@@ -3036,7 +3036,7 @@
     "subtitle": "Organise your shipping options into types.",
     "create": {
       "header": "Create Shipping Option Type",
-      "hint": "Create a new shipping option type to categorize your shipping options.",
+      "hint": "Create a new shipping option type to categorise your shipping options.",
       "successToast": "Shipping option type {{label}} was successfully created."
     },
     "edit": {
@@ -3058,7 +3058,7 @@
     "subtitle": "Organise your products into types.",
     "create": {
       "header": "Create Product Type",
-      "hint": "Create a new product type to categorize your products.",
+      "hint": "Create a new product type to categorise your products.",
       "successToast": "Product type {{value}} was successfully created."
     },
     "edit": {
@@ -3077,7 +3077,7 @@
     "domain": "Product Tags",
     "create": {
       "header": "Create Product Tag",
-      "subtitle": "Create a new product tag to categorize your products.",
+      "subtitle": "Create a new product tag to categorise your products.",
       "successToast": "Product tag {{value}} was successfully created."
     },
     "edit": {
