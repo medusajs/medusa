@@ -11,6 +11,10 @@ import {
 import RbacFeatureFlag from "../../../../feature-flags/rbac"
 import { AdminCreateRbacPolicyType } from "./validators"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -32,6 +36,10 @@ export const GET = async (
   })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateRbacPolicyType>,
   res: MedusaResponse

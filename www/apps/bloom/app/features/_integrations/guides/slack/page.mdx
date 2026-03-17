@@ -1,0 +1,122 @@
+import { InProductAction, getOsShortcut } from "docs-ui"
+
+export const metadata = {
+  title: `Slack Integration`,
+}
+
+# {metadata.title}
+
+Add [Slack](https://slack.com/) to get notifications about orders, customers, and store events in your Slack workspace.
+
+Slack notifications keep your team updated on important events without checking the admin dashboard constantly. Bloom sets it up for you in minutes.
+
+{/* TODO: Add screenshot of Slack notification showing order confirmation */}
+
+## Prerequisites
+
+Before adding Slack, you need a [Slack workspace](https://slack.com/) and a webhook URL.
+
+To get your Slack webhook URL:
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app (or use an existing one).
+2. In your app settings, click "Incoming Webhooks" in the sidebar.
+3. Turn on "Activate Incoming Webhooks."
+4. Click "Add New Webhook to Workspace."
+5. Choose the channel where you want to receive notifications.
+6. Copy the webhook URL.
+
+Webhook URLs start with `https://hooks.slack.com/services/`. You'll need this URL when Bloom asks for it.
+
+{/* TODO: Add screenshot of Slack webhook URL in app settings */}
+
+---
+
+## Add Slack to Your Store
+
+To add Slack using the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "integrations" }}>Integrations</InProductAction> panel:
+
+1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
+2. Select "Integrations" to open the Integrations panel.
+2. Find the Slack card in the available integrations.
+3. Click "Build" on the Slack card.
+
+Bloom will start setting up Slack and ask you questions about which notifications you want to receive.
+
+{/* TODO: Add screenshot of Slack card with "Build" button highlighted */}
+
+---
+
+## Answer Bloom's Questions
+
+After you click "Build," Bloom asks questions to configure Slack notifications, such as:
+
+1. **Do you have a Slack app with incoming webhooks enabled?** - Answer "yes" if you completed the prerequisites.
+1. **Which events do you want to receive notifications for?** - List the events you want (like "new orders, order cancellations, and new customer signups").
+2. **Do you have a Slack app with incoming webhooks enabled?** - Answer "yes" if you completed the prerequisites.
+3. **What's your Slack webhook URL?** - Paste the webhook URL you copied from your Slack app settings.
+
+Bloom will set up Slack to send notifications to your workspace when these events occur.
+
+{/* TODO: Add screenshot of Bloom asking for webhook URL */}
+
+---
+
+## Enter Your Slack Webhook URL
+
+When Bloom asks for your webhook URL, paste the full URL you copied from your Slack app settings:
+
+1. Make sure you copied the entire URL (starts with `https://hooks.slack.com/services/`).
+2. Paste it exactly as shown, with no extra spaces.
+3. Bloom will verify the webhook works before completing the setup.
+
+<Note title="Helpful Links">
+
+Can't find your webhook URL? Check the [Incoming Webhooks Guide](https://api.slack.com/messaging/webhooks) in Slack's documentation for step-by-step instructions.
+
+</Note>
+
+{/* TODO: Add screenshot of entering webhook URL */}
+
+---
+
+## Test Slack
+
+After Bloom finishes the setup, test Slack notifications in your preview store:
+
+1. Open your store preview.
+2. Trigger an event you configured (like placing an order).
+3. Check your Slack channel for the notification.
+4. Verify the notification includes the correct details (order number, customer name, etc.).
+
+If the notification appears in your Slack channel with accurate information, Slack is working correctly.
+
+{/* TODO: Add screenshot of test notification in Slack channel */}
+
+---
+
+## Publish Slack Integration
+
+Once you've tested Slack and notifications are working correctly, publish your store to make it live.
+
+To publish your Slack integration:
+
+1. Click the "Publish" button at the top right of your project.
+2. If you haven't published before, Bloom asks for details about your store.
+3. Your Slack webhook URL works for both test and live environments, so you don't need to enter new credentials.
+4. Click "Publish" to make your changes live.
+
+Your Slack integration is now active on your live store. You'll receive notifications for real customer events.
+
+<Note>
+
+**Production Notifications:** Make sure your team is ready to receive live notifications. You might want to create a separate channel for production notifications to keep them organized.
+
+</Note>
+
+{/* TODO: Add screenshot of publish dialog */}
+
+---
+
+## Need Help?
+
+If you face any issues while adding Slack to your Bloom store, [contact support or submit feedback](../../../../help-and-feedback/page.mdx).

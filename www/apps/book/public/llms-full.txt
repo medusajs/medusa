@@ -2831,6 +2831,10 @@ pnpm dlx create-medusa-app@latest
 
 This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`.
 
+### Monorepo Support
+
+At the moment, `pnpm` is only supported in single-package Medusa projects. If you're using a monorepo setup, these steps may not work as expected. We recommend using `yarn` or `npm` for monorepo setups until we add support for `pnpm` in monorepos.
+
 ***
 
 ### Prerequisites
@@ -26307,7 +26311,8 @@ FROM node:20-alpine
 WORKDIR /server
 
 # Copy package files and yarn config
-COPY package.json yarn.lock .yarnrc.yml .yarn/releases ./
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases .yarn/releases
 
 # Install all dependencies using yarn
 RUN yarn install
@@ -26577,7 +26582,7 @@ docker compose run --rm medusa pnpm medusa user -e admin@example.com -p supersec
 ### npm
 
 ```bash
-docker compose run --rm medusa npx medusa user -e admin@example.com -p supersecret
+docker compose exec medusa npx medusa user -e admin@example.com -p supersecret
 ```
 
 Make sure to replace `admin@example.com` and `supersecret` with your desired email and password.
@@ -26993,23 +26998,35 @@ The following diagram illustrates Medusa's architecture including all its layers
 
 In this chapter, you'll learn how you can use AI assistants and LLMs effectively in your Medusa development.
 
+## Bloom: AI-Powered Commerce Assistant
+
+[Bloom](https://bloom.medusajs.com/) is an AI-powered commerce assistant built by Medusa to help you build, manage, and scale your ecommerce store.
+
+Bloom has the ecommerce expertise to build your store following best practices and using Medusa's rich commerce features. You can build a complete ecommerce store that has a storefront, admin dashboard, and backend with a single prompt.
+
+Bloom helps you design your store, implement custom features, integrate third-party services, and more. It's ideal for:
+
+1. **Developers:** Build showcases for business ideas, speed up store development, and focus on advanced customizations.
+2. **Side Hustlers:** Start your ecommerce journey with minimal investment.
+3. **Business Owners:** Launch your online store quickly without technical expertise.
+4. **Designers:** Build production-ready storefronts with your unique design vision.
+5. **Marketers:** Test new store concepts and campaigns rapidly.
+
+Go to [Bloom](https://bloom.medusajs.com/) to get started. You'll start with free credits to try out Bloom's features and upgrade your plan as needed.
+
+***
+
 ## Agent Skills for Medusa
 
-Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. These plugins include skills that you can use in Claude Code, or copy into other AI tools that support custom skills.
+Medusa provides [agent skills](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can use them as plugins in Claude Code, or copy them into other AI tools that support custom skills.
 
-If you use AI agents in your development workflow, our team recommends installing these plugins to enhance your development experience with Medusa.
+If you use AI agents in your development workflow, our team recommends installing these skills to enhance your development experience with Medusa.
 
-The following sections explain how to use the plugins with Claude Code or other AI agents.
-
-|Plugin|Description|Example Prompt|
-|---|---|---|
-|\`medusa-dev\`|Knowledge to help you build Medusa features, fix bugs, and more.|Implement a product reviews feature.|
-|\`ecommerce-storefront\`|Knowledge to help you build storefronts for any ecommerce platform, including Medusa.|Implement a product reviews feature.|
-|\`learn-medusa\`|An interactive learning experience to learn Medusa concepts step-by-step by building a brands feature.|I want to learn Medusa.|
+The following sections explain how to use the skills with Claude Code or other AI agents.
 
 ### Medusa Development Assistance
 
-If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+If you want assistance in your Medusa development, install the `medusa-dev` plugin and its skills:
 
 ### Claude Code
 
@@ -27084,7 +27101,7 @@ Add a megamenu to the storefront's header that displays product categories and s
 
 ### Interactive Learning
 
-If you're a Medusa beginner, install the `learn-medusa` plugin to start an interactive learning experience:
+If you're a Medusa beginner, install the `learn-medusa` plugin or its skill to start an interactive learning experience:
 
 ### Claude Code
 
@@ -27169,12 +27186,14 @@ For example, you can ask:
 
 The Medusa documentation includes an AI Assistant that answers your questions and helps you build customizations with Medusa.
 
+The AI Assistant in the docs is different from [Bloom](https://bloom.medusajs.com/), our AI-powered commerce assistant that helps you build, manage, and scale your ecommerce store. The AI Assistant in the docs is specifically designed to help you with Medusa development by providing relevant documentation links, code snippets, and explanations.
+
 ### Open the AI Assistant
 
 To open the AI Assistant, either:
 
 - Use the keyboard shortcut `Ctrl + I` for Windows/Linux, or `Cmd + I` for macOS.
-- Click the <InlineIcon Icon={AiAssistent} alt="AI Assistant" /> icon in the top right corner of the documentation.
+- Click the <InlineIcon Icon={BloomIcon} alt="Bloom" /> icon in the top right corner of the documentation.
 
 You can then ask the AI Assistant any questions about Medusa, such as:
 
@@ -27187,13 +27206,13 @@ The AI Assistant will provide you with relevant documentation links, code snippe
 
 ### Ask About Code Snippets
 
-While browsing the documentation, you'll find a <InlineIcon Icon={AiAssistentLuminosity} alt="AI Assistant" /> icon in the header of code snippets. You can click this icon to ask the AI Assistant about the code snippet.
+While browsing the documentation, you'll find a <InlineIcon Icon={BloomIcon} alt="Bloom" /> icon in the header of code snippets. You can click this icon to ask the AI Assistant about the code snippet.
 
 The AI Assistant will analyze the code and provide explanations, usage examples, and any additional information you need to understand how the code works.
 
 ### Ask About Documentation Pages
 
-If you need more help understanding a specific documentation page, you can click the "Explain with AI Assistant" link in the page's right sidebar. This will open the AI Assistant and provide context about the current page, allowing you to ask questions related to the content.
+If you need more help understanding a specific documentation page, you can click the "Explain this page" link in the page's right sidebar. This will open the AI Assistant and provide context about the current page, allowing you to ask questions related to the content.
 
 ### Formatting and Code Blocks
 
@@ -50841,7 +50860,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [setTaxRateRulesWorkflow](https://docs.medusajs.com/references/medusa-workflows/setTaxRateRulesWorkflow/index.html.md)
 - [updateTaxRatesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxRatesWorkflow/index.html.md)
 - [updateTaxRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxRegionsWorkflow/index.html.md)
-- [batchTranslationSettingsWorkflow](https://docs.medusajs.com/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow/index.html.md)
+- [batchTranslationSettingsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchTranslationSettingsWorkflow/index.html.md)
 - [batchTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchTranslationsWorkflow/index.html.md)
 - [createTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTranslationsWorkflow/index.html.md)
 - [deleteTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteTranslationsWorkflow/index.html.md)
@@ -51060,7 +51079,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [deleteProductVariantsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteProductVariantsStep/index.html.md)
 - [deleteProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteProductsStep/index.html.md)
 - [dismissProductVariantsInventoryStep](https://docs.medusajs.com/references/medusa-workflows/steps/dismissProductVariantsInventoryStep/index.html.md)
-- [exportProductsStep](https://docs.medusajs.com/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep/index.html.md)
+- [exportProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/exportProductsStep/index.html.md)
 - [generateProductCsvStep](https://docs.medusajs.com/references/medusa-workflows/steps/generateProductCsvStep/index.html.md)
 - [getAllProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/getAllProductsStep/index.html.md)
 - [getProductsStep](https://docs.medusajs.com/references/medusa-workflows/steps/getProductsStep/index.html.md)
@@ -51137,11 +51156,11 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [listTaxRateRuleIdsStep](https://docs.medusajs.com/references/medusa-workflows/steps/listTaxRateRuleIdsStep/index.html.md)
 - [updateTaxRatesStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTaxRatesStep/index.html.md)
 - [updateTaxRegionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTaxRegionsStep/index.html.md)
-- [createTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep/index.html.md)
+- [createTranslationSettingsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTranslationSettingsStep/index.html.md)
 - [createTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTranslationsStep/index.html.md)
-- [deleteTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep/index.html.md)
+- [deleteTranslationSettingsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteTranslationSettingsStep/index.html.md)
 - [deleteTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteTranslationsStep/index.html.md)
-- [updateTranslationSettingsStep](https://docs.medusajs.com/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep/index.html.md)
+- [updateTranslationSettingsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTranslationSettingsStep/index.html.md)
 - [updateTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateTranslationsStep/index.html.md)
 - [validateTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateTranslationsStep/index.html.md)
 - [createUsersStep](https://docs.medusajs.com/references/medusa-workflows/steps/createUsersStep/index.html.md)
@@ -96418,6 +96437,7 @@ Start by adding the necessary imports at the top of `src/admin/routes/reviews/pa
 import { 
   createDataTableCommandHelper, 
   DataTableRowSelectionState, 
+  toast
 } from "@medusajs/ui"
 ```
 
@@ -133259,7 +133279,6 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/gift-cards/{id}](https://docs.medusajs.com/api/admin#gift-cards_getgiftcardsid)
 - [POST /admin/gift-cards/{id}](https://docs.medusajs.com/api/admin#gift-cards_postgiftcardsid)
 - [GET /admin/gift-cards/{id}/orders](https://docs.medusajs.com/api/admin#gift-cards_getgiftcardsidorders)
-- [POST /admin/gift-cards/{id}/redeem](https://docs.medusajs.com/api/admin#gift-cards_postgiftcardsidredeem)
 - [GET /admin/index/details](https://docs.medusajs.com/api/admin#index_getindexdetails)
 - [POST /admin/index/sync](https://docs.medusajs.com/api/admin#index_postindexsync)
 - [GET /admin/inventory-items](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems)
@@ -133483,7 +133502,6 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/tax-regions/{id}](https://docs.medusajs.com/api/admin#tax-regions_gettaxregionsid)
 - [POST /admin/tax-regions/{id}](https://docs.medusajs.com/api/admin#tax-regions_posttaxregionsid)
 - [DELETE /admin/tax-regions/{id}](https://docs.medusajs.com/api/admin#tax-regions_deletetaxregionsid)
-- [GET /admin/transaction-groups](https://docs.medusajs.com/api/admin#transaction-groups_gettransactiongroups)
 - [GET /admin/translations](https://docs.medusajs.com/api/admin#translations_gettranslations)
 - [POST /admin/translations/batch](https://docs.medusajs.com/api/admin#translations_posttranslationsbatch)
 - [GET /admin/translations/entities](https://docs.medusajs.com/api/admin#translations_gettranslationsentities)
@@ -133563,7 +133581,6 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /store/customers/me/addresses/{address_id}](https://docs.medusajs.com/api/store#customers_postcustomersmeaddressesaddress_id)
 - [DELETE /store/customers/me/addresses/{address_id}](https://docs.medusajs.com/api/store#customers_deletecustomersmeaddressesaddress_id)
 - [GET /store/gift-cards/{idOrCode}](https://docs.medusajs.com/api/store#gift-cards_getgiftcardsidorcode)
-- [POST /store/gift-cards/{idOrCode}/redeem](https://docs.medusajs.com/api/store#gift-cards_postgiftcardsidorcoderedeem)
 - [GET /store/locales](https://docs.medusajs.com/api/store#locales_getlocales)
 - [GET /store/orders](https://docs.medusajs.com/api/store#orders_getorders)
 - [GET /store/orders/{id}](https://docs.medusajs.com/api/store#orders_getordersid)
@@ -160810,7 +160827,7 @@ import {
   defineMiddlewares, 
   validateAndTransformBody,
 } from "@medusajs/framework/http"
-import { CreateTicketProductSchema } from "./admin/ticket-products/route"
+import { CreateVenueSchema } from "./admin/venues/route"
 
 export default defineMiddlewares({
   routes: [
