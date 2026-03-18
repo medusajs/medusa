@@ -2,11 +2,12 @@
 
 import clsx from "clsx"
 import React from "react"
-import { ContentMenuVersion } from "./Version"
 import { ContentMenuToc } from "./Toc"
 import { ContentMenuActions } from "./Actions"
 import { ContentMenuProducts } from "./Products"
 import { useLayout } from "../../providers/Layout"
+import { ShadedBlock } from "../ShadedBlock"
+import { ContentMenuWhatsNew } from "./WhatsNew"
 
 export const ContentMenu = () => {
   const { showCollapsedNavbar } = useLayout()
@@ -15,17 +16,21 @@ export const ContentMenu = () => {
     <div
       className={clsx(
         "hidden lg:flex w-full max-w-sidebar-lg",
-        "flex-col gap-docs_2 pb-docs_1.5 mr-docs_1",
+        "flex-col gap-docs_2 pb-docs_1.5",
         "fixed top-[57px] right-docs_0.25 z-10",
-        showCollapsedNavbar && "max-h-[calc(100%-112px)] pt-[84px]",
-        !showCollapsedNavbar && "max-h-[calc(100%-56px)] pt-[28px]"
+        "border-l border-medusa-border-base h-full",
+        showCollapsedNavbar && "max-h-[calc(100%-112px)]",
+        !showCollapsedNavbar && "max-h-[calc(100%-56px)]"
       )}
     >
-      <ContentMenuVersion />
-      <div className="flex flex-col gap-docs_1.5 flex-1 overflow-auto">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <ContentMenuToc />
         <ContentMenuActions />
         <ContentMenuProducts />
+        <ContentMenuWhatsNew />
+        <div className="p-docs_1">
+          <ShadedBlock className="!h-docs_2" />
+        </div>
       </div>
     </div>
   )

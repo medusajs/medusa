@@ -1,9 +1,12 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import clsx from "clsx"
 import {
+  getOsShortcut,
+  Kbd,
   MainNav,
+  Tooltip,
   useAiAssistant,
   useIsBrowser,
   useLayout,
@@ -23,13 +26,14 @@ export const MainContentLayout = ({
   children,
   mainWrapperClasses,
   contentClassName,
-  showContentMenu = true,
+  showContentMenu: initialShowContentMenu = true,
 }: MainContentLayoutProps) => {
   const { isBrowser } = useIsBrowser()
-  const { desktopSidebarOpen } = useSidebar()
+  const { desktopSidebarOpen, setDesktopSidebarOpen } = useSidebar()
   const { mainContentRef, showCollapsedNavbar } = useLayout()
   const { frontmatter, isInProduct } = useSiteConfig()
   const { chatOpened } = useAiAssistant()
+  const osShortcut = getOsShortcut()
 
   useEffect(() => {
     if (!isBrowser) {
@@ -42,6 +46,48 @@ export const MainContentLayout = ({
       rootLayout?.classList.remove("lg:grid-cols-[221px_1fr]")
     }
   }, [desktopSidebarOpen, isBrowser])
+
+  const showContentMenu = useMemo(() => {
+    return (
+      initialShowContentMenu &&
+      !frontmatter.hide_content_menu &&
+      !isInProduct &&
+      (!chatOpened || (chatOpened && !showCollapsedNavbar))
+    )
+  }, [
+    initialShowContentMenu,
+    frontmatter.hide_content_menu,
+    isInProduct,
+    chatOpened,
+    showCollapsedNavbar,
+  ])
+
+  const sidebarCollapser = (className?: string) => (
+    <Tooltip
+      render={() => (
+        <div className="flex gap-[6px] justify-center items-center">
+          <span className="text-compact-x-small-plus text-medusa-fg-base">
+            {desktopSidebarOpen ? "Hide sidebar" : "Show sidebar"}
+          </span>
+          <Kbd>{osShortcut}</Kbd>
+          <Kbd>/</Kbd>
+        </div>
+      )}
+      className={clsx(
+        "hidden lg:block absolute h-[20px] w-[3px] top-1/2 -translate-y-1/2 z-10",
+        className
+      )}
+      innerClassName="w-full h-full inline-block"
+    >
+      <button
+        className={clsx(
+          "rounded-[2px] bg-medusa-alphas-alpha-24 h-full w-full cursor-pointer",
+          "appearance-none p-0 border-none focus:outline-none active:outline-none"
+        )}
+        onClick={() => setDesktopSidebarOpen((prev) => !prev)}
+      />
+    </Tooltip>
+  )
 
   return (
     <div
@@ -68,10 +114,12 @@ export const MainContentLayout = ({
         ref={mainContentRef}
       >
         <MainNav />
+        {/* Sidebar + content menu collapser */}
+        {sidebarCollapser("left-docs_0.25")}
         <div
           className={clsx(
             "pb-docs_8 lg:pb-docs_4",
-            showContentMenu && !isInProduct && "grid grid-cols-1 lg:mx-auto",
+            showContentMenu && "grid grid-cols-1 lg:mx-auto",
             desktopSidebarOpen && "lg:grid-cols-[1fr_221px]",
             chatOpened && showCollapsedNavbar && "pl-docs_1",
             !isInProduct && "pt-docs_4 lg:pt-docs_6",
@@ -82,8 +130,12 @@ export const MainContentLayout = ({
         >
           <div className="flex justify-center">{children}</div>
         </div>
-        {showContentMenu && !frontmatter.hide_content_menu && !isInProduct && (
-          <ContentMenu />
+        {/* Sidebar + content menu collapser */}
+        {showContentMenu && (
+          <>
+            {sidebarCollapser("right-[225px]")}
+            {desktopSidebarOpen && <ContentMenu />}
+          </>
         )}
       </div>
     </div>

@@ -6,6 +6,7 @@ import { products } from "../../../constants"
 import { Product } from "types"
 import { BorderedIcon } from "../../BorderedIcon"
 import clsx from "clsx"
+import { ContentMenuSection } from "../Section"
 
 export const ContentMenuProducts = () => {
   const { frontmatter, config } = useSiteConfig()
@@ -34,32 +35,34 @@ export const ContentMenuProducts = () => {
   }
 
   return (
-    <div className="flex flex-col gap-docs_0.5">
-      <span className="text-x-small-plus text-medusa-fg-muted">
-        Modules used
-      </span>
-      {loadedProducts.map((product, index) => (
-        <a
-          key={index}
-          href={getProductUrl(product)}
-          className="flex gap-docs_0.5 items-center group"
-          data-testid="product-link"
-        >
-          <BorderedIcon
-            wrapperClassName={clsx("bg-medusa-bg-base")}
-            icon={getProductImageUrl(product)}
-            iconWidth={16}
-            iconHeight={16}
-          />
-          <span
-            className={
-              "text-medusa-fg-subtle text-x-small-plus group-hover:text-medusa-fg-base transition-colors"
-            }
+    <ContentMenuSection title="Modules used">
+      <div className="flex flex-col gap-docs_0.5 p-docs_1">
+        <span className="text-x-small-plus text-medusa-fg-muted">
+          Modules used
+        </span>
+        {loadedProducts.map((product, index) => (
+          <a
+            key={index}
+            href={getProductUrl(product)}
+            className="flex gap-docs_0.5 items-center group"
+            data-testid="product-link"
           >
-            {product.title}
-          </span>
-        </a>
-      ))}
-    </div>
+            <BorderedIcon
+              wrapperClassName={clsx("bg-medusa-bg-base")}
+              icon={getProductImageUrl(product)}
+              iconWidth={16}
+              iconHeight={16}
+            />
+            <span
+              className={
+                "text-medusa-fg-subtle text-x-small-plus group-hover:text-medusa-fg-base transition-colors"
+              }
+            >
+              {product.title}
+            </span>
+          </a>
+        ))}
+      </div>
+    </ContentMenuSection>
   )
 }
