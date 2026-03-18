@@ -174,6 +174,47 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Integrations",
+            "path": "/features/integrations",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Cookiebot",
+                "path": "/features/integrations/guides/cookiebot",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Klaviyo",
+                "path": "/features/integrations/guides/klaviyo",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Slack",
+                "path": "/features/integrations/guides/slack",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Stripe",
+                "path": "/features/integrations/guides/stripe",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Selection Mode",
             "path": "/features/selection-mode",
             "children": []
@@ -299,15 +340,6 @@ export const generatedSidebars = [
             "title": "ShipStation",
             "path": "/prompting/service-integrations-prompting/guides/shipstation",
             "description": "Add shipping and fulfillment features",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "title": "Stripe",
-            "path": "/prompting/service-integrations-prompting/guides/stripe",
-            "description": "Add payment processing features",
             "children": []
           }
         ]

@@ -73,6 +73,14 @@ export const generatedSidebars = [
                 "title": "Prerequisites",
                 "path": "/projects/prerequisites",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Rename Repository",
+                "path": "/projects/rename-repo-branch",
+                "children": []
               }
             ]
           },

@@ -6,15 +6,15 @@ export const generatedEditDates = {
   "app/deployments/page.mdx": "2026-01-07T13:12:29.617Z",
   "app/organizations/page.mdx": "2025-12-17T11:56:48.669Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
-  "app/database/page.mdx": "2025-10-20T15:47:46.364Z",
+  "app/database/page.mdx": "2026-03-18T09:04:03.570Z",
   "app/redis/page.mdx": "2025-10-15T15:22:34.997Z",
-  "app/s3/page.mdx": "2025-10-15T15:23:02.835Z",
+  "app/s3/page.mdx": "2026-03-18T09:06:39.127Z",
   "app/loyalty-plugin/page.mdx": "2025-10-15T15:27:40.303Z",
-  "app/logs/page.mdx": "2026-01-08T09:08:23.867Z",
+  "app/logs/page.mdx": "2026-03-18T09:15:07.187Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-01-07T12:56:08.417Z",
-  "app/environments/long-lived/page.mdx": "2026-01-07T13:10:54.148Z",
+  "app/environments/long-lived/page.mdx": "2026-03-18T09:15:59.684Z",
   "app/environments/preview/page.mdx": "2026-02-05T15:06:26.801Z",
   "app/faq/page.mdx": "2026-01-08T08:43:23.224Z",
   "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",
@@ -31,5 +31,6 @@ export const generatedEditDates = {
   "app/user/page.mdx": "2025-12-17T12:03:18.968Z",
   "app/deployments/access/page.mdx": "2026-01-08T08:52:48.924Z",
   "app/projects/prerequisites/page.mdx": "2026-02-09T14:40:20.415Z",
-  "app/storefront/page.mdx": "2026-02-09T14:40:39.790Z"
+  "app/storefront/page.mdx": "2026-02-09T14:40:39.790Z",
+  "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z"
 }

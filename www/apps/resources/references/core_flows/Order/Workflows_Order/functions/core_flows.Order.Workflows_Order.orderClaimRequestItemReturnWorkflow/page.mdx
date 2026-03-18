@@ -5,6 +5,8 @@ sidebar_description: Request one or more items to be returned as part of a claim
 tags:
   - order
   - workflow
+  - promotion
+  - query
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -20,7 +22,7 @@ items are added to the claim as inbound items. The workflow is used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to request items to be returned
 as part of a claim in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/claim/claim-request-item-return.ts#L150" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/order/workflows/claim/claim-request-item-return.ts#L153" />
 
 ## Examples
 
@@ -149,7 +151,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"orderClaimRequestItemReturnWorkflow","steps":[{"type":"when","condition":"{\n      return !orderClaim.return_id\n    }","depth":"2","steps":[{"type":"step","name":"createReturnsStep","description":"This step creates returns.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.createReturnsStep/page.mdx","depth":2}]},{"type":"when","condition":"{\n      return !!createdReturn?.length\n    }","depth":"3","steps":[{"type":"step","name":"updateOrderChangesStep","description":"This step updates order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.updateOrderChangesStep/page.mdx","depth":3}]},{"type":"step","name":"orderClaimRequestItemReturnValidationStep","description":"This step validates that items can be requested to return as part of a claim.\nIf the order, claim, or return is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, order return, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimRequestItemReturnValidationStep/page.mdx","depth":4},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":6},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":7}]}} />
+<WorkflowDiagram workflow={{"name":"orderClaimRequestItemReturnWorkflow","steps":[{"type":"when","condition":"{\n      return !orderClaim.return_id\n    }","depth":"2","steps":[{"type":"step","name":"createReturnsStep","description":"This step creates returns.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.createReturnsStep/page.mdx","depth":2}]},{"type":"when","condition":"{\n      return !!createdReturn?.length\n    }","depth":"3","steps":[{"type":"step","name":"updateOrderChangesStep","description":"This step updates order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.updateOrderChangesStep/page.mdx","depth":3}]},{"type":"step","name":"orderClaimRequestItemReturnValidationStep","description":"This step validates that items can be requested to return as part of a claim.\nIf the order, claim, or return is canceled, or the order change is not active, the step will throw an error.\n\n:::note\n\nYou can retrieve an order, order claim, order return, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../core_flows.Order.Workflows_Order.orderClaimRequestItemReturnValidationStep/page.mdx","depth":4},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":6},{"type":"workflow","name":"computeAdjustmentsForPreviewWorkflow","description":"Compute adjustments for an order edit, exchange, claim, or return.","link":"../core_flows.Order.Workflows_Order.computeAdjustmentsForPreviewWorkflow/page.mdx","depth":7},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":8}]}} />
 
 ## Input
 
