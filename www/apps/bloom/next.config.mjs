@@ -158,6 +158,15 @@ const nextConfig = {
       ],
     }
   },
+  redirects: async () => {
+    return [
+      {
+        source: "/prompting/service-integrations-prompting/guides/stripe",
+        destination: "/features/integrations/guides/stripe",
+        permanent: true,
+      },
+    ]
+  },
 }
 
 const withBundleAnalyzer = bundleAnalyzer({

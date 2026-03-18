@@ -34,7 +34,7 @@ Test keys start with `sk_test_` (secret) and `pk_test_` (publishable). You'll ne
 To add Stripe using the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "integrations" }}>Integrations</InProductAction> panel:
 
 1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
-2. Select "Integrations" to open the Integrations panel.
+2. Select the "Integrations" tab from the list.
 3. Find the Stripe card in the available integrations.
 4. Click "Build" on the Stripe card.
 
@@ -50,18 +50,12 @@ After you click "Build," Bloom will ask you which regions you want to enable Str
 
 You can select specific regions or enable Stripe globally. Bloom will set up Stripe based on your preferences.
 
-{/* TODO: Add screenshot of Bloom asking configuration questions */}
+Next, Bloom will ask for your API keys:
 
----
+1. **Publishable API key:** Paste the publishable key you copied from your Stripe dashboard (starts with `pk_test_`).
+2. **Secret API key:** Paste the secret key you copied from your Stripe dashboard (starts with `sk_test_`).
 
-## Enter Your Stripe Credentials
-
-Next, Bloom will ask for your API keys. Paste the test keys you copied from your Stripe dashboard:
-
-1. Enter your Publishable key (starts with `pk_test_`).
-2. Enter your Secret key (starts with `sk_test_`).
-
-Bloom stores these keys securely and uses them to connect your store to Stripe.
+Bloom will start the setup process and configure Stripe with the provided API keys and region settings.
 
 <Note title="Technical Information">
 
@@ -69,7 +63,7 @@ Bloom stores your Stripe credentials as environment variables in your store. The
 
 </Note>
 
-{/* TODO: Add screenshot of entering API keys */}
+{/* TODO: Add screenshot of Bloom asking configuration questions */}
 
 ---
 
