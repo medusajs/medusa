@@ -630,6 +630,20 @@
  *             type: string
  *             title: price_list_id
  *             description: A price list ID.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by the product's external ID.
+ *         - type: array
+ *           description: Filter by external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: The external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

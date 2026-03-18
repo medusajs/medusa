@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/index",
-  "version": "2.13.3",
+  "version": "2.13.4",
   "description": "Medusa Index module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,10 +36,10 @@
     "orm:cache:clear": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.13.3",
-    "@medusajs/test-utils": "2.13.3"
+    "@medusajs/framework": "2.13.4",
+    "@medusajs/test-utils": "2.13.4"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   }
 }

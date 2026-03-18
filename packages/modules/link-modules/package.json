@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "2.13.3",
+  "version": "2.13.4",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,10 +33,10 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.13.3",
-    "@medusajs/test-utils": "2.13.3"
+    "@medusajs/framework": "2.13.4",
+    "@medusajs/test-utils": "2.13.4"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   }
 }
