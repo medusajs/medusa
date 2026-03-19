@@ -70,11 +70,11 @@ export const MainContentLayout = ({
             {desktopSidebarOpen ? "Hide sidebar" : "Show sidebar"}
           </span>
           <Kbd>{osShortcut}</Kbd>
-          <Kbd>/</Kbd>
+          <Kbd>\</Kbd>
         </div>
       )}
       className={clsx(
-        "hidden lg:block absolute h-[20px] w-[3px] top-1/2 -translate-y-1/2 z-10",
+        "hidden lg:block absolute h-[20px] w-[3px] top-1/2 -translate-y-1/2 z-20",
         className
       )}
       innerClassName="w-full h-full inline-block"
@@ -133,7 +133,9 @@ export const MainContentLayout = ({
         {/* Sidebar + content menu collapser */}
         {showContentMenu && (
           <>
-            {sidebarCollapser("right-[225px]")}
+            {sidebarCollapser(
+              desktopSidebarOpen ? "right-[225px]" : "right-docs_0.25"
+            )}
             {desktopSidebarOpen && <ContentMenu />}
           </>
         )}
