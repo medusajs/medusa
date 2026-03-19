@@ -34,11 +34,6 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
       link: `/developers/code-editor`,
       sidebar_id: "developers",
     },
-    // {
-    //   type: "link",
-    //   title: "Changelog",
-    //   link: `#`,
-    // },
   ]
 
   const helpNavItem: NavigationItemDropdown = {

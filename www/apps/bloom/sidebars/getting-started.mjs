@@ -95,6 +95,11 @@ export const gettingStartedSidebar = [
         title: "Help and Feedback",
         path: "/help-and-feedback",
       },
+      {
+        type: "link",
+        title: "Changelog",
+        path: "/changelog",
+      },
     ],
   },
 ]

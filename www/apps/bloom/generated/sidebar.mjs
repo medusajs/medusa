@@ -140,6 +140,14 @@ export const generatedSidebars = [
         "title": "Help and Feedback",
         "path": "/help-and-feedback",
         "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Changelog",
+        "path": "/changelog",
+        "children": []
       }
     ]
   },
@@ -375,10 +383,5 @@ export const generatedSidebars = [
         "children": []
       }
     ]
-  },
-  {
-    "sidebar_id": "changelog",
-    "title": "Changelog",
-    "items": []
   }
 ]

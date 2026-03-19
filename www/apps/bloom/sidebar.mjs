@@ -1,4 +1,3 @@
-import { changelogSidebar } from "./sidebars/changelog.mjs"
 import { developersSidebar } from "./sidebars/developers.mjs"
 import { featuresSidebar } from "./sidebars/features.mjs"
 import { gettingStartedSidebar } from "./sidebars/getting-started.mjs"
@@ -10,5 +9,4 @@ export const sidebar = [
   ...featuresSidebar,
   ...promptingSidebar,
   ...developersSidebar,
-  ...changelogSidebar,
 ]

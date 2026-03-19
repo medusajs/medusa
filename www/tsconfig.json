@@ -3,6 +3,6 @@
   "compilerOptions": {
     "rootDir": "."
   },
-  "include": ["**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx", "**/*.mjs"],
+  "include": ["**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx", "**/*.mjs", "apps/bloom/app/changelog/page.mdx"],
   "exclude": ["**/node_modules/**", "**/dist/**", "**/build/**"]
 }

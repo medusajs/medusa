@@ -18,6 +18,7 @@ export declare type FrontMatter = {
   products?: string[]
   toc_max_depth?: number
   generate_toc?: boolean
+  allow_nontext_toc?: boolean
   hide_content_menu?: boolean
   keywords?: string[]
 }

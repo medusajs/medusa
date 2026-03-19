@@ -21,7 +21,12 @@ export const ContentMenuToc = () => {
 
   const formatHeadingContent = (heading: HTMLHeadingElement): string => {
     return Array.from(heading.childNodes)
-      .filter((child) => child.nodeType === Node.TEXT_NODE && child.textContent)
+      .filter(
+        (child) =>
+          (child.nodeType === Node.TEXT_NODE ||
+            frontmatter.allow_nontext_toc) &&
+          child.textContent
+      )
       .map((textNode) => textNode.textContent!.trim())
       .join("")
   }

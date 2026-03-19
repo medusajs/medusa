@@ -50,7 +50,7 @@ jobs:
           NEXT_PUBLIC_SANITY_PROJECT_ID: temp
           NEXT_PUBLIC_SANITY_DATASET: temp
           NEXT_PUBLIC_ENV: CI
-          # TODO change once we have actual URLs
+          NEXT_PUBLIC_BLOOM_API_URL: "http://example.com"
           NEXT_PUBLIC_USER_GUIDE_URL: "http://example.com"
 
   vale-book:

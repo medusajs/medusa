@@ -47,5 +47,6 @@ export const generatedEditDates = {
   "app/features/integrations/guides/klaviyo/page.mdx": "2026-03-18T08:33:25.354Z",
   "app/features/integrations/guides/slack/page.mdx": "2026-03-18T08:33:20.171Z",
   "app/features/integrations/guides/stripe/page.mdx": "2026-03-18T08:34:10.941Z",
-  "app/features/integrations/page.mdx": "2026-03-18T08:45:24.081Z"
+  "app/features/integrations/page.mdx": "2026-03-18T08:45:24.081Z",
+  "app/changelog/page.mdx": "2026-03-19T08:52:07.204Z"
 }
