@@ -6559,7 +6559,7 @@ export const generatedEditDates = {
   "references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getToken/page.mdx": "2025-08-14T12:59:55.678Z",
   "app/commerce-modules/order/draft-orders/page.mdx": "2025-12-10T15:06:37.701Z",
   "app/troubleshooting/scheduled-job-not-running/page.mdx": "2025-12-04T14:15:34.338Z",
-  "app/troubleshooting/pnpm/page.mdx": "2026-01-12T13:41:26.196Z",
+  "app/troubleshooting/pnpm/page.mdx": "2026-03-16T14:36:54.157Z",
   "app/how-to-tutorials/tutorials/product-feed/page.mdx": "2026-01-12T12:22:16.122Z",
   "app/storefront-development/cart/manage-promotions/page.mdx": "2025-09-11T14:11:40.904Z",
   "app/recipes/ticket-booking/examples/page.mdx": "2025-09-10T14:11:55.063Z",

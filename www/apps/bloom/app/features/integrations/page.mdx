@@ -14,12 +14,12 @@ Connect services like Stripe, Slack, Klaviyo, and more to add powerful features 
 
 Ecommerce applications rely on various services to handle payments, notifications, marketing, and more. Setting up this ecommerce ecosystem manually can be complex and requires technical knowledge.
 
-Bloom's Integrations feature allows you to add popular services to your store with simple prompts. Bloom can add integrations for:
+Bloom's Integrations feature allows you to add popular services to your store with simple prompts. Add integrations to:
 
-- **Accepting Payments**: Add Stripe to process credit cards, Apple Pay, Google Pay, and more.
-- **Sending Notifications**: Connect Slack to get alerts about new orders and events.
-- **Managing Consent**: Use Cookiebot to handle customer privacy and cookie consent.
-- **Building Email Lists**: Integrate Klaviyo to send marketing emails and newsletters.
+- **Accept Payments**: Add Stripe to process credit cards, Apple Pay, Google Pay, and more.
+- **Send Notifications**: Connect Slack to get alerts about new orders and events.
+- **Manage Consent**: Use Cookiebot to handle customer privacy and cookie consent.
+- **Build Email Lists**: Integrate Klaviyo to send marketing emails and newsletters.
 
 And more. Bloom handles the technical setup, so you can focus on running your store and serving customers.
 
@@ -33,7 +33,7 @@ Bloom offers guided setup for popular services. Each integration includes step-b
 
 <Note title="Looking for a specific integration?">
 
-If you don't see the service you want to integrate, you can ask Bloom to add it using a custom prompt as explained [below](#custom-integrations). Consider sharing a feedback at the end of this page with the service you'd like to see added next.
+If you don't see the service you want to integrate, you can ask Bloom to add it using a custom prompt as explained [below](#custom-integrations). Consider sharing feedback at the end of this page with the service you'd like to see added next.
 
 </Note>
 
@@ -83,11 +83,13 @@ To open the Integrations tab:
 
 ### Step 2: Choose Your Service
 
-On the integrations page, you'll see cards for supported integrations like Stripe and Slack. To add the service, click the "Build" button on the card. This will send a prompt to Bloom to add your integration.
+On the integrations page, you'll see cards for supported integrations like Stripe and Slack.
+
+To integrate the service, click the "Build" button on the card. This will send a prompt to Bloom to add your integration.
 
 #### Custom Integrations
 
-If you can't find the service you want to integrate, you can enter a custom prompt to add it in the input field at the top of the page.
+If you can't find the service you want to integrate, you can enter a custom prompt to integrate it in the input field at the top of the page.
 
 For example:
 
@@ -98,7 +100,7 @@ a search bar to the header of my store and show instant search results as custom
 type.
 ```
 
-Bloom will interpret your prompt and set up the integration based on the details you provide.
+Bloom will set up the integration based on the details you provide.
 
 See [Service Integration Prompting](../../prompting/service-integrations-prompting/page.mdx) for tips on writing effective prompts to integrate custom services.
 
@@ -110,7 +112,7 @@ Once Bloom starts building the integration, it will ask you questions to gather 
 
 1. "Which regions do you want to enable Stripe in?"
 2. "What events do you want to receive notifications for in Slack?"
-3. "Please enter your API keys for Stripe."
+3. "What is your Cookiebot domain group ID?"
 
 After you answer these questions and provide the required information, Bloom will complete the integration setup for you.
 
@@ -163,7 +165,7 @@ Your integration is now active on your live store with production credentials. C
   {
     href: "/prompting/service-integrations-prompting",
     title: "Service Integration Prompting",
-    text: "Learn how to integrate custom services."
+    text: "Learn how to integrate custom services not in the available integrations list."
   },
   {
     href: "/going-live",
@@ -175,4 +177,4 @@ Your integration is now active on your live store with production credentials. C
     title: "Give Feedback and Contact Support",
     text: "Get help if your integration isn't working as expected."
   }
-]} />
+]} itemsPerRow={1} />

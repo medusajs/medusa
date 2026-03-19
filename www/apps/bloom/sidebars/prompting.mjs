@@ -48,12 +48,6 @@ export const promptingSidebar = [
             path: "/prompting/service-integrations-prompting/guides/shipstation",
             description: "Add shipping and fulfillment features",
           },
-          {
-            type: "link",
-            title: "Stripe",
-            path: "/prompting/service-integrations-prompting/guides/stripe",
-            description: "Add payment processing features",
-          },
         ],
       },
     ],

@@ -235,6 +235,14 @@ describe("rendering", () => {
     expect(navItems).toHaveClass("custom-items-class")
   })
 
+  test("always shows border-b on nav content regardless of collapse state", () => {
+    const { container } = render(<MainNav />)
+    const topBar = container.querySelector("[data-testid='main-nav-content']")
+    expect(topBar).toBeInTheDocument()
+    expect(topBar).toHaveClass("border-b")
+    expect(topBar).toHaveClass("border-medusa-border-base")
+  })
+
   test("adjusts layout when collapsed", () => {
     mockUseLayout.mockReturnValueOnce({
       ...defaultUseLayoutReturn,
