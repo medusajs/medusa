@@ -8,9 +8,11 @@ import { ContentMenuProducts } from "./Products"
 import { useLayout } from "../../providers/Layout"
 import { ShadedBlock } from "../ShadedBlock"
 import { ContentMenuWhatsNew } from "./WhatsNew"
+import { useSiteConfig } from "../../providers/SiteConfig"
 
 export const ContentMenu = () => {
   const { showCollapsedNavbar } = useLayout()
+  const { config } = useSiteConfig()
 
   return (
     <div
@@ -26,8 +28,8 @@ export const ContentMenu = () => {
       <div className="flex flex-col flex-1 overflow-hidden">
         <ContentMenuToc />
         <ContentMenuActions />
-        <ContentMenuProducts />
-        <ContentMenuWhatsNew />
+        {config.contentMenuSections?.products && <ContentMenuProducts />}
+        {config.contentMenuSections?.whatsNew && <ContentMenuWhatsNew />}
         <div className="p-docs_1">
           <ShadedBlock className="!h-docs_2" />
         </div>

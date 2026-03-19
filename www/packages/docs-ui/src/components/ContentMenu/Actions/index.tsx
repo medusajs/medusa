@@ -11,7 +11,7 @@ import { ContentMenuSection } from "../Section"
 
 export const ContentMenuActions = () => {
   const {
-    config: { baseUrl, basePath, features },
+    config: { baseUrl, basePath, features, contentMenuSections },
   } = useSiteConfig()
   const pathname = usePathname()
   const { setChatOpened } = useAiAssistant()
@@ -31,7 +31,12 @@ export const ContentMenuActions = () => {
   }
 
   return (
-    <ContentMenuSection title="Shortcuts">
+    <ContentMenuSection
+      title="Shortcuts"
+      hideChildrenDivider={
+        !contentMenuSections?.products && !contentMenuSections?.whatsNew
+      }
+    >
       <div className="flex flex-col gap-docs_0.5 p-docs_1">
         <Link
           className="flex items-center gap-docs_0.5 text-medusa-fg-subtle text-x-small-plus hover:text-medusa-fg-base"

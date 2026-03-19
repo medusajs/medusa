@@ -35,7 +35,10 @@ export const ContentMenuProducts = () => {
   }
 
   return (
-    <ContentMenuSection title="Modules used">
+    <ContentMenuSection
+      title="Modules used"
+      hideChildrenDivider={!config.contentMenuSections?.whatsNew}
+    >
       <div className="flex flex-col gap-docs_0.5 p-docs_1">
         <span className="text-x-small-plus text-medusa-fg-muted">
           Modules used
