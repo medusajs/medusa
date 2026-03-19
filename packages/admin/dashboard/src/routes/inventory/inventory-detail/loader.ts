@@ -10,6 +10,7 @@ const inventoryDetailQuery = (id: string) => ({
   queryFn: async () =>
     sdk.admin.inventoryItem.retrieve(id, {
       fields: INVENTORY_DETAIL_FIELDS,
+      order: "-created_at",
     }),
 })
 

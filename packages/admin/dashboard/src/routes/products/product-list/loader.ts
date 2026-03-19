@@ -10,9 +10,10 @@ const productsListQuery = () => ({
     limit: 20,
     offset: 0,
     is_giftcard: false,
+    order: "-created_at",
   }),
   queryFn: async () =>
-    sdk.admin.product.list({ limit: 20, offset: 0, is_giftcard: false }),
+    sdk.admin.product.list({ limit: 20, offset: 0, order: "-created_at", is_giftcard: false }),
 })
 
 export const productsLoader = (client: QueryClient) => {
