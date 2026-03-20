@@ -10,6 +10,7 @@ import {
   faIR,
   fr,
   he,
+  hr,
   hu,
   id,
   it,
@@ -81,6 +82,12 @@ export const languages: Language[] = [
     display_name: "עברית",
     ltr: false,
     date_locale: he,
+  },
+  {
+    code: "hr",
+    display_name: "Hrvatski",
+    ltr: true,
+    date_locale: hr,
   },
   {
     code: "hu",

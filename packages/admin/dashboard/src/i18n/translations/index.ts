@@ -5,6 +5,7 @@ import en from "./en.json"
 import es from "./es.json"
 import fr from "./fr.json"
 import he from "./he.json"
+import hr from "./hr.json"
 import hu from "./hu.json"
 import it from "./it.json"
 import ja from "./ja.json"
@@ -53,6 +54,9 @@ export default {
   },
   he: {
     translation: he,
+  },
+  hr: {
+    translation: hr,
   },
   hu: {
     translation: hu,
