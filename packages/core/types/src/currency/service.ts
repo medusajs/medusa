@@ -46,7 +46,7 @@ export interface ICurrencyModuleService extends IModuleService {
    * })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const currencies = await currencyModuleService.listCurrencies(
@@ -87,7 +87,7 @@ export interface ICurrencyModuleService extends IModuleService {
    *   })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [currencies, count] =

@@ -130,7 +130,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets(
@@ -191,7 +191,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [fulfillmentSets, count] =
@@ -455,7 +455,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const serviceZones =
@@ -517,7 +517,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [serviceZones, count] =
@@ -822,7 +822,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const geoZones = await fulfillmentModuleService.listGeoZones(
@@ -883,7 +883,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [geoZones, count] =
@@ -1155,7 +1155,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingOptions =
@@ -1226,7 +1226,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingOptions =
@@ -1292,7 +1292,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [shippingOptions, count] =
@@ -1636,7 +1636,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingProfiles =
@@ -1700,7 +1700,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [shippingProfiles, count] =
@@ -2015,7 +2015,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingOptionRules =
@@ -2079,7 +2079,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [shippingOptionRules, count] =
@@ -2452,7 +2452,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingOptionTypes =
@@ -2516,7 +2516,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [shippingOptionTypes, count] =
@@ -2697,7 +2697,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const fulfillments =
@@ -2766,7 +2766,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [fulfillments, count] =

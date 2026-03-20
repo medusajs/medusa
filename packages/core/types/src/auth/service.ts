@@ -183,7 +183,7 @@ export interface IAuthModuleService extends IModuleService {
    * })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const authIdentities = await authModuleService.listAuthIdentities(
@@ -222,7 +222,7 @@ export interface IAuthModuleService extends IModuleService {
    *   })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [authIdentities, count] =
@@ -375,7 +375,7 @@ export interface IAuthModuleService extends IModuleService {
    * })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const providerIdentities = await authModuleService.listProviderIdentities(

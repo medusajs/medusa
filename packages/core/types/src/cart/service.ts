@@ -123,7 +123,7 @@ export interface ICartModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const carts = await cartModuleService.listCarts(
@@ -182,7 +182,7 @@ export interface ICartModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [carts, count] = await cartModuleService.listAndCountCarts(
@@ -344,7 +344,7 @@ export interface ICartModuleService extends IModuleService {
    * })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const addresses = await cartModuleService.listAddresses(
@@ -558,7 +558,7 @@ export interface ICartModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const lineItems = await cartModuleService.listLineItems(
@@ -791,7 +791,7 @@ export interface ICartModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingMethods =
@@ -965,7 +965,7 @@ export interface ICartModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const lineItemAdjustments =
@@ -1136,7 +1136,7 @@ export interface ICartModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingMethodAdjustments =
@@ -1313,7 +1313,7 @@ export interface ICartModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const lineItemTaxLines =
@@ -1466,7 +1466,7 @@ export interface ICartModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const shippingMethodTaxLines =

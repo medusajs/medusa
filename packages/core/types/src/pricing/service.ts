@@ -187,7 +187,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const priceSets = await pricingModuleService.listPriceSets(
@@ -250,7 +250,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [priceSets, count] =
@@ -645,7 +645,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const prices = await pricingModuleService.listPrices(
@@ -759,7 +759,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [prices, count] = await pricingModuleService.listPrices(
@@ -860,7 +860,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const priceRules = await pricingModuleService.listPriceRules(
@@ -923,7 +923,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [priceRules, count] =
@@ -1086,7 +1086,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const priceLists = await pricingModuleService.listPriceLists(
@@ -1149,7 +1149,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [priceLists, count] =
@@ -1377,7 +1377,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const priceListRules =
@@ -1441,7 +1441,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [priceListRules, count] =
@@ -1638,7 +1638,7 @@ export interface IPricingModuleService extends IModuleService {
    * })
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const pricePreferences = await pricingModuleService.listPricePreferences(

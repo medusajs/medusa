@@ -105,7 +105,7 @@ export interface ITranslationModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const locales = await translationModuleService.listLocales(
@@ -164,7 +164,7 @@ export interface ITranslationModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [locales, count] = await translationModuleService.listAndCountLocales(
@@ -424,7 +424,7 @@ export interface ITranslationModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const translations = await translationModuleService.listTranslations(
@@ -483,7 +483,7 @@ export interface ITranslationModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [translations, count] = await translationModuleService.listAndCountTranslations(

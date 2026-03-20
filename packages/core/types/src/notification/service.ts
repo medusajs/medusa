@@ -131,7 +131,7 @@ export interface INotificationModuleService extends IModuleService {
    * )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const notifications = await notificationModuleService.listNotifications(
@@ -193,7 +193,7 @@ export interface INotificationModuleService extends IModuleService {
    *   )
    * ```
    *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, all records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
    * const [notifications, count] =
