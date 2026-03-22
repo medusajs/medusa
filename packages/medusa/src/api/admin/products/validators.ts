@@ -98,7 +98,7 @@ export type AdminCreateVariantPriceType = z.infer<
   typeof AdminCreateVariantPrice
 >
 export const AdminCreateVariantPrice = z.object({
-  currency_code: z.string(),
+  currency_code: z.string().transform((value) => value.toLowerCase()),
   amount: z.number(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
@@ -110,7 +110,10 @@ export type AdminUpdateVariantPriceType = z.infer<
 >
 export const AdminUpdateVariantPrice = z.object({
   id: z.string().optional(),
-  currency_code: z.string().optional(),
+  currency_code: z
+    .string()
+    .transform((value) => value.toLowerCase())
+    .optional(),
   amount: z.number().optional(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),

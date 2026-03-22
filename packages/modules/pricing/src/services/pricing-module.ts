@@ -953,6 +953,9 @@ export default class PricingModuleService
 
       const hasRulesInput = isPresent(price.rules)
       entry.price_list_id = priceListId
+      if (isPresent(entry.currency_code)) {
+        entry.currency_code = entry.currency_code.toLowerCase()
+      }
       if (hasRulesInput) {
         entry.price_rules = rules
         entry.rules_count = rules.length
