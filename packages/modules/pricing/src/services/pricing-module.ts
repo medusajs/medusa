@@ -1815,7 +1815,7 @@ const hashPrice = (
   const parts: string[] = []
 
   if ("currency_code" in price) {
-    parts.push(`cc:${price.currency_code ?? ""}`)
+    parts.push(`cc:${price.currency_code?.toLowerCase() ?? ""}`)
   }
   if ("price_set_id" in price) {
     parts.push(`ps:${price.price_set_id ?? ""}`)
