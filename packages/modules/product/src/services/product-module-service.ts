@@ -251,15 +251,7 @@ export default class ProductModuleService
     )
 
     if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
+      await this.buildVariantImagesFromProducts(products, sharedContext)
     }
 
     return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products)
@@ -293,15 +285,7 @@ export default class ProductModuleService
     )
 
     if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
+      await this.buildVariantImagesFromProducts(products, sharedContext)
     }
 
     const serializedProducts = await this.baseRepository_.serialize<
@@ -2520,6 +2504,74 @@ export default class ProductModuleService
     }
 
     return result
+  }
+
+  private async buildVariantImagesFromProducts(
+    products: InferEntityType<typeof Product>[],
+    sharedContext: Context = {}
+  ): Promise<void> {
+    // Collect all variant IDs across all products in a single batch
+    const allVariantIds: string[] = []
+    const productsWithVariantImages: InferEntityType<typeof Product>[] = []
+
+    for (const product of products) {
+      if (product.variants && product.images) {
+        productsWithVariantImages.push(product)
+        for (const variant of product.variants) {
+          allVariantIds.push(variant.id)
+        }
+      }
+    }
+
+    if (!allVariantIds.length) {
+      return
+    }
+
+    // Single batch query for all variant-image relations across all products
+    const allVariantImageRelations =
+      await this.productVariantProductImageService_.list(
+        { variant_id: allVariantIds },
+        { select: ["variant_id", "image_id"] },
+        sharedContext
+      )
+
+    // Build a global variant_id -> image_ids lookup
+    const variantIdImageIdsMap = new Map<string, string[]>()
+    for (const relation of allVariantImageRelations) {
+      if (!variantIdImageIdsMap.has(relation.variant_id)) {
+        variantIdImageIdsMap.set(relation.variant_id, [])
+      }
+      variantIdImageIdsMap.get(relation.variant_id)!.push(relation.image_id)
+    }
+
+    // Assign images to variants per product
+    for (const product of productsWithVariantImages) {
+      const imageIdVariantIdsMap = new Map<string, string[]>()
+      for (const variant of product.variants) {
+        const imageIds = variantIdImageIdsMap.get(variant.id) || []
+        for (const imageId of imageIds) {
+          if (!imageIdVariantIdsMap.has(imageId)) {
+            imageIdVariantIdsMap.set(imageId, [])
+          }
+          imageIdVariantIdsMap.get(imageId)!.push(variant.id)
+        }
+      }
+
+      const [generalImages, variantImages] = partitionArray(
+        product.images,
+        (img) => !imageIdVariantIdsMap.has(img.id)
+      )
+
+      for (const variant of product.variants) {
+        const variantImageIds = variantIdImageIdsMap.get(variant.id) || []
+        variant.images = [...generalImages]
+        for (const image of variantImages) {
+          if (variantImageIds.includes(image.id)) {
+            variant.images.push(image)
+          }
+        }
+      }
+    }
   }
 
   private async buildVariantImagesFromProduct(
