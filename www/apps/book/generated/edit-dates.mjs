@@ -140,6 +140,6 @@ export const generatedEditDates = {
   "app/learn/best-practices/third-party-sync/page.mdx": "2025-12-03T11:48:58.209Z",
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-01-06T15:51:48.131Z",
   "app/learn/codemods/replace-zod-imports/page.mdx": "2026-01-12T13:51:52.324Z",
-  "app/learn/configurations/pnpm/page.mdx": "2026-01-12T13:39:17.549Z",
+  "app/learn/configurations/pnpm/page.mdx": "2026-03-16T14:36:36.335Z",
   "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z"
 }

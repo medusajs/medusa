@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-sendgrid",
-  "version": "2.13.3",
+  "version": "2.13.4",
   "description": "Sendgrid notification provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -26,13 +26,13 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   },
   "keywords": [
     "medusa-provider",
