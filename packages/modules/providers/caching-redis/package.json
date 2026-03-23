@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/caching-redis",
-  "version": "2.13.3",
+  "version": "2.13.4",
   "description": "Redis Caching for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -20,10 +20,10 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.13.3"
+    "@medusajs/framework": "2.13.4"
   },
   "dependencies": {
     "ioredis": "^5.4.1",

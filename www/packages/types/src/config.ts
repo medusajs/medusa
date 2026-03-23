@@ -35,4 +35,5 @@ export declare type DocsConfig = {
   features?: {
     aiAssistant?: boolean
   }
+  contentMenuSections?: Record<string, boolean>
 }
