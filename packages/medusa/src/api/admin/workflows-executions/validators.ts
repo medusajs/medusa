@@ -1,6 +1,10 @@
 import { TransactionHandlerType } from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetWorkflowExecutionDetailsParamsType = z.infer<
   typeof AdminGetWorkflowExecutionDetailsParams
@@ -19,6 +23,8 @@ export const AdminGetWorkflowExecutionsParams = createFindParams({
     q: z.string().optional(),
     transaction_id: z.union([z.string(), z.array(z.string())]).optional(),
     workflow_id: z.union([z.string(), z.array(z.string())]).optional(),
+    state: z.union([z.string(), z.array(z.string())]).optional(),
+    created_at: createOperatorMap().optional(),
   })
 )
 

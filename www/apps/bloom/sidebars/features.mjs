@@ -26,6 +26,33 @@ export const featuresSidebar = [
           // },
           {
             type: "link",
+            title: "Integrations",
+            path: "/features/integrations",
+            children: [
+              {
+                type: "link",
+                title: "Cookiebot",
+                path: "/features/integrations/guides/cookiebot",
+              },
+              {
+                type: "link",
+                title: "Klaviyo",
+                path: "/features/integrations/guides/klaviyo",
+              },
+              {
+                type: "link",
+                title: "Slack",
+                path: "/features/integrations/guides/slack",
+              },
+              {
+                type: "link",
+                title: "Stripe",
+                path: "/features/integrations/guides/stripe",
+              },
+            ],
+          },
+          {
+            type: "link",
             title: "Selection Mode",
             path: "/features/selection-mode",
           },

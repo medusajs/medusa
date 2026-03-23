@@ -4,6 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
@@ -19,7 +20,9 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 
 /**
  * The data to validate that claim items can be added to a claim.
@@ -124,7 +127,11 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "canceled_at", "items.*"],
+      fields: [
+        ...fieldsToComputeAdjustmentsForPreview,
+        "status",
+        "canceled_at",
+      ],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -132,7 +139,7 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: ["id", "status", "version", "claim_id", "carry_over_promotions"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -172,6 +179,20 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     return new WorkflowResponse(previewOrderChangeStep(orderClaim.order_id))
