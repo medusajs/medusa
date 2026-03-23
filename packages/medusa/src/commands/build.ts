@@ -16,11 +16,16 @@ export default async function build({
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  await generateTypes({
-    directory,
-    container,
-    logger,
-  })
+  try {
+    await generateTypes({
+      directory,
+      container,
+      logger,
+    })
+  } catch (error) {
+    logger.error("Error generating types", error)
+    process.exit(1)
+  }
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)

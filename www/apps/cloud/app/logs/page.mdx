@@ -22,7 +22,7 @@ Logs are essential for monitoring your application's health and debugging issues
 There are two types of logs for your environment's deployments:
 
 - **Build logs**: Messages generated during the build process before deploying and starting the application. These logs are useful for debugging when a deployment's build fails.
-- **Runtime logs**: Messages logged by the Medusa application when it starts and while it's running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
+- **Runtime logs**: Messages logged by the Medusa backend and storefront when they start and while they're running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
 
 ---
 
@@ -92,12 +92,12 @@ To download build logs, click the <InlineIcon Icon={ArrowDownTray} alt="download
 
 ## View Runtime Logs on Cloud
 
-Runtime logs are useful for debugging the live deployment of an environment's Medusa application, especially when the deployment's status is "Deploy failed". They include logs for:
+Runtime logs are useful for debugging the live deployment of an environment's backend and storefront, especially when the deployment's status is "Deploy failed". They include logs for:
 
-- Errors that occur during application startup.
-- Errors that occur when handling incoming HTTP requests, such as 404 errors or 500 server errors.
+- Errors that occur during backend or storefront startup.
+- Errors that occur when handling incoming HTTP requests in the backend, such as 404 errors or 500 server errors.
 - Scheduled jobs, subscribers, and background workflow executions not working as expected (if they log informational or error messages).
-- Other runtime issues that may occur while the application is running.
+- Other runtime issues that may occur while the backend or storefront are running.
 
 You can only view the runtime logs of an environment's live deployment, as older deployments are no longer running and do not produce runtime logs.
 
@@ -111,6 +111,15 @@ To view the runtime logs for an environment's live deployment:
 This will open the runtime logs page, where you can see the logs for the live deployment of the environment.
 
 ![Runtime Logs for an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317226/Cloud/CleanShot_2025-06-19_at_10.13.36_2x_rfvows.png)
+
+### Switch Between Backend and Storefront Runtime Logs
+
+The runtime logs page shows logs for both the Medusa backend and, if you deployed a storefront alongside the Medusa application, the storefront. You can switch between the two using the toggle at the top of the logs table:
+
+- **Backend**: Logs from the Medusa backend application, such as HTTP requests, errors, and startup messages.
+- **Storefront**: Logs from the storefront application. This option is only available if you deployed a storefront alongside the Medusa application.
+
+![Runtime logs page with the backend and storefront toggle highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1773825145/Cloud/CleanShot_2026-03-18_at_11.12.05_2x_pop7tp.png)
 
 ### Search Runtime Logs
 
