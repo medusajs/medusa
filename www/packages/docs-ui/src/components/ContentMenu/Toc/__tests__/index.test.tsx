@@ -82,6 +82,19 @@ vi.mock("@/hooks/use-active-on-scroll", () => ({
 vi.mock("@/components/Loading", () => ({
   Loading: () => <div data-testid="loading">Loading...</div>,
 }))
+vi.mock("@/components/ContentMenu/Section", () => ({
+  ContentMenuSection: ({
+    title,
+    children,
+  }: {
+    title: string
+    children: React.ReactNode
+  }) => (
+    <div data-testid="content-menu-section" data-title={title}>
+      {children}
+    </div>
+  ),
+}))
 
 import { ContentMenuToc } from "../../Toc"
 
@@ -102,6 +115,15 @@ beforeEach(() => {
 })
 
 describe("render", () => {
+  test("renders inside On this page section", () => {
+    const { container } = render(<ContentMenuToc />)
+    const section = container.querySelector(
+      "[data-testid='content-menu-section']"
+    )
+    expect(section).toBeInTheDocument()
+    expect(section).toHaveAttribute("data-title", "On this page")
+  })
+
   test("render toc", () => {
     const { container } = render(<ContentMenuToc />)
     expect(container).toBeInTheDocument()

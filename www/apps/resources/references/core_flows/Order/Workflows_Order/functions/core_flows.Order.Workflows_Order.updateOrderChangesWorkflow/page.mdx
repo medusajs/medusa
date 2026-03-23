@@ -18,7 +18,7 @@ This workflow updates one or more order changes.
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 updating order changes.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/6695f211633620d5c8c54c8f7a866e92d4ec6166/packages/core/core-flows/src/order/workflows/update-order-changes.ts#L23" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/order/workflows/update-order-changes.ts#L23" />
 
 ## Examples
 
@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await updateOrderChangesWorkflow(req.scope)
     .run({
       input: [{
-        "id": "id_2Qe9ggpnCJEUi"
+        "id": "id_KaYUj0mH3pzT"
       }]
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await updateOrderChangesWorkflow(container)
     .run({
       input: [{
-        "id": "id_2Qe9ggpnCJEUi"
+        "id": "id_KaYUj0mH3pzT"
       }]
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await updateOrderChangesWorkflow(container)
     .run({
       input: [{
-        "id": "id_2Qe9ggpnCJEUi"
+        "id": "id_KaYUj0mH3pzT"
       }]
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = updateOrderChangesWorkflow
       .runAsStep({
         input: [{
-          "id": "id_2Qe9ggpnCJEUi"
+          "id": "id_KaYUj0mH3pzT"
         }]
       })
   }
