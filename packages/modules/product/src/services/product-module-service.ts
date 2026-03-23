@@ -251,15 +251,7 @@ export default class ProductModuleService
     )
 
     if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
+      await this.batchBuildVariantImagesFromProducts(products, sharedContext)
     }
 
     return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products)
@@ -293,15 +285,7 @@ export default class ProductModuleService
     )
 
     if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
+      await this.batchBuildVariantImagesFromProducts(products, sharedContext)
     }
 
     const serializedProducts = await this.baseRepository_.serialize<
@@ -2520,6 +2504,71 @@ export default class ProductModuleService
     }
 
     return result
+  }
+
+  private async batchBuildVariantImagesFromProducts(
+    products: InferEntityType<typeof Product>[],
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const allVariantIds: string[] = []
+
+    for (const product of products) {
+      if (!product.variants || !product.images) {
+        continue
+      }
+      for (const variant of product.variants) {
+        allVariantIds.push(variant.id)
+      }
+    }
+
+    if (allVariantIds.length === 0) {
+      return
+    }
+
+    const variantImageRelations =
+      await this.productVariantProductImageService_.list(
+        { variant_id: allVariantIds },
+        { select: ["variant_id", "image_id"] },
+        sharedContext
+      )
+
+    const variantIdImageIdsMap = new Map<string, string[]>()
+    const imageIdVariantIdsMap = new Map<string, Set<string>>()
+
+    for (const relation of variantImageRelations) {
+      if (!variantIdImageIdsMap.has(relation.variant_id)) {
+        variantIdImageIdsMap.set(relation.variant_id, [])
+      }
+      variantIdImageIdsMap.get(relation.variant_id)!.push(relation.image_id)
+
+      if (!imageIdVariantIdsMap.has(relation.image_id)) {
+        imageIdVariantIdsMap.set(relation.image_id, new Set())
+      }
+      imageIdVariantIdsMap.get(relation.image_id)!.add(relation.variant_id)
+    }
+
+    for (const product of products) {
+      if (!product.variants || !product.images) {
+        continue
+      }
+
+      const [generalImages, variantImages] = partitionArray(
+        product.images,
+        (img) => !imageIdVariantIdsMap.has(img.id)
+      )
+
+      for (const variant of product.variants) {
+        const variantImageIds = variantIdImageIdsMap.get(variant.id) || []
+
+        variant.images = [...generalImages]
+
+        for (const image of variantImages) {
+          if (variantImageIds.includes(image.id)) {
+            variant.images.push(image)
+          }
+        }
+      }
+    }
   }
 
   private async buildVariantImagesFromProduct(
