@@ -11,6 +11,7 @@ import clsx from "clsx"
 import Link from "next/link"
 import { useSiteConfig } from "../../../providers/SiteConfig"
 import { Loading } from "../../Loading"
+import { ContentMenuSection } from "../Section"
 
 export const ContentMenuToc = () => {
   const { toc: items, frontmatter, setToc } = useSiteConfig()
@@ -70,17 +71,18 @@ export const ContentMenuToc = () => {
   }
 
   return (
-    <div className="h-max max-h-full overflow-y-hidden flex relative flex-col">
-      <div className="absolute left-0 top-docs_0.5 h-[calc(100%-8px)] w-[1.5px] bg-medusa-border-base" />
-      {items !== null && (
-        <TocList
-          items={items}
-          activeItemId={activeItemId}
-          className="relative overflow-y-auto"
-        />
-      )}
-      {items === null && <EmptyTocItems />}
-    </div>
+    <ContentMenuSection title="On this page">
+      <div className="h-max max-h-full overflow-y-hidden flex relative flex-col">
+        {items !== null && (
+          <TocList
+            items={items}
+            activeItemId={activeItemId}
+            className="relative overflow-y-auto py-docs_0.75 px-docs_1"
+          />
+        )}
+        {items === null && <EmptyTocItems />}
+      </div>
+    </ContentMenuSection>
   )
 }
 
@@ -108,17 +110,16 @@ type TocItemProps = {
 const TocItem = ({ item, activeItemId }: TocItemProps) => {
   const { scrollToElement } = useScrollController()
   return (
-    <li className="w-full pt-docs_0.5 toc-item" data-testid="toc-item">
+    <li className="w-full toc-item" data-testid="toc-item">
       <Link
         href={`#${item.id}`}
         className={clsx(
-          "text-x-small-plus block w-full relative",
+          "block w-full relative py-docs_0.25",
           item.id !== activeItemId &&
-            "text-medusa-fg-muted hover:text-medusa-fg-base border-transparent"
+            "text-medusa-fg-subtle hover:text-medusa-fg-base text-x-small",
+          item.id === activeItemId && "text-medusa-fg-base text-x-small-plus",
+          "truncate"
         )}
-        style={{
-          paddingLeft: `${(item.level - 1) * 12}px`,
-        }}
         onClick={(e) => {
           e.preventDefault()
           history.pushState({}, "", `#${item.id}`)
@@ -126,16 +127,14 @@ const TocItem = ({ item, activeItemId }: TocItemProps) => {
           scrollToElement(elm)
         }}
       >
-        <span
-          className={clsx(
-            "absolute left-0 top-0 w-[1.5px] h-full bg-medusa-fg-base rounded-full",
-            item.id !== activeItemId && "invisible"
-          )}
-        />
         {item.title}
       </Link>
       {(item.children?.length ?? 0) > 0 && (
-        <TocList items={item.children!} activeItemId={activeItemId} />
+        <TocList
+          items={item.children!}
+          activeItemId={activeItemId}
+          className="pl-docs_0.75 relative after:content-[''] after:absolute after:left-0 after:top-docs_0.25 after:bottom-docs_0.25 after:w-docs_0.125 after:h-[calc(100%-8px)] after:bg-medusa-border-strong"
+        />
       )}
     </li>
   )
@@ -144,7 +143,11 @@ const TocItem = ({ item, activeItemId }: TocItemProps) => {
 const EmptyTocItems = () => {
   return (
     <div className="animate-pulse" data-testid="empty-toc-items">
-      <Loading count={5} className="pt-docs_0.5 px-docs_0.75 !my-0" />
+      <Loading
+        count={5}
+        className="!py-docs_0.75 !px-docs_1 !my-0"
+        barClassName="!h-docs_0.5"
+      />
     </div>
   )
 }
