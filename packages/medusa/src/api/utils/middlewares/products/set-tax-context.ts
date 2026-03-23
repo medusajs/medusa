@@ -47,6 +47,15 @@ export function setTaxContext(options: TaxContextOptions = {}) {
 }
 
 const getTaxInclusivityInfo = async (req: MedusaRequest) => {
+  // Reuse the region already fetched by setPricingContext if available,
+  // avoiding a duplicate DB query for the same region
+  const cachedRegion = (req as any).__region
+  if (cachedRegion && cachedRegion.automatic_taxes !== undefined) {
+    return {
+      automaticTaxes: cachedRegion.automatic_taxes,
+    }
+  }
+
   const region = await refetchEntity({
     entity: "region",
     idOrFilter: req.filterableFields.region_id as string,

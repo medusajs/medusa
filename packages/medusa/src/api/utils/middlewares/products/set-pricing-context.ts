@@ -26,17 +26,22 @@ export function setPricingContext(options: PricingContextOptions = {}) {
     }
 
     // We validate the region ID in the previous middleware
+    // Also fetch automatic_taxes so setTaxContext can reuse this region
+    // instead of making a duplicate DB query
     const region = await refetchEntity({
       entity: "region",
       idOrFilter: req.filterableFields.region_id!,
       scope: req.scope,
-      fields: ["id", "currency_code"],
+      fields: ["id", "currency_code", "automatic_taxes"],
       options: {
         cache: {
           enable: true,
         },
       },
     })
+
+    // Store region on the request so setTaxContext can reuse it
+    ;(req as any).__region = region
 
     if (!region) {
       try {
