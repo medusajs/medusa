@@ -30,7 +30,24 @@ If you're using a Medusa version before v2.7.0, contact support for assistance i
 
 ### Access S3 Configurations on Cloud
 
-Since Cloud is a managed service, you can't directly access your S3 bucket or its configurations. Medusa also doesn't expose the S3 bucket connection or configuration details.
+Since Cloud is a managed service, you can't directly access your S3 bucket.
+
+You can, however, access the S3 bucket details of your environment. This is useful when setting remote patterns in your storefront to allow loading assets from the S3 bucket.
+
+To access the S3 bucket details of an environment:
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the "Settings" tab.
+4. Choose the "Storage" tab from the sidebar.
+5. In the "Object storage" section, you can find your full S3 file URL and your S3 endpoint.
+
+From the S3 file URL, you can extract the bucket name and region. For example, if your S3 file URL is `https://s3.eu-central-1.amazonaws.com/medusajs.cloud-data-prod-euc1-123`:
+
+- The bucket name is `medusajs.cloud-data-prod-euc1-123`.
+- The region is `eu-central-1`.
+
+![S3 bucket details in Storage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1773824777/Cloud/CleanShot_2026-03-18_at_11.06.01_2x_imxylo.png)
 
 ### Override S3 Configurations on Cloud
 

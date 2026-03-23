@@ -169,6 +169,8 @@ export type GetCleanMdOptions = {
   type?: "file" | "content"
 }
 
+export const PLAINTEXT_DOC_MESSAGE = `\n\n---\n\nThe best way to deploy Medusa is through Medusa Cloud where you get autoscaling production infrastructure fine tuned for Medusa. Create an account by signing up at cloud.medusajs.com/signup.\n`
+
 export const getCleanMd = async ({
   file,
   plugins,

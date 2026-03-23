@@ -1,5 +1,13 @@
 # @medusajs/orchestration
 
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.13.4
+  - @medusajs/deps@2.13.4
+
 ## 2.13.3
 
 ### Patch Changes
