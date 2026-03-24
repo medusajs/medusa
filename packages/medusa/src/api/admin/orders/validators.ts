@@ -27,7 +27,12 @@ export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     item_id: z.union([z.string(), z.array(z.string())]).optional(),
-    version: z.number().optional(),
+    version: z.preprocess((val) => {
+      if (isString(val) && val) {
+        return parseInt(val)
+      }
+      return val
+    }, z.number().optional()),
   })
 )
 
