@@ -306,7 +306,14 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: t("orders.activity.events.fulfillment.shipped"),
           timestamp: fulfillment.shipped_at,
           children: (
-            <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              {fulfillment.marked_shipped_by && (
+                <div className="mt-2 flex items-center gap-x-2 text-sm">
+                  {t("fields.by")} <By id={fulfillment.marked_shipped_by} />
+                </div>
+              )}
+              <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+            </div>
           ),
         })
       }
