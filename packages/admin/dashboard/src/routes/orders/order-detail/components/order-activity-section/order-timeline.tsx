@@ -384,7 +384,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         itemsToSend: claim.additional_items,
         itemsToReturn: claimReturn?.items,
         itemsMap,
-        children: <ClaimBody claim={claim} claimReturn={claimReturn} />,
+        children: (
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ClaimBody claim={claim} claimReturn={claimReturn} />
+            {claim.created_by && !claim.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={claim.created_by} />
+              </div>
+            )}
+          </div>
+        ),
       })
     }
 
