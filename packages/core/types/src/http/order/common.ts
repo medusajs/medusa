@@ -677,6 +677,10 @@ export interface BaseOrderFulfillment {
    */
   created_at: Date
   /**
+   * The ID of the user that created the fulfillment.
+   */
+  created_by: string | null
+  /**
    * The date the fulfillment was updated.
    */
   updated_at: Date
