@@ -260,17 +260,17 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: refund.created_at,
           children: (
             <div className="text-ui-fg-subtle flex flex-col gap-y-2">
-              {refund.created_by && (
-                <div className="mt-2 flex items-center gap-x-2 text-sm">
-                  {t("fields.by")} <By id={refund.created_by} />
-                </div>
-              )}
               <Text size="small">
                 {getStylizedAmount(
                   refund.amount as number,
                   payment.currency_code
                 )}
               </Text>
+              {refund.created_by && (
+                <div className="flex items-center gap-x-2 text-sm">
+                  {t("fields.by")} <By id={refund.created_by} />
+                </div>
+              )}
             </div>
           ),
         })
@@ -283,12 +283,12 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         timestamp: fulfillment.created_at,
         children: (
           <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <FulfillmentCreatedBody fulfillment={fulfillment} />
             {fulfillment.created_by && (
-              <div className="mt-2 flex items-center gap-x-2 text-sm">
+              <div className="flex items-center gap-x-2 text-sm">
                 {t("fields.by")} <By id={fulfillment.created_by} />
               </div>
             )}
-            <FulfillmentCreatedBody fulfillment={fulfillment} />
           </div>
         ),
       })
@@ -307,12 +307,12 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: fulfillment.shipped_at,
           children: (
             <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
               {fulfillment.marked_shipped_by && (
-                <div className="mt-2 flex items-center gap-x-2 text-sm">
+                <div className="flex items-center gap-x-2 text-sm">
                   {t("fields.by")} <By id={fulfillment.marked_shipped_by} />
                 </div>
               )}
-              <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
             </div>
           ),
         })
@@ -414,7 +414,14 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         itemsToReturn: exchangeReturn?.items,
         itemsMap,
         children: (
-          <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
+            {exchange.created_by && !exchange.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={exchange.created_by} />
+              </div>
+            )}
+          </div>
         ),
       })
     }
@@ -1153,11 +1160,6 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
 
   return (
     <div className="text-ui-fg-subtle flex flex-col items-start gap-y-2">
-      {userId && (
-        <div className="mt-2 flex items-center gap-x-2 text-sm">
-          {t("fields.by")} <By id={userId} />
-        </div>
-      )}
       {itemsAdded.totalCount > 0 && (
         <ChangeDetailsTooltip
           title={`${t("labels.added")}: ${itemsAdded.totalCount}`}
@@ -1177,6 +1179,11 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
             />
           }
         />
+      )}
+      {userId && (
+        <div className="flex items-center gap-x-2 text-sm">
+          {t("fields.by")} <By id={userId} />
+        </div>
       )}
     </div>
   )
