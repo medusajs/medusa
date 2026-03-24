@@ -343,7 +343,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         timestamp: ret.created_at,
         itemsToReturn: ret?.items,
         itemsMap,
-        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
+        children: (
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />
+            {ret.created_by && !ret.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={ret.created_by} />
+              </div>
+            )}
+          </div>
+        ),
       })
 
       if (ret.canceled_at) {
