@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "2.13.4",
+  "version": "2.13.5",
   "scripts": {
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "../../../node_modules/.bin/vite",
@@ -46,10 +46,10 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/admin-shared": "2.13.4",
-    "@medusajs/icons": "2.13.4",
-    "@medusajs/js-sdk": "2.13.4",
-    "@medusajs/ui": "4.1.4",
+    "@medusajs/admin-shared": "2.13.5",
+    "@medusajs/icons": "2.13.5",
+    "@medusajs/js-sdk": "2.13.5",
+    "@medusajs/ui": "4.1.5",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
     "@tanstack/react-query": "5.64.2",
@@ -80,10 +80,10 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "@medusajs/admin-shared": "2.13.4",
-    "@medusajs/admin-vite-plugin": "2.13.4",
-    "@medusajs/types": "2.13.4",
-    "@medusajs/ui-preset": "2.13.4"
+    "@medusajs/admin-shared": "2.13.5",
+    "@medusajs/admin-vite-plugin": "2.13.5",
+    "@medusajs/types": "2.13.5",
+    "@medusajs/ui-preset": "2.13.5"
   },
   "packageManager": "yarn@3.2.1"
 }
