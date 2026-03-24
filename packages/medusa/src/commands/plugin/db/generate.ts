@@ -7,6 +7,7 @@ import {
   isFileSkipped,
   toUnixSlash,
 } from "@medusajs/framework/utils"
+import { MetadataStorage } from "@medusajs/framework/mikro-orm/core"
 import { MikroORM } from "@medusajs/framework/mikro-orm/postgresql"
 import { glob } from "glob"
 import { dirname, join } from "path"
@@ -77,7 +78,10 @@ async function getEntitiesForModule(path: string) {
       (potentialEntity) => {
         return (
           DmlEntity.isDmlEntity(potentialEntity) ||
-          typeof potentialEntity === "function"
+          Object.hasOwn(
+            potentialEntity as object,
+            MetadataStorage.PATH_SYMBOL
+          )
         )
       }
     )
