@@ -1057,7 +1057,7 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
         .map((item) => item.lineItemId)
     )
     const isAllDeleted = deletedItemIdsSet.size === itemChange.detail.length
-    const isSomeDeleted = deletedItemIdsSet.size > 0 && !isAllDeleted
+    const isSomeDeleted = deletedItemIdsSet.size > 0
 
     const { isLoading: isLoadingDeleted, order_items: deletedLineItems = [] } =
       useOrderLineItems(
