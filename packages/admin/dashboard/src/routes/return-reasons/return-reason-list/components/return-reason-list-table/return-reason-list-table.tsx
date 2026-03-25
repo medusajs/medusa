@@ -98,7 +98,7 @@ const useColumns = () => {
 
       await mutateAsync(returnReason.id, {
         onSuccess: () => {
-          toast.success(t("returnReasons.delete.successToast"))
+          toast.success(t("returnReasons.delete.successToast", { label: returnReason.label }))
         },
         onError: (e) => {
           toast.error(e.message)
