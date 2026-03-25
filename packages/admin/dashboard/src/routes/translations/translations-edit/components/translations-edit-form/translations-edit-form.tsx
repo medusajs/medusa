@@ -22,12 +22,12 @@ const EntityTranslationsSchema = z.object({
   id: z.string().nullish(),
   fields: z.record(z.string().optional()),
 })
-export type EntityTranslationsSchema = z.infer<typeof EntityTranslationsSchema>
+export type EntityTranslations = z.infer<typeof EntityTranslationsSchema>
 
 export const TranslationsFormSchema = z.object({
   entities: z.record(EntityTranslationsSchema),
 })
-export type TranslationsFormSchema = z.infer<typeof TranslationsFormSchema>
+export type TranslationsForm = z.infer<typeof TranslationsFormSchema>
 
 export type TranslationRow = EntityRow | FieldRow
 
@@ -53,7 +53,7 @@ export function isFieldRow(row: TranslationRow): row is FieldRow {
 
 type LocaleSnapshot = {
   localeCode: string
-  entities: Record<string, EntityTranslationsSchema>
+  entities: Record<string, EntityTranslations>
 }
 
 function buildLocaleSnapshot(
@@ -69,7 +69,7 @@ function buildLocaleSnapshot(
     }
   }
 
-  const entities: Record<string, EntityTranslationsSchema> = {}
+  const entities: Record<string, EntityTranslations> = {}
   for (const ref of references) {
     const existing = referenceTranslations.get(ref.id)
     const fields: Record<string, string> = {}
@@ -122,9 +122,7 @@ function extendSnapshot(
   return { ...snapshot, entities: extendedEntities }
 }
 
-function snapshotToFormValues(
-  snapshot: LocaleSnapshot
-): TranslationsFormSchema {
+function snapshotToFormValues(snapshot: LocaleSnapshot): TranslationsForm {
   return { entities: snapshot.entities }
 }
 
@@ -134,7 +132,7 @@ type ChangeDetectionResult = {
 }
 
 function computeChanges(
-  currentState: TranslationsFormSchema,
+  currentState: TranslationsForm,
   snapshot: LocaleSnapshot,
   entityType: string,
   localeCode: string
@@ -185,10 +183,7 @@ function computeChanges(
   return { hasChanges, payload }
 }
 
-const columnHelper = createDataGridHelper<
-  TranslationRow,
-  TranslationsFormSchema
->()
+const columnHelper = createDataGridHelper<TranslationRow, TranslationsForm>()
 
 const FIELD_COLUMN_WIDTH = 350
 
@@ -412,7 +407,7 @@ export const TranslationsEditForm = ({
     latestPropsRef.current = { translations, references }
   }, [translations, references])
 
-  const form = useForm<TranslationsFormSchema>({
+  const form = useForm<TranslationsForm>({
     resolver: zodResolver(TranslationsFormSchema),
     defaultValues: snapshotToFormValues(snapshotRef.current),
   })
@@ -436,7 +431,7 @@ export const TranslationsEditForm = ({
     )
 
     const currentValues = form.getValues()
-    const newFormValues: TranslationsFormSchema = {
+    const newFormValues: TranslationsForm = {
       entities: { ...currentValues.entities },
     }
 
