@@ -105,7 +105,6 @@ export class Translation {
    * .then(({ created, updated, deleted }) => {
    *   console.log(created, updated, deleted)
    * })
-   * ```
    */
   async batch(body: HttpTypes.AdminBatchTranslations, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminTranslationsBatchResponse>(
@@ -123,7 +122,7 @@ export class Translation {
    * It sends a request to the
    * [Get Translation Settings](https://docs.medusajs.com/api/admin#translations_gettranslationssettings) API route.
    *
-   * @param query - The query parameters which can optionally include the entity type to get the settings for.
+   * @param query - The query parameters which can optionally include the entity type to get the settings for and whether to get the settings for active/inactive entities only.
    * @param headers - Headers to pass in the request.
    * @returns The translation settings.
    *
@@ -134,8 +133,8 @@ export class Translation {
    * sdk.admin.translation.settings({
    *   entity_type: "product"
    * })
-   * .then(({ translatable_fields }) => {
-   *   console.log(translatable_fields)
+   * .then(({ translation_settings }) => {
+   *   console.log(translation_settings)
    * })
    * ```
    *
@@ -143,8 +142,30 @@ export class Translation {
    *
    * ```ts
    * sdk.admin.translation.settings()
-   * .then(({ translatable_fields }) => {
-   *   console.log(translatable_fields)
+   * .then(({ translation_settings }) => {
+   *   console.log(translation_settings)
+   * })
+   * ```
+   *
+   * To retrieve the settings for active entities only:
+   *
+   * ```ts
+   * sdk.admin.translation.settings({
+   *   is_active: true
+   * })
+   * .then(({ translation_settings }) => {
+   *   console.log(translation_settings)
+   * })
+   * ```
+   *
+   * To retrieve the settings for inactive entities only:
+   *
+   * ```ts
+   * sdk.admin.translation.settings({
+   *   is_active: false
+   * })
+   * .then(({ translation_settings }) => {
+   *   console.log(translation_settings)
    * })
    * ```
    */
@@ -157,6 +178,54 @@ export class Translation {
       {
         headers,
         query,
+      }
+    )
+  }
+
+  /**
+   * This method allows bulk operations on translation settings. It sends a request to the
+   * [Batch Translation Settings](https://docs.medusajs.com/api/admin#translations_posttranslationssettingsbatch)
+   * API route.
+   *
+   * @since 2.12.6
+   *
+   * @param body - The translation settings to create, update, or delete.
+   * @param headers - Headers to pass in the request.
+   * @returns The translation settings' details.
+   *
+   * @example
+   * sdk.admin.translation.batchSettings({
+   *   create: [
+   *     {
+   *       entity_type: "product",
+   *       fields: ["title", "description"],
+   *       is_active: true
+   *     }
+   *   ],
+   *   update: [
+   *     {
+   *       id: "trset_123",
+   *       fields: ["title", "description", "subtitle"],
+   *       is_active: true
+   *     }
+   *   ],
+   *   delete: ["trset_456"]
+   * })
+   * .then(({ created, updated, deleted }) => {
+   *   console.log(created, updated, deleted)
+   * })
+   * ```
+   */
+  async batchSettings(
+    body: HttpTypes.AdminBatchTranslationSettings,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminBatchTranslationSettingsResponse>(
+      `/admin/translations/settings/batch`,
+      {
+        method: "POST",
+        headers,
+        body,
       }
     )
   }

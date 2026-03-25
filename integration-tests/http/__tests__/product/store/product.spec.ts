@@ -521,6 +521,7 @@ medusaIntegrationTestRunner({
           title: "test product 1",
           collection_id: collection.id,
           status: ProductStatus.PUBLISHED,
+          external_id: "my-prod-001",
           shipping_profile_id: shippingProfile.id,
           options: [
             { title: "size", values: ["large", "small"] },
@@ -853,6 +854,34 @@ medusaIntegrationTestRunner({
       it("returns a list of products with a given tag", async () => {
         const response = await api.get(
           `/store/products?tag_id[]=${product.tags[0].id}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it('returns the external_id field when requested with `fields` param', async () => {  
+        const response  = await api.get('/store/products/' + product.id, storeHeaders);
+        expect(response.status).toEqual(200);
+        expect(response.data.product.external_id).toBeUndefined();
+
+        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
+        expect(response2.status).toEqual(200);
+        expect(response2.data.product.external_id).toEqual(product.external_id);
+      });
+
+      it("returns a list of products with given external_id", async () => {
+        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
+        expect(response2.status).toEqual(200);
+        expect(response2.data.product.external_id).toBeTruthy();
+        expect(response2.data.product.external_id).toEqual(product.external_id);
+
+        const response = await api.get(
+          `/store/products?external_id[]=${product.external_id}`,
           storeHeaders
         )
 

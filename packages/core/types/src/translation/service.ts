@@ -5,23 +5,27 @@ import { Context } from "../shared-context"
 import {
   FilterableLocaleProps,
   FilterableTranslationProps,
+  FilterableTranslationSettingsProps,
   LocaleDTO,
   TranslationDTO,
+  TranslationSettingsDTO,
   TranslationStatisticsInput,
   TranslationStatisticsOutput,
 } from "./common"
 import {
   CreateLocaleDTO,
   CreateTranslationDTO,
+  CreateTranslationSettingsDTO,
   UpdateLocaleDTO,
   UpdateLocaleDataDTO,
   UpdateTranslationDTO,
   UpdateTranslationDataDTO,
+  UpdateTranslationSettingsDTO,
 } from "./mutations"
 
 /**
  * The main service interface for the Translation Module.
- * 
+ *
  * @privateRemarks
  * Method signatures match what MedusaService generates.
  */
@@ -43,12 +47,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -82,12 +86,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the locales:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -141,12 +145,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the locales:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -250,7 +254,7 @@ export interface ITranslationModuleService extends IModuleService {
    *
    * @example
    * To update locales by their IDs:
-   * 
+   *
    * ```ts
    * const locales = await translationModuleService.updateLocales([
    *   {
@@ -265,7 +269,7 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To update locales by a selector:
-   * 
+   *
    * ```ts
    * const locales = await translationModuleService.updateLocales({
    *   selector: {
@@ -299,7 +303,7 @@ export interface ITranslationModuleService extends IModuleService {
    * @param {string | object | string[] | object[]} primaryKeyValues - The IDs or objects with IDs identifying the locales to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the locales are deleted.
-   * 
+   *
    * @example
    * await translationModuleService.deleteLocales(["loc_123", "loc_321"])
    */
@@ -336,7 +340,7 @@ export interface ITranslationModuleService extends IModuleService {
    * @returns {Promise<Record<string, string[]> | void>} An object that includes the IDs of related records that were restored.
    *
    * If there are no related records restored, the promise resolves to `void`.
-   * 
+   *
    * @example
    * await translationModuleService.restoreLocales(["loc_123", "loc_321"])
    */
@@ -362,12 +366,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -401,12 +405,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the translations:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -419,7 +423,7 @@ export interface ITranslationModuleService extends IModuleService {
    *   }
    * )
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
@@ -460,12 +464,12 @@ export interface ITranslationModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the translations:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -478,7 +482,7 @@ export interface ITranslationModuleService extends IModuleService {
    *   }
    * )
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
@@ -618,7 +622,7 @@ export interface ITranslationModuleService extends IModuleService {
    * @param {string | object | string[] | object[]} primaryKeyValues - The IDs or objects with IDs identifying the translations to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the translations are deleted.
-   * 
+   *
    * @example
    * await translationModuleService.deleteTranslations("tra_123")
    */
@@ -635,7 +639,7 @@ export interface ITranslationModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>} An object that includes the IDs of related records that were also soft deleted.
    * If there are no related records, the promise resolves to `void`.
-   * 
+   *
    * @example
    * await translationModuleService.softDeleteTranslations(["tra_123", "tra_321"])
    */
@@ -667,7 +671,7 @@ export interface ITranslationModuleService extends IModuleService {
   /**
    * This method retrieves translation statistics for the specified entities and locales.
    * It's useful to understand the translation coverage of different entities across various locales.
-   * 
+   *
    * You can use this method to get insights into how many fields are translated, missing translations,
    * and the expected number of translations based on the entities and locales provided.
    *
@@ -731,4 +735,219 @@ export interface ITranslationModuleService extends IModuleService {
     entityType?: string,
     sharedContext?: Context
   ): Promise<Record<string, string[]>>
+
+  /**
+   * This method retrieves the inactive translatable fields of a resource from the database.
+   * For example, whenever a merchant disables a fields as translatable, it is added to the inactive translatable fields, so they
+   * can later be re-enabled.
+   *
+   * @param {string} entityType - Name of the resource's table to get inactive translatable fields for.
+   * If not provided, returns all inactive translatable fields for all entity types. For example, `product` or `product_variant`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]>>} A mapping of resource names to their inactive translatable fields.
+   *
+   * @example
+   * To get inactive translatable fields for all resources:
+   *
+   * ```ts
+   * const allInactiveFields = await translationModuleService.getInactiveTranslatableFields()
+   * // Returns: { product: ["subtitle"], product_variant: ["material"] }
+   * ```
+   *
+   * To get inactive translatable fields for a specific resource:
+   *
+   * ```ts
+   * const productInactiveFields = await translationModuleService.getInactiveTranslatableFields("product")
+   * // Returns: { product: ["subtitle"] }
+   * ```
+   */
+  getInactiveTranslatableFields(
+    entityType?: string,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]>>
+
+  /**
+   * This method creates a translation setting.
+   *
+   * @param {CreateTranslationSettingsDTO} data - The translation setting to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO>} The created translation setting.
+   *
+   * @example
+   * const translationSetting = await translationModuleService.createTranslationSettings({
+   *     entity_type: "product",
+   *     fields: ["title", "description"],
+   *     is_active: true,
+   *   })
+   */
+  createTranslationSettings(
+    data: CreateTranslationSettingsDTO,
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO>
+
+  /**
+   *
+   * @param data - The translation settings to be created.
+   * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO[]>} The created translation settings.
+   *
+   * @example
+   * const translationSettings = await translationModuleService.createTranslationSettings([
+   *   {
+   *     entity_type: "product",
+   *     fields: ["title", "description"],
+   *     is_active: true,
+   *   },
+   * ])
+   */
+  createTranslationSettings(
+    data: CreateTranslationSettingsDTO[],
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO[]>
+
+  /**
+   * This method updates an existent translation setting. The ID should be included in the data object.
+  }
+   * @param {UpdateTranslationSettingsDTO} data - The attributes to update in the translation setting (including id).
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO>} The updated translation setting.
+   *
+   * @example
+   * const translationSettings = await translationModuleService.updateTranslationSettings([
+   *   {
+   *     id: "ts_123",
+   *     entity_type: "product_collection",
+   *     fields: ["title"],
+   *     is_active: true,
+   *   },
+   * ])
+   */
+  updateTranslationSettings(
+    data: UpdateTranslationSettingsDTO,
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO>
+
+  /**
+   * This method updates one or more existent translation settings.
+   * @param {UpdateTranslationSettingsDTO[]} data - The translation settings to update.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO[]>} The updated translation settings.
+   *
+   * @example
+   * const translationSettings = await translationModuleService.updateTranslationSettings([
+   *   {
+   *     id: "ts_123",
+   *     entity_type: "product_collection",
+   *     fields: ["title"],
+   *     is_active: true,
+   *   },
+   * ])
+   */
+  updateTranslationSettings(
+    data: UpdateTranslationSettingsDTO[],
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO[]>
+
+  /**
+   * This method deletes one or more translation settings.
+   *
+   * @param {string[]} input - The IDs of the translation settings to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the translation settings are deleted.
+   *
+   * @example
+   * await translationModuleService.deleteTranslationSettings([
+   *   "ts_123",
+   *   "ts_321",
+   * ])
+   */
+  deleteTranslationSettings(
+    input: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method retrieves a paginated list of translation settings based on optional filters and configuration.
+   *
+   * @param {FilterableTranslationSettingsProps} filters - The filters to apply on the retrieved translation settings.
+   * @param {FindConfig<TranslationSettingsDTO>} config - The configurations determining how the translation settings are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a translation settings.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO[]>} The list of translation settings.
+   *
+   * @example
+   * const translationSettings = await translationModuleService.listTranslationSettings({
+   *   entity_type: "product",
+   *   is_active: true,
+   * })
+   * // Returns: [
+   * //   {
+   * //     id: "ts_123",
+   * //     entity_type: "product",
+   * //     fields: ["title", "description"],
+   * //     is_active: true,
+   * //   },
+   * // ]
+   */
+  listTranslationSettings(
+    filters?: FilterableTranslationSettingsProps,
+    config?: FindConfig<TranslationSettingsDTO>,
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO[]>
+
+  /**
+   * This method retrieves a paginated list of translation settings based on optional filters and configuration, along with the total count.
+   *
+   * @param {FilterableTranslationSettingsProps} filters - The filters to apply on the retrieved translation settings.
+   * @param {FindConfig<TranslationSettingsDTO>} config - The configurations determining how the translation settings are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a translation settings.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[TranslationSettingsDTO[], number]>} The list of translation settings along with their total count.
+   *
+   * @example
+   * const [translationSettings, count] = await translationModuleService.listAndCountTranslationSettings({
+   *   entity_type: "product",
+   *   is_active: true,
+   * })
+   * // Returns: [
+   * //   [
+   * //     {
+   * //       id: "ts_123",
+   * //       entity_type: "product",
+   * //       fields: ["title", "description"],
+   * //       is_active: true,
+   * //     },
+   * //   ],
+   * //   1,
+   * // ]
+   */
+  listAndCountTranslationSettings(
+    filters?: FilterableTranslationSettingsProps,
+    config?: FindConfig<TranslationSettingsDTO>,
+    sharedContext?: Context
+  ): Promise<[TranslationSettingsDTO[], number]>
+
+  /**
+   * This method retrieves a translation setting by its ID.
+   *
+   * @param {string} id - The ID of the translation setting to retrieve.
+   * @param {FindConfig<TranslationSettingsDTO>} config - The configurations determining how the translation setting is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a translation settings.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<TranslationSettingsDTO>} The retrieved translation setting.
+   *
+   * @example
+   * const translationSetting = await translationModuleService.retrieveTranslationSettings("ts_123")
+   * // Returns: {
+   * //   id: "ts_123",
+   * //   entity_type: "product",
+   * //   fields: ["title", "description"],
+   * //   is_active: true,
+   * // }
+   */
+  retrieveTranslationSettings(
+    id: string,
+    config?: FindConfig<TranslationSettingsDTO>,
+    sharedContext?: Context
+  ): Promise<TranslationSettingsDTO>
 }

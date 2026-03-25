@@ -3,7 +3,6 @@ slug: /references/medusa-workflows/createTranslationsWorkflow
 sidebar_label: createTranslationsWorkflow
 sidebar_description: Create one or more translations.
 tags:
-  - query
   - translation
   - event bus
   - workflow
@@ -33,7 +32,7 @@ This is available starting from [Medusa v2.12.3](https://github.com/medusajs/med
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/a960fb75c9f662372fd5cd623f883f9d6d8ad473/packages/core/core-flows/src/translation/workflows/create-translations.ts#L53" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/translation/workflows/create-translations.ts#L52" />
 
 ## Examples
 
@@ -166,7 +165,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createTranslationsWorkflow","steps":[{"type":"step","name":"validateTranslationsStep","description":"This step validates that the translations are supported by the store.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.validateTranslationsStep/page.mdx","depth":1},{"type":"step","name":"createTranslationsStep","description":"This step creates one or more translations.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"createTranslationsWorkflow","steps":[{"type":"step","name":"createTranslationsStep","description":"This step creates one or more translations.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
 
 ## Input
 

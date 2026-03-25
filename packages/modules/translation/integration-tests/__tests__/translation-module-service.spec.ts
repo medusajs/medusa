@@ -1,15 +1,42 @@
 import { ITranslationModuleService } from "@medusajs/framework/types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { DmlEntity, Module, Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import TranslationModuleService from "@services/translation-module"
 import { createLocaleFixture, createTranslationFixture } from "../__fixtures__"
 
 jest.setTimeout(100000)
 
+// Set up the mock before module initialization
+let mockGetTranslatableEntities: jest.SpyInstance
+
 moduleIntegrationTestRunner<ITranslationModuleService>({
   moduleName: Modules.TRANSLATION,
+  hooks: {
+    beforeModuleInit: async () => {
+      mockGetTranslatableEntities = jest.spyOn(
+        DmlEntity,
+        "getTranslatableEntities"
+      )
+      mockGetTranslatableEntities.mockReturnValue([
+        {
+          entity: "Product",
+          fields: ["title", "description", "subtitle", "material"],
+        },
+        { entity: "ProductVariant", fields: ["title", "material"] },
+        { entity: "ProductCategory", fields: ["name"] },
+      ])
+    },
+  },
   testSuite: ({ service }) => {
     describe("Translation Module Service", () => {
+      beforeEach(async () => {
+        await service.__hooks?.onApplicationStart?.().catch(() => {})
+      })
+      afterAll(() => {
+        // Restore the mock after all tests complete
+        mockGetTranslatableEntities.mockRestore()
+      })
+
       it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.TRANSLATION, {
           service: TranslationModuleService,
@@ -685,6 +712,38 @@ moduleIntegrationTestRunner<ITranslationModuleService>({
             const fields = await service.getTranslatableFields("unknown_entity")
 
             expect(fields).toEqual({})
+          })
+
+          it("should return empty array when entity has fields configured but is_active is false", async () => {
+            const [productTranslationSettings] =
+              await service.listTranslationSettings({
+                entity_type: "product",
+              })
+            await service.updateTranslationSettings({
+              id: productTranslationSettings.id,
+              is_active: false,
+            })
+
+            const fields = await service.getTranslatableFields("product")
+
+            expect(fields).toEqual({
+              product: [],
+            })
+          })
+
+          it("should return empty array for inactive entity when getting all fields", async () => {
+            const [productTranslationSettings] =
+              await service.listTranslationSettings({
+                entity_type: "product",
+              })
+            await service.updateTranslationSettings({
+              id: productTranslationSettings.id,
+              is_active: false,
+            })
+
+            const fields = await service.getTranslatableFields()
+
+            expect(fields.product).toEqual([])
           })
         })
 

@@ -1,6 +1,10 @@
 import { FeatureFlag } from "@medusajs/framework/utils"
 import TranslationFeatureFlag from "../../../feature-flags/translation"
 
+export enum Entities {
+  store = "store",
+}
+
 export const defaultAdminStoreFields = [
   "id",
   "name",
@@ -20,9 +24,11 @@ export const defaultAdminStoreFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminStoreFields,
   isList: false,
+  entity: Entities.store,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.store,
 }

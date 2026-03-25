@@ -1,3 +1,7 @@
+export enum Entities {
+  price_preference = "price_preference",
+}
+
 export const adminPricePreferenceRemoteQueryFields = [
   "id",
   "attribute",
@@ -11,9 +15,11 @@ export const adminPricePreferenceRemoteQueryFields = [
 export const retrivePricePreferenceQueryConfig = {
   defaults: adminPricePreferenceRemoteQueryFields,
   isList: false,
+  entity: Entities.price_preference,
 }
 
 export const listPricePreferenceQueryConfig = {
   ...retrivePricePreferenceQueryConfig,
   isList: true,
+  entity: Entities.price_preference,
 }

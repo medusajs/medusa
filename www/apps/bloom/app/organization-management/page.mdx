@@ -1,0 +1,85 @@
+export const metadata = {
+  title: `Manage Your Organization`,
+}
+
+# {metadata.title}
+
+This guide covers how to change your organization information and delete your organization.
+
+## What is an Organization?
+
+Every account in Bloom belongs to an organization. An organization is a workspace that contains your projects and settings.
+
+Your account can belong to multiple organizations, and you can switch between them. Each organization has its own projects, settings, and billing.
+
+---
+
+## Switch Organizations View
+
+When you sign into Bloom, the dashboard shows settings and projects for one of your organizations.
+
+If you're part of multiple organizations, you can switch between organizations by clicking the organization name at the top left.
+
+This opens an organization switcher where you can select a different organization to view its projects and settings.
+
+---
+
+## Update Organization Details
+
+You can update your organization name, billing email, or VAT number in the organization settings.
+
+To update your organization details:
+
+1. Open the [Bloom homepage](https://bloom.medusajs.com/).
+2. Click on your avatar in the top right corner.
+3. Select "Account Settings" from the menu.
+4. Click "General" in the sidebar under Organization.
+5. Update any of these fields:
+   - **Organization name**: The name that appears throughout Bloom.
+   - **Billing email**: The email address shown on invoices.
+   - **VAT number**: (optional) Your tax identification number. This VAT number is shown on invoices.
+6. Click "Save changes" to update your organization.
+
+Future invoices show the updated organization details.
+
+{/* TODO: Add image: Organization settings page with form to update organization name, billing email, and VAT number */}
+
+---
+
+## Delete Organization
+
+<Note type="warning">
+
+Deleting your organization is irreversible. Deleting your organization permanently removes all projects associated with it. If this is your only organization, Bloom also deletes your account.
+
+</Note>
+
+You can delete your organization to remove all associated projects and data permanently.
+
+To delete your organization:
+
+1. Open the [Bloom homepage](https://bloom.medusajs.com/).
+2. Click on your avatar in the top right corner.
+3. Select "Account Settings" from the menu.
+4. Click "General" in the sidebar under Organization.
+5. Click "Delete Organization."
+6. Confirm the deletion in the dialog.
+
+{/* TODO: Add image: Delete organization confirmation dialog with Delete Organization button */}
+
+---
+
+## More Organization Management
+
+<CardList items={[
+  {
+    href: "/organization-management/team",
+    title: "Team",
+    text: "Manage your team members"
+  },
+  {
+    href: "/manage-billing",
+    title: "Billing",
+    text: "Manage your plan and payment details"
+  }
+]} />

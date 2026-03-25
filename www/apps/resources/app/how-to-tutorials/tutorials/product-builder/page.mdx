@@ -78,7 +78,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -400,7 +400,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Product Builder Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productBuilder
 ```
 
@@ -408,7 +408,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -519,7 +519,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -1829,7 +1829,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { upsertProductBuilderWorkflow } from "../../../../../workflows/upsert-product-builder"
 
 export const UpsertProductBuilderSchema = z.object({
@@ -1999,7 +1999,7 @@ export const getComplementaryProductsRouteHighlights = [
 ```ts title="src/api/admin/products/complementary/route.ts" highlights={getComplementaryProductsRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { createFindParams } from "@medusajs/medusa/api/utils/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetComplementaryProductsSchema = z.object({
   exclude_product_id: z.string(),
@@ -4804,7 +4804,7 @@ export const addToCartApiHighlights = [
 ```ts title="src/api/store/carts/[id]/product-builder/route.ts" highlights={addToCartApiHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { addProductBuilderToCartWorkflow } from "../../../../../workflows/add-product-builder-to-cart"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const AddBuilderProductSchema = z.object({
   product_id: z.string(),

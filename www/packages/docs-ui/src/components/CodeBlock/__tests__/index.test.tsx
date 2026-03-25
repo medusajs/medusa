@@ -428,6 +428,9 @@ describe("interaction", () => {
     expect(mockTrack).toHaveBeenCalledWith({
       event: {
         event: DocsTrackingEvents.CODE_BLOCK_COPY,
+        options: {
+          text: mockSource.substring(0, 150),
+        }
       },
     })
   })

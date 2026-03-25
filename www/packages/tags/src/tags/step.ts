@@ -184,6 +184,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getTranslatedLineItemsStep"
   },
   {
+    "title": "getTranslatedShippingOptionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getTranslatedShippingOptionsStep"
+  },
+  {
     "title": "removeRemoteLinkStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeRemoteLinkStep"
   },
@@ -594,6 +598,10 @@ export const step = [
   {
     "title": "updateOrderShippingMethodsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsStep"
+  },
+  {
+    "title": "updateOrderShippingMethodsTranslationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsTranslationsStep"
   },
   {
     "title": "updateOrdersStep",
@@ -1072,12 +1080,12 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductsStep"
   },
   {
-    "title": "generateProductCsvStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/generateProductCsvStep"
+    "title": "dismissProductVariantsInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/dismissProductVariantsInventoryStep"
   },
   {
-    "title": "getAllProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAllProductsStep"
+    "title": "exportProductsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportProductsStep"
   },
   {
     "title": "getProductsStep",
@@ -1368,20 +1376,28 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTaxRegionsStep"
   },
   {
+    "title": "createTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createTranslationSettingsStep"
+  },
+  {
     "title": "createTranslationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createTranslationsStep"
+  },
+  {
+    "title": "deleteTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteTranslationSettingsStep"
   },
   {
     "title": "deleteTranslationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteTranslationsStep"
   },
   {
-    "title": "updateTranslationsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTranslationsStep"
+    "title": "updateTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTranslationSettingsStep"
   },
   {
-    "title": "validateTranslationsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateTranslationsStep"
+    "title": "updateTranslationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTranslationsStep"
   },
   {
     "title": "createUsersStep",

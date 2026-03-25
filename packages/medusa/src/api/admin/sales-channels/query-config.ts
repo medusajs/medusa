@@ -1,3 +1,7 @@
+export enum Entities {
+  sales_channel = "sales_channel",
+}
+
 export const defaultAdminSalesChannelFields = [
   "id",
   "name",
@@ -12,9 +16,11 @@ export const defaultAdminSalesChannelFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminSalesChannelFields,
   isList: false,
+  entity: Entities.sales_channel,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.sales_channel,
 }

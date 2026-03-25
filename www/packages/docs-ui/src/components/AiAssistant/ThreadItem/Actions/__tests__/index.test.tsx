@@ -2,8 +2,6 @@ import React from "react"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
 import { ButtonProps } from "../../../../Button"
-import { LinkProps } from "../../../../Link"
-import { BadgeProps } from "../../../../Badge"
 import { AiAssistantThreadItem } from "../../../../../providers/AiAssistant"
 import * as AiAssistantMocks from "../../../__mocks__"
 
@@ -38,14 +36,13 @@ vi.mock("@kapaai/react-sdk", () => ({
 vi.mock("@/providers/SiteConfig", () => ({
   useSiteConfig: () => mockSiteConfig,
 }))
-vi.mock("@/components/Badge", () => ({
-  Badge: (props: BadgeProps) => <div {...props} />,
-}))
 vi.mock("@/components/Button", () => ({
   Button: (props: ButtonProps) => <button {...props} />,
 }))
-vi.mock("@/components/Link", () => ({
-  Link: (props: LinkProps) => <a {...props} />,
+vi.mock("next/link", () => ({
+  default: ({ children, ...props }: React.ComponentProps<"a">) => (
+    <a {...props}>{children}</a>
+  ),
 }))
 vi.mock("@/hooks/use-copy", () => ({
   useCopy: () => useCopyMock(),

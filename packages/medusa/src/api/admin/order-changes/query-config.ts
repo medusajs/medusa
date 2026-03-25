@@ -1,3 +1,7 @@
+export enum Entities {
+  order_change = "order_change",
+}
+
 export const defaultAdminRetrieveOrderChangeFields = [
   "id",
   "order_id",
@@ -29,4 +33,5 @@ export const defaultAdminRetrieveOrderChangeFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRetrieveOrderChangeFields,
   isList: false,
+  entity: Entities.order_change,
 }

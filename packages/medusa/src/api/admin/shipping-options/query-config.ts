@@ -1,3 +1,7 @@
+export enum Entities {
+  shipping_option = "shipping_option",
+}
+
 export const defaultAdminShippingOptionFields = [
   "id",
   "name",
@@ -19,11 +23,13 @@ export const defaultAdminShippingOptionFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminShippingOptionFields,
   isList: false,
+  entity: Entities.shipping_option,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.shipping_option,
 }
 
 export const defaultAdminShippingOptionRuleFields = [

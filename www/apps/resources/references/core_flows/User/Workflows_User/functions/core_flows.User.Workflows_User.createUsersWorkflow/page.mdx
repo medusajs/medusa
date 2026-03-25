@@ -1,9 +1,10 @@
 ---
 slug: /references/medusa-workflows/createUsersWorkflow
 sidebar_label: createUsersWorkflow
-sidebar_description: Create one or more users.
+sidebar_description: Create one or more users with optional role assignment.
 tags:
   - user
+  - link
   - event bus
   - workflow
 ---
@@ -21,10 +22,12 @@ You can attach an auth identity to each user to allow the user to log in using t
 setAuthAppMetadataStep. Learn more about auth identities in
 [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
 
+You can provide roles to be assigned to each user during creation.
+
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 create users within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/a960fb75c9f662372fd5cd623f883f9d6d8ad473/packages/core/core-flows/src/user/workflows/create-users.ts#L40" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/user/workflows/create-users.ts#L45" />
 
 ## Examples
 
@@ -49,6 +52,7 @@ export async function POST(
           email: "example@gmail.com",
           first_name: "John",
           last_name: "Doe",
+          roles: ["role_super_admin"]
         }]
       }
     })
@@ -78,6 +82,7 @@ export default async function handleOrderPlaced({
           email: "example@gmail.com",
           first_name: "John",
           last_name: "Doe",
+          roles: ["role_super_admin"]
         }]
       }
     })
@@ -107,6 +112,7 @@ export default async function myCustomJob(
           email: "example@gmail.com",
           first_name: "John",
           last_name: "Doe",
+          roles: ["role_super_admin"]
         }]
       }
     })
@@ -137,6 +143,7 @@ const myWorkflow = createWorkflow(
             email: "example@gmail.com",
             first_name: "John",
             last_name: "Doe",
+            roles: ["role_super_admin"]
           }]
         }
       })
@@ -149,7 +156,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users. To allow these users to log in,\nyou must attach an auth identity to each user using the setAuthAppMetadataStep.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.createUsersStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users. To allow these users to log in,\nyou must attach an auth identity to each user using the setAuthAppMetadataStep.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.createUsersStep/page.mdx","depth":1},{"type":"step","name":"createRemoteLinkStep","description":"This step creates links between two records of linked data models.\n\nLearn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#create-link).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.createRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
@@ -157,7 +164,7 @@ const myWorkflow = createWorkflow(
 
 ## Output
 
-<TypeList types={[{"name":"UserDTO[]","type":"[UserDTO](../../../../../user/interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createUsersWorkflow"/>
+<TypeList types={[{"name":"UserDTO[]","type":"[UserDTO](../../../../../user/interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"roles","type":"`null` \\| `string`[]","description":"The RBAC roles assigned to the user.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createUsersWorkflow"/>
 
 ## Emitted Events
 

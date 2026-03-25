@@ -166,7 +166,7 @@ export interface BaseProductVariant {
   /**
    * The variant's images.
    */
-  images: BaseProductImage[] | null
+  images?: BaseProductImage[] | null
   /**
    * Whether the variant can be ordered even if it's out of stock.
    */
@@ -383,6 +383,10 @@ export interface BaseProductListParams
    * Filter by the product's handle(s).
    */
   handle?: string | string[]
+  /**
+   * Filter by the product's external ID(s).
+   */
+  external_id?: string | string[]
   /**
    * Filter by the product's id(s).
    */

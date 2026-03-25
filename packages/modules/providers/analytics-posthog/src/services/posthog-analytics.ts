@@ -1,11 +1,11 @@
 import {
-  PosthogAnalyticsServiceOptions,
   Logger,
+  PosthogAnalyticsServiceOptions,
   ProviderIdentifyAnalyticsEventDTO,
   ProviderTrackAnalyticsEventDTO,
 } from "@medusajs/framework/types"
-import { PostHog } from "posthog-node"
 import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
+import { PostHog } from "posthog-node"
 
 type InjectedDependencies = {
   logger: Logger
@@ -76,11 +76,11 @@ export class PosthogAnalyticsService extends AbstractAnalyticsProviderService {
         distinctId: data.actor_id,
         properties: data.properties,
       })
+    } else {
+      throw new Error(
+        "Actor or group is required when identifying an entity with Posthog"
+      )
     }
-
-    throw new Error(
-      "Actor or group is required when identifying an entity with Posthog"
-    )
   }
 
   async shutdown() {

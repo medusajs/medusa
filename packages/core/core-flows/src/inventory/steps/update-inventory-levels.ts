@@ -27,6 +27,14 @@ export const updateInventoryLevelsStep = createStep(
       Modules.INVENTORY
     )
 
+    if (!input.length) {
+      return new StepResponse([], {
+        dataBeforeUpdate: [],
+        selects: [],
+        relations: [],
+      })
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
 
     const dataBeforeUpdate = await inventoryService.listInventoryLevels(

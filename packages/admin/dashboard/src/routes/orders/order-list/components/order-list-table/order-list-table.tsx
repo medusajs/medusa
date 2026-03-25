@@ -10,9 +10,9 @@ import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-t
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { ConfigurableOrderListTable } from "./configurable-order-list-table"
-import { useOrderTableFilters } from "./use-order-table-filters"
 
 import { DEFAULT_FIELDS } from "../../const"
+import { useOrderTableFilters } from "../../../../../hooks/table/filters"
 
 const PAGE_SIZE = 20
 

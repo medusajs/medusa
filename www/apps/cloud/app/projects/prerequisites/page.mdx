@@ -4,13 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, learn about the prerequisites for your Medusa application and storefront before deploying it to Medusa Cloud in a new project.
+In this guide, learn about the prerequisites for your Medusa application and storefront before deploying it to Cloud in a new project.
 
 Alternatively, you can create a project from a starter, as explained in the [Create Projects](../page.mdx) guide.
 
 ## Who is this guide for?
 
-This guide is intended for developers and teams deploying their local Medusa applications to Medusa Cloud.
+This guide is intended for developers and teams deploying their local Medusa applications to Cloud.
 
 You'll learn what setup steps are necessary for:
 
@@ -19,13 +19,49 @@ You'll learn what setup steps are necessary for:
 
 ---
 
-## Prerequisites for Medusa Application Only
+## Prerequisites for Medusa Application
 
 This section covers the prerequisites for deploying your Medusa application (server and admin dashboard) to Cloud.
 
 If you're also deploying a storefront with your backend, check the [next section](#prerequisites-for-medusa-application-with-storefront) for additional prerequisites.
 
-### Configurations Managed by Medusa Cloud
+### Supported Node.js Versions
+
+Medusa supports the Node.js LTS of the following major versions:
+
+- 20.x (default)
+- 22.x
+- 24.x
+- 25.x
+
+#### Specifying Node.js Version
+
+You can override the default Node.js version for your Medusa application by adding an `engines` field in your `package.json` file:
+
+```json title="package.json"
+{
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
+```
+
+Medusa will satisfy this version by the following priority:
+
+```mermaid
+flowchart LR
+    A[Start] --> B{engines field\nspecified?}
+    B -- Yes --> C{"Found minimum secure\nversion matching range?"}
+    C -- Yes --> D[Use minimum secure\nversion matching the range]
+    C -- No --> E[Use minimum version\nsatisfying the range]
+    B -- No --> F["Use default\nNode.js version (20.x)"]
+```
+
+1. Find the minimum secure version that matches the range specified in the `engines` field. For example, if your `package.json` specifies `>=21.0.0`, Medusa will use Node.js v22.x since v21.x is no longer supported.
+2. If Medusa can't find the minimum secure version that matches the range, it will use the minimum version that satisfies the range, even if it's not an LTS version.
+3. If no `engines` field is specified, Medusa will use the default Node.js version (20.x).
+
+### Configurations Managed in Cloud
 
 Your existing Medusa application (server and admin dashboard) doesn't need specific configurations to be deployed to Cloud. Medusa automatically:
 
@@ -72,6 +108,12 @@ To create a monorepo, you need:
 You can structure your monorepo as you see fit. You'll be required to specify the paths to your Medusa application and storefront during the project creation process on Cloud.
 
 ![Diagram showcasing the monorepo structure with Medusa application and storefront as separate packages](https://res.cloudinary.com/dza7lstvk/image/upload/v1766044505/Cloud/storefront-overview_ebmefz.jpg)
+
+### Storefront Supported Node.js Versions
+
+Medusa uses Node.js v24.x (LTS) to build storefronts. You can't override this version.
+
+So, ensure that your storefront is compatible with Node.js v24.x.
 
 ### Root Build Script
 
@@ -151,8 +193,8 @@ If you're using `npm` as your package manager, and you're using the [Next.js Sta
   "overrides": {
     // other overrides...
     "@medusajs/icons": {
-      "react": "19.0.3",
-      "react-dom": "19.0.3"
+      "react": "19.0.4",
+      "react-dom": "19.0.4"
     }
   }
 }
@@ -166,8 +208,8 @@ Also, add the following override in your monorepo's root `package.json`:
 {
   "overrides": {
     // other overrides...
-    "react": "19.0.3",
-    "react-dom": "19.0.3"
+    "react": "19.0.4",
+    "react-dom": "19.0.4"
   }
 }
 ```
@@ -178,9 +220,9 @@ This ensures that all packages in your monorepo use compatible versions of `reac
 
 Cloud currently supports deploying storefronts built with the following frameworks:
 
-1. [Next.js](https://nextjs.org/) v15+
+1. [Next.js](https://nextjs.org/) v15. v16 is also supported if you're not using a [proxy](https://nextjs.org/docs/app/getting-started/proxy).
 2. [SvelteKit](https://kit.svelte.dev/) v2.40.0+
-3. [Tanstack Start](https://tanstack.com/start) v1.132.0+
+3. [Tanstack Start](https://tanstack.com/start) v1.132.0+ (React and Solid)
 
 If you're using a different framework for your storefront, contact support to request it.
 

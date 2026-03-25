@@ -7,8 +7,8 @@ import { isAbortError } from "./create-abort-controller.js"
 import execute from "./execute.js"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import logMessage from "./log-message.js"
-import ProcessManager from "./process-manager.js"
 import { updatePackageVersions } from "./update-package-versions.js"
+import PackageManager from "./package-manager.js"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 const NEXTJS_BRANCH = "main"
@@ -31,7 +31,7 @@ type InstallOptions = {
   abortController?: AbortController
   factBoxOptions: FactBoxOptions
   verbose?: boolean
-  processManager: ProcessManager
+  packageManager: PackageManager
   version?: string
 }
 
@@ -40,7 +40,7 @@ export async function installNextjsStarter({
   abortController,
   factBoxOptions,
   verbose = false,
-  processManager,
+  packageManager,
   version,
 }: InstallOptions): Promise<string> {
   factBoxOptions.interval = displayFactBox({
@@ -74,29 +74,27 @@ export async function installNextjsStarter({
       { verbose }
     )
 
+    const packageJsonPath = path.join(nextjsDirectory, "package.json")
+    let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
+
     if (version) {
-      const packageJsonPath = path.join(nextjsDirectory, "package.json")
-      updatePackageVersions(packageJsonPath, version, { applyChanges: true })
+      packageJson = updatePackageVersions(packageJsonPath, version, {
+        applyChanges: false,
+      })
     }
+
+    // Update packageManager field to match user's chosen package manager
+    const packageManagerString = await packageManager.getPackageManagerString()
+    if (packageManagerString) {
+      packageJson.packageManager = packageManagerString
+    }
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
     const execOptions = {
       signal: abortController?.signal,
       cwd: nextjsDirectory,
     }
-    await processManager.runProcess({
-      process: async () => {
-        try {
-          await execute([`yarn`, execOptions], { verbose })
-        } catch (e) {
-          // yarn isn't available
-          // use npm
-          await execute([`npm install`, execOptions], {
-            verbose,
-          })
-        }
-      },
-      ignoreERESOLVE: true,
-    })
+    await packageManager.installDependencies(execOptions)
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()
@@ -130,14 +128,17 @@ type StartOptions = {
   directory: string
   abortController?: AbortController
   verbose?: boolean
+  packageManager: PackageManager
 }
 
 export function startNextjsStarter({
   directory,
   abortController,
   verbose = false,
+  packageManager,
 }: StartOptions) {
-  const childProcess = exec(`npm run dev`, {
+  const command = packageManager.getCommandStr(`dev`)
+  const childProcess = exec(command, {
     cwd: directory,
     signal: abortController?.signal,
   })

@@ -28,7 +28,7 @@ post:
             create:
               type: array
               description: >-
-                The The associations to create between product variants and
+                The associations to create between product variants and
                 inventory items.
               items:
                 type: object

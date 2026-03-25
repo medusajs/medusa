@@ -61,6 +61,6 @@ export const generatedEditDates = {
   "app/orders/draft-orders/page.mdx": "2025-08-26T09:31:53.784Z",
   "app/settings/locations-and-shipping/shipping-option-types/page.mdx": "2025-08-28T14:03:13.999Z",
   "app/settings/refund-reasons/page.mdx": "2025-10-09T07:29:52.837Z",
-  "app/settings/translations/page.mdx": "2025-12-16T13:44:48.166Z",
+  "app/settings/translations/page.mdx": "2026-01-20T10:27:20.421Z",
   "app/orders/export/page.mdx": "2025-12-18T11:43:04.911Z"
 }

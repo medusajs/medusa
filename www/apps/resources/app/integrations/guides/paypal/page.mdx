@@ -1,0 +1,1946 @@
+---
+sidebar_label: "Integrate PayPal"
+products:
+  - payment
+---
+
+import { Github, EllipsisHorizontal } from "@medusajs/icons"
+import { Card, Prerequisites, WorkflowDiagram, InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Integrate PayPal (Payment) with Medusa`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to integrate PayPal with Medusa for payment processing.
+
+When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa's architecture facilitates integrating third-party services to handle various functionalities, including payment processing.
+
+[PayPal](https://www.paypal.com/) is a widely used payment gateway that allows businesses to accept payments online securely. By integrating PayPal with Medusa, you can offer your customers a convenient and trusted payment option.
+
+## Summary
+
+By following this tutorial, you'll learn how to:
+
+- Install and set up Medusa.
+- Integrate PayPal as a Payment Module Provider in Medusa.
+- Customize the Next.js Starter Storefront to include PayPal as a payment option.
+
+You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
+
+![Diagram showing the checkout flow between customer, Medusa, and PayPal](https://res.cloudinary.com/dza7lstvk/image/upload/v1765268705/Medusa%20Resources/paypal-overview_rsqisb.jpg)
+
+<Card
+  href="https://github.com/medusajs/examples/tree/main/paypal-integration"
+  title="Full Code"
+  text="Find the complete code for this integration on GitHub."
+  icon={Github}
+/>
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash
+npx create-medusa-app@latest
+```
+
+You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
+
+Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name and the Next.js Starter Storefront in a separate directory named `{project-name}-storefront`.
+
+<Note title="Why is the storefront installed separately">
+
+The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST API endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
+
+</Note>
+
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Create PayPal Module Provider
+
+To integrate third-party services into Medusa, you create a custom module. A module is a reusable package with functionalities related to a single feature or domain.
+
+Medusa's [Payment Module](../../../commerce-modules/payment/page.mdx) provides an interface to process payments in your Medusa application. It delegates the actual payment processing to the underlying providers.
+
+In this step, you'll integrate PayPal as a Payment Module Provider and configure it in your Medusa application. Later, you'll use it to process payments.
+
+<Note>
+
+Refer to the [Modules](!docs!/learn/fundamentals/modules) documentation to learn more about modules in Medusa.
+
+</Note>
+
+### a. Install PayPal SDK
+
+To interact with PayPal's APIs, run the following command in your Medusa application to install the PayPal server SDK:
+
+```bash npm2yarn
+npm install @paypal/paypal-server-sdk
+```
+
+You'll use the SDK in the Payment Module Provider's service.
+
+### b. Create Module Directory
+
+A module is created under the `src/modules` directory of your Medusa application. So, create the directory `src/modules/paypal`.
+
+### c. Create PayPal Module's Service
+
+A module has a service that contains its logic. For Payment Module Providers, the service implements the logic to process payments with third-party services.
+
+To create the service of the PayPal Payment Module Provider, create the file `src/modules/paypal/service.ts` with the following content:
+
+```ts title="src/modules/paypal/service.ts"
+import { AbstractPaymentProvider } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
+import {
+  Client,
+  Environment,
+  OrdersController,
+  PaymentsController,
+} from "@paypal/paypal-server-sdk"
+
+type Options = {
+  client_id: string
+  client_secret: string
+  environment?: "sandbox" | "production"
+  autoCapture?: boolean
+  webhook_id?: string
+}
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  static identifier = "paypal"
+
+  protected logger_: Logger
+  protected options_: Options
+  protected client_: Client
+  protected ordersController_: OrdersController
+  protected paymentsController_: PaymentsController
+
+  constructor(container: InjectedDependencies, options: Options) {
+    super(container, options)
+
+    this.logger_ = container.logger
+    this.options_ = {
+      environment: "sandbox",
+      autoCapture: false,
+      ...options,
+    }
+
+    // Initialize PayPal client
+    this.client_ = new Client({
+      environment:
+        this.options_.environment === "production"
+          ? Environment.Production
+          : Environment.Sandbox,
+      clientCredentialsAuthCredentials: {
+        oAuthClientId: this.options_.client_id,
+        oAuthClientSecret: this.options_.client_secret,
+      },
+    })
+
+    this.ordersController_ = new OrdersController(this.client_)
+    this.paymentsController_ = new PaymentsController(this.client_)
+  }
+
+  // TODO: Add methods
+}
+
+export default PayPalPaymentProviderService
+```
+
+A Payment Module Provider service must extend the `AbstractPaymentProvider` class. It must also have a static `identifier` property that uniquely identifies the provider.
+
+The module provider's constructor receives two parameters:
+
+- `container`: The [module's container](!docs!/learn/fundamentals/modules/container) that contains Framework resources available to the module.
+- `options`: Options that are passed to the module provider when it's registered in Medusa's configurations. You define the following option:
+    - `client_id`: The PayPal Client ID.
+    - `client_secret`: The PayPal Client Secret.
+    - `environment`: The PayPal environment to use, either `sandbox` or `production`.
+    - `autoCapture`: Whether to capture payments immediately or authorize them for later capture.
+    - `webhook_id`: The PayPal Webhook ID for validating webhooks.
+
+In the constructor, you initialize the PayPal SDK client and controllers using the provided credentials.
+
+In the next sections, you'll implement the methods required by the `AbstractPaymentProvider` class to process payments with PayPal.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider) guide for detailed information about the methods.
+
+</Note>
+
+#### validateOptions Method
+
+The [validateOptions](/references/payment/provider#validateoptions) method validates that the module has received the required options.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import { 
+  MedusaError,
+} from "@medusajs/framework/utils"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  static validateOptions(options: Record<any, any>): void | never {
+    if (!options.client_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
+        "Client ID is required"
+      )
+    }
+    if (!options.client_secret) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
+        "Client secret is required"
+      )
+    }
+  }
+}
+```
+
+The `validateOptions` method receives the options passed to the module provider as a parameter.
+
+In the method, you throw an error if the `client_id` or `client_secret` options are missing. This will stop the application from starting.
+
+#### initiatePayment Method
+
+The [initiatePayment](/references/payment/provider#initiatepayment) method initializes a payment session with the third-party service. It's called when the customer selects a payment method during checkout.
+
+You'll create a PayPal order in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  InitiatePaymentInput,
+  InitiatePaymentOutput,
+} from "@medusajs/framework/types"
+import {
+  CheckoutPaymentIntent,
+  OrderApplicationContextLandingPage,
+  OrderApplicationContextUserAction,
+  OrderRequest,
+} from "@paypal/paypal-server-sdk"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async initiatePayment(
+    input: InitiatePaymentInput
+  ): Promise<InitiatePaymentOutput> {
+    try {
+      const { amount, currency_code } = input
+
+      // Determine intent based on autoCapture option
+      const intent = this.options_.autoCapture
+        ? CheckoutPaymentIntent.Capture
+        : CheckoutPaymentIntent.Authorize
+
+      // Create PayPal order request
+      const orderRequest: OrderRequest = {
+        intent: intent,
+        purchaseUnits: [
+          {
+            amount: {
+              currencyCode: currency_code.toUpperCase(),
+              value: amount.toString(),
+            },
+            description: "Order payment",
+            customId: input.data?.session_id as string | undefined,
+          },
+        ],
+        applicationContext: {
+          // TODO: Customize as needed
+          brandName: "Store",
+          landingPage: OrderApplicationContextLandingPage.NoPreference,
+          userAction: OrderApplicationContextUserAction.PayNow,
+        },
+      }
+
+      const response = await this.ordersController_.createOrder({
+        body: orderRequest,
+        prefer: "return=representation",
+      })
+
+      const order = response.result
+
+      if (!order?.id) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to create PayPal order"
+        )
+      }
+
+      // Extract approval URL from links
+      const approvalUrl = order.links?.find(
+        (link) => link.rel === "approve"
+      )?.href
+
+      return {
+        id: order.id,
+        data: {
+          order_id: order.id,
+          intent: intent,
+          status: order.status,
+          approval_url: approvalUrl,
+          session_id: input.data?.session_id,
+          currency_code,
+        },
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to initiate PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `initiatePayment` method receives an object with the payment details, such as the amount and currency code.
+
+In the method, you:
+
+1. Determine the payment intent based on the `autoCapture` option. By default, payments are authorized for later capture.
+2. Create a PayPal order request with the payment details.
+    - You can customize the `applicationContext` as needed. For example, you can set your store's name and the PayPal landing page type.
+
+You return an object with the PayPal order ID and a `data` object with additional information, such as the intent and approval URL. Medusa stores the `data` object in the payment session's `data` field, allowing you to access it for later processing.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#initiatepayment) guide for detailed information about this method.
+
+</Note>
+
+#### authorizePayment Method
+
+The [authorizePayment](/references/payment/provider#authorizepayment) method authorizes a payment with the third-party service. It's called when the customer places their order to authorize the payment with the selected payment method.
+
+You'll authorize or capture the PayPal order in this method, based on the `autoCapture` option.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  AuthorizePaymentInput,
+  AuthorizePaymentOutput,
+  PaymentSessionStatus,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async authorizePayment(
+    input: AuthorizePaymentInput
+  ): Promise<AuthorizePaymentOutput> {
+    try {
+      const orderId = input.data?.order_id as string | undefined
+
+      if (!orderId || typeof orderId !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal order ID is required"
+        )
+      }
+
+      // If autoCapture is enabled, authorize and capture in one step
+      if (this.options_.autoCapture) {
+        const response = await this.ordersController_.captureOrder({
+          id: orderId,
+          prefer: "return=representation",
+        })
+
+        const capture = response.result
+
+        if (!capture?.id) {
+          throw new MedusaError(
+            MedusaError.Types.UNEXPECTED_STATE,
+            "Failed to capture PayPal payment"
+          )
+        }
+
+        // Extract capture ID from purchase units
+        const captureId =
+          capture.purchaseUnits?.[0]?.payments?.captures?.[0]?.id
+
+        return {
+          data: {
+            ...input.data,
+            capture_id: captureId,
+            intent: "CAPTURE",
+          },
+          status: "captured" as PaymentSessionStatus,
+        }
+      }
+
+      // Otherwise, just authorize
+      const response = await this.ordersController_.authorizeOrder({
+        id: orderId,
+        prefer: "return=representation",
+      })
+
+      const authorization = response.result
+
+      if (!authorization?.id) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to authorize PayPal payment"
+        )
+      }
+
+      // Extract authorization ID from purchase units
+      const authId =
+        authorization.purchaseUnits?.[0]?.payments?.authorizations?.[0]?.id
+
+      return {
+        data: {
+          order_id: orderId,
+          authorization_id: authId,
+          intent: "AUTHORIZE",
+          currency_code: input.data?.currency_code,
+        },
+        status: "authorized" as PaymentSessionStatus,
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to authorize PayPal payment: ${error.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `authorizePayment` method receives an object with the payment session's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal order ID from the `data` field. This is the same `data.order_id` you returned in the `initiatePayment` method.
+2. If the `autoCapture` option is enabled, you capture the PayPal order.
+3. Otherwise, you authorize the PayPal order.
+
+You return an object with a `data` field containing additional information, such as the authorization or capture ID. Medusa will store the `data` object in the newly created payment record for later processing.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#authorizepayment) guide for detailed information about this method.
+
+</Note>
+
+#### capturePayment Method
+
+The [capturePayment](/references/payment/provider#capturepayment) method captures a previously authorized payment with the third-party service. It's called either when:
+
+- An admin user captures the payment from the Medusa Admin dashboard.
+- PayPal webhook notifies Medusa that the payment has been captured.
+
+You'll captured the authorized PayPal order in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  CapturePaymentInput,
+  CapturePaymentOutput,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async capturePayment(
+    input: CapturePaymentInput
+  ): Promise<CapturePaymentOutput> {
+    try {
+      const authorizationId = input.data?.authorization_id as string | undefined
+
+      if (!authorizationId || typeof authorizationId !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal authorization ID is required for capture"
+        )
+      }
+
+      const response = await this.paymentsController_.captureAuthorizedPayment({
+        authorizationId: authorizationId,
+        prefer: "return=representation",
+      })
+
+      const capture = response.result
+
+      if (!capture?.id) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to capture PayPal payment"
+        )
+      }
+
+      return {
+        data: {
+          ...input.data,
+          capture_id: capture.id,
+        },
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to capture PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `capturePayment` method receives an object with the payment record's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal authorization ID from the `data` field. This is the same `data.authorization_id` you returned in the `authorizePayment` method.
+2. Capture the authorized PayPal payment.
+
+You return an object with a `data` field containing additional information, such as the capture ID. Medusa updates the payment record's `data` field with the returned `data` object.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#capturepayment) guide for detailed information about this method.
+
+</Note>
+
+#### refundPayment Method
+
+The [refundPayment](/references/payment/provider#refundpayment) method refunds a previously captured payment with the third-party service. It's called when an admin user issues a refund from the Medusa Admin dashboard.
+
+You'll refund the captured PayPal payment in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  RefundPaymentInput,
+  RefundPaymentOutput,
+} from "@medusajs/framework/types"
+import { BigNumber } from "@medusajs/framework/utils"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async refundPayment(input: RefundPaymentInput): Promise<RefundPaymentOutput> {
+    try {
+      const captureId = input.data?.capture_id as string | undefined
+
+      if (!captureId || typeof captureId !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal capture ID is required for refund"
+        )
+      }
+
+      const refundRequest = {
+        amount: {
+          currencyCode: (input.data?.currency_code as string | undefined)
+            ?.toUpperCase() || "",
+          value: new BigNumber(input.amount).numeric.toString(),
+        },
+      }
+
+      const response = await this.paymentsController_.refundCapturedPayment({
+        captureId: captureId,
+        body: Object.keys(refundRequest).length > 0 ? refundRequest : undefined,
+        prefer: "return=representation",
+      })
+
+      const refund = response.result
+
+      if (!refund?.id) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to refund PayPal payment"
+        )
+      }
+
+      return {
+        data: {
+          ...input.data,
+          refund_id: refund.id,
+        },
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to refund PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `refundPayment` method receives an object with the payment record's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal capture ID from the `data` field. This is the same `data.capture_id` you returned in the `capturePayment` method.
+2. Extract the amount and currency code from the input.
+3. Refund the captured PayPal payment.
+
+You return an object with a `data` field containing additional information, such as the refund ID. Medusa updates the payment record's `data` field with the returned `data` object.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#refundpayment) guide for detailed information about this method.
+
+</Note>
+
+#### updatePayment Method
+
+The [updatePayment](/references/payment/provider#updatepayment) method updates the payment session in the third-party service. It's called when the payment session needs to be updated, such as when the order amount changes.
+
+You'll update the PayPal order amount in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  UpdatePaymentInput,
+  UpdatePaymentOutput,
+} from "@medusajs/framework/types"
+import {
+  PatchOp,
+} from "@paypal/paypal-server-sdk"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async updatePayment(
+    input: UpdatePaymentInput
+  ): Promise<UpdatePaymentOutput> {
+    try {
+      const orderId = input.data?.order_id as string | undefined
+
+      if (!orderId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal order ID is required"
+        )
+      }
+      
+      await this.ordersController_.patchOrder({
+        id: orderId as string,
+        body: [
+          {
+            op: PatchOp.Replace,
+            path: "/purchase_units/@reference_id=='default'/amount/value",
+            value: new BigNumber(input.amount).numeric.toString(),
+          },
+        ],
+      })
+
+      return {
+        data: {
+          ...input.data,
+          currency_code: input.currency_code,
+        },
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to update PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `updatePayment` method receives an object with the payment session's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal order ID from the `data` field. This is the same `data.order_id` you returned in the `initiatePayment` method.
+2. Update the PayPal order amount.
+
+You return an object with a `data` field containing the updated payment information. Medusa updates the payment session's `data` field with the returned `data` object.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#updatepayment) guide for detailed information about this method.
+
+</Note>
+
+#### deletePayment Method
+
+The [deletePayment](/references/payment/provider#deletepayment) method deletes the payment session in the third-party service. It's called when the customer changes the payment method during checkout.
+
+PayPal orders cannot be deleted, so you can leave this method empty. PayPal will automatically cancel orders that are not approved within a certain timeframe.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  DeletePaymentInput,
+  DeletePaymentOutput,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async deletePayment(
+    input: DeletePaymentInput
+  ): Promise<DeletePaymentOutput> {
+    // Note: PayPal doesn't have a cancelOrder API endpoint
+    // Orders can only be voided if they're authorized, which is handled in cancelPayment
+    // For orders that haven't been authorized yet, they will expire automatically
+
+    return {
+      data: input.data,
+    }
+  }
+}
+```
+
+The `deletePayment` method receives an object with the payment session's `data` field.
+
+In the method, you simply return the existing `data` object without making any changes.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#deletepayment) guide for detailed information about this method.
+
+</Note>
+
+#### retrievePayment Method
+
+The [retrievePayment](/references/payment/provider#retrievepayment) method retrieves the payment details from the third-party service. You'll retrieve the order details from PayPal in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  RetrievePaymentInput,
+  RetrievePaymentOutput,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async retrievePayment(
+    input: RetrievePaymentInput
+  ): Promise<RetrievePaymentOutput> {
+    try {
+      const orderId = input.data?.order_id as string | undefined
+
+      if (!orderId || typeof orderId !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal order ID is required"
+        )
+      }
+
+      const response = await this.ordersController_.getOrder({
+        id: orderId,
+      })
+
+      const order = response.result
+
+      if (!order?.id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          "PayPal order not found"
+        )
+      }
+
+      return {
+        data: {
+          order_id: order.id,
+          status: order.status,
+          intent: order.intent,
+        },
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to retrieve PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `retrievePayment` method receives an object with the payment record's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal order ID from the `data` field. This is the same `data.order_id` you returned in the `initiatePayment` method.
+2. Retrieve the PayPal order details.
+
+You return an object with a `data` field containing the retrieved payment information.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#retrievepayment) guide for detailed information about this method.
+
+</Note>
+
+#### cancelPayment Method
+
+The [cancelPayment](/references/payment/provider#cancelpayment) method cancels a previously authorized payment with the third-party service. It's called when an admin user cancels an order from the Medusa Admin dashboard.
+
+You'll void the authorized PayPal payment in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  CancelPaymentInput,
+  CancelPaymentOutput,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async cancelPayment(
+    input: CancelPaymentInput
+  ): Promise<CancelPaymentOutput> {
+    try {
+      const authorizationId = input.data?.authorization_id as string | undefined
+
+      if (!authorizationId || typeof authorizationId !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal authorization ID is required for cancellation"
+        )
+      }
+
+      await this.paymentsController_.voidPayment({
+        authorizationId: authorizationId,
+      })
+
+      return {
+        data: input.data,
+      }
+    } catch (error: any) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to cancel PayPal payment: ${error.result?.message || error}`
+      )
+    }
+  }
+}
+```
+
+The `cancelPayment` method receives an object with the payment record's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal authorization ID from the `data` field. This is the same `data.authorization_id` you returned in the `authorizePayment` method.
+2. Void the authorized PayPal payment.
+
+You return an object with the existing `data` field without making any changes. Medusa updates the payment record's `data` field with the returned `data` object.
+
+#### getPaymentStatus Method
+
+The [getPaymentStatus](/references/payment/provider#getpaymentstatus) method retrieves the current status of the payment from the third-party service. You'll retrieve the order status from PayPal in this method.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import type {
+  GetPaymentStatusInput,
+  GetPaymentStatusOutput,
+} from "@medusajs/framework/types"
+import { OrderStatus } from "@paypal/paypal-server-sdk"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async getPaymentStatus(
+    input: GetPaymentStatusInput
+  ): Promise<GetPaymentStatusOutput> {
+    try {
+      const orderId = input.data?.order_id as string | undefined
+
+      if (!orderId || typeof orderId !== "string") {
+        return { status: "pending" as PaymentSessionStatus }
+      }
+
+      const response = await this.ordersController_.getOrder({
+        id: orderId,
+      })
+
+      const order = response.result
+
+      if (!order) {
+        return { status: "pending" as PaymentSessionStatus }
+      }
+
+      const status = order.status
+
+      switch (status) {
+        case OrderStatus.Created:
+        case OrderStatus.Saved:
+          return { status: "pending" as PaymentSessionStatus }
+        case OrderStatus.Approved:
+          return { status: "authorized" as PaymentSessionStatus }
+        case OrderStatus.Completed:
+          return { status: "authorized" as PaymentSessionStatus }
+        case OrderStatus.Voided:
+          return { status: "canceled" as PaymentSessionStatus }
+        default:
+          return { status: "pending" as PaymentSessionStatus }
+      }
+    } catch (error: any) {
+      return { status: "pending" as PaymentSessionStatus }
+    }
+  }
+}
+```
+
+The `getPaymentStatus` method receives an object with the payment record's `data` field.
+
+In the method, you:
+
+1. Extract the PayPal order ID from the `data` field. This is the same `data.order_id` you returned in the `initiatePayment` method.
+2. Retrieve the PayPal order details.
+3. Map the PayPal order status to Medusa's `PaymentSessionStatus`.
+
+You return an object with the mapped payment status.
+
+<Note>
+
+Refer to the [Create Payment Module Provider](/references/payment/provider#getpaymentstatus) guide for detailed information about this method.
+
+</Note>
+
+#### verifyWebhookSignature Method
+
+The `verifyWebhookSignature` method is not required by the `AbstractPaymentProvider` class. You'll create this method to verify PayPal webhook signatures, and use it in the next method that handles webhooks.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  private async verifyWebhookSignature(
+    headers: Record<string, any>,
+    body: any,
+    rawBody: string | Buffer | undefined
+  ): Promise<boolean> {
+    try {
+      if (!this.options_.webhook_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "PayPal webhook ID is required for webhook signature verification"
+        )
+      }
+  
+      const transmissionId =
+        headers["paypal-transmission-id"]
+      const transmissionTime =
+        headers["paypal-transmission-time"]
+      const certUrl =
+        headers["paypal-cert-url"]
+      const authAlgo =
+        headers["paypal-auth-algo"]
+      const transmissionSig =
+        headers["paypal-transmission-sig"]
+  
+      if (
+        !transmissionId ||
+        !transmissionTime ||
+        !certUrl ||
+        !authAlgo ||
+        !transmissionSig
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Missing required PayPal webhook headers"
+        )
+      }
+  
+      // PayPal's API endpoint for webhook verification
+      const baseUrl =
+        this.options_.environment === "production"
+          ? "https://api.paypal.com"
+          : "https://api.sandbox.paypal.com"
+  
+      const verifyUrl = `${baseUrl}/v1/notifications/verify-webhook-signature`
+  
+      // Get access token for verification API call
+      const authResponse = await fetch(`${baseUrl}/v1/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(
+            `${this.options_.client_id}:${this.options_.client_secret}`
+          ).toString("base64")}`,
+        },
+        body: "grant_type=client_credentials",
+      })
+  
+      if (!authResponse.ok) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to get access token for webhook verification"
+        )
+      }
+  
+      const authData = await authResponse.json()
+      const accessToken = authData.access_token
+  
+      if (!accessToken) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Access token not received from PayPal"
+        )
+      }
+  
+      let webhookEvent: any
+      if (rawBody) {
+        const rawBodyString =
+          typeof rawBody === "string" ? rawBody : rawBody.toString("utf8")
+        try {
+          webhookEvent = JSON.parse(rawBodyString)
+        } catch (e) {
+          this.logger_.warn("Raw body is not valid JSON, using parsed body")
+          webhookEvent = body
+        }
+      } else {
+        this.logger_.warn(
+          "Raw body not available, using parsed body. Verification may fail if formatting differs."
+        )
+        webhookEvent = body
+      }
+  
+      const verifyPayload = {
+        transmission_id: transmissionId,
+        transmission_time: transmissionTime,
+        cert_url: certUrl,
+        auth_algo: authAlgo,
+        transmission_sig: transmissionSig,
+        webhook_id: this.options_.webhook_id,
+        webhook_event: webhookEvent,
+      }
+  
+      const verifyResponse = await fetch(verifyUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(verifyPayload),
+      })
+  
+      if (!verifyResponse.ok) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Webhook verification API call failed"
+        )
+      }
+  
+      const verifyData = await verifyResponse.json()
+  
+      // PayPal returns verification_status: "SUCCESS" if verification passes
+      const isValid = verifyData.verification_status === "SUCCESS"
+  
+      if (!isValid) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Webhook signature verification failed"
+        )
+      }
+  
+      return isValid
+    } catch (e) {
+      this.logger_.error("PayPal verifyWebhookSignature error:", e)
+      return false
+    }
+  }
+}
+```
+
+The `verifyWebhookSignature` method receives the following parameters:
+
+1. `headers`: The HTTP headers from the webhook request.
+2. `body`: The parsed JSON body from the webhook request.
+3. `rawBody`: The raw body from the webhook request as a string or buffer.
+
+In the method, you:
+
+1. Extract the required PayPal webhook headers.
+2. Get an [access token](https://developer.paypal.com/api/rest/authentication/) for the PayPal webhook verification API.
+3. Construct the verification payload with the extracted headers and webhook event data.
+4. Call the PayPal [webhook verification API](https://developer.paypal.com/api/rest/webhooks/rest/#link-postbackmethod) to verify the webhook signature.
+
+You return `true` if the webhook signature is valid (based on the API's response), or `false` otherwise.
+
+#### getWebhookActionAndData Method
+
+The [getWebhookActionAndData](/references/payment/provider#getwebhookactionanddata) method processes incoming webhook events from the third-party service. Medusa provides a webhook endpoint at `/hooks/payment/{provider_id}` that you can use to receive PayPal webhooks. This endpoint calls the `getWebhookActionAndData` method to process the webhook event.
+
+Add the following method to the `PayPalPaymentProviderService` class:
+
+```ts title="src/modules/paypal/service.ts"
+import { PaymentActions } from "@medusajs/framework/utils"
+import type {
+  ProviderWebhookPayload,
+  WebhookActionResult,
+} from "@medusajs/framework/types"
+
+class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
+  // ...
+  async getWebhookActionAndData(
+    payload: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult> {
+    try {
+      const { data, rawData, headers } = payload
+
+      // Verify webhook signature
+      const isValid = await this.verifyWebhookSignature(
+        headers || {},
+        data,
+        rawData || ""
+      )
+
+      if (!isValid) {
+        this.logger_.error("Invalid PayPal webhook signature")
+        return {
+          action: "failed",
+          data: {
+            session_id: "",
+            amount: new BigNumber(0),
+          },
+        }
+      }
+
+      // PayPal webhook events have event_type
+      const eventType = (data as any)?.event_type
+
+      if (!eventType) {
+        this.logger_.warn("PayPal webhook event missing event_type")
+        return {
+          action: "not_supported",
+          data: {
+            session_id: "",
+            amount: new BigNumber(0),
+          },
+        }
+      }
+
+      // Extract order ID and amount from webhook payload
+      const resource = (data as any)?.resource
+      const sessionId: string | undefined = (data as any)?.resource?.custom_id
+
+      if (!sessionId) {
+        this.logger_.warn("Session ID not found in PayPal webhook resource")
+        return {
+          action: "not_supported",
+          data: {
+            session_id: "",
+            amount: new BigNumber(0),
+          },
+        }
+      }
+
+      const amountValue =
+        resource?.amount?.value ||
+        resource?.purchase_units?.[0]?.payments?.captures?.[0]?.amount
+          ?.value ||
+        resource?.purchase_units?.[0]?.payments?.authorizations?.[0]
+          ?.amount?.value ||
+        0
+
+      const amount = new BigNumber(amountValue)
+      const payloadData = {
+        session_id: sessionId,
+        amount,
+      }
+
+      // Map PayPal webhook events to Medusa actions
+      switch (eventType) {
+        case "PAYMENT.AUTHORIZATION.CREATED":
+          return {
+            action: PaymentActions.AUTHORIZED,
+            data: payloadData,
+          }
+
+        case "PAYMENT.CAPTURE.DENIED":
+          return {
+            action: PaymentActions.FAILED,
+            data: payloadData,
+          }
+
+        case "PAYMENT.AUTHORIZATION.VOIDED":
+          return {
+            action: PaymentActions.CANCELED,
+            data: payloadData,
+          }
+        
+        case "PAYMENT.CAPTURE.COMPLETED":
+          return {
+            action: PaymentActions.SUCCESSFUL,
+            data: payloadData,
+          }
+
+        default:
+          this.logger_.info(`Unhandled PayPal webhook event: ${eventType}`)
+          return {
+            action: PaymentActions.NOT_SUPPORTED,
+            data: payloadData,
+          }
+      }
+    } catch (error: any) {
+      this.logger_.error("PayPal getWebhookActionAndData error:", error.result?.message || error)
+      return {
+        action: "failed",
+        data: {
+          session_id: "",
+          amount: new BigNumber(0),
+        },
+      }
+    }
+  }
+}
+```
+
+The `getWebhookActionAndData` method receives a `payload` object containing the webhook request data.
+
+In the method, you:
+
+1. Verify the webhook signature using the `verifyWebhookSignature` method.
+2. Extract the `event_type` from the webhook payload to determine the type of event.
+3. Extract the session ID and amount from the webhook resource.
+4. Map the PayPal webhook event types to Medusa actions.
+
+You return an object containing the action Medusa should take (such as `authorized`), along with the payment session ID and amount. Based on the returned action, Medusa uses the methods you implemented earlier to perform the necessary operations.
+
+### d. Export Module Definition
+
+You've now finished implementing the necessary methods for the PayPal Payment Module Provider.
+
+The final piece to a module is its definition, which you export in an `index.ts` file at the module's root directory. This definition tells Medusa the module's details, including its service.
+
+To create the module's definition, create the file `src/modules/paypal/index.ts` with the following content:
+
+```ts title="src/modules/paypal/index.ts"
+import PayPalPaymentProviderService from "./service"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+
+export default ModuleProvider(Modules.PAYMENT, {
+  services: [PayPalPaymentProviderService],
+})
+```
+
+You use `ModuleProvider` from the Modules SDK to create the module provider's definition. It accepts two parameters:
+
+1. The name of the module that this provider belongs to, which is `Modules.PAYMENT` in this case.
+2. An object with a required property `services` indicating the Module Provider's services.
+
+### e. Add Module Provider to Medusa's Configuration
+
+Once you finish building the module, add it to Medusa's configurations to start using it.
+
+In `medusa-config.ts`, add a `modules` property:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/paypal",
+            id: "paypal",
+            options: {
+              client_id: process.env.PAYPAL_CLIENT_ID!,
+              client_secret: process.env.PAYPAL_CLIENT_SECRET!,
+              environment: process.env.PAYPAL_ENVIRONMENT || "sandbox",
+              autoCapture: process.env.PAYPAL_AUTO_CAPTURE === "true",
+              webhook_id: process.env.PAYPAL_WEBHOOK_ID,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+To pass Payment Module Providers to the Payment Module, add the `modules` property to the Medusa configuration and pass the Payment Module in its value.
+
+The Payment Module accepts a `providers` option, which is an array of Payment Module Providers to register.
+
+To register the PayPal Payment Module Provider, you add an object to the `providers` array with the following properties:
+
+- `resolve`: The NPM package or path to the module provider. In this case, it's the path to the `src/modules/paypal` directory.
+- `id`: The ID of the module provider. The Payment Module Provider is then registered with the ID `pp_{identifier}_{id}`, where:
+    - `{identifier}`: The identifier static property defined in the Module Provider's service, which is `paypal` in this case.
+    - `{id}`: The ID set in this configuration, which is also `paypal` in this case.
+- `options`: The options to pass to the module provider. These are the options you defined in the `Options` interface of the module provider's service.
+
+### f. Set Options as Environment Variables
+
+Next, you'll set the necessary options as environment variables. You'll retrieve their values from the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/).
+
+#### PayPal Client ID and Secret
+
+To get your PayPal Client ID and Secret:
+
+1. [Log in to the PayPal Developer Dashboard](https://developer.paypal.com/dashboard/).
+2. Make sure you're in the correct environment (Sandbox or Live) using the environment toggle at the top left. It's recommended to use Sandbox for development and testing.
+
+![PayPal environment toggle highlighted with Sandbox selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1765207135/Medusa%20Resources/CleanShot_2025-12-08_at_17.18.06_2x_sbm8bv.png)
+
+2. Go to **Apps & Credentials**.
+3. If you don't have a default app, create one by clicking **Create App**.
+    - Enter app name, set type to "Merchant", and select the sandbox business account.
+4. Click on your app to view its details.
+5. Copy the **Client ID** and **Secret** values.
+
+![PayPal app details showing Client ID and Secret](https://res.cloudinary.com/dza7lstvk/image/upload/v1765207279/Medusa%20Resources/CleanShot_2025-12-08_at_17.20.49_2x_zu9muk.png)
+
+Then, set these values as environment variables in your `.env` file:
+
+```shell title=".env"
+PAYPAL_CLIENT_ID=your_paypal_client_id
+PAYPAL_CLIENT_SECRET=your_paypal_client_secret
+```
+
+#### PayPal Environment and Auto-Capture Option
+
+Next, you can set the following optional environment variables in your `.env` file:
+
+```shell title=".env"
+PAYPAL_ENVIRONMENT=sandbox # or "production" for live
+PAYPAL_AUTO_CAPTURE=true # or "false" to authorize only
+```
+
+Where:
+
+- `PAYPAL_ENVIRONMENT`: The PayPal environment to use, either `sandbox` for testing or `production` for live transactions. Default is `sandbox`.
+- `PAYPAL_AUTO_CAPTURE`: Whether to capture payments immediately (`true`) or authorize only (`false`). Default is `false`.
+
+#### PayPal Webhook ID
+
+Finally, you'll set up a webhook in the PayPal Developer Dashboard to receive payment events. Webhooks require a publicly accessible URL. In this section, you'll use [ngrok](https://ngrok.com/) to create a temporary public URL for testing webhooks locally.
+
+<Note title="Tip">
+
+Deploy your Medusa application with [Cloud](!cloud!/sign-up) in minutes. Benefit from features like zero-configuration deployments, automatic scaling, GitHub integration, and more.
+
+</Note>
+
+To set up ngrok and create a public URL, run the following command in your terminal:
+
+```shell
+npx ngrok http 9000
+```
+
+This will create a public URL that tunnels to your local Medusa server running on port `9000`. Copy the generated URL (for example, `https://abcd1234.ngrok.io`).
+
+Then, on the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/):
+
+1. Go to **Apps & Credentials**.
+2. Click on your app to view its details.
+3. Scroll down to the **Webhooks** (or **Sandbox Webhooks**) section and click **Add Webhook**.
+4. In the **Webhook URL** field, enter your ngrok URL followed by `/hooks/payment/paypal_paypal`. For example: `https://abcd1234.ngrok.io/hooks/payment/paypal_paypal`.
+    - The URL format is `{base_url}/hooks/payment/{provider_id}`, where `provider_id` is `paypal_paypal` (the combination of the `identifier` and `id` from your configuration).
+5. In the **Event Types** section, select the following events:
+    - Payment authorization created
+    - Payment authorization voided
+    - Payment capture completed
+    - Payment capture denied
+6. Click **Save** to create the webhook.
+
+Then, copy the **Webhook ID** from the webhook details. Set it as an environment variable in your `.env` file:
+
+```shell title=".env"
+PAYPAL_WEBHOOK_ID=your_paypal_webhook_id
+```
+
+Make sure the ngrok command remains running while you test PayPal webhooks locally. If you restart ngrok, you'll get a new public URL, and you'll need to update the webhook URL in the PayPal Developer Dashboard accordingly.
+
+In the next steps, you'll customize the Next.js Starter Storefront to support paying with PayPal, then test out the integration.
+
+---
+
+## Step 3: Enable PayPal Module Provider
+
+In this step, you'll enable the PayPal Payment Module Provider in a region of your Medusa store. A region is a geographical area where you sell products, and each region has its own settings, such as currency and payment providers.
+
+You must enable the PayPal Payment Module Provider in at least one region. To do this:
+
+1. Run the following command to start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+2. Open the Medusa Admin dashboard in your browser at `http://localhost:9000/app` and log in.
+3. Go to Settings -> Regions.
+4. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the region you want to enable PayPal for, then click **Edit**.
+5. In the **Payment Providers** dropdown, select **PayPal (PAYPAL)** to add it to the region.
+6. Click **Save** to update the region.
+
+Repeat these steps for every region where you want to enable the PayPal Payment Module Provider.
+
+![Medusa Admin dashboard showing region edit screen with PayPal selected as payment provider](https://res.cloudinary.com/dza7lstvk/image/upload/v1765265899/Medusa%20Resources/CleanShot_2025-12-09_at_09.36.54_2x_g4guz6.png)
+
+---
+
+## Step 4: Add PayPal to Storefront
+
+In this step, you'll customize the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you set up with the Medusa application to support paying with PayPal. You'll add a PayPal button to the checkout page that allows customers to pay using PayPal.
+
+<Note title="Reminder" forceMultiline>
+
+The Next.js Starter Storefront was installed in a separate directory from your Medusa application. The storefront directory's name follows the pattern `{your-project}-storefront`.
+
+For example, if your Medusa application's directory is `medusa-paypal`, you can find the storefront by going to the parent directory and changing to `medusa-paypal-storefront`:
+
+```bash
+cd ../medusa-paypal-storefront # change based on your project name
+```
+
+</Note>
+
+### a. Install PayPal SDK
+
+To add the PayPal button, you'll use the [PayPal React SDK](https://www.npmjs.com/package/@paypal/react-paypal-js). This SDK provides React components that make it easy to integrate PayPal into your React application.
+
+In the storefront directory, run the following command to install the PayPal React SDK:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm install @paypal/react-paypal-js
+```
+
+### b. Add Client ID Environment Variable
+
+Next, add the PayPal Client ID as an environment variable in the storefront.
+
+Copy the same PayPal Client ID you used in the Medusa application, then add it to the `.env.local` file in the storefront directory:
+
+```shell title=".env.local" badgeLabel="Storefront" badgeColor="blue"
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=your_paypal_client_id
+```
+
+### c. Add PayPal Wrapper Component
+
+Next, you'll add a PayPal wrapper component that initializes the PayPal SDK and provides the PayPal context to its child components.
+
+Create the file `src/modules/checkout/components/payment-wrapper/paypal-wrapper.tsx` with the following content:
+
+```tsx title="src/modules/checkout/components/payment-wrapper/paypal-wrapper.tsx" badgeLabel="Storefront" badgeColor="blue"
+"use client"
+
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
+import { HttpTypes } from "@medusajs/types"
+import { createContext } from "react"
+
+type PayPalWrapperProps = {
+  paymentSession: HttpTypes.StorePaymentSession
+  children: React.ReactNode
+}
+
+export const PayPalContext = createContext(false)
+
+const PayPalWrapper: React.FC<PayPalWrapperProps> = ({
+  paymentSession,
+  children,
+}) => {
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
+
+  if (!clientId) {
+    throw new Error(
+      "PayPal client ID is missing. Set NEXT_PUBLIC_PAYPAL_CLIENT_ID environment variable or ensure payment session has client_id."
+    )
+  }
+
+  const initialOptions = {
+    clientId,
+    currency: paymentSession.currency_code.toUpperCase() || "USD",
+    intent: paymentSession.data?.intent === "CAPTURE" ? "capture" : "authorize",
+  }
+
+  return (
+    <PayPalContext.Provider value={true}>
+      <PayPalScriptProvider options={initialOptions}>
+        {children}
+      </PayPalScriptProvider>
+    </PayPalContext.Provider>
+  )
+}
+
+export default PayPalWrapper
+```
+
+You create a `PayPalWrapper` component that accepts a Medusa payment session and children components as props.
+
+In the component, you:
+
+1. Retrieve the PayPal Client ID from the environment variable `NEXT_PUBLIC_PAYPAL_CLIENT_ID`.
+2. Set the initial options for the PayPal SDK, including the client ID, currency, and intent (capture or authorize).
+    - You set the intent based on the `data.intent` field in the payment session. You set this field in the `initiatePayment` method of the PayPal Payment Module Provider's service. Its value depends on the `autoCapture` option.
+3. Wrap the children components with the `PayPalScriptProvider` component from the PayPal React SDK, passing the initial options.
+
+Next, you'll use this wrapper component in the checkout page to provide the PayPal context to the PayPal button component you'll add later.
+
+In `src/modules/checkout/components/payment-wrapper/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/checkout/components/payment-wrapper/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import PayPalWrapper from "./paypal-wrapper"
+import { isPaypal } from "@lib/constants"
+```
+
+Then, in the `PaymentWrapper` component, add the following before the last `return` statement:
+
+```tsx title="src/modules/checkout/components/payment-wrapper/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+if (isPaypal(paymentSession?.provider_id) && paymentSession) {
+  return (
+    <PayPalWrapper
+      paymentSession={paymentSession}
+    >
+      {children}
+    </PayPalWrapper>
+  )
+}
+```
+
+If the customer has selected PayPal as the payment method, you wrap the children components with the `PayPalWrapper` component, passing the payment session as a prop.
+
+### d. Add PayPal Button Component
+
+Next, you'll add a PayPal button component that renders the PayPal button and handles the payment process.
+
+Create the file `src/modules/checkout/components/payment-button/paypal-payment-button.tsx` with the following content:
+
+```tsx title="src/modules/checkout/components/payment-button/paypal-payment-button.tsx" badgeLabel="Storefront" badgeColor="blue"
+"use client"
+
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js"
+import { placeOrder } from "@lib/data/cart"
+import { HttpTypes } from "@medusajs/types"
+import { Button } from "@medusajs/ui"
+import React, { useState } from "react"
+import ErrorMessage from "../error-message"
+
+type PayPalPaymentButtonProps = {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+  "data-testid"?: string
+}
+
+const PayPalPaymentButton: React.FC<PayPalPaymentButtonProps> = ({
+  cart,
+  notReady,
+  "data-testid": dataTestId,
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [{ isResolved }] = usePayPalScriptReducer()
+
+  const paymentSession = cart.payment_collection?.payment_sessions?.find(
+    (s) => s.status === "pending"
+  )
+
+  // TODO: add function handlers
+}
+
+export default PayPalPaymentButton
+```
+
+You create a `PayPalPaymentButton` component that accepts the cart, a `notReady` flag, and an optional `data-testid` prop for testing.
+
+In the component, you initialize the following variables:
+
+- `submitting`: A state variable to track if the payment is being submitted.
+- `errorMessage`: A state variable to store any error messages.
+- `isResolved`: A variable from the PayPal SDK that indicates whether the PayPal SDK script has loaded.
+- `paymentSession`: The pending PayPal payment session from the cart's payment collection.
+
+Next, you'll add the function handlers for creating PayPal orders and placing the Medusa order.
+
+Replace the `// TODO: add function handlers` comment with the following:
+
+export const functionHandlerHighlights = [
+  ["1", "onPaymentCompleted", "Place the Medusa order after PayPal payment approval."],
+  ["14", "getPayPalOrderId", "Retrieve the PayPal order ID from the payment session data."],
+  ["28", "createOrder", "Return the PayPal order ID created by the Medusa server."],
+  ["59", "onApprove", "Handle PayPal payment approval and place the Medusa order."],
+  ["73", "onError", "Handle errors during the PayPal payment process."],
+  ["80", "onCancel", "Handle PayPal payment cancellation by the customer."]
+]
+
+```tsx title="src/modules/checkout/components/payment-button/paypal-payment-button.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={functionHandlerHighlights}
+const onPaymentCompleted = async () => {
+  await placeOrder()
+    .catch((err) => {
+      setErrorMessage(err.message)
+    })
+    .finally(() => {
+      setSubmitting(false)
+    })
+}
+
+// Get PayPal order ID from payment session data
+// The Medusa PayPal provider should create a PayPal order during initialization
+// and store the order ID in the payment session data
+const getPayPalOrderId = (): string | null => {
+  if (!paymentSession?.data) {
+    return null
+  }
+
+  // Try different possible keys where the order ID might be stored
+  return (
+    (paymentSession.data.order_id as string) ||
+    (paymentSession.data.orderId as string) ||
+    (paymentSession.data.id as string) ||
+    null
+  )
+}
+
+const createOrder = async () => {
+  setSubmitting(true)
+  setErrorMessage(null)
+
+  try {
+    if (!paymentSession) {
+      throw new Error("Payment session not found")
+    }
+
+    // Check if Medusa server already created a PayPal order
+    const existingOrderId = getPayPalOrderId()
+
+    if (existingOrderId) {
+      // Medusa already created the order, use that order ID
+      return existingOrderId
+    }
+
+    // If no order ID exists, we need to create one
+    // This might happen if the PayPal provider doesn't create orders during initialization
+    // In this case, we'll need to create the order via PayPal API
+    // For now, throw an error - the backend should handle order creation
+    throw new Error(
+      "PayPal order not found. Please ensure the payment session is properly initialized."
+    )
+  } catch (error: any) {
+    setErrorMessage(error.message || "Failed to create PayPal order")
+    setSubmitting(false)
+    throw error
+  }
+}
+
+const onApprove = async (data: { orderID: string }) => {
+  try {
+    setSubmitting(true)
+    setErrorMessage(null)
+
+    // After PayPal approval, place the order
+    // The Medusa server will handle the payment authorization
+    await onPaymentCompleted()
+  } catch (error: any) {
+    setErrorMessage(error.message || "Failed to process PayPal payment")
+    setSubmitting(false)
+  }
+}
+
+const onError = (err: Record<string, unknown>) => {
+  setErrorMessage(
+    (err.message as string) || "An error occurred with PayPal payment"
+  )
+  setSubmitting(false)
+}
+
+const onCancel = () => {
+  setSubmitting(false)
+  setErrorMessage("PayPal payment was cancelled")
+}
+
+// TODO: add a return statement
+```
+
+You add the following function handlers:
+
+- `onPaymentCompleted`: Places the Medusa order by calling the `placeOrder` function. This function is called after the PayPal payment is approved.
+- `getPayPalOrderId`: Retrieves the PayPal order ID from the payment session's `data` field.
+- `createOrder`: Returns the PayPal order ID that was created by the Medusa server during payment initialization. If no order ID exists, it throws an error.
+- `onApprove`: Called when the customer approves the PayPal payment. It calls the `onPaymentCompleted` function to place the Medusa order.
+- `onError`: Called when an error occurs during the PayPal payment process. It updates the error message state.
+- `onCancel`: Called when the customer cancels the PayPal payment. It updates the error message state.
+
+Finally, you'll add the return statement to render the PayPal button.
+
+Replace the `// TODO: add a return statement` comment with the following:
+
+```tsx title="src/modules/checkout/components/payment-button/paypal-payment-button.tsx" badgeLabel="Storefront" badgeColor="blue"
+// If PayPal SDK is not ready, show a loading button
+if (!isResolved) {
+  return (
+    <>
+      <Button
+        disabled={true}
+        size="large"
+        isLoading={true}
+        data-testid={dataTestId}
+      >
+        Loading PayPal...
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="paypal-payment-error-message"
+      />
+    </>
+  )
+}
+
+return (
+  <>
+    <div className="mb-4">
+      <PayPalButtons
+        createOrder={createOrder}
+        onApprove={onApprove}
+        onError={onError}
+        onCancel={onCancel}
+        style={{
+          layout: "horizontal",
+          color: "black",
+          shape: "rect",
+          label: "buynow",
+        }}
+        disabled={notReady || submitting}
+      />
+    </div>
+    <ErrorMessage
+      error={errorMessage}
+      data-testid="paypal-payment-error-message"
+    />
+  </>
+)
+```
+
+You render two different states:
+
+- If the PayPal SDK is not ready, you render a loading button.
+- If the SDK is ready, you render the `PayPalButtons` component from the PayPal React SDK, passing the function handlers as props.
+
+### e. Use PayPal Button in Checkout Page
+
+Next, you'll use the `PayPalPaymentButton` component in the checkout page to allow customers to pay with PayPal.
+
+In `src/modules/checkout/components/payment-button/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/checkout/components/payment-button/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { isPaypal } from "@lib/constants"
+import PayPalPaymentButton from "./paypal-payment-button"
+```
+
+Then, in the `PaymentButton` component, add to the `switch` block a case for PayPal:
+
+```tsx title="src/modules/checkout/components/payment-button/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const PaymentButton: React.FC<PaymentButtonProps> = ({
+  cart,
+  "data-testid": dataTestId,
+}) => {
+  // ...
+  switch (true) {
+    case isPaypal(paymentSession?.provider_id):
+      return (
+        <PayPalPaymentButton
+          notReady={notReady}
+          cart={cart}
+          data-testid={dataTestId}
+        />
+      )
+    // ...
+  }
+}
+```
+
+When the customer selects PayPal as the payment method, you render the `PayPalPaymentButton` component, passing the cart and `notReady` flag as props.
+
+### f. Handle Selecting PayPal in Checkout Page
+
+Finally, you'll handle selecting PayPal as the payment method in the checkout page. You'll ensure that when the customer selects PayPal, the payment session is created and initialized correctly.
+
+In `src/modules/checkout/components/payment/index.tsx`, add the following import at the top of the file:
+
+```tsx title="src/modules/checkout/components/payment/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { isPaypal } from "@lib/constants"
+```
+
+Then, replace the `setPaymentMethod` function defined in the `Payment` component with the following:
+
+export const setPaymentMethodHighlights = [
+  ["4", "", "Add condition to check if the selected method is PayPal."]
+]
+
+```tsx title="src/modules/checkout/components/payment/index.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={setPaymentMethodHighlights}
+const setPaymentMethod = async (method: string) => {
+  setError(null)
+  setSelectedPaymentMethod(method)
+  if (isStripeLike(method) || isPaypal(method)) {
+    await initiatePaymentSession(cart, {
+      provider_id: method,
+    })
+  }
+}
+```
+
+You change the `if` condition in the `setPaymentMethod` function to also initialize the payment session when PayPal is selected.
+
+Finally, change the `handleSubmit` function defined in the `Payment` component to the following:
+
+export const handleSubmitHighlights = [
+  ["17", "", "Add condition to check if the selected method is PayPal."],
+]
+
+```tsx title="src/modules/checkout/components/payment/index.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={handleSubmitHighlights}
+const handleSubmit = async () => {
+  setIsLoading(true)
+  try {
+    const shouldInputCard =
+      isStripeLike(selectedPaymentMethod) && !activeSession
+
+    const checkActiveSession =
+      activeSession?.provider_id === selectedPaymentMethod
+
+    if (!checkActiveSession) {
+      await initiatePaymentSession(cart, {
+        provider_id: selectedPaymentMethod,
+      })
+    }
+
+    // For PayPal, we don't need to input card details, so go to review
+    if (!shouldInputCard || isPaypal(selectedPaymentMethod)) {
+      return router.push(
+        pathname + "?" + createQueryString("step", "review"),
+        {
+          scroll: false,
+        }
+      )
+    }
+  } catch (err: any) {
+    setError(err.message)
+  } finally {
+    setIsLoading(false)
+  }
+}
+```
+
+You mainly change the condition that checks whether to navigate to the review step. If PayPal is selected, you navigate to the review step directly since no card details are needed.
+
+### Test the PayPal Integration
+
+You can now test the PayPal integration by placing an order from the Next.js Starter Storefront.
+
+#### Get Sandbox PayPal Account Credentials
+
+Before you test the integration, you'll need to get sandbox PayPal account credentials to use for testing payments.
+
+To get sandbox PayPal account credentials:
+
+1. [Go to your PayPal Developer Dashboard](https://developer.paypal.com/dashboard/).
+2. Make sure you're in the Sandbox environment using the environment toggle at the top left.
+3. Go to **Testing Tools** -> **Sandbox Accounts**.
+4. Click on the email ending with `@personal.example.com` to view the account details.
+
+![PayPal Developer Dashboard showing sandbox accounts](https://res.cloudinary.com/dza7lstvk/image/upload/v1765267446/Medusa%20Resources/CleanShot_2025-12-09_at_10.03.49_2x_phd4cj.png)
+
+5. On the account details page, copy the **Email** and **Password** values. You'll use those to pay with PayPal during testing.
+
+#### Test Checkout with PayPal
+
+First, run the Medusa application with the following command:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then, run the Next.js Starter Storefront with the following command in the storefront directory:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm run dev
+```
+
+Open the storefront at `http://localhost:8000` in your browser. Add an item to the cart and proceed to checkout.
+
+On the payment step, select PayPal as the payment method, then click **Continue to Review**.
+
+![Next.js Starter Storefront checkout page showing PayPal selected as payment method](https://res.cloudinary.com/dza7lstvk/image/upload/v1765267123/Medusa%20Resources/CleanShot_2025-12-09_at_09.58.25_2x_b4ogqz.png)
+
+This navigates you to the review step, where a PayPal button appears for completing your order.
+
+![Next.js Starter Storefront checkout page showing PayPal button](https://res.cloudinary.com/dza7lstvk/image/upload/v1765267289/Medusa%20Resources/CleanShot_2025-12-09_at_09.59.36_2x_r9sboh.png)
+
+Click the PayPal button to be redirected to PayPal's payment page. On the PayPal login page, use the [sandbox account credentials](#get-sandbox-paypal-account-credentials) you obtained earlier to log in and complete the payment.
+
+Once you complete the payment, PayPal redirects you back to the storefront's order confirmation page.
+
+#### Check Webhook Event Handling
+
+If you've [set up webhooks](#paypal-webhook-id) using ngrok or with your deployed Medusa instance, PayPal sends webhook events to your Medusa application after payment completion.
+
+You'll see the following logged in your Medusa application's terminal:
+
+```bash
+info:    Processing payment.webhook_received which has 1 subscribers
+http:    POST /hooks/payment/paypal_paypal ← - (200) - 6.028 ms
+```
+
+Medusa uses the `getWebhookActionAndData` method you implemented earlier to process the webhook event and perform any necessary actions, such as authorizing the payment.
+
+#### Capturing and Refunding Payments
+
+In the Medusa Admin dashboard, you can go to Orders and view the order you just placed. You can see the payment status and details.
+
+From the order's details page, you can capture the authorized payment, and refund the captured payment from the **Payments** section. Medusa will use your PayPal Payment Module Provider to perform these actions.
+
+![Medusa Admin dashboard showing order payment details with capture and refund options](https://res.cloudinary.com/dza7lstvk/image/upload/v1765267658/Medusa%20Resources/CleanShot_2025-12-09_at_10.06.57_2x_qsazep.png)
+
+---
+
+## Next Steps
+
+You've successfully integrated PayPal with Medusa. You can now receive payments using PayPal in your Medusa store.
+
+### Learn More About Medusa
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
+
+To learn more about the commerce features that Medusa provides, check out Medusa's [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

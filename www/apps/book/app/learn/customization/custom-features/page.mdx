@@ -6,7 +6,43 @@ export const metadata = {
 
 In the upcoming chapters, you'll follow step-by-step guides to build custom features in Medusa. These guides gradually introduce Medusa's concepts to help you understand what they are and how to use them.
 
-By following these guides, you'll add brands to the Medusa application that you can associate with products.
+## Interactive Learning with Claude Code
+
+If you use Claude Code, you can learn the same concepts explained in the upcoming chapters through an interactive learning experience.
+
+Install the `learn-medusa` plugin to use the interactive learning experience:
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+```
+
+Then, start the learning experience with this prompt:
+
+```bash title="Claude Code Prompt"
+I want to learn Medusa.
+```
+
+<Note title="Tip">
+
+You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
+
+</Note>
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the next chapters. You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. [Link brands to products to associate products with brands](../extend-features/page.mdx).
+3. [Customize the Medusa Admin dashboard to allow admin users to manage brands](../customize-admin/page.mdx).
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+
+---
+
+## Tutorial Summary
+
+By following the guides in the upcoming chapters, you'll add brands to the Medusa application and associate them with products.
 
 To build a custom feature in Medusa, you need three main [Framework](../../fundamentals/framework/page.mdx) tools:
 

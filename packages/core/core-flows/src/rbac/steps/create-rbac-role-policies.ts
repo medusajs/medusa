@@ -2,12 +2,24 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@medusajs/types"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type CreateRbacRolePoliciesStepInput = {
   policies: CreateRbacRolePolicyDTO[]
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const createRbacRolePoliciesStepId = "create-rbac-role-policies"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const createRbacRolePoliciesStep = createStep(
   createRbacRolePoliciesStepId,
   async (data: CreateRbacRolePoliciesStepInput, { container }) => {

@@ -39,6 +39,7 @@ const defaultLocales = [
   { code: "nb-NO", name: "Norwegian Bokmål (Norway)" },
   { code: "fi-FI", name: "Finnish (Finland)" },
   { code: "pl-PL", name: "Polish (Poland)" },
+  { code: "lt-LT", name: "Lithuanian (Lithuania)" },
   { code: "cs-CZ", name: "Czech (Czech Republic)" },
   { code: "sk-SK", name: "Slovak (Slovakia)" },
   { code: "hu-HU", name: "Hungarian (Hungary)" },
@@ -65,6 +66,7 @@ const defaultLocales = [
   { code: "ja-JP", name: "Japanese (Japan)" },
   { code: "ko-KR", name: "Korean (South Korea)" },
   { code: "ka-GE", name: "Georgian (Georgia)" },
+  { code: "mn-MN", name: "Mongolian (Mongolia)" },
 ]
 
 export default async ({ container }: LoaderOptions): Promise<void> => {

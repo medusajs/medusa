@@ -48,7 +48,7 @@ In this example, you define a module link between the `blog` module's `post` dat
 
 After defining the link, run the `db:sync-links` command:
 
-```bash
+```bash npx2yarn
 npx medusa db:sync-links
 ```
 
@@ -227,7 +227,7 @@ In this example, you set the `table` property in the `database` object to the ol
 
 This is enough to rename the link table when you rename a module. If you renamed a data model's table, you need to also run the `db:sync-links` or `db:migrate` commands, which will update the column names in the link table automatically:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -237,6 +237,6 @@ npx medusa db:migrate
 
 To delete a module link definition, remove the link file from the `src/links` directory. Then, run the `db:sync-links` or `db:migrate` command to delete the link table from the database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```

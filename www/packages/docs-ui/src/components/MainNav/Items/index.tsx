@@ -16,7 +16,7 @@ export const MainNavItems = ({ className }: MainNavItemsProps) => {
   return (
     <ul
       className={clsx(
-        "hidden lg:flex justify-start gap-docs_1 items-center",
+        "hidden lg:flex justify-start gap-docs_0.5 items-center",
         "my-docs_0.75",
         className
       )}

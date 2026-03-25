@@ -761,6 +761,20 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
  *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by a product's external ID.
+ *         - type: array
+ *           description: Filter by external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: The external ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -796,36 +810,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           allOf:
- *             - type: object
- *               description: The paginated list of products.
- *               required:
- *                 - limit
- *                 - offset
- *                 - count
- *               properties:
- *                 limit:
- *                   type: number
- *                   title: limit
- *                   description: The maximum number of items returned.
- *                 offset:
- *                   type: number
- *                   title: offset
- *                   description: The number of items skipped before retrieving the returned items.
- *                 count:
- *                   type: number
- *                   title: count
- *                   description: The total number of items.
- *             - type: object
- *               description: The paginated list of products.
- *               required:
- *                 - products
- *               properties:
- *                 products:
- *                   type: array
- *                   description: The list of products.
- *                   items:
- *                     $ref: "#/components/schemas/StoreProduct"
+ *           $ref: "#/components/schemas/StoreProductListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

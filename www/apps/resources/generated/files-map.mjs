@@ -1020,6 +1020,10 @@ export const filesMap = [
     "pathname": "/integrations/guides/payload"
   },
   {
+    "filePath": "/www/apps/resources/app/integrations/guides/paypal/page.mdx",
+    "pathname": "/integrations/guides/paypal"
+  },
+  {
     "filePath": "/www/apps/resources/app/integrations/guides/resend/page.mdx",
     "pathname": "/integrations/guides/resend"
   },
@@ -1062,6 +1066,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/build/page.mdx",
     "pathname": "/medusa-cli/commands/build"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/codemod/page.mdx",
+    "pathname": "/medusa-cli/commands/codemod"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/db/page.mdx",
@@ -1546,6 +1554,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/medusa-admin/no-widget-route/page.mdx",
     "pathname": "/troubleshooting/medusa-admin/no-widget-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",
+    "pathname": "/troubleshooting/nextjs-node-25"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-starter-rewrites/page.mdx",
@@ -6324,6 +6336,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.dismissProductVariantsInventoryStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep/page.mdx",
+    "pathname": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.exportProductsStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.generateProductCsvStep/page.mdx",
     "pathname": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.generateProductCsvStep"
   },
@@ -6462,6 +6478,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.dismissProductVariantsInventoryStepId/page.mdx",
     "pathname": "/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.dismissProductVariantsInventoryStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.exportProductsStepId/page.mdx",
+    "pathname": "/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.exportProductsStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.generateProductCsvStepId/page.mdx",
@@ -7764,12 +7784,24 @@ export const filesMap = [
     "pathname": "/references/core_flows/Tax/core_flows.Tax.Workflows_Tax"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationSettingsStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx",
     "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationsStep/page.mdx",
     "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.deleteTranslationsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationSettingsStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.updateTranslationsStep/page.mdx",
@@ -7780,12 +7812,24 @@ export const filesMap = [
     "pathname": "/references/core_flows/Translation/Steps_Translation/functions/core_flows.Translation.Steps_Translation.validateTranslationsStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.createTranslationSettingsStepId/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.createTranslationSettingsStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.createTranslationsStepId/page.mdx",
     "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.createTranslationsStepId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStepId/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.deleteTranslationSettingsStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.deleteTranslationsStepId/page.mdx",
     "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.deleteTranslationsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.updateTranslationSettingsStepId/page.mdx",
+    "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.updateTranslationSettingsStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.updateTranslationsStepId/page.mdx",
@@ -7794,6 +7838,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.validateTranslationsStepId/page.mdx",
     "pathname": "/references/core_flows/Translation/Steps_Translation/variables/core_flows.Translation.Steps_Translation.validateTranslationsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflow"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.batchTranslationsWorkflow/page.mdx",
@@ -7810,6 +7858,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.updateTranslationsWorkflow/page.mdx",
     "pathname": "/references/core_flows/Translation/Workflows_Translation/functions/core_flows.Translation.Workflows_Translation.updateTranslationsWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/variables/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Translation/Workflows_Translation/variables/core_flows.Translation.Workflows_Translation.batchTranslationSettingsWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Translation/Workflows_Translation/variables/core_flows.Translation.Workflows_Translation.batchTranslationsWorkflowId/page.mdx",
@@ -8118,6 +8170,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.BatchShippingOptionRulesOutput/page.mdx",
     "pathname": "/references/core_flows/interfaces/core_flows.BatchShippingOptionRulesOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.BatchTranslationSettingsWorkflowInput/page.mdx",
+    "pathname": "/references/core_flows/interfaces/core_flows.BatchTranslationSettingsWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.BatchVariantImagesWorkflowInput/page.mdx",
@@ -9016,6 +9072,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/types/core_flows.CreateTaxRegionsWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/types/core_flows.CreateTranslationSettingsStepInput/page.mdx",
+    "pathname": "/references/core_flows/types/core_flows.CreateTranslationSettingsStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/types/core_flows.CreateTranslationsStepInput/page.mdx",
     "pathname": "/references/core_flows/types/core_flows.CreateTranslationsStepInput"
   },
@@ -9346,6 +9406,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/types/core_flows.DeleteTaxRegionsWorkflowInput/page.mdx",
     "pathname": "/references/core_flows/types/core_flows.DeleteTaxRegionsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/types/core_flows.DeleteTranslationSettingsStepInput/page.mdx",
+    "pathname": "/references/core_flows/types/core_flows.DeleteTranslationSettingsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/types/core_flows.DeleteTranslationsStepInput/page.mdx",
@@ -10080,6 +10144,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/types/core_flows.UpdateTaxRegionsWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/types/core_flows.UpdateTranslationSettingsStepInput/page.mdx",
+    "pathname": "/references/core_flows/types/core_flows.UpdateTranslationSettingsStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/types/core_flows.UpdateTranslationsStepInput/page.mdx",
     "pathname": "/references/core_flows/types/core_flows.UpdateTranslationsStepInput"
   },
@@ -10628,6 +10696,10 @@ export const filesMap = [
     "pathname": "/references/dml/Model_Methods/methods/dml.Model_Methods.cascades"
   },
   {
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.getTranslatableEntities/page.mdx",
+    "pathname": "/references/dml/Model_Methods/methods/dml.Model_Methods.getTranslatableEntities"
+  },
+  {
     "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.indexes/page.mdx",
     "pathname": "/references/dml/Model_Methods/methods/dml.Model_Methods.indexes"
   },
@@ -10736,6 +10808,10 @@ export const filesMap = [
     "pathname": "/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.checks"
   },
   {
+    "filePath": "/www/apps/resources/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.clearTranslatableEntities/page.mdx",
+    "pathname": "/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.clearTranslatableEntities"
+  },
+  {
     "filePath": "/www/apps/resources/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.isDmlEntity/page.mdx",
     "pathname": "/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.isDmlEntity"
   },
@@ -10750,6 +10826,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/dml/entity/types/dml.entity.DMLEntitySchemaBuilder/page.mdx",
     "pathname": "/references/dml/entity/types/dml.entity.DMLEntitySchemaBuilder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity/types/dml.entity.TranslatableEntityEntry/page.mdx",
+    "pathname": "/references/dml/entity/types/dml.entity.TranslatableEntityEntry"
   },
   {
     "filePath": "/www/apps/resources/references/dml/entity_builder/EntityBuilder/methods/dml.entity_builder.EntityBuilder.define/page.mdx",
@@ -14132,6 +14212,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batch"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/page.mdx",
+    "pathname": "/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.entities/page.mdx",
     "pathname": "/references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.entities"
   },
@@ -14588,6 +14672,10 @@ export const filesMap = [
     "pathname": "/references/medusa/classes/medusa.RestrictedFields"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.DefaultPolicyResources/page.mdx",
+    "pathname": "/references/medusa/interfaces/medusa.DefaultPolicyResources"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FindConfig/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.FindConfig"
   },
@@ -14614,6 +14702,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Constructor/page.mdx",
     "pathname": "/references/medusa/types/medusa.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceKey/page.mdx",
+    "pathname": "/references/medusa/types/medusa.DefaultResourceKey"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceValue/page.mdx",
+    "pathname": "/references/medusa/types/medusa.DefaultResourceValue"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Event/page.mdx",
@@ -19884,6 +19980,10 @@ export const filesMap = [
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createLocales"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslationSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslations/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.createTranslations"
   },
@@ -19892,8 +19992,16 @@ export const filesMap = [
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteLocales"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslationSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslations/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.deleteTranslations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getInactiveTranslatableFields/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getInactiveTranslatableFields"
   },
   {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.getStatistics/page.mdx",
@@ -19908,12 +20016,20 @@ export const filesMap = [
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountLocales"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslationSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslations/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listAndCountTranslations"
   },
   {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listLocales/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listLocales"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslationSettings"
   },
   {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.listTranslations/page.mdx",
@@ -19936,6 +20052,10 @@ export const filesMap = [
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslation"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.retrieveTranslationSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.softDeleteLocales/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.softDeleteLocales"
   },
@@ -19946,6 +20066,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateLocales/page.mdx",
     "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateLocales"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslationSettings/page.mdx",
+    "pathname": "/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslationSettings"
   },
   {
     "filePath": "/www/apps/resources/references/translation/ITranslationModuleService/methods/translation.ITranslationModuleService.updateTranslations/page.mdx",
@@ -19968,6 +20092,10 @@ export const filesMap = [
     "pathname": "/references/translation/interfaces/translation.CreateTranslationDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/interfaces/translation.CreateTranslationSettingsDTO/page.mdx",
+    "pathname": "/references/translation/interfaces/translation.CreateTranslationSettingsDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/interfaces/translation.EntityTypeStatistics/page.mdx",
     "pathname": "/references/translation/interfaces/translation.EntityTypeStatistics"
   },
@@ -19978,6 +20106,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/translation/interfaces/translation.FilterableTranslationProps/page.mdx",
     "pathname": "/references/translation/interfaces/translation.FilterableTranslationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/interfaces/translation.FilterableTranslationSettingsProps/page.mdx",
+    "pathname": "/references/translation/interfaces/translation.FilterableTranslationSettingsProps"
   },
   {
     "filePath": "/www/apps/resources/references/translation/interfaces/translation.FindConfig/page.mdx",
@@ -20028,6 +20160,10 @@ export const filesMap = [
     "pathname": "/references/translation/interfaces/translation.TranslationDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/interfaces/translation.TranslationSettingsDTO/page.mdx",
+    "pathname": "/references/translation/interfaces/translation.TranslationSettingsDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/interfaces/translation.TranslationStatisticsInput/page.mdx",
     "pathname": "/references/translation/interfaces/translation.TranslationStatisticsInput"
   },
@@ -20046,6 +20182,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/translation/interfaces/translation.UpdateTranslationDataDTO/page.mdx",
     "pathname": "/references/translation/interfaces/translation.UpdateTranslationDataDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/interfaces/translation.UpdateTranslationSettingsDTO/page.mdx",
+    "pathname": "/references/translation/interfaces/translation.UpdateTranslationSettingsDTO"
   },
   {
     "filePath": "/www/apps/resources/references/translation/types/translation.Constructor/page.mdx",
@@ -20274,6 +20414,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.InputConfigModules/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.InputConfigModules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.InputConfigWithArrayModules/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.InputConfigWithArrayModules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.InputConfigWithObjectModules/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.InputConfigWithObjectModules"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.InputFileConfig/page.mdx",
@@ -20766,6 +20914,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchProductVariantResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchProductVariantResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettings/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettingsResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettingsResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslations/page.mdx",
@@ -22266,6 +22422,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettingsParams/page.mdx",
@@ -24592,6 +24752,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AdminCreateTranslation"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminCreateTranslationSettings/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminCreateTranslationSettings"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminDeleteProductVariantInventoryItem/page.mdx",
     "pathname": "/references/types/interfaces/types.AdminDeleteProductVariantInventoryItem"
   },
@@ -24642,6 +24806,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateTranslation/page.mdx",
     "pathname": "/references/types/interfaces/types.AdminUpdateTranslation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateTranslationSettings/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateTranslationSettings"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneCity/page.mdx",
@@ -25268,6 +25436,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.IPaymentProvider"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.IRbacModuleService/page.mdx",
+    "pathname": "/references/types/interfaces/types.IRbacModuleService"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ITaxProvider/page.mdx",
     "pathname": "/references/types/interfaces/types.ITaxProvider"
   },
@@ -25596,6 +25768,22 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CreateProductWorkflowInputDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacPolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.CreateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleDTO/page.mdx",
+    "pathname": "/references/types/types/types.CreateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleParentDTO/page.mdx",
+    "pathname": "/references/types/types/types.CreateRbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRolePolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.CreateRbacRolePolicyDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.DeepPartial/page.mdx",
     "pathname": "/references/types/types/types.DeepPartial"
   },
@@ -25652,6 +25840,22 @@ export const filesMap = [
     "pathname": "/references/types/types/types.FilterValue2"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacPolicyProps/page.mdx",
+    "pathname": "/references/types/types/types.FilterableRbacPolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleParentProps/page.mdx",
+    "pathname": "/references/types/types/types.FilterableRbacRoleParentProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRolePolicyProps/page.mdx",
+    "pathname": "/references/types/types/types.FilterableRbacRolePolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleProps/page.mdx",
+    "pathname": "/references/types/types/types.FilterableRbacRoleProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.FlowRunOptions/page.mdx",
     "pathname": "/references/types/types/types.FlowRunOptions"
   },
@@ -25678,6 +25882,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.IndexOperatorMap/page.mdx",
     "pathname": "/references/types/types/types.IndexOperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.InputConfigBase/page.mdx",
+    "pathname": "/references/types/types/types.InputConfigBase"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.InternalJoinerServiceConfig/page.mdx",
@@ -25804,6 +26012,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Maybe"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.ModuleConfigForResolve/page.mdx",
+    "pathname": "/references/types/types/types.ModuleConfigForResolve"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ModuleDeclaration/page.mdx",
     "pathname": "/references/types/types/types.ModuleDeclaration"
   },
@@ -25916,6 +26128,22 @@ export const filesMap = [
     "pathname": "/references/types/types/types.RawBigNumberPrefix"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacPolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.RbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleDTO/page.mdx",
+    "pathname": "/references/types/types/types.RbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleParentDTO/page.mdx",
+    "pathname": "/references/types/types/types.RbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacRolePolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.RbacRolePolicyDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ReadonlyPrimary/page.mdx",
     "pathname": "/references/types/types/types.ReadonlyPrimary"
   },
@@ -25990,6 +26218,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdatePromotionRulesWorkflowDTO/page.mdx",
     "pathname": "/references/types/types/types.UpdatePromotionRulesWorkflowDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacPolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.UpdateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleDTO/page.mdx",
+    "pathname": "/references/types/types/types.UpdateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleParentDTO/page.mdx",
+    "pathname": "/references/types/types/types.UpdateRbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRolePolicyDTO/page.mdx",
+    "pathname": "/references/types/types/types.UpdateRbacRolePolicyDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ValidateFulfillmentDataContext/page.mdx",

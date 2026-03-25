@@ -115,7 +115,7 @@ Refer to the [JS SDK Authentication guide](../../../../js-sdk/auth/overview/page
 
 Next, you need to create an [API route](!docs!/learn/fundamentals/api-routes) with a [workflow](!docs!/learn/fundamentals/workflows) that handles creating the admin user after they authenticate through the third-party provider.
 
-Note that this API route will allow any user with a valid authentication token to create an admin user. Therefore, ensure that only authorized users can obtain an authentication token from the third-party provider.
+You will protect this API route so that only users authenticated through the custom Authentication Module Provider can access it. This prevents users from creating admin users through other authentication methods, such as email and password.
 
 ### Create User Workflow
 
@@ -180,9 +180,15 @@ Next, you need to create the API route that calls the workflow to create the use
 
 Create the file `src/api/custom-auth/admin/users/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/custom-auth/admin/users/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createUserWorkflow } from "../../../../workflows/create-user"
 
 export const CreateUserSchema = z.object({
@@ -224,6 +230,7 @@ export default defineMiddlewares({
         authenticate("user", "bearer", {
           allowUnregistered: true,
         }),
+        // TODO add custom validation middleware
       ],
     },
   ],
@@ -233,6 +240,90 @@ export default defineMiddlewares({
 This middleware applies the `authenticate` middleware to the `/custom-auth/admin/users` `POST` route, allowing only authenticated users to access it. By enabling the `allowUnregistered` option, users who are authenticated through the third-party provider but don't yet have an associated Medusa user can still access the route to create their user.
 
 Refer to the [Protected Routes](!docs!/learn/fundamentals/api-routes/protected-routes) guide to learn more about protecting API routes with the `authentication` middleware.
+
+### Create Custom Validation Middleware
+
+Finally, you should create a custom validation middleware that ensures only users authenticated through the custom Authentication Module Provider can access the API route. If you don't add this middleware, users authenticated through other methods, such as email and password, can also access the route and create accounts.
+
+To create the custom validation middleware, create thefile `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
+
+```ts title="src/api/middlewares/validate-custom-auth-provider.ts"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaResponse,
+  MedusaNextFunction,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default async function validateCustomAuthProvider(
+  req: AuthenticatedMedusaRequest, 
+  res: MedusaResponse, 
+  next: MedusaNextFunction
+) {
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "User already exists"
+    )
+  }
+
+  const query = req.scope.resolve("query")
+  const { data: [authIdentity] } = await query.graph({
+    entity: "auth_identity",
+    fields: [
+      "provider_identities.provider",
+    ],
+    filters: {
+      id: req.auth_context!.auth_identity_id!,
+    },
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  const isCustomAuthProvider = authIdentity.provider_identities.some((identity) => identity?.provider === "custom")
+
+  if (!isCustomAuthProvider) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid provider"
+    )
+  }
+
+  next()
+}
+```
+
+You create a middleware function that checks if:
+
+- The user already has an associated Medusa user. If so, you throw an error since the user shouldn't access the route.
+- The user's auth identity was authenticated by the custom Authentication Module Provider. You use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the user's auth identity with its provider identities, then check whether the custom provider is one of the providers. If not, you throw an unauthorized error.
+
+If both checks pass, you call the `next` function to proceed to the next middleware or route handler.
+
+Next, import this middleware at the top of the file `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import validateCustomAuthProvider from "./middlewares/validate-custom-auth-provider"
+```
+
+Then, replace the `// TODO add custom validation middleware` comment with the new middleware:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom-auth/admin/users",
+      methods: ["POST"],
+      middlewares: [
+        // ...
+        validateCustomAuthProvider,
+      ],
+    },
+  ],
+})
+```
+
+Only users authenticated through the custom Authentication Module Provider can now access the `/custom-auth/admin/users` API route to create their admin user.
 
 ---
 
