@@ -56,9 +56,14 @@ type LocaleSnapshot = {
   entities: Record<string, EntityTranslations>
 }
 
+type TranslationReference = {
+  id: string
+  [key: string]: unknown
+}
+
 function buildLocaleSnapshot(
   translations: HttpTypes.AdminTranslation[],
-  references: { id: string; [key: string]: string }[],
+  references: TranslationReference[],
   localeCode: string,
   translatableFields: string[]
 ): LocaleSnapshot {
@@ -90,7 +95,7 @@ function buildLocaleSnapshot(
 function extendSnapshot(
   snapshot: LocaleSnapshot,
   translations: HttpTypes.AdminTranslation[],
-  newReferences: { id: string; [key: string]: string }[],
+  newReferences: TranslationReference[],
   translatableFields: string[]
 ): LocaleSnapshot {
   const referenceTranslations = new Map<string, HttpTypes.AdminTranslation>()
@@ -188,7 +193,7 @@ const columnHelper = createDataGridHelper<TranslationRow, TranslationsForm>()
 const FIELD_COLUMN_WIDTH = 350
 
 function buildTranslationRows(
-  references: { id: string; [key: string]: string }[],
+  references: TranslationReference[],
   translatableFields: string[]
 ): TranslationRow[] {
   return references.map((reference) => ({
@@ -208,7 +213,7 @@ function useTranslationsGridColumns({
   selectedLocale,
   dynamicColumnWidth,
 }: {
-  entities: { id: string; [key: string]: string }[]
+  entities: TranslationReference[]
   availableLocales: AdminStoreLocale[]
   selectedLocale: string
   dynamicColumnWidth: number
@@ -273,7 +278,9 @@ function useTranslationsGridColumns({
             return null
           }
 
-          const originalValue = (entity[row.field_name] as string) ?? ""
+          const rawOriginalValue = entity[row.field_name]
+          const originalValue =
+            typeof rawOriginalValue === "string" ? rawOriginalValue : ""
 
           return (
             <DataGrid.ReadonlyCell color="normal" context={context} isMultiLine>
@@ -335,7 +342,7 @@ function useTranslationsGridColumns({
 
 type TranslationsEditFormProps = {
   translations: HttpTypes.AdminTranslation[]
-  references: { id: string; [key: string]: string }[]
+  references: TranslationReference[]
   entityType: string
   availableLocales: AdminStoreLocale[]
   translatableFields: string[]
