@@ -2095,48 +2095,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@turbo/darwin-64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/darwin-64@npm:2.8.20"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@turbo/darwin-arm64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/darwin-arm64@npm:2.8.20"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@turbo/linux-64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/linux-64@npm:2.8.20"
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@turbo/linux-arm64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/linux-arm64@npm:2.8.20"
-  conditions: os=linux & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@turbo/windows-64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/windows-64@npm:2.8.20"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@turbo/windows-arm64@npm:2.8.20":
-  version: 2.8.20
-  resolution: "@turbo/windows-arm64@npm:2.8.20"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@types/argparse@npm:1.0.38":
   version: 1.0.38
   resolution: "@types/argparse@npm:1.0.38"
@@ -3892,7 +3850,7 @@ __metadata:
     eslint-config-prettier: ^9.0.0
     eslint-plugin-prettier: ^5.0.0
     prettier: ^3.0.3
-    turbo: latest
+    turbo: 1.10.16
   languageName: unknown
   linkType: soft
 
@@ -7615,32 +7573,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo@npm:latest":
-  version: 2.8.20
-  resolution: "turbo@npm:2.8.20"
+"turbo-darwin-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-64@npm:1.10.16"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-darwin-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-arm64@npm:1.10.16"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-64@npm:1.10.16"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-arm64@npm:1.10.16"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-64@npm:1.10.16"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-arm64@npm:1.10.16"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo@npm:1.10.16"
   dependencies:
-    "@turbo/darwin-64": 2.8.20
-    "@turbo/darwin-arm64": 2.8.20
-    "@turbo/linux-64": 2.8.20
-    "@turbo/linux-arm64": 2.8.20
-    "@turbo/windows-64": 2.8.20
-    "@turbo/windows-arm64": 2.8.20
+    turbo-darwin-64: 1.10.16
+    turbo-darwin-arm64: 1.10.16
+    turbo-linux-64: 1.10.16
+    turbo-linux-arm64: 1.10.16
+    turbo-windows-64: 1.10.16
+    turbo-windows-arm64: 1.10.16
   dependenciesMeta:
-    "@turbo/darwin-64":
+    turbo-darwin-64:
       optional: true
-    "@turbo/darwin-arm64":
+    turbo-darwin-arm64:
       optional: true
-    "@turbo/linux-64":
+    turbo-linux-64:
       optional: true
-    "@turbo/linux-arm64":
+    turbo-linux-arm64:
       optional: true
-    "@turbo/windows-64":
+    turbo-windows-64:
       optional: true
-    "@turbo/windows-arm64":
+    turbo-windows-arm64:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: a102bd30067c040240719c831e2ae2d5d9c5994b7028f75445339d4b3cf2e334e93ebbd05669871e22f41af8acb4f26268df5099a8a6d1f5b297dac02023bc8e
+  checksum: a93ca993eea26351917c31d41c7f61e4198342fbded79a94e0837c3bc7506992094d7f38eaf0d8b798554f10ab553b859f1d8a4ad66553a0ec42cb223b40f8e4
   languageName: node
   linkType: hard
 
