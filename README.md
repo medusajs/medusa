@@ -31,6 +31,7 @@
     <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
   <a href="https://discord.gg/medusajs">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+[![Stack Health](https://indiestack.ai/api/badge/health/medusajs/medusa.svg)](https://indiestack.ai/audit?repo=medusajs/medusa)
   </a>
 </p>
 
