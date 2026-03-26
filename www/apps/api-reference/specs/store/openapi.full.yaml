@@ -18691,6 +18691,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -18754,6 +18756,14 @@ components:
           type: boolean
           title: requires_shipping
           description: Whether the fulfillment requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The fulfillment's created by.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The fulfillment's marked shipped by.
     AdminOrderItem:
       type: object
       description: The order item's details.
@@ -22506,6 +22516,7 @@ components:
         - display_id
         - received_at
         - created_at
+        - created_by
         - canceled_at
       properties:
         id:
@@ -22571,6 +22582,10 @@ components:
           type: string
           title: received_at
           description: The date the return was received.
+        created_by:
+          type: string
+          title: created_by
+          description: The return's created by.
     AdminReturnItem:
       type: object
       description: The return item's details.
@@ -24389,7 +24404,9 @@ components:
           items:
             allOf:
               - type: object
-                description: The entity's data.
+                description: The datum's data.
+              - type: object
+                description: The datum's data.
                 required:
                   - id
                   - translations
@@ -24397,12 +24414,58 @@ components:
                   id:
                     type: string
                     title: id
-                    description: The entity's ID.
+                    description: The datum's ID.
                   translations:
                     type: array
-                    description: The entity's translations.
+                    description: The datum's translations.
                     items:
-                      $ref: '#/components/schemas/AdminTranslation'
+                      type: object
+                      description: The translation's translations.
+                      x-schemaName: AdminTranslation
+                      required:
+                        - id
+                        - reference_id
+                        - reference
+                        - locale_code
+                        - translations
+                        - created_at
+                        - updated_at
+                        - deleted_at
+                      properties:
+                        id:
+                          type: string
+                          title: id
+                          description: The translation's ID.
+                        reference_id:
+                          type: string
+                          title: reference_id
+                          description: The translation's reference id.
+                        reference:
+                          type: string
+                          title: reference
+                          description: The translation's reference.
+                        locale_code:
+                          type: string
+                          title: locale_code
+                          description: The translation's locale code.
+                        translations:
+                          type: object
+                          description: The translation's translations.
+                        created_at:
+                          type: string
+                          format: date-time
+                          title: created_at
+                          description: The translation's created at.
+                        updated_at:
+                          type: string
+                          format: date-time
+                          title: updated_at
+                          description: The translation's updated at.
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          title: deleted_at
+                          description: The translation's deleted at.
         count:
           type: number
           title: count
@@ -28149,6 +28212,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -28212,6 +28277,14 @@ components:
           type: boolean
           title: requires_shipping
           description: Whether the fulfillment requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The fulfillment's created by.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The fulfillment's marked shipped by.
     BaseOrderItemDetail:
       type: object
       description: The item's detail.
@@ -34920,6 +34993,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -34983,6 +35058,14 @@ components:
           type: boolean
           title: requires_shipping
           description: The fulfillment's requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The fulfillment's created by.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The fulfillment's marked shipped by.
     StoreOrderLineItem:
       type: object
       description: The item's details.
@@ -41916,6 +41999,7 @@ components:
         - created_at
         - order_id
         - canceled_at
+        - created_by
         - received_at
       properties:
         items:
@@ -41973,6 +42057,10 @@ components:
           type: string
           title: received_at
           description: The date the return items were received.
+        created_by:
+          type: string
+          title: created_by
+          description: The return's created by.
     StoreReturnItem:
       type: object
       description: The return item's details.

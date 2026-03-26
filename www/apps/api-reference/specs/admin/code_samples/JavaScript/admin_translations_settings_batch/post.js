@@ -28,3 +28,4 @@ sdk.admin.translation.batchSettings({
 .then(({ created, updated, deleted }) => {
   console.log(created, updated, deleted)
 })
+```
