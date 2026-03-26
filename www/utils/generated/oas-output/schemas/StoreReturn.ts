@@ -71,7 +71,7 @@
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The return's created by.
+ *     description: The ID of the user that created the return.
  * 
 */
 

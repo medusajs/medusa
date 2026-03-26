@@ -109,16 +109,16 @@ get:
         oneOf:
           - type: string
             title: state
-            description: The workflows execution's state.
+            description: Filter by a workflow execution's state.
           - type: array
-            description: The workflows execution's state.
+            description: Filter by workflow execution states.
             items:
               type: string
               title: state
-              description: The state's details.
+              description: A workflow execution state.
     - name: created_at
       in: query
-      description: The workflows execution's created at.
+      description: Filter by the workflow execution's creation date.
       required: false
       schema:
         type: object

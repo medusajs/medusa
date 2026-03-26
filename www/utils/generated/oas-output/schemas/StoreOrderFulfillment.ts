@@ -84,11 +84,11 @@
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The fulfillment's created by.
+ *     description: The ID of the user that created the fulfillment.
  *   marked_shipped_by:
  *     type: string
  *     title: marked_shipped_by
- *     description: The fulfillment's marked shipped by.
+ *     description: The ID of the user that marked the fulfillment as shipped.
  * 
 */
 

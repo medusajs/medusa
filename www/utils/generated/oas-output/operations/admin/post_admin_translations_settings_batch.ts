@@ -47,7 +47,6 @@
  *       .then(({ created, updated, deleted }) => {
  *         console.log(created, updated, deleted)
  *       })
- *       ```
  *   - lang: Shell
  *     label: cURL
  *     source: |-
