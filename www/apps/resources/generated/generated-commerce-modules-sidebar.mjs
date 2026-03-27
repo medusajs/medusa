@@ -13931,6 +13931,30 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "orderClaimAddNewItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimAddNewItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "orderClaimItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "orderClaimRequestItemReturnWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimRequestItemReturnWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "orderEditAddNewItemWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditAddNewItemWorkflow",
                       "children": []
@@ -14037,6 +14061,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateClaimAddItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateClaimAddItemWorkflow",
                       "children": []
                     },
                     {
