@@ -13,8 +13,6 @@ export const SalesChannelsCell = ({
 }: SalesChannelsCellProps) => {
   const { t } = useTranslation()
 
-  // Filter out null/undefined entries that can occur when a sales channel
-  // is deleted but the product association is not cleaned up
   const validChannels = salesChannels?.filter(
     (sc): sc is SalesChannelDTO => sc != null
   )

@@ -20,7 +20,7 @@ export const ProductSalesChannelSection = ({
   // is deleted but the product association is not cleaned up
   const availableInSalesChannels =
     product.sales_channels
-      ?.filter((sc) => sc != null)
+      ?.filter((sc): sc is HttpTypes.AdminProductSalesChannel => sc != null)
       .map((sc) => ({
         id: sc.id,
         name: sc.name,
