@@ -267,7 +267,7 @@ Create the file `src/modules/delivery/models/delivery.ts` with the following con
 
 ```ts title="src/modules/delivery/models/delivery.ts"
 import { model } from "@medusajs/framework/utils"
-import { DeliveryStatus } from "../types/common"
+import { DeliveryStatus } from "../types"
 import { Driver } from "./driver"
 
 export const Delivery = model.define("delivery", {
