@@ -1,0 +1,207 @@
+name: Docs Automation
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "packages/**"
+
+jobs:
+  docs-automation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT so the created PR triggers other workflows
+          # (the default GITHUB_TOKEN cannot trigger workflow runs)
+          token: ${{ secrets.DOCS_AUTOMATION_PAT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install monorepo dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs-automation
+
+      - name: Install www/utils dependencies
+        working-directory: www/utils
+        run: yarn install
+
+      - name: Build www/utils packages
+        working-directory: www/utils
+        run: yarn build
+
+      - name: Analyze commit diff
+        id: analyze
+        working-directory: www/utils/packages/docs-automator
+        run: yarn analyze --commit-sha ${{ github.sha }} --output /tmp/analysis.json
+        env:
+          MONOREPO_ROOT_PATH: ${{ github.workspace }}
+        continue-on-error: true
+
+      - name: Check if documentation changes are needed
+        id: check
+        run: |
+          if [ "${{ steps.analyze.outcome }}" = "failure" ]; then
+            echo "needs_docs=false" >> "$GITHUB_OUTPUT"
+          else
+            node --input-type=module << 'EOF'
+              import { readFileSync, appendFileSync } from "fs"
+              const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+              const needed = a.affectedProjects.length > 0 ? "true" : "false"
+              appendFileSync(process.env.GITHUB_OUTPUT, `needs_docs=${needed}\n`)
+            EOF
+          fi
+
+      - name: Configure git
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout or create release docs branch
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git fetch origin docs/release-docs-staging 2>/dev/null || true
+          if git checkout docs/release-docs-staging 2>/dev/null; then
+            echo "Checked out existing branch docs/release-docs-staging"
+          else
+            git checkout -b docs/release-docs-staging
+            echo "Created new branch docs/release-docs-staging"
+          fi
+
+      - name: Extract Claude prompt
+        id: extract-prompt
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, appendFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const delimiter = "CLAUDE_PROMPT_EOF"
+            appendFileSync(
+              process.env.GITHUB_OUTPUT,
+              `CLAUDE_PROMPT<<${delimiter}\n${a.claudePrompt}\n${delimiter}\n`
+            )
+          EOF
+
+      - name: Run Claude Code to update docs
+        if: steps.check.outputs.needs_docs == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
+          claude_args: "--allowedTools \"Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)\" --max-turns 40"
+
+      - name: Verify no protected files were modified
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROTECTED=$(git diff --name-only | grep -E \
+            "^www/apps/resources/references/|^www/apps/ui/specs/components/|^www/apps/api-reference/" \
+            || true)
+          if [ -n "$PROTECTED" ]; then
+            echo "ERROR: Protected directories were modified:"
+            echo "$PROTECTED"
+            exit 1
+          fi
+
+      - name: Run prep scripts for affected projects
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROJECTS=$(node --input-type=module << 'EOF'
+            import { readFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            process.stdout.write(a.affectedProjects.map((p) => p.project).join(" "))
+          EOF
+          )
+          for project in $PROJECTS; do
+            echo "Running prep for $project..."
+            (cd "www/apps/$project" && yarn prep) || true
+          done
+
+      - name: Run lint:content for affected projects
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROJECTS=$(node --input-type=module << 'EOF'
+            import { readFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            process.stdout.write(a.affectedProjects.map((p) => p.project).join(" "))
+          EOF
+          )
+          for project in $PROJECTS; do
+            echo "Running lint:content for $project..."
+            (cd "www/apps/$project" && yarn lint:content) || true
+          done
+
+      - name: Stage documentation changes
+        id: changes
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git add www/apps/book www/apps/resources www/apps/ui www/apps/user-guide
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No documentation changes to commit."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit documentation changes
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git commit -m "chore(docs): automated documentation update for ${{ github.sha }}"
+
+      - name: Push release docs branch
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: git push origin docs/release-docs-staging
+
+      - name: Build PR body
+        id: pr-info
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, appendFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const list = a.affectedProjects
+              .map((p) => `- ${p.project}: ${p.reason}`)
+              .join("\n")
+            const delimiter = "PR_BODY_EOF"
+            appendFileSync(
+              process.env.GITHUB_OUTPUT,
+              `PROJECT_LIST<<${delimiter}\n${list}\n${delimiter}\n`
+            )
+          EOF
+
+      - name: Create or update Pull Request
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.DOCS_AUTOMATION_PAT }}
+          base: develop
+          branch: docs/release-docs-staging
+          title: "chore(docs): automated documentation updates (triggered by ${{ github.sha }})"
+          labels: "type: chore"
+          body: |
+            ## Automated Documentation Update
+
+            This PR was created by the docs automation workflow after
+            code changes were merged to `develop`.
+
+            **Trigger commit:** `${{ github.sha }}`
+
+            **Affected documentation projects:**
+            ${{ steps.pr-info.outputs.PROJECT_LIST }}
+
+            ---
+
+            > Review carefully before merging. Verify that all changes
+            > are accurate and complete. Claude may have missed context
+            > or made incorrect assumptions.
