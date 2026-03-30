@@ -3812,6 +3812,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"docs-automator@workspace:packages/docs-automator":
+  version: 0.0.0-use.local
+  resolution: "docs-automator@workspace:packages/docs-automator"
+  dependencies:
+    "@octokit/core": ^5.0.2
+    "@types/node": ^20.12.10
+    chalk: ^5.4.1
+    commander: ^11.1.0
+    typescript: ^5.6.2
+  languageName: unknown
+  linkType: soft
+
 "docs-generator@workspace:packages/docs-generator":
   version: 0.0.0-use.local
   resolution: "docs-generator@workspace:packages/docs-generator"
