@@ -69,8 +69,9 @@ Your job is to:
 1. Load the /writing-docs skill
 2. Review each changed package diff
 3. Determine which documentation actually needs updating (not all code changes need docs — the skill's \`when-to-document.md\` reference file explains the rules)
-4. Make targeted edits to the relevant MDX files in the listed writable directories
-5. If a new page is needed, create it and add it to the appropriate sidebar file`
+4. **When reviewing, also check whether the affected feature is already documented.** If a user-facing feature (CLI option, workflow, service method, config key, admin screen) appears in the diff but is missing from the docs, add it — even if the current diff is only a rename or modification, not a new addition.
+5. Make targeted edits to the relevant MDX files in the listed writable directories
+6. If a new page is needed, create it and add it to the appropriate sidebar file`
   }
 
   private buildChangedPackagesSection(

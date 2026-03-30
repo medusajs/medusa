@@ -2,6 +2,20 @@
 
 Use this reference when reviewing a code diff to decide whether documentation updates are needed, and if so, which projects to update.
 
+## Golden Rule: Document All User-Facing Features
+
+**If a user-facing feature exists in the code but is missing from the docs, document it — regardless of whether the current diff added it or just changed it.**
+
+When reviewing a diff, always check whether the affected feature (CLI option, workflow, service method, config key, admin screen, UI component) is documented. If it is not, add the documentation as part of this update. The fact that a feature was previously undocumented is not a reason to skip it — it is a reason to add it now.
+
+This applies especially to:
+- CLI options present in the source that are missing from the reference table in docs
+- Workflow steps or service methods referenced in code but not described on any doc page
+- Config options accepted by `medusa-config` but absent from the configurations docs
+- Admin UI screens or flows that exist but have no user-guide page
+
+---
+
 ## Decision Tree
 
 ### Always document

@@ -54,14 +54,14 @@ jobs:
         run: |
           if [ "${{ steps.analyze.outcome }}" = "failure" ]; then
             echo "needs_docs=false" >> "$GITHUB_OUTPUT"
-          else
-            node --input-type=module << 'EOF'
-              import { readFileSync, appendFileSync } from "fs"
-              const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
-              const needed = a.affectedProjects.length > 0 ? "true" : "false"
-              appendFileSync(process.env.GITHUB_OUTPUT, `needs_docs=${needed}\n`)
-            EOF
+            exit 0
           fi
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+          const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+          const needed = a.affectedProjects.length > 0 ? "true" : "false"
+          appendFileSync(process.env.GITHUB_OUTPUT, `needs_docs=${needed}\n`)
+          EOF
 
       - name: Configure git
         if: steps.check.outputs.needs_docs == 'true'
@@ -96,11 +96,12 @@ jobs:
 
       - name: Run Claude Code to update docs
         if: steps.check.outputs.needs_docs == 'true'
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-base-action@beta
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
-          claude_args: "--allowedTools \"Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)\" --max-turns 40"
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
+          max_turns: 40
 
       - name: Verify no protected files were modified
         if: steps.check.outputs.needs_docs == 'true'
