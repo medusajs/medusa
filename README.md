@@ -52,7 +52,7 @@ Check out all [available Medusa integrations](https://medusajs.com/integrations/
 
 ## Hosting
 
-The fastest way to get started is with [Medusa Cloud](https://medusajs.com/cloud/). It provides a managed environment optimized for Medusa applications, with automated deployments, scaling, and maintenance. [Get started on Medusa Cloud →](https://cloud.medusajs.com)
+The fastest way to get started is with [Medusa Cloud](https://medusajs.com/cloud/). It provides a managed environment optimized for Medusa applications, with automated deployments, scaling, and maintenance. [Get started on Medusa Cloud](https://cloud.medusajs.com)
 
 ## Community & Contributions
 
