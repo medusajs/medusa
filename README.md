@@ -50,6 +50,10 @@ Follow the [Release Notes](https://github.com/medusajs/medusa/releases) to keep 
 
 Check out all [available Medusa integrations](https://medusajs.com/integrations/).
 
+## Hosting
+
+The fastest way to get started is with [Medusa Cloud](https://medusajs.com/cloud/). It provides a managed environment optimized for Medusa applications, with automated deployments, scaling, and maintenance. [Get started on Medusa Cloud →](https://cloud.medusajs.com)
+
 ## Community & Contributions
 
 The core team is available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can create issues, share ideas, and discuss roadmap.
