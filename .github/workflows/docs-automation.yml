@@ -7,6 +7,10 @@ on:
     paths:
       - "packages/**"
 
+concurrency:
+  group: docs-release-staging
+  cancel-in-progress: false
+
 jobs:
   docs-automation:
     runs-on: ubuntu-latest
@@ -72,9 +76,11 @@ jobs:
       - name: Checkout or create release docs branch
         if: steps.check.outputs.needs_docs == 'true'
         run: |
-          git fetch origin docs/release-docs-staging 2>/dev/null || true
-          if git checkout docs/release-docs-staging 2>/dev/null; then
-            echo "Checked out existing branch docs/release-docs-staging"
+          git fetch origin
+          if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
+            git checkout docs/release-docs-staging
+            git merge origin/develop -m "chore: sync docs/release-docs-staging with develop"
+            echo "Checked out and synced existing branch docs/release-docs-staging"
           else
             git checkout -b docs/release-docs-staging
             echo "Created new branch docs/release-docs-staging"
@@ -235,6 +241,6 @@ jobs:
           token: ${{ secrets.REFERENCE_PAT }}
           base: develop
           branch: docs/release-docs-staging
-          title: "chore(docs): automated documentation updates"
+          title: "chore(docs): doc changes for next release (automated)"
           labels: "type: chore"
           body: ${{ steps.pr-body-content.outputs.BODY }}
