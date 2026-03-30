@@ -164,21 +164,68 @@ jobs:
         run: git push origin docs/release-docs-staging
 
       - name: Build PR body
-        id: pr-info
+        id: pr-body
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_AUTOMATION_PAT }}
+          COMMIT_SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
         run: |
           node --input-type=module << 'EOF'
-            import { readFileSync, appendFileSync } from "fs"
+            import { readFileSync, writeFileSync } from "fs"
+            import { execSync } from "child_process"
+
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
-            const list = a.affectedProjects
-              .map((p) => `- ${p.project}: ${p.reason}`)
+            const { COMMIT_SHA: sha, REPO: repo } = process.env
+            const date = new Date().toISOString().split("T")[0]
+
+            const projectList = a.affectedProjects
+              .map((p) => `- **${p.project}**: ${p.reason}`)
               .join("\n")
-            const delimiter = "PR_BODY_EOF"
-            appendFileSync(
-              process.env.GITHUB_OUTPUT,
-              `PROJECT_LIST<<${delimiter}\n${list}\n${delimiter}\n`
-            )
+
+            const commitUrl = `https://github.com/${repo}/commit/${sha}`
+            const newEntry = [
+              `### [\`${sha.slice(0, 7)}\`](${commitUrl}) — ${date}`,
+              "",
+              "**Affected projects:**",
+              projectList,
+            ].join("\n")
+
+            let existingBody = ""
+            try {
+              const out = execSync(
+                `gh pr view docs/release-docs-staging --repo ${repo} --json body --jq '.body'`,
+                { encoding: "utf8" }
+              ).trim()
+              if (out !== "null" && out !== "") existingBody = out
+            } catch { /* PR does not exist yet */ }
+
+            const header = [
+              "## Automated Documentation Updates",
+              "",
+              "This PR accumulates automated documentation changes for the next release.",
+              "Each entry below corresponds to a merged commit that triggered updates.",
+              "",
+              "> Review carefully before merging. Claude may have missed context",
+              "> or made incorrect assumptions.",
+            ].join("\n")
+
+            const body = existingBody
+              ? `${existingBody}\n\n---\n\n${newEntry}`
+              : `${header}\n\n---\n\n${newEntry}`
+
+            writeFileSync("/tmp/pr-body.md", body)
           EOF
+
+      - name: Read PR body
+        id: pr-body-content
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          {
+            echo 'BODY<<PR_BODY_EOF'
+            cat /tmp/pr-body.md
+            echo 'PR_BODY_EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create or update Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
@@ -187,21 +234,6 @@ jobs:
           token: ${{ secrets.DOCS_AUTOMATION_PAT }}
           base: develop
           branch: docs/release-docs-staging
-          title: "chore(docs): automated documentation updates (triggered by ${{ github.sha }})"
+          title: "chore(docs): automated documentation updates"
           labels: "type: chore"
-          body: |
-            ## Automated Documentation Update
-
-            This PR was created by the docs automation workflow after
-            code changes were merged to `develop`.
-
-            **Trigger commit:** `${{ github.sha }}`
-
-            **Affected documentation projects:**
-            ${{ steps.pr-info.outputs.PROJECT_LIST }}
-
-            ---
-
-            > Review carefully before merging. Verify that all changes
-            > are accurate and complete. Claude may have missed context
-            > or made incorrect assumptions.
+          body: ${{ steps.pr-body-content.outputs.BODY }}
