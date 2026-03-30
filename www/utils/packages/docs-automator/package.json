@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "analyze": "node dist/index.js analyze"
+    "analyze": "node dist/index.js analyze",
+    "analyze-cloud": "node dist/index.js analyze-cloud"
   },
   "dependencies": {
     "@octokit/core": "^5.0.2",

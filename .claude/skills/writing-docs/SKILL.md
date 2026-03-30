@@ -1,11 +1,11 @@
 ---
 name: writing-docs
-description: Writes and updates Medusa documentation MDX files for the book, resources, ui, and user-guide projects. Use when making documentation changes based on code diffs, adding new pages, updating existing content, or updating component examples. ALWAYS load this skill before modifying any MDX file in www/apps/.
+description: Writes and updates Medusa documentation MDX files for the book, resources, ui, user-guide, and cloud projects. Use when making documentation changes based on code diffs, adding new pages, updating existing content, or updating component examples. ALWAYS load this skill before modifying any MDX file in www/apps/.
 ---
 
 # Writing Medusa Documentation
 
-Skill for writing and updating MDX documentation across the `book`, `resources`, `ui`, and `user-guide` projects under `www/apps/`.
+Skill for writing and updating MDX documentation across the `book`, `resources`, `ui`, `user-guide`, and `cloud` projects under `www/apps/`.
 
 ## Constraints
 
@@ -28,6 +28,7 @@ Skill for writing and updating MDX documentation across the `book`, `resources`,
 | Writing for the **book** project | `reference/book-style.md` |
 | Writing for the **resources** project | `reference/resources-style.md` |
 | Writing for the **user-guide** project | `reference/user-guide-style.md` |
+| Writing for the **cloud** project | `reference/cloud-style.md` |
 | Checking prose quality | `reference/vale-rules.md` |
 
 ## Quick Reference
@@ -40,6 +41,7 @@ Skill for writing and updating MDX documentation across the `book`, `resources`,
 | resources | `www/apps/resources/app/` | `www/apps/resources/sidebars/*.mjs` |
 | ui | `www/apps/ui/app/`, `www/apps/ui/specs/examples/` | `www/apps/ui/sidebar.mjs` |
 | user-guide | `www/apps/user-guide/app/` | `www/apps/user-guide/sidebar.mjs` |
+| cloud | `www/apps/cloud/app/` | `www/apps/cloud/sidebar.mjs` |
 
 ### MDX file minimum structure
 
@@ -88,5 +90,6 @@ reference/mdx-patterns.md       - MDX syntax, code blocks, components
 reference/book-style.md         - book-specific structure and conventions
 reference/resources-style.md    - resources-specific structure and conventions
 reference/user-guide-style.md   - user-guide writing style and conventions
+reference/cloud-style.md        - cloud-specific structure and conventions
 reference/vale-rules.md         - Vale + lint rules to follow in prose
 ```
