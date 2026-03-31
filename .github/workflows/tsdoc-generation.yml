@@ -64,7 +64,7 @@ jobs:
         run: |
           NEXT=$(node -e "
             const v = require('./packages/medusa/package.json').version.split('.').map(Number);
-            console.log(v[0] + '.' + (v[1]+1) + '.0');
+            console.log(v[0] + '.' + v[1] + '.' + (v[2]+1));
           ")
           echo "next_version=$NEXT" >> "$GITHUB_OUTPUT"
 
@@ -72,7 +72,7 @@ jobs:
         if: steps.changed-files.outputs.has_files == 'true'
         uses: anthropics/claude-code-base-action@beta
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,git log:*,git status:*,ls:*)"
           max_turns: 30
           prompt: |
