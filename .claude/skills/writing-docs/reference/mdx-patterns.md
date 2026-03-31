@@ -143,6 +143,64 @@ Something to be careful about.
 </Note>
 ```
 
+## Version Notes
+
+When documenting a new option, method, parameter, or behavior change, add a version note so readers know when it became available.
+
+**Get the current version** from `www/packages/docs-ui/src/global-config.ts` → `version.number`. The next version is the patch increment (e.g. `2.13.5` → `2.13.6`). Use the next version when the change is being introduced now (i.e. not yet released).
+
+**Release URL pattern:** `https://github.com/medusajs/medusa/releases/tag/v{version}`
+
+### New option/method/parameter — `<Note>` block
+
+Place immediately after the heading for the new item:
+
+```mdx
+### myNewOption
+
+<Note>
+
+This option is available since Medusa [v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6).
+
+</Note>
+
+Description of the option...
+```
+
+### Changed behavior — "Before Medusa v..." inside `<Note>`
+
+Use when existing behavior changed and users may have old code:
+
+```mdx
+<Note>
+
+Before [Medusa v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6), you did X. Now, you must do Y instead.
+
+</Note>
+```
+
+### Table cell — inline version annotation
+
+For new or deprecated entries in `<Table>` components, annotate inside the cell:
+
+```mdx
+<Table.Cell>
+
+`myOption` (v2.13.6+)
+
+</Table.Cell>
+```
+
+For deprecated entries:
+
+```mdx
+<Table.Cell>
+
+`oldOption` (Deprecated v2.13.6+, use `newOption` instead)
+
+</Table.Cell>
+```
+
 ## Prerequisites Component
 
 Use at the top of pages that require existing knowledge or setup:

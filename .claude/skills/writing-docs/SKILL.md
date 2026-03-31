@@ -11,6 +11,7 @@ Skill for writing and updating MDX documentation across the `book`, `resources`,
 
 > **CRITICAL:** Violating these will corrupt the documentation or break CI.
 
+- **Never document `@ignore`-tagged items** — any option, method, or parameter with `@ignore` in its TSDoc must be skipped entirely
 - **Never touch `www/apps/resources/references/`** — auto-generated, will be overwritten
 - **Never touch `www/apps/ui/specs/components/`** — auto-generated, will be overwritten
 - **Never touch `www/apps/api-reference/`** — managed by a separate process
@@ -73,6 +74,8 @@ export const metadata = {
 
 ## Common Mistakes
 
+- [ ] Adding a new option, method, or parameter without a version note
+- [ ] Documenting any option, method, or parameter tagged with `@ignore` in its TSDoc — skip these entirely
 - [ ] Touching `references/` or `specs/components/` directories
 - [ ] Using `we`, `us`, `let's`, `our` in prose (use "you" or imperative)
 - [ ] Using passive voice ("is created", "was updated") — write active
