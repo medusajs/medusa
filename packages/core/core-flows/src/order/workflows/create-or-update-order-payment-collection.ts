@@ -84,15 +84,12 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
 
     const { data: existingPaymentCollection } = useQueryGraphStep({
       entity: "payment_collection",
-      fields: ["id", "status"],
+      fields: ["id", "status", "amount"],
       filters: {
         id: orderPaymentCollectionIds,
         status: [
           PaymentCollectionStatus.NOT_PAID,
           PaymentCollectionStatus.AWAITING,
-          // Keep authorized collections alive for partial capture instead of
-          // canceling them. Most payment providers (Stripe, Adyen, etc.)
-          // support capturing an amount ≤ the authorized amount.
           PaymentCollectionStatus.AUTHORIZED,
           PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
         ],
@@ -100,12 +97,34 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
       options: { isList: false },
     }).config({ name: "payment-collection-query" })
 
-    // Authorized collections are updated in place (amount change only).
-    // At capture time, the merchant captures the new amount and the
-    // provider releases the remaining hold automatically (partial capture).
+    // Determine whether to cancel+recreate or update in place.
+    //
+    // AUTHORIZED + amount decreased/same: keep the authorization alive
+    // for partial capture. Most providers (Stripe, Adyen, PayPal) support
+    // capturing an amount ≤ the authorized amount.
+    //
+    // AUTHORIZED + amount increased: must cancel and recreate since
+    // providers can't capture more than the authorized amount.
+    //
+    // PARTIALLY_AUTHORIZED: intermediate state — always recreate.
     const shouldRecreate = transform(
-      { existingPaymentCollection },
-      ({ existingPaymentCollection }) => false
+      { existingPaymentCollection, amountPending },
+      ({ existingPaymentCollection, amountPending }) => {
+        if (!existingPaymentCollection) return false
+
+        const status = existingPaymentCollection.status
+
+        if (status === PaymentCollectionStatus.PARTIALLY_AUTHORIZED) {
+          return true
+        }
+
+        if (status === PaymentCollectionStatus.AUTHORIZED) {
+          const authorizedAmount = existingPaymentCollection.amount ?? 0
+          return MathBN.gt(amountPending, authorizedAmount)
+        }
+
+        return false
+      }
     )
 
     const amountPending = transform({ order, input }, ({ order, input }) => {
