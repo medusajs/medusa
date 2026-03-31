@@ -1188,6 +1188,9 @@
       "statusTitle": "Status do Atendimento",
       "fulfillItems": "Atender itens",
       "awaitingFulfillmentBadge": "Aguardando atendimento",
+      "awaitingShipping": "Aguardando envio",
+      "awaitingPickup": "Aguardando retirada",
+      "awaitingDelivery": "Aguardando entrega",
       "requiresShipping": "Requer envio",
       "number": "Atendimento #{{number}}",
       "itemsToFulfill": "Itens a serem atendidos",
@@ -1423,6 +1426,10 @@
       "shippingProfiles": {
         "label": "Perfis de Envio",
         "description": "Agrupar produtos por requisitos de envio"
+      },
+      "shippingOptionTypes": {
+        "label": "Tipos de opções de envio",
+        "description": "Opções de envio em grupo por tipo"
       }
     },
     "salesChannels": {
@@ -2230,6 +2237,9 @@
   "store": {
     "domain": "Loja",
     "manageYourStoresDetails": "Gerencie os detalhes da sua loja",
+    "defaultSalesChannel": "Canal de vendas padrão",
+    "defaultLocation": "Estoque padrão",
+    "defaultLocale": "Idioma padrão",
     "editStore": "Editar loja",
     "defaultCurrency": "Moeda padrão",
     "defaultRegion": "Região padrão",
@@ -2642,6 +2652,28 @@
         "dormant": "Inativo",
         "timeout": "Tempo limite"
       }
+    }
+  },
+  "shippingOptionTypes": {
+    "domain": "Tipos de opções de envio",
+    "subtitle": "Organize suas opções de envio por tipo.",
+    "create": {
+      "header": "Criar tipo de opção de envio",
+      "hint": "Crie um novo tipo de opção de envio para categorizar suas opções de envio.",
+      "successToast": "A opção de envio do tipo {{label}} foi criada com sucesso."
+    },
+    "edit": {
+      "header": "Editar tipo de opção de envio",
+      "successToast": "A opção de envio {{label}} foi atualizada com sucesso."
+    },
+    "delete": {
+      "confirmation": "Você está prestes a excluir a opção de envio \"{{label}}\". Esta ação não pode ser desfeita.",
+      "successToast": "A opção de envio do tipo \"{{label}}\" foi excluída com sucesso."
+    },
+    "fields": {
+      "label": "Rótulo",
+      "code": "Código",
+      "description": "Descrição"
     }
   },
   "productTypes": {

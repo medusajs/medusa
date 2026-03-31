@@ -83,7 +83,8 @@
     "@medusajs/admin-shared": "2.13.4",
     "@medusajs/admin-vite-plugin": "2.13.4",
     "@medusajs/types": "2.13.4",
-    "@medusajs/ui-preset": "2.13.4"
+    "@medusajs/ui-preset": "2.13.4",
+    "prettier": "^3.8.1"
   },
   "packageManager": "yarn@3.2.1"
 }

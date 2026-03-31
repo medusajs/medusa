@@ -228,22 +228,22 @@ const Fulfillment = ({
 
   let statusText = fulfillment.requires_shipping
     ? isPickUpFulfillment
-      ? t("orders.fulfillment.status.awaitingPickup")
-      : t("orders.fulfillment.status.awaitingShipping")
-    : t("orders.fulfillment.status.awaitingDelivery")
+      ? t("orders.fulfillment.awaitingPickup")
+      : t("orders.fulfillment.awaitingShipping")
+    : t("orders.fulfillment.awaitingDelivery")
   let statusColor: "blue" | "green" | "red" = "blue"
   let statusTimestamp = fulfillment.created_at
 
   if (fulfillment.canceled_at) {
-    statusText = t("orders.fulfillment.status.canceled")
+    statusText = "Canceled"
     statusColor = "red"
     statusTimestamp = fulfillment.canceled_at
   } else if (fulfillment.delivered_at) {
-    statusText = t("orders.fulfillment.status.delivered")
+    statusText = "Delivered"
     statusColor = "green"
     statusTimestamp = fulfillment.delivered_at
   } else if (fulfillment.shipped_at) {
-    statusText = t("orders.fulfillment.status.shipped")
+    statusText = "Shipped"
     statusColor = "green"
     statusTimestamp = fulfillment.shipped_at
   }

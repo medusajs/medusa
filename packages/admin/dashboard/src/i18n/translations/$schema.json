@@ -80,10 +80,10 @@
         "select": {
           "type": "string"
         },
-        "unselectAll": {
+        "selectAll": {
           "type": "string"
         },
-        "selectAll": {
+        "unselectAll": {
           "type": "string"
         },
         "selected": {
@@ -196,10 +196,10 @@
         }
       },
       "required": [
+        "fullList",
         "ascending",
         "descending",
         "add",
-        "fullList",
         "start",
         "end",
         "open",
@@ -404,10 +404,10 @@
         "saveChanges": {
           "type": "string"
         },
-        "saveAndClose": {
+        "saveAsDraft": {
           "type": "string"
         },
-        "saveAsDraft": {
+        "saveAndClose": {
           "type": "string"
         },
         "copy": {
@@ -1190,12 +1190,6 @@
         "sortLabel": {
           "type": "string"
         },
-        "filterLabel": {
-          "type": "string"
-        },
-        "searchLabel": {
-          "type": "string"
-        },
         "collapse": {
           "type": "object",
           "properties": {
@@ -1205,6 +1199,12 @@
           },
           "required": ["all"],
           "additionalProperties": false
+        },
+        "filterLabel": {
+          "type": "string"
+        },
+        "searchLabel": {
+          "type": "string"
         },
         "date": {
           "type": "object",
@@ -1339,9 +1339,9 @@
       },
       "required": [
         "sortLabel",
+        "collapse",
         "filterLabel",
         "searchLabel",
-        "collapse",
         "date",
         "compare",
         "sorting",
@@ -5907,32 +5907,6 @@
           "required": ["open", "completed"],
           "additionalProperties": false
         },
-        "list": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "noRecordsMessage": {
-              "type": "string"
-            },
-            "filtered": {
-              "type": "object",
-              "properties": {
-                "heading": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": ["heading", "description"],
-              "additionalProperties": false
-            }
-          },
-          "required": ["description", "noRecordsMessage", "filtered"],
-          "additionalProperties": false
-        },
         "create": {
           "type": "object",
           "properties": {
@@ -6025,6 +5999,32 @@
           ],
           "additionalProperties": false
         },
+        "list": {
+          "type": "object",
+          "properties": {
+            "noRecordsMessage": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["noRecordsMessage", "description", "filtered"],
+          "additionalProperties": false
+        },
         "validation": {
           "type": "object",
           "properties": {
@@ -6054,6 +6054,7 @@
         "markAsPaid",
         "status",
         "create",
+        "list",
         "validation"
       ],
       "additionalProperties": false
@@ -9516,6 +9517,35 @@
         "domain": {
           "type": "string"
         },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "manage": {
+              "type": "string"
+            },
+            "manageEntities": {
+              "type": "string"
+            },
+            "manageLocales": {
+              "type": "string"
+            }
+          },
+          "required": ["manage", "manageEntities", "manageLocales"],
+          "additionalProperties": false
+        },
         "subtitle": {
           "type": "string"
         },
@@ -9526,35 +9556,8 @@
               "type": "string"
             }
           },
-          "required": ["metrics"]
-        },
-        "settings": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "type": "string"
-                },
-                "successToast": {
-                    "type": "string"
-                }
-            },
-            "required": ["header", "successToast"],
-            "additionalProperties": false
-        },
-        "actions": {
-          "type": "object",
-          "properties": {
-            "manageLocales": {
-              "type": "string"
-            },
-            "manageEntities": {
-              "type": "string"
-            },
-            "manage": {
-              "type": "string"
-            }
-          },
-          "required": ["manageLocales", "manageEntities", "manage"]
+          "required": ["metrics"],
+          "additionalProperties": false
         },
         "edit": {
           "type": "object",
@@ -9572,10 +9575,12 @@
                   "type": "string"
                 }
               },
-              "required": ["title", "description"]
+              "required": ["title", "description"],
+              "additionalProperties": false
             }
           },
-          "required": ["successToast", "unsavedChanges"]
+          "required": ["successToast", "unsavedChanges"],
+          "additionalProperties": false
         },
         "bulk": {
           "type": "object",
@@ -9587,7 +9592,8 @@
               "type": "string"
             }
           },
-          "required": ["header"]
+          "required": ["header", "mainColumn"],
+          "additionalProperties": false
         },
         "activeLocales": {
           "type": "object",
@@ -9610,7 +9616,8 @@
             "subtitle",
             "noLocalesTip",
             "noLocalesTipConfigureAction"
-          ]
+          ],
+          "additionalProperties": false
         },
         "completion": {
           "type": "object",
@@ -9628,17 +9635,22 @@
               "type": "string"
             }
           },
-          "required": ["heading", "translated", "toTranslate", "footer"]
+          "required": ["heading", "translated", "toTranslate", "footer"],
+          "additionalProperties": false
         }
       },
       "required": [
         "domain",
+        "settings",
         "actions",
         "subtitle",
+        "list",
+        "edit",
         "bulk",
-        "completion",
-        "edit"
-      ]
+        "activeLocales",
+        "completion"
+      ],
+      "additionalProperties": false
     },
     "store": {
       "type": "object",
@@ -9703,10 +9715,10 @@
         "removeLocaleWarning_other": {
           "type": "string"
         },
-        "localeAlreadyAdded": {
+        "currencyAlreadyAdded": {
           "type": "string"
         },
-        "currencyAlreadyAdded": {
+        "localeAlreadyAdded": {
           "type": "string"
         },
         "edit": {
@@ -9725,10 +9737,10 @@
             "update": {
               "type": "string"
             },
-            "localesUpdated": {
+            "currenciesUpdated": {
               "type": "string"
             },
-            "currenciesUpdated": {
+            "localesUpdated": {
               "type": "string"
             },
             "currenciesRemoved": {
@@ -9743,8 +9755,8 @@
           },
           "required": [
             "update",
-            "localesUpdated",
             "currenciesUpdated",
+            "localesUpdated",
             "currenciesRemoved",
             "localesRemoved",
             "updatedTaxInclusivitySuccessfully"
@@ -12487,6 +12499,7 @@
     "priceLists",
     "profile",
     "users",
+    "translations",
     "store",
     "regions",
     "taxes",

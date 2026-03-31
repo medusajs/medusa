@@ -173,11 +173,11 @@ const Payment = ({
 
   const getPaymentStatusAttributes = (payment: AdminPayment) => {
     if (payment.canceled_at) {
-      return ["Canceled", "red"]
+      return [t("orders.payment.status.canceled"), "red"]
     } else if (payment.captured_at) {
-      return ["Captured", "green"]
+      return [t("orders.payment.status.captured"), "green"]
     } else {
-      return ["Pending", "orange"]
+      return [t("orders.payment.status.awaiting"), "orange"]
     }
   }
 

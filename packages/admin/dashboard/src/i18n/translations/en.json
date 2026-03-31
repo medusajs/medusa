@@ -1396,6 +1396,9 @@
       "statusTitle": "Fulfillment Status",
       "fulfillItems": "Fulfill items",
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
+      "awaitingShipping": "Awaiting shipping",
+      "awaitingPickup": "Awaiting pickup",
+      "awaitingDelivery": "Awaiting Delivery",
       "requiresShipping": "Requires shipping",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
@@ -1427,10 +1430,7 @@
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Canceled",
-        "requiresAction": "Requires action",
-        "awaitingPickup": "Awaiting pickup",
-        "awaitingShipping": "Awaiting shipping",
-        "awaitingDelivery": "Awaiting delivery"
+        "requiresAction": "Requires action"
       },
       "toast": {
         "created": "Fulfillment created successfully",
