@@ -88,10 +88,11 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
       filters: {
         id: orderPaymentCollectionIds,
         status: [
-          // To update the collection amoun
           PaymentCollectionStatus.NOT_PAID,
           PaymentCollectionStatus.AWAITING,
-          // To cancel the authorized payments and create a new collection
+          // Keep authorized collections alive for partial capture instead of
+          // canceling them. Most payment providers (Stripe, Adyen, etc.)
+          // support capturing an amount ≤ the authorized amount.
           PaymentCollectionStatus.AUTHORIZED,
           PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
         ],
@@ -99,13 +100,12 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
       options: { isList: false },
     }).config({ name: "payment-collection-query" })
 
+    // Authorized collections are updated in place (amount change only).
+    // At capture time, the merchant captures the new amount and the
+    // provider releases the remaining hold automatically (partial capture).
     const shouldRecreate = transform(
       { existingPaymentCollection },
-      ({ existingPaymentCollection }) =>
-        existingPaymentCollection?.status ===
-          PaymentCollectionStatus.AUTHORIZED ||
-        existingPaymentCollection?.status ===
-          PaymentCollectionStatus.PARTIALLY_AUTHORIZED
+      ({ existingPaymentCollection }) => false
     )
 
     const amountPending = transform({ order, input }, ({ order, input }) => {
