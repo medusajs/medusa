@@ -232,6 +232,7 @@ jobs:
           {
             echo 'BODY<<PR_BODY_EOF'
             cat /tmp/pr-body.md
+            printf '\n'
             echo 'PR_BODY_EOF'
           } >> "$GITHUB_OUTPUT"
 

@@ -112,6 +112,7 @@ jobs:
             echo "This PR adds TSDoc comments to TypeScript source files changed in commit [\`${SHORT_SHA}\`](${COMMIT_URL})."
             echo ""
             echo "> Review carefully before merging. Claude may have missed context or used incorrect descriptions."
+            printf '\n'
             echo 'PR_BODY_EOF'
           } >> "$GITHUB_OUTPUT"
 
