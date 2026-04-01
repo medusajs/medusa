@@ -137896,7 +137896,8 @@ It accepts props from the \[Radix UI Dialog Trigger]\(https://www.radix-ui.com/p
 This component wraps the content of the modal.
 It accepts props from the \[Radix UI Dialog Content]\(https://www.radix-ui.com/primitives/docs/components/dialog#content) component.
 
-
+- overlayProps: (ReactComponentPropsWithoutRef)
+- portalProps: (ReactComponentPropsWithoutRef)
 
 ### FocusModal.Header Props
 
