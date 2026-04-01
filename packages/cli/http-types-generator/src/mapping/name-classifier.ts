@@ -1,3 +1,5 @@
+import { Config } from "../config"
+
 /**
  * Target file categories for schema outputs.
  * - `payloads` → `payloads.ts` (request body types: create, update, batch, etc.)
@@ -54,8 +56,9 @@ export class NameClassifier {
    * @returns The target file category. Returns "skip" if no type should be generated for this schema.
    */
   static classify(name: string): FileTarget {
-    // Must have Admin or Store prefix to be an HTTP type
-    if (!name.startsWith("Admin") && !name.startsWith("Store")) {
+    // Must have one of the configured public prefixes to be an HTTP type
+    const prefixes = Config.get().publicPrefixes
+    if (!prefixes.some((prefix) => name.startsWith(prefix))) {
       return "skip"
     }
 

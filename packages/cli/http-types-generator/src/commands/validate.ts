@@ -13,9 +13,10 @@ import { PathMapper } from "../mapping/path-mapper"
 import { NameClassifier } from "../mapping/name-classifier"
 import { NameRegistry } from "../mapping/name-registry"
 import { FsHelpers } from "../utils/fs-helpers"
+import { Config } from "../config"
 
 interface ValidateOptions {
-  area: "admin" | "store" | "all"
+  area: string
   domain?: string
   changedFiles?: string
   lenient: boolean
@@ -74,7 +75,7 @@ export function validateCommand(): Command {
         process.env.GITHUB_ACTIONS === "true"
 
       const options: ValidateOptions = {
-        area: opts.area as "admin" | "store" | "all",
+        area: opts.area as string,
         domain: opts.domain,
         changedFiles: opts.changedFiles,
         lenient: opts.lenient,
@@ -121,14 +122,14 @@ async function runValidate(options: ValidateOptions): Promise<void> {
     console.log(chalk.yellow("No validator files found."))
     if (domain) {
       console.log(
-        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name under packages/medusa/src/api/.`)
+        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
       )
     }
     return
   }
 
   // Collect HTTP type files to check against
-  const httpTypesBase = FsHelpers.fromRoot("packages/core/types/src/http")
+  const httpTypesBase = FsHelpers.fromRoot(Config.get().outputBase)
   const httpTypeFilesGlob = domain
     ? path.join(httpTypesBase, PathMapper.resolveHttpDomain(domain), "**", "*.ts")
     : path.join(httpTypesBase, "**", "*.ts")
@@ -270,8 +271,8 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   if (failures.length > 0) {
     console.log(
       chalk.yellow(
-        "Run `yarn generate:http-types --dry-run` to preview what the correct types should look like.\n" +
-          "Run `yarn generate:http-types --force` to overwrite existing types with generated ones."
+        "Run the generate command with --dry-run to preview what the correct types should look like.\n" +
+          "Run the generate command with --force to overwrite existing types with generated ones."
       )
     )
 

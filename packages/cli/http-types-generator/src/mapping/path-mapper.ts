@@ -1,10 +1,11 @@
 import path from "path"
 import pluralize from "pluralize"
 import { FsHelpers } from "../utils/fs-helpers"
+import { Config } from "../config"
 
 export interface PathMapping {
-  /** "admin" or "store" */
-  area: "admin" | "store"
+  /** The API area (e.g. "admin", "store") */
+  area: string
   /** Domain name in kebab-case as it appears in the HTTP types directory. e.g. "product" */
   domain: string
   /** Absolute path to the HTTP types directory for this domain+area */
@@ -44,22 +45,6 @@ export class PathMapper {
     "workflows-executions": "workflow-execution", // both segments are plural
   }
 
-  /** Base directory for HTTP types in the types package. */
-  private static readonly HTTP_TYPES_BASE = "packages/core/types/src/http"
-
-  /** Base directory for validator files in the medusa package. */
-  private static readonly VALIDATORS_BASE_ADMIN = "packages/medusa/src/api/admin"
-  private static readonly VALIDATORS_BASE_STORE = "packages/medusa/src/api/store"
-
-  /** Patterns for validator file paths */
-  private static readonly VALIDATOR_ADMIN_PATTERN =
-    /\/api\/admin\/([^/]+)\/validators\.ts$/
-  private static readonly VALIDATOR_STORE_PATTERN =
-    /\/api\/store\/([^/]+)\/validators\.ts$/
-
-  private static readonly DOMAIN_FILTER_RE =
-    /\/api\/(admin|store)\/([^/]+)\/validators\.ts$/
-
   /**
    * Derives the domain name from a route directory name by singularizing its
    * last hyphen-separated segment (e.g. "sales-channels" → "sales-channel",
@@ -81,27 +66,17 @@ export class PathMapper {
     validatorFilePath: string
   ): PathMapping | undefined {
     const normalized = validatorFilePath.replace(/\\/g, "/")
+    const pattern = new RegExp(Config.get().validatorPathPattern)
+    const match = normalized.match(pattern)
 
-    let area: "admin" | "store" | undefined
-    let routeDirName: string | undefined
-
-    const adminMatch = normalized.match(PathMapper.VALIDATOR_ADMIN_PATTERN)
-    const storeMatch = normalized.match(PathMapper.VALIDATOR_STORE_PATTERN)
-
-    if (adminMatch) {
-      area = "admin"
-      routeDirName = adminMatch[1]
-    } else if (storeMatch) {
-      area = "store"
-      routeDirName = storeMatch[1]
-    }
-
-    if (!area || !routeDirName) {
+    if (!match || !match[1] || !match[2]) {
       return undefined
     }
 
+    const area = match[1]
+    const routeDirName = match[2]
     const domain = PathMapper.resolveHttpDomain(routeDirName)
-    const outputDir = FsHelpers.fromRoot(PathMapper.HTTP_TYPES_BASE, domain, area)
+    const outputDir = FsHelpers.fromRoot(Config.get().outputBase, domain, area)
 
     return {
       area,
@@ -114,40 +89,28 @@ export class PathMapper {
 
   /**
    * Returns glob patterns for all validator files in the given area(s).
+   * Pass `"all"` to get globs for every configured area.
    */
-  static getValidatorGlobs(area: "admin" | "store" | "all"): string[] {
-    const monorepoRoot = FsHelpers.fromRoot()
-    const globs: string[] = []
+  static getValidatorGlobs(area: string): string[] {
+    const globs = Config.get().validatorGlobs
+    const root = FsHelpers.fromRoot()
 
-    if (area === "admin" || area === "all") {
-      globs.push(
-        path.join(
-          monorepoRoot,
-          PathMapper.VALIDATORS_BASE_ADMIN,
-          "*",
-          "validators.ts"
-        )
-      )
-    }
-    if (area === "store" || area === "all") {
-      globs.push(
-        path.join(
-          monorepoRoot,
-          PathMapper.VALIDATORS_BASE_STORE,
-          "*",
-          "validators.ts"
-        )
-      )
+    if (area === "all") {
+      return Object.values(globs).map((g) => path.join(root, g))
     }
 
-    return globs
+    const pattern = globs[area]
+    if (!pattern) {
+      return []
+    }
+    return [path.join(root, pattern)]
   }
 
   /**
    * Returns the absolute path to the HTTP types directory for a given domain.
    */
   static getHttpTypesDir(domain: string): string {
-    return FsHelpers.fromRoot(PathMapper.HTTP_TYPES_BASE, domain)
+    return FsHelpers.fromRoot(Config.get().outputBase, domain)
   }
 
   /**
@@ -165,8 +128,9 @@ export class PathMapper {
    * Filters a list of validator file paths to only those matching the given domain name.
    */
   static filterValidatorsByDomain(files: string[], domain: string): string[] {
+    const pattern = new RegExp(Config.get().validatorPathPattern)
     return files.filter((f) => {
-      const match = f.match(PathMapper.DOMAIN_FILTER_RE)
+      const match = f.replace(/\\/g, "/").match(pattern)
       return match && match[2] === domain
     })
   }

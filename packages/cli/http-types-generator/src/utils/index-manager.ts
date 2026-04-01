@@ -3,6 +3,7 @@ import path from "path"
 import chalk from "chalk"
 import { FsHelpers } from "./fs-helpers"
 import { Formatter } from "./formatter"
+import { Config } from "../config"
 import type { PathMapping } from "../mapping/path-mapper"
 
 /**
@@ -25,7 +26,8 @@ export class IndexManager {
     dryRun: boolean
   ): Promise<void> {
     const HTTP_ROOT_INDEX = FsHelpers.fromRoot(
-      "packages/core/types/src/http/index.ts"
+      Config.get().outputBase,
+      "index.ts"
     )
     const { outputDir, area, domain } = mapping
     const domainDir = path.dirname(outputDir)

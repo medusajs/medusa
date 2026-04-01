@@ -15,7 +15,7 @@ import { IndexManager } from "../utils/index-manager"
 import { FileMerger } from "../utils/file-merger"
 
 interface GenerateOptions {
-  area: "admin" | "store" | "all"
+  area: string
   domain?: string
   dryRun: boolean
   force: boolean
@@ -59,7 +59,7 @@ export function generateCommand(): Command {
     .option("--verbose", "Print detailed output including each processed schema", false)
     .action(async (opts) => {
       const options: GenerateOptions = {
-        area: opts.area as "admin" | "store" | "all",
+        area: opts.area as string,
         domain: opts.domain,
         dryRun: opts.dryRun,
         force: opts.force,
@@ -95,7 +95,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
     console.log(chalk.yellow("No validator files found."))
     if (domain) {
       console.log(
-        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name under packages/medusa/src/api/.`)
+        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
       )
     }
     return

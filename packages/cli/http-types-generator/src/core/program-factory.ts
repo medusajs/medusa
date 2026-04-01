@@ -1,6 +1,7 @@
 import ts from "typescript"
 import path from "path"
 import { FsHelpers } from "../utils/fs-helpers"
+import { Config } from "../config"
 
 export interface ProgramContext {
   program: ts.Program
@@ -9,13 +10,12 @@ export interface ProgramContext {
 
 export class ProgramFactory {
   /**
-   * Reads and parses the monorepo base TypeScript compiler options from
-   * `_tsconfig.base.json`. This ensures module resolution, paths, and other
-   * settings match the rest of the monorepo.
+   * Reads and parses the project's TypeScript compiler options from the
+   * tsconfig file specified in config (defaults to `tsconfig.json`).
    */
   private static getBaseCompilerOptions(): ts.CompilerOptions {
-    const monorepoRoot = FsHelpers.getMonorepoRoot()
-    const tsconfigBasePath = path.join(monorepoRoot, "_tsconfig.base.json")
+    const projectRoot = FsHelpers.getProjectRoot()
+    const tsconfigBasePath = path.join(projectRoot, Config.get().tsconfig)
 
     const configStr = ts.sys.readFile(tsconfigBasePath)
     if (!configStr) {
@@ -37,7 +37,7 @@ export class ProgramFactory {
     const parsed = ts.parseJsonConfigFileContent(
       JSON.parse(configStr),
       ts.sys,
-      monorepoRoot
+      projectRoot
     )
 
     return {

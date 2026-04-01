@@ -4,21 +4,13 @@ import { existsSync, readFileSync } from "fs"
 import type { ResolvedSchemaType, PropertyInfo } from "./type-resolver"
 import { TypeResolver } from "./type-resolver"
 import { FsHelpers } from "../utils/fs-helpers"
+import { Config } from "../config"
 import type { ImportTracker } from "./import-tracker"
 
 export interface EmittedInterface {
   name: string
   code: string
 }
-
-/**
- * Monorepo-relative paths to the directories that generated files import from.
- * At emit time these are resolved to relative import paths based on the output file location.
- */
-const IMPORT_SOURCES = {
-  COMMON_REQUEST: "packages/core/types/src/http/common",
-  DAL: "packages/core/types/src/dal",
-} as const
 
 /**
  * Emits TypeScript interface declarations from resolved Zod schema types and
@@ -182,12 +174,21 @@ export class TypeEmitter {
   }
 
   /**
-   * Computes a relative import path from an output file to one of the IMPORT_SOURCES targets.
+   * Resolves an import source to an import specifier string.
+   * If `target` is a bare package name (starts with `@` or contains no `/` after
+   * stripping scope), it is returned as-is. Otherwise it is treated as a
+   * project-root-relative path and converted to a relative import path.
    */
   private static resolveImportPath(
     outputFile: string,
     target: string
   ): string {
+    // Package specifier: starts with "@" (scoped) or has no path separators
+    const isPackageSpecifier =
+      target.startsWith("@") || !target.includes("/")
+    if (isPackageSpecifier) {
+      return target
+    }
     const fromDir = path.dirname(outputFile)
     const toDir = FsHelpers.fromRoot(target)
     const rel = path.relative(fromDir, toDir).replace(/\\/g, "/")
@@ -291,7 +292,7 @@ export class TypeEmitter {
 
     if (commonTypes.length > 0) {
       lines.push(
-        `import { ${commonTypes.join(", ")} } from "${TypeEmitter.resolveImportPath(outputFile, IMPORT_SOURCES.COMMON_REQUEST)}"`
+        `import { ${commonTypes.join(", ")} } from "${TypeEmitter.resolveImportPath(outputFile, Config.get().importSources.commonRequest)}"`
       )
     }
 
@@ -301,7 +302,7 @@ export class TypeEmitter {
 
     if (dalTypes.length > 0) {
       lines.push(
-        `import { ${dalTypes.join(", ")} } from "${TypeEmitter.resolveImportPath(outputFile, IMPORT_SOURCES.DAL)}"`
+        `import { ${dalTypes.join(", ")} } from "${TypeEmitter.resolveImportPath(outputFile, Config.get().importSources.dal)}"`
       )
     }
 

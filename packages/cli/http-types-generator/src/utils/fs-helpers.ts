@@ -1,14 +1,15 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs"
 import path from "path"
+import { Config } from "../config"
 
 export class FsHelpers {
   /**
-   * Returns the absolute path to the monorepo root by traversing up from
-   * the compiled file location:
-   * packages/cli/http-types-generator/dist/utils/fs-helpers.js → 5 levels up
+   * Returns the absolute path to the project root.
+   * Determined by searching upward for `http-types.config.json`; falls back
+   * to `process.cwd()` when no config file is found.
    */
-  static getMonorepoRoot(): string {
-    return path.resolve(__dirname, "..", "..", "..", "..", "..")
+  static getProjectRoot(): string {
+    return Config.get().projectRoot
   }
 
   /**
@@ -29,9 +30,9 @@ export class FsHelpers {
   }
 
   /**
-   * Resolves a path relative to the monorepo root.
+   * Resolves a path relative to the project root.
    */
   static fromRoot(...segments: string[]): string {
-    return path.join(FsHelpers.getMonorepoRoot(), ...segments)
+    return path.join(FsHelpers.getProjectRoot(), ...segments)
   }
 }
