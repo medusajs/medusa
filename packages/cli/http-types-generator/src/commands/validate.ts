@@ -53,11 +53,6 @@ export function validateCommand(): Command {
       "Comma-separated list of changed validator files (CI optimization)"
     )
     .option(
-      "--fix",
-      "Auto-generate types for schemas that fail validation",
-      false
-    )
-    .option(
       "--lenient",
       "Treat T|null|undefined as compatible with T|null (for legacy types)",
       false
@@ -105,7 +100,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
       .split(",")
       .map((f) => f.trim())
       .filter(Boolean)
-      .map((f) => (path.isAbsolute(f) ? f : path.resolve(f)))
+      .map((f) => (path.isAbsolute(f) ? f : FsHelpers.fromRoot(f)))
   } else {
     const globs = PathMapper.getValidatorGlobs(area)
     for (const pattern of globs) {

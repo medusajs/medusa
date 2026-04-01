@@ -111,8 +111,18 @@ export class Config {
         ...Config.DEFAULTS.importSources,
         ...(userConfig.importSources ?? {}),
       },
-      validatorPathPattern:
-        userConfig.validatorPathPattern ?? Config.DEFAULTS.validatorPathPattern,
+      validatorPathPattern: (() => {
+        const pattern =
+          userConfig.validatorPathPattern ?? Config.DEFAULTS.validatorPathPattern
+        try {
+          new RegExp(pattern)
+        } catch {
+          throw new Error(
+            `validatorPathPattern in http-types.config.json is not a valid regex: "${pattern}"`
+          )
+        }
+        return pattern
+      })(),
       publicPrefixes:
         userConfig.publicPrefixes ?? Config.DEFAULTS.publicPrefixes,
     }

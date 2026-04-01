@@ -50,8 +50,9 @@ jobs:
         run: |
           node packages/cli/http-types-generator/dist/index.js validate \
             --ci \
-            --changed-files "${{ steps.changed.outputs.files }}"
+            --changed-files "$CHANGED_FILES"
         env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
           MONOREPO_ROOT_PATH: ${{ github.workspace }}
 
       - name: Validate HTTP types (full)
