@@ -2,23 +2,17 @@ import { Command } from "commander"
 import { glob } from "glob"
 import path from "path"
 import chalk from "chalk"
-import { createProgramContext } from "../core/program-factory"
-import { extractSchemasFromFile } from "../core/schema-extractor"
-import { resolveSchemaType } from "../core/type-resolver"
+import { ProgramFactory } from "../core/program-factory"
+import { SchemaExtractor } from "../core/schema-extractor"
+import { TypeResolver } from "../core/type-resolver"
 import {
-  checkCompatibility,
-  formatCompatibilityResult,
+  CompatibilityChecker,
   type CheckPair,
 } from "../core/compatibility-checker"
-import {
-  mapValidatorToHttpTypes,
-  getValidatorGlobs,
-  filterValidatorsByDomain,
-  resolveHttpDomain,
-} from "../mapping/path-mapper"
-import { classifySchemaName } from "../mapping/name-classifier"
-import { resolveHttpTypeName } from "../mapping/name-registry"
-import { fromRoot } from "../utils/fs-helpers"
+import { PathMapper } from "../mapping/path-mapper"
+import { NameClassifier } from "../mapping/name-classifier"
+import { NameRegistry } from "../mapping/name-registry"
+import { FsHelpers } from "../utils/fs-helpers"
 
 interface ValidateOptions {
   area: "admin" | "store" | "all"
@@ -106,14 +100,13 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   let validatorFiles: string[] = []
 
   if (changedFiles) {
-    // CI optimization: only validate changed files
     validatorFiles = changedFiles
       .split(",")
       .map((f) => f.trim())
       .filter(Boolean)
       .map((f) => (path.isAbsolute(f) ? f : path.resolve(f)))
   } else {
-    const globs = getValidatorGlobs(area)
+    const globs = PathMapper.getValidatorGlobs(area)
     for (const pattern of globs) {
       const matches = await glob(pattern)
       validatorFiles.push(...matches)
@@ -121,7 +114,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   }
 
   if (domain) {
-    validatorFiles = filterValidatorsByDomain(validatorFiles, domain)
+    validatorFiles = PathMapper.filterValidatorsByDomain(validatorFiles, domain)
   }
 
   if (validatorFiles.length === 0) {
@@ -134,25 +127,26 @@ async function runValidate(options: ValidateOptions): Promise<void> {
     return
   }
 
-  // Collect HTTP type files to check against — narrowed to the target domain
-  // when --domain is set, so we don't load the entire types tree unnecessarily.
-  const httpTypesBase = fromRoot("packages/core/types/src/http")
+  // Collect HTTP type files to check against
+  const httpTypesBase = FsHelpers.fromRoot("packages/core/types/src/http")
   const httpTypeFilesGlob = domain
-    ? path.join(httpTypesBase, resolveHttpDomain(domain), "**", "*.ts")
+    ? path.join(httpTypesBase, PathMapper.resolveHttpDomain(domain), "**", "*.ts")
     : path.join(httpTypesBase, "**", "*.ts")
   const httpTypeFiles = await glob(httpTypeFilesGlob)
 
   // Create TypeScript program with both validator files AND HTTP type files
-  // so we can resolve both sides in one pass
   const allFiles = [...validatorFiles, ...httpTypeFiles]
-  const { program, checker } = createProgramContext(allFiles)
+  const { program, checker } = ProgramFactory.create(allFiles)
+
+  const extractor = new SchemaExtractor(checker)
+  const resolver = new TypeResolver(checker)
 
   // Build check pairs
   const pairs: CheckPair[] = []
   let skippedCount = 0
 
   for (const validatorFile of validatorFiles) {
-    const mapping = mapValidatorToHttpTypes(validatorFile)
+    const mapping = PathMapper.mapValidatorToHttpTypes(validatorFile)
     if (!mapping) {
       continue
     }
@@ -165,26 +159,26 @@ async function runValidate(options: ValidateOptions): Promise<void> {
       continue
     }
 
-    const schemas = extractSchemasFromFile(sourceFile, checker)
+    const schemas = extractor.extract(sourceFile)
 
     for (const schema of schemas) {
       const httpTypeName =
         schema.httpTypeName !== schema.exportName
           ? schema.httpTypeName
-          : resolveHttpTypeName(schema.exportName, mapping.domain)
+          : NameRegistry.resolveHttpTypeName(schema.exportName, mapping.domain)
 
       if (httpTypeName === "skip") {
         skippedCount++
         continue
       }
 
-      const targetFile = classifySchemaName(schema.exportName)
+      const targetFile = NameClassifier.classify(schema.exportName)
       if (targetFile === "skip") {
         skippedCount++
         continue
       }
 
-      const resolved = resolveSchemaType(checker, {
+      const resolved = resolver.resolveSchemaType({
         ...schema,
         httpTypeName,
       })
@@ -222,7 +216,8 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   )
 
   // Run compatibility checks
-  const results = checkCompatibility({ program, checker, pairs, httpTypeFiles, lenient: options.lenient })
+  const compatChecker = new CompatibilityChecker(program, checker)
+  const results = compatChecker.check(pairs, httpTypeFiles, options.lenient)
 
   // Report results
   const failures = results.filter((r) => !r.passed)
@@ -234,8 +229,9 @@ async function runValidate(options: ValidateOptions): Promise<void> {
     const domainMatch = result.httpTypeFile.match(
       /\/http\/([^/]+)\/(admin|store)\//
     )
-    // e.g. "users/admin" or "products/store". If we can't parse it, group under "unknown".
-    const domainKey = domainMatch ? `${domainMatch[1]}/${domainMatch[2]}` : "unknown"
+    const domainKey = domainMatch
+      ? `${domainMatch[1]}/${domainMatch[2]}`
+      : "unknown"
     if (!byDomain.has(domainKey)) {
       byDomain.set(domainKey, [])
     }
@@ -252,7 +248,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
     console.log(chalk.bold(`  ${domainKey}`))
 
     for (const result of domainResults) {
-      const line = formatCompatibilityResult(result, verbose)
+      const line = CompatibilityChecker.formatResult(result, verbose)
       if (line) {
         console.log(line)
       }

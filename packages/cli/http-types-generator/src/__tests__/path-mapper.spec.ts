@@ -1,9 +1,7 @@
 import path from "path"
-import { mapValidatorToHttpTypes, getValidatorGlobs } from "../mapping/path-mapper"
+import { PathMapper } from "../mapping/path-mapper"
 
-describe("mapValidatorToHttpTypes", () => {
-  // Build a fake-but-structurally-valid absolute path.
-  // fromRoot() adds the monorepo root prefix; we only care about the parts we control.
+describe("PathMapper.mapValidatorToHttpTypes", () => {
   const toAdminPath = (entity: string) =>
     `/repo/packages/medusa/src/api/admin/${entity}/validators.ts`
   const toStorePath = (entity: string) =>
@@ -11,19 +9,25 @@ describe("mapValidatorToHttpTypes", () => {
 
   describe("area detection", () => {
     it("sets area to 'admin' for admin validator paths", () => {
-      const result = mapValidatorToHttpTypes(toAdminPath("products"))
+      const result = PathMapper.mapValidatorToHttpTypes(toAdminPath("products"))
       expect(result?.area).toBe("admin")
     })
 
     it("sets area to 'store' for store validator paths", () => {
-      const result = mapValidatorToHttpTypes(toStorePath("products"))
+      const result = PathMapper.mapValidatorToHttpTypes(toStorePath("products"))
       expect(result?.area).toBe("store")
     })
 
     it("returns undefined for paths that don't match the expected structure", () => {
-      expect(mapValidatorToHttpTypes("/some/random/path/validators.ts")).toBeUndefined()
-      expect(mapValidatorToHttpTypes("/packages/medusa/src/api/middleware.ts")).toBeUndefined()
-      expect(mapValidatorToHttpTypes("")).toBeUndefined()
+      expect(
+        PathMapper.mapValidatorToHttpTypes("/some/random/path/validators.ts")
+      ).toBeUndefined()
+      expect(
+        PathMapper.mapValidatorToHttpTypes(
+          "/packages/medusa/src/api/middleware.ts"
+        )
+      ).toBeUndefined()
+      expect(PathMapper.mapValidatorToHttpTypes("")).toBeUndefined()
     })
   })
 
@@ -60,52 +64,59 @@ describe("mapValidatorToHttpTypes", () => {
     it.each(cases)(
       "maps route dir '%s' → domain '%s'",
       (routeDir, expectedDomain) => {
-        const result = mapValidatorToHttpTypes(toAdminPath(routeDir))
+        const result = PathMapper.mapValidatorToHttpTypes(
+          toAdminPath(routeDir)
+        )
         expect(result?.domain).toBe(expectedDomain)
       }
     )
 
     it("singularizes the route dir name when no override exists", () => {
-      // 'locales' has no override, so it is singularized to 'locale'
-      const result = mapValidatorToHttpTypes(toAdminPath("locales"))
+      const result = PathMapper.mapValidatorToHttpTypes(toAdminPath("locales"))
       expect(result?.domain).toBe("locale")
     })
   })
 
   describe("output paths", () => {
     it("puts payloads.ts and queries.ts inside the outputDir", () => {
-      const result = mapValidatorToHttpTypes(toAdminPath("products"))!
-      expect(result.payloadsFile).toBe(path.join(result.outputDir, "payloads.ts"))
+      const result = PathMapper.mapValidatorToHttpTypes(
+        toAdminPath("products")
+      )!
+      expect(result.payloadsFile).toBe(
+        path.join(result.outputDir, "payloads.ts")
+      )
       expect(result.queriesFile).toBe(path.join(result.outputDir, "queries.ts"))
     })
 
     it("outputDir contains the domain and area segments", () => {
-      const result = mapValidatorToHttpTypes(toAdminPath("orders"))!
+      const result = PathMapper.mapValidatorToHttpTypes(toAdminPath("orders"))!
       expect(result.outputDir).toMatch(/order[/\\]admin/)
     })
 
     it("store paths use 'store' area in outputDir", () => {
-      const result = mapValidatorToHttpTypes(toStorePath("products"))!
+      const result = PathMapper.mapValidatorToHttpTypes(
+        toStorePath("products")
+      )!
       expect(result.outputDir).toMatch(/product[/\\]store/)
     })
   })
 })
 
-describe("getValidatorGlobs", () => {
+describe("PathMapper.getValidatorGlobs", () => {
   it("returns one glob for area 'admin'", () => {
-    const globs = getValidatorGlobs("admin")
+    const globs = PathMapper.getValidatorGlobs("admin")
     expect(globs).toHaveLength(1)
     expect(globs[0]).toMatch(/api\/admin\/\*\/validators\.ts$/)
   })
 
   it("returns one glob for area 'store'", () => {
-    const globs = getValidatorGlobs("store")
+    const globs = PathMapper.getValidatorGlobs("store")
     expect(globs).toHaveLength(1)
     expect(globs[0]).toMatch(/api\/store\/\*\/validators\.ts$/)
   })
 
   it("returns two globs for area 'all'", () => {
-    const globs = getValidatorGlobs("all")
+    const globs = PathMapper.getValidatorGlobs("all")
     expect(globs).toHaveLength(2)
     expect(globs.some((g) => g.includes("admin"))).toBe(true)
     expect(globs.some((g) => g.includes("store"))).toBe(true)

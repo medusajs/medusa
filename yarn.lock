@@ -3693,6 +3693,7 @@ __metadata:
     commander: ^11.0.0
     glob: 11.1.0
     pluralize: ^8.0.0
+    prettier: ^2.8.8
     typescript: ^5.6.2
   bin:
     medusa-http-types: ./dist/index.js

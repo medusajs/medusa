@@ -272,33 +272,39 @@ export const DOMAIN_SCOPED_OVERRIDES: Record<string, Record<string, string>> = {
  * Reverse lookup: HTTP type name → validator export name.
  * Used by the validate command to find the Zod schema for a given HTTP type.
  */
-export const HTTP_TYPE_TO_VALIDATOR_NAME: Record<string, string> = Object.fromEntries(
-  Object.entries(VALIDATOR_TO_HTTP_TYPE_NAME).map(([k, v]) => [v, k])
-)
+export const HTTP_TYPE_TO_VALIDATOR_NAME: Record<string, string> =
+  Object.fromEntries(
+    Object.entries(VALIDATOR_TO_HTTP_TYPE_NAME).map(([k, v]) => [v, k])
+  )
 
 /**
- * Resolves the HTTP type name for a given validator export name.
- * Falls back to the export name itself if no override is registered.
- *
- * @param exportName - The Zod validator export name.
- * @param domain - Optional route directory name (e.g. "exchanges", "claims").
- *   When provided, domain-scoped overrides take precedence over global mappings.
- *   Returns "skip" if the export should be excluded from validation in this domain.
+ * Resolves HTTP type names for validator export names and vice versa.
  */
-export function resolveHttpTypeName(exportName: string, domain?: string): string {
-  if (domain) {
-    const domainOverride = DOMAIN_SCOPED_OVERRIDES[domain]?.[exportName]
-    if (domainOverride !== undefined) {
-      return domainOverride
+export class NameRegistry {
+  /**
+   * Resolves the HTTP type name for a given validator export name.
+   * Falls back to the export name itself if no override is registered.
+   *
+   * @param exportName - The Zod validator export name.
+   * @param domain - Optional route directory name (e.g. "exchanges", "claims").
+   *   When provided, domain-scoped overrides take precedence over global mappings.
+   *   Returns "skip" if the export should be excluded from validation in this domain.
+   */
+  static resolveHttpTypeName(exportName: string, domain?: string): string {
+    if (domain) {
+      const domainOverride = DOMAIN_SCOPED_OVERRIDES[domain]?.[exportName]
+      if (domainOverride !== undefined) {
+        return domainOverride
+      }
     }
+    return VALIDATOR_TO_HTTP_TYPE_NAME[exportName] ?? exportName
   }
-  return VALIDATOR_TO_HTTP_TYPE_NAME[exportName] ?? exportName
-}
 
-/**
- * Resolves the validator export name for a given HTTP type name.
- * Falls back to the HTTP type name itself if no mapping is registered.
- */
-export function resolveValidatorName(httpTypeName: string): string {
-  return HTTP_TYPE_TO_VALIDATOR_NAME[httpTypeName] ?? httpTypeName
+  /**
+   * Resolves the validator export name for a given HTTP type name.
+   * Falls back to the HTTP type name itself if no mapping is registered.
+   */
+  static resolveValidatorName(httpTypeName: string): string {
+    return HTTP_TYPE_TO_VALIDATOR_NAME[httpTypeName] ?? httpTypeName
+  }
 }

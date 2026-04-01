@@ -2,18 +2,17 @@
  * End-to-end pipeline tests: simulated Zod schema source → emitted HTTP interface string.
  *
  * These tests exercise the full conversion path:
- *   extractSchemasFromFile → resolveSchemaType → emitInterface
+ *   SchemaExtractor.extract → TypeResolver.resolveSchemaType → TypeEmitter.emitInterface
  *
  * Rather than depending on the real Zod runtime, the source strings use
  * plain TypeScript declarations that carry the same structural shape the TS
  * compiler sees when resolving real Zod generics: an object type with
  * `_input` and `_output` properties whose types are the inferred shapes.
  */
-import { extractSchemasFromFile } from "../core/schema-extractor"
-import { resolveSchemaType } from "../core/type-resolver"
-import { emitInterface } from "../core/type-emitter"
-import { createImportTracker } from "../core/import-tracker"
-import type { ImportTracker } from "../core/import-tracker"
+import { SchemaExtractor } from "../core/schema-extractor"
+import { TypeResolver } from "../core/type-resolver"
+import { TypeEmitter } from "../core/type-emitter"
+import { ImportTracker } from "../core/import-tracker"
 import { createTestProgram } from "./utils/ts-utils"
 
 // ---------------------------------------------------------------------------
@@ -35,14 +34,18 @@ function runPipeline(source: string): PipelineResult[] {
   const { program, checker } = createTestProgram({ [fileName]: source })
   const sourceFile = program.getSourceFile(fileName)!
 
-  const schemas = extractSchemasFromFile(sourceFile, checker)
+  const extractor = new SchemaExtractor(checker)
+  const resolver = new TypeResolver(checker)
+  const emitter = new TypeEmitter(checker)
+
+  const schemas = extractor.extract(sourceFile)
   const results: PipelineResult[] = []
 
   for (const schema of schemas) {
-    const resolved = resolveSchemaType(checker, schema)
+    const resolved = resolver.resolveSchemaType(schema)
     if (!resolved) continue
-    const tracker = createImportTracker()
-    const code = emitInterface(checker, schema.httpTypeName, resolved, tracker)
+    const tracker = new ImportTracker()
+    const code = emitter.emitInterface(schema.httpTypeName, resolved, tracker)
     results.push({ name: schema.httpTypeName, code, tracker })
   }
 
@@ -151,7 +154,6 @@ describe("createFindParams schemas", () => {
       ${FIND_PARAMS_SOURCE}
       export const AdminGetProductsParams = createFindParams()
     `)
-    // These come from FindParams via extends and must not appear inline
     expect(result.code).not.toContain("limit")
     expect(result.code).not.toContain("offset")
     expect(result.code).not.toContain("fields")
@@ -246,7 +248,6 @@ describe("WithAdditionalData schemas", () => {
     expect(result.code).toContain("export interface AdminCreateProduct")
     expect(result.code).toContain("title: string")
     expect(result.code).toContain("description?: string")
-    // additional_data itself should not appear — it's added by the wrapper
     expect(result.code).not.toContain("additional_data")
   })
 })
@@ -257,10 +258,6 @@ describe("WithAdditionalData schemas", () => {
 
 describe("ZodEffects (transform) schemas", () => {
   it("uses _input type rather than _output type for transforms", () => {
-    // ZodEffects<Output, Input> — _input and _output differ.
-    // The pipeline should emit the _input shape (what the HTTP client sends).
-    // Uses an interface (not a type alias) so the symbol name "ZodEffects" is
-    // preserved and isZodEffects() can detect it.
     const [result] = runPipeline(`
       interface ZodEffects<O, I> { _output: O; _input: I }
       export declare const AdminCreateOrder: ZodEffects<
@@ -268,10 +265,8 @@ describe("ZodEffects (transform) schemas", () => {
         { raw_title: string; quantity: number }
       >
     `)
-    // _input fields should be present
     expect(result.code).toContain("raw_title: string")
     expect(result.code).toContain("quantity: number")
-    // _output-only field should NOT be present
     expect(result.code).not.toContain("id: string")
   })
 })

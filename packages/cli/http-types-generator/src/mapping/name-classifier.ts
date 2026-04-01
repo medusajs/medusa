@@ -7,69 +7,74 @@
 export type FileTarget = "payloads" | "queries" | "skip"
 
 /**
- * Patterns in the schema name that indicate a query/filter type.
- * These go into `queries.ts`.
+ * Classifies Zod schema export names into the appropriate output file category.
  */
-const QUERY_PATTERNS = [
-  /Params$/,
-  /Filters?$/,
-  /ListParams$/,
-  /FilterFields$/,
-]
+export class NameClassifier {
+  /**
+   * Patterns in the schema name that indicate a query/filter type.
+   * These go into `queries.ts`.
+   */
+  private static readonly QUERY_PATTERNS = [
+    /Params$/,
+    /Filters?$/,
+    /ListParams$/,
+    /FilterFields$/,
+  ]
 
-/**
- * Patterns in the schema name that indicate a payload type.
- * These go into `payloads.ts`.
- */
-const PAYLOAD_PATTERNS = [
-  /Create[A-Z]/,
-  /Update[A-Z]/,
-  /Batch[A-Z]/,
-  /Import[A-Z]/,
-  /Export[A-Z]/,
-  /Link[A-Z]/,
-  /[A-Z]Request$/,
-  /[A-Z]Payload$/,
-]
+  /**
+   * Patterns in the schema name that indicate a payload type.
+   * These go into `payloads.ts`.
+   */
+  private static readonly PAYLOAD_PATTERNS = [
+    /Create[A-Z]/,
+    /Update[A-Z]/,
+    /Batch[A-Z]/,
+    /Import[A-Z]/,
+    /Export[A-Z]/,
+    /Link[A-Z]/,
+    /[A-Z]Request$/,
+    /[A-Z]Payload$/,
+  ]
 
-/**
- * These intermediate/internal helper schemas should not generate HTTP types.
- */
-const SKIP_PATTERNS = [
-  /ParamsFields$/,
-  /ParamsDirectFields$/,
-  /ParamsBase$/,
-  /ParamsTransform$/,
-  /Schema$/,
-]
+  /**
+   * These intermediate/internal helper schemas should not generate HTTP types.
+   */
+  private static readonly SKIP_PATTERNS = [
+    /ParamsFields$/,
+    /ParamsDirectFields$/,
+    /ParamsBase$/,
+    /ParamsTransform$/,
+    /Schema$/,
+  ]
 
-/**
- * Classifies a Zod schema export name into the appropriate output file category.
- *
- * @param name - The exported variable name from the validator file.
- * @returns The target file category. Returns "skip" if no type should be generated for this schema.
- */
-export function classifySchemaName(name: string): FileTarget {
-  // Must have Admin or Store prefix to be an HTTP type
-  if (!name.startsWith("Admin") && !name.startsWith("Store")) {
-    return "skip"
-  }
+  /**
+   * Classifies a Zod schema export name into the appropriate output file category.
+   *
+   * @param name - The exported variable name from the validator file.
+   * @returns The target file category. Returns "skip" if no type should be generated for this schema.
+   */
+  static classify(name: string): FileTarget {
+    // Must have Admin or Store prefix to be an HTTP type
+    if (!name.startsWith("Admin") && !name.startsWith("Store")) {
+      return "skip"
+    }
 
-  // Skip intermediate/helper schemas
-  if (SKIP_PATTERNS.some((p) => p.test(name))) {
-    return "skip"
-  }
+    // Skip intermediate/helper schemas
+    if (NameClassifier.SKIP_PATTERNS.some((p) => p.test(name))) {
+      return "skip"
+    }
 
-  // Check if it's a query/filter type
-  if (QUERY_PATTERNS.some((p) => p.test(name))) {
-    return "queries"
-  }
+    // Check if it's a query/filter type
+    if (NameClassifier.QUERY_PATTERNS.some((p) => p.test(name))) {
+      return "queries"
+    }
 
-  // Check if it's a payload type
-  if (PAYLOAD_PATTERNS.some((p) => p.test(name))) {
+    // Check if it's a payload type
+    if (NameClassifier.PAYLOAD_PATTERNS.some((p) => p.test(name))) {
+      return "payloads"
+    }
+
+    // Default: treat as a payload type
     return "payloads"
   }
-
-  // Default: treat as a payload type
-  return "payloads"
 }

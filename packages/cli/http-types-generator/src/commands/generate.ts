@@ -2,25 +2,17 @@ import { Command } from "commander"
 import { glob } from "glob"
 import path from "path"
 import chalk from "chalk"
-import { createProgramContext } from "../core/program-factory"
-import { extractSchemasFromFile } from "../core/schema-extractor"
-import { resolveSchemaType } from "../core/type-resolver"
-import {
-  emitInterface,
-  type EmittedInterface,
-} from "../core/type-emitter"
-import { type ImportTracker, createImportTracker } from "../core/import-tracker"
-import {
-  mapValidatorToHttpTypes,
-  getValidatorGlobs,
-  filterValidatorsByDomain,
-  type PathMapping,
-} from "../mapping/path-mapper"
-import { classifySchemaName } from "../mapping/name-classifier"
-import { resolveHttpTypeName } from "../mapping/name-registry"
-import { writeFile } from "../utils/fs-helpers"
-import { updateIndexFiles } from "../utils/index-manager"
-import { resolveFileContent } from "../utils/file-merger"
+import { ProgramFactory } from "../core/program-factory"
+import { SchemaExtractor } from "../core/schema-extractor"
+import { TypeResolver } from "../core/type-resolver"
+import { TypeEmitter, type EmittedInterface } from "../core/type-emitter"
+import { ImportTracker } from "../core/import-tracker"
+import { PathMapper, type PathMapping } from "../mapping/path-mapper"
+import { NameClassifier } from "../mapping/name-classifier"
+import { NameRegistry } from "../mapping/name-registry"
+import { FsHelpers } from "../utils/fs-helpers"
+import { IndexManager } from "../utils/index-manager"
+import { FileMerger } from "../utils/file-merger"
 
 interface GenerateOptions {
   area: "admin" | "store" | "all"
@@ -87,7 +79,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   )
 
   // Discover validator files
-  const globs = getValidatorGlobs(area)
+  const globs = PathMapper.getValidatorGlobs(area)
   let validatorFiles: string[] = []
 
   for (const pattern of globs) {
@@ -96,7 +88,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   }
 
   if (domain) {
-    validatorFiles = filterValidatorsByDomain(validatorFiles, domain)
+    validatorFiles = PathMapper.filterValidatorsByDomain(validatorFiles, domain)
   }
 
   if (validatorFiles.length === 0) {
@@ -114,7 +106,13 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   }
 
   // Create TypeScript program with all validator files
-  const { program, checker } = createProgramContext(validatorFiles)
+  const { program, checker } = ProgramFactory.create(validatorFiles)
+
+  const extractor = new SchemaExtractor(checker)
+  const resolver = new TypeResolver(checker)
+  const emitter = new TypeEmitter(checker)
+  const merger = new FileMerger()
+  const indexManager = new IndexManager()
 
   // Group schemas by output file
   const fileGroups = new Map<string, FileGroup>()
@@ -123,7 +121,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   let skippedSchemas = 0
 
   for (const validatorFile of validatorFiles) {
-    const mapping = mapValidatorToHttpTypes(validatorFile)
+    const mapping = PathMapper.mapValidatorToHttpTypes(validatorFile)
     if (!mapping) {
       if (verbose) {
         console.log(
@@ -139,7 +137,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       continue
     }
 
-    const schemas = extractSchemasFromFile(sourceFile, checker)
+    const schemas = extractor.extract(sourceFile)
 
     for (const schema of schemas) {
       totalSchemas++
@@ -148,9 +146,9 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       const httpTypeName =
         schema.httpTypeName !== schema.exportName
           ? schema.httpTypeName // already set via @http-type-name annotation
-          : resolveHttpTypeName(schema.exportName)
+          : NameRegistry.resolveHttpTypeName(schema.exportName)
 
-      const targetFile = classifySchemaName(schema.exportName)
+      const targetFile = NameClassifier.classify(schema.exportName)
       if (targetFile === "skip") {
         skippedSchemas++
         if (verbose) {
@@ -159,7 +157,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
         continue
       }
 
-      const resolved = resolveSchemaType(checker, {
+      const resolved = resolver.resolveSchemaType({
         ...schema,
         httpTypeName,
       })
@@ -179,8 +177,8 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
           mapping,
           payloads: [],
           queries: [],
-          payloadsImports: createImportTracker(),
-          queriesImports: createImportTracker(),
+          payloadsImports: new ImportTracker(),
+          queriesImports: new ImportTracker(),
         })
       }
 
@@ -191,7 +189,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
           : group.queriesImports
 
       // Emit the interface
-      const code = emitInterface(checker, httpTypeName, resolved, importTracker)
+      const code = emitter.emitInterface(httpTypeName, resolved, importTracker)
 
       const emitted: EmittedInterface = { name: httpTypeName, code }
 
@@ -244,7 +242,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
     for (const { file, interfaces, imports, label } of filesToWrite) {
       const relPath = path.relative(process.cwd(), file)
 
-      const result = await resolveFileContent(file, interfaces, imports, force)
+      const result = await merger.resolveFileContent(file, interfaces, imports, force)
 
       if (dryRun) {
         if (result.status === "skipped") {
@@ -258,7 +256,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
                 : `[dry-run] Update (+${result.added} interface(s))`
           console.log(chalk.cyan(`\n--- ${tag}: ${relPath} ---`))
           console.log(result.content)
-          await updateIndexFiles(group.mapping, label, true)
+          await indexManager.updateIndexFiles(group.mapping, label, true)
         }
         continue
       }
@@ -269,7 +267,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
         continue
       }
 
-      writeFile(file, result.content)
+      FsHelpers.writeFile(file, result.content)
 
       if (result.status === "created" || result.status === "overwritten") {
         written++
@@ -285,7 +283,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
         )
       }
 
-      await updateIndexFiles(group.mapping, label, false)
+      await indexManager.updateIndexFiles(group.mapping, label, false)
     }
   }
 

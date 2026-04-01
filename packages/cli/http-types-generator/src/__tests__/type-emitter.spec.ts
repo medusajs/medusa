@@ -1,5 +1,5 @@
-import { emitInterface, assembleFile } from "../core/type-emitter"
-import { createImportTracker } from "../core/import-tracker"
+import { TypeEmitter } from "../core/type-emitter"
+import { ImportTracker } from "../core/import-tracker"
 import type { ResolvedSchemaType } from "../core/type-resolver"
 import { createSingleFileProgram } from "./utils/ts-utils"
 import ts from "typescript"
@@ -19,17 +19,22 @@ function makeResolved(
 }
 
 // ---------------------------------------------------------------------------
-// emitInterface
+// TypeEmitter.emitInterface
 // ---------------------------------------------------------------------------
 
-describe("emitInterface", () => {
+describe("TypeEmitter.emitInterface", () => {
   describe("basic field emission", () => {
     it("emits required fields with their types", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { name: string; age: number }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(output).toContain("export interface AdminCreate")
       expect(output).toContain("name: string")
@@ -40,8 +45,13 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { name: string; description?: string }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(output).toContain("description?: string")
     })
@@ -50,8 +60,13 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { title: string | null }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(output).toContain("title: string | null")
     })
@@ -60,16 +75,28 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { tags: string[] }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(output).toContain("tags: string[]")
     })
 
     it("emits an empty interface when the type has no properties", () => {
-      const { checker, getType } = createSingleFileProgram(`interface Shape {}`)
-      const tracker = createImportTracker()
-      const output = emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const { checker, getType } = createSingleFileProgram(
+        `interface Shape {}`
+      )
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(output).toContain("export interface AdminCreate")
       expect(output).not.toContain(":")
@@ -81,9 +108,9 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { q?: string }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(
-        checker,
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
         "AdminListParams",
         makeResolved(getType("Shape"), { hasFindParams: true }),
         tracker
@@ -97,9 +124,9 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { q?: string }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(
-        checker,
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
         "AdminFilters",
         makeResolved(getType("Shape"), { hasBaseFilterable: true }),
         tracker
@@ -113,11 +140,14 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { q?: string }`
       )
-      const tracker = createImportTracker()
-      const output = emitInterface(
-        checker,
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      const output = emitter.emitInterface(
         "AdminListFilters",
-        makeResolved(getType("Shape"), { hasFindParams: true, hasBaseFilterable: true }),
+        makeResolved(getType("Shape"), {
+          hasFindParams: true,
+          hasBaseFilterable: true,
+        }),
         tracker
       )
 
@@ -131,8 +161,13 @@ describe("emitInterface", () => {
       const { checker, getType } = createSingleFileProgram(
         `interface Shape { name: string }`
       )
-      const tracker = createImportTracker()
-      emitInterface(checker, "AdminCreate", makeResolved(getType("Shape")), tracker)
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      emitter.emitInterface(
+        "AdminCreate",
+        makeResolved(getType("Shape")),
+        tracker
+      )
 
       expect(tracker.needsFindParams).toBe(false)
       expect(tracker.needsBaseFilterable).toBe(false)
@@ -140,17 +175,31 @@ describe("emitInterface", () => {
     })
 
     it("sets needsFindParams when hasFindParams is true", () => {
-      const { checker, getType } = createSingleFileProgram(`interface Shape {}`)
-      const tracker = createImportTracker()
-      emitInterface(checker, "T", makeResolved(getType("Shape"), { hasFindParams: true }), tracker)
+      const { checker, getType } = createSingleFileProgram(
+        `interface Shape {}`
+      )
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      emitter.emitInterface(
+        "T",
+        makeResolved(getType("Shape"), { hasFindParams: true }),
+        tracker
+      )
 
       expect(tracker.needsFindParams).toBe(true)
     })
 
     it("sets needsBaseFilterable when hasBaseFilterable is true", () => {
-      const { checker, getType } = createSingleFileProgram(`interface Shape {}`)
-      const tracker = createImportTracker()
-      emitInterface(checker, "T", makeResolved(getType("Shape"), { hasBaseFilterable: true }), tracker)
+      const { checker, getType } = createSingleFileProgram(
+        `interface Shape {}`
+      )
+      const emitter = new TypeEmitter(checker)
+      const tracker = new ImportTracker()
+      emitter.emitInterface(
+        "T",
+        makeResolved(getType("Shape"), { hasBaseFilterable: true }),
+        tracker
+      )
 
       expect(tracker.needsBaseFilterable).toBe(true)
     })
@@ -158,29 +207,33 @@ describe("emitInterface", () => {
 })
 
 // ---------------------------------------------------------------------------
-// assembleFile
+// TypeEmitter.assembleFile
 // ---------------------------------------------------------------------------
 
-describe("assembleFile", () => {
-  // Use a fixed output path so import resolution is deterministic
-  const outputFile = "/repo/packages/core/types/src/http/product/admin/payloads.ts"
+describe("TypeEmitter.assembleFile", () => {
+  const outputFile =
+    "/repo/packages/core/types/src/http/product/admin/payloads.ts"
 
   it("joins multiple interfaces separated by blank lines", () => {
     const interfaces = [
       { name: "A", code: "export interface A { x: string }" },
       { name: "B", code: "export interface B { y: number }" },
     ]
-    const content = assembleFile(interfaces, createImportTracker(), outputFile)
+    const content = TypeEmitter.assembleFile(
+      interfaces,
+      new ImportTracker(),
+      outputFile
+    )
 
     expect(content).toContain("export interface A")
     expect(content).toContain("export interface B")
   })
 
   it("includes a FindParams import when needsFindParams is true", () => {
-    const tracker = createImportTracker()
+    const tracker = new ImportTracker()
     tracker.needsFindParams = true
 
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T {}" }],
       tracker,
       outputFile
@@ -190,10 +243,10 @@ describe("assembleFile", () => {
   })
 
   it("includes SelectParams in the common import when needsSelectParams is true", () => {
-    const tracker = createImportTracker()
+    const tracker = new ImportTracker()
     tracker.needsSelectParams = true
 
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T {}" }],
       tracker,
       outputFile
@@ -203,11 +256,11 @@ describe("assembleFile", () => {
   })
 
   it("combines FindParams and SelectParams into a single common import", () => {
-    const tracker = createImportTracker()
+    const tracker = new ImportTracker()
     tracker.needsFindParams = true
     tracker.needsSelectParams = true
 
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T {}" }],
       tracker,
       outputFile
@@ -220,10 +273,10 @@ describe("assembleFile", () => {
   })
 
   it("includes a DAL import with BaseFilterable when needsBaseFilterable is true", () => {
-    const tracker = createImportTracker()
+    const tracker = new ImportTracker()
     tracker.needsBaseFilterable = true
 
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T {}" }],
       tracker,
       outputFile
@@ -233,17 +286,16 @@ describe("assembleFile", () => {
   })
 
   it("combines BaseFilterable and OperatorMap into a single DAL import", () => {
-    const tracker = createImportTracker()
+    const tracker = new ImportTracker()
     tracker.needsBaseFilterable = true
     tracker.needsOperatorMap = true
 
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T {}" }],
       tracker,
       outputFile
     )
 
-    // Both should appear in one import statement, not two separate ones
     const importLines = content.split("\n").filter((l) => l.startsWith("import"))
     const dalImport = importLines.find((l) => l.includes("BaseFilterable"))
     expect(dalImport).toBeDefined()
@@ -252,12 +304,14 @@ describe("assembleFile", () => {
   })
 
   it("produces no import lines when no imports are needed", () => {
-    const content = assembleFile(
+    const content = TypeEmitter.assembleFile(
       [{ name: "T", code: "export interface T { x: string }" }],
-      createImportTracker(),
+      new ImportTracker(),
       outputFile
     )
 
-    expect(content.split("\n").filter((l) => l.startsWith("import"))).toHaveLength(0)
+    expect(
+      content.split("\n").filter((l) => l.startsWith("import"))
+    ).toHaveLength(0)
   })
 })

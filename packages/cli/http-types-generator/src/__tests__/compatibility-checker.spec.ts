@@ -1,6 +1,5 @@
 import {
-  checkCompatibility,
-  formatCompatibilityResult,
+  CompatibilityChecker,
   type CheckPair,
   type CompatibilityResult,
 } from "../core/compatibility-checker"
@@ -35,15 +34,16 @@ function runCheck(
     },
   ]
 
-  const results = checkCompatibility({ program, checker, pairs, httpTypeFiles: [httpFile], lenient })
+  const compatChecker = new CompatibilityChecker(program, checker)
+  const results = compatChecker.check(pairs, [httpFile], lenient)
   return results[0]
 }
 
 // ---------------------------------------------------------------------------
-// formatCompatibilityResult
+// CompatibilityChecker.formatResult
 // ---------------------------------------------------------------------------
 
-describe("formatCompatibilityResult", () => {
+describe("CompatibilityChecker.formatResult", () => {
   it("returns empty string for passing results when not verbose", () => {
     const result: CompatibilityResult = {
       httpTypeName: "AdminCreateProduct",
@@ -56,7 +56,7 @@ describe("formatCompatibilityResult", () => {
       typeMismatchFields: [],
       extraFields: [],
     }
-    expect(formatCompatibilityResult(result, false)).toBe("")
+    expect(CompatibilityChecker.formatResult(result, false)).toBe("")
   })
 
   it("shows PASS line for passing results in verbose mode", () => {
@@ -71,8 +71,10 @@ describe("formatCompatibilityResult", () => {
       typeMismatchFields: [],
       extraFields: [],
     }
-    expect(formatCompatibilityResult(result, true)).toContain("PASS")
-    expect(formatCompatibilityResult(result, true)).toContain("AdminCreateProduct")
+    expect(CompatibilityChecker.formatResult(result, true)).toContain("PASS")
+    expect(CompatibilityChecker.formatResult(result, true)).toContain(
+      "AdminCreateProduct"
+    )
   })
 
   it("shows FAIL line with missing fields for failures", () => {
@@ -83,11 +85,13 @@ describe("formatCompatibilityResult", () => {
       validatorFile: "packages/medusa/src/api/admin/customers/validators.ts",
       passed: false,
       typeNotFound: false,
-      missingFields: [{ fieldName: "email", expectedType: "string | null | undefined" }],
+      missingFields: [
+        { fieldName: "email", expectedType: "string | null | undefined" },
+      ],
       typeMismatchFields: [],
       extraFields: [],
     }
-    const output = formatCompatibilityResult(result, false)
+    const output = CompatibilityChecker.formatResult(result, false)
     expect(output).toContain("FAIL")
     expect(output).toContain("AdminUpdateCustomer")
     expect(output).toContain("Missing field: email")
@@ -112,7 +116,7 @@ describe("formatCompatibilityResult", () => {
       ],
       extraFields: [],
     }
-    const output = formatCompatibilityResult(result, false)
+    const output = CompatibilityChecker.formatResult(result, false)
     expect(output).toContain("Type mismatch: status")
     expect(output).toContain("string")
     expect(output).toContain("OrderStatus")
@@ -130,16 +134,20 @@ describe("formatCompatibilityResult", () => {
       typeMismatchFields: [],
       extraFields: [{ fieldName: "legacy_field", actualType: "string" }],
     }
-    expect(formatCompatibilityResult(result, false)).toContain("legacy_field")
-    expect(formatCompatibilityResult(result, true)).toContain("legacy_field")
+    expect(CompatibilityChecker.formatResult(result, false)).toContain(
+      "legacy_field"
+    )
+    expect(CompatibilityChecker.formatResult(result, true)).toContain(
+      "legacy_field"
+    )
   })
 })
 
 // ---------------------------------------------------------------------------
-// checkCompatibility — structural diffing
+// CompatibilityChecker.check — structural diffing
 // ---------------------------------------------------------------------------
 
-describe("checkCompatibility", () => {
+describe("CompatibilityChecker.check", () => {
   describe("passing cases", () => {
     it("passes when Zod type exactly matches the HTTP type", () => {
       const result = runCheck(
@@ -264,7 +272,6 @@ describe("checkCompatibility", () => {
     })
 
     it("passes when Zod type is assignable to HTTP type (subtype)", () => {
-      // literal string is assignable to string
       const result = runCheck(
         `interface ZodShape { status: "active" }`,
         "ZodShape",
@@ -282,7 +289,7 @@ describe("checkCompatibility", () => {
         "ZodShape",
         `export interface HttpType { name?: string }`,
         "HttpType",
-        true // lenient
+        true
       )
       expect(result.passed).toBe(true)
     })
@@ -293,7 +300,7 @@ describe("checkCompatibility", () => {
         "ZodShape",
         `export interface HttpType { count?: number }`,
         "HttpType",
-        true // lenient
+        true
       )
       expect(result.passed).toBe(false)
     })
@@ -327,7 +334,6 @@ describe("checkCompatibility", () => {
         `export interface HttpType { status: "a" | "b" }`,
         "HttpType"
       )
-      // "a"|"b"|"c" is not assignable to "a"|"b" — "c" is not in HTTP's union
       expect(result.passed).toBe(false)
     })
   })
