@@ -102,10 +102,11 @@ jobs:
           node --input-type=module << 'EOF'
             import { readFileSync, appendFileSync } from "fs"
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
             const delimiter = "CLAUDE_PROMPT_EOF"
             appendFileSync(
               process.env.GITHUB_OUTPUT,
-              `CLAUDE_PROMPT<<${delimiter}\n${a.claudePrompt}\n${delimiter}\n`
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
             )
           EOF
 
