@@ -1281,8 +1281,7 @@
       "panel": {
         "title": "İade başlatıldı",
         "description": "Tamamlanması gereken açık bir iade talebi var"
-      },
-      "refundAmount": "İade tutarı"
+      }
     },
     "claims": {
       "create": "Talep Oluştur",
