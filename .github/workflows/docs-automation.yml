@@ -44,7 +44,7 @@ jobs:
 
       - name: Build www packages
         working-directory: www
-        run: yarn build
+        run: yarn build:packages
 
       - name: Install www/utils dependencies
         working-directory: www/utils
