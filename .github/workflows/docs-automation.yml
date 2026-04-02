@@ -38,6 +38,14 @@ jobs:
         with:
           extension: docs-automation
 
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build www packages
+        working-directory: www
+        run: yarn build
+
       - name: Install www/utils dependencies
         working-directory: www/utils
         run: yarn install

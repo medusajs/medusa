@@ -35,6 +35,14 @@ jobs:
         with:
           extension: cloud-docs-automation
 
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build www packages
+        working-directory: www
+        run: yarn build
+
       - name: Install www/utils dependencies
         working-directory: www/utils
         run: yarn install
@@ -110,7 +118,7 @@ jobs:
         if: steps.check.outputs.needs_docs == 'true'
         uses: anthropics/claude-code-base-action@beta
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
           max_turns: 40
