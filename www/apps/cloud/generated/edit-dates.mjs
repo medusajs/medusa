@@ -1,8 +1,8 @@
 export const generatedEditDates = {
   "app/page.mdx": "2026-01-08T09:12:42.756Z",
   "app/organization/page.mdx": "2025-06-12T14:43:20.772Z",
-  "app/projects/page.mdx": "2026-01-08T08:58:12.499Z",
-  "app/environments/page.mdx": "2026-01-07T12:07:20.976Z",
+  "app/projects/page.mdx": "2026-04-02T14:02:58.521Z",
+  "app/environments/page.mdx": "2026-04-02T14:02:30.389Z",
   "app/deployments/page.mdx": "2026-01-07T13:12:29.617Z",
   "app/organizations/page.mdx": "2026-03-27T09:49:54.966Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
@@ -18,7 +18,7 @@ export const generatedEditDates = {
   "app/environments/preview/page.mdx": "2026-02-05T15:06:26.801Z",
   "app/faq/page.mdx": "2026-01-08T08:43:23.224Z",
   "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",
-  "app/usage/page.mdx": "2025-12-17T13:02:15.554Z",
+  "app/usage/page.mdx": "2026-04-02T14:03:31.278Z",
   "app/billing/manage/page.mdx": "2025-10-08T14:40:23.629Z",
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
   "app/sign-up/page.mdx": "2026-03-27T09:49:44.526Z",
@@ -32,5 +32,6 @@ export const generatedEditDates = {
   "app/deployments/access/page.mdx": "2026-01-08T08:52:48.924Z",
   "app/projects/prerequisites/page.mdx": "2026-02-09T14:40:20.415Z",
   "app/storefront/page.mdx": "2026-03-27T09:46:46.272Z",
-  "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z"
+  "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
+  "app/environments/domains/page.mdx": "2026-04-02T14:02:16.583Z"
 }

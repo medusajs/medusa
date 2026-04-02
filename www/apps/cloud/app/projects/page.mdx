@@ -51,17 +51,32 @@ Medusa provides you with the following starters that you can use to quickly set 
 
 Both starters come with a pre-configured Medusa server, admin dashboard, and the Next.js Starter Storefront.
 
-To create a project from either of these starters:
+### One-Click Template Cloning
+
+You can quickly clone a starter template with a single click using the one-click cloning system:
 
 1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
 2. Click the **Clone** button of the starter you want to use.
-3. In the Repository step, authenticate with your GitHub account if you haven't already.
-4. Choose a GitHub organization to clone the starter into in the "Organization" field.
-    - If you don't see your organization, you can click the **Configure accessible organizations** link to manage accessible organizations in GitHub.
-5. In the "Repository name" field, enter a name for your new repository.
-6. Once you're done, click the **Continue** button.
+3. In the modal that opens:
+   - **GitHub Installation**: If you haven't connected your GitHub account yet, you'll be prompted to install the Medusa GitHub App and authenticate.
+   - **Repository Selection**: Choose a GitHub organization to clone the starter into.
+   - **Repository Name**: Enter a name for your new repository. If the name conflicts with an existing repository, you'll be prompted to choose a different name.
+4. Click **Create Repository** to start the cloning process.
 
-The repository will be cloned and you'll move forward to the [Configure step](#configure-project-during-creation).
+The system will automatically:
+- Create a new repository from the template
+- Set up the project structure
+- Initiate the project creation process
+
+You can monitor the progress through different phases:
+- **Creating repository**: The template is being cloned to your GitHub account
+- **Creating project**: Cloud is setting up your project resources
+
+Once complete, you'll automatically move forward to the [Configure step](#configure-project-during-creation).
+
+### Manual Template Setup
+
+If the one-click cloning encounters issues, you can fall back to the traditional project creation flow by manually creating a repository from the template and then [creating a project from an existing application](#2-create-project-from-an-existing-application).
 
 ---
 

@@ -1,0 +1,129 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Custom Domains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to configure custom domains for your environments in Cloud.
+
+## Custom Domains Overview
+
+Cloud allows you to configure custom domains for both your Medusa backend and storefront. This lets you use your own domain names instead of the default Cloud-provided URLs.
+
+There are two types of domain configurations available:
+
+- **Medusa Subdomains**: Configure subdomains for your backend and storefront using Medusa's domain (e.g., `mystore.medusajs.app`)
+- **Custom Domains**: Use your own domain names for both backend and storefront (e.g., `api.mystore.com`, `mystore.com`)
+
+<Note type="warning">
+
+Custom domains are not available for **Free** and **Developer** plans. You need to upgrade to **Launch**, **Scale**, or **Enterprise** plans to use this feature.
+
+</Note>
+
+---
+
+## Configure Medusa Subdomains
+
+Medusa-hosted subdomains allow you to use custom subdomain names while keeping them under the Medusa domain.
+
+To configure Medusa subdomains:
+
+1. Open your project in the Cloud dashboard.
+2. Click on the environment you want to configure.
+3. In the environment settings, navigate to the **Domains** section.
+4. In the **Medusa domains** section:
+   - Enter your desired **Backend subdomain** (e.g., `mystore-api`)
+   - Enter your desired **Storefront subdomain** (e.g., `mystore`)
+5. Click **Save** to apply the changes.
+
+Your backend will be accessible at `{backend-subdomain}.medusajs.app` and your storefront at `{storefront-subdomain}.medusajs.app`.
+
+---
+
+## Configure Custom Domains
+
+Custom domains allow you to use your own domain names for your Medusa backend and storefront.
+
+### Add a Custom Domain
+
+To add a custom domain:
+
+1. Open your project in the Cloud dashboard.
+2. Click on the environment you want to configure.
+3. In the environment settings, navigate to the **Domains** section.
+4. In the **Custom domains** section, click **Add domain**.
+5. Enter your custom domain name (e.g., `api.mystore.com` for backend or `mystore.com` for storefront).
+6. Select whether this domain is for your **Backend** or **Storefront**.
+7. Click **Add** to save the domain.
+
+### DNS Verification
+
+After adding a custom domain, you need to verify that you own the domain by configuring DNS records.
+
+Cloud will provide you with DNS verification instructions that typically include:
+
+- **DNS record type**: Usually a CNAME or A record
+- **Host/Name**: The record name to create in your DNS provider
+- **Value**: The target value for the DNS record
+
+To complete DNS verification:
+
+1. Log in to your DNS provider's dashboard (where you manage your domain).
+2. Create the DNS record as instructed by Cloud.
+3. Wait for DNS propagation (this can take up to 24 hours).
+4. Return to the Cloud dashboard to check the verification status.
+
+The domain status will show as:
+
+- **Pending**: DNS verification is in progress
+- **Configured**: DNS records are set up correctly
+- **Verified**: Domain is fully configured and active
+
+### Backend Custom Domains
+
+<Note type="warning">
+
+Backend custom domains are currently behind a feature flag and may not be available to all users yet.
+
+</Note>
+
+Backend custom domains allow you to use your own domain for your Medusa API endpoints. Once configured, your admin dashboard and API will be accessible through your custom domain.
+
+### Remove a Custom Domain
+
+To remove a custom domain:
+
+1. In the **Custom domains** section, find the domain you want to remove.
+2. Click the remove or delete button next to the domain.
+3. Confirm the removal in the popup dialog.
+
+<Note>
+
+Removing a custom domain will immediately stop routing traffic from that domain to your environment. Make sure to update any applications or services that depend on the domain before removing it.
+
+</Note>
+
+---
+
+## Domain Management Best Practices
+
+When configuring custom domains, consider these best practices:
+
+- **Use descriptive subdomains**: Choose clear subdomain names that indicate their purpose (e.g., `api.mystore.com` for backend, `shop.mystore.com` for storefront).
+- **Plan for multiple environments**: If you have staging and production environments, use different subdomains or domains for each (e.g., `staging-api.mystore.com`, `api.mystore.com`).
+- **Monitor DNS propagation**: DNS changes can take time to propagate. Allow up to 24 hours for full propagation.
+- **Keep records updated**: If you change hosting providers or DNS settings, make sure to update your custom domain configurations in Cloud.
+
+---
+
+## Troubleshooting
+
+If you encounter issues with custom domains:
+
+- **Domain verification fails**: Double-check that your DNS records match exactly what Cloud provided, including any trailing dots or specific formatting.
+- **Domain shows as pending**: DNS propagation can take time. Wait a few hours and check again.
+- **Site not accessible**: Ensure your DNS records are correctly configured and have had time to propagate.
+- **SSL certificate issues**: Cloud automatically provides SSL certificates for verified domains. If you see SSL errors, contact support.
