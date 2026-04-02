@@ -3683,6 +3683,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/http-types-generator@workspace:packages/cli/http-types-generator":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/http-types-generator@workspace:packages/cli/http-types-generator"
+  dependencies:
+    "@types/node": ^20.12.11
+    "@types/pluralize": ^0.0.33
+    chalk: ^4.1.2
+    commander: ^11.0.0
+    glob: 11.1.0
+    pluralize: ^8.0.0
+    prettier: ^2.8.8
+    typescript: ^5.6.2
+  bin:
+    medusa-http-types: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/icons@2.13.5, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"

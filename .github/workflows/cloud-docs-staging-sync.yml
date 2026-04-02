@@ -1,0 +1,39 @@
+name: Sync Cloud Docs Staging Branch
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: cloud-docs-staging-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync docs/cloud-docs-staging with develop
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code origin docs/cloud-docs-staging > /dev/null 2>&1; then
+            git checkout docs/cloud-docs-staging
+            git merge origin/develop -m "chore: sync docs/cloud-docs-staging with develop"
+            git push origin docs/cloud-docs-staging
+            echo "Synced docs/cloud-docs-staging with develop"
+          else
+            echo "Branch docs/cloud-docs-staging does not exist yet — nothing to sync"
+          fi
