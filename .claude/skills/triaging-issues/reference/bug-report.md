@@ -108,7 +108,7 @@ Assign a priority based on impact:
 
 Post a validation comment summarizing the finding, then apply labels.
 
-**Comment template — bug confirmed:**
+**Comment template — bug confirmed (no community label):**
 ```
 I was able to reproduce/confirm this issue. [Brief explanation of what's happening and why.]
 
@@ -117,10 +117,29 @@ I was able to reproduce/confirm this issue. [Brief explanation of what's happeni
 We'll track this for a fix. Thank you for the detailed report!
 ```
 
+**Comment template — bug confirmed with `good-first-issue`:**
+```
+I was able to reproduce/confirm this issue. [Brief explanation of what's happening and why.]
+
+[Optional: point to the relevant code location if found]
+
+This looks like a good opportunity for a community contribution — the fix should be relatively straightforward. We'd welcome a PR if you or anyone else would like to take a stab at it!
+```
+
+**Comment template — bug confirmed with `help-wanted`:**
+```
+I was able to reproduce/confirm this issue. [Brief explanation of what's happening and why.]
+
+[Optional: point to the relevant code location if found]
+
+The fix may be a bit involved, but we'd welcome community contributions on this one if anyone wants to dig in!
+```
+
 **Label assignment:**
 
 | Condition | Labels to add |
 |-----------|---------------|
+| Bug confirmed (always) | `type: bug` |
 | Priority is `critical` or `high` | `requires-team` |
 | Claude couldn't clearly identify root cause despite sufficient details | `requires-team` |
 | Issue is WWW-related (plugin not featured, etc.) | `requires-team` |
@@ -132,4 +151,4 @@ We'll track this for a fix. Thank you for the detailed report!
 bash scripts/labels.sh <issue_number> add <label>
 ```
 
-> **Note:** `good-first-issue` and `help-wanted` are mutually exclusive. Only add one based on estimated fix complexity.
+> **Note:** `good-first-issue` and `help-wanted` are mutually exclusive. Only add one based on estimated fix complexity. Always add `type: bug` when the bug is confirmed.
