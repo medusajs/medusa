@@ -50,6 +50,8 @@ jobs:
 
             /triaging-issues ${{ github.event.issue.number }} "${{ github.event.issue.title }}" "${{ github.event.issue.body }}" "${{ github.event.issue.user.login }}"
 
+          show_full_output: "true"
+
           claude_args: >-
             --allowedTools
             "Bash(bash scripts/get_issue.sh:*),
@@ -60,4 +62,5 @@ jobs:
             Bash(bash scripts/close_issue.sh:*),
             Bash(bash scripts/convert_to_discussion.sh:*),
             Bash(bash scripts/search_issues.sh:*),
+            Bash(gh issue:*),
             Bash(gh search issues:*)"
