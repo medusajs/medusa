@@ -19,19 +19,39 @@ bash scripts/labels.sh <issue_number> add feedback
 
 ## Vague Issues
 
-Add a comment and close the issue. Keep the tone friendly and invite the user to reopen with more details.
+First, assess whether the issue has a **discernible intent** even if details are missing.
 
-**Comment template:**
+**Does it hint at a bug, installation problem, error, or usage question?**
+- "I keep running into errors", "this isn't working", "I'm having trouble with X" — these suggest a real problem even without details.
+- In these cases: **ask for more information and add `requires-more`**. Do NOT close.
+
+**Comment template — vague but has intent:**
 ```
-Thanks for opening this issue! Unfortunately, there isn't enough information here for us to understand or investigate the problem.
+Thanks for opening this issue! It looks like you're running into a problem, but we need a bit more information to help investigate.
 
-We're going to close this for now, but you're welcome to reopen it with more details, such as:
-- What you're trying to do
-- What's going wrong
-- Steps to reproduce
-- Any error messages or logs
+Could you share:
+- [ ] What you're trying to do
+- [ ] What's going wrong (error messages, logs, unexpected behavior)
+- [ ] Steps to reproduce
+- [ ] Medusa version and Node.js version
 
-We're happy to help once we have more context!
+We're happy to look into it once we have more context!
+```
+
+```bash
+bash scripts/labels.sh <issue_number> add requires-more
+```
+
+---
+
+**Is the body completely empty, a single word, or genuinely incomprehensible with no discernible intent?**
+- In these cases: add a comment and close.
+
+**Comment template — truly empty/incomprehensible:**
+```
+Thanks for opening this issue! Unfortunately, there isn't enough information here for us to understand what you're running into.
+
+Feel free to reopen it with more details — such as what you're trying to do, what's going wrong, and any error messages or logs. We're happy to help once we have more context!
 ```
 
 ```bash
