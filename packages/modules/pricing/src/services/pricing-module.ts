@@ -466,7 +466,7 @@ export default class PricingModuleService
     const preferenceContext = Object.entries(
       pricingContext.context ?? {}
     ).filter(([key, val]) => {
-      return key === "region_id" || key === "currency_code"
+      return ["region_id", "currency_code", "sales_channel_id"].includes(key)
     })
     let pricingPreferences: InferEntityType<typeof PricePreference>[] = []
     if (preferenceContext.length) {
@@ -508,7 +508,7 @@ export default class PricingModuleService
           priceRulesPriceMap.get(calculatedPrice.id),
           pricingPreferences,
           calculatedPrice.currency_code!,
-          pricingContext.context?.region_id as string
+          pricingContext
         ),
         calculated_amount: isPresent(calculatedPrice?.amount)
           ? parseFloat(calculatedPrice?.amount as string)
@@ -521,7 +521,7 @@ export default class PricingModuleService
               priceRulesPriceMap.get(originalPrice.id),
               pricingPreferences,
               originalPrice.currency_code || calculatedPrice.currency_code!,
-              pricingContext.context?.region_id as string
+              pricingContext
             )
           : false,
         original_amount: isPresent(originalPrice?.amount)
@@ -1782,10 +1782,17 @@ const isTaxInclusive = (
   priceRules: InferEntityType<typeof PriceRule>[],
   preferences: InferEntityType<typeof PricePreference>[],
   currencyCode: string,
-  regionId?: string
+  pricingContext: PricingContext
 ) => {
+  const regionId = pricingContext.context?.region_id as string
+  const salesChannelId = pricingContext.context?.sales_channel_id as string
+
   const regionRule = priceRules?.find(
     (rule) => rule.attribute === "region_id" && rule.value === regionId
+  )
+
+  const salesChannelPreference = preferences.find(
+    (p) => p.attribute === "sales_channel_id" && p.value === salesChannelId
   )
 
   const regionPreference = preferences.find(
@@ -1795,6 +1802,10 @@ const isTaxInclusive = (
   const currencyPreference = preferences.find(
     (p) => p.attribute === "currency_code" && p.value === currencyCode
   )
+
+  if (salesChannelPreference) {
+    return salesChannelPreference.is_tax_inclusive
+  }
 
   if (regionRule && regionPreference) {
     return regionPreference.is_tax_inclusive
