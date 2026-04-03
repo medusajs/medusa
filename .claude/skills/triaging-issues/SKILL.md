@@ -104,6 +104,7 @@ Load the reference file for the assigned category and follow the detailed flow:
 
 | Label | When to apply |
 |-------|---------------|
+| `type: bug` | Bug is confirmed — always apply when closing the triage on a valid bug report |
 | `requires-more` | Issue lacks details needed to validate or reproduce |
 | `requires-team` | Critical/high priority, or needs team expertise; cannot be resolved without team review |
 | `good-first-issue` | Bug is confirmed, fix is straightforward — encourages community contribution |
