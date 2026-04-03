@@ -6,6 +6,12 @@ on:
       - develop
     paths:
       - "packages/**"
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to analyze and generate docs for"
+        required: true
+        type: string
 
 concurrency:
   group: docs-release-staging
@@ -13,7 +19,7 @@ concurrency:
 
 jobs:
   docs-automation:
-    if: ${{ !contains(github.event.head_commit.message, 'Version Packages') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Version Packages') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -57,7 +63,7 @@ jobs:
       - name: Analyze commit diff
         id: analyze
         working-directory: www/utils/packages/docs-automator
-        run: yarn analyze --commit-sha ${{ github.sha }} --output /tmp/analysis.json
+        run: yarn analyze --commit-sha ${{ inputs.commit_sha || github.sha }} --output /tmp/analysis.json
         env:
           MONOREPO_ROOT_PATH: ${{ github.workspace }}
         continue-on-error: true
@@ -174,18 +180,17 @@ jobs:
       - name: Commit documentation changes
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         run: |
-          git commit -m "chore(docs): automated documentation update for ${{ github.sha }}"
+          git commit -m "chore(docs): automated documentation update for ${{ inputs.commit_sha || github.sha }}"
 
       - name: Push release docs branch
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         run: git push origin docs/release-docs-staging
 
-      - name: Build PR body
-        id: pr-body
+      - name: Create or update Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
-          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
           REPO: ${{ github.repository }}
         run: |
           node --input-type=module << 'EOF'
@@ -234,24 +239,16 @@ jobs:
             writeFileSync("/tmp/pr-body.md", body)
           EOF
 
-      - name: Read PR body
-        id: pr-body-content
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          {
-            echo 'BODY<<PR_BODY_EOF'
-            cat /tmp/pr-body.md
-            printf '\n'
-            echo 'PR_BODY_EOF'
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Create or update Pull Request
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.REFERENCE_PAT }}
-          base: develop
-          branch: docs/release-docs-staging
-          title: "chore(docs): doc changes for next release (automated)"
-          labels: "type: chore"
-          body: ${{ steps.pr-body-content.outputs.BODY }}
+          PR_NUMBER=$(gh pr view docs/release-docs-staging --repo "$REPO" --json number --jq '.number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr edit "$PR_NUMBER" --repo "$REPO" \
+              --title "chore(docs): doc changes for next release (automated)" \
+              --body-file /tmp/pr-body.md
+          else
+            gh pr create --repo "$REPO" \
+              --base develop \
+              --head docs/release-docs-staging \
+              --title "chore(docs): doc changes for next release (automated)" \
+              --label "type: chore" \
+              --body-file /tmp/pr-body.md
+          fi
