@@ -14823,7 +14823,7 @@ const criticalWorkflow = createWorkflow(
       eventName: "payment.processed",
       data: { id: "123" },
       options: {
-        priority: EventPriority.CRITICAL
+        priority: EventPriority.CRITICAL,
       },
     })
   }
@@ -15020,11 +15020,11 @@ export const handlePaymentWorkflow = createWorkflow(
     emitEventStep({
       eventName: "payment.processed",
       data: {
-        id: input.paymentId
+        id: input.paymentId,
       },
       options: {
-        priority: EventPriority.CRITICAL
-      }
+        priority: EventPriority.CRITICAL,
+      },
     })
 
     return new WorkflowResponse({ success: true })
@@ -24614,7 +24614,7 @@ export const chargeCustomerStep = createStep(
 
 In this example, the `chargeCustomerStep` step acquires a lock on the order using the `order_id` as the lock key. After performing the operation, it releases the lock.
 
-The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](undefined/resources/infrastructure-modules/locking/redis) will wait five seconds before timing out.
+The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](undefined/resources/infrastructure-modules/locking/redis) will wait five seconds before timing out by default, with exponential backoff retry intervals.
 
 ### Locking Module Service API
 
@@ -49312,6 +49312,8 @@ The Redis Locking Module Provider uses Redis to manage locks across multiple ins
 This provider is recommended for production environments where Medusa is running in a multi-instance setup.
 
 Our Cloud offering automatically provisions a Redis instance and configures the Redis Locking Module Provider for you. Learn more in the [Redis](undefined/cloud/redis) Cloud documentation.
+
+Starting in [Medusa v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6), the Redis Locking Module Provider uses exponential backoff for retry logic, improving performance in high-contention scenarios. The default retry intervals have also been updated for better efficiency.
 
 ***
 
@@ -96438,7 +96440,7 @@ Start by adding the necessary imports at the top of `src/admin/routes/reviews/pa
 import { 
   createDataTableCommandHelper, 
   DataTableRowSelectionState, 
-  toast
+  toast,
 } from "@medusajs/ui"
 ```
 
