@@ -50,6 +50,24 @@ bash scripts/get_comments.sh <issue_number> # always — comments are never pass
 bash scripts/get_labels.sh <issue_number>   # always — current labels are never passed as arguments
 ```
 
+### Step 0.5 — Possible Early Exit for Comment-Only Events
+
+**Only applies when triggered by a new comment (not a new issue).**
+
+After fetching context, read the latest comment and assess whether it warrants triage action. **Exit immediately (do nothing)** if the comment is:
+
+- A reply between users continuing an existing conversation
+- A general discussion or back-and-forth that doesn't change the nature of the issue
+- A "thank you", acknowledgement, or similar low-signal message
+- A comment from a bot or automated system
+
+**Only proceed with triage** if the comment:
+- Provides new information that meaningfully changes the issue's category or validity (e.g., a reproduction that confirms a bug, or details that resolve a `requires-more` state)
+- Explicitly asks for help or re-opens a question that needs a response
+- Indicates the issue was reopened and needs re-evaluation
+
+When in doubt, **do nothing** — it's better to skip unnecessary triage than to post redundant comments.
+
 ### Step 1 — Check for Duplicates
 
 Before any categorization, search for existing issues that cover the same problem:
@@ -111,12 +129,34 @@ Load the reference file for the assigned category and follow the detailed flow:
 | `help-wanted` | Bug is confirmed, fix is complex — encourages community contribution |
 | `feedback` | General feedback that team will review later |
 
+## Comment Writing Guidelines
+
+All comments posted on issues must follow these principles:
+
+**Tone — supportive and understanding:**
+- Acknowledge the user's effort in reporting and assume good intent
+- Validate their experience even when the issue turns out to be expected behavior or user error
+- Never be dismissive; users reporting bugs or asking for help deserve a respectful, helpful response
+- Use "we" when referring to the Medusa team — the bot speaks on behalf of the team
+
+**Formatting — clear and readable:**
+- Use markdown headings (`##`) to separate distinct sections in longer comments
+- Use bullet lists or numbered steps for multi-part information
+- Use inline code formatting for code references, file paths, and labels
+- Keep paragraphs short; avoid walls of text
+
+**Examples of what to avoid:**
+- "This is not a bug." → too blunt; explain *why* and invite follow-up
+- Long unformatted blocks of text → break into sections with headings
+- Generic filler phrases ("Great question!") → skip the preamble, get to the point
+
 ## Documentation Links
 
 Whenever linking to Medusa docs in a comment, load `reference/doc-links.md` to construct the correct URL. Doc file paths in `www/apps/` do not map directly to URLs — each project has its own prefix and rules.
 
 ## Common Mistakes
 
+- [ ] Triaging a comment that is just an ongoing user conversation — exit early instead
 - [ ] Categorizing based on comments instead of the original issue body
 - [ ] Closing an issue without leaving a comment explaining why
 - [ ] Adding `good-first-issue` or `help-wanted` before confirming the bug in the codebase
