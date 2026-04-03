@@ -2,6 +2,21 @@
 
 Support issues are requests for help implementing something or understanding how Medusa works — not bug reports or feature requests.
 
+## Step 1 — Check if It's Actually a Bug
+
+Before treating the issue as a support request, assess whether the user's problem is caused by something broken in Medusa rather than a misunderstanding or usage question.
+
+Signs it may be a bug:
+- The user followed the docs correctly but got an unexpected error or result
+- The behavior they describe contradicts what the code should do
+- They provide a reproduction that demonstrates something not working as designed
+
+**If it looks like a bug:** stop this flow and follow `reference/bug-report.md` instead.
+
+**If it's clearly a support/usage question:** continue below.
+
+---
+
 ## Cloud Platform Exception
 
 **Before anything else:** check if the user mentions the issue is on the **Medusa Cloud platform** (e.g., cloud deployment, cloud dashboard, cloud-specific behavior).
