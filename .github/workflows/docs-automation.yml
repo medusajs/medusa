@@ -215,8 +215,9 @@ jobs:
 
             let existingBody = ""
             try {
+              const owner = repo.split("/")[0]
               const out = execSync(
-                `gh pr view docs/release-docs-staging --repo ${repo} --json body --jq '.body'`,
+                `gh api "repos/${repo}/pulls?head=${owner}:docs/release-docs-staging&state=open" --jq '.[0].body'`,
                 { encoding: "utf8" }
               ).trim()
               if (out !== "null" && out !== "") existingBody = out
@@ -239,7 +240,8 @@ jobs:
             writeFileSync("/tmp/pr-body.md", body)
           EOF
 
-          PR_NUMBER=$(gh pr view docs/release-docs-staging --repo "$REPO" --json number --jq '.number' 2>/dev/null || echo "")
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:docs/release-docs-staging&state=open" --jq '.[0].number' 2>/dev/null || echo "")
           if [ -n "$PR_NUMBER" ]; then
             gh pr edit "$PR_NUMBER" --repo "$REPO" \
               --title "chore(docs): doc changes for next release (automated)" \
