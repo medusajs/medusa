@@ -6012,7 +6012,7 @@ export const generatedEditDates = {
   "app/references-overview/page.mdx": "2025-03-10T12:55:49.803Z",
   "app/infrastructure-modules/locking/page.mdx": "2025-11-26T11:45:10.290Z",
   "app/infrastructure-modules/locking/postgres/page.mdx": "2026-01-12T12:25:40.540Z",
-  "app/infrastructure-modules/locking/redis/page.mdx": "2025-06-24T08:50:10.115Z",
+  "app/infrastructure-modules/locking/redis/page.mdx": "2026-04-03T08:53:26.702Z",
   "references/locking/interfaces/locking.ILockingModule/page.mdx": "2025-10-21T08:10:48.921Z",
   "references/locking/interfaces/locking.ILockingProvider/page.mdx": "2025-10-21T08:10:48.914Z",
   "references/modules/locking/page.mdx": "2025-03-12T12:28:30.419Z",
