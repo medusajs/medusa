@@ -49,7 +49,7 @@ Thanks for pointing this out! You're right that the documentation [is missing / 
 
 [Include the fix location guidance below if it's non-obvious to contributors]
 
-This is a great opportunity for a community contribution — we'd welcome a PR!
+This is a great opportunity for a community contribution — we'd welcome a PR! Check out our [docs contribution guidelines](https://docs.medusajs.com/learn/resources/contribution-guidelines/docs) to get started.
 ```
 
 **Fix location wording by doc type:**
