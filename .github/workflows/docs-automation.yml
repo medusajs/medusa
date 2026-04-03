@@ -215,8 +215,9 @@ jobs:
 
             let existingBody = ""
             try {
+              const owner = repo.split("/")[0]
               const out = execSync(
-                `gh pr view docs/release-docs-staging --repo ${repo} --json body --jq '.body'`,
+                `gh api "repos/${repo}/pulls?head=${owner}:docs/release-docs-staging&state=open" --jq '.[0].body'`,
                 { encoding: "utf8" }
               ).trim()
               if (out !== "null" && out !== "") existingBody = out
@@ -239,16 +240,22 @@ jobs:
             writeFileSync("/tmp/pr-body.md", body)
           EOF
 
-          PR_NUMBER=$(gh pr view docs/release-docs-staging --repo "$REPO" --json number --jq '.number' 2>/dev/null || echo "")
-          if [ -n "$PR_NUMBER" ]; then
-            gh pr edit "$PR_NUMBER" --repo "$REPO" \
-              --title "chore(docs): doc changes for next release (automated)" \
-              --body-file /tmp/pr-body.md
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:docs/release-docs-staging&state=open" --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --method PATCH \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)"
           else
-            gh pr create --repo "$REPO" \
-              --base develop \
-              --head docs/release-docs-staging \
-              --title "chore(docs): doc changes for next release (automated)" \
-              --label "type: chore" \
-              --body-file /tmp/pr-body.md
+            PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+              --method POST \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)" \
+              --field base="develop" \
+              --field head="docs/release-docs-staging" \
+              --jq '.number')
+            gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+              --method POST \
+              --field 'labels[]=type: chore'
           fi
