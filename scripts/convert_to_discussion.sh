@@ -43,19 +43,16 @@ if [[ -z "$ISSUE_NODE_ID" ]]; then
   exit 1
 fi
 
-# Get the repo node ID and all discussion categories
+# Get all discussion categories
 REPO_DATA=$(gh api graphql -f query='
   query($owner: String!, $repo: String!) {
     repository(owner: $owner, name: $repo) {
-      id
       discussionCategories(first: 25) {
         nodes { id name }
       }
     }
   }
 ' -f owner="${REPO%%/*}" -f repo="${REPO##*/}")
-
-REPO_NODE_ID=$(echo "$REPO_DATA" | jq -r '.data.repository.id')
 
 # Resolve category: requested name → "General" → first available
 if [[ -n "$CATEGORY_NAME" ]]; then
@@ -83,13 +80,13 @@ fi
 
 # Convert the issue to a discussion via GraphQL mutation
 gh api graphql -f query='
-  mutation($issueId: ID!, $repoId: ID!, $categoryId: ID!) {
+  mutation($issueId: ID!, $categoryId: ID!) {
     convertIssueToDiscussion(
-      input: { issueId: $issueId, repositoryId: $repoId, categoryId: $categoryId }
+      input: { issueId: $issueId, categoryId: $categoryId }
     ) {
       discussion { url }
     }
   }
-' -f issueId="$ISSUE_NODE_ID" -f repoId="$REPO_NODE_ID" -f categoryId="$CATEGORY_ID"
+' -f issueId="$ISSUE_NODE_ID" -f categoryId="$CATEGORY_ID"
 
 echo "Converted issue #$ISSUE to a discussion"
