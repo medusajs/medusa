@@ -484,17 +484,19 @@ export default class ProductModuleService
     if (isString(idOrSelector)) {
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const variants = await this.productVariantService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = variants.map((variant) => ({
-        id: variant.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductVariant>[] = []
+  do {
+    batch = await this.productVariantService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((variant) => ({ id: variant.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const variants = await this.updateVariants_(normalizedInput, sharedContext)
 
@@ -682,17 +684,19 @@ export default class ProductModuleService
       await this.productTagService_.retrieve(idOrSelector, {}, sharedContext)
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const tags = await this.productTagService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = tags.map((tag) => ({
-        id: tag.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductTag>[] = []
+  do {
+    batch = await this.productTagService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((tag) => ({ id: tag.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const tags = await this.productTagService_.update(
       normalizedInput,
@@ -816,17 +820,19 @@ export default class ProductModuleService
       await this.productTypeService_.retrieve(idOrSelector, {}, sharedContext)
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const types = await this.productTypeService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = types.map((type) => ({
-        id: type.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductType>[] = []
+  do {
+    batch = await this.productTypeService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((type) => ({ id: type.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const types = await this.productTypeService_.update(
       normalizedInput,
@@ -967,17 +973,19 @@ export default class ProductModuleService
       await this.productOptionService_.retrieve(idOrSelector, {}, sharedContext)
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const options = await this.productOptionService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = options.map((option) => ({
-        id: option.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductOption>[] = []
+  do {
+    batch = await this.productOptionService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((option) => ({ id: option.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const options = await this.updateOptions_(normalizedInput, sharedContext)
 
@@ -1207,17 +1215,19 @@ export default class ProductModuleService
       )
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const collections = await this.productCollectionService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = collections.map((collection) => ({
-        id: collection.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductCollection>[] = []
+  do {
+    batch = await this.productCollectionService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((collection) => ({ id: collection.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const collections = await this.updateCollections_(
       normalizedInput,
@@ -1493,17 +1503,19 @@ export default class ProductModuleService
       )
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const categories = await this.productCategoryService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = categories.map((type) => ({
-        id: type.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductCategory>[] = []
+  do {
+    batch = await this.productCategoryService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((category) => ({ id: category.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const categories = await this.productCategoryService_.update(
       normalizedInput,
@@ -1610,17 +1622,24 @@ export default class ProductModuleService
 
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const products = await this.productService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
+  // Batch list() calls to avoid unbounded memory consumption
+  // when a broad selector is passed (e.g. { status: "active" })
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof Product>[] = []
 
-      normalizedInput = products.map((product) => ({
-        id: product.id,
-        ...data,
-      }))
-    }
+  do {
+    batch = await this.productService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(
+      ...batch.map((product) => ({ id: product.id, ...data }))
+    )
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const products = await this.updateProducts_(normalizedInput, sharedContext)
 
@@ -1815,17 +1834,19 @@ export default class ProductModuleService
 
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const productOptionValues = await this.productOptionValueService_.list(
-        idOrSelector,
-        {},
-        sharedContext
-      )
-
-      normalizedInput = productOptionValues.map((product) => ({
-        id: product.id,
-        ...data,
-      }))
-    }
+  const BATCH_SIZE = 500
+  let skip = 0
+  let batch: InferEntityType<typeof ProductOptionValue>[] = []
+  do {
+    batch = await this.productOptionValueService_.list(
+      idOrSelector,
+      { take: BATCH_SIZE, skip },
+      sharedContext
+    )
+    normalizedInput.push(...batch.map((val) => ({ id: val.id, ...data })))
+    skip += BATCH_SIZE
+  } while (batch.length === BATCH_SIZE)
+}
 
     const productOptionValues = await this.updateProductOptionValues_(
       normalizedInput,

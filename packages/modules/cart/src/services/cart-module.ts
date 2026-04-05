@@ -415,21 +415,29 @@ export default class CartModuleService
           : {}),
       }))
     } else {
-      const carts = await this.cartService_.list(
-        { ...dataOrIdOrSelector },
-        { select: ["id"] },
-        sharedContext
-      )
+      // Batch list() calls to avoid unbounded memory consumption
+      // when a broad selector is passed
+      const BATCH_SIZE = 500
+      let skip = 0
+      let batch: InferEntityType<typeof Cart>[] = []
 
-      toUpdate = carts.map((cart) => {
-        return {
-          ...data,
-          id: cart.id,
-          ...(data?.currency_code
-            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
-            : {}),
-        }
-      })
+      do {
+        batch = await this.cartService_.list(
+          { ...dataOrIdOrSelector },
+          { select: ["id"], take: BATCH_SIZE, skip },
+          sharedContext
+        )
+        toUpdate.push(
+          ...batch.map((cart) => ({
+            ...data,
+            id: cart.id,
+            ...(data?.currency_code
+              ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+              : {}),
+          }))
+        )
+        skip += BATCH_SIZE
+      } while (batch.length === BATCH_SIZE)
     }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
