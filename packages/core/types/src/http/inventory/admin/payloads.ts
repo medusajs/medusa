@@ -61,7 +61,7 @@ export interface AdminCreateInventoryItem {
   location_levels?: AdminBatchCreateInventoryItemLocationLevels[]
 }
 
-export interface AdminUpdateInventoryItem extends AdminCreateInventoryItem {}
+export interface AdminUpdateInventoryItem extends Omit<AdminCreateInventoryItem, "location_levels"> {}
 
 export interface AdminUpdateInventoryLevel {
   /**

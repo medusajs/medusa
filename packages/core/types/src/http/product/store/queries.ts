@@ -8,8 +8,8 @@ import {
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
 export interface StoreProductVariantParams extends BaseProductVariantParams {
   sku?: string | string[]
-  manage_inventory?: string
-  allow_backorder?: string
+  manage_inventory?: boolean
+  allow_backorder?: boolean
   product_id?: string | string[]
 }
 export interface StoreProductPricingContext {

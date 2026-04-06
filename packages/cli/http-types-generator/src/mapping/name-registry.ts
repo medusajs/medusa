@@ -112,7 +112,6 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   StoreProductTypesParams: "StoreProductTypeListParams",
 
   // ----------- product-variants -----------
-  StoreGetProductVariantsParams: "StoreProductVariantParams",
   // StoreProductVariantParams (from store/product-variants) is a single-item
   // select params with context fields; the list params are validated via
   // StoreGetProductVariantsParams above.
