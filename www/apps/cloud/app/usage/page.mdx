@@ -26,7 +26,13 @@ To view your organization's usage:
 3. Choose "Organization Settings" from the dropdown.
 4. Change to the "Usage" settings from the sidebar.
 
-In the Usage settings, you'll find a table with the list of resources your organization is using, along with their current usage levels and limits based on your plan.
+In the Usage settings, you'll find a table with the list of resources your organization is using, along with their current usage levels and limits based on your plan. The table includes the following columns:
+
+- **Resource**: The name of the resource (such as data transfer, compute, storage, etc.)
+- **Usage**: Your current usage for the resource
+- **Allowance**: Your plan's included allowance for the resource (only displayed when viewing a single billing period)
+- **Flex**: Additional usage beyond your plan limits
+- **Charge**: Cost associated with Flex usage
 
 ![Usage table in the Usage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755264824/Cloud/CleanShot_2025-08-15_at_16.33.30_2x_cbkure.png)
 
@@ -47,7 +53,7 @@ You can view additional Flex Usage for each resource and its charge in the [usag
 - **Flex**: The amount of usage beyond your plan limits. For example, the additional data transfer amount.
 - **Charge**: The cost associated with the Flex Usage.
 
-If you have Flex Usage, you can also see the flex charges visualized in the chart above the table.
+If you have Flex Usage, you can also see the flex charges visualized in the chart above the table. Additionally, a progress indicator (donut chart) showing resource usage against allowances is displayed only when allowance data is available for the selected period.
 
 ### Usage Chart Per Resource
 
@@ -92,8 +98,14 @@ The JSON file will be downloaded automatically.
 
 By default, the usage table and Flex Usage chart show data for the current billing cycle on Cloud.
 
-To view usage for a different billing cycle, click on the "Current billing cycle" dropdown at the top of the Usage settings. You can then select the previous billing cycle, or a custom date range.
+To view usage for a different billing period, click on the time range dropdown at the top of the Usage settings. The dropdown displays all available billing periods individually, formatted as 'MMM d, yyyy - MMM d, yyyy' (for example, "Jan 1, 2025 - Jan 31, 2025"). The current billing period is selected by default.
 
-After making your selection, the usage table will update automatically after a few seconds.
+The dropdown is scrollable with a fixed height to accommodate the full list of available billing periods. After making your selection, the usage table will update automatically after a few seconds.
+
+<Note>
+
+When viewing a single billing period, you'll see allowance information for each resource. When viewing data across multiple periods, allowance information is not displayed since allowances don't sum across multiple periods.
+
+</Note>
 
 ![Usage table updated for different billing cycle](https://res.cloudinary.com/dza7lstvk/image/upload/v1755266925/Cloud/CleanShot_2025-08-15_at_17.07.47_2x_ieqxwi.png)
