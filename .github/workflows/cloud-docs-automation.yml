@@ -5,9 +5,6 @@ on:
     types:
       - cloud-deployment
 
-concurrency:
-  group: cloud-docs-staging
-  cancel-in-progress: false
 
 jobs:
   cloud-docs-automation:
@@ -87,19 +84,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Checkout or create cloud docs branch
-        if: steps.check.outputs.needs_docs == 'true'
-        run: |
-          git fetch origin
-          if git ls-remote --exit-code origin docs/cloud-docs-staging > /dev/null 2>&1; then
-            git checkout docs/cloud-docs-staging
-            git merge origin/develop -m "chore: sync docs/cloud-docs-staging with develop"
-            echo "Checked out and synced existing branch docs/cloud-docs-staging"
-          else
-            git checkout -b docs/cloud-docs-staging
-            echo "Created new branch docs/cloud-docs-staging"
-          fi
-
       - name: Extract Claude prompt
         id: extract-prompt
         if: steps.check.outputs.needs_docs == 'true'
@@ -107,10 +91,11 @@ jobs:
           node --input-type=module << 'EOF'
             import { readFileSync, appendFileSync } from "fs"
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
             const delimiter = "CLAUDE_PROMPT_EOF"
             appendFileSync(
               process.env.GITHUB_OUTPUT,
-              `CLAUDE_PROMPT<<${delimiter}\n${a.claudePrompt}\n${delimiter}\n`
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
             )
           EOF
 
@@ -135,26 +120,18 @@ jobs:
           echo "Running lint:content for cloud..."
           (cd "www/apps/cloud" && yarn lint:content) || true
 
-      - name: Stage documentation changes
+      - name: Check for documentation changes
         id: changes
         if: steps.check.outputs.needs_docs == 'true'
         run: |
-          git add www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs
-          if git diff --staged --quiet; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No documentation changes to commit."
-          else
+          CHANGES=$(git diff --name-only -- www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs \
+            | grep -E '\.(mdx|json|mjs)$' || true)
+          if [ -n "$CHANGES" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No documentation changes found."
           fi
-
-      - name: Commit documentation changes
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          git commit -m "chore(docs): automated cloud documentation update"
-
-      - name: Push cloud docs branch
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: git push origin docs/cloud-docs-staging
 
       - name: Build PR body
         id: pr-body
@@ -195,13 +172,19 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, `BODY<<${delimiter}\n${body}\n${delimiter}\n`)
           EOF
 
-      - name: Create or update Pull Request
+      - name: Create Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.REFERENCE_PAT }}
+          commit-message: "chore(docs): automated cloud documentation update"
           base: develop
-          branch: docs/cloud-docs-staging
+          branch: docs/cloud-docs
+          branch-suffix: timestamp
           title: "chore(docs): cloud doc changes (automated)"
           labels: "type: chore"
+          add-paths: |
+            www/apps/cloud/app
+            www/apps/cloud/generated
+            www/apps/cloud/sidebar.mjs
           body: ${{ steps.pr-body.outputs.BODY }}
