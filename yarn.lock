@@ -3490,11 +3490,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/deps@workspace:packages/deps"
   dependencies:
-    "@mikro-orm/cli": 6.4.16
-    "@mikro-orm/core": 6.4.16
-    "@mikro-orm/knex": 6.4.16
-    "@mikro-orm/migrations": 6.4.16
-    "@mikro-orm/postgresql": 6.4.16
+    "@mikro-orm/cli": 6.6.10
+    "@mikro-orm/core": 6.6.10
+    "@mikro-orm/knex": 6.6.10
+    "@mikro-orm/migrations": 6.6.10
+    "@mikro-orm/postgresql": 6.6.10
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation-pg": ^0.52.0
     "@opentelemetry/resources": ^2.0.0
@@ -4313,43 +4313,43 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@mikro-orm/cli@npm:6.4.16":
-  version: 6.4.16
-  resolution: "@mikro-orm/cli@npm:6.4.16"
+"@mikro-orm/cli@npm:6.6.10":
+  version: 6.6.10
+  resolution: "@mikro-orm/cli@npm:6.6.10"
   dependencies:
     "@jercle/yargonaut": 1.1.5
-    "@mikro-orm/core": 6.4.16
-    "@mikro-orm/knex": 6.4.16
-    fs-extra: 11.3.0
+    "@mikro-orm/core": 6.6.10
+    "@mikro-orm/knex": 6.6.10
+    fs-extra: 11.3.3
     tsconfig-paths: 4.2.0
     yargs: 17.7.2
   bin:
-    mikro-orm: ./cli
-    mikro-orm-esm: ./esm
-  checksum: c58cfc6a89a4770671c58e3c40a60c8a38229a74e1722d1fb6c14a8d19a43303aa26557ec6a0000ac1d494270f3cfd98e32e38c69163f6b9cafb7c3ef6804b00
+    mikro-orm: cli
+    mikro-orm-esm: esm
+  checksum: fd473d20b54eeef9e039708aadbbd4c2ee0c193f3ec11c6ea256e2d6f7297dbc8acda3470012b75f6130318dabfc6cc0a466162bbaf214872a9b55ab222d0940
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:6.4.16":
-  version: 6.4.16
-  resolution: "@mikro-orm/core@npm:6.4.16"
+"@mikro-orm/core@npm:6.6.10":
+  version: 6.6.10
+  resolution: "@mikro-orm/core@npm:6.6.10"
   dependencies:
     dataloader: 2.2.3
-    dotenv: 16.5.0
+    dotenv: 17.3.1
     esprima: 4.0.1
-    fs-extra: 11.3.0
+    fs-extra: 11.3.3
     globby: 11.1.0
-    mikro-orm: 6.4.16
+    mikro-orm: 6.6.10
     reflect-metadata: 0.2.2
-  checksum: beeb614134d908674916105326c4846fe80fb9a7adc1251a8b9bd70f4db1115256a1bdaa08107fab1577986bbca46dd24b0ff24d87753925f382d1ef216bea18
+  checksum: 13fc37fa35d96f00ca7f3dc58545befb70ceffa5370cb4eff73e561cbd61c13c3c0e9aa3855e61a92334241a9fe0c8f279ce86969e109b51bd694bf8c1b77bbc
   languageName: node
   linkType: hard
 
-"@mikro-orm/knex@npm:6.4.16":
-  version: 6.4.16
-  resolution: "@mikro-orm/knex@npm:6.4.16"
+"@mikro-orm/knex@npm:6.6.10":
+  version: 6.6.10
+  resolution: "@mikro-orm/knex@npm:6.6.10"
   dependencies:
-    fs-extra: 11.3.0
+    fs-extra: 11.3.3
     knex: 3.1.0
     sqlstring: 2.3.3
   peerDependencies:
@@ -4364,35 +4364,35 @@ __metadata:
       optional: true
     mariadb:
       optional: true
-  checksum: b0584fe3bd79b131512712ec9e31a1b76e272dcff519d5607daebfd5b3dd856116d9aae836c86baa006abc58e0331926aa3bd4ef4bba1a7ced4781d8c6fd3d21
+  checksum: f72ed424491c166ad9691d9c023893f98b932387b761f114085f0ca6b59fe1ed4282dbba704b3224fdd3d2bd6641299d86418faf2e0d98160213b5c40ff3bac1
   languageName: node
   linkType: hard
 
-"@mikro-orm/migrations@npm:6.4.16":
-  version: 6.4.16
-  resolution: "@mikro-orm/migrations@npm:6.4.16"
+"@mikro-orm/migrations@npm:6.6.10":
+  version: 6.6.10
+  resolution: "@mikro-orm/migrations@npm:6.6.10"
   dependencies:
-    "@mikro-orm/knex": 6.4.16
-    fs-extra: 11.3.0
+    "@mikro-orm/knex": 6.6.10
+    fs-extra: 11.3.3
     umzug: 3.8.2
   peerDependencies:
     "@mikro-orm/core": ^6.0.0
-  checksum: 1d5beb2423c20879cffc9c51f035b2f24b963997bea4d69445f1686616686a3bd8d7b34c2081fcb421df24c0f14ee2c51b4ed01299b5c9dbf2af4fc4cbc22de5
+  checksum: 545a8a12cb58ca2791b0bd8fd27327837a32ba42ff6e7f31e92f7969114d1cf6a2928588f8abfbb1846c5fee7b3f9ded0a2b4b2a2ecc1287222411e28ea89dcc
   languageName: node
   linkType: hard
 
-"@mikro-orm/postgresql@npm:6.4.16":
-  version: 6.4.16
-  resolution: "@mikro-orm/postgresql@npm:6.4.16"
+"@mikro-orm/postgresql@npm:6.6.10":
+  version: 6.6.10
+  resolution: "@mikro-orm/postgresql@npm:6.6.10"
   dependencies:
-    "@mikro-orm/knex": 6.4.16
-    pg: 8.16.0
+    "@mikro-orm/knex": 6.6.10
+    pg: 8.19.0
     postgres-array: 3.0.4
     postgres-date: 2.1.0
     postgres-interval: 4.0.2
   peerDependencies:
     "@mikro-orm/core": ^6.0.0
-  checksum: 0d7b6dd04f9c476d445fd31b5544be88d38da9b3c5c3666c2c84c1fb35db55de27a98e23b62ba26528f9056bb28966cc8dc5673418bf4b2da6bf6bfeb6af0264
+  checksum: 0756e14eb75f1b3661e888f9270c54fb0bc841a1485f5b717235e622d322a0355e57442adba78bdbf09f7a3cabbe73c612397d3004e721cffd8cf09033eb38e4
   languageName: node
   linkType: hard
 
@@ -15844,10 +15844,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.5.0":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 5bc94c919fbd955bf0ba44d33922a1e93d1078e64a1db5c30faeded1d996e7a83c55332cb8ea4fae5a9ca4d0be44cbceb95c5811e70f9f095298df09d1997dd9
+"dotenv@npm:17.3.1":
+  version: 17.3.1
+  resolution: "dotenv@npm:17.3.1"
+  checksum: c78e0c2d5a549c751e544cc60e2b95e7cb67e0c551f42e094d161c6b297aa44b630a3c2dcacf5569e529a6c2a6b84e2ab9be8d37b299d425df5a18b81ce4a35f
   languageName: node
   linkType: hard
 
@@ -17479,14 +17479,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:11.3.0":
-  version: 11.3.0
-  resolution: "fs-extra@npm:11.3.0"
+"fs-extra@npm:11.3.3":
+  version: 11.3.3
+  resolution: "fs-extra@npm:11.3.3"
   dependencies:
     graceful-fs: ^4.2.0
     jsonfile: ^6.0.1
     universalify: ^2.0.0
-  checksum: 5f95e996186ff45463059feb115a22fb048bdaf7e487ecee8a8646c78ed8fdca63630e3077d4c16ce677051f5e60d3355a06f3cd61f3ca43f48cc58822a44d0a
+  checksum: 984924ff4104e3e9f351b658a864bf3b354b2c90429f57aec0acd12d92c4e6b762cbacacdffb4e745b280adce882e1f980c485d9f02c453f769ab4e7fc646ce3
   languageName: node
   linkType: hard
 
@@ -21060,10 +21060,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mikro-orm@npm:6.4.16":
-  version: 6.4.16
-  resolution: "mikro-orm@npm:6.4.16"
-  checksum: 6a7d6ad717503433eba0372f890fc66c8f0f80927b40ae8666bc0795006b0a5a089e662a7a5fc121d3e0fbdb1350c1878dc3bee2c1c6bc4028c729b2c4a45f7a
+"mikro-orm@npm:6.6.10":
+  version: 6.6.10
+  resolution: "mikro-orm@npm:6.6.10"
+  checksum: 9358f44ec20ec6e1dcb8189475e7c1f5ea4c059349a0069118f2a1578392e930bab751977d179198d08c9d83b2e6f14e0626818f6be2b24e135932296ec94f34
   languageName: node
   linkType: hard
 
