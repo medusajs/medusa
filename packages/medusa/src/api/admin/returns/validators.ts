@@ -5,9 +5,6 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
-/**
- * @http-type-name AdminGetReturnParams
- */
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -26,9 +23,6 @@ export const AdminGetReturnParams = createSelectParams()
 
 export type AdminGetReturnParamsType = z.infer<typeof AdminGetReturnParams>
 
-/**
- * @http-type-name AdminGetReturnsListParams
- */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,
   offset: 0,

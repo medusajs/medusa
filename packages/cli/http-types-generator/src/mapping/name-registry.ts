@@ -275,7 +275,7 @@ export const DOMAIN_SCOPED_OVERRIDES: Record<string, Record<string, string>> = {
     AdminGetOrdersParams: "AdminExchangeListParams",
   },
   claim: {
-    AdminGetOrdersOrderParams: "AdminClaimActionsParams",
+    AdminGetOrdersOrderParams: "AdminClaimParams",
     AdminGetOrdersParams: "AdminClaimListParams",
   },
   return: {
