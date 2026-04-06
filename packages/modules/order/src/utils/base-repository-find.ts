@@ -1,5 +1,5 @@
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
-import { MikroOrmBaseRepository } from "@medusajs/framework/utils"
+import { MikroOrmBaseRepository, toMikroORMEntity } from "@medusajs/framework/utils"
 import { LoadStrategy } from "@medusajs/framework/mikro-orm/core"
 import { Order, OrderClaim, OrderLineItemAdjustment } from "@models"
 
@@ -100,12 +100,29 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       orderAlias = "o1"
     }
 
-    const defaultVersion = knex.raw(`"${orderAlias}"."version"`)
+    let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
+
+    if (strategy === LoadStrategy.SELECT_IN) {
+      const sql = manager
+        .qb(toMikroORMEntity(Order), "_sub0")
+        .select("version")
+        .where({ id: knex.raw(`"${orderAlias}"."order_id"`) })
+        .getKnexQuery()
+        .toString()
+
+      defaultVersion = knex.raw(`(${sql})`)
+    }
 
     const version = config.where?.version ?? defaultVersion
     delete config.where?.version
 
-    configurePopulateWhere(config, isRelatedEntity, version)
+    configurePopulateWhere(
+      config,
+      isRelatedEntity,
+      version,
+      strategy === LoadStrategy.SELECT_IN,
+      manager
+    )
 
     let loadAdjustments = false
     if (config.options.populate.includes("items.item.adjustments")) {
@@ -195,8 +212,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       orderAlias = "o1"
     }
 
-    const defaultVersion = knex.raw(`"${orderAlias}"."version"`)
+    let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
     const strategy = config.options.strategy ?? LoadStrategy.JOINED
+    if (strategy === LoadStrategy.SELECT_IN) {
+      defaultVersion = getVersionSubQuery(manager, orderAlias)
+    }
 
     const version = config.where.version ?? defaultVersion
     delete config.where.version
@@ -220,7 +240,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
-    configurePopulateWhere(config, isRelatedEntity, version)
+    configurePopulateWhere(
+      config,
+      isRelatedEntity,
+      version,
+      strategy === LoadStrategy.SELECT_IN,
+      manager
+    )
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
@@ -291,10 +317,24 @@ async function loadItemAdjustments(manager, orders) {
   }
 }
 
+function getVersionSubQuery(manager, alias, field = "order_id") {
+  const knex = manager.getKnex()
+  const sql = manager
+    .qb(toMikroORMEntity(Order), "_sub0")
+    .select("version")
+    .where({ id: knex.raw(`"${alias}"."${field}"`) })
+    .getKnexQuery()
+    .toString()
+
+  return knex.raw(`(${sql})`)
+}
+
 function configurePopulateWhere(
   config: any,
   isRelatedEntity: boolean,
-  version: any
+  version: any,
+  isSelectIn = false,
+  manager?
 ) {
   const requestedPopulate = config.options?.populate ?? []
   const hasRelation = (relation: string) =>
@@ -305,30 +345,43 @@ function configurePopulateWhere(
   config.options.populateWhere ??= {}
   const popWhere = config.options.populateWhere
 
+  // isSelectIn && isRelatedEntity - Order is always the FROM clause (field o0.id)
   if (isRelatedEntity) {
     popWhere.order ??= {}
 
     const popWhereOrder = popWhere.order
 
-    popWhereOrder.version = version
+    popWhereOrder.version = isSelectIn
+      ? getVersionSubQuery(manager, "o0", "id")
+      : version
 
     // related entity shipping method
     if (hasRelation("shipping_methods")) {
       popWhere.shipping_methods ??= {}
-      popWhere.shipping_methods.version = version
+      popWhere.shipping_methods.version = isSelectIn
+        ? getVersionSubQuery(manager, "s0")
+        : version
     }
 
     if (hasRelation("items") || hasRelation("order.items")) {
       popWhereOrder.items ??= {}
-      popWhereOrder.items.version = version
+      popWhereOrder.items.version = isSelectIn
+        ? getVersionSubQuery(manager, "o0", "id")
+        : version
     }
 
     if (hasRelation("shipping_methods")) {
       popWhereOrder.shipping_methods ??= {}
-      popWhereOrder.shipping_methods.version = version
+      popWhereOrder.shipping_methods.version = isSelectIn
+        ? getVersionSubQuery(manager, "o0", "id")
+        : version
     }
 
     return
+  }
+
+  if (isSelectIn) {
+    version = getVersionSubQuery(manager, "o0")
   }
 
   if (hasRelation("summary")) {
