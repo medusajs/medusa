@@ -10,7 +10,7 @@ export interface AdminCreateCollection {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateCollection {
@@ -25,7 +25,7 @@ export interface AdminUpdateCollection {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any> | null
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateCollectionProducts {

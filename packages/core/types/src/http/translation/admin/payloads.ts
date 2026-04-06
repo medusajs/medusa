@@ -1,4 +1,4 @@
-interface AdminCreateTranslation {
+export interface AdminCreateTranslation {
   /**
    * The ID of the entity being translated.
    */
@@ -14,18 +14,30 @@ interface AdminCreateTranslation {
   /**
    * The translated fields as key-value pairs.
    */
-  translations: Record<string, unknown>
+  translations: Record<string, string>
 }
 
-interface AdminUpdateTranslation {
+export interface AdminUpdateTranslation {
   /**
    * The ID of the translation.
    */
   id: string
   /**
+   * The ID of the entity being translated.
+   */
+  reference_id?: string
+  /**
+   * The type of entity being translated.
+   */
+  reference?: string
+  /**
+   * The BCP 47 language tag code for this translation.
+   */
+  locale_code?: string
+  /**
    * The translated fields as key-value pairs.
    */
-  translations: Record<string, unknown>
+  translations?: Record<string, string>
 }
 
 export interface AdminBatchTranslations {
@@ -91,3 +103,4 @@ export interface AdminBatchTranslationSettings {
    */
   delete?: string[]
 }
+

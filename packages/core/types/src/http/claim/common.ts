@@ -107,10 +107,6 @@ export interface BaseClaim {
 
 export interface BaseClaimListParams extends FindParams {
   /**
-   * Query or keywords to search the claim's searchable fields.
-   */
-  q?: string
-  /**
    * Filter by ID(s).
    */
   id?: string | string[]

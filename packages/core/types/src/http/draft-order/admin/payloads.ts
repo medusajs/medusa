@@ -14,13 +14,23 @@ export interface AdminCreateDraftOrderItem {
    */
   variant_barcode?: string | null
   /**
+   * The item's SKU.
+   * @deprecated Use variant_sku instead.
+   */
+  sku?: string | null
+  /**
+   * The item's barcode.
+   * @deprecated Use variant_barcode instead.
+   */
+  barcode?: string | null
+  /**
    * The ID of the item's variant.
    */
   variant_id?: string | null
   /**
    * The item's unit price.
    */
-  unit_price?: number | null
+  unit_price?: number | string | { value: string; precision: number } | null
   /**
    * The item's quantity.
    */
@@ -40,6 +50,10 @@ export interface AdminCreateDraftOrderShippingMethod {
 
 export interface AdminCreateDraftOrder {
   /**
+   * The draft order's status.
+   */
+  status?: "completed"
+  /**
    * The draft order's email.
    *
    * Either email or customer_id must be provided.
@@ -54,7 +68,7 @@ export interface AdminCreateDraftOrder {
   /**
    * The ID of the sales channel to associate the draft order with.
    */
-  sales_channel_id: string
+  sales_channel_id?: string | null
   /**
    * The ID of the region to associate the draft order with.
    */
@@ -90,6 +104,10 @@ export interface AdminCreateDraftOrder {
    */
   no_notification_order?: boolean
   /**
+   * The BCP 47 language tag code of the locale.
+   */
+  locale?: string
+  /**
    * The draft order's metadata.
    */
   metadata?: Record<string, unknown> | null
@@ -117,6 +135,10 @@ export interface AdminUpdateDraftOrder {
    */
   billing_address?: OrderAddress
   /**
+   * The BCP 47 language tag code of the locale.
+   */
+  locale?: string
+  /**
    * The draft order's metadata.
    */
   metadata?: Record<string, unknown> | null
@@ -139,10 +161,6 @@ export interface AdminUpdateDraftOrderItem {
    * The item's internal note.
    */
   internal_note?: string | null
-  /**
-   * The item's metadata.
-   */
-  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminAddDraftOrderItem {
@@ -260,4 +278,11 @@ export interface AdminUpdateDraftOrderShippingMethod {
    * Internal note for the shipping method.
    */
   internal_note?: string | null
+}
+
+export interface AdminUpdateDraftOrderActionItem {
+  quantity: number
+  internal_note?: string | undefined
+  unit_price?: number | null | undefined
+  compare_at_unit_price?: number | null | undefined
 }

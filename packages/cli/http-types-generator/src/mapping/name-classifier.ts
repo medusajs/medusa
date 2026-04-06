@@ -21,6 +21,8 @@ export class NameClassifier {
     /Filters?$/,
     /ListParams$/,
     /FilterFields$/,
+    /^StoreGet/,
+    /^AdminGet/,
   ]
 
   /**

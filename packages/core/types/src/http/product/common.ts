@@ -1,7 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
 import { FindParams } from "../common"
-import { BaseCalculatedPriceSet } from "../pricing/common"
+import { BaseCalculatedPriceSet } from "../price-preference/common"
 import { BaseProductCategory } from "../product-category/common"
 import { BaseProductTag } from "../product-tag/common"
 import { BaseProductType } from "../product-type/common"
@@ -444,8 +444,8 @@ export interface BaseProductVariantParams
   q?: string
   id?: string | string[]
   options?: {
-    value: string
-    option_id: string
+    value?: string
+    option_id?: string
   }
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>

@@ -67,17 +67,6 @@ export const AdminGetProductOptionsParams = createFindParams({
   .merge(AdminGetProductOptionsParamsFields)
   .merge(applyAndAndOrOperators(AdminGetProductOptionsParamsFields))
 
-export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
-export const AdminCreateProductTag = z.object({
-  value: z.string(),
-})
-
-export type AdminUpdateProductTagType = z.infer<typeof AdminUpdateProductTag>
-export const AdminUpdateProductTag = z.object({
-  id: z.string().optional(),
-  value: z.string().optional(),
-})
-
 export type AdminCreateProductOptionType = z.infer<typeof CreateProductOption>
 export const CreateProductOption = z.object({
   title: z.string(),
@@ -115,11 +104,6 @@ export const AdminUpdateVariantPrice = z.object({
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
   rules: z.record(z.string(), z.string()).optional(),
-})
-
-export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
-export const AdminCreateProductType = z.object({
-  value: z.string(),
 })
 
 export type AdminCreateProductVariantType = z.infer<typeof CreateProductVariant>
@@ -248,7 +232,7 @@ export const UpdateProduct = z
       .array(z.object({ id: z.string().optional(), url: z.string() }))
       .optional(),
     thumbnail: z.string().nullish(),
-    handle: z.string().nullish(),
+    handle: z.string().optional(),
     type_id: z.string().nullish(),
     external_id: z.string().nullish(),
     collection_id: z.string().nullish(),

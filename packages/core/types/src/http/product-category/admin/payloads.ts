@@ -25,7 +25,7 @@ export interface AdminCreateProductCategory {
   /**
    * The ID of the parent category.
    */
-  parent_category_id?: string
+  parent_category_id?: string | null
   /**
    * The category's ranking among its sibling categories.
    */
@@ -33,7 +33,7 @@ export interface AdminCreateProductCategory {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateProductCategory {
@@ -71,7 +71,7 @@ export interface AdminUpdateProductCategory {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateProductCategoryProducts {

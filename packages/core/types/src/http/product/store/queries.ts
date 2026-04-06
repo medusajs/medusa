@@ -6,7 +6,12 @@ import {
 } from "../common"
 
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
-export interface StoreProductVariantParams extends BaseProductVariantParams {}
+export interface StoreProductVariantParams extends BaseProductVariantParams {
+  sku?: string | string[]
+  manage_inventory?: string
+  allow_backorder?: string
+  product_id?: string | string[]
+}
 export interface StoreProductPricingContext {
   /**
    * The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
@@ -39,7 +44,11 @@ export interface StoreProductParams extends SelectParams, StoreProductPricingCon
 }
 
 export interface StoreProductListParams
-  extends Omit<BaseProductListParams, "tags" | "status" | "categories" | "deleted_at" | "with_deleted">, StoreProductPricingContext {
+  extends Omit<
+      BaseProductListParams,
+      "tags" | "status" | "categories" | "deleted_at" | "with_deleted"
+    >,
+    StoreProductPricingContext {
   /**
    * Filter by the product's tag(s).
    */
@@ -51,9 +60,9 @@ export interface StoreProductListParams
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.
-   * 
+   *
    * Learn more in the [Serve Translations in Storefront](https://docs.medusajs.com/resources/commerce-modules/translations/storefront) guide.
-   * 
+   *
    * @example
    * "en-US"
    */

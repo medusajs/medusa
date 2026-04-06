@@ -5,11 +5,8 @@ import {
 import {
   createBatchBody,
   createFindParams,
-  createSelectParams,
 } from "../../utils/validators"
 import { z } from "@medusajs/framework/zod"
-
-export const AdminGetTranslationParams = createSelectParams()
 
 export const AdminGetTranslationParamsFields = z.object({
   q: z.string().optional(),
@@ -57,8 +54,8 @@ export type AdminTranslationStatisticsType = z.infer<
 >
 export const AdminTranslationStatistics = z
   .object({
-    locales: z.union([z.string(), z.array(z.string())]),
-    entity_types: z.union([z.string(), z.array(z.string())]),
+    locales: z.array(z.string()),
+    entity_types: z.array(z.string()),
   })
   .transform((data) => ({
     // Normalize to arrays for consistent handling
