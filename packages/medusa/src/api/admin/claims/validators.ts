@@ -6,6 +6,9 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
+/**
+ * @http-type-name AdminGetClaimsParams
+ */
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -21,7 +24,7 @@ export type AdminGetOrdersOrderParamsType = z.infer<
 >
 
 /**
- * Parameters used to filter and configure the pagination of the retrieved order.
+ * @http-type-name AdminGetClaimsListParams
  */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,

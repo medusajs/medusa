@@ -1,3 +1,5 @@
+import { SelectParams } from "../../common"
+
 export interface StoreCreateCart {
   /**
    * The ID of the region that the cart is created in.
@@ -207,3 +209,5 @@ export interface StoreCartAddPromotion {
    */
   promo_codes: string[]
 }
+
+export interface StoreCalculateCartTaxes extends SelectParams {}

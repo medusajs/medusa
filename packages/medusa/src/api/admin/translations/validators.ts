@@ -50,9 +50,9 @@ export const AdminBatchTranslations = createBatchBody(
 )
 
 export type AdminTranslationStatisticsType = z.infer<
-  typeof AdminTranslationStatistics
+  typeof AdminTranslationStatisticsParams
 >
-export const AdminTranslationStatistics = z
+export const AdminTranslationStatisticsParams = z
   .object({
     locales: z.array(z.string()),
     entity_types: z.array(z.string()),
