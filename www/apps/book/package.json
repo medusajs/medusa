@@ -25,6 +25,7 @@
     "loops": "^6.0.1",
     "next": "15.3.9",
     "posthog-js": "^1.298.1",
+    "posthog-node": "^5.29.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "rehype-mdx-code-props": "^2.0.0",
