@@ -33,7 +33,7 @@ const CLOUD_STOREFRONT_SUGGESTION: CardProps = {
 const BLOOM_SUGGESTION: CardProps = {
   title: "Build with Bloom",
   text: "Bring your business ideas to life with Bloom, our AI-powered commerce assistant.",
-  href: "https://bloom.medusajs.com",
+  href: "https://bloom.chat",
 }
 
 type Suggestions = Map<string, CardProps>
