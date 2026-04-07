@@ -39,6 +39,7 @@ bash scripts/get_pr.sh <pr_number>
 bash scripts/get_pr.sh <pr_number>                       # Fetch PR details (title, body, author, diff stats)
 bash scripts/get_pr_files.sh <pr_number>                 # List files changed in the PR as JSON
 bash scripts/get_linked_issues.sh <pr_number>            # Fetch issues linked with closing keywords
+bash scripts/get_comments.sh <pr_number>                 # Fetch all existing comments on the PR
 bash scripts/get_labels.sh <pr_number>                   # Fetch current labels on the PR
 bash scripts/add_comment.sh <pr_number> <body>           # Post a comment on the PR
 bash scripts/labels.sh <pr_number> <action> <label>      # Manage labels: action is "add" or "remove"
@@ -61,7 +62,19 @@ bash scripts/get_labels.sh <pr_number>
 bash scripts/get_pr_files.sh <pr_number>
 ```
 
-### Step 2 — Template Compliance
+### Step 2 — Review Prior Comments
+
+Read the existing comments fetched in Step 1. Identify any previous bot review comments (comments from this automation) that raised issues or made requests.
+
+For each previously raised issue or remark, determine whether it has been addressed in the current state of the PR:
+
+- If **all prior issues are resolved** — acknowledge the progress in the new review comment and focus only on any remaining or new issues.
+- If **some prior issues remain unresolved** — carry them forward into the new review. Do not re-explain them in detail; reference them briefly (e.g., *"The changeset message format is still incorrect"*).
+- If **this is the first review** (no prior bot comments) — skip this step.
+
+> **CRITICAL:** Do not repeat the full explanation for issues already raised in a previous comment. Keep follow-up reviews concise — assume the contributor has read the prior feedback.
+
+### Step 3 — Template Compliance
 
 The PR body must follow `.github/pull_request_template.md`. It requires these sections to be filled in (not left as placeholder text):
 
@@ -81,7 +94,7 @@ Could you please fill in the PR description following our [pull request template
 Thanks!
 ```
 
-### Step 3 — Massive Changes Check
+### Step 4 — Massive Changes Check
 
 **Massive changes:**
 
@@ -106,7 +119,7 @@ bash scripts/close_issue.sh <pr_number>
 
 If **potential security risks** (not clearly malicious) → include them as a concern in the review comment.
 
-### Step 4 — Fetch Linked Issues
+### Step 5 — Fetch Linked Issues
 
 ```bash
 bash scripts/get_linked_issues.sh <pr_number>
@@ -114,7 +127,7 @@ bash scripts/get_linked_issues.sh <pr_number>
 
 Look for closing keywords (`closes`, `fixes`, `resolves` + `#<number>`) in the PR body. Note whether a verified, open issue is linked.
 
-### Step 5 — Determine Contribution Type
+### Step 6 — Determine Contribution Type
 
 Inspect the changed file paths and load the relevant reference section:
 
@@ -126,11 +139,11 @@ Inspect the changed file paths and load the relevant reference section:
 
 For mixed PRs, apply all relevant types.
 
-### Step 6 — Check Conventions
+### Step 7 — Check Conventions
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
-### Step 7 — Contextual Assessment
+### Step 8 — Contextual Assessment
 
 Before writing the review, assess whether the changes make sense in the broader context of the PR. Load `reference/comment-guidelines.md` (Contextual Assessment section) for the full checklist. Key questions:
 
@@ -142,7 +155,7 @@ Before writing the review, assess whether the changes make sense in the broader 
 
 Note any concerns to include in the review comment.
 
-### Step 8 — Compose and Post Review
+### Step 9 — Compose and Post Review
 
 Load `reference/comment-guidelines.md` for comment templates and tone guidance.
 
