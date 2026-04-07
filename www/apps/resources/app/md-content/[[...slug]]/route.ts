@@ -12,7 +12,7 @@ import {
 import type { Plugin } from "unified"
 import { filesMap } from "../../../generated/files-map.mjs"
 import { slugChanges } from "../../../generated/slug-changes.mjs"
-import { posthog } from "posthog-js"
+import { PostHog } from "posthog-node"
 
 type Params = {
   params: Promise<{ slug: string[] }>
@@ -76,24 +76,20 @@ export async function GET(req: NextRequest, { params }: Params) {
     acceptHeader.includes("text/plain") ||
     acceptHeader.includes("text/markdown")
   ) {
-    if (!posthog.__loaded) {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        person_profiles: "always",
-        defaults: "2025-05-24",
-      })
-    }
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
 
-    posthog.capture(
-      "md_content_requested_agents",
-      {
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
         $current_url: req.url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
-      {
-        send_instantly: true,
-      }
-    )
+    })
+
+    await client.shutdown()
   }
 
   return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {

@@ -77,6 +77,12 @@ You can also set up a custom domain for your storefront to use a branded URL.
 
 To set up a custom domain for your storefront, you need a domain registered with a domain provider that supports either ALIAS records or top-level CNAME records.
 
+<Note>
+
+Custom storefront domains are available for Launch, Scale, and Enterprise plans only. Learn more about plan features on the [pricing page](../pricing/page.mdx).
+
+</Note>
+
 ### Set Up Storefront Custom Domain
 
 You can set up storefront custom domains per environment. For example, you can set up a custom domain for the Production environment while keeping the default domain for the Staging and preview environments.
@@ -115,7 +121,7 @@ Medusa automatically injects the necessary configurations during the deployment 
 
 ### Injected Environment Variables
 
-When deploying your storefront to Cloud, Medusa automatically injects the following environment variables into your storefront's build process:
+When deploying your storefront to Cloud, Medusa automatically injects the following environment variables into your storefront's build and runtime process:
 
 <CodeTabs group="storefront-framework">
   <CodeTab label="Next.js" value="nextjs">
@@ -123,7 +129,9 @@ When deploying your storefront to Cloud, Medusa automatically injects the follow
 ```shell
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY # Your Medusa application's publishable key
 NEXT_PUBLIC_MEDUSA_BACKEND_URL # Your Medusa backend's URL
-MEDUSA_BACKEND_URL # Your Medusa backend's URL, compatible with Next.js Starter Storefront
+NEXT_PUBLIC_BASE_URL # Your storefront's URL
+MEDUSA_BACKEND_URL # Your Medusa backend's URL
+BASE_URL # Your storefront's URL
 ```
 
   </CodeTab>
@@ -132,6 +140,9 @@ MEDUSA_BACKEND_URL # Your Medusa backend's URL, compatible with Next.js Starter 
 ```shell
 VITE_MEDUSA_PUBLISHABLE_KEY # Your Medusa application's publishable key
 VITE_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+VITE_BASE_URL # Your storefront's URL
+MEDUSA_BACKEND_URL # Your Medusa backend's URL
+BASE_URL # Your storefront's URL
 ```
 
   </CodeTab>

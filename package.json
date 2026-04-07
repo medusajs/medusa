@@ -152,6 +152,8 @@
     "test:integration:api": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-api",
     "test:integration:http": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-http",
     "test:integration:modules": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-modules",
+    "generate:http-types": "yarn workspace @medusajs/http-types-generator generate:http-types",
+    "validate:http-types": "yarn workspace @medusajs/http-types-generator validate:http-types",
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
