@@ -27,6 +27,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           base_branch: develop
+          show_full_output: true
           plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
           plugins: "medusa-dev@medusa"
 
