@@ -10,6 +10,9 @@
 - [ ] Tests are included (unit or integration, appropriate to the scope of the change)
 - [ ] Follows `CONTRIBUTING.md` — specifically: change is scoped, starts from `develop`, linked issue exists
 - [ ] Follows conventions in `conventions.md`
+- [ ] **Changeset included** — any change to source code under `packages/` must include a changeset file under `.changeset/`. Exception: TSDoc-only changes (adding/updating JSDoc comments with no logic change) do not require a changeset. Contributors can generate one with `yarn changeset`. The changeset bump type must be:
+  - `patch` for non-breaking changes (bug fixes, additions that don't break existing behaviour)
+  - `minor` for breaking changes (removed exports, changed signatures, altered behaviour)
 
 **Key convention checks for code PRs:**
 - API route changes → integration tests in `integration-tests/http/__tests__/`
