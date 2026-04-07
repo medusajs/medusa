@@ -18,7 +18,7 @@ such as [requestItemReturnWorkflow](../core_flows.Order.Workflows_Order.requestI
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 creating an order change action.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/order/workflows/create-order-change-actions.ts#L25" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/core/core-flows/src/order/workflows/create-order-change-actions.ts#L25" />
 
 ## Examples
 
@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await createOrderChangeActionsWorkflow(req.scope)
     .run({
       input: [{
-        "action": "REINSTATE_ITEM"
+        "action": "CANCEL_ITEM_FULFILLMENT"
       }]
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "REINSTATE_ITEM"
+        "action": "CANCEL_ITEM_FULFILLMENT"
       }]
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "REINSTATE_ITEM"
+        "action": "CANCEL_ITEM_FULFILLMENT"
       }]
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = createOrderChangeActionsWorkflow
       .runAsStep({
         input: [{
-          "action": "REINSTATE_ITEM"
+          "action": "CANCEL_ITEM_FULFILLMENT"
         }]
       })
   }

@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 2.13.5
+
+### Patch Changes
+
+- [#14932](https://github.com/medusajs/medusa/pull/14932) [`4eee16b932f4b532f81db2739194ed5d2b47f3ea`](https://github.com/medusajs/medusa/commit/4eee16b932f4b532f81db2739194ed5d2b47f3ea) Thanks [@peterlgh7](https://github.com/peterlgh7)! - use in-memory modules if REDIS_URL unset
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.5
+
 ## 2.13.4
 
 ### Patch Changes

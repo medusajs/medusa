@@ -1,5 +1,14 @@
 # @medusajs/core-flows
 
+## 2.13.5
+
+### Patch Changes
+
+- [#14302](https://github.com/medusajs/medusa/pull/14302) [`f01da61c0d973d399bb6c3693bd06b01ee557df6`](https://github.com/medusajs/medusa/commit/f01da61c0d973d399bb6c3693bd06b01ee557df6) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - chore(core-flows): Expose payment & fulfillment status helpers
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
 ## 2.13.4
 
 ### Patch Changes
