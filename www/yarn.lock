@@ -2191,6 +2191,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@posthog/core@npm:1.25.0":
+  version: 1.25.0
+  resolution: "@posthog/core@npm:1.25.0"
+  checksum: 6b94306fa07f54d60584218cf0a0ea3cb5cc288aff52e603016686801eec1288129e1d115e1d77b17d345835a4b3b7272e547b7604a44fd281f911479c633b72
+  languageName: node
+  linkType: hard
+
 "@posthog/core@npm:1.6.0":
   version: 1.6.0
   resolution: "@posthog/core@npm:1.6.0"
@@ -6737,6 +6744,7 @@ __metadata:
     next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
@@ -6778,6 +6786,7 @@ __metadata:
     next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
@@ -7176,6 +7185,7 @@ __metadata:
     next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
@@ -13835,6 +13845,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"posthog-node@npm:^5.29.0":
+  version: 5.29.0
+  resolution: "posthog-node@npm:5.29.0"
+  dependencies:
+    "@posthog/core": 1.25.0
+  peerDependencies:
+    rxjs: ^7.0.0
+  peerDependenciesMeta:
+    rxjs:
+      optional: true
+  checksum: eb08ceb0a7ce8b3d10593500f41e49115618fd377437c45ed6ce6035b8d6140f2bd2939e040b1df1e9f401df296616e9e5f8e8063e48b9d46ab3ecbb3e36c3d1
+  languageName: node
+  linkType: hard
+
 "preact@npm:^10.10.0":
   version: 10.19.6
   resolution: "preact@npm:10.19.6"
@@ -14805,6 +14829,7 @@ __metadata:
     next-mdx-remote-client: 2
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
@@ -16806,6 +16831,7 @@ turbo@latest:
     next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
@@ -17170,6 +17196,7 @@ turbo@latest:
     next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     react: 19.2.4
     react-dom: 19.2.4
     rehype-mdx-code-props: ^2.0.0
