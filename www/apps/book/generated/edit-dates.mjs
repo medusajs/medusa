@@ -48,7 +48,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/admin/ui-routes/page.mdx": "2025-07-25T06:58:26.149Z",
   "app/learn/fundamentals/api-routes/middlewares/page.mdx": "2025-10-16T11:23:37.787Z",
   "app/learn/fundamentals/modules/isolation/page.mdx": "2025-05-21T15:10:15.499Z",
-  "app/learn/fundamentals/data-models/index/page.mdx": "2025-03-18T07:59:07.798Z",
   "app/learn/fundamentals/custom-cli-scripts/page.mdx": "2025-12-23T07:33:58.063Z",
   "app/learn/debugging-and-testing/testing-tools/integration-tests/api-routes/page.mdx": "2025-12-23T07:53:58.179Z",
   "app/learn/debugging-and-testing/testing-tools/integration-tests/page.mdx": "2025-12-23T07:54:27.757Z",
@@ -141,5 +140,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-01-06T15:51:48.131Z",
   "app/learn/codemods/replace-zod-imports/page.mdx": "2026-01-12T13:51:52.324Z",
   "app/learn/configurations/pnpm/page.mdx": "2026-03-16T14:36:36.335Z",
-  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z"
+  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
+  "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z"
 }

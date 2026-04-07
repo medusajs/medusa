@@ -25,7 +25,7 @@ This is available starting from [Medusa v2.10.3](https://github.com/medusajs/med
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/core/core-flows/src/settings/workflows/update-view-configuration.ts#L28" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/core/core-flows/src/settings/workflows/update-view-configuration.ts#L28" />
 
 ## Examples
 
@@ -46,7 +46,7 @@ export async function POST(
   const { result } = await updateViewConfigurationWorkflow(req.scope)
     .run({
       input: {
-        "id": "id_ej4xQa9FwNWObZH96p26"
+        "id": "id_1vmf1UcOSGo8mIi3Oo"
       }
     })
 
@@ -71,7 +71,7 @@ export default async function handleOrderPlaced({
   const { result } = await updateViewConfigurationWorkflow(container)
     .run({
       input: {
-        "id": "id_ej4xQa9FwNWObZH96p26"
+        "id": "id_1vmf1UcOSGo8mIi3Oo"
       }
     })
 
@@ -96,7 +96,7 @@ export default async function myCustomJob(
   const { result } = await updateViewConfigurationWorkflow(container)
     .run({
       input: {
-        "id": "id_ej4xQa9FwNWObZH96p26"
+        "id": "id_1vmf1UcOSGo8mIi3Oo"
       }
     })
 
@@ -122,7 +122,7 @@ const myWorkflow = createWorkflow(
     const result = updateViewConfigurationWorkflow
       .runAsStep({
         input: {
-          "id": "id_ej4xQa9FwNWObZH96p26"
+          "id": "id_1vmf1UcOSGo8mIi3Oo"
         }
       })
   }
