@@ -20,18 +20,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Check if author is a team member
-        id: check-team
-        run: |
-          AUTHOR="${{ github.event.pull_request.user.login }}"
-          if grep -qF "\"@${AUTHOR}\"" .github/teams.yml; then
-            echo "is_team_member=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_team_member=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Generate GitHub App token
-        if: steps.check-team.outputs.is_team_member == 'false'
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
@@ -39,7 +28,6 @@ jobs:
           private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
 
       - name: Review PR
-        if: steps.check-team.outputs.is_team_member == 'false'
         uses: anthropics/claude-code-action@v1
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}

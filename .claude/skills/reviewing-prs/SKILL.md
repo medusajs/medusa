@@ -61,11 +61,7 @@ bash scripts/get_labels.sh <pr_number>
 bash scripts/get_pr_files.sh <pr_number>
 ```
 
-### Step 2 — Check Team Membership
-
-Read `.github/teams.yml`. If the PR author's login appears in the list, they are a **team member** — **skip steps 3 and 4** entirely and proceed directly to step 5.
-
-### Step 3 — Template Compliance (non-team members only)
+### Step 2 — Template Compliance
 
 The PR body must follow `.github/pull_request_template.md`. It requires these sections to be filled in (not left as placeholder text):
 
@@ -85,9 +81,9 @@ Could you please fill in the PR description following our [pull request template
 Thanks!
 ```
 
-### Step 4 — Non-Member Checks (skip if team member)
+### Step 3 — Massive Changes Check
 
-**4a. Massive changes:**
+**Massive changes:**
 
 If the PR has more than 500 changed lines (additions + deletions) **or** more than 20 changed files:
 ```bash
@@ -110,7 +106,7 @@ bash scripts/close_issue.sh <pr_number>
 
 If **potential security risks** (not clearly malicious) → include them as a concern in the review comment.
 
-### Step 5 — Fetch Linked Issues
+### Step 4 — Fetch Linked Issues
 
 ```bash
 bash scripts/get_linked_issues.sh <pr_number>
@@ -118,7 +114,7 @@ bash scripts/get_linked_issues.sh <pr_number>
 
 Look for closing keywords (`closes`, `fixes`, `resolves` + `#<number>`) in the PR body. Note whether a verified, open issue is linked.
 
-### Step 6 — Determine Contribution Type
+### Step 5 — Determine Contribution Type
 
 Inspect the changed file paths and load the relevant reference section:
 
@@ -130,11 +126,11 @@ Inspect the changed file paths and load the relevant reference section:
 
 For mixed PRs, apply all relevant types.
 
-### Step 7 — Check Conventions
+### Step 6 — Check Conventions
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
-### Step 8 — Contextual Assessment
+### Step 7 — Contextual Assessment
 
 Before writing the review, assess whether the changes make sense in the broader context of the PR. Load `reference/comment-guidelines.md` (Contextual Assessment section) for the full checklist. Key questions:
 
@@ -146,7 +142,7 @@ Before writing the review, assess whether the changes make sense in the broader 
 
 Note any concerns to include in the review comment.
 
-### Step 9 — Compose and Post Review
+### Step 8 — Compose and Post Review
 
 Load `reference/comment-guidelines.md` for comment templates and tone guidance.
 
@@ -165,7 +161,6 @@ bash scripts/labels.sh <pr_number> add <label>
 
 ## Common Mistakes
 
-- [ ] Checking template compliance for team members — skip for team members
 - [ ] Being vague about required changes — always list exactly what needs to change and why
 - [ ] Closing a PR without a clear explanation
 - [ ] Forgetting the docs-ui test requirement for `www/packages/docs-ui/` changes
