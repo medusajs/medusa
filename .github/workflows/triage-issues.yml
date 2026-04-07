@@ -28,7 +28,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ vars.MEDUSA_APP_ID }}
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
           private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
 
       - name: Triage issue
@@ -38,6 +38,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           base_branch: develop
+          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
+          plugins: "medusa-dev@medusa"
 
           prompt: |
             ISSUE NUMBER: ${{ github.event.issue.number }}
