@@ -1,5 +1,14 @@
 # @medusajs/link-modules
 
+## 2.13.5
+
+### Patch Changes
+
+- [#14933](https://github.com/medusajs/medusa/pull/14933) [`5dbda9c14007e554720d5a2a640fc010ff54c696`](https://github.com/medusajs/medusa/commit/5dbda9c14007e554720d5a2a640fc010ff54c696) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - chore: disable link if rbac ff is off
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
 ## 2.13.4
 
 ### Patch Changes

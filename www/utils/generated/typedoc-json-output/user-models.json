@@ -18,7 +18,7 @@
 					"fileName": "invite.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L3"
 				}
 			],
 			"type": {
@@ -63,7 +63,7 @@
 													"fileName": "invite.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L5"
 												}
 											],
 											"type": {
@@ -107,7 +107,7 @@
 													"fileName": "invite.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L6"
 												}
 											],
 											"type": {
@@ -140,7 +140,7 @@
 													"fileName": "invite.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L7"
 												}
 											],
 											"type": {
@@ -173,7 +173,7 @@
 													"fileName": "invite.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L8"
 												}
 											],
 											"type": {
@@ -206,7 +206,7 @@
 													"fileName": "invite.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L9"
 												}
 											],
 											"type": {
@@ -241,7 +241,7 @@
 													"fileName": "invite.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L10"
 												}
 											],
 											"type": {
@@ -274,7 +274,7 @@
 											"fileName": "invite.ts",
 											"line": 4,
 											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/invite.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/invite.ts#L4"
 										}
 									]
 								}
@@ -306,7 +306,7 @@
 					"fileName": "user.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L3"
 				}
 			],
 			"type": {
@@ -351,7 +351,7 @@
 													"fileName": "user.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L5"
 												}
 											],
 											"type": {
@@ -397,7 +397,7 @@
 													"fileName": "user.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L6"
 												}
 											],
 											"type": {
@@ -432,7 +432,7 @@
 													"fileName": "user.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L7"
 												}
 											],
 											"type": {
@@ -465,7 +465,7 @@
 													"fileName": "user.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L8"
 												}
 											],
 											"type": {
@@ -500,7 +500,7 @@
 													"fileName": "user.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L9"
 												}
 											],
 											"type": {
@@ -535,7 +535,7 @@
 													"fileName": "user.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L10"
 												}
 											],
 											"type": {
@@ -568,7 +568,7 @@
 											"fileName": "user.ts",
 											"line": 4,
 											"character": 18,
-											"url": "https://github.com/medusajs/medusa/blob/ad4437b298d499d1a51e54decad6de3f5ebd2181/packages/modules/user/src/models/user.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/3c2ae85bf15ddcf5c29c2a2a8a79e3fe355717c5/packages/modules/user/src/models/user.ts#L4"
 										}
 									]
 								}

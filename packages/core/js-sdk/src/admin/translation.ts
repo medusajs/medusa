@@ -214,7 +214,6 @@ export class Translation {
    * .then(({ created, updated, deleted }) => {
    *   console.log(created, updated, deleted)
    * })
-   * ```
    */
   async batchSettings(
     body: HttpTypes.AdminBatchTranslationSettings,
