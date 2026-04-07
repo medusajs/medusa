@@ -25,6 +25,10 @@ export interface AdminStockLocation {
    */
   name: string
   /**
+   * The metadata associated with the stock location.
+   */
+  metadata: Record<string, unknown> | null
+  /**
    * The ID of the address associated with the stock location.
    */
   address_id: string
