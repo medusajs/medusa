@@ -40,6 +40,7 @@ jobs:
           version: yarn version
           commit: "Chore: Release"
           title: "Chore: Release"
+          createGithubReleases: false
           publish: yarn changeset publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
