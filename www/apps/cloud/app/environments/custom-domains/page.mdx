@@ -1,0 +1,144 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Environment Custom Domains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up custom domains for your Medusa environments on Cloud.
+
+## Custom Domains Overview
+
+By default, Medusa environments are deployed with `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains. You can configure custom domains to use your own branded URLs for both your backend API and storefront.
+
+Custom domains can be configured per environment, allowing you to use different domains for Production, Staging, and preview environments based on your needs.
+
+---
+
+## Storefront Custom Domains
+
+Storefront custom domains allow you to serve your storefront from your own domain instead of the default `medusajs.site` subdomain.
+
+### Prerequisites
+
+To set up a storefront custom domain, you need:
+
+- A domain registered with a domain provider that supports either ALIAS records or top-level CNAME records
+- Access to your domain's DNS settings
+
+<Note>
+
+Custom storefront domains are available for Launch, Scale, and Enterprise plans only. Learn more about plan features on the [pricing page](../../pricing/page.mdx).
+
+</Note>
+
+### Set Up Storefront Custom Domain
+
+#### From Project Overview
+
+If no custom domain is configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
+
+1. Go to your project's dashboard in Cloud.
+2. In the environment card (e.g., Production), click the **Setup Custom Domain** link next to the health status.
+
+#### From Environment Settings
+
+1. Go to your project's dashboard in Cloud.
+2. Click on the environment card where you want to set up the custom domain.
+3. Click the **Settings** tab.
+4. Navigate to the **Custom Domains** section.
+5. Click the **Add Domain** button.
+6. In the modal that opens:
+   - **Domain Step**: Enter your custom domain name (e.g., `shop.example.com`)
+   - **DNS Setup**: Follow the instructions to add the required DNS records with your domain provider
+7. Click **Done** to complete the setup.
+
+---
+
+## Backend Custom Domains
+
+Backend custom domains allow you to serve your Medusa API from your own domain instead of the default `medusajs.app` subdomain.
+
+<Note>
+
+Backend custom domains are currently available as a preview feature and may not be visible in all environments. Contact support if you need access to this feature.
+
+</Note>
+
+### Prerequisites
+
+To set up a backend custom domain, you need:
+
+- A domain registered with a domain provider that supports CNAME records
+- Access to your domain's DNS settings
+
+### Set Up Backend Custom Domain
+
+#### From Project Overview
+
+If backend custom domains are enabled and no custom domain is configured, you'll see a **Setup Custom Domain** link in the backend environment card:
+
+1. Go to your project's dashboard in Cloud.
+2. In the backend environment card, click the **Setup Custom Domain** link next to the health status.
+
+#### From Environment Settings
+
+1. Go to your project's dashboard in Cloud.
+2. Click on the environment card where you want to set up the backend custom domain.
+3. Click the **Settings** tab.
+4. Navigate to the **Custom Domains** section.
+5. Click the **Add Domain** button.
+6. In the modal that opens:
+   - **Domain Step**: Enter your custom domain name (e.g., `api.example.com`)
+   - **DNS Setup**: Follow the instructions to add the required DNS records with your domain provider
+7. Click **Done** to complete the setup.
+
+---
+
+## Domain Status Indicators
+
+After adding a custom domain, you'll see status indicators that help you track the setup progress:
+
+- **Pending** (gray clock icon): Domain has been added but DNS verification is pending
+- **Configured** (blue clock icon): DNS records are detected but verification is in progress  
+- **Verified** (green checkmark icon): Domain is fully configured and active
+
+Domain activation typically completes within a few minutes to 48 hours, depending on DNS propagation times.
+
+---
+
+## Manage Custom Domains
+
+### Remove Custom Domain
+
+To remove a custom domain:
+
+1. In the **Custom Domains** section of your environment settings, find the domain you want to remove.
+2. Click the **Remove** button next to the domain.
+3. In the confirmation dialog, type the domain name exactly as shown to confirm the removal.
+4. Click **Remove Domain** to complete the action.
+
+<Note>
+
+Removing a custom domain will immediately stop serving traffic from that domain. Make sure to update any integrations or client applications before removing a domain.
+
+</Note>
+
+### Domain Verification Troubleshooting
+
+If your domain remains in **Pending** or **Configured** status:
+
+1. **Check DNS records**: Verify that you've added all required DNS records exactly as provided in the DNS setup instructions.
+2. **Wait for propagation**: DNS changes can take up to 48 hours to propagate globally.
+3. **Contact support**: If your domain hasn't verified after 48 hours, contact support for assistance.
+
+---
+
+## Access Control
+
+Access to custom domain features is controlled by your project's entitlements rather than subscription plans. If you don't see custom domain options:
+
+1. Check that your organization has the appropriate permissions for your project.
+2. Contact your organization administrator to review project entitlements.
+3. Contact support if you believe you should have access to these features.
