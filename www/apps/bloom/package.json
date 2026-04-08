@@ -16,7 +16,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.13.5",
+    "@medusajs/icons": "2.13.6",
     "@next/mdx": "15.3.9",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
