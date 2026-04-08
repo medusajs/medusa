@@ -37,7 +37,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: yarn changeset version && yarn install --no-immutable
+          version: yarn version
           commit: "Chore: Release"
           title: "Chore: Release"
           publish: yarn changeset publish
