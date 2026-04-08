@@ -981,7 +981,7 @@
     "js-sdk": "sdk.admin.translation.settings({\n  entity_type: \"product\"\n})\n.then(({ translation_settings }) => {\n  console.log(translation_settings)\n})"
   },
   "POST /admin/translations/settings/batch": {
-    "js-sdk": "sdk.admin.translation.batchSettings({\n  create: [\n    {\n      entity_type: \"product\",\n      fields: [\"title\", \"description\"],\n      is_active: true\n    }\n  ],\n  update: [\n    {\n      id: \"trset_123\",\n      fields: [\"title\", \"description\", \"subtitle\"],\n      is_active: true\n    }\n  ],\n  delete: [\"trset_456\"]\n})\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})\n```"
+    "js-sdk": "sdk.admin.translation.batchSettings({\n  create: [\n    {\n      entity_type: \"product\",\n      fields: [\"title\", \"description\"],\n      is_active: true\n    }\n  ],\n  update: [\n    {\n      id: \"trset_123\",\n      fields: [\"title\", \"description\", \"subtitle\"],\n      is_active: true\n    }\n  ],\n  delete: [\"trset_456\"]\n})\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})"
   },
   "GET /admin/translations/entities": {
     "js-sdk": "sdk.admin.translation.entities({\n  type: \"product\"\n})\n.then(({ data, count, offset, limit }) => {\n  console.log(data)\n})"
