@@ -8,10 +8,7 @@ on:
 
 jobs:
   triage:
-    # Run on new issues, or on new comments that are not from bots
-    if: |
-      github.event_name == 'issues' ||
-      (github.event_name == 'issue_comment' && github.event.comment.user.type != 'Bot')
+    if: false # temporarily disabled
     runs-on: ubuntu-latest
     permissions:
       contents: read
