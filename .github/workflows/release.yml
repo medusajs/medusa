@@ -44,6 +44,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Commit updated lockfile
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add yarn.lock
+          git diff --staged --quiet || git commit -m "chore: update lockfile after release"
+          git push origin develop
+
       - name: Trigger release notes generation
         if: steps.changesets.outputs.published == 'true'
         run: |
