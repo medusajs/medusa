@@ -1,6 +1,6 @@
 ---
 "create-medusa-app": patch
-"@medusajs/cli": patch
+"@medusajs/cli": minor
 ---
 
-feat(cli): change new command to use dtc-starter
+feat(create-medusa-app, cli): change new command to use dtc-starter
