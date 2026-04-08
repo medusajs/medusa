@@ -1,6 +1,6 @@
 ---
 "create-medusa-app": patch
-"@medusajs/cli": minor
+"@medusajs/cli": patch
 ---
 
-feat(create-medusa-app, cli): change new command to use dtc-starter
+feat(create-medusa-app, cli): change cloned repository to monorepo
