@@ -276,9 +276,28 @@ export default class PackageManager {
 
     await this.processManager.runProcess({
       process: async () => {
-        await execute([command, execOptions], {
-          verbose: this.verbose,
-        })
+        try {
+          await execute([command, execOptions], {
+            verbose: this.verbose,
+          })
+        } catch (error) {
+          const errorStr =
+            typeof error === "string"
+              ? error
+              : (error as any)?.stderr ||
+                (error as any)?.message ||
+                String(error)
+          const packageManagerConflictMatch = errorStr.match(
+            /This project is configured to use (\w+) because (.+) has a "packageManager" field/
+          )
+          if (this.packageManager === "pnpm" && packageManagerConflictMatch) {
+            const conflictingFile = packageManagerConflictMatch[2]
+            throw new Error(
+              `Cannot install with pnpm because ${conflictingFile} has a "packageManager" field that specifies a different package manager. Consider removing that field from ${conflictingFile}, or create your Medusa project in a different directory.`
+            )
+          }
+          throw error
+        }
 
         // For npm, run npm ci after npm install to validate installation
         if (this.packageManager === "npm") {
