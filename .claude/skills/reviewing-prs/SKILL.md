@@ -72,6 +72,7 @@ For each previously raised issue or remark, determine whether it has been addres
 - If **all prior issues are resolved** — acknowledge the progress in the new review comment and focus only on any remaining or new issues.
 - If **some prior issues remain unresolved** — carry them forward into the new review. Do not re-explain them in detail; reference them briefly (e.g., *"The changeset message format is still incorrect"*).
 - If **this is the first review** (no prior bot comments) — skip this step.
+- If **there is a prior review and nothing has changed** — no new issues, no resolved issues, no new concerns — **do not post a new comment**. Stop here.
 
 > **CRITICAL:** Do not repeat the full explanation for issues already raised in a previous comment. Keep follow-up reviews concise — assume the contributor has read the prior feedback.
 
