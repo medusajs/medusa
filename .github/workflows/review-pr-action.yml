@@ -55,6 +55,7 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ steps.app-token.outputs.token }}
           base_branch: develop
           show_full_output: true
           plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
