@@ -22,8 +22,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          matrix=$(gh pr list --repo ${{ github.repository }} --state open --json number,isDraft \
-            --jq '[.[] | select(.isDraft == false) | {number: .number}]')
+          matrix=$(gh pr list --repo ${{ github.repository }} --state open --json number,isDraft,author \
+            --jq '[.[] | select(.isDraft == false and .author.is_bot == false) | {number: .number}]')
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
@@ -55,19 +55,33 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pr_number: ${{ steps.set.outputs.pr_number }}
+      should_review: ${{ steps.set.outputs.should_review }}
     steps:
-      - name: Set PR number
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set PR number and check team membership
         id: set
         run: |
           if [ "${{ github.event_name }}" == "issue_comment" ]; then
             echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "should_review=true" >> $GITHUB_OUTPUT
           else
             echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            AUTHOR="${{ github.event.pull_request.user.login }}"
+            if grep -qF "\"@${AUTHOR}\"" .github/teams.yml; then
+              echo "should_review=false" >> $GITHUB_OUTPUT
+            else
+              echo "should_review=true" >> $GITHUB_OUTPUT
+            fi
           fi
 
   # Runs on pull_request and issue_comment: calls the reusable review workflow
   review:
     needs: prepare
+    if: needs.prepare.result == 'success' && needs.prepare.outputs.should_review == 'true'
     uses: ./.github/workflows/review-pr-action.yml
     with:
       pr_number: ${{ needs.prepare.outputs.pr_number }}
