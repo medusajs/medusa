@@ -140,18 +140,57 @@ const Cart = model
      * @since 2.13.7
      */
     original_tax_total: model.bigNumber().computed(),
+    /**
+     * The total amount of the cart after discounts.
+     */
     total: model.bigNumber().computed(),
+    /**
+     * The subtotal amount of the cart after discounts.
+     */
     subtotal: model.bigNumber().computed(),
+    /**
+     * The tax total amount of the cart.
+     */
     tax_total: model.bigNumber().computed(),
+    /**
+     * The total discount amount applied to the cart.
+     */
     discount_total: model.bigNumber().computed(),
+    /**
+     * The total tax amount on discounts applied to the cart.
+     */
     discount_tax_total: model.bigNumber().computed(),
+    /**
+     * The total gift card amount applied to the cart.
+     */
     gift_card_total: model.bigNumber().computed(),
+    /**
+     * The total tax amount on gift cards applied to the cart.
+     */
     gift_card_tax_total: model.bigNumber().computed(),
+    /**
+     * The total shipping amount for the cart.
+     */
     shipping_total: model.bigNumber().computed(),
+    /**
+     * The shipping subtotal amount for the cart.
+     */
     shipping_subtotal: model.bigNumber().computed(),
+    /**
+     * The total tax amount on shipping for the cart.
+     */
     shipping_tax_total: model.bigNumber().computed(),
+    /**
+     * The original total shipping amount for the cart before discounts.
+     */
     original_shipping_total: model.bigNumber().computed(),
+    /**
+     * The original shipping subtotal amount for the cart before discounts.
+     */
     original_shipping_subtotal: model.bigNumber().computed(),
+    /**
+     * The original total tax amount on shipping for the cart before discounts.
+     */
     original_shipping_tax_total: model.bigNumber().computed(),
   })
   .cascades({
