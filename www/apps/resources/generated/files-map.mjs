@@ -5848,6 +5848,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/Order/core_flows.Order.Workflows_Order"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.getLastFulfillmentStatus/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.getLastFulfillmentStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.getLastPaymentStatus/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.getLastPaymentStatus"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Payment/Steps_Payment/functions/core_flows.Payment.Steps_Payment.authorizePaymentSessionStep/page.mdx",
     "pathname": "/references/core_flows/Payment/Steps_Payment/functions/core_flows.Payment.Steps_Payment.authorizePaymentSessionStep"
   },

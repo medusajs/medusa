@@ -6,7 +6,8 @@
  *   Start an order export process to retrieve a CSV of exported orders.
  * 
  * 
- *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-orders/:transaction-id`.
+ *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to
+ *   `/admin/workflows-executions/export-orders/:transaction-id`.
  * 
  * 
  *   Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.

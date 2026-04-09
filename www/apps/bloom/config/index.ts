@@ -1,6 +1,6 @@
 import { DocsConfig, Sidebar } from "types"
 import { generatedSidebars } from "@/generated/sidebar.mjs"
-import { globalConfig } from "docs-ui"
+import { globalConfig, products } from "docs-ui"
 import { basePathUrl } from "../utils/base-path-url"
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
@@ -33,5 +33,9 @@ export const config: DocsConfig = {
   },
   features: {
     aiAssistant: false,
+  },
+  contentMenuSections: {
+    products: false,
+    whatsNew: false,
   },
 }

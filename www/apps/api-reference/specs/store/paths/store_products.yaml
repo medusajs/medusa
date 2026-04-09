@@ -877,6 +877,20 @@ get:
           url: >-
             https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
+    - name: external_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: external_id
+            description: Filter by a product's external ID.
+          - type: array
+            description: Filter by external IDs.
+            items:
+              type: string
+              title: external_id
+              description: The external ID.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK
