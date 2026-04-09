@@ -152,6 +152,39 @@ const nextConfig = {
           source: "/:path*.md",
           destination: "/md-content/:path*",
         },
+        {
+          source: "/:path((?!md-content).+)/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:path((?!md-content).+)",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
+        },
       ],
     }
   },

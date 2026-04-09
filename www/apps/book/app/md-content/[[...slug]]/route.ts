@@ -27,8 +27,8 @@ export async function GET(req: NextRequest, { params }: Params) {
 
     return new NextResponse(homepageFile + PLAINTEXT_DOC_MESSAGE, {
       headers: {
-        "Content-Type": "text/markdown",
-        "Cache-Control": "public, max-age=3600, must-revalidate",
+        "content-type": "text/markdown",
+        "cache-control": "public, max-age=3600, must-revalidate",
       },
       status: 200,
     })
@@ -97,8 +97,8 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
-      "Content-Type": "text/markdown",
-      "Cache-Control": "public, max-age=3600, must-revalidate",
+      "content-type": "text/markdown",
+      "cache-control": "public, max-age=3600, must-revalidate",
     },
     status: 200,
   })

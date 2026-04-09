@@ -12,98 +12,239 @@ Medusa is for businesses and teams looking for a digital commerce platform with 
 
 Businesses of all sizes can use Medusa, from small start ups to large enterprises. Also, technical teams of all sizes can build with Medusa; all it takes is a developer to manage and deploy Medusa projects.
 
-> When searching for Medusa documentation, append `index.html.md` to the end of the URL to get a plain-text version of the document.
-
 ## Get Started
 
-- [Get Started](https://docs.medusajs.com/learn/installation/index.html.md): Install a digital commerce application with Medusa.
-- [Main docs](https://docs.medusajs.com/learn/index.html.md): Chapters to learn Medusa's concepts and toolings.
+- [Get Started](https://docs.medusajs.com/learn/installation): Install a digital commerce application with Medusa.
+- [Install with Docker](https://docs.medusajs.com/learn/installation/docker): Install Medusa with Docker.
+- [Main docs](https://docs.medusajs.com/learn): Chapters to learn Medusa's concepts and toolings.
+- [Medusa Architecture](https://docs.medusajs.com/learn/introduction/architecture): Overview of Medusa's architecture.
+- [Build with AI Assistants and LLMs](https://docs.medusajs.com/learn/introduction/build-with-llms-ai): Use AI assistants and LLMs to build with Medusa.
+- [From Medusa v1 to v2](https://docs.medusajs.com/learn/introduction/from-v1-to-v2): Conceptual differences between Medusa v1 and v2.
+- [Update Medusa](https://docs.medusajs.com/learn/update): Update Medusa to the latest version.
+- [Build Medusa Application](https://docs.medusajs.com/learn/build): Build and compile the Medusa application.
 
 ## Product
 
 ### Framework
 
-- [Framework Overview](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md): Overview of Medusa's Framework and concepts in it like API routes, modules, data models, etc...
-- [API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md): Create custom API endpoints.
-- [Data Models](https://docs.medusajs.com/learn/fundamentals/data-models/index.html.md): Define and manage data models.
-- [Events and Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/index.html.md): Handle events and create subscribers.
-- [Index Module](https://docs.medusajs.com/learn/fundamentals/module-links/index-module/index.html.md): Use the Index Module for module links.
-- [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md): Access registered resources in Medusa.
-- [Modules](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md): Build reusable commerce functionalities.
-- [Module Links](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md): Link data models across modules.
-- [Plugins](https://docs.medusajs.com/learn/fundamentals/plugins/index.html.md): Extend Medusa with plugins.
-- [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md): Query linked data models.
-- [Scheduled Jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/index.html.md): Create and manage scheduled jobs.
-- [Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md): Build workflows and automations.
+- [Framework Overview](https://docs.medusajs.com/learn/fundamentals/framework): Overview of Medusa's Framework and concepts in it like API routes, modules, data models, etc...
+- [API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes): Create custom API endpoints.
+- [API Route Parameters](https://docs.medusajs.com/learn/fundamentals/api-routes/parameters): Use path and query parameters in API routes.
+- [HTTP Methods](https://docs.medusajs.com/learn/fundamentals/api-routes/http-methods): Supported HTTP methods for API routes.
+- [API Route Response](https://docs.medusajs.com/learn/fundamentals/api-routes/responses): Return responses from API routes.
+- [Request Body and Query Parameter Validation](https://docs.medusajs.com/learn/fundamentals/api-routes/validation): Validate request body and query parameters.
+- [Middlewares](https://docs.medusajs.com/learn/fundamentals/api-routes/middlewares): Create and apply middlewares to API routes.
+- [Protected API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/protected-routes): Protect API routes with authentication.
+- [Handling CORS in API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/cors): Configure CORS for API routes.
+- [Pass Additional Data to Medusa](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data): Pass extra data to core API routes.
+- [Throwing and Handling Errors](https://docs.medusajs.com/learn/fundamentals/api-routes/errors): Throw and handle errors in API routes.
+- [Override API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/override): Override existing Medusa API routes.
+- [Configure Request Body Parser](https://docs.medusajs.com/learn/fundamentals/api-routes/parse-body): Configure the body parser for API routes.
+- [Localization in API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/localization): Add localization support to API routes.
+- [Retrieve Custom Links from Medusa](https://docs.medusajs.com/learn/fundamentals/api-routes/retrieve-custom-links): Retrieve custom module link data in API routes.
+- [Data Models](https://docs.medusajs.com/learn/fundamentals/data-models): Define and manage data models.
+- [Data Model Properties](https://docs.medusajs.com/learn/fundamentals/data-models/properties): Define properties on data models.
+- [Data Model Relationships](https://docs.medusajs.com/learn/fundamentals/data-models/relationships): Define relationships between data models.
+- [Manage Relationships](https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships): Create, update, and delete relationship records.
+- [JSON Properties in Data Models](https://docs.medusajs.com/learn/fundamentals/data-models/json-properties): Use JSON properties in data models.
+- [Data Model Database Index](https://docs.medusajs.com/learn/fundamentals/data-models/indexes): Add database indexes to data models.
+- [Add Data Model Check Constraints](https://docs.medusajs.com/learn/fundamentals/data-models/check-constraints): Add check constraints to data model properties.
+- [Infer Type of Data Model](https://docs.medusajs.com/learn/fundamentals/data-models/infer-type): Infer TypeScript type from a data model.
+- [Migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration): Write and run database migrations.
+- [Events and Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers): Handle events and create subscribers.
+- [Event Data Payload](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/data-payload): Access event data in subscribers.
+- [Emit Workflow and Service Events](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/emit-event): Emit custom events from workflows and services.
+- [Event Processing Priority](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/event-priority): Set the processing priority of events.
+- [Index Module](https://docs.medusajs.com/learn/fundamentals/module-links/index-module): Use the Index Module for module links.
+- [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container): Access registered resources in Medusa.
+- [Modules](https://docs.medusajs.com/learn/fundamentals/modules): Build reusable commerce functionalities.
+- [Modules Directory Structure](https://docs.medusajs.com/learn/fundamentals/modules/modules-directory-structure): Understand the module directory structure.
+- [Module Container](https://docs.medusajs.com/learn/fundamentals/modules/container): Access the module container in a service.
+- [Module Isolation](https://docs.medusajs.com/learn/fundamentals/modules/isolation): Understand module isolation in Medusa.
+- [Module Options](https://docs.medusajs.com/learn/fundamentals/modules/options): Pass options to a custom module.
+- [Loaders](https://docs.medusajs.com/learn/fundamentals/modules/loaders): Run custom logic when a module is loaded.
+- [Multiple Services in a Module](https://docs.medusajs.com/learn/fundamentals/modules/multiple-services): Create multiple services in a module.
+- [Service Constraints](https://docs.medusajs.com/learn/fundamentals/modules/service-constraints): Understand constraints when building module services.
+- [Service Factory](https://docs.medusajs.com/learn/fundamentals/modules/service-factory): Use the service factory for data management.
+- [Perform Database Operations in a Service](https://docs.medusajs.com/learn/fundamentals/modules/db-operations): Run database operations in a module service.
+- [Commerce Modules in Custom Modules](https://docs.medusajs.com/learn/fundamentals/modules/commerce-modules): Use commerce modules within custom modules.
+- [Infrastructure Modules in Custom Modules](https://docs.medusajs.com/learn/fundamentals/modules/infrastructure-modules): Use infrastructure modules within custom modules.
+- [Module Links](https://docs.medusajs.com/learn/fundamentals/module-links): Link data models across modules.
+- [Link](https://docs.medusajs.com/learn/fundamentals/module-links/link): Create a link between two module records.
+- [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query): Query linked data models.
+- [Module Link Direction](https://docs.medusajs.com/learn/fundamentals/module-links/directions): Understand the direction of module links.
+- [Add Columns to a Link Table](https://docs.medusajs.com/learn/fundamentals/module-links/custom-columns): Add extra columns to a module link table.
+- [Query Context](https://docs.medusajs.com/learn/fundamentals/module-links/query-context): Use query context when querying linked data.
+- [Read-Only Module Link](https://docs.medusajs.com/learn/fundamentals/module-links/read-only): Create a read-only link between modules.
+- [Plugins](https://docs.medusajs.com/learn/fundamentals/plugins): Extend Medusa with plugins.
+- [Create a Plugin](https://docs.medusajs.com/learn/fundamentals/plugins/create): Create and publish a Medusa plugin.
+- [Scheduled Jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs): Create and manage scheduled jobs.
+- [Set Interval for Scheduled Jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/interval): Configure the interval of a scheduled job.
+- [Scheduled Job Number of Executions](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/execution-number): Limit how many times a scheduled job runs.
+- [Workflows](https://docs.medusajs.com/learn/fundamentals/workflows): Build workflows and automations.
+- [Compensation Function](https://docs.medusajs.com/learn/fundamentals/workflows/compensation-function): Roll back workflow steps with compensation functions.
+- [Workflow Hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks): Inject logic into a workflow with hooks.
+- [Expose a Workflow Hook](https://docs.medusajs.com/learn/fundamentals/workflows/add-workflow-hook): Add a hook to a custom workflow.
+- [Conditions in Workflows with When-Then](https://docs.medusajs.com/learn/fundamentals/workflows/conditions): Use when-then to add conditions to workflows.
+- [Run Workflow Steps in Parallel](https://docs.medusajs.com/learn/fundamentals/workflows/parallel-steps): Execute multiple steps simultaneously.
+- [Execute Nested Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/execute-another-workflow): Call one workflow from within another.
+- [Error Handling in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/errors): Handle and recover from errors in workflows.
+- [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks): Use locks to prevent concurrent workflow execution.
+- [Long-Running Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/long-running-workflow): Build workflows that run over extended periods.
+- [Retry Failed Steps](https://docs.medusajs.com/learn/fundamentals/workflows/retry-failed-steps): Configure automatic retry for failed workflow steps.
+- [Multiple Step Usage in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/multiple-step-usage): Reuse the same step multiple times in a workflow.
+- [Data Manipulation in Workflows with transform](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation): Use transform to manipulate data between steps.
+- [Workflow Timeout](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-timeout): Set a timeout for workflow execution.
+- [Workflow Constraints](https://docs.medusajs.com/learn/fundamentals/workflows/constructor-constraints): Understand constraints when building workflows.
+- [Store Workflow Executions](https://docs.medusajs.com/learn/fundamentals/workflows/store-executions): Persist workflow execution history.
+- [Custom CLI Scripts](https://docs.medusajs.com/learn/fundamentals/custom-cli-scripts): Create custom scripts to run via the CLI.
+- [Seed Data with Custom CLI Script](https://docs.medusajs.com/learn/fundamentals/custom-cli-scripts/seed-data): Seed your database using a custom CLI script.
+- [Environment Variables](https://docs.medusajs.com/learn/fundamentals/environment-variables): Manage environment variables in Medusa.
+- [Automatically Generated Types](https://docs.medusajs.com/learn/fundamentals/generated-types): Use auto-generated TypeScript types in your project.
+
+### Admin Development
+
+- [Admin Development](https://docs.medusajs.com/learn/fundamentals/admin): Build custom widgets and routes for the admin dashboard.
+- [Admin Widgets](https://docs.medusajs.com/learn/fundamentals/admin/widgets): Create custom widgets for the admin dashboard.
+- [Admin UI Routes](https://docs.medusajs.com/learn/fundamentals/admin/ui-routes): Create custom UI routes in the admin dashboard.
+- [Admin Routing Customizations](https://docs.medusajs.com/learn/fundamentals/admin/routing): Understand routing in admin customizations.
+- [Environment Variables in Admin Customizations](https://docs.medusajs.com/learn/fundamentals/admin/environment-variables): Use environment variables in admin customizations.
+- [Admin Development Constraints](https://docs.medusajs.com/learn/fundamentals/admin/constraints): Understand constraints in admin development.
+- [Admin Development Tips](https://docs.medusajs.com/learn/fundamentals/admin/tips): Tips and best practices for admin development.
+- [Translate Admin Customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations): Add translations to custom admin components.
+
+### Customization Tutorial
+
+- [Build Custom Features](https://docs.medusajs.com/learn/customization/custom-features): Step-by-step guide to building custom features.
+- [Guide: Implement Brand Module](https://docs.medusajs.com/learn/customization/custom-features/module): Create a custom module in the tutorial.
+- [Guide: Create Brand Workflow](https://docs.medusajs.com/learn/customization/custom-features/workflow): Create a workflow in the tutorial.
+- [Guide: Create Brand API Route](https://docs.medusajs.com/learn/customization/custom-features/api-route): Expose an API route in the tutorial.
+- [Extend Core Commerce Features](https://docs.medusajs.com/learn/customization/extend-features): Extend Medusa's built-in commerce features.
+- [Guide: Define Module Link Between Brand and Product](https://docs.medusajs.com/learn/customization/extend-features/define-link): Link a custom module to a core module.
+- [Guide: Extend Create Product Flow](https://docs.medusajs.com/learn/customization/extend-features/extend-create-product): Add custom logic to the create product workflow.
+- [Guide: Query Linked Records](https://docs.medusajs.com/learn/customization/extend-features/query-linked-records): Retrieve linked data across modules.
+- [Customize Medusa Admin Dashboard](https://docs.medusajs.com/learn/customization/customize-admin): Add custom UI to the Medusa admin dashboard.
+- [Create Brands UI Route in Admin](https://docs.medusajs.com/learn/customization/customize-admin/route): Create a custom admin route in the tutorial.
+- [Guide: Add Product Widget](https://docs.medusajs.com/learn/customization/customize-admin/widget): Add a widget to the product page in admin.
+- [Integrate Third-Party Systems](https://docs.medusajs.com/learn/customization/integrate-systems): Connect external services with Medusa.
+- [Guide: Integrate Third-Party Brand System](https://docs.medusajs.com/learn/customization/integrate-systems/service): Build a service to integrate with a third-party API.
+- [Guide: Sync Brands from Medusa to Third-Party](https://docs.medusajs.com/learn/customization/integrate-systems/handle-event): Sync data on events.
+- [Guide: Schedule Syncing Brands from Third-Party](https://docs.medusajs.com/learn/customization/integrate-systems/schedule-task): Schedule periodic sync with a third-party.
+- [Re-Use Customizations with Plugins](https://docs.medusajs.com/learn/customization/reuse-customizations): Package customizations as a reusable plugin.
+- [Customizations Next Steps](https://docs.medusajs.com/learn/customization/next-steps): Continue learning after the customization tutorial.
 
 ### Modules
 
-- [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md): List of all Commerce Modules in Medusa and an entry point to their documentation.
-- [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md): List of all Infrastructure Modules in Medusa and an entry point to their documentation.
+- [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules): List of all Commerce Modules in Medusa and an entry point to their documentation.
+- [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules): List of all Infrastructure Modules in Medusa and an entry point to their documentation.
+
+### Debugging and Testing
+
+- [Medusa Testing Tools](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools): Overview of testing tools available in Medusa.
+- [Write Integration Tests](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/integration-tests): Set up and write integration tests.
+- [Example: Write Integration Tests for API Routes](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/integration-tests/api-routes): Integration test examples for API routes.
+- [Example: Write Integration Tests for Workflows](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/integration-tests/workflows): Integration test examples for workflows.
+- [Write Tests for Modules](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/modules-tests): Write unit tests for custom modules.
+- [Debug Workflows](https://docs.medusajs.com/learn/debugging-and-testing/debug-workflows): Debug workflow executions.
+- [Logging](https://docs.medusajs.com/learn/debugging-and-testing/logging): Configure logging in Medusa.
+- [Override Logger](https://docs.medusajs.com/learn/debugging-and-testing/logging/custom-logger): Replace the default logger with a custom one.
+- [Configure Instrumentation](https://docs.medusajs.com/learn/debugging-and-testing/instrumentation): Set up OpenTelemetry instrumentation.
+- [Feature Flags](https://docs.medusajs.com/learn/debugging-and-testing/feature-flags): Enable and disable feature flags.
+- [Create Custom Feature Flag](https://docs.medusajs.com/learn/debugging-and-testing/feature-flags/create): Define a custom feature flag.
+
+### Deployment and Configuration
+
+- [Medusa Deployment Overview](https://docs.medusajs.com/learn/deployment): Overview of deploying Medusa to production.
+- [General Medusa Application Deployment Guide](https://docs.medusajs.com/learn/deployment/general): Step-by-step guide for deploying Medusa.
+- [Worker Mode of Medusa Instance](https://docs.medusajs.com/learn/production/worker-mode): Run Medusa in worker mode for background jobs.
+- [Medusa Application Configuration](https://docs.medusajs.com/learn/configurations/medusa-config): Configure the Medusa application with medusa-config.
+- [Asymmetric Encryption](https://docs.medusajs.com/learn/configurations/medusa-config/asymmetric-encryption): Configure asymmetric encryption in Medusa.
+- [Use pnpm with Medusa](https://docs.medusajs.com/learn/configurations/pnpm): Use pnpm as your package manager with Medusa.
+- [Using TypeScript Aliases](https://docs.medusajs.com/learn/configurations/ts-aliases): Configure TypeScript path aliases in Medusa.
+
+### Storefront Development
+
+- [Storefront Development](https://docs.medusajs.com/learn/storefront-development): Overview of building storefronts with Medusa.
+
+### Best Practices
+
+- [Best Practices for Third-Party Syncing](https://docs.medusajs.com/learn/best-practices/third-party-sync): Best practices when syncing data with third-party services.
+
+### Codemods
+
+- [Medusa Codemods](https://docs.medusajs.com/learn/codemods): Automated code migration tools for Medusa upgrades.
+- [Replace Imports Codemod](https://docs.medusajs.com/learn/codemods/replace-imports): Automatically replace deprecated imports.
+- [Replace Zod Imports Codemod](https://docs.medusajs.com/learn/codemods/replace-zod-imports): Automatically replace Zod imports.
+
+### Contributing
+
+- [Docs Contribution Guidelines](https://docs.medusajs.com/learn/resources/contribution-guidelines/docs): How to contribute to Medusa documentation.
+- [Translate Medusa Admin](https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations): Contribute translations for the Medusa admin.
+- [Usage Information](https://docs.medusajs.com/learn/resources/usage): Information about Medusa usage data collection.
 
 ## Commerce Modules
 
 ### Cart & Purchase
 
-- [Cart](https://docs.medusajs.com/resources/commerce-modules/cart/index.html.md): Add to cart, checkout, and totals.
-- [Payment](https://docs.medusajs.com/resources/commerce-modules/payment/index.html.md): Process any payment type.
-- [Customer](https://docs.medusajs.com/resources/commerce-modules/customer/index.html.md): Customer and group management.
+- [Cart](https://docs.medusajs.com/resources/commerce-modules/cart): Add to cart, checkout, and totals.
+- [Payment](https://docs.medusajs.com/resources/commerce-modules/payment): Process any payment type.
+- [Customer](https://docs.medusajs.com/resources/commerce-modules/customer): Customer and group management.
 
 ### Merchandising
 
-- [Pricing](https://docs.medusajs.com/resources/commerce-modules/pricing/index.html.md): Configurable pricing engine.
-- [Promotion](https://docs.medusajs.com/resources/commerce-modules/promotion/index.html.md): Discounts and promotions.
-- [Product](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md): Variants, categories, and bulk edits.
+- [Pricing](https://docs.medusajs.com/resources/commerce-modules/pricing): Configurable pricing engine.
+- [Promotion](https://docs.medusajs.com/resources/commerce-modules/promotion): Discounts and promotions.
+- [Product](https://docs.medusajs.com/resources/commerce-modules/product): Variants, categories, and bulk edits.
 
 ### Fulfillment
 
-- [Order](https://docs.medusajs.com/resources/commerce-modules/order/index.html.md): Omnichannel order management.
-- [Inventory](https://docs.medusajs.com/resources/commerce-modules/inventory/index.html.md): Multi-warehouse and reservations.
-- [Fulfillment](https://docs.medusajs.com/resources/commerce-modules/fulfillment/index.html.md): Order fulfillment and shipping.
-- [Stock Location](https://docs.medusajs.com/resources/commerce-modules/stock-location/index.html.md): Locations of stock-kept items.
+- [Order](https://docs.medusajs.com/resources/commerce-modules/order): Omnichannel order management.
+- [Inventory](https://docs.medusajs.com/resources/commerce-modules/inventory): Multi-warehouse and reservations.
+- [Fulfillment](https://docs.medusajs.com/resources/commerce-modules/fulfillment): Order fulfillment and shipping.
+- [Stock Location](https://docs.medusajs.com/resources/commerce-modules/stock-location): Locations of stock-kept items.
 
 ### Regions & Channels
 
-- [Region](https://docs.medusajs.com/resources/commerce-modules/region/index.html.md): Cross-border commerce.
-- [Sales Channel](https://docs.medusajs.com/resources/commerce-modules/sales-channel/index.html.md): Omnichannel sales.
-- [Tax](https://docs.medusajs.com/resources/commerce-modules/tax/index.html.md): Granular tax control.
-- [Currency](https://docs.medusajs.com/resources/commerce-modules/currency/index.html.md): Multi-currency support.
+- [Region](https://docs.medusajs.com/resources/commerce-modules/region): Cross-border commerce.
+- [Sales Channel](https://docs.medusajs.com/resources/commerce-modules/sales-channel): Omnichannel sales.
+- [Tax](https://docs.medusajs.com/resources/commerce-modules/tax): Granular tax control.
+- [Currency](https://docs.medusajs.com/resources/commerce-modules/currency): Multi-currency support.
 
 ### User Access
 
-- [API Keys](https://docs.medusajs.com/resources/commerce-modules/api-key/index.html.md): Store and admin access.
-- [User Module](https://docs.medusajs.com/resources/commerce-modules/user/index.html.md): Admin user management.
-- [Auth](https://docs.medusajs.com/resources/commerce-modules/auth/index.html.md): Integrate authentication methods.
+- [API Keys](https://docs.medusajs.com/resources/commerce-modules/api-key): Store and admin access.
+- [User Module](https://docs.medusajs.com/resources/commerce-modules/user): Admin user management.
+- [Auth](https://docs.medusajs.com/resources/commerce-modules/auth): Integrate authentication methods.
 
 ## Infrastructure Modules
 
-- [Analytics](https://docs.medusajs.com/resources/infrastructure-modules/analytics/index.html.md): Track and analyze user interactions and system events with third-party services.
-- [Caching](https://docs.medusajs.com/resources/infrastructure-modules/caching/index.html.md): Cache data in your Medusa application, improving performance and reducing latency for frequently accessed data.
-- [Event](https://docs.medusajs.com/resources/infrastructure-modules/event/index.html.md): Handles queueing events, emitting them, and executing their subscribers.
-- [File](https://docs.medusajs.com/resources/infrastructure-modules/file/index.html.md): Store assets, such as product images, in third-party providers.
-- [Locking](https://docs.medusajs.com/resources/infrastructure-modules/locking/index.html.md): Manages access to shared resources by multiple processes or threads.
-- [Notification](https://docs.medusajs.com/resources/infrastructure-modules/notification/index.html.md): Send a notification to customers or users, such as order confirmation emails.
-- [Workflow Engine](https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/index.html.md): Handles tracking and recording the transactions and statuses of workflows and their steps.
+- [Analytics](https://docs.medusajs.com/resources/infrastructure-modules/analytics): Track and analyze user interactions and system events with third-party services.
+- [Caching](https://docs.medusajs.com/resources/infrastructure-modules/caching): Cache data in your Medusa application, improving performance and reducing latency for frequently accessed data.
+- [Event](https://docs.medusajs.com/resources/infrastructure-modules/event): Handles queueing events, emitting them, and executing their subscribers.
+- [File](https://docs.medusajs.com/resources/infrastructure-modules/file): Store assets, such as product images, in third-party providers.
+- [Locking](https://docs.medusajs.com/resources/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads.
+- [Notification](https://docs.medusajs.com/resources/infrastructure-modules/notification): Send a notification to customers or users, such as order confirmation emails.
+- [Workflow Engine](https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine): Handles tracking and recording the transactions and statuses of workflows and their steps.
 
 ## Build
 
-- [Recipes](https://docs.medusajs.com/resources/recipes/index.html.md): Build common use cases with step-by-step guides.
-- [How-to & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md): How-to guides and tutorials for building with Medusa.
-- [Integrations](https://docs.medusajs.com/resources/integrations/index.html.md): Integrate third-party services with Medusa.
-- [Storefront](https://docs.medusajs.com/resources/storefront-development/index.html.md): Build storefronts with Medusa.
+- [Recipes](https://docs.medusajs.com/resources/recipes): Build common use cases with step-by-step guides.
+- [How-to & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials): How-to guides and tutorials for building with Medusa.
+- [Integrations](https://docs.medusajs.com/resources/integrations): Integrate third-party services with Medusa.
+- [Storefront](https://docs.medusajs.com/resources/storefront-development): Build storefronts with Medusa.
 
 ## Tools
 
 ### CLI Tools
 
-- [create-medusa-app](https://docs.medusajs.com/resources/create-medusa-app/index.html.md): CLI tool to create Medusa applications.
-- [Medusa CLI](https://docs.medusajs.com/resources/medusa-cli/index.html.md): CLI tool for managing Medusa projects.
+- [create-medusa-app](https://docs.medusajs.com/resources/create-medusa-app): CLI tool to create Medusa applications.
+- [Medusa CLI](https://docs.medusajs.com/resources/medusa-cli): CLI tool for managing Medusa projects.
 
 ### Development Tools
 
-- [JS SDK](https://docs.medusajs.com/resources/js-sdk/index.html.md): JavaScript SDK for interacting with Medusa.
-- [Next.js Starter](https://docs.medusajs.com/resources/nextjs-starter/index.html.md): Next.js storefront starter template and how to install it.
-- [Medusa UI](https://docs.medusajs.com/ui/index.html.md): A React library to build applications using Medusa's primitives and design system.
+- [JS SDK](https://docs.medusajs.com/resources/js-sdk): JavaScript SDK for interacting with Medusa.
+- [Next.js Starter](https://docs.medusajs.com/resources/nextjs-starter): Next.js storefront starter template and how to install it.
+- [Medusa UI](https://docs.medusajs.com/ui): A React library to build applications using Medusa's primitives and design system.
 
 ## References
 
@@ -114,21 +255,21 @@ Businesses of all sizes can use Medusa, from small start ups to large enterprise
 
 ### Development References
 
-- [Admin Injection Zones](https://docs.medusajs.com/resources/admin-widget-injection-zones/index.html.md): Injection zones for customizing the admin dashboard.
-- [Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md): Resources available in the Medusa Container.
-- [Core Workflows](https://docs.medusajs.com/resources/medusa-workflows-reference/index.html.md): Reference for core workflows in Medusa.
-- [Data Model Language](https://docs.medusajs.com/resources/references/data-model/index.html.md): Reference for the Data Model Language.
-- [Data Model Repository](https://docs.medusajs.com/resources/data-model-repository-reference/index.html.md): Reference for the Data Model Repository.
-- [Events Reference](https://docs.medusajs.com/resources/references/events/index.html.md): Reference for events in Medusa.
-- [Helper Steps](https://docs.medusajs.com/resources/references/helper-steps/index.html.md): Reference for helper steps in workflows.
-- [Service Factory](https://docs.medusajs.com/resources/service-factory-reference/index.html.md): Reference for the Service Factory.
-- [Testing Framework](https://docs.medusajs.com/resources/test-tools-reference/index.html.md): Reference for testing tools in Medusa.
-- [Workflows SDK](https://docs.medusajs.com/resources/references/workflows/index.html.md): Reference for the Workflows SDK.
+- [Admin Injection Zones](https://docs.medusajs.com/resources/admin-widget-injection-zones): Injection zones for customizing the admin dashboard.
+- [Container Resources](https://docs.medusajs.com/resources/medusa-container-resources): Resources available in the Medusa Container.
+- [Core Workflows](https://docs.medusajs.com/resources/medusa-workflows-reference): Reference for core workflows in Medusa.
+- [Data Model Language](https://docs.medusajs.com/resources/references/data-model): Reference for the Data Model Language.
+- [Data Model Repository](https://docs.medusajs.com/resources/data-model-repository-reference): Reference for the Data Model Repository.
+- [Events Reference](https://docs.medusajs.com/resources/references/events): Reference for events in Medusa.
+- [Helper Steps](https://docs.medusajs.com/resources/references/helper-steps): Reference for helper steps in workflows.
+- [Service Factory](https://docs.medusajs.com/resources/service-factory-reference): Reference for the Service Factory.
+- [Testing Framework](https://docs.medusajs.com/resources/test-tools-reference): Reference for testing tools in Medusa.
+- [Workflows SDK](https://docs.medusajs.com/resources/references/workflows): Reference for the Workflows SDK.
 
 ## Medusa Admin
 
-- [User Guide](https://docs.medusajs.com/user-guide/index.html.md): Guide for merchants and users to manage their Medusa store with the Medusa Admin.
+- [User Guide](https://docs.medusajs.com/user-guide): Guide for merchants and users to manage their Medusa store with the Medusa Admin.
 
 ## Cloud
 
-- [Medusa Cloud](https://docs.medusajs.com/cloud/index.html.md): Deploy and manage Medusa projects on Medusa Cloud.
+- [Medusa Cloud](https://docs.medusajs.com/cloud): Deploy and manage Medusa projects on Medusa Cloud.
