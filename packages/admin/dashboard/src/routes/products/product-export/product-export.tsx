@@ -26,6 +26,7 @@ export const ProductExport = () => {
 const ProductExportContent = () => {
   const { t } = useTranslation()
   const { searchParams } = useProductTableQuery({})
+  delete searchParams.fields
 
   const { mutateAsync } = useExportProducts({ ...searchParams })
   const { handleSuccess } = useRouteModal()

@@ -29,7 +29,7 @@ export type ModuleProviderExports<Service = any> = {
     moduleDeclaration?: any
   ): Promise<void>
   /**
-   * Explicitly set the the true location of the module resources.
+   * Explicitly set the true location of the module resources.
    * Can be used to re-export the module from a different location and specify its original location.
    */
   discoveryPath?: string

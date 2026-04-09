@@ -3,7 +3,6 @@ import ts from "typescript"
 import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 import AbstractGenerator from "./index.js"
 import { minimatch } from "minimatch"
-import AiGenerator from "../helpers/ai-generator.js"
 import getBasePath from "../../utils/get-base-path.js"
 
 /**
@@ -25,7 +24,6 @@ class DocblockGenerator extends AbstractGenerator {
       if (file.isDeclarationFile || !this.isFileIncluded(file.fileName)) {
         return
       }
-      let aiGenerator: AiGenerator | undefined
 
       console.log(`[Docblock] Generating for ${file.fileName}...`)
 
@@ -34,10 +32,6 @@ class DocblockGenerator extends AbstractGenerator {
       const commentsToRemove: string[] = []
       const origFileText = file.getFullText().trim()
       const fileNodes: ts.Node[] = [file]
-
-      if (this.options.generateExamples) {
-        aiGenerator = new AiGenerator()
-      }
 
       // since typescript's compiler API doesn't support
       // async processes, we have to retrieve the nodes first then
@@ -55,14 +49,9 @@ class DocblockGenerator extends AbstractGenerator {
         let docComment: string | undefined
 
         if (nodeKindGenerator?.canDocumentNode(node)) {
-          if (aiGenerator) {
-            const nodeFiles = aiGenerator.getNodeFiles(file)
-            await aiGenerator.initAssistant(nodeFiles)
-          }
           // initialize assistant only when needed
           // if previously initialized, calling the method does nothing
           docComment = await nodeKindGenerator.getDocBlock(node, {
-            aiGenerator,
             addEnd: true,
           })
           if (docComment.length) {
@@ -96,10 +85,6 @@ class DocblockGenerator extends AbstractGenerator {
         await Promise.all(
           fileNodes.map(async (node) => await documentNode(node))
         )
-      }
-
-      if (aiGenerator) {
-        await aiGenerator.destroyAssistant()
       }
 
       // add comments to file

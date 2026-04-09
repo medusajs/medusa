@@ -5,7 +5,8 @@
  * description: >
  *   Accept an invite and create a new user.
  * 
- *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`). The user can then authenticate using the `/auth/user/emailpass` API route.
+ *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`). The user can
+ *   then authenticate using the `/auth/user/emailpass` API route.
  * x-authenticated: true
  * requestBody:
  *   content:

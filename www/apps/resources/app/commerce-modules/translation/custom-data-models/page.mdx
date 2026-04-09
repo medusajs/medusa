@@ -1,4 +1,4 @@
-import { Prerequisites, CodeTabs, CodeTab } from "docs-ui"
+import { Prerequisites, CodeTabs, CodeTab, Table } from "docs-ui"
 
 export const metadata = {
   title: `Translate Custom Data Models`,
@@ -64,9 +64,42 @@ module.exports = defineConfig({
 
 ---
 
-## Step 1: Configure Translatable Entities
+## Step 1: Configure Translatable Data Models
 
-The first step is to configure the Translation Module with the custom entities you want to support translations for.
+<Note>
+
+The `translatable` method is available since [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0). Previous versions required [configuring translatable data models](#deprecated-manage-from-medusa-configts) in `medusa-config.ts`, which is now deprecated.
+
+</Note>
+
+The first step is to configure the properties of your custom data models that you want to support translations for. This will allow admin users to translate the data model's records from the Medusa Admin, and manage whether the model and its properties are translatable.
+
+For example, update your `Post` data model to mark its `title` property as translatable:
+
+export const translatableModifierHighlights = [
+  ["5", "translatable", "Mark the title property as translatable."],
+]
+
+```ts title="src/modules/blog/models/post.ts" highlights={translatableModifierHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text().translatable(),
+})
+
+export default Post
+```
+
+When you add the `.translatable()` method to a property, the data model automatically appears in Settings → Translations in the Medusa Admin.
+
+Next, go to [Step 2: Manage Translations from Medusa Admin](#step-2-manage-translations-from-medusa-admin).
+
+### Deprecated: Manage From medusa-config.ts
+
+<Details summaryContent="Before Medusa v2.13.0">
+
+If you're using a Medusa version prior to v2.13.0, you need to configure the Translation Module in `medusa-config.ts` to support translations for your custom data models.
 
 Before proceeding, run the `build` command to ensure the generated types are up-to-date:
 
@@ -108,6 +141,8 @@ The `options.entities` option is an array of objects indicating the custom data 
 
 1. `type`: The name of the table where the custom data model is stored. This is the same value passed as the first parameter to `model.define`.
 2. `fields`: An array of fields in the custom data model to support translations for.
+
+</Details>
 
 ---
 

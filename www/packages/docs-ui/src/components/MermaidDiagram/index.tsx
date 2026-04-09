@@ -46,6 +46,11 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
         tertiaryTextColor: "#18181B",
         edgeLabelBackground: "#FAFAFA",
         textColor: "rgba(82, 82, 91, 1)",
+        fontFamily: "Inter, sans-serif",
+        fontSize: "14px",
+      },
+      sequence: {
+        mirrorActors: false,
       },
     })
 

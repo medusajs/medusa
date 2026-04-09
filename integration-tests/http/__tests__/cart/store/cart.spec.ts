@@ -1,4 +1,7 @@
-import { createCartCreditLinesWorkflow } from "@medusajs/core-flows"
+import {
+  createCartCreditLinesWorkflow,
+  updateCartsStep,
+} from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   Modules,
@@ -19,6 +22,10 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 
 jest.setTimeout(100000)
 
@@ -37,8 +44,13 @@ const shippingAddressData = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let appContainer
+
+    beforeAll(async () => {
+      appContainer = getContainer()
+    })
+
     describe("Store Carts API", () => {
-      let appContainer
       let storeHeaders
       let storeHeadersWithCustomer
       let region,
@@ -50,10 +62,6 @@ medusaIntegrationTestRunner({
         promotion,
         shippingProfile,
         taxSeedData
-
-      beforeAll(async () => {
-        appContainer = getContainer()
-      })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -5917,6 +5925,26 @@ medusaIntegrationTestRunner({
             message: "Shipping Options are invalid for cart.",
           })
         })
+      })
+    })
+
+    describe("workflows", () => {
+      it("updateCartsStep - should not call listCarts when data is empty", async () => {
+        const cartService = appContainer.resolve(Modules.CART)
+        const listCartsSpy = jest.spyOn(cartService, "listCarts")
+
+        const workflow = createWorkflow("test-workflow", () => {
+          return new WorkflowResponse(updateCartsStep([]))
+        })
+
+        const { result } = await workflow(appContainer).run({
+          input: [],
+        })
+
+        expect(result).toEqual([])
+        expect(listCartsSpy).not.toHaveBeenCalled()
+
+        listCartsSpy.mockRestore()
       })
     })
   },

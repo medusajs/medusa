@@ -256,6 +256,7 @@ function prepareFulfillmentData({
       requires_shipping: someItemsRequireShipping,
       labels: input.labels ?? [],
       delivery_address: shippingAddress as any,
+      created_by: input.created_by,
       packed_at: new Date(),
       metadata: input.metadata,
     },

@@ -2,7 +2,7 @@ If you use the `--db-url` option with the `create-medusa-app` command and the co
 
 - Specify `?sslmode=require` at the end of the connection URL. Some PostgreSQL hosting providers, like Vercel, require passing this option. For example:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
 ```
 

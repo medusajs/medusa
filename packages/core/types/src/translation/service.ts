@@ -737,6 +737,36 @@ export interface ITranslationModuleService extends IModuleService {
   ): Promise<Record<string, string[]>>
 
   /**
+   * This method retrieves the inactive translatable fields of a resource from the database.
+   * For example, whenever a merchant disables a fields as translatable, it is added to the inactive translatable fields, so they
+   * can later be re-enabled.
+   *
+   * @param {string} entityType - Name of the resource's table to get inactive translatable fields for.
+   * If not provided, returns all inactive translatable fields for all entity types. For example, `product` or `product_variant`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]>>} A mapping of resource names to their inactive translatable fields.
+   *
+   * @example
+   * To get inactive translatable fields for all resources:
+   *
+   * ```ts
+   * const allInactiveFields = await translationModuleService.getInactiveTranslatableFields()
+   * // Returns: { product: ["subtitle"], product_variant: ["material"] }
+   * ```
+   *
+   * To get inactive translatable fields for a specific resource:
+   *
+   * ```ts
+   * const productInactiveFields = await translationModuleService.getInactiveTranslatableFields("product")
+   * // Returns: { product: ["subtitle"] }
+   * ```
+   */
+  getInactiveTranslatableFields(
+    entityType?: string,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]>>
+
+  /**
    * This method creates a translation setting.
    *
    * @param {CreateTranslationSettingsDTO} data - The translation setting to be created.

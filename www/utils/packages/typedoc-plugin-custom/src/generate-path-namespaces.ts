@@ -65,6 +65,12 @@ export function load(app: Application) {
         return
       }
 
+      const isIgnored = reflection.comment?.modifierTags.has("@ignore")
+
+      if (isIgnored) {
+        return
+      }
+
       const symbol = context.project.getSymbolFromReflection(reflection)
       const filePath = symbol?.valueDeclaration?.getSourceFile().fileName
 
@@ -109,6 +115,23 @@ export function load(app: Application) {
       }
     }
   )
+
+  app.converter.on(Converter.EVENT_END, (context) => {
+    generatedNamespaces.forEach((namespace) => {
+      if (namespace.children?.length === 0) {
+        return
+      }
+
+      const emptyChildren = namespace.children?.every(
+        (child) =>
+          !child.children?.some((c) => c.kind === ReflectionKind.Function)
+      )
+
+      if (emptyChildren) {
+        context.project.removeChild(namespace)
+      }
+    })
+  })
 }
 
 function createNamespace(

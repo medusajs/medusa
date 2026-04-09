@@ -29,7 +29,8 @@
 		"properties": {
 			"id": "The ID of the translation settings.",
 			"entity_type": "The entity type of the translation settings",
-			"fields": "The fields of the translation settings\n\n@example [\"title\", \"description\", \"material\"]"
+			"fields": "The fields of the translation settings\n\n@example [\"title\", \"description\", \"material\"]",
+			"is_active": "Whether the translation settings is active.\n\n@since 2.13.0"
 		},
 		"since": "2.12.4",
 		"deprecated": {

@@ -35,6 +35,14 @@ export const updateReservationsStep = createStep(
       Modules.INVENTORY
     )
 
+    if (!data.length) {
+      return new StepResponse([], {
+        dataBeforeUpdate: [],
+        selects: [],
+        relations: [],
+      })
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
     const dataBeforeUpdate = await inventoryModuleService.listReservationItems(
       { id: data.map((d) => d.id) },

@@ -89,15 +89,30 @@ export interface AdminTranslationStatisticsResponse {
  */
 export interface AdminTranslationSettingsResponse {
   /**
-   * A mapping of entity types to their translatable field names.
+   * A mapping of entity types to their tranlsation settings.
    *
    * @example
    * {
-   *   "product": ["title", "description", "subtitle", "status"],
-   *   "product_variant": ["title", "material"]
+   *   "product": {
+   *     "id": "trset_123",
+   *     "fields": ["title", "description", "subtitle", "status"],
+   *     "is_active": true,
+   *     "inactive_fields": []
+   *   },
+   *   "product_variant": {
+   *     "id": "trset_456",
+   *     "fields": ["title", "material"],
+   *     "is_active": false,
+   *     "inactive_fields": []
+   *   }
    * }
    */
-  translatable_fields: Record<string, string[]>
+  translation_settings: Record<
+    string,
+    Pick<AdminTranslationSettings, "id" | "fields" | "is_active"> & {
+      inactive_fields: string[]
+    }
+  >
 }
 
 export interface AdminBatchTranslationSettingsResponse {

@@ -1,6 +1,6 @@
+import { z } from "@medusajs/deps/zod"
 import { dynamicImport, FileSystem, isFileSkipped } from "@medusajs/utils"
 import { join } from "path"
-import { z } from "@medusajs/deps/zod"
 
 import { logger } from "../logger"
 import {
@@ -124,8 +124,15 @@ export class MiddlewareFileLoader {
           })
         }
 
-        if (route.middlewares) {
-          route.middlewares.forEach((middleware) => {
+        if (route.middlewares || route.policies) {
+          const middlewares = route.middlewares ?? []
+          if (route.policies && !route.middlewares?.length) {
+            middlewares.push((_, __, next) => {
+              next()
+            })
+          }
+
+          middlewares.forEach((middleware) => {
             result.middleware.push({
               handler: middleware,
               matcher: matcher,

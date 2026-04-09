@@ -1,3 +1,7 @@
+export enum Entities {
+  product_tag = "product_tag",
+}
+
 export const defaultAdminProductTagFields = [
   "id",
   "value",
@@ -9,10 +13,12 @@ export const defaultAdminProductTagFields = [
 export const retrieveProductTagTransformQueryConfig = {
   defaults: defaultAdminProductTagFields,
   isList: false,
+  entity: Entities.product_tag,
 }
 
 export const listProductTagsTransformQueryConfig = {
   ...retrieveProductTagTransformQueryConfig,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.product_tag,
 }

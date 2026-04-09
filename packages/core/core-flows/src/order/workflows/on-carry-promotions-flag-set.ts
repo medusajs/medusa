@@ -18,6 +18,7 @@ import { useRemoteQueryStep } from "../../common"
 import { throwIfOrderChangeIsNotActive } from "../utils/order-validation"
 
 import { computeAdjustmentsForPreviewWorkflow } from "./compute-adjustments-for-preview"
+import { fieldsToComputeAdjustmentsForPreview } from "./order-edit/utils/fields"
 
 /**
  * The data to set the carry over promotions flag for an order change.
@@ -198,9 +199,7 @@ export const onCarryPromotionsFlagSet = createWorkflow(
       useRemoteQueryStep({
         entry_point: "orders",
         fields: [
-          "id",
-          "currency_code",
-          "promotions.*",
+          ...fieldsToComputeAdjustmentsForPreview,
           "promotions.application_method.*",
         ],
         variables: {

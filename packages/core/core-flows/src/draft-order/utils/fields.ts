@@ -3,6 +3,7 @@ export const draftOrderFieldsForRefreshSteps = [
   "is_draft_order",
   "status",
   "currency_code",
+  "email",
   "metadata",
   "sales_channel_id",
   "region_id",

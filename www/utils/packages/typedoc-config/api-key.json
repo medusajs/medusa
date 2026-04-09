@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/api-key/dist", 
     "../../../../packages/modules/api-key/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/api-key/src"
+  }
 }

@@ -12,6 +12,7 @@ import {
 import { ActiveLocalesSection } from "./components/active-locales-section/active-locales-section"
 import { TranslationListSection } from "./components/translation-list-section/translation-list-section"
 import { TranslationsCompletionSection } from "./components/translations-completion-section/translations-completion-section"
+import { ListCheckbox } from "@medusajs/icons"
 
 export type TranslatableEntity = {
   label: string
@@ -27,11 +28,13 @@ export const TranslationList = () => {
 
   const { store, isPending, isError, error } = useStore()
   const {
-    translatable_fields,
+    translation_settings,
     isPending: isTranslationSettingsPending,
     isError: isTranslationSettingsError,
     error: translationSettingsError,
-  } = useTranslationSettings()
+  } = useTranslationSettings({
+    is_active: true,
+  })
   const {
     statistics,
     isPending: isTranslationStatisticsPending,
@@ -43,11 +46,13 @@ export const TranslationList = () => {
         store?.supported_locales?.map(
           (suportedLocale) => suportedLocale.locale_code
         ) ?? [],
-      entity_types: Object.keys(translatable_fields ?? {}),
+      entity_types: Object.keys(translation_settings ?? {}),
     },
     {
       enabled:
-        !!translatable_fields && !!store && store.supported_locales?.length > 0,
+        !!translation_settings &&
+        !!store &&
+        store.supported_locales?.length > 0,
     }
   )
 
@@ -58,17 +63,17 @@ export const TranslationList = () => {
   const hasLocales = (store?.supported_locales ?? []).length > 0
 
   const translatableEntities: TranslatableEntity[] = useMemo(() => {
-    if (!translatable_fields) {
+    if (!translation_settings) {
       return []
     }
 
     return (
-      Object.entries(translatable_fields)
+      Object.entries(translation_settings)
         .filter(
           ([entity]) =>
             !["product_option", "product_option_value"].includes(entity)
         )
-        .map(([entity, fields]) => {
+        .map(([entity, setting]) => {
           const entityStatistics = statistics?.[entity] ?? {
             translated: 0,
             expected: 0,
@@ -80,7 +85,7 @@ export const TranslationList = () => {
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" "),
             reference: entity,
-            translatableFields: fields,
+            translatableFields: setting.fields,
             translatedCount: entityStatistics.translated,
             totalCount: entityStatistics.expected,
           }
@@ -88,17 +93,21 @@ export const TranslationList = () => {
         // sort by label alphabetically
         .sort((a, b) => a.label.localeCompare(b.label))
     )
-  }, [translatable_fields, statistics])
+  }, [translation_settings, statistics])
 
   const handleManageLocales = useCallback(() => {
     navigate("/settings/translations/add-locales")
+  }, [navigate])
+
+  const handleManageEntities = useCallback(() => {
+    navigate("/settings/translations/settings")
   }, [navigate])
 
   const isReady =
     !!store &&
     !isPending &&
     !isTranslationSettingsPending &&
-    !!translatable_fields &&
+    !!translation_settings &&
     ((!!statistics && !isTranslationStatisticsPending) || !hasLocales)
 
   if (!isReady) {
@@ -115,11 +124,23 @@ export const TranslationList = () => {
       }}
     >
       <TwoColumnPage.Main>
-        <Container className="flex flex-col px-6 py-4">
-          <Heading>Manage {t("translations.domain")}</Heading>
-          <Text className="text-ui-fg-subtle" size="small">
-            {t("translations.subtitle")}
-          </Text>
+        <Container className="flex items-center justify-between px-6 py-4">
+          <div className="flex flex-col">
+            <Heading>Manage {t("translations.domain")}</Heading>
+            <Text className="text-ui-fg-subtle" size="small">
+              {t("translations.subtitle")}
+            </Text>
+          </div>
+          <Button
+            size="small"
+            variant="secondary"
+            onClick={handleManageEntities}
+          >
+            <ListCheckbox className="text-ui-fg-subtle" />
+            <Text className="txt-compact-small-plus text-ui-fg-base">
+              {t("translations.actions.manageEntities")}
+            </Text>
+          </Button>
         </Container>
 
         {!hasLocales && (

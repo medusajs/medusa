@@ -26,6 +26,9 @@ const withMDX = mdx({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -51,6 +54,9 @@ const withMDX = mdx({
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",
@@ -162,7 +168,15 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path*",
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!md-content).+)/",
           has: [
             {
               type: "header",
@@ -170,7 +184,29 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path*",
+          destination: "/md-content/:path",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:path((?!md-content).+)",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
         },
       ],
     }

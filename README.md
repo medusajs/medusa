@@ -36,7 +36,9 @@
 
 ## Getting Started
 
-Visit the [Documentation](https://docs.medusajs.com/learn) to set up a Medusa application.
+The fastest way to get started is with [Medusa Cloud](https://medusajs.com/cloud/). It provides a managed environment optimized for Medusa applications, with automated deployments, scaling, and maintenance. [Get started on Medusa Cloud](https://cloud.medusajs.com)
+
+To set up a Medusa application locally, visit the [Documentation](https://docs.medusajs.com/learn).
 
 ## About Medusa
 

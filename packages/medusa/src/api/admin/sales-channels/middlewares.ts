@@ -1,10 +1,12 @@
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreateSalesChannel,
   AdminGetSalesChannelParams,
@@ -13,6 +15,15 @@ import {
 } from "./validators"
 
 export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    matcher: "/admin/sales-channels/*",
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
   {
     method: ["GET"],
     matcher: "/admin/sales-channels",
@@ -31,6 +42,12 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         resourceId: "sales_channel_id",
         filterableField: "publishable_key_id",
       }),
+    ],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -53,6 +70,12 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -64,11 +87,23 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/sales-channels/:id",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.delete,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -79,6 +114,12 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetSalesChannelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]
