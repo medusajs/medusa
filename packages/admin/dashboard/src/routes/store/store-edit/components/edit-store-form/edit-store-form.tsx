@@ -29,7 +29,7 @@ const EditStoreSchema = z.object({
 export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const direction = useDocumentDirection()  
+  const direction = useDocumentDirection()
   const form = useForm<z.infer<typeof EditStoreSchema>>({
     defaultValues: {
       name: store.name,
@@ -95,7 +95,10 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col overflow-hidden">
+      <KeyboundForm
+        onSubmit={handleSubmit}
+        className="flex h-full flex-col overflow-hidden"
+      >
         <RouteDrawer.Body className="overflow-y-auto">
           <div className="flex flex-col gap-y-8">
             <Form.Field

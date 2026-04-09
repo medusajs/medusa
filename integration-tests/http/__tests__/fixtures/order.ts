@@ -6,7 +6,11 @@ import {
   AdminStockLocation,
   MedusaContainer,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules, ProductStatus } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  ProductStatus,
+} from "@medusajs/utils"
 import {
   adminHeaders,
   generatePublishableKey,

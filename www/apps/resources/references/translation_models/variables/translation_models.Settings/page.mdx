@@ -1,0 +1,21 @@
+---
+displayed_sidebar: translationModelReference
+slug: /references/translation/models/Settings
+sidebar_label: Settings
+---
+
+import { TypeList } from "docs-ui"
+
+# Settings - Translation Module Data Models Reference
+
+This documentation provides a reference to the Settings data model. It belongs to the Translation Module.
+
+:::note
+
+This is available starting from [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/modules/translation/src/models/settings.ts#L6" />
+
+<TypeList types={[{"name":"id","type":"PrimaryKeyModifier&#60;IdProperty&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`TextProperty`","description":"The entity type that these settings apply to (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`JSONProperty`","description":"The translatable fields for this entity type.\nArray of field names that can be translated.","optional":false,"defaultValue":"","example":"[\"title\", \"description\", \"material\"]","expandable":false,"children":[]},{"name":"is_active","type":"`BooleanProperty`","description":"Wether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[],"since":"2.13.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="Settings"/>

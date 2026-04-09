@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -48,6 +48,7 @@ export const AdminUpsertStockLocationAddress = z.object({
   phone: z.string().nullish(),
   postal_code: z.string().nullish(),
   province: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export type AdminCreateStockLocationType = z.infer<

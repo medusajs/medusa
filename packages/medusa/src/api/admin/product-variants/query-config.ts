@@ -1,7 +1,12 @@
+export enum Entities {
+  product_variant = "product_variant",
+}
+
 export const defaultAdminProductVariantFields = [
   "id",
   "title",
   "sku",
+  "thumbnail",
   "barcode",
   "ean",
   "upc",
@@ -20,6 +25,7 @@ export const defaultAdminProductVariantFields = [
   "product_id",
   "created_at",
   "updated_at",
+  "deleted_at",
   "*product",
   "*prices",
   "*options",
@@ -30,10 +36,12 @@ export const defaultAdminProductVariantFields = [
 export const retrieveProductVariantQueryConfig = {
   defaults: defaultAdminProductVariantFields,
   isList: false,
+  entity: Entities.product_variant,
 }
 
 export const listProductVariantQueryConfig = {
   ...retrieveProductVariantQueryConfig,
   defaultLimit: 50,
   isList: true,
+  entity: Entities.product_variant,
 }

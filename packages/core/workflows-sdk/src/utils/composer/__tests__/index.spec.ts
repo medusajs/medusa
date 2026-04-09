@@ -1,4 +1,4 @@
-import z from "zod"
+import { z } from "@medusajs/deps/zod"
 import { expectTypeOf } from "expect-type"
 import { TransactionState } from "@medusajs/utils"
 import { createStep } from "../create-step"

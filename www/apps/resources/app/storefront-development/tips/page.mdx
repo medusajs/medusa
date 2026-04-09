@@ -4,12 +4,12 @@ tags:
 ---
 
 export const metadata = {
-  title: `Storefront Development Tips`,
+  title: `Connect Your Storefront to Medusa`,
 }
 
 # {metadata.title}
 
-In this document, you’ll find tips useful when building a storefront.
+In this guide, you’ll learn how to send requests from your storefront application to the Medusa application.
 
 ## Connect to the Medusa Application
 
@@ -18,34 +18,68 @@ To send requests from the storefront to the Medusa application’s Store API Rou
 - **For JavaScript frameworks**: use Medusa’s [JS SDK](../../js-sdk/page.mdx) in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs. All Storefront Development guides use the JS SDK.
 - **For other frontend technologies**: interact directly with the Medusa application by sending requests to its [Store REST APIs](https://docs.medusajs.com/api/store).
 
----
+### Set Up the JS SDK
 
-## Install Types Package
-
-The `@medusajs/types` package provide API routes' request and response types.
-
-If you're not using the JS SDK but are building your application with TypeScript, install `@medusajs/types` to use the correct request and response types:
+To set up the JS SDK in your storefront application, install the `@medusajs/js-sdk` package with the types package:
 
 ```bash npm2yarn
-npm install @medusajs/types@latest
+npm install @medusajs/js-sdk@latest @medusajs/types@latest
 ```
+
+Then, create a file that initializes the JS SDK client. For example, create the file `src/lib/sdk.ts` with the following content:
+
+```ts title="src/lib/sdk.ts"
+import Medusa from "@medusajs/js-sdk"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+```
+
+Where:
+
+- `NEXT_PUBLIC_MEDUSA_BACKEND_URL` is the URL of your Medusa application. Based on your storefront framework, make sure the environment variable is accessible in the browser. For example, in Next.js, prefix the variable name with `NEXT_PUBLIC_`.
+- `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is the publishable API key of your storefront. Learn more in the [Publishable API Keys](../publishable-api-keys/page.mdx) guide.
+
+You can then import the `sdk` instance from `src/lib/sdk.ts` and use it to send requests to the Medusa application. For example:
+
+```ts
+import { sdk } from "@/lib/sdk"
+
+sdk.store.product.list()
+.then(({ products }) => {
+  console.log(products)
+})
+```
+
+Refer to the [JS SDK reference](../../js-sdk/page.mdx) to learn more about using the SDK to interact with the Medusa application.
 
 ---
 
-## Configure CORS
+## Configure Store CORS in Medusa
 
 The Medusa application’s API routes are guarded by a CORS middleware. Make sure to set the `storeCors` property of the `http` configuration in `medusa-config.ts` to the storefront’s URL.
 
 For example:
 
-```ts title="medusa-config.ts"
+```ts title="medusa-config.ts" badgeLabel="Medusa Application" badgeColor="green"
 module.exports = defineConfig({
   projectConfig: {
     http: {
-      storeCors: "http://localhost:3000",
+      storeCors: "http://localhost:3000,http://localhost:8000",
       // ...
     },
   },
   // ...
 })
 ```
+
+Refer to the [Medusa configuration](!docs!/learn/configurations/medusa-config#httpstorecors) guide to learn more about configuring CORS in the Medusa application.

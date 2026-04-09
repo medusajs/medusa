@@ -367,7 +367,8 @@
 			"transactions": "The associated transactions, which include amounts captured and refunded.\n\n@expandable",
 			"credit_lines": "The associated credit lines, which include additional payment amounts for an order.\n\n@expandable",
 			"returns": "The associated returns.\n\n@expandable",
-			"custom_display_id": "The custom display ID of the order"
+			"custom_display_id": "The custom display ID of the order",
+			"locale": "The locale of the order"
 		},
 		"deprecated": {
 			"is_deprecated": false

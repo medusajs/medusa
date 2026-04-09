@@ -11,7 +11,7 @@ In this guide, you'll learn how to manage environment variables of long-lived an
 
 Environment variables are key-value pairs of sensitive information, such as API keys and credentials. Instead of hardcoding these variables in your codebase, you should store them as environment variables.
 
-You can manage an environment's variables in its "Settings" tab.
+You can manage an environment's variables in its "Settings" tab. You can manage environment variables for the environment's Medusa backend and storefront (if applicable).
 
 ## Restricted Environment Variable Names
 
@@ -50,7 +50,8 @@ To add environment variables to an environment:
 
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
-3. In the "Add new environment variables" section, there are different ways you can add environment variables:
+3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
+4. In the "Add new environment variables" section, you can add environment variables either for the backend or storefront. There are different ways you can add environment variables:
     - **Manually**:
       - Enter the key and value of the environment variable in the respective fields.
       - Click the "Add another" button to add another variable.
@@ -58,7 +59,7 @@ To add environment variables to an environment:
       - If you copied environment variables in a `.env` file format, you can paste them directly into the "Key" field. The environment variables will be pre-filled for you.
     - **Import `.env` file**:
       - If you have a `.env` file that defines your environment variables, click the "Import .env" button to upload the file. The environment variables will be automatically extracted and added to the list.
-4. Once you're done, click the "Save" button to save the environment variables.
+5. Once you're done, click the "Save" button to save the environment variables.
 
 <Note title="Important">
 
@@ -66,7 +67,7 @@ After adding the environment variables, you must [redeploy the environment](../l
 
 </Note>
 
-![Environment variables section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749816071/Cloud/CleanShot_2025-06-13_at_15.00.54_2x_dbdxl4.png)
+![Environment variables section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790401/Cloud/CleanShot_2026-01-07_at_14.53.15_2x_ehzdre.png)
 
 ---
 
@@ -76,14 +77,15 @@ To edit an environment variable:
 
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
-3. In the "Environment variables" section, find the variable you want to edit.
-4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the variable's right side.
-5. Choose "Edit" from the dropdown menu.
+3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
+4. In the "Environment variables" section, find the variable you want to edit.
+5. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the variable's right side.
+6. Choose "Edit" from the dropdown menu.
 
-![Edit environment variable in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749816223/Cloud/CleanShot_2025-06-13_at_15.03.21_2x_a38dch.png)
+![Edit environment variable in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790460/Cloud/CleanShot_2026-01-07_at_14.54.07_2x_xtkek9.png)
 
-6. In the side window that opens, you can edit the variable's key, value, and whether it's sensitive.
-7. Once you're done, click the "Save" button.
+7. In the side window that opens, you can edit the variable's key, value, and whether it's sensitive.
+8. Once you're done, click the "Save" button.
 
 <Note title="Important">
 
@@ -101,9 +103,10 @@ To delete an environment variable:
 
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
-3. In the "Environment variables" section, find the variable you want to delete.
-4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the variable's right side.
-5. Choose "Delete" from the dropdown menu.
+3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
+4. In the "Environment variables" section, find the variable you want to delete.
+5. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the variable's right side.
+6. Choose "Delete" from the dropdown menu.
 
 <Note title="Important">
 
@@ -111,7 +114,7 @@ After deleting the environment variable, you must [redeploy the environment](../
 
 </Note>
 
-![Delete environment variable in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749816223/Cloud/CleanShot_2025-06-13_at_15.03.21_2x_a38dch.png)
+![Delete environment variable in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790460/Cloud/CleanShot_2026-01-07_at_14.54.07_2x_xtkek9.png)
 
 ---
 
@@ -123,10 +126,11 @@ To export an environment's variables:
 
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
-3. In the "Environment variables" section, click on the "Export .env" button at the top right of the section.
+3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
+4. In the "Environment variables" section, click on the "Export .env" button at the top right of the section.
 
 A file download will start with the name `env.txt`, which contains the environment variables in `.env` format.
 
 You can rename the file to `.env` and use it in your local development.
 
-![Export env button in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749816591/Cloud/CleanShot_2025-06-13_at_15.09.37_2x_k5t0nz.png)
+![Export env button in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790560/Cloud/CleanShot_2026-01-07_at_14.55.48_2x_ro5bib.png)

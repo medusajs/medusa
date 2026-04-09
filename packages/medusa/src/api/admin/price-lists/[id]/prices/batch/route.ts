@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { listPrices } from "../../../queries"
-import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
+import { adminPriceListPriceQueryFields } from "../../../query-config"
 import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreatePriceListPriceType,
@@ -44,12 +44,12 @@ export const POST = async (
     listPrices(
       result.created.map((c) => c.id),
       req.scope,
-      adminPriceListPriceRemoteQueryFields
+      adminPriceListPriceQueryFields
     ),
     listPrices(
       result.updated.map((c) => c.id),
       req.scope,
-      adminPriceListPriceRemoteQueryFields
+      adminPriceListPriceQueryFields
     ),
   ])
 

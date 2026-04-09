@@ -1,0 +1,35 @@
+---
+slug: /references/medusa-workflows/steps/dismissProductVariantsInventoryStep
+sidebar_label: dismissProductVariantsInventoryStep
+tags:
+  - query
+  - link
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# dismissProductVariantsInventoryStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `dismissProductVariantsInventoryStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { dismissProductVariantsInventoryStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = dismissProductVariantsInventoryStep({
+      "variantIds": [
+        "{value}"
+      ]
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"DismissProductVariantsInventoryStepInput","type":"[DismissProductVariantsInventoryStepInput](../../../../types/core_flows.DismissProductVariantsInventoryStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"variantIds","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="dismissProductVariantsInventoryStep"/>

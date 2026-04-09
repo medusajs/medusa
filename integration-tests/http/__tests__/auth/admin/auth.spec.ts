@@ -1,4 +1,5 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
+import { AuthWorkflowEvents, Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
 import {
@@ -430,6 +431,46 @@ medusaIntegrationTestRunner({
 
         expect(response.response.status).toEqual(401)
         expect(response.response.data.message).toEqual("Invalid token")
+      })
+
+      it("should emit metadata in password reset event", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "test-metadata@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const subscriber = jest.fn()
+
+        eventBus.subscribe(AuthWorkflowEvents.PASSWORD_RESET, subscriber)
+
+        const metadata = {
+          source: "test",
+          userId: "123",
+          customField: "customValue",
+        }
+
+        const response = await api.post("/auth/user/emailpass/reset-password", {
+          identifier: "test-metadata@medusa-commerce.com",
+          metadata: metadata,
+        })
+
+        expect(response.status).toEqual(201)
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(subscriber).toHaveBeenCalledTimes(1)
+
+        const eventData = subscriber.mock.calls[0][0]
+
+        expect(eventData.data).toMatchObject({
+          entity_id: "test-metadata@medusa-commerce.com",
+          actor_type: "user",
+          token: expect.any(String),
+          metadata,
+        })
+
+        eventBus.unsubscribe(AuthWorkflowEvents.PASSWORD_RESET, subscriber)
       })
     })
 

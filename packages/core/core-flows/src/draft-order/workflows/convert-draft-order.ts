@@ -1,4 +1,5 @@
 import {
+  EventPriority,
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
@@ -143,11 +144,13 @@ export const convertDraftOrderWorkflow = createWorkflow(
 
       for (const orderItem of orderItems.items ?? []) {
         items.push({
-          variant_id: orderItem.variant.id,
+          variant_id: orderItem.variant?.id,
           quantity: orderItem.quantity,
           id: orderItem.id,
         })
-        variants.push(orderItem.variant)
+        if (orderItem.variant) {
+          variants.push(orderItem.variant)
+        }
       }
 
       return {
@@ -178,6 +181,9 @@ export const convertDraftOrderWorkflow = createWorkflow(
       emitEventStep({
         eventName: OrderWorkflowEvents.PLACED,
         data: { id: updatedOrder.id },
+        options: {
+          priority: EventPriority.CRITICAL,
+        },
       })
     )
 

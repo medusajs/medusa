@@ -4,6 +4,7 @@ import {
   prerequisitesLinkFixerPlugin,
   recmaInjectMdxDataPlugin,
   typeListLinkFixerPlugin,
+  validateHighlightsPlugin,
   workflowDiagramLinkFixerPlugin,
 } from "remark-rehype-plugins"
 
@@ -28,6 +29,9 @@ const withMDX = mdx({
           },
           hasGeneratedSlugs: true,
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -48,6 +52,7 @@ const withMDX = mdx({
         },
       ],
       ...mdxPluginOptions.options.rehypePlugins,
+      [validateHighlightsPlugin, { verbose: false }],
       [localLinksRehypePlugin],
       [typeListLinkFixerPlugin],
       [

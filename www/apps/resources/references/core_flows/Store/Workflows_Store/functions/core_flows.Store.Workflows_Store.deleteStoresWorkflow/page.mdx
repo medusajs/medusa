@@ -27,7 +27,7 @@ If you delete the only store in your application, the Medusa application will re
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 delete stores within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/da5d0e3a1430979ab9cda7f239ea7066ded1f7ab/packages/core/core-flows/src/store/workflows/delete-stores.ts#L43" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/store/workflows/delete-stores.ts#L43" />
 
 ## Examples
 
@@ -136,7 +136,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteStoresWorkflow","steps":[{"type":"step","name":"deleteStoresStep","description":"This step deletes one or more stores.","link":"../../../Steps_Store/functions/core_flows.Store.Steps_Store.deleteStoresStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteStoresWorkflow","steps":[{"type":"step","name":"deleteStoresStep","description":"This step deletes one or more stores.","link":"../../../Steps_Store/functions/core_flows.Store.Steps_Store.deleteStoresStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
 
 ## Input
 

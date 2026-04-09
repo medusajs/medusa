@@ -340,6 +340,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: q
       in: query
       description: The claim's q.
@@ -673,6 +674,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by the claim's update date.
@@ -956,6 +958,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: $and
       in: query
       description: >-
@@ -1219,6 +1222,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a claim's update date.
@@ -1358,6 +1362,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: deleted_at
       in: query
       description: Filter by a claim's deletion date.
@@ -1497,6 +1502,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
   security:
     - api_token: []
     - cookie_auth: []

@@ -1,7 +1,12 @@
 import type { FulfillmentWorkflow } from "@medusajs/framework/types"
-import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  parallelize,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
 import { deleteShippingOptionsStep } from "../steps"
-import { removeRemoteLinkStep } from "../../common"
+import { emitEventStep, removeRemoteLinkStep } from "../../common"
+import { ShippingOptionWorkflowEvents } from "@medusajs/framework/utils"
 
 export const deleteShippingOptionsWorkflowId =
   "delete-shipping-options-workflow"
@@ -31,6 +36,12 @@ export const deleteShippingOptionsWorkflow = createWorkflow(
   ) => {
     const softDeletedEntities = deleteShippingOptionsStep(input.ids)
 
-    removeRemoteLinkStep(softDeletedEntities)
+    parallelize(
+      removeRemoteLinkStep(softDeletedEntities),
+      emitEventStep({
+        eventName: ShippingOptionWorkflowEvents.DELETED,
+        data: input.ids,
+      })
+    )
   }
 )

@@ -5,6 +5,10 @@ import path from "path"
 
 jest.setTimeout(100000)
 
+function getJobCounts(queue) {
+  return queue.waiting + queue.delayed + (queue.prioritized || 0)
+}
+
 medusaIntegrationTestRunner({
   medusaConfigFile: path.join(
     __dirname,
@@ -42,8 +46,7 @@ medusaIntegrationTestRunner({
 
         const queue = (eventBus as any).queue_
         const jobCountsBefore = await queue.getJobCounts()
-        const totalJobsBefore =
-          jobCountsBefore.waiting + jobCountsBefore.delayed
+        const totalJobsBefore = getJobCounts(jobCountsBefore)
 
         await eventBus.emit(
           composeMessage(testEventName, {
@@ -55,9 +58,9 @@ medusaIntegrationTestRunner({
         )
 
         const jobCountsAfterWithSubscriber = await queue.getJobCounts()
-        const totalJobsAfterWithSubscriber =
-          jobCountsAfterWithSubscriber.waiting +
-          jobCountsAfterWithSubscriber.delayed
+        const totalJobsAfterWithSubscriber = getJobCounts(
+          jobCountsAfterWithSubscriber
+        )
 
         expect(totalJobsAfterWithSubscriber).toBeGreaterThan(totalJobsBefore)
 

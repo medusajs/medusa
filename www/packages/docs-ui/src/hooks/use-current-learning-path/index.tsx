@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useEffect } from "react"
-import { useLearningPath, useNotifications } from "@/providers"
+import { useLearningPath } from "@/providers/LearningPath"
+import { useNotifications } from "@/providers/Notification"
 import { LearningPathIcon } from "../../components/LearningPath/Icon"
 import { LearningPathFinish } from "../../components/LearningPath/Finish"
 import { LearningPathSteps } from "../../components/LearningPath/Steps"

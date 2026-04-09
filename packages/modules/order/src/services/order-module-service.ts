@@ -904,6 +904,7 @@ export default class OrderModuleService
     const orderAddressIds = orders
       .map((order) => [order.shipping_address_id, order.billing_address_id])
       .flat(1)
+      .filter(Boolean)
 
     const orderChanges = await this.orderChangeService_.list(
       { order_id: ids },
@@ -931,8 +932,19 @@ export default class OrderModuleService
       (orderShipping) => orderShipping.shipping_method_id
     )
 
-    await this.orderAddressService_.delete(orderAddressIds, sharedContext)
-    await this.orderChangeService_.delete(orderChangeIds, sharedContext)
+    const deletions: Promise<string[]>[] = []
+
+    if (orderAddressIds.length) {
+      deletions.push(this.orderAddressService_.delete(orderAddressIds, sharedContext))
+    }
+
+    if (orderChangeIds.length) {
+      deletions.push(this.orderChangeService_.delete(orderChangeIds, sharedContext))
+    }
+
+    if (deletions.length) {
+      await promiseAll(deletions)
+    }
 
     // Delete order, order items, summary, shipping methods, transactions and credit lines
     await super.deleteOrders(ids, sharedContext)

@@ -10,7 +10,9 @@ In this guide, you'll learn about environments in Cloud, how to create and manag
 
 A Cloud project can have multiple environments, each representing a different stage of your application. For example, you can have a Production environment for your live application, and a Staging environment for testing new features.
 
-Each environment has its own resources, such as a database and server instance. By default, a project has at least a Production environment, and you can create custom environments based on your development needs.
+Each environment has its own deployed Medusa backend, admin dashboard, and storefront. It also has its own resources, such as a database and server instance.
+
+By default, a project has at least a Production environment, and you can create custom environments based on your development needs.
 
 Environments are useful to test changes in production-like conditions before actually pushing them to production. You can test out new features, bug fixes, and integrations without affecting the live application.
 
@@ -30,6 +32,8 @@ To view a project's environments:
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the project whose environments you want to view.
 
-In the project's dashboard, you'll find a card for every environment in your project. For example, you may have Production, Staging, and Previews cards.
+In the project's dashboard, you'll find a card for every long-lived environment in your project. For example, you may have Production and Staging cards.
 
-![Project dashboard showing the environment cards](https://res.cloudinary.com/dza7lstvk/image/upload/v1750081123/Cloud/CleanShot_2025-06-16_at_16.37.50_2x_wgqkws.png)
+You'll also find a table listing all the preview environments created for the project below the long-lived environment cards.
+
+![Project dashboard showing the environment cards](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787582/Cloud/CleanShot_2026-01-07_at_14.06.03_2x_bane7m.png)

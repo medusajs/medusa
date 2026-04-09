@@ -51,6 +51,7 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
       } else {
         logger.info(`Skipped. Database is up-to-date for module.`)
       }
+      return result
     } catch (error) {
       logger.error(`Failed with error ${error.message}`, error)
       throw new MedusaError(MedusaError.Types.DB_ERROR, error.message)

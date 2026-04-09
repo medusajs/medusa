@@ -11,11 +11,13 @@ In this guide, you'll learn about deployments in Cloud, how they're created, and
 
 ## Deployments Overview
 
-Each [environment](../environments/page.mdx) has at least one deployment, which is publicly accessible at the [environment's URL](#find-environments-url).
+Each [environment](../environments/page.mdx) has at least one deployment, which is publicly accessible at the [environment's URL](./access/page.mdx#find-backend-and-admins-url).
 
 A deployment is created from the latest source code of an [environment](../environments/page.mdx)'s branch. An environment can have only one live deployment at a time.
 
 The latest deployment of an environment is the live version of that environment, unless you [redeploy a previous deployment](#redeploy-a-deployment).
+
+If you deployed both the Medusa backend and storefront in an environment, each deployment refers to the backend and storefront. The deployment will also show the status of both the backend and storefront.
 
 ---
 
@@ -28,6 +30,8 @@ For short-lived preview environments, Medusa creates a new environment and deplo
 ---
 
 ## Build Process for Deployments
+
+### Medusa Application Only
 
 Before deploying your application on Cloud, Medusa runs the `build` script defined in your project's `package.json` file, which must run the `medusa build` command, among other build steps you may have.
 
@@ -47,9 +51,17 @@ You can replace `npm run other-build-steps` with the appropriate command for you
 
 </Note>
 
-### What Gets Deployed?
+### Medusa Application with Storefront
 
-Medusa deploys the contents of the `.medusa/server` directory created by the [build process](!docs!/learn/build). It includes the compiled JavaScript files in your project, the production build of the admin dashboard, and other necessary files to run your Medusa application in production.
+If you're deploying both a Medusa application and a storefront on Cloud, Medusa will run the:
+
+1. The `build` command defined in the backend's `package.json` file, which must run the `medusa build` command.
+2. The build command relevant to the storefront, depending on the frontend framework you're using. For example, if you're using Next.js for your storefront, Medusa will run the `next build` command in the storefront's directory.
+    - Medusa currently doesn't support custom build scripts for storefronts.
+
+### What Gets Deployed in the Medusa Application?
+
+Medusa deploys the contents of the `.medusa/server` directory of the Medusa application. This directory is created by the [build process](!docs!/learn/build). It includes the compiled JavaScript files in your project, the production build of the admin dashboard, and other necessary files to run your Medusa application in production.
 
 <Note>
 
@@ -87,7 +99,6 @@ You'll find all deployments for the project's environments in the "Deployments" 
 
 ---
 
-
 ## Find Environment Deployments
 
 You can find the deployments for an environment in the project and environment dashboards.
@@ -95,17 +106,10 @@ You can find the deployments for an environment in the project and environment d
 For example, to find the deployments for the Production environment:
 
 1. [Go to its project's dashboard](../projects/page.mdx#open-project-dashboard).
-2. You can go to the latest Production deployment's details by clicking the "Latest Deployment" link in the Production environment card.
+2. Click on the "Production" environment card.
+3. You'll find the deployments in the "Deployments" table on the environment's dashboard.
 
-![Production environment card in the Cloud dashboard with the "Latest Deployment" link prominently highlighted, providing quick access to view details about the most recent deployment including status, commit information, and deployment logs](https://res.cloudinary.com/dza7lstvk/image/upload/v1750146946/Cloud/CleanShot_2025-06-17_at_10.54.05_2x_ksw4nk.png)
-
-3. To find a list of all deployments, click on the "Production" environment card to open the environment's dashboard.
-    - The "Latest update" card shows details about the latest deployment.
-    - The "Deployments" card shows the list of all previous deployments.
-
-![Production environment details page with deployment cards highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1750151060/Cloud/CleanShot_2025-06-17_at_10.57.49_2x_wqrfzf.png)
-
-The last step applies to all environments in your project, including custom environments (like Staging) and preview environments.
+![Production environment details page with deployment cards highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790909/Cloud/CleanShot_2026-01-07_at_15.01.37_2x_dixi9u.png)
 
 ---
 
@@ -116,22 +120,19 @@ You'll often need to check a deployment's details, such as its status, commit in
 To view a deployment's details:
 
 1. [Go to its project's dashboard](../projects/page.mdx#open-project-dashboard).
-2. If you're looking for the latest deployment:
-    - Click the "Latest Deployment" link in its environment's card.
-3. If you're looking for an older deployment:
-    - Click on its environment's card to open its dashboard.
-    - In the "Deployments" card, click on the deployment you want to view.
+2. Click on the "Deployments" tab.
+3. Click on the deployment in the deployments table.
 
 This will open the deployment's details page, where you can also see the deployment's commit at the top of the page.
 
 On the deployment details page, you'll find:
 
-![Deployment details page with key sections highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1750147821/Cloud/CleanShot_2025-06-17_at_11.08.58_2x_ea1l8s.png)
+![Deployment details page with key sections highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791012/Cloud/CleanShot_2026-01-07_at_15.02.49_2x_aiatds.png)
 
 1. **Commit**: The commit that the deployment was created from. This is the page's title.
 2. **Status**: The current [status](#deployment-statuses-and-lifecycle) of the deployment. For example, "Live" or "Build Failed". You can see it next to the "Redeploy" button.
 3. **Author**: The GitHub user who pushed the commit that created the deployment. You can see the user name when you hover over the user's avatar.
-4. **Build Logs**: This section shows the logs from the build process. They are useful to understand why a deployment failed. Learn more in the [Logs](../logs/page.mdx) guide.
+4. **Activity**: This section shows the build logs for the backend and storefront (if applicable). They are useful to understand why a deployment failed. Learn more in the [Logs](../logs/page.mdx) guide.
 
 ### Switch Between Deployments
 
@@ -142,66 +143,9 @@ To switch to a different deployment:
 1. Click on the deployment's commit at the top of the Cloud dashboard, next to the environment's name.
 2. Choose the deployment you want to switch to from the dropdown.
 
-![Deployment switcher at the top of the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1750148493/Cloud/CleanShot_2025-06-17_at_11.20.16_2x_jegncv.png)
+![Deployment switcher at the top of the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791120/Cloud/CleanShot_2026-01-07_at_15.05.15_2x_tblb0s.png)
 
 This will change the view to the selected deployment and you'll see its details and logs.
-
----
-
-## Access Live Deployment
-
-You can only access a deployment once its status is "Live". You can access it through its environment's URL.
-
-### Find Environment's URL
-
-<Note>
-
-For preview environments, refer to the [Preview Environments](../environments/preview/page.mdx#access-deployed-preview-environment) guide to find the URL of the preview environment.
-
-</Note>
-
-An environment's URL is in the format `<subdomain>.medusajs.app`, where `<subdomain>` is the subdomain you set either when [creating its project](../projects/page.mdx#create-a-project) or when [creating the environment](../environments/long-lived/page.mdx#create-a-long-lived-environment).
-
-You can also find the URL of a deployment's environment through the Cloud dashboard:
-
-1. Select a project from the [organization's dashboard](../organizations/page.mdx#organization-dashboard).
-2. In the project's dashboard, find the URL in the environment's card under its name. For example, find the production URL in the Production environment card.
-
-<Note title="Why are there two URLs?">
-
-Aside from the subdomain you set when [creating the environment](../environments/long-lived/page.mdx#create-a-long-lived-environment), Medusa also provides a unique, randomly generated URL for each environment. Both of these URLs point to the same deployment.
-
-</Note>
-
-![URL of environment in its card under the environment's name](https://res.cloudinary.com/dza7lstvk/image/upload/v1750157464/Cloud/CleanShot_2025-06-17_at_13.50.38_2x_nfxy1t.png)
-
-3. You can also click on the environment's name to open its dashboard, where you'll find the URL under the environment's name.
-
-![URL of environment in its dashboard under the environment's name](https://res.cloudinary.com/dza7lstvk/image/upload/v1750081257/Cloud/CleanShot_2025-06-16_at_16.40.37_2x_vxupew.png)
-
-### Access the Deployment's Medusa Admin
-
-To access the Medusa Admin of a live deployment, click on [the environment's URL](#find-environments-url).
-
-You can then log in using the email and password set either [during project creation](../projects/page.mdx#create-a-project) or [in the environment's variables](../environments/long-lived/page.mdx#create-medusa-admin-user-in-environment).
-
-### Send Requests to the Deployment
-
-You can send requests to a live deployment's API routes using its URL.
-
-For example, to check the health of the live deployment, you can send a `GET` request to the `/health` endpoint:
-
-```bash
-curl https://my-project.medusajs.app/health
-```
-
-Where `my-project` is the subdomain you set either when [creating the project](../projects/page.mdx#create-a-project) or when [creating the environment](../environments/long-lived/page.mdx#create-a-long-lived-environment).
-
-### Access Deployment's Server through SSH
-
-Medusa doesn't support SSH access to the server instance of a deployment. However, you can still access the server's [runtime and build logs](../logs/page.mdx) to debug issues in your application.
-
-If this isn't sufficient for your use case, you can contact support to discuss alternatives.
 
 ---
 
@@ -300,6 +244,14 @@ If a deployment is stuck at a status like "Building" or "Deploying" for a long t
 
 ---
 
+## Access Live Deployment
+
+Once a deployment's status is "Live", you can access its Medusa Admin, send requests to its API routes, and access its storefront (if applicable).
+
+Learn more in the [Access Live Deployment](./access/page.mdx) guide.
+
+---
+
 ## Troubleshooting Failed Deployments
 
 ### Troubleshooting Build Failures
@@ -333,7 +285,7 @@ To redeploy a deployment:
 1. [Go to the deployment's details page](#find-deployment-details).
 2. Click the "Redeploy" button at the top right of the page.
 
-![Redeploy button highlighted on the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1750156363/Cloud/CleanShot_2025-06-17_at_13.31.17_2x_i6lfit.png)
+![Redeploy button highlighted on the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791243/Cloud/CleanShot_2026-01-07_at_15.07.12_2x_popu4f.png)
 
 This will trigger the redeployment process for the selected deployment. The deployment will go through [the same lifecycle](#deployment-statuses-and-lifecycle) as a new deployment.
 
@@ -358,7 +310,7 @@ To change the deployment rules for an environment:
 3. Click on the "Deployment rules" tab in the sidebar.
 4. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
 
-![Deployment rules section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1750171235/Cloud/CleanShot_2025-06-17_at_17.40.13_2x_v0vn1k.png)
+![Deployment rules section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791296/Cloud/CleanShot_2026-01-07_at_15.08.11_2x_f3pkm1.png)
 
 5. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
 6. Click "Save" to apply the changes.

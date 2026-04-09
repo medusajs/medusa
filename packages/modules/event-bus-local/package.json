@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-local",
-  "version": "2.12.1",
+  "version": "2.13.6",
   "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -23,15 +23,15 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.12.1"
+    "@medusajs/framework": "2.13.6"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
-    "test": "../../../node_modules/.bin/jest --passWithNoTests",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPattern=src",
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.12.1"
+    "@medusajs/framework": "2.13.6"
   }
 }

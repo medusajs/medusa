@@ -5,7 +5,7 @@ import { CustomerGroupCustomer } from "@models"
 const CustomerGroup = model
   .define("CustomerGroup", {
     id: model.id({ prefix: "cusgroup" }).primaryKey(),
-    name: model.text().searchable(),
+    name: model.text().searchable().translatable(),
     metadata: model.json().nullable(),
     created_by: model.text().nullable(),
     customers: model.manyToMany(() => Customer, {

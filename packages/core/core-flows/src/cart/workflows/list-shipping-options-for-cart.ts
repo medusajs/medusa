@@ -24,6 +24,7 @@ import {
   pricingContextResult,
   shippingOptionsContextResult,
 } from "../utils/schemas"
+import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
@@ -359,7 +360,12 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         })
     )
 
-    return new WorkflowResponse(shippingOptionsWithPrice, {
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptionsWithPrice,
+      locale: cart.locale,
+    })
+
+    return new WorkflowResponse(translatedShippingOptions as any[], {
       hooks: [setPricingContext, setShippingOptionsContext] as const,
     })
   }

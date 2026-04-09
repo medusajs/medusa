@@ -122,6 +122,8 @@ export async function applyChangesToOrder(
           continue
         }
 
+        const isExisting = isDefined(creditLine_.id)
+
         const upsertCreditLine = {
           id: creditLine_.version === version ? creditLine_.id : undefined,
           order_id: order.id,
@@ -130,7 +132,9 @@ export async function applyChangesToOrder(
           reference_id: creditLine_.reference_id,
           amount: creditLine_.amount,
           raw_amount: creditLine_.raw_amount,
-          metadata: creditLine_.metadata,
+          metadata: isExisting
+            ? creditLine_.metadata
+            : { ...(creditLine_.metadata ?? {}), created_in_version: version },
         } as any
 
         creditLinesToUpsert.push(upsertCreditLine)

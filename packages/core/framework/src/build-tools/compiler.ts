@@ -37,10 +37,10 @@ export class Compiler {
     this.#adminOnlyDistFolder = path.join(this.#projectRoot, ".medusa/admin")
     this.#pluginsDistFolder = path.join(this.#projectRoot, ".medusa/server")
     this.#backendIgnoreFiles = [
-      "/integration-tests/",
-      "/test/",
-      "/unit-tests/",
-      "/src/admin/",
+      "integration-tests",
+      "test",
+      "unit-tests",
+      "src/admin",
     ]
   }
 
@@ -495,7 +495,7 @@ export class Compiler {
         "dist",
         "static",
         "private",
-        ".medusa/**/*",
+        ".medusa",
         ...this.#backendIgnoreFiles,
       ],
     })

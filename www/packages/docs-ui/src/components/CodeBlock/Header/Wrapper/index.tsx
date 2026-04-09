@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import React, { useMemo } from "react"
-import { useColorMode } from "../../../../providers"
-import { CodeBlockStyle } from "../../../.."
+import { useColorMode } from "../../../../providers/ColorMode"
+import { CodeBlockStyle } from "../../../CodeBlock"
 
-type CodeBlockHeaderWrapperProps = {
+export type CodeBlockHeaderWrapperProps = {
   blockStyle?: CodeBlockStyle
   children: React.ReactNode
 }

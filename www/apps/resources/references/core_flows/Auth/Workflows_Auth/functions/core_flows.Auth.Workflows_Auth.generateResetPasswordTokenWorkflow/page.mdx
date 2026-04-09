@@ -27,7 +27,7 @@ how to handle this event.
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 generate reset password tokens within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/da5d0e3a1430979ab9cda7f239ea7066ded1f7ab/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L43" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L43" />
 
 ## Examples
 
@@ -152,7 +152,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"entityId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actorType","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"secret","type":"`undefined` \\| `Secret`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtOptions","type":"`SignOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="generateResetPasswordTokenWorkflow"/>
+<TypeList types={[{"name":"entityId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actorType","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"secret","type":"`undefined` \\| `Secret`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtOptions","type":"`SignOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="generateResetPasswordTokenWorkflow"/>
 
 ## Output
 
@@ -202,6 +202,7 @@ to send a reset password email to the user or customer, for example.
   entity_id, // The identifier of the user or customer. For example, an email address.
   actor_type, // The type of actor. For example, "customer", "user", or custom.
   token, // The generated token.
+  metadata, // Optional custom metadata passed from the request.
 }
 ```
 </Table.Cell>
@@ -213,6 +214,7 @@ to send a reset password email to the user or customer, for example.
   entity_id, // The identifier of the user or customer. For example, an email address.
   actor_type, // The type of actor. For example, "customer", "user", or custom.
   token, // The generated token.
+  metadata, // Optional custom metadata passed from the request.
 }
 \`\`\``
         }}/>

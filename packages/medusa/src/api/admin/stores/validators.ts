@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 
@@ -28,6 +28,13 @@ export const AdminUpdateStore = z.object({
         currency_code: z.string(),
         is_default: z.boolean().optional(),
         is_tax_inclusive: z.boolean().optional(),
+      })
+    )
+    .optional(),
+  supported_locales: z
+    .array(
+      z.object({
+        locale_code: z.string(),
       })
     )
     .optional(),

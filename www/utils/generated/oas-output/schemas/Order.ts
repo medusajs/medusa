@@ -325,6 +325,11 @@
  *     description: The custom display ID of the order.
  *     externalDocs:
  *       url: https://docs.medusajs.com/resources/commerce-modules/order/custom-display-id
+ *   locale:
+ *     type: string
+ *     title: locale
+ *     description: The order's locale in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
+ *     example: en-US
  * 
 */
 

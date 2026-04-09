@@ -286,6 +286,7 @@ medusaIntegrationTestRunner({
           payment_status: "not_paid",
           region_id: "test_region_id",
           fulfillments: [],
+          locale: null,
           metadata: {
             foo: "bar",
           },

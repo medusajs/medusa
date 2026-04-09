@@ -10,6 +10,7 @@ export class TextProperty extends BaseProperty<string> {
     options: {
       prefix?: string
       searchable: boolean
+      translatable?: boolean
     }
   } = {
     name: "text",
@@ -55,6 +56,29 @@ export class TextProperty extends BaseProperty<string> {
   searchable() {
     this.dataType.options.searchable = true
 
+    return this
+  }
+
+  /**
+   * This method indicates that a text property is translatable.
+   * Translatable properties can have different values per locale.
+   * See [Translate Custom Data Models](https://docs.medusajs.com/resources/commerce-modules/translation/custom-data-models) for more information.
+   *
+   * @example
+   * import { model } from "@medusajs/framework/utils"
+   *
+   * const Store = model.define("store", {
+   *   name: model.text().translatable(),
+   *   // ...
+   * })
+   *
+   * export default Store
+   *
+   * @customNamespace Property Configuration Methods
+   * @since 2.13.0
+   */
+  translatable() {
+    this.dataType.options.translatable = true
     return this
   }
 }

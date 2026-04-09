@@ -1,10 +1,10 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export type AdminGetInviteParamsType = z.infer<typeof AdminGetInviteParams>
 export const AdminGetInviteParams = createSelectParams()
@@ -39,6 +39,7 @@ export type AdminCreateInviteType = z.infer<typeof AdminCreateInvite>
 export const AdminCreateInvite = z
   .object({
     email: z.string(),
+    roles: z.array(z.string()).nullish(),
     metadata: z.record(z.unknown()).nullish(),
   })
   .strict()

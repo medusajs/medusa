@@ -7,7 +7,10 @@ import { PriceListPricesAddForm } from "./components/price-list-prices-add-form"
 export const PriceListProductsAdd = () => {
   const { id } = useParams<{ id: string }>()
 
-  const { price_list, isPending, isError, error } = usePriceList(id!)
+  const { price_list, isPending, isError, error } = usePriceList(id!, {
+    fields:
+      "*prices,prices.price_set.variant.id,prices.price_rules.attribute,prices.price_rules.value",
+  })
   const { currencies, regions, pricePreferences, isReady } =
     usePriceListCurrencyData()
 

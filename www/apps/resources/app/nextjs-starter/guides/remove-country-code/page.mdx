@@ -1,0 +1,996 @@
+export const metadata = {
+  title: `Remove Country Code Prefix in Next.js Starter Storefront`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to remove the country code prefix from the URLs in the Next.js Starter Storefront.
+
+## Overview
+
+By default, the Next.js Starter Storefront includes a country code prefix in URLs that indicates the customer's selected country. For example, if a customer selects the United States, the URL includes the prefix `/us`.
+
+You may want to remove the country code prefix for a cleaner URL structure or to handle country selection differently.
+
+### Summary
+
+To remove the country code prefix from URLs, you need an alternative way to store and access the country code. The country code is necessary to determine the associated region, which is used for carts, prices, and available payment methods.
+
+This guide shows you how to:
+
+1. Store and manage the country code using cookies.
+2. Update the middleware to handle country code retrieval from cookies.
+3. Restructure the routes to remove the country code prefix.
+4. Update components and pages to use the country code from cookies.
+
+---
+
+## 1. Add Country Code Cookie Utilities
+
+You'll start by adding utility functions to manage the country code cookie.
+
+In `src/lib/data/cookies.ts`, add the following at the end of the file:
+
+```ts title="src/lib/data/cookies.ts"
+export const COUNTRY_CODE_COOKIE_NAME = "_medusa_country_code"
+
+/**
+ * Gets the current country code from cookies
+ */
+export const getCountryCode = async (): Promise<string | null> => {
+  try {
+    const cookies = await nextCookies()
+    return cookies.get(COUNTRY_CODE_COOKIE_NAME)?.value ?? null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Sets the country code cookie
+ */
+export const setCountryCode = async (countryCode: string) => {
+  const cookies = await nextCookies()
+  cookies.set(COUNTRY_CODE_COOKIE_NAME, countryCode, {
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    httpOnly: false, // Allow client-side access
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  })
+}
+```
+
+You add two utility functions:
+
+1. `getCountryCode`: Retrieves the country code from cookies.
+2. `setCountryCode`: Sets the country code cookie with appropriate options.
+
+The country code is stored in the `_medusa_country_code` cookie, following the Next.js Starter Storefront's naming conventions.
+
+---
+
+## 2. Update Middleware to Remove Country Code from URL
+
+The Next.js Starter Storefront uses middleware at `src/middleware.ts` to handle country code prefixes in URLs, among other functionalities.
+
+You'll update the middleware to remove the country code prefix from URLs and store it in a cookie instead. This ensures that all requests are handled correctly without requiring a country code in the URL.
+
+In `src/middleware.ts`, add the following import at the top of the file:
+
+```ts title="src/middleware.ts"
+import { COUNTRY_CODE_COOKIE_NAME } from "@lib/data/cookies"
+```
+
+Then, update the `getCountryCode` function in the middleware to the following:
+
+```ts title="src/middleware.ts"
+/**
+ * Determines the country code from cookie or headers.
+ * @param request
+ * @param regionMap
+ */
+async function getCountryCode(
+  request: NextRequest,
+  regionMap: Map<string, HttpTypes.StoreRegion | number>
+) {
+  try {
+    // First, check if country code is already in cookie
+    const cookieCountryCode = request.cookies.get(COUNTRY_CODE_COOKIE_NAME)?.value?.toLowerCase()
+    if (cookieCountryCode && regionMap.has(cookieCountryCode)) {
+      return cookieCountryCode
+    }
+
+    // Check Vercel IP country header
+    const vercelCountryCode = request.headers
+      .get("x-vercel-ip-country")
+      ?.toLowerCase()
+    if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
+      return vercelCountryCode
+    }
+
+    // Fall back to default region
+    if (regionMap.has(DEFAULT_REGION)) {
+      return DEFAULT_REGION
+    }
+
+    // Last resort: use first available region
+    if (regionMap.keys().next().value) {
+      return regionMap.keys().next().value
+    }
+
+    return null
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error(
+        "Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL."
+      )
+    }
+    return null
+  }
+}
+```
+
+In this updated function, you:
+
+1. Check if the country code is already stored in the cookie.
+2. Fall back to the Vercel IP country header if not found in the cookie.
+3. Use the default region or the first available region if necessary.
+
+Finally, update the `middleware` function to the following:
+
+```ts title="src/middleware.ts"
+/**
+ * Middleware to handle region selection and country code cookie management.
+ */
+export async function middleware(request: NextRequest) {
+  // Check if the url is a static asset
+  if (request.nextUrl.pathname.includes(".")) {
+    return NextResponse.next()
+  }
+
+  const cacheIdCookie = request.cookies.get("_medusa_cache_id")
+  const cacheId = cacheIdCookie?.value || crypto.randomUUID()
+
+  const regionMap = await getRegionMap(cacheId)
+
+  if (!regionMap) {
+    return new NextResponse(
+      "No valid regions configured. Please set up regions with countries in your Medusa Admin.",
+      { status: 500 }
+    )
+  }
+
+  const countryCode = await getCountryCode(request, regionMap)
+
+  if (!countryCode) {
+    return new NextResponse(
+      "No valid regions configured. Please set up regions with countries in your Medusa Admin.",
+      { status: 500 }
+    )
+  }
+
+  // Create response
+  const response = NextResponse.next()
+
+  // Set cache ID cookie if not set
+  if (!cacheIdCookie) {
+    response.cookies.set("_medusa_cache_id", cacheId, {
+      maxAge: 60 * 60 * 24,
+    })
+  }
+
+  // Set country code cookie if not set or different
+  const cookieCountryCode = request.cookies.get(COUNTRY_CODE_COOKIE_NAME)?.value
+  if (!cookieCountryCode || cookieCountryCode !== countryCode) {
+    response.cookies.set(COUNTRY_CODE_COOKIE_NAME, countryCode, {
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      httpOnly: false, // Allow client-side access
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    })
+  }
+
+  return response
+}
+```
+
+In this updated `middleware` function, you make the following key changes regarding the country code:
+
+1. Retrieve the country code using the updated `getCountryCode` function.
+2. Set the country code cookie if it's not already set or if it differs from the current value.
+
+With these changes, the middleware no longer requires the country code prefix in URLs and manages the country code using cookies instead.
+
+---
+
+## 3. Remove Routes from Country Code Prefix
+
+Next, you need to restructure the routes in the Next.js Starter Storefront to remove the country code prefix.
+
+Currently, there are two directories under `src/app/[countryCode]`: `(checkout)` and `(main)`. These directories contain all routes that include the country code prefix.
+
+To remove the country code prefix, move the `(checkout)` and `(main)` directories directly under `src/app`, then delete the `[countryCode]` directory. Make sure to update any imports or references to and from the routes in these directories accordingly.
+
+![Diagram illustrating the directory structure before and after removing the country code prefix.](https://res.cloudinary.com/dza7lstvk/image/upload/v1767091142/Medusa%20Resources/nextjs-country-code-structure_wpm0yp.jpg)
+
+---
+
+## 4. Update Country Selector to Use Cookie
+
+Next, you'll update the `CountrySelect` component that allows customers to select their country from the side menu. You'll modify it to set the country code cookie when a customer selects a different country, rather than changing the URL.
+
+In `src/modules/layout/components/country-select/index.tsx`, add the following helper function before the `CountrySelect` component:
+
+```ts title="src/modules/layout/components/country-select/index.tsx"
+// Helper function to get cookie value on client side
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") {return null}
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) {return parts.pop()?.split(";").shift() || null}
+  return null
+}
+```
+
+This function retrieves cookie values on the client side, allowing you to update the selected country in the dropdown based on the cookie value without refreshing the page.
+
+Then, inside the `CountrySelect` component, add a new variable and update the `currentPath` variable declaration:
+
+```ts title="src/modules/layout/components/country-select/index.tsx"
+const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+  const [countryCode, setCountryCode] = useState<string | null>(null)
+  const currentPath = usePathname()
+  // ...
+}
+```
+
+You define a new state variable `countryCode` to store the currently selected country code from the cookie. You also update the `currentPath` variable declaration to remove the country code retrieval from the URL.
+
+Next, add the following functions in the `CountrySelect` component to handle country selection and changes:
+
+```ts title="src/modules/layout/components/country-select/index.tsx"
+const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+  // ...
+
+  // Function to update country code from cookie
+  const updateCountryCodeFromCookie = () => {
+    const cookieCountryCode = getCookie("_medusa_country_code")
+    setCountryCode(cookieCountryCode)
+  }
+
+  useEffect(() => {
+    // Get country code from cookie on client side
+    updateCountryCodeFromCookie()
+
+    // Listen for focus events to refresh country code when user returns to the page
+    const handleFocus = () => {
+      updateCountryCodeFromCookie()
+    }
+
+    window.addEventListener("focus", handleFocus)
+    return () => window.removeEventListener("focus", handleFocus)
+  }, [])
+
+  const handleChange = async (option: CountryOption) => {
+    // Optimistically update the UI immediately
+    const newCountryCode = option.country.toLowerCase()
+    setCountryCode(newCountryCode)
+    const selectedOption = options?.find(
+      (o) => o?.country?.toLowerCase() === newCountryCode
+    )
+    if (selectedOption && selectedOption.country) {
+      setCurrent({
+        country: selectedOption.country,
+        region: selectedOption.region,
+        label: selectedOption.label,
+      })
+    }
+    close()
+
+    try {
+      // Update the region (this will set the cookie and redirect)
+      await updateRegion(option.country, currentPath)
+    } catch (error) {
+      // If update fails, revert to previous country code
+      updateCountryCodeFromCookie()
+      console.error("Failed to update region:", error)
+    }
+  }
+
+  // ...
+}
+```
+
+You add two functions:
+
+1. `updateCountryCodeFromCookie`: Retrieves the country code from the cookie and updates the state.
+2. `handleChange`: Handles country selection changes, optimistically updates the UI, sets the country code cookie, and reverts the UI if the update fails.
+
+Then, update the `useEffect` usage in the component to the following:
+
+```ts title="src/modules/layout/components/country-select/index.tsx"
+const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+  // ...
+
+  useEffect(() => {
+    if (countryCode) {
+      const option = options?.find(
+        (o) => o?.country === countryCode.toLowerCase()
+      )
+      setCurrent(option)
+    }
+  }, [options, countryCode])
+
+  // ...
+}
+```
+
+You make a small change to transform the country code to lowercase when finding the corresponding option.
+
+Finally, in the return statement of the `CountrySelect` component, update the `defaultValue` prop of the `Listbox` component to the following:
+
+```tsx title="src/modules/layout/components/country-select/index.tsx"
+const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+  // ...
+  return (
+    <div>
+      <Listbox
+        as="span"
+        onChange={handleChange}
+        defaultValue={
+          countryCode
+            ? (options?.find(
+              (o) => o?.country?.toLowerCase() === countryCode.toLowerCase()
+            ) as CountryOption | undefined)
+            : undefined
+        }
+      >
+      {/* ... */}
+      </Listbox>
+    </div>
+  )
+}
+```
+
+You update the `defaultValue` prop to find the option based on the country code stored in the cookie.
+
+With these changes, the `CountrySelect` component now uses cookies to set and retrieve the country code instead of the URL.
+
+---
+
+## 5. Update Country Code Retrieval in Pages
+
+Next, you'll update how the country code is retrieved across various pages of the Next.js Starter Storefront.
+
+<Note>
+
+The paths of the files mentioned in this section follow the new structure without the `[countryCode]` directory, as described in [Step 3](#3-remove-routes-from-country-code-prefix).
+
+</Note>
+
+### a. Update Home Page
+
+In `src/app/(main)/page.tsx`, add the following import at the top of the file:
+
+```ts title="src/app/(main)/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, change the `Home` component to remove the `countryCode` parameter and retrieve the country code using the `getCountryCode` utility:
+
+```ts title="src/app/(main)/page.tsx"
+export default async function Home() {
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    return null
+  }
+
+  // ...
+}
+```
+
+### b. Update Store Page
+
+In `src/app/(main)/store/page.tsx`, add the following import at the top of the file:
+
+```tsx title="src/app/(main)/store/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, remove the `params` prop from the `Params` type. It should only have a `searchParams` prop:
+
+```tsx title="src/app/(main)/store/page.tsx"
+type Params = {
+  searchParams: Promise<{
+    sortBy?: SortOptions
+    page?: string
+  }>
+}
+```
+
+Finally, update the `StorePage` component to retrieve the country code using the `getCountryCode` utility:
+
+```tsx title="src/app/(main)/store/page.tsx"
+export default async function StorePage(props: Params) {
+  const searchParams = await props.searchParams
+  const { sortBy, page } = searchParams
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    return null
+  }
+
+  return (
+    <StoreTemplate
+      sortBy={sortBy}
+      page={page}
+      countryCode={countryCode}
+    />
+  )
+}
+```
+
+### c. Update Product Page
+
+In `src/app/(main)/products/[handle]/page.tsx`, add the following import at the top of the file:
+
+```tsx title="src/app/(main)/products/[handle]/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, update the `Props` type to remove `countryCode` from the `params` prop:
+
+```tsx title="src/app/(main)/products/[handle]/page.tsx"
+type Props = {
+  params: Promise<{ handle: string }>
+  searchParams: Promise<{ v_id?: string }>
+}
+```
+
+Next, update the `generateMetadata` function to retrieve the country code using the `getCountryCode` utility:
+
+```tsx title="src/app/(main)/products/[handle]/page.tsx"
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    notFound()
+  }
+
+  const product = await listProducts({
+    countryCode,
+    queryParams: { handle },
+  }).then(({ response }) => response.products[0])
+
+  // ...
+}
+```
+
+This retrieves the country code using the `getCountryCode` utility, then passes it to the `getRegion` and `listProducts` functions.
+
+Finally, update the `ProductPage` component to retrieve the country code using the `getCountryCode` utility and pass it to the used functions and components:
+
+```tsx title="src/app/(main)/products/[handle]/page.tsx"
+export default async function ProductPage(props: Props) {
+  const params = await props.params
+  const countryCode = await getCountryCode()
+  const searchParams = await props.searchParams
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    notFound()
+  }
+
+  const selectedVariantId = searchParams.v_id
+
+  const pricedProduct = await listProducts({
+    countryCode,
+    queryParams: { handle: params.handle },
+  }).then(({ response }) => response.products[0])
+
+  const images = getImagesForVariant(pricedProduct, selectedVariantId)
+
+  if (!pricedProduct) {
+    notFound()
+  }
+
+  return (
+    <ProductTemplate
+      product={pricedProduct}
+      region={region}
+      countryCode={countryCode}
+      images={images}
+    />
+  )
+}
+```
+
+### d. Update Collection Page
+
+In `src/app/(main)/collections/[handle]/page.tsx`, add the following import at the top of the file:
+
+```tsx title="src/app/(main)/collections/[handle]/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, update the `Props` type to remove `countryCode` from the `params` prop:
+
+```tsx title="src/app/(main)/collections/[handle]/page.tsx"
+type Props = {
+  params: Promise<{ handle: string }>
+  searchParams: Promise<{
+    page?: string
+    sortBy?: SortOptions
+  }>
+}
+```
+
+Finally, update the `CollectionPage` component to retrieve the country code using the `getCountryCode` utility and pass it to the used component:
+
+```tsx title="src/app/(main)/collections/[handle]/page.tsx"
+export default async function CollectionPage(props: Props) {
+  const searchParams = await props.searchParams
+  const params = await props.params
+  const { sortBy, page } = searchParams
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  const collection = await getCollectionByHandle(params.handle).then(
+    (collection: StoreCollection) => collection
+  )
+
+  if (!collection) {
+    notFound()
+  }
+
+  return (
+    <CollectionTemplate
+      collection={collection}
+      page={page}
+      sortBy={sortBy}
+      countryCode={countryCode}
+    />
+  )
+}
+```
+
+This retrieves the country code using the `getCountryCode` utility and passes it to the `CollectionTemplate` component.
+
+### e. Update Categories Page
+
+In `src/app/(main)/categories/[...category]/page.tsx`, add the following import at the top of the file:
+
+```tsx title="src/app/(main)/categories/[...category]/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, update the `Props` type to remove `countryCode` from the `params` prop:
+
+```tsx title="src/app/(main)/categories/[...category]/page.tsx"
+type Props = {
+  params: Promise<{ category: string[] }>
+  searchParams: Promise<{
+    sortBy?: SortOptions
+    page?: string
+  }>
+}
+```
+
+Finally, update the `CategoriesPage` component to retrieve the country code using the `getCountryCode` utility and pass it to the used component:
+
+```tsx title="src/app/(main)/categories/[...category]/page.tsx"
+export default async function CategoryPage(props: Props) {
+  const searchParams = await props.searchParams
+  const params = await props.params
+  const { sortBy, page } = searchParams
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  const productCategory = await getCategoryByHandle(params.category)
+
+  if (!productCategory) {
+    notFound()
+  }
+
+  return (
+    <CategoryTemplate
+      category={productCategory}
+      sortBy={sortBy}
+      page={page}
+      countryCode={countryCode}
+    />
+  )
+}
+```
+
+This retrieves the country code using the `getCountryCode` utility and passes it to the `CategoryTemplate` component.
+
+### f. Update Addresses Page
+
+In `src/app/(main)/account/@dashboard/addresses/page.tsx`, add the following import at the top of the file:
+
+```tsx title="src/app/(main)/account/@dashboard/addresses/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, update the `Addresses` component to remove the `countryCode` parameter and retrieve the country code using the `getCountryCode` utility:
+
+```tsx title="src/app/(main)/account/@dashboard/addresses/page.tsx"
+export default async function Addresses() {
+  const countryCode = await getCountryCode()
+  const customer = await retrieveCustomer()
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  // ...
+}
+```
+
+---
+
+## 6. Update Country Usage in Components
+
+In this section, you'll update various components in the Next.js Starter Storefront to use the country code from cookies instead of the URL.
+
+### a. Update AccountNav Component
+
+In `src/modules/account/components/account-nav/index.tsx`, the country code is used to prefix URLs with the country code. You'll update it to remove the country code from the URLs.
+
+In the `AccountNav` component, remove the country code retrieval using the `useParams` hook. You should have only the following lines before the `return` statement:
+
+```tsx title="src/modules/account/components/account-nav/index.tsx"
+const AccountNav = ({
+  customer,
+}: {
+  customer: HttpTypes.StoreCustomer | null
+}) => {
+  const route = usePathname()
+
+  const handleLogout = async () => {
+    await signout()
+  }
+
+  // ...
+}
+```
+
+Then, in the `return` statement of the `AccountNav` component, change the condition checking the `route` variable's value to the following:
+
+```tsx title="src/modules/account/components/account-nav/index.tsx"
+const AccountNav = ({
+  customer,
+}: {
+  customer: HttpTypes.StoreCustomer | null
+}) => {
+  // ...
+  return (
+    <div>
+      <div className="small:hidden" data-testid="mobile-account-nav">
+        {route !== `/account` ? (
+          {/* ... */}
+        ) : (
+          {/* ... */}
+        )}
+      </div>
+      {/* ... */}
+    </div>
+  )
+}
+```
+
+You remove the country code prefix from the URL checks in the `AccountNav` component.
+
+Finally, in the `AccountNavLink` component defined in the same file, change the `active` variable declaration to the following:
+
+```tsx title="src/modules/account/components/account-nav/index.tsx"
+const AccountNavLink = ({
+  href,
+  route,
+  children,
+  "data-testid": dataTestId,
+}: AccountNavLinkProps) => {
+  const active = route === href
+  
+  // ...
+}
+```
+
+You remove the country code prefix from the URL check in the `AccountNavLink` component.
+
+### b. Update ProductActions Component
+
+The `ProductActions` component uses the country code when adding products to the cart. You'll remove the need to pass the country code to the `addToCart` function. You'll update the `addToCart` function later to retrieve the country code from the cookie.
+
+In `src/modules/products/components/product-actions/index.tsx`, remove the `countryCode` variable from the `ProductActions` component:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx"
+export default function ProductActions({
+  product,
+  disabled,
+}: ProductActionsProps) {
+  // ...
+  
+  // REMOVE THIS LINE
+  // const countryCode = useParams().countryCode as string
+
+  // ...
+}
+```
+
+Then, in the `handleAddToCart` function inside the `ProductActions` component, remove the `countryCode` argument when calling the `addToCart` function:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx"
+export default function ProductActions({
+  product,
+  disabled,
+}: ProductActionsProps) {
+  // ...
+
+  const handleAddToCart = async () => {
+    if (!selectedVariant?.id) {return null}
+
+    setIsAdding(true)
+
+    await addToCart({
+      variantId: selectedVariant.id,
+      quantity: 1,
+      // REMOVE THIS LINE
+      // countryCode,
+    })
+
+    setIsAdding(false)
+  }
+
+  // ...
+}
+```
+
+Ignore any type errors from the removed `countryCode` argument. You'll update the `addToCart` function later to remove the `countryCode` parameter.
+
+### c. Update LocalizedClientLink Component
+
+The `LocalizedClientLink` component creates links that include the country code prefix in URLs. Update it to remove the country code from the URLs.
+
+In `src/modules/common/components/localized-client-link/index.tsx`, replace the content with the following:
+
+```tsx title="src/modules/common/components/localized-client-link/index.tsx"
+"use client"
+
+import Link from "next/link"
+import React from "react"
+
+/**
+ * Use this component to create a Next.js `<Link />` that works without country code in the URL.
+ * Country code is now stored in a cookie instead.
+ */
+const LocalizedClientLink = ({
+  children,
+  href,
+  ...props
+}: {
+  children?: React.ReactNode
+  href: string
+  className?: string
+  onClick?: () => void
+  passHref?: true
+  [x: string]: any
+}) => {
+  return (
+    <Link href={href} {...props}>
+      {children}
+    </Link>
+  )
+}
+
+export default LocalizedClientLink
+```
+
+You make the following key changes:
+
+1. Remove the `useParams` hook import and usage.
+2. Remove the logic that adds the country code prefix to the `href` prop.
+
+With these changes, the `LocalizedClientLink` component now creates links without the country code prefix in URLs.
+
+---
+
+## 7. Update Server Functions to Use Country Code from Cookie
+
+Finally, you'll update the server functions in the Next.js Starter Storefront to retrieve the country code from the cookie instead of receiving it as a parameter.
+
+### a. Update Customer Functions
+
+In `src/lib/data/customer.ts`, find the `signout` function and update it to the following:
+
+```ts title="src/lib/data/customer.ts"
+export async function signout() {
+  await sdk.auth.logout()
+
+  await removeAuthToken()
+
+  const customerCacheTag = await getCacheTag("customers")
+  revalidateTag(customerCacheTag)
+
+  await removeCartId()
+
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  redirect(`/account`)
+}
+```
+
+You remove the `countryCode` parameter and the country code usage in the `redirect` function.
+
+### b. Update Cart Functions
+
+In `src/lib/data/cart.ts`, add the following import at the top of the file:
+
+```ts title="src/lib/data/cart.ts"
+import { 
+  getCountryCode,
+  setCountryCode,
+} from "@lib/data/cookies"
+```
+
+Then, find the `addToCart` function and update it to the following:
+
+```ts title="src/lib/data/cart.ts"
+export async function addToCart({
+  variantId,
+  quantity,
+}: {
+  variantId: string
+  quantity: number
+}) {
+  if (!variantId) {
+    throw new Error("Missing variant ID when adding to cart")
+  }
+
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    throw new Error("Country code not found. Please select a country.")
+  }
+
+  const cart = await getOrSetCart(countryCode)
+
+  if (!cart) {
+    throw new Error("Error retrieving or creating cart")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  await sdk.store.cart
+    .createLineItem(
+      cart.id,
+      {
+        variant_id: variantId,
+        quantity,
+      },
+      {},
+      headers
+    )
+    .then(async () => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment")
+      revalidateTag(fulfillmentCacheTag)
+    })
+    .catch(medusaError)
+}
+```
+
+You remove the `countryCode` parameter and retrieve the country code using the `getCountryCode` utility inside the function.
+
+Next, find the `placeOrder` function in the same file and update it to the following:
+
+```ts title="src/lib/data/cart.ts"
+export async function placeOrder(cartId?: string) {
+  const id = cartId || (await getCartId())
+
+  if (!id) {
+    throw new Error("No existing cart found when placing an order")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const cartRes = await sdk.store.cart
+    .complete(id, {}, headers)
+    .then(async (cartRes) => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+      return cartRes
+    })
+    .catch(medusaError)
+
+  if (cartRes?.type === "order") {
+    const orderCacheTag = await getCacheTag("orders")
+    revalidateTag(orderCacheTag)
+
+    removeCartId()
+    redirect(`/order/${cartRes?.order.id}/confirmed`)
+  }
+
+  return cartRes.cart
+}
+```
+
+You change the redirect logic to remove the country code from the URL.
+
+Finally, find the `updateRegion` function in the same file and update it to the following:
+
+```ts title="src/lib/data/cart.ts"
+export async function updateRegion(countryCode: string, currentPath: string) {
+  const cartId = await getCartId()
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    throw new Error(`Region not found for country code: ${countryCode}`)
+  }
+
+  // Set country code cookie
+  await setCountryCode(countryCode)
+
+  if (cartId) {
+    await updateCart({ region_id: region.id })
+    const cartCacheTag = await getCacheTag("carts")
+    revalidateTag(cartCacheTag)
+  }
+
+  const regionCacheTag = await getCacheTag("regions")
+  revalidateTag(regionCacheTag)
+
+  const productsCacheTag = await getCacheTag("products")
+  revalidateTag(productsCacheTag)
+
+  redirect(currentPath || "/")
+}
+```
+
+You update the function to set the country code cookie using the `setCountryCode` utility instead of relying on the URL, and you remove the country code from the redirect URL.
+
+---
+
+## Test Your Changes
+
+After completing these steps, you can use the Next.js Starter Storefront without country code prefixes in URLs. The country code is now managed using cookies.
+
+To test it, run the following command in the directory of the Medusa application that the storefront connects to:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then, in a separate terminal, run the following command in the Next.js Starter Storefront directory to start the development server:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm run dev
+```
+
+You should be able to navigate the storefront, select different countries using the country selector, go through checkout, and place orders without country code prefixes in URLs. The country code is stored and retrieved using cookies as intended.

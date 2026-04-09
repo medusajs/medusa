@@ -7,6 +7,7 @@ import {
   S3Client,
   S3ClientConfigType,
 } from "@aws-sdk/client-s3"
+import { Upload } from "@aws-sdk/lib-storage"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import {
   FileTypes,
@@ -18,7 +19,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import path from "path"
-import { Readable } from "stream"
+import { PassThrough, Readable, Writable } from "stream"
 import { ulid } from "ulid"
 
 type InjectedDependencies = {
@@ -29,6 +30,7 @@ interface S3FileServiceConfig {
   fileUrl: string
   accessKeyId?: string
   secretAccessKey?: string
+  sessionToken?: string
   authenticationMethod?: "access-key" | "s3-iam-role"
   region: string
   bucket: string
@@ -66,6 +68,7 @@ export class S3FileService extends AbstractFileProviderService {
       fileUrl: options.file_url,
       accessKeyId: options.access_key_id,
       secretAccessKey: options.secret_access_key,
+      sessionToken: options.session_token,
       authenticationMethod: authenticationMethod,
       region: options.region,
       bucket: options.bucket,
@@ -84,9 +87,10 @@ export class S3FileService extends AbstractFileProviderService {
     const credentials =
       this.config_.authenticationMethod === "access-key"
         ? {
-            accessKeyId: this.config_.accessKeyId!,
-            secretAccessKey: this.config_.secretAccessKey!,
-          }
+          accessKeyId: this.config_.accessKeyId!,
+          secretAccessKey: this.config_.secretAccessKey!,
+          sessionToken: this.config_.sessionToken,
+        }
         : undefined
 
     const config: S3ClientConfigType = {
@@ -116,9 +120,8 @@ export class S3FileService extends AbstractFileProviderService {
     const parsedFilename = path.parse(file.filename)
 
     // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${
-      parsedFilename.ext
-    }`
+    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+      }`
 
     let content: Buffer
     try {
@@ -165,6 +168,52 @@ export class S3FileService extends AbstractFileProviderService {
     }
   }
 
+  async getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    if (!fileData.filename) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `No filename provided`
+      )
+    }
+
+    const parsedFilename = path.parse(fileData.filename)
+    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+      }`
+
+    const pass = new PassThrough()
+    const upload = new Upload({
+      client: this.client_,
+      params: {
+        ACL: fileData.access === "public" ? "public-read" : "private",
+        Bucket: this.config_.bucket,
+        Key: fileKey,
+        Body: pass,
+        ContentType: fileData.mimeType,
+        CacheControl: this.config_.cacheControl,
+        Metadata: {
+          "original-filename": encodeURIComponent(fileData.filename),
+        },
+      },
+    })
+
+    const promise = upload.done().then(() => ({
+      url: `${this.config_.fileUrl}/${fileKey}`,
+      key: fileKey,
+    }))
+
+    return {
+      writeStream: pass,
+      promise,
+      url: `${this.config_.fileUrl}/${fileKey}`,
+      fileKey,
+    }
+  }
+
   async delete(
     files: FileTypes.ProviderDeleteFileDTO | FileTypes.ProviderDeleteFileDTO[]
   ): Promise<void> {
@@ -207,7 +256,7 @@ export class S3FileService extends AbstractFileProviderService {
       Key: `${fileData.fileKey}`,
     })
 
-    return await getSignedUrl(this.client_, command, {
+    return await getSignedUrl(this.client_ as any, command as any, {
       expiresIn: this.config_.downloadFileDuration,
     })
   }
@@ -238,7 +287,7 @@ export class S3FileService extends AbstractFileProviderService {
       Key: fileKey,
     })
 
-    const signedUrl = await getSignedUrl(this.client_, command, {
+    const signedUrl = await getSignedUrl(this.client_ as any, command as any, {
       expiresIn:
         fileData.expiresIn ?? DEFAULT_UPLOAD_EXPIRATION_DURATION_SECONDS,
     })

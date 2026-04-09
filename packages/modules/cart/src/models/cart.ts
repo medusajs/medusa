@@ -12,6 +12,15 @@ const Cart = model
     sales_channel_id: model.text().nullable(),
     email: model.text().nullable(),
     currency_code: model.text(),
+    /**
+     * The BCP 47 language tag code of the locale
+     * 
+     * @since 2.12.3
+     * 
+     * @example
+     * "en-US"
+     */
+    locale: model.text().nullable(),
     metadata: model.json().nullable(),
     completed_at: model.dateTime().nullable(),
     shipping_address: model

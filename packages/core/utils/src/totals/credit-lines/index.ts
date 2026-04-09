@@ -1,16 +1,19 @@
 import { BigNumberInput } from "@medusajs/types"
 import { isDefined } from "../../common"
-import { BigNumber, MEDUSA_EPSILON } from "../big-number"
+import { defaultCurrencies } from "../../defaults/currencies"
+import { BigNumber, getEpsilonFromDecimalPrecision } from "../big-number"
 import { MathBN } from "../math"
 
 export function calculateCreditLinesTotal({
   creditLines,
   includesTax,
   taxRate,
+  currencyCode,
 }: {
   creditLines: { amount: BigNumberInput }[]
   includesTax?: boolean
   taxRate?: BigNumberInput
+  currencyCode?: string
 }) {
   // the sum of all creditLine amounts excluding tax
   let creditLinesSubtotal = MathBN.convert(0)
@@ -46,7 +49,12 @@ export function calculateCreditLinesTotal({
     }
   }
 
-  const isZero = MathBN.lte(creditLinesTotal, MEDUSA_EPSILON)
+  const upperCurCode = currencyCode?.toUpperCase() as string
+  const currencyEpsilon = getEpsilonFromDecimalPrecision(
+    defaultCurrencies[upperCurCode]?.decimal_digits
+  )
+
+  const isZero = MathBN.lte(creditLinesTotal, currencyEpsilon)
   return {
     creditLinesTotal: isZero ? MathBN.convert(0) : creditLinesTotal,
     creditLinesSubtotal: isZero ? MathBN.convert(0) : creditLinesSubtotal,

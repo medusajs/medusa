@@ -53,7 +53,7 @@ export interface AdminBatchInventoryItemLocationLevels {
   delete?: string[]
   /**
    * Whether to force the deletion of the inventory levels,
-   * even if the the location has stocked quantity.
+   * even if the location has stocked quantity.
    */
   force?: boolean
 }

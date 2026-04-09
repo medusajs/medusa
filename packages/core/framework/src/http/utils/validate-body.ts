@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/deps/zod"
 import { NextFunction } from "express"
 import { MedusaRequest, MedusaResponse } from "../types"
 import { zodValidator } from "../../zod"

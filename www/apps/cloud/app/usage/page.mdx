@@ -42,12 +42,35 @@ To learn how your Flex Usage is billed, refer to the [Billing](../billing/page.m
 
 ### Monitor Flex Usage
 
-You can view additional Flex Usage for each resource and its charge in the [usage table](#view-usage-on-cloud). The table has the following columns useful for monitoring Flex Usage:
+You can view additional Flex Usage for each resource and its charge in the [usage table](#view-usage-on-cloud). For each resource, the table has the following columns useful for monitoring Flex Usage:
 
 - **Flex**: The amount of usage beyond your plan limits. For example, the additional data transfer amount.
 - **Charge**: The cost associated with the Flex Usage.
 
 If you have Flex Usage, you can also see the flex charges visualized in the chart above the table.
+
+### Usage Chart Per Resource
+
+In the "Billable metrics" section of the Usage settings, you can view a chart for each resource showing your usage over time with forcasted usage. For example, you can view the usage chart for data transfer, Compute, object storage, etc...
+
+#### Usage Chart Types
+
+At the type of the "Billable metrics" section, you can find a "Cumulative" toggle. When enabled, the charts will display cumulative usage over time. When disabled, the charts will show daily usage.
+
+Cumulative usage helps you understand the total usage up to a specific date, while daily usage provides insights into your usage patterns on a day-to-day basis.
+
+![Cumulative usage toggle in the Billable metrics section](https://res.cloudinary.com/dza7lstvk/image/upload/v1765976513/Cloud/CleanShot_2025-12-17_at_15.01.07_2x_aimjwh.png)
+
+#### Understanding the Charts
+
+In each chart, there are two line types:
+
+1. Green lines: Represent your actual usage for the resource over time. This is the usage that has already occurred.
+2. Grey lines: Represent the forecasted usage for the resource. This is an estimate of your future usage based on historical data.
+
+There's also a horizontal orange dashed line indicating your plan's usage limit for that resource. If your actual usage (green line) exceeds this limit, the excess is considered Flex Usage.
+
+![Usage chart showing actual and forecasted usage with plan limit](https://res.cloudinary.com/dza7lstvk/image/upload/v1765976514/Cloud/CleanShot_2025-12-17_at_15.01.21_2x_upehmd.png)
 
 ---
 

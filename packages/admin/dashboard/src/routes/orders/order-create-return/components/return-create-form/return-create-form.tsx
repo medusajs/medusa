@@ -402,6 +402,16 @@ export const ReturnCreateForm = ({
     return method?.total || 0
   }, [preview.shipping_methods])
 
+  /**
+   * For estimated difference show pending difference and subtract the total of inbound items (assume all items will be returned correctly)
+   * We don't include inbound total in the pending difference because it will be considered returned when the receive flow is completed
+   */
+  const estimatedDifference =
+    preview.summary.pending_difference -
+    previewItems.reduce((acc, item) => {
+      return acc + item.total
+    }, 0)
+
   return (
     <RouteFocusModal.Form
       form={form}
@@ -707,10 +717,7 @@ export const ReturnCreateForm = ({
                   {t("orders.returns.estDifference")}
                 </span>
                 <span className="txt-small font-medium">
-                  {getStylizedAmount(
-                    preview.summary.pending_difference,
-                    order.currency_code
-                  )}
+                  {getStylizedAmount(estimatedDifference, order.currency_code)}
                 </span>
               </div>
             </div>

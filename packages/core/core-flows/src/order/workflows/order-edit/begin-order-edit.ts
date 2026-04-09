@@ -11,6 +11,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { createOrderChangeStep } from "../../steps/create-order-change"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
@@ -79,6 +80,12 @@ export const beginOrderEditOrderWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.BeginorderEditWorkflowInput>
   ): WorkflowResponse<OrderChangeDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -105,6 +112,10 @@ export const beginOrderEditOrderWorkflow = createWorkflow(
     })
 
     const orderChange = createOrderChangeStep(orderChangeInput)
+
+    releaseLockStep({
+      key: input.order_id,
+    })
 
     return new WorkflowResponse(orderChange)
   }

@@ -196,7 +196,7 @@ medusaIntegrationTestRunner({
             name: "Test shipping option",
             price_type: "flat",
             prices: expect.arrayContaining([
-              {
+              expect.objectContaining({
                 id: expect.any(String),
                 amount: 1000,
                 currency_code: "usd",
@@ -215,8 +215,8 @@ medusaIntegrationTestRunner({
                 updated_at: expect.any(String),
                 deleted_at: null,
                 price_rules: [],
-              },
-              {
+              }),
+              expect.objectContaining({
                 id: expect.any(String),
                 amount: 500,
                 currency_code: "usd",
@@ -246,7 +246,7 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 deleted_at: null,
-              },
+              }),
             ]),
             provider_id: "manual_test-provider",
             provider: expect.objectContaining({

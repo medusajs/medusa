@@ -1,10 +1,12 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreateCampaign,
   AdminGetCampaignParams,
@@ -14,6 +16,15 @@ import {
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/campaigns/*",
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/campaigns",
     middlewares: [
@@ -21,6 +32,12 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetCampaignsParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -32,6 +49,12 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.create,
+      },
     ],
   },
   {
@@ -54,6 +77,12 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -64,6 +93,22 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/campaigns/:id",
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.delete,
+      },
     ],
   },
 ]

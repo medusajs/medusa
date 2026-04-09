@@ -1,4 +1,4 @@
-import { Component, PencilSquare, Trash } from "@medusajs/icons"
+import { Component, GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type VariantGeneralSectionProps = {
   variant: HttpTypes.AdminProductVariant
@@ -16,6 +17,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   const hasInventoryKit = variant.inventory?.length > 1
 
@@ -70,6 +72,19 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
                   },
                 ],
               },
+              ...(isTranslationsEnabled
+                ? [
+                    {
+                      actions: [
+                        {
+                          label: t("translations.actions.manage"),
+                          to: `/settings/translations/edit?reference=product_variant&reference_id=${variant.id}`,
+                          icon: <GlobeEurope />,
+                        },
+                      ],
+                    },
+                  ]
+                : []),
               {
                 actions: [
                   {

@@ -49,7 +49,7 @@ describe.skip("S3 File Plugin", () => {
 
       expect(resp).toEqual({
         key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
-        url: expect.stringMatching(/https:\/\/.*\.jpg/),
+        url: expect.stringMatching(/https?:\/\/.*\.jpg/),
       })
 
       const urlResp = await axios.get(resp.url).catch((e) => e.response)
@@ -95,7 +95,7 @@ describe.skip("S3 File Plugin", () => {
 
     expect(resp).toEqual({
       key: expect.stringMatching(/tests\/catphoto-か.*\.jpg/),
-      url: expect.stringMatching(/https:\/\/.*\/catphoto-%E3%81%8B.*\.jpg/),
+      url: expect.stringMatching(/https?:\/\/.*\/catphoto-%E3%81%8B.*\.jpg/),
     })
   })
 
@@ -112,7 +112,7 @@ describe.skip("S3 File Plugin", () => {
 
     expect(resp).toEqual({
       key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
-      url: expect.stringMatching(/https:\/\/.*\/cat%3Fphoto.*\.jpg/),
+      url: expect.stringMatching(/https?:\/\/.*\/cat%3Fphoto.*\.jpg/),
     })
   })
 
@@ -128,7 +128,7 @@ describe.skip("S3 File Plugin", () => {
 
     expect(resp).toEqual({
       key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
-      url: expect.stringMatching(/https:\/\/.*catphoto\.jpg/),
+      url: expect.stringMatching(/https?:\/\/.*catphoto\.jpg/),
     })
 
     const uploadResp = await axios.put(resp.url, fileContent, {
@@ -169,7 +169,7 @@ describe.skip("S3 File Plugin", () => {
 
     expect(resp).toEqual({
       key: expect.stringMatching(/tests\/testfolder\/catphoto.*\.jpg/),
-      url: expect.stringMatching(/https:\/\/.*testfolder\/catphoto\.jpg/),
+      url: expect.stringMatching(/https?:\/\/.*testfolder\/catphoto\.jpg/),
     })
 
     const uploadResp = await axios.put(resp.url, fileContent, {
@@ -220,5 +220,43 @@ describe.skip("S3 File Plugin", () => {
       { fileKey: cat1.key },
       { fileKey: cat2.key },
     ])
+  })
+
+  it("uploads using stream", async () => {
+    const fileContent = await fs.readFile(fixtureImagePath)
+    const fixtureAsBinary = fileContent.toString("binary")
+
+    const { writeStream, promise } = await s3Service.getUploadStream({
+      filename: "catphoto-stream.jpg",
+      mimeType: "image/jpeg",
+      access: "public",
+    })
+
+    writeStream.write(fileContent)
+    writeStream.end()
+
+    const resp = await promise
+
+    expect(resp).toEqual({
+      key: expect.stringMatching(/tests\/catphoto-stream.*\.jpg/),
+      url: expect.stringMatching(/https?:\/\/.*\.jpg/),
+    })
+
+    const urlResp = await axios.get(resp.url).catch((e) => e.response)
+    expect(urlResp.status).toEqual(200)
+
+    const signedUrl = await s3Service.getPresignedDownloadUrl({
+      fileKey: resp.key,
+    })
+
+    const signedUrlFile = Buffer.from(
+      await axios
+        .get(signedUrl, { responseType: "arraybuffer" })
+        .then((r) => r.data)
+    )
+
+    expect(signedUrlFile.toString("binary")).toEqual(fixtureAsBinary)
+
+    await s3Service.delete({ fileKey: resp.key })
   })
 })

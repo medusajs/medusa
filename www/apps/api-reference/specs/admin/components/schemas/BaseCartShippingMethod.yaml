@@ -75,36 +75,36 @@ properties:
   original_total:
     type: number
     title: original_total
-    description: The shipping method's total including taxes, excluding promotions.
+    description: The shipping method's original total before discounts, including taxes.
   original_subtotal:
     type: number
     title: original_subtotal
-    description: The shipping method's total excluding taxes, including promotions.
+    description: The shipping method's original subtotal before discounts, excluding taxes.
   original_tax_total:
     type: number
     title: original_tax_total
-    description: >-
-      The total taxes applied on the shipping method's amount including
-      promotions.
+    description: The shipping method's original tax total before discounts.
   total:
     type: number
     title: total
-    description: The shipping method's total amount including taxes and promotions.
+    description: The shipping method's total after discounts, including taxes.
   subtotal:
     type: number
     title: subtotal
-    description: The shipping method's total amount excluding taxes, including promotions.
+    description: The shipping method's subtotal before discounts, excluding taxes.
   tax_total:
     type: number
     title: tax_total
-    description: >-
-      The total taxes applied on the shipping method's amount including
-      promotions.
+    description: The shipping method's tax total after discounts.
   discount_total:
     type: number
     title: discount_total
-    description: The total amount discounted.
+    description: >-
+      The total amount of discounts applied to the shipping method, including
+      the tax portion of discounts.
   discount_tax_total:
     type: number
     title: discount_tax_total
-    description: The taxes applied on the discounted amount.
+    description: >-
+      The total amount of discounts applied to the shipping method's tax.
+      Represents the tax portion of discounts.

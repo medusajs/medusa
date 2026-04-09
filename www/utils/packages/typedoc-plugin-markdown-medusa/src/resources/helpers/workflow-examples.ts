@@ -2,27 +2,26 @@ import Handlebars from "handlebars"
 import { DeclarationReflection, SignatureReflection } from "typedoc"
 import { getReflectionTypeFakeValueStr, getWorkflowInputType } from "utils"
 import beautifyCode from "../../utils/beautify-code.js"
-import { MarkdownTheme } from "../../theme.js"
-import { getPageFrontmatter } from "../../utils/frontmatter.js"
 
-export default function (theme: MarkdownTheme) {
+export default function () {
   Handlebars.registerHelper(
     "workflowExamples",
     function (this: SignatureReflection): string {
-      const frontmatter = getPageFrontmatter({
-        frontmatterData:
-          theme.getFormattingOptionsForLocation().frontmatterData,
-        reflection: this,
-      })
-      const hasLocking =
-        frontmatter?.tags?.some((tag) => {
-          return typeof tag === "string"
-            ? tag === "locking"
-            : tag.name === "locking"
-        }) ?? false
       const workflowReflection = this.parent
-      const exampleStr: string[] = []
+      // prepare locking data
+      const workflowLockingTag = workflowReflection.comment?.blockTags.find(
+        (tag) => tag.tag === "@workflowLock"
+      )
+      const workflowLockingContentSplit =
+        workflowLockingTag?.content[0]?.text.split("---")
+      const lockingData = workflowLockingContentSplit
+        ? {
+            step: workflowLockingContentSplit[1].trim(),
+            key: workflowLockingContentSplit[0].trim(),
+          }
+        : undefined
 
+      const exampleStr: string[] = []
       const exampleTags = workflowReflection.comment?.blockTags.filter(
         (tag) => tag.tag === "@example"
       )
@@ -32,7 +31,7 @@ export default function (theme: MarkdownTheme) {
           getExecutionCodeTabs({
             exampleCode: generateWorkflowExample(workflowReflection),
             workflowName: workflowReflection.name,
-            hasLocking,
+            locking: lockingData,
           })
         )
       } else {
@@ -56,7 +55,7 @@ export default function (theme: MarkdownTheme) {
               getExecutionCodeTabs({
                 exampleCode: part.text,
                 workflowName: workflowReflection.name,
-                hasLocking,
+                locking: lockingData,
               })
             )
           })
@@ -73,11 +72,14 @@ export default function (theme: MarkdownTheme) {
 function getExecutionCodeTabs({
   exampleCode,
   workflowName,
-  hasLocking,
+  locking,
 }: {
   exampleCode: string
   workflowName: string
-  hasLocking: boolean
+  locking?: {
+    step: string
+    key: string
+  }
 }): string {
   exampleCode = exampleCode.replace("```ts\n", "").replace("\n```", "")
 
@@ -156,13 +158,19 @@ import { ${workflowName} } from "@medusajs/medusa/core-flows"
 
 const myWorkflow = createWorkflow(
   "my-workflow",
-  () => {${hasLocking ? "\n    // Acquire lock from nested workflow here" : ""}
+  () => {${
+    locking
+      ? `\n    // Acquire lock from nested workflow here\n    // ${locking.step}`
+      : ""
+  }
     ${exampleCode
       .replace(`{ result }`, "result")
       .replace(`await `, "")
       .replace(`(container)`, "")
       .replace(".run(", ".runAsStep(")}${
-      hasLocking ? "\n    // Release lock here" : ""
+      locking
+        ? `\n    // Release lock here\n    // releaseLockStep({ key: ${locking.key} })`
+        : ""
     }
   }
 )`)}

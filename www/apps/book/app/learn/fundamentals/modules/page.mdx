@@ -81,7 +81,7 @@ You define a service in a `service.ts` or `service.js` file at the root of your 
 
 export const highlights = [
   ["4", "MedusaService", "The service factory function."],
-  ["5", "MyCustom", "The data models to generate data-management methods for."]
+  ["5", "Post", "The data models to generate data-management methods for."]
 ]
 
 ```ts title="src/modules/blog/service.ts" highlights={highlights}
@@ -189,7 +189,7 @@ If you're creating the module in a plugin, use the [plugin\:db\:generate command
 
 </Note>
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 ```
 
@@ -229,7 +229,7 @@ If you're creating the module in a plugin, run this command on the Medusa applic
 
 </Note>
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -256,9 +256,9 @@ export const workflowHighlights = [
   ["17", "resolve", "Resolve the Blog Module's service from the Medusa container."],
   ["19", "createPosts", "Create a blog post using the Blog Module service's generated method."],
   ["25", "", "Add a compensation function that only runs if an error occurs in the workflow."],
-  ["28", "", "Delete the post if an error occurs using the Blog Module service's generated method."],
-  ["32", "createWorkflow", "Create and workflow that can be executed to create a blog post."],
-  ["35", "createPostStep", "Execute the `createPostStep` to create the post."]
+  ["31", "deletePosts", "Delete the post if an error occurs using the Blog Module service's generated method."],
+  ["35", "createWorkflow", "Create and workflow that can be executed to create a blog post."],
+  ["38", "createPostStep", "Execute the `createPostStep` to create the post."]
 ]
 
 ```ts title="src/workflows/create-post.ts" highlights={workflowHighlights}
@@ -287,6 +287,9 @@ const createPostStep = createStep(
     return new StepResponse(post, post)
   },
   async (post, { container }) => {
+    if (!post) {
+      return
+    }
     const blogModuleService: BlogModuleService = container.resolve(BLOG_MODULE)
 
     await blogModuleService.deletePosts(post.id)
@@ -309,7 +312,7 @@ The step also has a compensation function, which is a function passed as a third
 
 You'll now execute that workflow in an API route to expose the feature of creating blog posts to clients. To create an API route, create the file `src/api/blog/posts/route.ts` with the following content:
 
-```ts
+```ts title="src/api/blog/posts/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,

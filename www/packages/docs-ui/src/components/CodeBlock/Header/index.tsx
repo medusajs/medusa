@@ -2,9 +2,9 @@
 
 import React, { useMemo } from "react"
 import clsx from "clsx"
-import { CodeBlockStyle } from ".."
-import { useColorMode } from "@/providers"
-import { Badge, BadgeVariant } from "@/components"
+import { CodeBlockStyle } from "../../CodeBlock"
+import { useColorMode } from "@/providers/ColorMode"
+import { Badge, BadgeVariant } from "@/components/Badge"
 import { CodeBlockActions, CodeBlockActionsProps } from "../Actions"
 import { CodeBlockHeaderWrapper } from "./Wrapper"
 
@@ -13,7 +13,7 @@ export type CodeBlockHeaderMeta = {
   badgeColor?: BadgeVariant
 }
 
-type CodeBlockHeaderProps = {
+export type CodeBlockHeaderProps = {
   title?: string
   blockStyle?: CodeBlockStyle
   actionsProps: CodeBlockActionsProps
@@ -44,14 +44,20 @@ export const CodeBlockHeader = ({
 
   return (
     <CodeBlockHeaderWrapper blockStyle={blockStyle}>
-      <div className={clsx("flex-1", "flex gap-docs_0.75 items-start")}>
+      <div
+        className={clsx("flex-1", "flex gap-docs_0.75 items-start")}
+        data-testid="code-block-header"
+      >
         {badgeLabel && (
           <Badge variant={badgeColor || "code"} className="font-base">
             {badgeLabel}
           </Badge>
         )}
         {title && (
-          <div className={clsx("text-compact-x-small font-base", titleColor)}>
+          <div
+            className={clsx("text-compact-x-small font-base", titleColor)}
+            data-testid="code-block-header-title"
+          >
             {title}
           </div>
         )}

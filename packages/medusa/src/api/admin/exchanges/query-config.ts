@@ -1,3 +1,7 @@
+export enum Entities {
+  order_exchange = "order_exchange",
+}
+
 export const defaultAdminExchangeFields = [
   "id",
   "order_id",
@@ -18,10 +22,12 @@ export const defaultAdminDetailsExchangeFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminDetailsExchangeFields,
   isList: false,
+  entity: Entities.order_exchange,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminExchangeFields,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.order_exchange,
 }

@@ -800,10 +800,10 @@ Finally, add the `calculatePrice` method to `ShipStationProviderService`:
 
 export const serviceHighlights5 = [
   ["14", "shipment_id", "Retrieve the shipping method's shipment ID."],
-  ["20", "createShipment", "If a shipment isn't already created, create the shipment and get its rates."],
-  ["23", "getShipmentRates", "If a shipment is already created, retrieve its rates."],
-  ["27", "calculatedPrice", "Calculate the price from the specified rate."],
-  ["34", "is_calculated_price_tax_inclusive", "Return whether the price includes taxes."]
+  ["24", "createShipment", "If a shipment isn't already created, create the shipment and get its rates."],
+  ["37", "getShipmentRates", "If a shipment is already created, retrieve its rates."],
+  ["41", "calculatedPrice", "Calculate the price from the specified rate."],
+  ["47", "is_calculated_price_tax_inclusive", "Return whether the price includes taxes."]
 ]
 
 ```ts title="src/modules/shipstation/service.ts" highlights={serviceHighlights5}
@@ -892,8 +892,8 @@ Add the `validateFulfillmentData` method to `ShipStationProviderService`:
 
 export const serviceHighlights4 = [
   ["8", "shipment_id", "Get the ID of an already created shipment, if available."],
-  ["14", "createShipment", "Create a shipment if it doesn't already exist."],
-  ["20", "shipment_id", "Store the shipment ID in the shipping method's `data`."]
+  ["17", "createShipment", "Create a shipment if it doesn't already exist."],
+  ["38", "shipment_id", "Store the shipment ID in the shipping method's `data`."]
 ]
 
 ```ts title="src/modules/shipstation/service.ts" highlights={serviceHighlights4}

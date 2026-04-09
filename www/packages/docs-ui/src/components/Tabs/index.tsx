@@ -5,7 +5,7 @@ import { Tabs as UiTabs } from "@medusajs/ui"
 import { ComponentProps } from "react"
 import clsx from "clsx"
 import { EllipseMiniSolid } from "@medusajs/icons"
-import { useMobile } from "../.."
+import { useMobile } from "@/providers/Mobile"
 
 type TabsProps = ComponentProps<typeof UiTabs> & {
   layoutType?: "horizontal" | "vertical"

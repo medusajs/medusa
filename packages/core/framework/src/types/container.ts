@@ -21,12 +21,14 @@ import {
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
+  IRbacModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
   ISettingsModuleService,
   IStockLocationService,
   IStoreModuleService,
   ITaxModuleService,
+  ITranslationModuleService,
   IUserModuleService,
   IWorkflowEngineService,
   Logger,
@@ -34,8 +36,8 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
-import { Knex } from "../deps/mikro-orm-knex"
 import { AwilixContainer, ResolveOptions } from "../deps/awilix"
+import { Knex } from "../deps/mikro-orm-knex"
 
 declare module "@medusajs/types" {
   export interface ModuleImplementations {
@@ -80,6 +82,8 @@ declare module "@medusajs/types" {
     [Modules.SETTINGS]: ISettingsModuleService
     [Modules.CACHING]: ICachingModuleService
     [Modules.INDEX]: IIndexService
+    [Modules.TRANSLATION]: ITranslationModuleService
+    [Modules.RBAC]: IRbacModuleService
   }
 }
 

@@ -1,5 +1,7 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
+import { updateTaxRegionsWorkflow } from "@medusajs/core-flows"
 
 jest.setTimeout(50000)
 
@@ -11,9 +13,15 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let container
+
+    beforeAll(async () => {
+      container = getContainer()
+    })
+
     describe("/admin/tax-regions", () => {
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, getContainer())
+        await createAdminUser(dbConnection, adminHeaders, container)
       })
 
       describe("POST /admin/tax-regions/:id", () => {
@@ -152,6 +160,22 @@ medusaIntegrationTestRunner({
             message: 'TaxRegion with id "does-not-exist" not found',
             type: "not_found",
           })
+        })
+      })
+
+      describe("workflows", () => {
+        it("updateTaxRegionsWorkflow - should not call listTaxRegions when data is empty", async () => {
+          const taxService = container.resolve(Modules.TAX)
+          const listTaxRegionsSpy = jest.spyOn(taxService, "listTaxRegions")
+
+          const { result } = await updateTaxRegionsWorkflow(container).run({
+            input: [],
+          })
+
+          expect(result).toEqual([])
+          expect(listTaxRegionsSpy).not.toHaveBeenCalled()
+
+          listTaxRegionsSpy.mockRestore()
         })
       })
     })

@@ -1,4 +1,4 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -8,6 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useExtension } from "../../../../../providers/extension-provider"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -35,6 +36,7 @@ export const ProductGeneralSection = ({
   const prompt = usePrompt()
   const navigate = useNavigate()
   const { getDisplays } = useExtension()
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   const displays = getDisplays("product", "general")
 
@@ -85,6 +87,19 @@ export const ProductGeneralSection = ({
                   },
                 ],
               },
+              ...(isTranslationsEnabled
+                ? [
+                    {
+                      actions: [
+                        {
+                          label: t("translations.actions.manage"),
+                          to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
+                          icon: <GlobeEurope />,
+                        },
+                      ],
+                    },
+                  ]
+                : []),
               {
                 actions: [
                   {

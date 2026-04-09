@@ -1,6 +1,7 @@
 import React from "react"
 import clsx from "clsx"
-import { Details, MarkdownContent } from "@/components"
+import { Details } from "@/components/Details"
+import { MarkdownContent } from "@/components/MarkdownContent"
 
 type TroubleshootingSection = {
   title: string

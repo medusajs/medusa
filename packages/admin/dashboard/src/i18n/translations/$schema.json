@@ -8,6 +8,9 @@
     "general": {
       "type": "object",
       "properties": {
+        "fullList": {
+          "type": "string"
+        },
         "ascending": {
           "type": "string"
         },
@@ -36,6 +39,9 @@
           "type": "string"
         },
         "search": {
+          "type": "string"
+        },
+        "original": {
           "type": "string"
         },
         "of": {
@@ -74,6 +80,12 @@
         "select": {
           "type": "string"
         },
+        "unselectAll": {
+          "type": "string"
+        },
+        "selectAll": {
+          "type": "string"
+        },
         "selected": {
           "type": "string"
         },
@@ -102,6 +114,9 @@
           "type": "string"
         },
         "removed": {
+          "type": "string"
+        },
+        "remaining": {
           "type": "string"
         },
         "admin": {
@@ -184,6 +199,7 @@
         "ascending",
         "descending",
         "add",
+        "fullList",
         "start",
         "end",
         "open",
@@ -191,6 +207,7 @@
         "apply",
         "range",
         "search",
+        "original",
         "of",
         "results",
         "pages",
@@ -203,6 +220,8 @@
         "tip",
         "error",
         "select",
+        "selectAll",
+        "unselectAll",
         "selected",
         "enabled",
         "disabled",
@@ -213,6 +232,7 @@
         "modified",
         "added",
         "removed",
+        "remaining",
         "admin",
         "store",
         "details",
@@ -381,6 +401,12 @@
         "save": {
           "type": "string"
         },
+        "saveChanges": {
+          "type": "string"
+        },
+        "saveAndClose": {
+          "type": "string"
+        },
         "saveAsDraft": {
           "type": "string"
         },
@@ -513,7 +539,9 @@
       },
       "required": [
         "save",
+        "saveChanges",
         "saveAsDraft",
+        "saveAndClose",
         "copy",
         "copied",
         "duplicate",
@@ -1168,6 +1196,16 @@
         "searchLabel": {
           "type": "string"
         },
+        "collapse": {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "string"
+            }
+          },
+          "required": ["all"],
+          "additionalProperties": false
+        },
         "date": {
           "type": "object",
           "properties": {
@@ -1303,6 +1341,7 @@
         "sortLabel",
         "filterLabel",
         "searchLabel",
+        "collapse",
         "date",
         "compare",
         "sorting",
@@ -4049,6 +4088,45 @@
           "required": ["noRecordsMessage"],
           "additionalProperties": false
         },
+        "export": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "filters": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "description", "success", "filters"],
+          "additionalProperties": false
+        },
         "status": {
           "type": "object",
           "properties": {
@@ -4785,6 +4863,15 @@
             "refundAmount": {
               "type": "string"
             },
+            "carryOverPromotion": {
+              "type": "string"
+            },
+            "carryOverPromotionHint": {
+              "type": "string"
+            },
+            "carryOverPromotionTooltip": {
+              "type": "string"
+            },
             "activeChangeError": {
               "type": "string"
             },
@@ -4866,6 +4953,9 @@
             "outboundShipping",
             "outboundShippingHint",
             "refundAmount",
+            "carryOverPromotion",
+            "carryOverPromotionHint",
+            "carryOverPromotionTooltip",
             "activeChangeError",
             "actions",
             "cancel",
@@ -5260,6 +5350,15 @@
                 },
                 "requiresAction": {
                   "type": "string"
+                },
+                "awaitingPickup": {
+                  "type": "string"
+                },
+                "awaitingShipping": {
+                  "type": "string"
+                },
+                "awaitingDelivery": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -5273,7 +5372,10 @@
                 "partiallyReturned",
                 "returned",
                 "canceled",
-                "requiresAction"
+                "requiresAction",
+                "awaitingPickup",
+                "awaitingShipping",
+                "awaitingDelivery"
               ],
               "additionalProperties": false
             },
@@ -5740,6 +5842,7 @@
         "orderCanceled",
         "onDateFromSalesChannel",
         "list",
+        "export",
         "status",
         "summary",
         "transfer",
@@ -5802,6 +5905,32 @@
             }
           },
           "required": ["open", "completed"],
+          "additionalProperties": false
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "noRecordsMessage": {
+              "type": "string"
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["description", "noRecordsMessage", "filtered"],
           "additionalProperties": false
         },
         "create": {
@@ -8271,6 +8400,98 @@
           ],
           "additionalProperties": false
         },
+        "templates": {
+          "type": "object",
+          "properties": {
+            "amount_off_products": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "amount_off_order": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "percentage_off_product": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "percentage_off_order": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "buy_get": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "shipping_discount": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "amount_off_products",
+            "amount_off_order",
+            "percentage_off_product",
+            "percentage_off_order",
+            "buy_get",
+            "shipping_discount"
+          ],
+          "additionalProperties": false
+        },
         "deleteWarning": {
           "type": "string"
         },
@@ -8314,6 +8535,7 @@
         "campaign",
         "campaign_currency",
         "form",
+        "templates",
         "deleteWarning",
         "createPromotionTitle",
         "type",
@@ -9288,6 +9510,136 @@
       ],
       "additionalProperties": false
     },
+    "translations": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "metrics": {
+              "type": "string"
+            }
+          },
+          "required": ["metrics"]
+        },
+        "settings": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "type": "string"
+                },
+                "successToast": {
+                    "type": "string"
+                }
+            },
+            "required": ["header", "successToast"],
+            "additionalProperties": false
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "manageLocales": {
+              "type": "string"
+            },
+            "manageEntities": {
+              "type": "string"
+            },
+            "manage": {
+              "type": "string"
+            }
+          },
+          "required": ["manageLocales", "manageEntities", "manage"]
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "successToast": {
+              "type": "string"
+            },
+            "unsavedChanges": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"]
+            }
+          },
+          "required": ["successToast", "unsavedChanges"]
+        },
+        "bulk": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "mainColumn": {
+              "type": "string"
+            }
+          },
+          "required": ["header"]
+        },
+        "activeLocales": {
+          "type": "object",
+          "properties": {
+            "heading": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "noLocalesTip": {
+              "type": "string"
+            },
+            "noLocalesTipConfigureAction": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "heading",
+            "subtitle",
+            "noLocalesTip",
+            "noLocalesTipConfigureAction"
+          ]
+        },
+        "completion": {
+          "type": "object",
+          "properties": {
+            "heading": {
+              "type": "string"
+            },
+            "translated": {
+              "type": "string"
+            },
+            "toTranslate": {
+              "type": "string"
+            },
+            "footer": {
+              "type": "string"
+            }
+          },
+          "required": ["heading", "translated", "toTranslate", "footer"]
+        }
+      },
+      "required": [
+        "domain",
+        "actions",
+        "subtitle",
+        "bulk",
+        "completion",
+        "edit"
+      ]
+    },
     "store": {
       "type": "object",
       "properties": {
@@ -9301,6 +9653,9 @@
           "type": "string"
         },
         "defaultCurrency": {
+          "type": "string"
+        },
+        "defaultLocale": {
           "type": "string"
         },
         "defaultRegion": {
@@ -9321,6 +9676,9 @@
         "inviteLinkTemplate": {
           "type": "string"
         },
+        "locales": {
+          "type": "string"
+        },
         "currencies": {
           "type": "string"
         },
@@ -9337,6 +9695,15 @@
           "type": "string"
         },
         "removeCurrencyWarning_other": {
+          "type": "string"
+        },
+        "removeLocaleWarning_one": {
+          "type": "string"
+        },
+        "removeLocaleWarning_other": {
+          "type": "string"
+        },
+        "localeAlreadyAdded": {
           "type": "string"
         },
         "currencyAlreadyAdded": {
@@ -9358,10 +9725,16 @@
             "update": {
               "type": "string"
             },
+            "localesUpdated": {
+              "type": "string"
+            },
             "currenciesUpdated": {
               "type": "string"
             },
             "currenciesRemoved": {
+              "type": "string"
+            },
+            "localesRemoved": {
               "type": "string"
             },
             "updatedTaxInclusivitySuccessfully": {
@@ -9370,8 +9743,10 @@
           },
           "required": [
             "update",
+            "localesUpdated",
             "currenciesUpdated",
             "currenciesRemoved",
+            "localesRemoved",
             "updatedTaxInclusivitySuccessfully"
           ],
           "additionalProperties": false
@@ -9382,19 +9757,24 @@
         "manageYourStoresDetails",
         "editStore",
         "defaultCurrency",
+        "defaultLocale",
         "defaultRegion",
         "defaultSalesChannel",
         "defaultLocation",
         "swapLinkTemplate",
         "paymentLinkTemplate",
         "inviteLinkTemplate",
+        "locales",
         "currencies",
         "addCurrencies",
         "enableTaxInclusivePricing",
         "disableTaxInclusivePricing",
         "removeCurrencyWarning_one",
         "removeCurrencyWarning_other",
+        "removeLocaleWarning_one",
+        "removeLocaleWarning_other",
         "currencyAlreadyAdded",
+        "localeAlreadyAdded",
         "edit",
         "toast"
       ],
@@ -12052,6 +12432,26 @@
         "prompts"
       ],
       "additionalProperties": false
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "object",
+          "properties": {
+            "authenticationFailed": {
+              "type": "string"
+            },
+            "cloud": {
+              "type": "string"
+            }
+          },
+          "required": ["authenticationFailed", "cloud"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["login"],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -12109,7 +12509,8 @@
     "labels",
     "fields",
     "dateTime",
-    "views"
+    "views",
+    "auth"
   ],
   "additionalProperties": false
 }

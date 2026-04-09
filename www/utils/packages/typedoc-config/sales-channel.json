@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/sales-channel/dist", 
     "../../../../packages/modules/sales-channel/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/sales-channel/src"
+  }
 }

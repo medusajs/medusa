@@ -14,6 +14,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { deleteOrderShippingMethods } from "../../steps"
 import { deleteOrderChangeActionsStep } from "../../steps/delete-order-change-actions"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
@@ -111,6 +112,12 @@ export const removeOrderEditShippingMethodWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.DeleteOrderEditShippingMethodWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderChangeResult = useQueryGraphStep({
       entity: "order_change",
       fields: ["id", "status", "version", "actions.*"],
@@ -151,6 +158,12 @@ export const removeOrderEditShippingMethodWorkflow = createWorkflow(
       deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
     )
 
-    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
+    const previewOrderChange = previewOrderChangeStep(input.order_id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

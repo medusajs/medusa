@@ -160,7 +160,9 @@ function prepareCancelOrderFulfillmentData({
         (i) => i.id === lineItemId
       ) as OrderItemWithVariantDTO
       // find inventory items
-      const iitems = orderItem!.variant?.inventory_items
+      const iitems = orderItem!.variant?.manage_inventory
+        ? orderItem!.variant?.inventory_items
+        : undefined
       // find fulfillment item
       const fitem = fulfillment.items.find(
         (i) => i.line_item_id === lineItemId

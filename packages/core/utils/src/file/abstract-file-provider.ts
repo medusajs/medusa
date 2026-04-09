@@ -1,5 +1,5 @@
-import type { Readable } from "stream"
 import { FileTypes, IFileProvider } from "@medusajs/types"
+import type { Readable, Writable } from "stream"
 
 /**
  * ### constructor
@@ -233,5 +233,35 @@ export class AbstractFileProviderService implements IFileProvider {
    */
   getAsBuffer(fileData: FileTypes.ProviderGetFileDTO): Promise<Buffer> {
     throw Error("getAsBuffer must be overridden by the child class")
+  }
+
+  /**
+   * This method returns a writeable stream to upload a file.
+   *
+   * @param {FileTypes.ProviderUploadStreamDTO} fileData - The details of the file to upload.
+   * @returns {Promise<{ writeStream: Writable, promise: Promise<FileTypes.ProviderFileResultDTO>, url: string, fileKey: string }>} The writeable stream and upload promise.
+   *
+   * @since 2.8.0
+   *
+   * @example
+   * class MyFileProviderService extends AbstractFileProviderService {
+   *   // ...
+   *   async getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+   *     writeStream: Writable
+   *     promise: Promise<FileTypes.ProviderFileResultDTO>
+   *     url: string
+   *     fileKey: string
+   *   }> {
+   *     // TODO logic to get the writeable stream
+   *   }
+   * }
+   */
+  getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    throw Error("getUploadStream must be overridden by the child class")
   }
 }

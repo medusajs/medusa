@@ -1,0 +1,40 @@
+---
+slug: /references/medusa-workflows/steps/deleteTranslationsStep
+sidebar_label: deleteTranslationsStep
+tags:
+  - translation
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteTranslationsStep - Medusa Core Workflows Reference
+
+:::note
+
+To use this resource, make sure to [enable its feature flag: translation](https://docs.medusajs.com/development/feature-flags/toggle)
+
+:::
+
+This documentation provides a reference to the `deleteTranslationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step deletes one or more translations.
+
+:::note
+
+This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+:::
+
+## Example
+
+```ts
+const data = deleteTranslationsStep([
+  "trans_123",
+  "trans_456",
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"DeleteTranslationsStepInput","type":"[DeleteTranslationsStepInput](../../../../types/core_flows.DeleteTranslationsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The IDs of the translations to delete.","expandable":false,"children":[{"name":"DeleteTranslationsStepInput","type":"`string`[]","description":"The IDs of the translations to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteTranslationsStep"/>

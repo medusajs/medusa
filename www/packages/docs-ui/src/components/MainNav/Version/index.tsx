@@ -1,7 +1,7 @@
 "use state"
 
 import React from "react"
-import { useSiteConfig } from "../../../providers"
+import { useSiteConfig } from "../../../providers/SiteConfig"
 import Link from "next/link"
 import { Tooltip } from "../../Tooltip"
 import clsx from "clsx"

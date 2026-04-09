@@ -24,6 +24,7 @@ import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { fetchShippingOptionForOrderWorkflow } from "../fetch-shipping-option"
+import { getTranslatedShippingOptionsStep } from "../../../common/steps/get-translated-shipping-option"
 
 /**
  * The data to validate that a shipping method can be created for an exchange.
@@ -163,7 +164,7 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "currency_code", "canceled_at"],
+      fields: ["id", "status", "currency_code", "canceled_at", "locale"],
       variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -228,6 +229,11 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
       return [shippingOption]
     })
 
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptions,
+      locale: order.locale!,
+    })
+
     createExchangeShippingMethodValidationStep({
       order,
       orderExchange,
@@ -237,7 +243,7 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
     const shippingMethodInput = transform(
       {
         relatedEntity: orderExchange,
-        shippingOptions,
+        shippingOptions: translatedShippingOptions,
         customPrice: input.custom_amount,
         orderChange,
         input,

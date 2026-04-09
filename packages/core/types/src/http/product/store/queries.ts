@@ -25,7 +25,18 @@ export interface StoreProductPricingContext {
    */
   cart_id?: string
 }
-export interface StoreProductParams extends SelectParams, StoreProductPricingContext {}
+export interface StoreProductParams extends SelectParams, StoreProductPricingContext {
+  /**
+   * The locale code in BCP 47 format. Information of the
+   * product and related entities will be localized based on the provided locale.
+   * 
+   * Learn more in the [Serve Translations in Storefront](https://docs.medusajs.com/resources/commerce-modules/translations/storefront) guide.
+   * 
+   * @example
+   * "en-US"
+   */
+  locale?: string
+}
 
 export interface StoreProductListParams
   extends Omit<BaseProductListParams, "tags" | "status" | "categories" | "deleted_at" | "with_deleted">, StoreProductPricingContext {
@@ -37,4 +48,14 @@ export interface StoreProductListParams
    * Filter by the product's variants.
    */
   variants?: Pick<StoreProductVariantParams, "options">
+  /**
+   * The locale code in BCP 47 format. Information of the
+   * product and related entities will be localized based on the provided locale.
+   * 
+   * Learn more in the [Serve Translations in Storefront](https://docs.medusajs.com/resources/commerce-modules/translations/storefront) guide.
+   * 
+   * @example
+   * "en-US"
+   */
+  locale?: string
 }

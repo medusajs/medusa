@@ -12,8 +12,6 @@ Medusa offers a managed S3 storage service for your project environments on Clou
 
 So, when you create a new project, Medusa creates a production S3 bucket for the production environment. If you create a staging environment, Medusa creates a separate S3 bucket for that environment as well.
 
-By default, the S3 bucket is private, but the files you upload to the bucket are publicly accessible. This is necessary for serving product images and other assets in your Medusa application.
-
 ![Diagram showcasing S3 isolation between environments](https://res.cloudinary.com/dza7lstvk/image/upload/v1750230909/Cloud/s3-cloud_smrtfc.jpg)
 
 ---
@@ -32,7 +30,24 @@ If you're using a Medusa version before v2.7.0, contact support for assistance i
 
 ### Access S3 Configurations on Cloud
 
-Since Cloud is a managed service, you can't directly access your S3 bucket or its configurations. Medusa also doesn't expose the S3 bucket connection or configuration details.
+Since Cloud is a managed service, you can't directly access your S3 bucket.
+
+You can, however, access the S3 bucket details of your environment. This is useful when setting remote patterns in your storefront to allow loading assets from the S3 bucket.
+
+To access the S3 bucket details of an environment:
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the "Settings" tab.
+4. Choose the "Storage" tab from the sidebar.
+5. In the "Object storage" section, you can find your full S3 file URL and your S3 endpoint.
+
+From the S3 file URL, you can extract the bucket name and region. For example, if your S3 file URL is `https://s3.eu-central-1.amazonaws.com/medusajs.cloud-data-prod-euc1-123`:
+
+- The bucket name is `medusajs.cloud-data-prod-euc1-123`.
+- The region is `eu-central-1`.
+
+![S3 bucket details in Storage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1773824777/Cloud/CleanShot_2026-03-18_at_11.06.01_2x_imxylo.png)
 
 ### Override S3 Configurations on Cloud
 
@@ -45,3 +60,17 @@ Then, configure the S3 File Module Provider in your `medusa-config.ts` file to c
 To set the connection options of your external S3 instance, refer to the [Environments](../environments/environment-variables/page.mdx#add-environment-variables) guide to learn how to add environment variables. You can then use these variables in your `medusa-config.ts` file to connect to your S3 instance.
 
 </Note>
+
+---
+
+## Upload Files to S3 on Cloud
+
+When you upload files through your Medusa application hosted on Cloud, such as product images or other assets, the files are stored in the S3 bucket associated with that application's environment.
+
+You can also upload files using Medusa's [Upload Files API route](!api!/admin#uploads_postuploads), or in a [custom API route that handles file upload](!docs!/learn/fundamentals/api-routes/parse-body#configure-file-uploads).
+
+---
+
+## S3 Bucket Privacy on Cloud
+
+By default, the S3 bucket of your Cloud projects is private, but the files you upload to the bucket are publicly accessible. This is necessary for serving product images and other assets in your Medusa application.

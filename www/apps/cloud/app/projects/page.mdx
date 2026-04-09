@@ -15,6 +15,10 @@ A project is the collection of resources, environments, deployments, and setting
 
 To deploy a Medusa application to the Cloud, you create a project for it. Medusa will automatically set up and configure the necessary resources in the project to run the application, such as PostgreSQL, Redis, and S3.
 
+{/* TODO add links */}
+
+You can deploy either a Medusa application (server and admin dashboard) only, or a Medusa application along with a [storefront](../storefront/page.mdx).
+
 Each project can have multiple environments, such as production and staging. These environments allow you to test changes before pushing them live to users. You can learn more in the [Environments documentation](../environments/page.mdx).
 
 ---
@@ -28,12 +32,6 @@ If you've reached the limit of projects allowed in your organization's plan, you
 </Note>
 
 In this section, you'll learn how to create a project in Cloud to deploy your Medusa application.
-
-<Note title="Prerequisites">
-
-Make sure your organization's plan supports creating more projects. If you've exceeded the number of projects limit for your plan, contact support to upgrade your plan.
-
-</Note>
 
 To create a project:
 
@@ -50,6 +48,8 @@ Medusa provides you with the following starters that you can use to quickly set 
 
 - **DTC Starter**: Standard Medusa application with fully-fledged commerce features.
 - **B2B Starter**: Medusa application with powerful B2B and commerce features.
+
+Both starters come with a pre-configured Medusa server, admin dashboard, and the Next.js Starter Storefront.
 
 To create a project from either of these starters:
 
@@ -69,28 +69,7 @@ The repository will be cloned and you'll move forward to the [Configure step](#c
 
 If you already have a Medusa application, you can create a project from it.
 
-### Prerequisite: Medusa Application Configurations
-
-Your existing Medusa application doesn't need specific configurations to be deployed to Cloud. Medusa will automatically:
-
-- Create the necessary [server and worker instances](!docs!/learn/production/worker-mode).
-- Scale your Medusa application's resources based on the traffic it receives.
-- Set up and configure production resources and modules for your Medusa application:
-    - [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis)
-    - [Redis Event Module](!resources!/infrastructure-modules/event/redis)
-    - [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
-    - [Redis Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/redis)
-    - [S3 File Provider Module](!resources!/infrastructure-modules/file/s3)
-
-So, make sure to remove any of these modules from your `medusa-config.ts` file, unless you want to use custom options for them. In that case, you're expected to manually set up and manage those resources externally and configure them in your Medusa application.
-
-<Note>
-
-The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module. If you're still using the Cache Module, make sure to remove it from your `medusa-config.ts` file as well.
-
-</Note>
-
-### Project Creation Steps
+Refer to the [Prerequisites for Creating Projects](./prerequisites/page.mdx) guide to ensure your Medusa application meets the necessary prerequisites before deploying it to Cloud. This is especially necessary if you're deploying a storefront along with your Medusa application.
 
 To create a project from an existing Medusa application:
 
@@ -108,22 +87,24 @@ You'll move forward to the [Configure step](#configure-project-during-creation).
 After selecting the repository, you'll move on to the project configuration step. You can set the following information:
 
 1. **Project name**: Enter the name of the project.
-2. **Project subdomain**: Enter a custom subdomain for the project. All projects are subdomains of `medusajs.app`.
+2. **Custom subdomain**: Enter a custom subdomain for the Medusa application. All projects are subdomains of `medusajs.app`.
     - For example, if you enter `my-project`, the project will be accessible at `my-project.medusajs.app`. Refer to the [subdomain restrictions](#subdomain-restrictions-for-projects) section for more details.
-3. You can expand the "Build details" section to optionally change its configurations:
+    - If you're hosting a storefront, it will be accessible at `my-project.medusajs.site`.
     - **Region**: Select a [region](#available-regions-for-projects-in-cloud) to deploy the project. For better performance, choose a region that's closer to your target users. The region can't be changed later.
+3. In the **Build details** section, set the following:
     - **Project root directory**: If your project is in a monorepo, specify the path to the Medusa project in the repository. Otherwise, leave it empty.
-4. You can expand the "Environment variables" section to optionally add environment variables:
+    - **Storefront root directory**: If you're deploying a storefront along with your Medusa application, specify the path to the storefront project in the repository. Otherwise, leave it empty.
+4. You can expand the "Initial user" section to optionally set up the credentials of the initial admin user for the Medusa Admin:
+    - **Email**: The email of the initial admin user.
+    - **Password**: The password of the initial admin user.
+5. You can expand the "Environment variables" section to optionally add environment variables for both backend and storefront:
     - Enter the key and value for each environment variable you want to add.
     - Mark the variable as "Sensitive" to hide its value in the UI.
     - To add more variables, click the "Add another" button.
     - You can also add and change environment variables later in the project's environment settings.
-5. You can expand the "Initial user" section to optionally set up the credentials of the initial admin user for the Medusa Admin:
-    - **Email**: The email of the initial admin user.
-    - **Password**: The password of the initial admin user.
 6. Once you're done configuring the project, click the "Create" button.
 
-After creating the project, it will take a few minutes to create the necessary resources for it and deploy it. You'll be redirected to the organization dashboard, where you can see the project in the list of projects.
+After creating the project, it will take a few minutes to create the necessary resources for it and deploy it. Once the deployment is complete, you'll be able to access the project from your organization's dashboard.
 
 <Note>
 
@@ -131,13 +112,13 @@ If the project creation takes too long, check out the [troubleshooting section](
 
 </Note>
 
-![The organization dashboard with a project in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1749742078/Cloud/CleanShot_2025-06-12_at_18.27.34_2x_voskmq.png)
+![The organization dashboard with a project in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786136/Cloud/CleanShot_2026-01-07_at_13.42.01_2x_zsdvl6.png)
 
 If you click on the project, you'll be taken to the project's dashboard, where you can view [its details and status](#find-project-details).
 
 Once the project is created and deployed, you'll receive a notification in the Cloud dashboard. You can also view its status in the list of projects and in the project's details.
 
-![The project status in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1749743107/Cloud/CleanShot_2025-06-12_at_18.40.07_2x_asgpxm.png)
+![The project status in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786310/Cloud/CleanShot_2026-01-07_at_13.44.17_2x_cggzib.png)
 
 ---
 
@@ -149,7 +130,7 @@ If you encounter any issues while creating a project, [check common deployment i
 
 ## Subdomain Restrictions for Projects
 
-Your project's URL must be a subdomain of `medusajs.app`. For example, if you choose `my-store` as your subdomain, your project's URL will be `my-store.medusajs.app`.
+Your backend's URL must be a subdomain of `medusajs.app`. For example, if you choose `my-store` as your subdomain, your project's URL will be `my-store.medusajs.app`.
 
 When you choose a subdomain for your project, it must be at least five characters long. It also can't be one of the following reserved subdomains:
 
@@ -160,6 +141,8 @@ When you choose a subdomain for your project, it must be at least five character
 - `preview`
 - `development`
 - `proxy`
+
+If you also deployed a storefront with your Medusa application, its URL will be a subdomain of `medusajs.site`. For example, if your backend's subdomain is `my-store`, your storefront's URL will be `my-store.medusajs.site`. You can also add a custom domain, as explained in the [Storefront Custom Domain](../storefront/page.mdx#storefront-custom-domain) guide.
 
 ---
 
@@ -177,9 +160,12 @@ All your project's deployments will be in the selected region. For better perfor
 
 ## Access Deployed Project
 
-To access the deployed project, you can navigate to the URL of its Production environment.
+To access the deployed project, you can navigate to:
 
-Learn more in the [Deployments](../deployments/page.mdx#access-live-deployment) guide.
+- The Backend URL of the environment. Clicking this URL will open the Medusa Admin in a new tab.
+- The Storefront URL of the environment (if you deployed a storefront along with your Medusa application). Clicking this URL will open the storefront in a new tab.
+
+Learn more in the [Access Deployment](../deployments/access/page.mdx) guide.
 
 ---
 
@@ -192,22 +178,25 @@ To open a project's dashboard:
 
 When you open a project's dashboard, its name will be shown at the top left next to the [organization switcher](../organizations/page.mdx#organization-switcher).
 
-![The project name at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1749801071/Cloud/CleanShot_2025-06-13_at_10.50.43_2x_m1snj2.png)
+![The project name at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786526/Cloud/CleanShot_2026-01-07_at_13.48.01_2x_gegnmb.png)
 
 ### Find Project Details
 
 On the project's dashboard, you can view the following details:
 
-![The project dashboard with the details of a project](https://res.cloudinary.com/dza7lstvk/image/upload/v1759405506/Cloud/CleanShot_2025-10-02_at_14.42.33_2x_w4ql3x.png)
+![The project dashboard with the details of a project](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786975/Cloud/CleanShot_2026-01-07_at_13.49.11_2x_f6yppu.png)
 
 1. **Region**: The region where the project is deployed. You'll find it below the project name.
-2. **Environments**: The environments for the project are shown as cards. By default, you'll find Production and Previews environments. You can learn more about environments in the [Environments](../environments/page.mdx) guide.
+2. **Long-Lived Environments**: The long-lived environments for the project are shown as cards. By default, you'll find the Production environment. You can learn more about environments in the [Environments](../environments/page.mdx) guide.
     - The Production environment is the live environment where your Medusa application is deployed and clients connect to.
-    - The Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
-    - Other [Long-lived environments](../environments/long-lived/page.mdx) like Staging will be shown here if you create them.
-3. **Production URL**: The URL of the project's production deployment. You'll find it in the "Production" card under the title. Clicking it will open the production Medusa Admin in a new tab.
-4. **Repository**: The GitHub repository linked to the project. You'll find it as a "Repository" button at the top right of the project's dashboard. Clicking it will open the repository in a new tab.
-5. **Production Deployment Status**: The deployment status of the project's environment, which may be "Live" or "Building". Learn more in the [Deployments](../deployments/page.mdx#deployment-statuses-and-lifecycle) guide.
+    - Other [Long-lived environments](../environments/long-lived/page.mdx) like Staging will be shown here if you create them. These are useful for testing changes before deploying them to Production.
+    - Each environment card shows the environment's name, URLs, and status.
+3. **Preview Environments**: The Preview environments for the project are shown in a table below the long-lived environments.
+    - Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
+    - Learn more in the [Preview Environments](../environments/preview/page.mdx) guide.
+4. **Production URL**: The URL of the project's production deployment. You'll find the backend and storefront URLs (if deployed) under their respective titles in the Production environment card.
+5. **Repository**: The GitHub repository linked to the project. You'll find it as a "Repository" button at the top right of the project's dashboard. Clicking it will open the repository in a new tab.
+6. **Production Deployment Status**: The deployment status of the project for the backend and storefront. If it's "Live", then the deployment was successful. Learn more in the [Deployments](../deployments/page.mdx#deployment-statuses-and-lifecycle) guide.
 
 ### Switch Projects
 
@@ -218,7 +207,7 @@ To switch to a different project:
 1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch project" /> icon next to the project's name at the top left of the Cloud dashboard, next to the organization name.
 2. Choose the project you want to switch to from the dropdown.
 
-![Project switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1749743106/Cloud/CleanShot_2025-06-12_at_18.39.27_2x_imjvkt.png)
+![Project switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787268/Cloud/CleanShot_2026-01-07_at_14.00.01_2x_hylol3.png)
 
 This will change the view to the selected project, and you'll see its details, environments, and settings.
 
@@ -232,6 +221,32 @@ Learn more in the [Deployments](../deployments/page.mdx) guide.
 
 ---
 
+## Add Storefront to Existing Project
+
+If you initially created a project with only a Medusa application and later want to add a storefront to it, you can do it from the organization or project's dashboard.
+
+Before adding a storefront, make sure you've changed your repository structure to a monorepo that includes both the Medusa application and storefront code. Learn how to create the monorepo in the [Prerequisites for Creating Projects](./prerequisites/page.mdx#prerequisites-for-medusa-application-with-storefront) guide.
+
+Then, to add a storefront to an existing project:
+
+1. Open the project's dashboard.
+2. Click on the "Add storefront" button at the Production environment card.
+
+![The Add storefront button at the Production environment card](https://res.cloudinary.com/dza7lstvk/image/upload/v1767859152/Cloud/CleanShot_2026-01-08_at_09.58.56_2x_nuqs8s.png)
+
+3. In the "Add Storefront" form, enter the following details:
+    - **Storefront root directory**: The path to the storefront project in the repository.
+    - **Environment variables**: (Optional) Expand this section to add any necessary environment variables.
+4. Once you're done, click the "Create" button.
+
+![Form to add a storefront to an existing project](https://res.cloudinary.com/dza7lstvk/image/upload/v1767859257/Cloud/CleanShot_2026-01-08_at_10.00.52_2x_j2t5mp.png)
+
+Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
+
+You can also set a custom domain for the storefront, as explained in the [Storefront](../storefront/page.mdx#storefront-custom-domain) guide.
+
+---
+
 ## Edit Project Details
 
 After creating a project, you can edit its general details, such as the project name and root directory in the repository, and manage its preview settings.
@@ -240,11 +255,11 @@ To edit a project's general details:
 
 1. Open the project's dashboard.
 2. Click on the "Settings" tab.
-3. In the "General" tab of the Settings page, you can edit the project's name and root directory in the repository.
-    - Editing the root directory in the repository is useful if the repository is a monorepo.
+3. In the "General" tab of the Settings page, you can edit the project's name and root directories of the backend and storefront in the repository.
+    - Changing the root directory is useful if the structure of your repository has changed.
 4. Once you're done making changes, click the "Save changes" button next to the input field.
 
-![The project settings with the General tab selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1749744080/Cloud/CleanShot_2025-06-12_at_18.58.20_2x_gzis0n.png)
+![The project settings with the General tab selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787375/Cloud/CleanShot_2026-01-07_at_14.02.50_2x_gr7a9r.png)
 
 ### Editing Previews Settings
 
@@ -265,7 +280,7 @@ To delete a project:
 
 1. Open the project's dashboard.
 2. Click on the "Settings" tab.
-3. In the "General" tab of the Settings page, click the "Delete Project" button.
-4. Confirm the deletion by typing the project's name in the confirmation input, then click the "Delete" button.
+3. In the "General" tab of the Settings page, click the "Delete" button in the "Delete project" section at the bottom.
+4. Confirm the deletion by typing "delete project" in the confirmation input, then click the "Delete" button.
 
-![The project settings with the General tab selected and the Delete project section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749744219/Cloud/CleanShot_2025-06-12_at_19.03.10_2x_p6lttt.png)
+![The project settings with the General tab selected and the Delete project section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787425/Cloud/CleanShot_2026-01-07_at_14.03.28_2x_b6wkxb.png)

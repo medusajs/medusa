@@ -51,12 +51,6 @@ const _OrderItem = model
       unique: false,
       where: "deleted_at IS NOT NULL",
     },
-    {
-      name: "IDX_unique_order_item_version_item_id",
-      on: ["version", "item_id"],
-      unique: true,
-      where: "deleted_at IS NULL",
-    },
   ])
 
 export const OrderItem = _OrderItem

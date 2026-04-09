@@ -1,4 +1,10 @@
-import { z, ZodEffects, ZodNullable, ZodObject, ZodOptional } from "zod"
+import { 
+  z,
+  type ZodEffects,
+  type ZodNullable,
+  type ZodObject,
+  type ZodOptional
+} from "@medusajs/framework/zod"
 
 /**
  * Wraps the original schema to a function to accept and merge

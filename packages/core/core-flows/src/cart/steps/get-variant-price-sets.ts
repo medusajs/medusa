@@ -91,13 +91,15 @@ async function fetchVariantPriceSets(
 }
 
 /**
- * Validates that all variants have price sets and throws error for missing ones
+ * Validates that all variants without a custom price have price sets and throws error for missing ones
  */
 function validateVariantPriceSets(
-  variantPriceSets: VariantPriceSetData[]
+  variantPriceSets: VariantPriceSetData[],
+  variantsWithCustomPrice: string[] = []
 ): void {
+  const variantsWithCustomPriceSet = new Set(variantsWithCustomPrice)
   const notFound = variantPriceSets
-    .filter((v) => !v.price_set?.id)
+    .filter((v) => !v.price_set?.id && !variantsWithCustomPriceSet.has(v.id))
     .map((v) => v.id)
 
   if (notFound.length) {
@@ -287,7 +289,10 @@ export const getVariantPriceSetsStep = createStep(
       const variantIds = bulkData.map((item) => item.variantId)
       const variantPriceSets = await fetchVariantPriceSets(query, variantIds)
 
-      validateVariantPriceSets(variantPriceSets)
+      const variantsWithCustomPrice = bulkData
+        .filter((item) => !!item.context?.is_custom_price)
+        .map((item) => item.variantId)
+      validateVariantPriceSets(variantPriceSets, variantsWithCustomPrice)
 
       // Map variant IDs to price set IDs
       const variantToPriceSetId = new Map<string, string>()

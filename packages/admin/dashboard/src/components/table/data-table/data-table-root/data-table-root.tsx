@@ -176,9 +176,9 @@ export const DataTableRoot = <TData,>({
                                 : undefined,
                             }}
                             className={clx({
-                              "bg-ui-bg-subtle sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              "bg-ui-bg-subtle sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isStickyHeader,
-                              "left-[68px]":
+                              "start-[68px]":
                                 isStickyHeader && hasSelect && !isSelectHeader,
                               "after:bg-ui-border-base":
                                 showStickyBorder &&
@@ -263,11 +263,11 @@ export const DataTableRoot = <TData,>({
                           key={cell.id}
                           className={clx({
                             "!ps-0 !pe-0": shouldRenderAsLink,
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
-                            "left-[68px]": hasLeftOffset,
+                            "start-[68px]": hasLeftOffset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
                             "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":

@@ -47,7 +47,9 @@ import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
-export type RunMigrationFn = () => Promise<void>
+export type RunMigrationFn = (options?: {
+  allOrNothing?: boolean
+}) => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
 export type GenerateMigrations = (moduleNames: string[]) => Promise<void>
 export type GetLinkExecutionPlanner = () => ILinkMigrationsPlanner
@@ -84,6 +86,7 @@ export async function loadModules(args: {
   sharedContainer: MedusaContainer
   sharedResourcesConfig?: SharedResources
   migrationOnly?: boolean
+  schemaOnly?: boolean
   loaderOnly?: boolean
   workerMode?: "shared" | "worker" | "server"
   cwd?: string
@@ -93,6 +96,7 @@ export async function loadModules(args: {
     sharedContainer,
     sharedResourcesConfig,
     migrationOnly = false,
+    schemaOnly = false,
     loaderOnly = false,
     workerMode = "shared" as ModuleBootstrapOptions["workerMode"],
     cwd,
@@ -162,6 +166,7 @@ export async function loadModules(args: {
 
   const loaded = (await MedusaModule.bootstrapAll(modulesToLoad, {
     migrationOnly,
+    schemaOnly,
     loaderOnly,
     workerMode,
     cwd,
@@ -202,6 +207,8 @@ async function initializeLinks({
   linkModules,
   injectedDependencies,
   moduleExports,
+  migrationOnly = false,
+  schemaOnly = false,
 }) {
   try {
     let resources = moduleExports
@@ -218,7 +225,10 @@ async function initializeLinks({
     const linkResolution = await initialize(
       config,
       linkModules,
-      injectedDependencies
+      injectedDependencies,
+      undefined,
+      migrationOnly,
+      schemaOnly
     )
 
     return {
@@ -306,6 +316,16 @@ export type MedusaAppOptions = {
    * Forces the modules bootstrapper to only run the modules loaders and return prematurely
    */
   loaderOnly?: boolean
+  /**
+   * Only partially load modules to retrieve their module joiner configs and run their loaders.
+   * Useful for migrations.
+   */
+  migrationOnly?: boolean
+  /**
+   * Only partially load modules to retrieve their module joiner configs without running loaders.
+   * Useful for type generation.
+   */
+  schemaOnly?: boolean
   cwd?: string
 }
 
@@ -320,12 +340,11 @@ async function MedusaApp_({
   remoteFetchData,
   injectedDependencies = {},
   migrationOnly = false,
+  schemaOnly = false,
   loaderOnly = false,
   workerMode = "shared",
   cwd = process.cwd(),
-}: MedusaAppOptions & {
-  migrationOnly?: boolean
-} = {}): Promise<MedusaAppOutput> {
+}: MedusaAppOptions = {}): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const config = sharedContainer_.resolve(
@@ -420,6 +439,7 @@ async function MedusaApp_({
     sharedContainer: sharedContainer_,
     sharedResourcesConfig: { database: dbData },
     migrationOnly,
+    schemaOnly,
     loaderOnly,
     workerMode,
     cwd,
@@ -483,6 +503,8 @@ async function MedusaApp_({
     linkModules,
     injectedDependencies,
     moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
+    migrationOnly,
+    schemaOnly,
   })
 
   const loadedSchema = getLoadedSchema()
@@ -498,10 +520,12 @@ async function MedusaApp_({
   const applyMigration = async ({
     modulesNames,
     action = "run",
+    allOrNothing = false,
   }: {
     modulesNames: string[]
     action?: "run" | "revert" | "generate"
-  }) => {
+    allOrNothing?: boolean
+  }): Promise<{ name: string; path: string }[] | void> => {
     const moduleResolutions = Array.from(new Set(modulesNames)).map(
       (moduleName) => {
         return {
@@ -527,7 +551,11 @@ async function MedusaApp_({
       throw error
     }
 
-    const run = async ({ resolution: moduleResolution }) => {
+    let executedResolutions: [any, string[]][] = [] // [moduleResolution, migration names[]]
+    const run = async (
+      { resolution: moduleResolution },
+      migrationNames?: string[]
+    ) => {
       if (
         !moduleResolution.options?.database &&
         moduleResolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL
@@ -550,24 +578,62 @@ async function MedusaApp_({
       }
 
       if (action === "revert") {
-        await MedusaModule.migrateDown(migrationOptions)
+        await MedusaModule.migrateDown(migrationOptions, migrationNames)
       } else if (action === "run") {
-        await MedusaModule.migrateUp(migrationOptions)
+        const ranMigrationsResult = await MedusaModule.migrateUp(
+          migrationOptions
+        )
+
+        // Store for revert if anything goes wrong later
+        executedResolutions.push([
+          moduleResolution,
+          ranMigrationsResult?.map((r) => r.name) ?? [],
+        ])
       } else {
         await MedusaModule.migrateGenerate(migrationOptions)
       }
     }
 
     const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
-    await executeWithConcurrency(
-      moduleResolutions.map((a) => () => run(a)),
-      concurrency
-    )
+    try {
+      const results = await executeWithConcurrency(
+        moduleResolutions.map((a) => () => run(a)),
+        concurrency
+      )
+      const rejections = results.filter(
+        (result) => result.status === "rejected"
+      )
+      if (rejections.length) {
+        throw new Error(
+          `Some migrations failed to ${action}: ${rejections
+            .map((r) => r.reason)
+            .join(", ")}`
+        )
+      }
+    } catch (error) {
+      if (allOrNothing) {
+        action = "revert"
+        await executeWithConcurrency(
+          executedResolutions.map(
+            ([resolution, migrationNames]) =>
+              () =>
+                run({ resolution }, migrationNames)
+          ),
+          concurrency
+        )
+      }
+      throw error
+    }
   }
 
-  const runMigrations: RunMigrationFn = async (): Promise<void> => {
+  const runMigrations: RunMigrationFn = async (
+    { allOrNothing = false }: { allOrNothing?: boolean } = {
+      allOrNothing: false,
+    }
+  ): Promise<void> => {
     await applyMigration({
       modulesNames: Object.keys(allModules),
+      allOrNothing,
     })
   }
 
@@ -638,7 +704,7 @@ export async function MedusaApp(
 }
 
 export async function MedusaAppMigrateUp(
-  options: MedusaAppOptions = {}
+  options: MedusaAppOptions & { allOrNothing?: boolean } = {}
 ): Promise<void> {
   const migrationOnly = true
 
@@ -647,7 +713,9 @@ export async function MedusaAppMigrateUp(
     migrationOnly,
   })
 
-  await runMigrations().finally(MedusaModule.clearInstances)
+  await runMigrations({ allOrNothing: options.allOrNothing }).finally(
+    MedusaModule.clearInstances
+  )
 }
 
 export async function MedusaAppMigrateDown(

@@ -1,10 +1,10 @@
-import { join } from "path"
-import { Modules } from "./definition"
 import type { LoadedModule } from "@medusajs/types"
+import { join } from "path"
 import { FileSystem } from "../common/file-system"
-import { toUnixSlash } from "../common/to-unix-slash"
 import { toCamelCase } from "../common/to-camel-case"
+import { toUnixSlash } from "../common/to-unix-slash"
 import { upperCaseFirst } from "../common/upper-case-first"
+import { Modules } from "./definition"
 
 /**
  * For known services that has interfaces, we will set the container
@@ -37,6 +37,10 @@ const SERVICES_INTERFACES = {
   [Modules.FILE]: "IFileModuleService",
   [Modules.NOTIFICATION]: "INotificationModuleService",
   [Modules.LOCKING]: "ILockingModule",
+  [Modules.SETTINGS]: "ISettingsModuleService",
+  [Modules.CACHING]: "ICachingModuleService",
+  [Modules.TRANSLATION]: "ITranslationModuleService",
+  [Modules.RBAC]: "IRbacModuleService",
 }
 
 /**

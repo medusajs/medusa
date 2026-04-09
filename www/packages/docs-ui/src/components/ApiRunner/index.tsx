@@ -2,9 +2,9 @@
 
 import React from "react"
 import { useEffect, useMemo, useState } from "react"
-import { useRequestRunner } from "../../hooks"
+import { useRequestRunner } from "../../hooks/use-request-runner"
 import { CodeBlock } from "../CodeBlock"
-import { Button } from "../.."
+import { Button } from "@/components/Button"
 import { ApiMethod, ApiTestingOptions } from "types"
 import { ApiRunnerParamInputs } from "./ParamInputs"
 import clsx from "clsx"

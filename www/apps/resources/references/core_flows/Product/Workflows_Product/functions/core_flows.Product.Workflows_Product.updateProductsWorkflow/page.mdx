@@ -4,11 +4,12 @@ sidebar_label: updateProductsWorkflow
 sidebar_description: Update one or more products with options and variants.
 tags:
   - product
+  - query
+  - link
   - event bus
   - workflow
   - remote query
   - pricing
-  - link
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -31,7 +32,7 @@ Learn more about adding rules to the product variant's prices in the Pricing Mod
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/da5d0e3a1430979ab9cda7f239ea7066ded1f7ab/packages/core/core-flows/src/product/workflows/update-products.ts#L410" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/product/workflows/update-products.ts#L411" />
 
 ## Examples
 
@@ -343,7 +344,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"updateProductsWorkflow","steps":[{"type":"step","name":"updateProductsStep","description":"This step updates one or more products.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.updateProductsStep/page.mdx","depth":1},{"type":"workflow","name":"upsertVariantPricesWorkflow","description":"Create, update, or remove variants' prices.","link":"../core_flows.Product.Workflows_Product.upsertVariantPricesWorkflow/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3},{"type":"hook","name":"productsUpdated","description":"This hook is executed after the products are updated. You can consume this hook to perform custom actions on the updated products.","link":"#productsUpdated","depth":4}]}} />
+<WorkflowDiagram workflow={{"name":"updateProductsWorkflow","steps":[{"type":"step","name":"updateProductsStep","description":"This step updates one or more products.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.updateProductsStep/page.mdx","depth":1},{"type":"step","name":"dismissProductVariantsInventoryStep","description":"","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.dismissProductVariantsInventoryStep/page.mdx","depth":2},{"type":"workflow","name":"upsertVariantPricesWorkflow","description":"Create, update, or remove variants' prices.","link":"../core_flows.Product.Workflows_Product.upsertVariantPricesWorkflow/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":4},{"type":"hook","name":"productsUpdated","description":"This hook is executed after the products are updated. You can consume this hook to perform custom actions on the updated products.","link":"#productsUpdated","depth":5}]}} />
 
 ## Input
 

@@ -7,11 +7,12 @@ export * from "./jobs"
 export * from "./links"
 export * from "./logger"
 export * from "./medusa-app-loader"
-export * from "./subscribers"
-export * from "./workflows"
-export * from "./telemetry"
-export * from "./zod"
 export * from "./migrations"
+export * from "./policies"
+export * from "./subscribers"
+export * from "./telemetry"
+export * from "./workflows"
+export * from "./zod"
 
 export const MEDUSA_CLI_PATH = require.resolve("@medusajs/cli")
 

@@ -22,10 +22,15 @@ export abstract class ResourceLoader {
   #sourceDir: string | string[]
 
   /**
-   * The list of file names to exclude from the subscriber scan
+   * The list of file name patterns to exclude from resource scanning.
+   * Excludes: files starting with _, test files (.spec.ts, .test.ts)
    * @private
    */
-  #excludes: RegExp[] = [/^_[^/\\]*(\.[^/\\]+)?$/]
+  #excludes: RegExp[] = [
+    /^_[^/\\]*(\.[^/\\]+)?$/,
+    /\.spec\.[jt]s$/,
+    /\.test\.[jt]s$/,
+  ]
 
   protected logger: Logger
 
@@ -55,6 +60,7 @@ export abstract class ResourceLoader {
         !entry.isDirectory() &&
         parsedName.name !== "index" &&
         !parsedName.base.endsWith(".d.ts") &&
+        !entry.path.includes("__tests__") &&
         [".js", ".ts"].includes(parsedName.ext) &&
         !this.#excludes.some((exclude) => exclude.test(parsedName.base)) &&
         !exclude.some((exclude) => exclude.test(parsedName.base))

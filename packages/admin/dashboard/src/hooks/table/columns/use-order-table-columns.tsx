@@ -9,6 +9,7 @@ import {
   DateCell,
   DateHeader,
 } from "../../../components/table/table-cells/common/date-cell"
+import { countries } from "../../../lib/data/countries"
 import { CountryCell } from "../../../components/table/table-cells/order/country-cell"
 import {
   CustomerCell,
@@ -101,10 +102,10 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
             const isFullyRefunded = row.original.payment_status === "refunded"
             const total = !isFullyRefunded
               ? getValue()
-              : row.original.payment_collections.reduce(
+              : row.original.payment_collections?.reduce(
                   (acc, payCol) => acc + (payCol.refunded_amount ?? 0),
                   0
-                )
+                ) ?? 0
             const currencyCode = row.original.currency_code
 
             return (
@@ -121,7 +122,8 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          const country = row.original.shipping_address?.country
+          const countryCode = row.original.shipping_address?.country_code
+          const country = countries.find((c) => c.iso_2 === countryCode)
 
           return <CountryCell country={country} />
         },

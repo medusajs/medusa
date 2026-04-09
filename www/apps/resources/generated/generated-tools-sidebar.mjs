@@ -133,6 +133,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "title": "telemetry",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/medusa-cli/commands/codemod",
+                  "title": "codemod",
+                  "description": "",
+                  "children": []
                 }
               ]
             }
@@ -303,6 +312,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/js-sdk/store/locale",
+                  "title": "locale",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/js-sdk/store/order",
                   "title": "order",
                   "description": "",
@@ -458,6 +476,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/invite",
                   "title": "invite",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/locale",
+                  "title": "locale",
                   "description": "",
                   "children": []
                 },
@@ -726,6 +753,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/js-sdk/admin/translation",
+                  "title": "translation",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/js-sdk/admin/upload",
                   "title": "upload",
                   "description": "",
@@ -800,6 +836,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/nextjs-starter/guides/revalidate-cache",
                   "title": "Revalidate Cache",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/nextjs-starter/guides/remove-country-code",
+                  "title": "Remove Country Code from URLs",
                   "children": []
                 }
               ]

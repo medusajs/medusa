@@ -32,6 +32,10 @@ export const notification = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/sendNotificationsStep"
   },
   {
+    "title": "exportOrdersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportOrdersWorkflow"
+  },
+  {
     "title": "exportProductsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportProductsWorkflow"
   },

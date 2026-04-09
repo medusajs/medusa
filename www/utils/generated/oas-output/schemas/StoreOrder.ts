@@ -145,59 +145,59 @@
  *   original_item_total:
  *     type: number
  *     title: original_item_total
- *     description: The order items' total including taxes, excluding promotions.
+ *     description: The sum of all line items' original totals before discounts, including taxes.
  *   original_item_subtotal:
  *     type: number
  *     title: original_item_subtotal
- *     description: The order items' total excluding taxes, including promotions.
+ *     description: The sum of all line items' original subtotals before discounts, excluding taxes.
  *   original_item_tax_total:
  *     type: number
  *     title: original_item_tax_total
- *     description: The total taxes applied on the order items, excluding promotions.
+ *     description: The sum of all line items' original tax totals before discounts.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The order items' total including taxes and promotions.
+ *     description: The sum of all line items' totals after discounts, including taxes.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The order items' total excluding taxes, including promotions.
+ *     description: The sum of all line items' subtotals before discounts, excluding taxes.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The total taxes applied on the order's items, including promotions.
+ *     description: The sum of all line items' tax totals after discounts.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The order's total including taxes, excluding promotions.
+ *     description: The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The order's total excluding taxes, including promotions.
+ *     description: The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The total taxes of the order excluding promotions.
+ *     description: The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
  *   total:
  *     type: number
  *     title: total
- *     description: The order's total including taxes and promotions.
+ *     description: The order's final total after discounts and credit lines, including taxes.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The order's total excluding taxes, including promotions.
+ *     description: The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The tax totals of the order including promotions.
+ *     description: The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The order's discount total.
+ *     description: The total amount of discounts applied to the order, including the tax portion of discounts.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total taxes applied on the discounted amount.
+ *     description: The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
  *   gift_card_total:
  *     type: number
  *     title: gift_card_total
@@ -209,27 +209,27 @@
  *   shipping_total:
  *     type: number
  *     title: shipping_total
- *     description: The order's shipping total including taxes and promotions.
+ *     description: The sum of all shipping methods' totals after discounts, including taxes.
  *   shipping_subtotal:
  *     type: number
  *     title: shipping_subtotal
- *     description: The order's shipping total excluding taxes, including promotions.
+ *     description: The sum of all shipping methods' subtotals before discounts, excluding taxes.
  *   shipping_tax_total:
  *     type: number
  *     title: shipping_tax_total
- *     description: The total taxes of the order's shipping including promotions.
+ *     description: The sum of all shipping methods' tax totals after discounts.
  *   original_shipping_total:
  *     type: number
  *     title: original_shipping_total
- *     description: The order's shipping total including taxes, excluding promotions.
+ *     description: The sum of all shipping methods' original totals before discounts, including taxes.
  *   original_shipping_subtotal:
  *     type: number
  *     title: original_shipping_subtotal
- *     description: The order's shipping total excluding taxes, including promotions.
+ *     description: The sum of all shipping methods' original subtotals before discounts, excluding taxes.
  *   original_shipping_tax_total:
  *     type: number
  *     title: original_shipping_tax_total
- *     description: The total taxes of the order's shipping excluding promotions.
+ *     description: The sum of all shipping methods' original tax totals before discounts.
  *   customer:
  *     $ref: "#/components/schemas/StoreCustomer"
  *   transactions:
@@ -244,15 +244,15 @@
  *   credit_line_total:
  *     type: number
  *     title: credit_line_total
- *     description: The order's credit line total.
+ *     description: The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
  *   item_discount_total:
  *     type: number
  *     title: item_discount_total
- *     description: The total discount amount applied on the order's items.
+ *     description: The sum of all discounts applied to line items, including the tax portion of discounts.
  *   shipping_discount_total:
  *     type: number
  *     title: shipping_discount_total
- *     description: The total discount amount applied on the order's shipping.
+ *     description: The sum of all discounts applied to shipping methods, including the tax portion of discounts.
  *   custom_display_id:
  *     type: string
  *     title: custom_display_id

@@ -9,9 +9,10 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `updateRemoteLinksStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
 
-This step updates remote links between two records of linked data models.
+This step updates links between two records of linked data models. This is useful to update
+links with additional data such as metadata.
 
-Learn more in the [Remote Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#create-link).
+Learn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#update-links).
 
 ## Example
 
@@ -21,8 +22,8 @@ const data = updateRemoteLinksStep([
     [Modules.PRODUCT]: {
       product_id: "prod_321",
     },
-    "helloModuleService": {
-      my_custom_id: "mc_321",
+    blog: {
+      post_id: "post_321",
     },
     data: {
       metadata: {

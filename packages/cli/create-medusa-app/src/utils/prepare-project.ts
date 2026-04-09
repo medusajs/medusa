@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { Ora } from "ora"
-import execute from "./execute.js"
+import { ExecuteResult } from "./execute.js"
 import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import ProcessManager from "./process-manager.js"
@@ -95,6 +95,12 @@ async function preparePlugin({
   // Update name
   packageJson.name = projectName
 
+  // Add packageManager field to ensure consistent version usage
+  const packageManagerString = await packageManager.getPackageManagerString()
+  if (packageManagerString) {
+    packageJson.packageManager = packageManagerString
+  }
+
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
   factBoxOptions.interval = displayFactBox({
@@ -162,6 +168,12 @@ async function prepareProject({
   // Update name
   packageJson.name = projectName
 
+  // Add packageManager field to ensure consistent version usage
+  const packageManagerString = await packageManager.getPackageManagerString()
+  if (packageManagerString) {
+    packageJson.packageManager = packageManagerString
+  }
+
   // Update medusa dependencies versions
   if (version) {
     updatePackageVersions(packageJson, version)
@@ -210,59 +222,59 @@ async function prepareProject({
     })
 
     // run migrations
-    await processManager.runProcess({
-      process: async () => {
-        const proc = await execute(["npx medusa db:migrate", npxOptions], {
-          verbose,
-          needOutput: true,
-        })
+    const migrationExecResult = await packageManager.runMedusaCommand(
+      "db:migrate",
+      npxOptions,
+      {
+        verbose,
+        needOutput: true,
+      }
+    )
 
-        if (client) {
-          // check the migrations table is in the database
-          // to ensure that migrations ran
-          let errorOccurred = false
-          try {
-            const migrations = await client.query(
-              `SELECT * FROM "mikro_orm_migrations"`
-            )
-            errorOccurred = migrations.rowCount == 0
-          } catch (e) {
-            // avoid error thrown if the migrations table
-            // doesn't exist
-            errorOccurred = true
-          }
+    if (client) {
+      // check the migrations table is in the database
+      // to ensure that migrations ran
+      let errorOccurred = false
+      try {
+        const migrations = await client.query(
+          `SELECT count(tablename) from pg_tables WHERE tablename = 'mikro_orm_migrations'`
+        )
+        errorOccurred = migrations.rowCount == 0
+      } catch (e) {
+        // avoid error thrown if the migrations table
+        // doesn't exist
+        errorOccurred = true
+      }
 
-          // ensure that migrations actually ran in case of an uncaught error
-          if (errorOccurred && (proc.stderr || proc.stdout)) {
-            throw new Error(
-              `An error occurred while running migrations: ${
-                proc.stderr || proc.stdout
-              }`
-            )
-          }
-        }
-      },
-    })
+      // ensure that migrations actually ran in case of an uncaught error
+      if (
+        errorOccurred &&
+        (migrationExecResult.stderr || migrationExecResult.stdout)
+      ) {
+        throw new Error(
+          `An error occurred while running migrations: ${
+            migrationExecResult.stderr || migrationExecResult.stdout
+          }`
+        )
+      }
+    }
 
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
       message: "Ran Migrations",
     })
 
-    await processManager.runProcess({
-      process: async () => {
-        const proc = await execute(
-          [`npx medusa user -e ${ADMIN_EMAIL} --invite`, npxOptions],
-          { verbose, needOutput: true }
-        )
+    const userExecResult = (await packageManager.runMedusaCommand(
+      `user -e ${ADMIN_EMAIL} --invite`,
+      npxOptions,
+      { verbose, needOutput: true }
+    )) as ExecuteResult
 
-        // get invite token from stdout
-        const match = (proc.stdout as string).match(
-          /Invite token: (?<token>.+)/
-        )
-        inviteToken = match?.groups?.token
-      },
-    })
+    // get invite token from stdout
+    const match = (userExecResult.stdout as string).match(
+      /Invite token: (?<token>.+)/
+    )
+    inviteToken = match?.groups?.token
 
     // TODO for now we just seed the default data
     // we should add onboarding seeding again if it makes

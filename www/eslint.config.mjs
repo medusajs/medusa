@@ -1,171 +1,204 @@
-import prettier from "eslint-plugin-prettier/recommended";
-import globals from "globals";
-import babelParser from "@babel/eslint-parser";
-import typescriptEslintEslintPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import prettier from "eslint-plugin-prettier/recommended"
+import globals from "globals"
+import babelParser from "@babel/eslint-parser"
+import typescriptEslintEslintPlugin from "@typescript-eslint/eslint-plugin"
+import tsParser from "@typescript-eslint/parser"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+import js from "@eslint/js"
+import { FlatCompat } from "@eslint/eslintrc"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
+})
 
 export default [
-    prettier,
-    {
+  prettier,
+  {
     ignores: [
-        "**/dist", 
-        "**/build", 
-        "**/global-config.ts",
-        "**/next.config.js",
-        "**/spec",
-        "**/node_modules",
-        "**/public",
-        "**/.eslintrc.js",
-        "**/generated",
-        "packages/tags/src/tags"
+      "**/dist",
+      "**/build",
+      "**/global-config.ts",
+      "**/next.config.js",
+      "**/spec",
+      "**/node_modules",
+      "**/public",
+      "**/.eslintrc.js",
+      "**/generated",
+      "packages/tags/src/tags",
+      "**/__tests__",
+      "**/__mocks__",
     ],
-}, ...compat.extends(
+  },
+  ...compat.extends(
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-), {
-
+    "plugin:react/jsx-runtime"
+  ),
+  {
     languageOptions: {
-        globals: {
-            ...globals.node,
-            ...globals.jest,
-            ...globals.browser,
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+        ...globals.browser,
+      },
+
+      parser: babelParser,
+      ecmaVersion: 13,
+      sourceType: "module",
+
+      parserOptions: {
+        requireConfigFile: false,
+
+        ecmaFeatures: {
+          experimentalDecorators: true,
+          jsx: true,
+          modules: true,
         },
 
-        parser: babelParser,
-        ecmaVersion: 13,
-        sourceType: "module",
-
-        parserOptions: {
-            requireConfigFile: false,
-
-            ecmaFeatures: {
-                experimentalDecorators: true,
-                jsx: true,
-                modules: true
-            },
-
-            project: true,
-        },
+        project: true,
+      },
     },
 
     settings: {
-        react: {
-            version: "detect",
-        },
+      react: {
+        version: "detect",
+      },
     },
 
     rules: {
-        curly: ["error", "all"],
-        "new-cap": "off",
-        "require-jsdoc": "off",
-        "no-unused-expressions": "off",
-        "no-unused-vars": "off",
-        camelcase: "off",
-        "no-invalid-this": "off",
+      curly: ["error", "all"],
+      "new-cap": "off",
+      "require-jsdoc": "off",
+      "no-unused-expressions": "off",
+      "no-unused-vars": "off",
+      camelcase: "off",
+      "no-invalid-this": "off",
 
-        "max-len": ["error", {
-            code: 80,
-            ignoreStrings: true,
-            ignoreRegExpLiterals: true,
-            ignoreComments: true,
-            ignoreTrailingComments: true,
-            ignoreUrls: true,
-            ignoreTemplateLiterals: true,
-        }],
+      "max-len": [
+        "error",
+        {
+          code: 80,
+          ignoreStrings: true,
+          ignoreRegExpLiterals: true,
+          ignoreComments: true,
+          ignoreTrailingComments: true,
+          ignoreUrls: true,
+          ignoreTemplateLiterals: true,
+        },
+      ],
 
-        semi: ["error", "never"],
+      semi: ["error", "never"],
 
-        quotes: ["error", "double", {
-            allowTemplateLiterals: true,
-        }],
+      quotes: [
+        "error",
+        "double",
+        {
+          allowTemplateLiterals: true,
+        },
+      ],
 
-        "comma-dangle": ["error", {
-            arrays: "always-multiline",
-            objects: "always-multiline",
-            imports: "always-multiline",
-            exports: "always-multiline",
-            functions: "never",
-        }],
+      "comma-dangle": [
+        "error",
+        {
+          arrays: "always-multiline",
+          objects: "always-multiline",
+          imports: "always-multiline",
+          exports: "always-multiline",
+          functions: "never",
+        },
+      ],
 
-        "object-curly-spacing": ["error", "always"],
-        "arrow-parens": ["error", "always"],
-        "linebreak-style": 0,
+      "object-curly-spacing": ["error", "always"],
+      "arrow-parens": ["error", "always"],
+      "linebreak-style": 0,
 
-        "no-confusing-arrow": ["error", {
-            allowParens: false,
-        }],
+      "no-confusing-arrow": [
+        "error",
+        {
+          allowParens: false,
+        },
+      ],
 
-        "space-before-function-paren": ["error", {
-            anonymous: "always",
-            named: "never",
-            asyncArrow: "always",
-        }],
+      "space-before-function-paren": [
+        "error",
+        {
+          anonymous: "always",
+          named: "never",
+          asyncArrow: "always",
+        },
+      ],
 
-        "space-infix-ops": "error",
-        "eol-last": ["error", "always"],
+      "space-infix-ops": "error",
+      "eol-last": ["error", "always"],
 
-        "no-console": ["error", {
-            allow: ["error", "warn"],
-        }],
+      "no-console": [
+        "error",
+        {
+          allow: ["error", "warn"],
+        },
+      ],
 
-        "react/prop-types": "off",
+      "react/prop-types": "off",
     },
-}, ...compat.extends("plugin:@typescript-eslint/recommended", "plugin:react/recommended").map(config => ({
-    ...config,
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-})), {
+  },
+  ...compat
+    .extends(
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended"
+    )
+    .map((config) => ({
+      ...config,
+      files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+    })),
+  {
     files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
 
     plugins: {
-        "@typescript-eslint": typescriptEslintEslintPlugin,
+      "@typescript-eslint": typescriptEslintEslintPlugin,
     },
 
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 13,
-        sourceType: "module",
+      parser: tsParser,
+      ecmaVersion: 13,
+      sourceType: "module",
 
-        parserOptions: {
-            project: "./tsconfig.json",
-        },
+      parserOptions: {
+        project: "./tsconfig.json",
+      },
     },
 
     rules: {
-        "valid-jsdoc": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-floating-promises": "error",
-        "@typescript-eslint/await-thenable": "error",
-        "@typescript-eslint/promise-function-async": "error",
-        "@/keyword-spacing": "error",
+      "valid-jsdoc": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/await-thenable": "error",
+      "@typescript-eslint/promise-function-async": "error",
+      "@/keyword-spacing": "error",
 
-        "@/space-before-function-paren": ["error", {
-            anonymous: "always",
-            named: "never",
-            asyncArrow: "always",
-        }],
+      "@/space-before-function-paren": [
+        "error",
+        {
+          anonymous: "always",
+          named: "never",
+          asyncArrow: "always",
+        },
+      ],
 
-        "@/space-infix-ops": "error",
-        "@typescript-eslint/no-explicit-any": "warn",
-        "@typescript-eslint/no-unused-vars": "warn",
+      "@/space-infix-ops": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
 
-        "react/prop-types": "off",
+      "react/prop-types": "off",
     },
     settings: {
-        next: {
-            rootDir: ["apps/*/"],
-        },
+      next: {
+        rootDir: ["apps/*/"],
+      },
     },
-}];
+  },
+]

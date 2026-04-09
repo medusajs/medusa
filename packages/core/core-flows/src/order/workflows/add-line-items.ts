@@ -21,7 +21,7 @@ import { requiredVariantFieldsForInventoryConfirmation } from "../../cart/utils/
 import { pricingContextResult } from "../../cart/utils/schemas"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants-and-items-with-prices"
-import { useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { createOrderLineItemsStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 
@@ -108,6 +108,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
         "customer_id",
         "email",
         "currency_code",
+        "locale",
       ],
       options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "order-query" })
@@ -176,9 +177,15 @@ export const addOrderLineItemsWorkflow = createWorkflow(
       })
     })
 
+    const translatedItems = getTranslatedLineItemsStep({
+      items,
+      variants,
+      locale: order.locale,
+    })
+
     return new WorkflowResponse(
       createOrderLineItemsStep({
-        items: items,
+        items: translatedItems,
       }) satisfies OrderAddLineItemWorkflowOutput,
       {
         hooks: [setPricingContext] as const,

@@ -212,6 +212,13 @@ type OrderLineItem {
 
 type OrderItem {
   id: ID!
+  version: Int!
+  unit_price: Float!
+  raw_unit_price: JSON
+  compare_at_unit_price: Float!
+  raw_compare_at_unit_price: JSON
+  delivered_quantity: Int!
+  raw_delivered_quantity: JSON
   item_id: String!
   item: OrderLineItem!
   quantity: Int!

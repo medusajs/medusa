@@ -9,6 +9,7 @@ import logMessage from "./log-message.js"
 import formatConnectionString from "./format-connection-string.js"
 import { Ora } from "ora"
 import { getCurrentOs } from "./get-current-os.js"
+import terminalLink from "terminal-link"
 
 type CreateDbOptions = {
   client: pg.Client
@@ -141,7 +142,10 @@ async function getForDbName({
       })
     } catch (e) {
       logMessage({
-        message: `Couldn't connect to PostgreSQL because of the following error: ${e}.${EOL}${EOL}Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}If you keep running into this issue despite having PostgreSQL installed, please check out our troubleshooting guidelines: https://docs.medusajs.com/resources/troubleshooting/database-errors`,
+        message: `Couldn't connect to PostgreSQL because of the following error: ${e}.${EOL}${EOL}Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}If you keep running into this issue despite having PostgreSQL installed, please check out our ${terminalLink(
+          "troubleshooting guides",
+          "https://docs.medusajs.com/resources/troubleshooting/database-errors"
+        )}.`,
         type: "error",
       })
     }

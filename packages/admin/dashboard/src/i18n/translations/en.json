@@ -1,6 +1,7 @@
 {
   "$schema": "./$schema.json",
   "general": {
+    "fullList": "All",
     "ascending": "Ascending",
     "descending": "Descending",
     "add": "Add",
@@ -11,6 +12,7 @@
     "apply": "Apply",
     "range": "Range",
     "search": "Search",
+    "original": "Original",
     "of": "of",
     "results": "results",
     "pages": "pages",
@@ -23,6 +25,8 @@
     "tip": "Tip",
     "error": "Error",
     "select": "Select",
+    "selectAll": "Select all",
+    "unselectAll": "Unselect all",
     "selected": "Selected",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -33,6 +37,7 @@
     "modified": "Modified",
     "added": "Added",
     "removed": "Removed",
+    "remaining": "Left",
     "admin": "Admin",
     "store": "Store",
     "details": "Details",
@@ -99,7 +104,9 @@
   },
   "actions": {
     "save": "Save",
+    "saveChanges": "Save changes",
     "saveAsDraft": "Save as draft",
+    "saveAndClose": "Save and close",
     "copy": "Copy",
     "copied": "Copied",
     "duplicate": "Duplicate",
@@ -303,6 +310,9 @@
   },
   "filters": {
     "sortLabel": "Sort",
+    "collapse": {
+      "all": "Collapse all"
+    },
     "filterLabel": "Filter",
     "searchLabel": "Search",
     "date": {
@@ -1080,6 +1090,18 @@
     "list": {
       "noRecordsMessage": "Your orders will show up here."
     },
+    "export": {
+      "header": "Export Order List",
+      "description": "Export the order list to a CSV file.",
+      "success": {
+        "title": "Export started",
+        "description": "You will be notified when the export is ready."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "The following filters will be applied to the export."
+      }
+    },
     "status": {
       "not_paid": "Not paid",
       "pending": "Pending",
@@ -1272,6 +1294,9 @@
       "outboundShipping": "Outbound shipping",
       "outboundShippingHint": "Choose which method you want to use.",
       "refundAmount": "Estimated difference",
+      "carryOverPromotion": "Carry over promotions",
+      "carryOverPromotionHint": "Apply the order's promotions to the claim items",
+      "carryOverPromotionTooltip": "Only fixed type promotions with EACH allocation and percentage type promotions with EACH or ACROSS allocation can be carried over to outbound claim items.",
       "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
       "actions": {
         "cancelClaim": {
@@ -1402,7 +1427,10 @@
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Canceled",
-        "requiresAction": "Requires action"
+        "requiresAction": "Requires action",
+        "awaitingPickup": "Awaiting pickup",
+        "awaitingShipping": "Awaiting shipping",
+        "awaitingDelivery": "Awaiting delivery"
       },
       "toast": {
         "created": "Fulfillment created successfully",
@@ -1552,6 +1580,14 @@
       "shippingPriceOverrideHint": "Override the shipping price for the draft order.",
       "sendNotificationLabel": "Send notification",
       "sendNotificationHint": "Send a notification to the customer when the draft order is created."
+    },
+    "list": {
+      "noRecordsMessage": "No draft orders found",
+      "description": "Create a new draft order to get started.",
+      "filtered": {
+        "heading": "No results found",
+        "description": "No draft orders match your filter criteria."
+      }
     },
     "validation": {
       "requiredEmailOrCustomer": "Email or customer is required.",
@@ -2220,6 +2256,32 @@
         "description": "Maximum number of times this promotion can be used across all orders. Leave empty for unlimited usage."
       }
     },
+    "templates": {
+      "amount_off_products": {
+        "title": "Amount off products",
+        "description": "Discount specific products or collection of products"
+      },
+      "amount_off_order": {
+        "title": "Amount off order",
+        "description": "Discounts the total order amount"
+      },
+      "percentage_off_product": {
+        "title": "Percentage off product",
+        "description": "Discounts a percentage off selected products"
+      },
+      "percentage_off_order": {
+        "title": "Percentage off order",
+        "description": "Discounts a percentage of the total order amount"
+      },
+      "buy_get": {
+        "title": "Buy X Get Y",
+        "description": "Buy X product(s), get Y product(s)"
+      },
+      "shipping_discount": {
+        "title": "Free shipping",
+        "description": "Applies a 100% discount to shipping fees"
+      }
+    },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type",
@@ -2492,31 +2554,77 @@
     "deleteUserSuccess": "User {{name}} deleted successfully",
     "invite": "Invite"
   },
+  "translations": {
+    "domain": "Translations",
+    "settings": {
+      "header": "Manage translatable entities",
+      "successToast": "Settings updated successfully"
+    },
+    "actions": {
+      "manage": "Manage translations",
+      "manageEntities": "Manage entities",
+      "manageLocales": "Manage locales"
+    },
+    "subtitle": "Manage translations of your data in Medusa",
+    "list": {
+      "metrics": "{{translated}} of {{total}} translations"
+    },
+    "edit": {
+      "successToast": "Translations updated successfully",
+      "unsavedChanges": {
+        "title": "Unsaved translations",
+        "description": "Don't lose your work. You have changes that haven't been saved yet"
+      }
+    },
+    "bulk": {
+      "header": "Translations Bulk Editor",
+      "mainColumn": "Locale"
+    },
+    "activeLocales": {
+      "heading": "Languages",
+      "subtitle": "Activated translations",
+      "noLocalesTip": "Configure at least one language to start translating your data",
+      "noLocalesTipConfigureAction": "Configure"
+    },
+    "completion": {
+      "heading": "Translated fields",
+      "translated": "Translated",
+      "toTranslate": "Missing",
+      "footer": "Languages"
+    }
+  },
   "store": {
     "domain": "Store",
     "manageYourStoresDetails": "Manage your store's details",
     "editStore": "Edit store",
     "defaultCurrency": "Default currency",
+    "defaultLocale": "Default locale",
     "defaultRegion": "Default region",
     "defaultSalesChannel": "Default sales channel",
     "defaultLocation": "Default location",
     "swapLinkTemplate": "Swap link template",
     "paymentLinkTemplate": "Payment link template",
     "inviteLinkTemplate": "Invite link template",
+    "locales": "Locales",
     "currencies": "Currencies",
     "addCurrencies": "Add currencies",
     "enableTaxInclusivePricing": "Enable tax inclusive pricing",
     "disableTaxInclusivePricing": "Disable tax inclusive pricing",
     "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
     "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
+    "removeLocaleWarning_one": "You are about to remove {{count}} locale from your store. Any translation using this locale will be removed.",
+    "removeLocaleWarning_other": "You are about to remove {{count}} locales from your store. Any translation using these locales will be removed.",
     "currencyAlreadyAdded": "The currency has already been added to your store.",
+    "localeAlreadyAdded": "The locale has already been added to your store.",
     "edit": {
       "header": "Edit Store"
     },
     "toast": {
       "update": "Store successfully updated",
       "currenciesUpdated": "Currencies updated successfully",
+      "localesUpdated": "Locales updated successfully",
       "currenciesRemoved": "Removed currencies from the store successfully",
+      "localesRemoved": "Removed locales from the store successfully",
       "updatedTaxInclusivitySuccessfully": "Tax inclusive pricing updated successfully"
     }
   },
@@ -3224,6 +3332,12 @@
         "confirmText": "Update",
         "cancelText": "Cancel"
       }
+    }
+  },
+  "auth": {
+    "login": {
+      "authenticationFailed": "Authentication failed",
+      "cloud": "Log in with Medusa Cloud"
     }
   }
 }

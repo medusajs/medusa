@@ -96,6 +96,10 @@ export const tutorial = [
     "path": "https://docs.medusajs.com/resources/integrations/guides/mailchimp"
   },
   {
+    "title": "Integrate Okta",
+    "path": "https://docs.medusajs.com/resources/integrations/guides/okta"
+  },
+  {
     "title": "Integrate Payload",
     "path": "https://docs.medusajs.com/resources/integrations/guides/payload"
   },

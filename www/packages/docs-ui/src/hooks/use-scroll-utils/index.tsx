@@ -21,7 +21,7 @@ import React, {
 } from "react"
 import { getScrolledTop as getScrolledTopUtil, isElmWindow } from "../../utils"
 import { useKeyboardShortcut } from "../use-keyboard-shortcut"
-import { useLayout } from "../../providers"
+import { useLayout } from "../../providers/Layout"
 
 type EventFunc = (...args: never[]) => unknown
 

@@ -44,20 +44,20 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Architecture",
-            "path": "/learn/introduction/architecture",
+            "title": "AI Assistants and LLMs",
+            "path": "/learn/introduction/build-with-llms-ai",
             "children": [],
-            "chapterTitle": "1.3. Architecture",
+            "chapterTitle": "1.3. AI Assistants and LLMs",
             "number": "1.3."
           },
           {
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "AI Assistants and LLMs",
-            "path": "/learn/introduction/build-with-llms-ai",
+            "title": "Architecture",
+            "path": "/learn/introduction/architecture",
             "children": [],
-            "chapterTitle": "1.4. AI Assistants and LLMs",
+            "chapterTitle": "1.4. Architecture",
             "number": "1.4."
           },
           {
@@ -547,7 +547,7 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/index",
+                "path": "/learn/fundamentals/data-models/indexes",
                 "title": "Define Index",
                 "children": [],
                 "chapterTitle": "3.5.6. Define Index",
@@ -698,11 +698,21 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/learn/fundamentals/api-routes/localization",
+                "title": "Localization",
+                "children": [],
+                "chapterTitle": "3.6.12. Localization",
+                "number": "3.6.12."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/learn/fundamentals/api-routes/override",
                 "title": "Override API Routes",
                 "children": [],
-                "chapterTitle": "3.6.12. Override API Routes",
-                "number": "3.6.12."
+                "chapterTitle": "3.6.13. Override API Routes",
+                "number": "3.6.13."
               }
             ],
             "chapterTitle": "3.6. API Routes",
@@ -905,6 +915,16 @@ export const generatedSidebars = [
                 "children": [],
                 "chapterTitle": "3.8.2. Emit Event",
                 "number": "3.8.2."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/learn/fundamentals/events-and-subscribers/event-priority",
+                "title": "Event Priority",
+                "children": [],
+                "chapterTitle": "3.8.3. Event Priority",
+                "number": "3.8.3."
               }
             ],
             "chapterTitle": "3.8. Events and Subscribers",
@@ -1115,11 +1135,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "pnpm",
+            "path": "/learn/configurations/pnpm",
+            "children": [],
+            "chapterTitle": "6.1. pnpm",
+            "number": "6.1."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Environment Variables",
             "path": "/learn/fundamentals/environment-variables",
             "children": [],
-            "chapterTitle": "6.1. Environment Variables",
-            "number": "6.1."
+            "chapterTitle": "6.2. Environment Variables",
+            "number": "6.2."
           },
           {
             "loaded": true,
@@ -1135,12 +1165,12 @@ export const generatedSidebars = [
                 "title": "Asymmetric Encryption",
                 "path": "/learn/configurations/medusa-config/asymmetric-encryption",
                 "children": [],
-                "chapterTitle": "6.2.1. Asymmetric Encryption",
-                "number": "6.2.1."
+                "chapterTitle": "6.3.1. Asymmetric Encryption",
+                "number": "6.3.1."
               }
             ],
-            "chapterTitle": "6.2. Medusa Configuations",
-            "number": "6.2."
+            "chapterTitle": "6.3. Medusa Configuations",
+            "number": "6.3."
           },
           {
             "loaded": true,
@@ -1149,8 +1179,8 @@ export const generatedSidebars = [
             "title": "Type Aliases",
             "path": "/learn/configurations/ts-aliases",
             "children": [],
-            "chapterTitle": "6.3. Type Aliases",
-            "number": "6.3."
+            "chapterTitle": "6.4. Type Aliases",
+            "number": "6.4."
           }
         ],
         "chapterTitle": "6. Configurations",
@@ -1413,6 +1443,16 @@ export const generatedSidebars = [
                 "children": [],
                 "chapterTitle": "10.3.1. Replace Imports (v2.11.0+)",
                 "number": "10.3.1."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Replace Zod Imports (v2.13.0+)",
+                "path": "/learn/codemods/replace-zod-imports",
+                "children": [],
+                "chapterTitle": "10.3.2. Replace Zod Imports (v2.13.0+)",
+                "number": "10.3.2."
               }
             ],
             "chapterTitle": "10.3. Codemods",

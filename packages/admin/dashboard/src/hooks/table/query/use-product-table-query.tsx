@@ -7,7 +7,8 @@ type UseProductTableQueryProps = {
 }
 
 const DEFAULT_FIELDS =
-  "id,title,handle,status,*collection,*sales_channels,variants.id,thumbnail"
+  // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+  "id,title,handle,status,*collection,*sales_channels,variants.id,thumbnail,-type,-options,-tags,-images,-variants"
 
 export const useProductTableQuery = ({
   prefix,

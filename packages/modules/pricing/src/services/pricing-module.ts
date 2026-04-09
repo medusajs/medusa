@@ -535,16 +535,16 @@ export default class PricingModuleService
           id: calculatedPrice?.id || null,
           price_list_id: calculatedPrice?.price_list_id || null,
           price_list_type: calculatedPrice?.price_list_type || null,
-          min_quantity: parseInt(calculatedPrice?.min_quantity || "") || null,
-          max_quantity: parseInt(calculatedPrice?.max_quantity || "") || null,
+          min_quantity: parseFloat(calculatedPrice?.min_quantity || "") || null,
+          max_quantity: parseFloat(calculatedPrice?.max_quantity || "") || null,
         },
 
         original_price: {
           id: originalPrice?.id || null,
           price_list_id: originalPrice?.price_list_id || null,
           price_list_type: originalPrice?.price_list_type || null,
-          min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
-          max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
+          min_quantity: parseFloat(originalPrice?.min_quantity || "") || null,
+          max_quantity: parseFloat(originalPrice?.max_quantity || "") || null,
         },
       }
 

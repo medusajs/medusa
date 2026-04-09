@@ -11,6 +11,7 @@ export * from "./prerequisites-link-fixer.js"
 export * from "./resolve-admonitions.js"
 export * from "./type-list-link-fixer.js"
 export * from "./ui-rehype-plugin.js"
+export * from "./validate-highlights.js"
 export * from "./workflow-diagram-link-fixer.js"
 
 export * from "./utils/fix-link.js"

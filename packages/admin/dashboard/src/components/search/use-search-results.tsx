@@ -117,7 +117,9 @@ const useDynamicSearchResults = (
     {
       q: debouncedSearch,
       limit,
-      fields: "id,title,thumbnail",
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields:
+        "id,title,thumbnail,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
     },
     {
       enabled: isAreaEnabled(currentArea, "product"),

@@ -47,3 +47,10 @@ export interface AdminOrderPreviewResponse {
    */
   order: AdminOrderPreview
 }
+
+export interface AdminExportOrderResponse {
+  /**
+   * The ID of the export order workflow's transaction.
+   */
+  transaction_id: string
+}

@@ -207,13 +207,20 @@ medusaIntegrationTestRunner({
             })
           )
 
-          expect(remainingPricePreferences).toEqual([
-            expect.objectContaining({
-              attribute: "currency_code",
-              value: "EUR",
-              is_tax_inclusive: true,
-            }),
-          ])
+          expect(remainingPricePreferences).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                attribute: "currency_code",
+                value: "EUR",
+                is_tax_inclusive: true,
+              }),
+              expect.objectContaining({
+                attribute: "currency_code",
+                value: "eur",
+                is_tax_inclusive: false,
+              }),
+            ])
+          )
         })
       })
     })

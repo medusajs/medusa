@@ -16,27 +16,28 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.12.1",
-    "@next/mdx": "15.3.6",
+    "@medusajs/icons": "2.13.6",
+    "@next/mdx": "15.3.9",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "15.3.6",
+    "next": "15.3.9",
     "next-mdx-remote-client": "2",
     "posthog-js": "^1.298.1",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "posthog-node": "^5.29.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "rehype-mdx-code-props": "^2.0.0",
     "remark-directive": "^3.0.0",
     "remark-frontmatter": "^5.0.0",
     "swr": "^2.3.6"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^15.3.6",
+    "@next/bundle-analyzer": "15.3.9",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20",
-    "@types/react": "19.2.1",
-    "@types/react-dom": "19.2.1",
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3",
     "autoprefixer": "^10.0.1",
     "build-scripts": "*",
     "docs-utils": "*",
@@ -57,7 +58,7 @@
     "node": ">=20"
   },
   "overrides": {
-    "@types/react": "19.2.1",
-    "@types/react-dom": "19.2.1"
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3"
   }
 }

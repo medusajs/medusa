@@ -5,7 +5,6 @@
  * x-schemaName: AdminCreateStoreCreditAccount
  * required:
  *   - currency_code
- *   - customer_id
  * properties:
  *   currency_code:
  *     type: string

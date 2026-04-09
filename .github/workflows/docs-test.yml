@@ -34,6 +34,10 @@ jobs:
         working-directory: www
         run: yarn install
 
+      - name: Run Tests
+        working-directory: www
+        run: yarn test
+
       - name: Build Doc Apps
         working-directory: www
         run: yarn build
@@ -379,6 +383,63 @@ jobs:
       - name: Get Directories to Scan
         working-directory: www/vale
         run: ./get-files.sh cloud/app
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: "--minAlertLevel=error"
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+
+  vale-bloom:
+    if: ${{ startsWith(github.head_ref, 'docs/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh bloom/app going-live faq
         id: directories
 
       - name: Vale Linter

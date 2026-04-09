@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import { Badge, ExpandableNotice, FeatureFlagNotice } from "docs-ui"
 import { Fragment } from "react"
@@ -26,7 +27,7 @@ const TagOperationParametersName = ({
     case schema.type === "array":
       typeDescription = (
         <>
-          {schema.type === "array" && formatArrayDescription(schema.items)}
+          {formatArrayDescription((schema as OpenAPI.ArraySchemaObject).items)}
           {schema.nullable ? ` or null` : ""}
         </>
       )
@@ -35,7 +36,7 @@ const TagOperationParametersName = ({
     case schema.allOf !== undefined:
       typeDescription = (
         <>
-          {formatUnionDescription(schema.allOf)}
+          {formatUnionDescription(schema.allOf || schema.anyOf)}
           {schema.nullable ? ` or null` : ""}
         </>
       )
@@ -43,7 +44,7 @@ const TagOperationParametersName = ({
     case schema.oneOf !== undefined:
       typeDescription = (
         <>
-          {schema.oneOf?.map((item, index) => (
+          {schema.oneOf!.map((item, index) => (
             <Fragment key={index}>
               {index !== 0 && <> or </>}
               {item.type !== "array" && <>{item.title || item.type}</>}
@@ -60,16 +61,21 @@ const TagOperationParametersName = ({
       typeDescription = (
         <>
           {!schema.type ? "any" : schema.type}
-          {schema.nullable ? ` or null` : ""}
           {schema.format ? ` <${schema.format}>` : ""}
+          {schema.nullable ? ` or null` : ""}
         </>
       )
   }
 
   return (
     <span className="inline-flex gap-0.5 items-center">
-      <span className="font-monospace">{name}</span>
-      <span className="text-medusa-fg-muted text-compact-small">
+      <span className="font-monospace" data-testid="name">
+        {name}
+      </span>
+      <span
+        className="text-medusa-fg-muted text-compact-small"
+        data-testid="type-description"
+      >
         {typeDescription}
       </span>
       {schema.deprecated && (
@@ -84,7 +90,10 @@ const TagOperationParametersName = ({
         <FeatureFlagNotice featureFlag={schema["x-featureFlag"]} type="type" />
       )}
       {!isRequired && (
-        <span className="text-medusa-tag-blue-text text-compact-x-small">
+        <span
+          className="text-medusa-tag-blue-text text-compact-x-small"
+          data-testid="optional"
+        >
           optional
         </span>
       )}

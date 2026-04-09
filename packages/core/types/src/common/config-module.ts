@@ -5,10 +5,29 @@ import {
 } from "../modules-sdk"
 
 import type { RedisOptions } from "ioredis"
+
 import { ConnectionOptions } from "node:tls"
 // @ts-ignore
 import type { InlineConfig } from "vite"
 import type { Logger } from "../logger"
+
+/**
+ * Registry for module options types. Modules can augment this interface
+ * using declaration merging to provide typed options in defineConfig.
+ *
+ * @example
+ * ```ts
+ * // In @medusajs/translation module:
+ * declare module "@medusajs/types" {
+ *   interface ModuleOptions {
+ *     "@medusajs/translation": {
+ *       entities?: { type: string; fields: string[] }[]
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export interface ModuleOptions {}
 
 /**
  * @interface
@@ -100,6 +119,22 @@ export interface AdminOptions {
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
+
+  /**
+   * The maximum file size for media uploads in bytes. The default value is `1048576` (1MB).
+   * Set to `Infinity` to disable the file size limit.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     maxUploadFileSize: 10 * 1024 * 1024, // 10MB
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  maxUploadFileSize?: number
 }
 
 /**
@@ -243,6 +278,22 @@ export type MedusaCloudOptions = {
    * The endpoint of the Medusa Cloud email service.
    */
   emailsEndpoint?: string
+  /**
+   * The authorization endpoint of the Medusa Cloud OAuth service.
+   */
+  oauthAuthorizeEndpoint?: string
+  /**
+   * The token endpoint of the Medusa Cloud OAuth token service.
+   */
+  oauthTokenEndpoint?: string
+  /**
+   * The callback URL for the Medusa Cloud OAuth service. If not provided, it will be set to `${AdminOptions.backendUrl}/auth/user/cloud/callback`.
+   */
+  oauthCallbackUrl?: string
+  /**
+   * Whether the Medusa Cloud OAuth service is disabled.
+   */
+  oauthDisabled?: boolean
 }
 
 /**
@@ -852,7 +903,7 @@ export type ProjectConfigOptions = {
      * This configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actors).
      * For example, you only want to allow SSO logins for `users`, while you want to allow email/password logins for `customers` to the storefront.
      *
-     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
+     * `authMethodsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
      *
      * @example
      * Some example values of common use cases:
@@ -1093,17 +1144,6 @@ export type ConfigModule = {
   logger?: Logger
 }
 
-type InternalModuleDeclarationOverride = InternalModuleDeclaration & {
-  /**
-   * Optional key to be used to identify the module, if not provided, it will be inferred from the module joiner config service name.
-   */
-  key?: string
-  /**
-   * By default, modules are enabled, if provided as true, this will disable the module entirely.
-   */
-  disable?: boolean
-}
-
 type ExternalModuleDeclarationOverride = ExternalModuleDeclaration & {
   /**
    * key to be used to identify the module, if not provided, it will be inferred from the module joiner config service name.
@@ -1115,27 +1155,71 @@ type ExternalModuleDeclarationOverride = ExternalModuleDeclaration & {
   disable?: boolean
 }
 
+type ModuleConfigForResolve<R extends string> = R extends keyof ModuleOptions
+  ? {
+      resolve: R
+      key?: string
+      disable?: boolean
+      options?: ModuleOptions[R]
+    } & Partial<Omit<InternalModuleDeclaration, "options" | "resolve">>
+  : {
+      resolve?: string
+      key?: string
+      disable?: boolean
+      options?: object
+    } & Partial<Omit<InternalModuleDeclaration, "options" | "resolve">>
+
 /**
- * Modules accepted by the defineConfig function
+ * Generates a union of typed module configs for all known modules in the ModuleOptions registry.
+ * This distributes over all keys in ModuleOptions to create specific config types for each.
  */
-export type InputConfigModules = Partial<
-  InternalModuleDeclarationOverride | ExternalModuleDeclarationOverride
->[]
+type KnownModuleConfigs = ModuleConfigForResolve<keyof ModuleOptions & string>
+
+/**
+ * Generic module config for modules not registered in ModuleOptions.
+ */
+type GenericModuleConfig = ModuleConfigForResolve<string & {}>
+
+/**
+ * Modules accepted by the defineConfig function.
+ * Automatically infers options type for known modules registered in ModuleOptions.
+ */
+export type InputConfigModules = (
+  | KnownModuleConfigs
+  | GenericModuleConfig
+  | ExternalModuleDeclarationOverride
+)[]
+
+/**
+ * Base configuration type without modules
+ */
+type InputConfigBase = Partial<
+  Omit<ConfigModule, "admin" | "modules"> & {
+    admin?: Partial<ConfigModule["admin"]>
+  }
+>
+
+/**
+ * Configuration with array-based modules (recommended)
+ */
+export type InputConfigWithArrayModules = InputConfigBase & {
+  modules?: InputConfigModules
+}
+
+/**
+ * Configuration with object-based modules (deprecated)
+ * @deprecated Use array-based modules instead
+ */
+export type InputConfigWithObjectModules = InputConfigBase & {
+  modules?: ConfigModule["modules"]
+}
 
 /**
  * The configuration accepted by the "defineConfig" helper
  */
-export type InputConfig = Partial<
-  Omit<ConfigModule, "admin" | "modules"> & {
-    admin?: Partial<ConfigModule["admin"]>
-    modules:
-      | InputConfigModules
-      /**
-       * @deprecated use the array instead
-       */
-      | ConfigModule["modules"]
-  }
->
+export type InputConfig =
+  | InputConfigWithArrayModules
+  | InputConfigWithObjectModules
 
 type PluginAdminDetails = {
   type: "local" | "package"

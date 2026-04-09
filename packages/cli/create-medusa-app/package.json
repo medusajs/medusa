@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "2.12.1",
+  "version": "2.13.6",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -9,12 +9,13 @@
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc",
-    "watch": "yarn run -T tsc --watch"
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
-    "@medusajs/deps": "2.12.1",
-    "@medusajs/telemetry": "2.12.1",
+    "@medusajs/deps": "2.13.6",
+    "@medusajs/telemetry": "2.13.6",
     "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
@@ -25,8 +26,9 @@
     "open": "^9.1.0",
     "ora": "^5.4.1",
     "slugify": "^1.6.6",
+    "terminal-link": "^5.0.0",
     "uuid": "^9.0.0",
-    "validator": "^13.15.20",
+    "validator": "^13.15.22",
     "wait-on": "^9.0.1",
     "winston": "^3.9.0"
   },

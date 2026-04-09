@@ -39,18 +39,15 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
     return null
   }
 
-  const groupedRules = taxRate.rules.reduce(
-    (acc, rule) => {
-      if (!acc[rule.reference]) {
-        acc[rule.reference] = []
-      }
+  const groupedRules = taxRate.rules.reduce((acc, rule) => {
+    if (!acc[rule.reference]) {
+      acc[rule.reference] = []
+    }
 
-      acc[rule.reference].push(rule.reference_id)
+    acc[rule.reference].push(rule.reference_id)
 
-      return acc
-    },
-    {} as Record<string, string[]>
-  )
+    return acc
+  }, {} as Record<string, string[]>)
 
   const validKeys = Object.values(TaxRateRuleReferenceType)
   const numberOfTargets = Object.keys(groupedRules).map((key) =>
@@ -282,6 +279,9 @@ const useReferenceValues = (
     {
       id: ids.slice(0, DISPLAY_OVERRIDE_ITEMS_LIMIT),
       limit: DISPLAY_OVERRIDE_ITEMS_LIMIT,
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields:
+        "-type,-collection,-options,-tags,-images,-variants,-sales_channels",
     },
     {
       enabled: !!ids.length && type === TaxRateRuleReferenceType.PRODUCT,

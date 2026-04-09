@@ -88,7 +88,7 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -917,11 +917,11 @@ A Notification Module Provider has a service that contains the sending logic. Th
 So, create the file `src/modules/twilio-sms/service.ts` with the following content:
 
 export const twilioSmsServiceHighlights = [
-  ["8", "accountSid", "Twilio account SID."],
-  ["9", "authToken", "Twilio auth token."],
-  ["10", "from", "Twilio phone number to send the SMS from."],
-  ["14", "identifier", "Unique identifier for the module."],
-  ["15", "client", "Twilio client to send the SMS."],
+  ["9", "accountSid", "Twilio account SID."],
+  ["10", "authToken", "Twilio auth token."],
+  ["11", "from", "Twilio phone number to send the SMS from."],
+  ["15", "identifier", "Unique identifier for the module."],
+  ["16", "client", "Twilio client to send the SMS."],
 ]
 
 ```ts title="src/modules/twilio-sms/service.ts" highlights={twilioSmsServiceHighlights}

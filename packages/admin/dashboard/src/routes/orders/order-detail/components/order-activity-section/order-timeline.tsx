@@ -34,6 +34,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import ActivityItems from "./activity-items"
 import ChangeDetailsTooltip from "./change-details-tooltip"
+import { Thumbnail } from "../../../../../components/common/thumbnail"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -124,10 +125,14 @@ type Activity = {
 const useActivityItems = (order: AdminOrder): Activity[] => {
   const { t } = useTranslation()
 
-  const { order: initialOrder = order } = useOrder(order.id, {
-    version: 1,
-    fields: "created_at,total,currency_code",
-  }, { enabled: order.version !== 1})
+  const { order: initialOrder = order } = useOrder(
+    order.id,
+    {
+      version: 1,
+      fields: "created_at,total,currency_code",
+    },
+    { enabled: order.version !== 1 }
+  )
 
   const { order_changes: orderChanges = [] } = useOrderChanges(order.id, {
     change_type: [
@@ -254,12 +259,19 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: t("orders.activity.events.payment.refunded"),
           timestamp: refund.created_at,
           children: (
-            <Text size="small" className="text-ui-fg-subtle">
-              {getStylizedAmount(
-                refund.amount as number,
-                payment.currency_code
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <Text size="small">
+                {getStylizedAmount(
+                  refund.amount as number,
+                  payment.currency_code
+                )}
+              </Text>
+              {refund.created_by && (
+                <div className="flex items-center gap-x-2 text-sm">
+                  {t("fields.by")} <By id={refund.created_by} />
+                </div>
               )}
-            </Text>
+            </div>
           ),
         })
       }
@@ -269,7 +281,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
       items.push({
         title: t("orders.activity.events.fulfillment.created"),
         timestamp: fulfillment.created_at,
-        children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
+        children: (
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <FulfillmentCreatedBody fulfillment={fulfillment} />
+            {fulfillment.created_by && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={fulfillment.created_by} />
+              </div>
+            )}
+          </div>
+        ),
       })
 
       if (fulfillment.delivered_at) {
@@ -285,7 +306,14 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: t("orders.activity.events.fulfillment.shipped"),
           timestamp: fulfillment.shipped_at,
           children: (
-            <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+              {fulfillment.marked_shipped_by && (
+                <div className="flex items-center gap-x-2 text-sm">
+                  {t("fields.by")} <By id={fulfillment.marked_shipped_by} />
+                </div>
+              )}
+            </div>
           ),
         })
       }
@@ -315,7 +343,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         timestamp: ret.created_at,
         itemsToReturn: ret?.items,
         itemsMap,
-        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
+        children: (
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />
+            {ret.created_by && !ret.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={ret.created_by} />
+              </div>
+            )}
+          </div>
+        ),
       })
 
       if (ret.canceled_at) {
@@ -356,7 +393,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         itemsToSend: claim.additional_items,
         itemsToReturn: claimReturn?.items,
         itemsMap,
-        children: <ClaimBody claim={claim} claimReturn={claimReturn} />,
+        children: (
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ClaimBody claim={claim} claimReturn={claimReturn} />
+            {claim.created_by && !claim.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={claim.created_by} />
+              </div>
+            )}
+          </div>
+        ),
       })
     }
 
@@ -377,7 +423,14 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         itemsToReturn: exchangeReturn?.items,
         itemsMap,
         children: (
-          <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
+          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
+            {exchange.created_by && !exchange.canceled_at && (
+              <div className="flex items-center gap-x-2 text-sm">
+                {t("fields.by")} <By id={exchange.created_by} />
+              </div>
+            )}
+          </div>
         ),
       })
     }
@@ -398,12 +451,12 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           edit.status === "requested"
             ? edit.requested_at
             : edit.status === "confirmed"
-              ? edit.confirmed_at
-              : edit.status === "declined"
-                ? edit.declined_at
-                : edit.status === "canceled"
-                  ? edit.canceled_at
-                  : edit.created_at,
+            ? edit.confirmed_at
+            : edit.status === "declined"
+            ? edit.declined_at
+            : edit.status === "canceled"
+            ? edit.canceled_at
+            : edit.created_at,
         children: isConfirmed ? <OrderEditBody edit={edit} /> : null,
       })
     }
@@ -449,12 +502,20 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: (
             <ChangeDetailsTooltip
               title={t(`orders.activity.events.update_order.shipping_address`)}
-              previous={getFormattedAddress({
-                address: update.actions[0].details.old,
-              }).join(", ")}
-              next={getFormattedAddress({
-                address: update.actions[0].details.new,
-              }).join(", ")}
+              previous={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {getFormattedAddress({
+                    address: update.actions[0].details.old,
+                  }).join(", ")}
+                </p>
+              }
+              next={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {getFormattedAddress({
+                    address: update.actions[0].details.new,
+                  }).join(", ")}
+                </p>
+              }
             />
           ),
           timestamp: update.created_at,
@@ -471,12 +532,20 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: (
             <ChangeDetailsTooltip
               title={t(`orders.activity.events.update_order.billing_address`)}
-              previous={getFormattedAddress({
-                address: update.actions[0].details.old,
-              }).join(", ")}
-              next={getFormattedAddress({
-                address: update.actions[0].details.new,
-              }).join(", ")}
+              previous={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {getFormattedAddress({
+                    address: update.actions[0].details.old,
+                  }).join(", ")}
+                </p>
+              }
+              next={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {getFormattedAddress({
+                    address: update.actions[0].details.new,
+                  }).join(", ")}
+                </p>
+              }
             />
           ),
           timestamp: update.created_at,
@@ -493,8 +562,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           title: (
             <ChangeDetailsTooltip
               title={t(`orders.activity.events.update_order.email`)}
-              previous={update.actions[0].details.old}
-              next={update.actions[0].details.new}
+              previous={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {update.actions[0].details.old}
+                </p>
+              }
+              next={
+                <p className="txt-compact-small text-ui-fg-subtle">
+                  {update.actions[0].details.new}
+                </p>
+              }
             />
           ),
           timestamp: update.created_at,
@@ -527,16 +604,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     })
 
     if (initialOrder.created_at) {
-        const createdAt = {
-          title: t("orders.activity.events.placed.title"),
-          timestamp: initialOrder.created_at,
-          children: (
-            <Text size="small" className="text-ui-fg-subtle">
-              {getStylizedAmount(initialOrder.total, initialOrder.currency_code)}
-            </Text>
-          ),
-        }
-        sortedActivities.push(createdAt)
+      const createdAt = {
+        title: t("orders.activity.events.placed.title"),
+        timestamp: initialOrder.created_at,
+        children: (
+          <Text size="small" className="text-ui-fg-subtle">
+            {getStylizedAmount(initialOrder.total, initialOrder.currency_code)}
+          </Text>
+        ),
+      }
+      sortedActivities.push(createdAt)
     }
 
     return [...sortedActivities]
@@ -980,23 +1057,142 @@ const ExchangeBody = ({
 const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
   const { t } = useTranslation()
 
+  const isConfirmed = edit.status === "confirmed"
+  const isDeclined = edit.status === "declined"
+  const isCanceled = edit.status === "canceled"
+
+  const userId = isConfirmed
+    ? edit.confirmed_by
+    : isDeclined
+    ? edit.declined_by
+    : isCanceled
+    ? edit.canceled_by
+    : edit.requested_by
+
   const [itemsAdded, itemsRemoved] = useMemo(
     () => countItemsChange(edit.actions),
     [edit]
   )
 
-  return (
-    <div>
-      {itemsAdded > 0 && (
+  const ItemChangeDetails = ({
+    itemChange,
+    version,
+  }: {
+    itemChange: ItemChange
+    version: number
+  }) => {
+    // We need to know items that were completely removed, not just decreasing in quantity, since to get the item information for them
+    // we need to query the line items for the previous version, since the current order change version doesn't contain them
+    const deletedItemIdsSet = new Set(
+      itemChange.detail
+        .filter((item) => item.isDeleted)
+        .map((item) => item.lineItemId)
+    )
+    const isAllDeleted = deletedItemIdsSet.size === itemChange.detail.length
+    const isSomeDeleted = deletedItemIdsSet.size > 0
+
+    const { isLoading: isLoadingDeleted, order_items: deletedLineItems = [] } =
+      useOrderLineItems(
+        edit.order_id,
+        {
+          item_id: Array.from(deletedItemIdsSet),
+          version: version - 1,
+        },
+        {
+          enabled: isSomeDeleted,
+        }
+      )
+
+    const { isLoading, order_items: nonDeletedLineItems = [] } =
+      useOrderLineItems(
+        edit.order_id,
+        {
+          item_id: itemChange.detail
+            .filter((item) => !deletedItemIdsSet.has(item.lineItemId))
+            .map((item) => item.lineItemId),
+          version,
+        },
+        {
+          enabled: !isAllDeleted,
+        }
+      )
+
+    const lineItems = [...deletedLineItems, ...nonDeletedLineItems]
+
+    const label =
+      itemChange.type === "added" ? t("labels.added") : t("labels.removed")
+
+    if (isLoading || isLoadingDeleted) {
+      return (
         <Text size="small" className="text-ui-fg-subtle">
-          {t("labels.added")}: {itemsAdded}
+          {t("labels.loading")}
         </Text>
+      )
+    }
+
+    return (
+      <div className="text-ui-fg-subtle flex flex-col divide-y divide-dashed">
+        {lineItems.map((orderItem) => {
+          const itemChangeItem = itemChange.detail.find(
+            (item) => item.lineItemId === orderItem.item_id
+          )
+
+          if (!itemChangeItem) {
+            return null
+          }
+
+          const lineItem = orderItem.item
+
+          return (
+            <div className="group flex items-start gap-x-4 py-3 first:pt-0 last:pb-0">
+              <Thumbnail src={lineItem.thumbnail} />
+              <div>
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-base"
+                >
+                  {lineItem.title}
+                </Text>
+
+                {lineItem.variant_sku && (
+                  <Text size="small">{lineItem.variant_sku}</Text>
+                )}
+                <Text size="small">{`${label}: ${itemChangeItem.count}`}</Text>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  return (
+    <div className="text-ui-fg-subtle flex flex-col items-start gap-y-2">
+      {itemsAdded.totalCount > 0 && (
+        <ChangeDetailsTooltip
+          title={`${t("labels.added")}: ${itemsAdded.totalCount}`}
+          previous={
+            <ItemChangeDetails itemChange={itemsAdded} version={edit.version} />
+          }
+        />
       )}
 
-      {itemsRemoved > 0 && (
-        <Text size="small" className="text-ui-fg-subtle">
-          {t("labels.removed")}: {itemsRemoved}
-        </Text>
+      {itemsRemoved.totalCount > 0 && (
+        <ChangeDetailsTooltip
+          title={`${t("labels.removed")}: ${itemsRemoved.totalCount}`}
+          previous={
+            <ItemChangeDetails
+              itemChange={itemsRemoved}
+              version={edit.version}
+            />
+          }
+        />
+      )}
+      {userId && (
+        <div className="flex items-center gap-x-2 text-sm">
+          {t("fields.by")} <By id={userId} />
+        </div>
       )}
     </div>
   )
@@ -1066,29 +1262,61 @@ const TransferOrderRequestBody = ({
   )
 }
 
+type ItemChange = {
+  totalCount: number
+  type: "added" | "removed"
+  detail: {
+    lineItemId: string
+    count: number
+    isDeleted?: boolean
+  }[]
+}
 /**
  * Returns count of added and removed item quantity
  */
-function countItemsChange(actions: AdminOrderChange["actions"]) {
-  let added = 0
-  let removed = 0
+function countItemsChange(
+  actions: AdminOrderChange["actions"]
+): [ItemChange, ItemChange] {
+  const addedChange: ItemChange = {
+    totalCount: 0,
+    detail: [],
+    type: "added",
+  }
+  const removedChange: ItemChange = {
+    totalCount: 0,
+    detail: [],
+    type: "removed",
+  }
 
   actions.forEach((action) => {
     if (action.action === "ITEM_ADD") {
-      added += action.details!.quantity as number
+      addedChange.totalCount += action.details!.quantity as number
+      addedChange.detail.push({
+        lineItemId: action.details!.reference_id as string,
+        count: action.details!.quantity as number,
+      })
     }
     if (action.action === "ITEM_UPDATE") {
       const quantityDiff = action.details!.quantity_diff as number
 
       if (quantityDiff > 0) {
-        added += quantityDiff
+        addedChange.totalCount += quantityDiff
+        addedChange.detail.push({
+          lineItemId: action.details!.reference_id as string,
+          count: quantityDiff,
+        })
       } else {
-        removed += Math.abs(quantityDiff)
+        removedChange.totalCount += Math.abs(quantityDiff)
+        removedChange.detail.push({
+          lineItemId: action.details!.reference_id as string,
+          count: Math.abs(quantityDiff),
+          isDeleted: action.details!.quantity === 0,
+        })
       }
     }
   })
 
-  return [added, removed]
+  return [addedChange, removedChange]
 }
 
 /**

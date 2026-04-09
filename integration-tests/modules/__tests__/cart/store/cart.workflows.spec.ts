@@ -1360,6 +1360,7 @@ medusaIntegrationTestRunner({
               id: expect.stringContaining("cart_"),
               sales_channel_id: expect.stringContaining("sc_"),
               currency_code: "usd",
+              locale: null,
               region_id: expect.stringContaining("reg_"),
               shipping_address: null,
               item_total: 0,
@@ -1443,6 +1444,290 @@ medusaIntegrationTestRunner({
             })
           )
           expect(cart.items?.length).toEqual(1)
+        })
+
+        it("should update cart shipping address fields", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const regions = await regionModuleService.createRegions([
+            {
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+          ])
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            region_id: regions[0].id,
+            shipping_address: {
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "123 Main St",
+              city: "New York",
+              country_code: "us",
+              postal_code: "10001",
+            },
+          })
+
+          const shippingAddressId = cart.shipping_address?.id
+
+          await updateCartWorkflow(appContainer).run({
+            input: {
+              id: cart.id,
+              shipping_address: {
+                id: shippingAddressId,
+                first_name: "Jane",
+                last_name: "Smith",
+                address_1: "456 Oak Ave",
+                city: "Los Angeles",
+                country_code: "us",
+                postal_code: "90001",
+              },
+            },
+          })
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            relations: ["shipping_address"],
+          })
+
+          expect(cart.shipping_address).toEqual(
+            expect.objectContaining({
+              id: shippingAddressId,
+              first_name: "Jane",
+              last_name: "Smith",
+              address_1: "456 Oak Ave",
+              city: "Los Angeles",
+              country_code: "us",
+              postal_code: "90001",
+            })
+          )
+        })
+
+        it("should update cart billing address fields", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const regions = await regionModuleService.createRegions([
+            {
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+          ])
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            region_id: regions[0].id,
+            billing_address: {
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "123 Main St",
+              city: "New York",
+              country_code: "us",
+              postal_code: "10001",
+            },
+          })
+
+          const billingAddressId = cart.billing_address?.id
+
+          await updateCartWorkflow(appContainer).run({
+            input: {
+              id: cart.id,
+              billing_address: {
+                id: billingAddressId,
+                first_name: "Jane",
+                last_name: "Smith",
+                address_1: "456 Oak Ave",
+                city: "Los Angeles",
+                country_code: "us",
+                postal_code: "90001",
+              },
+            },
+          })
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            relations: ["billing_address"],
+          })
+
+          expect(cart.billing_address).toEqual(
+            expect.objectContaining({
+              id: billingAddressId,
+              first_name: "Jane",
+              last_name: "Smith",
+              address_1: "456 Oak Ave",
+              city: "Los Angeles",
+              country_code: "us",
+              postal_code: "90001",
+            })
+          )
+        })
+
+        it("should update both shipping and billing addresses simultaneously", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const regions = await regionModuleService.createRegions([
+            {
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+          ])
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            region_id: regions[0].id,
+            shipping_address: {
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "123 Main St",
+              city: "New York",
+              country_code: "us",
+              postal_code: "10001",
+            },
+            billing_address: {
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "789 Business Blvd",
+              city: "Chicago",
+              country_code: "us",
+              postal_code: "60601",
+            },
+          })
+
+          const shippingAddressId = cart.shipping_address?.id
+          const billingAddressId = cart.billing_address?.id
+
+          await updateCartWorkflow(appContainer).run({
+            input: {
+              id: cart.id,
+              shipping_address: {
+                id: shippingAddressId,
+                first_name: "Jane",
+                last_name: "Smith",
+                address_1: "456 Oak Ave",
+                city: "Los Angeles",
+                country_code: "us",
+                postal_code: "90001",
+              },
+              billing_address: {
+                id: billingAddressId,
+                first_name: "Jane",
+                last_name: "Smith",
+                address_1: "321 Corporate Dr",
+                city: "San Francisco",
+                country_code: "us",
+                postal_code: "94102",
+              },
+            },
+          })
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            relations: ["shipping_address", "billing_address"],
+          })
+
+          expect(cart.shipping_address).toEqual(
+            expect.objectContaining({
+              id: shippingAddressId,
+              first_name: "Jane",
+              last_name: "Smith",
+              address_1: "456 Oak Ave",
+              city: "Los Angeles",
+              postal_code: "90001",
+            })
+          )
+
+          expect(cart.billing_address).toEqual(
+            expect.objectContaining({
+              id: billingAddressId,
+              first_name: "Jane",
+              last_name: "Smith",
+              address_1: "321 Corporate Dr",
+              city: "San Francisco",
+              postal_code: "94102",
+            })
+          )
+        })
+
+        it("should rollback address updates on workflow failure", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const regions = await regionModuleService.createRegions([
+            {
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+          ])
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            region_id: regions[0].id,
+            shipping_address: {
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "123 Main St",
+              city: "New York",
+              country_code: "us",
+              postal_code: "10001",
+            },
+          })
+
+          const originalShippingAddress = { ...cart.shipping_address }
+          const shippingAddressId = cart.shipping_address?.id
+
+          const workflow = updateCartWorkflow(appContainer)
+
+          workflow.appendAction("throw", "update-carts", {
+            invoke: async function failStep() {
+              throw new Error("Simulated failure")
+            },
+          })
+
+          const { errors } = await workflow.run({
+            input: {
+              id: cart.id,
+              shipping_address: {
+                id: shippingAddressId,
+                first_name: "Jane",
+                last_name: "Smith",
+                address_1: "456 Oak Ave",
+                city: "Los Angeles",
+                country_code: "us",
+                postal_code: "90001",
+              },
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toBeDefined()
+          expect(errors?.length).toBeGreaterThan(0)
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            relations: ["shipping_address"],
+          })
+
+          expect(cart.shipping_address).toEqual(
+            expect.objectContaining({
+              id: shippingAddressId,
+              first_name: originalShippingAddress.first_name,
+              last_name: originalShippingAddress.last_name,
+              address_1: originalShippingAddress.address_1,
+              city: originalShippingAddress.city,
+              postal_code: originalShippingAddress.postal_code,
+            })
+          )
         })
       })
 
@@ -2187,6 +2472,103 @@ medusaIntegrationTestRunner({
               }),
             },
           ])
+        })
+
+        it("should add item to cart with unit_price when variant has no price set", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.createInventoryItems({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            select: ["id", "region_id", "currency_code", "sales_channel_id"],
+          })
+
+          // Add item with unit_price specified even though variant has no price set
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                  unit_price: 5000,
+                },
+              ],
+              cart_id: cart.id,
+            },
+          })
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            relations: ["items"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 5000,
+                  is_custom_price: true,
+                  quantity: 1,
+                  title: "Test product",
+                  subtitle: "Test variant",
+                }),
+              ]),
+            })
+          )
         })
 
         describe("setPricingContext hook", () => {

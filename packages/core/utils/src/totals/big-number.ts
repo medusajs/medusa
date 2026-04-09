@@ -1,6 +1,7 @@
 import { BigNumberInput, BigNumberRawValue, IBigNumber } from "@medusajs/types"
 import { BigNumber as BigNumberConstructor } from "bignumber.js"
 import { isBigNumber } from "../common/is-big-number"
+import { isDefined } from "../common/is-defined"
 import { isString } from "../common/is-string"
 
 type BigNumberJS = InstanceType<typeof BigNumberConstructor>
@@ -150,3 +151,18 @@ export class BigNumber implements IBigNumber {
 export const MEDUSA_EPSILON = new BigNumber(
   process.env.MEDUSA_EPSILON || "0.0001"
 )
+
+export const MEDUSA_DEFAULT_CURRENCY_EPSILON = new BigNumber(
+  process.env.MEDUSA_DEFAULT_CURRENCY_EPSILON || "0.01"
+)
+
+export const getEpsilonFromDecimalPrecision = (decimalDigits?: number) => {
+  if (!isDefined(decimalDigits)) {
+    return MEDUSA_DEFAULT_CURRENCY_EPSILON
+  }
+
+  const epsilon = new BigNumberJS(1).dividedBy(
+    new BigNumberJS(10).pow(decimalDigits)
+  )
+  return new BigNumber(epsilon.toString())
+}

@@ -6,7 +6,7 @@ products:
   - cart
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Create Cart in Storefront`,
@@ -129,6 +129,39 @@ sdk.store.cart.create({
 When the cart is created for a logged-in customer, it's automatically associated with that customer.
 
 However, if the cart is created for a guest customer, then the customer logs in, then you have to set the cart's customer as explained in the [Update Cart](../update/page.mdx#set-carts-customer) guide.
+
+---
+
+## Set Cart's Locale
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+By default, items in the cart will have their associated product's original content. If your storefront supports [localization](../../localization/page.mdx), you can set the cart's locale to ensure that the item contents are in the customer's preferred language.
+
+You can set the cart's locale by passing the `locale` request body parameter to the [Create Cart API route](!api!/store#carts_postcarts). For example:
+
+```ts
+sdk.store.cart.create({
+  region_id: region.id,
+  // you can also retrieve the locale from sdk.getLocale()
+  locale: "fr-FR",
+})
+.then(({ cart }) => {
+  // TODO use the cart...
+  console.log(cart)
+})
+```
+
+When the cart's locale is set, the cart's items will have their content in the specified locale if translations are available.
+
+You can also [update the cart's locale](../update/page.mdx#set-cart-locale) later if the customer changes their language preference.
 
 ---
 

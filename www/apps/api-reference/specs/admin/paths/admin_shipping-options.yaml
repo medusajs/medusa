@@ -290,6 +290,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a shipping option's update date.
@@ -429,6 +430,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: deleted_at
       in: query
       description: Filter by a shipping option's deletion date.
@@ -568,6 +570,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: stock_location_id
       in: query
       required: false
@@ -742,4 +745,14 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: createShippingOptionsWorkflow
-  x-events: []
+  x-events:
+    - name: shipping-option.created
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the shipping option
+        }
+        ```
+      description: Emitted when shipping options are created.
+      deprecated: false
+      since: 2.12.4

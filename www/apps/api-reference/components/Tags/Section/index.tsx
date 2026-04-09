@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { InView } from "react-intersection-observer"
 import { useEffect, useMemo, useState } from "react"
 import {
@@ -9,6 +10,8 @@ import {
   useIsBrowser,
   useScrollController,
   useSidebar,
+  Loading,
+  Link,
 } from "docs-ui"
 import dynamic from "next/dynamic"
 import type { SectionProps } from "../../Section"
@@ -19,7 +22,6 @@ import SectionContainer from "../../Section/Container"
 import { useArea } from "@/providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
-import { Loading, Link } from "docs-ui"
 import { useRouter } from "next/navigation"
 import { OpenAPI } from "types"
 import TagSectionSchema from "./Schema"
@@ -36,11 +38,11 @@ export type TagSectionProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Section = dynamic<SectionProps>(
-  async () => import("../../Section")
+  async () => import("@/components/Section")
 ) as React.FC<SectionProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
-  async () => import("../../MDXContent/Client"),
+  async () => import("@/components/MDXContent/Client"),
   {
     loading: () => <Loading />,
   }

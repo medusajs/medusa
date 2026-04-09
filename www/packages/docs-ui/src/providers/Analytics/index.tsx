@@ -100,19 +100,21 @@ export const AnalyticsProvider = ({
   }
 
   useEffect(() => {
-    if (eventsQueue.length) {
-      // Process queue in background without blocking
-      const currentQueue = [...eventsQueue]
-      setEventsQueue([])
+    if (!eventsQueue.length) {
+      return
+    }
 
-      // Process events asynchronously in batches to avoid overwhelming the system
-      const batchSize = 5
-      for (let i = 0; i < currentQueue.length; i += batchSize) {
-        const batch = currentQueue.slice(i, i + batchSize)
-        setTimeout(() => {
-          batch.forEach(processEvent)
-        }, i * 10) // Small delay between batches
-      }
+    // Process queue in background without blocking
+    const currentQueue = [...eventsQueue]
+    setEventsQueue([])
+
+    // Process events asynchronously in batches to avoid overwhelming the system
+    const batchSize = 5
+    for (let i = 0; i < currentQueue.length; i += batchSize) {
+      const batch = currentQueue.slice(i, i + batchSize)
+      setTimeout(() => {
+        batch.forEach(processEvent)
+      }, i * 10) // Small delay between batches
     }
   }, [eventsQueue, processEvent])
 

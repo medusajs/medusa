@@ -24,7 +24,13 @@ import {
   TransactionStepState,
 } from "@medusajs/framework/utils"
 import { WorkflowOrchestratorService } from "@services"
-import { Queue, QueueOptions, RepeatOptions, Worker, WorkerOptions } from "bullmq"
+import {
+  Queue,
+  QueueOptions,
+  RepeatOptions,
+  Worker,
+  WorkerOptions,
+} from "bullmq"
 import Redis from "ioredis"
 
 enum JobType {
@@ -661,7 +667,10 @@ export class RedisDistributedTransactionStorage
     step: TransactionStep
   ): Promise<void> {
     // Pass retry interval to ensure we remove the correct job (with -retry suffix if interval > 0)
-    const interval = step.definition.retryInterval || 0
+    const interval =
+      step.definition.retryInterval ||
+      step.definition.retryIntervalAwaiting ||
+      0
     await this.removeJob(JobType.RETRY, transaction, step, interval)
   }
 
@@ -729,7 +738,12 @@ export class RedisDistributedTransactionStorage
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id, step.attempts + "")
+      key.push(step.id)
+
+      // Step timeout has a single job per step
+      if (type !== JobType.STEP_TIMEOUT) {
+        key.push(step.attempts + "")
+      }
 
       // Add suffix for retry scheduling (interval > 0) to avoid collision with async execution (interval = 0)
       if (type === JobType.RETRY && isDefined(interval) && interval > 0) {

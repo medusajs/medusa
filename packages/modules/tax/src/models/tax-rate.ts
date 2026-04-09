@@ -7,7 +7,7 @@ const TaxRate = model
     id: model.id({ prefix: "txr" }).primaryKey(),
     rate: model.float().nullable(),
     code: model.text().searchable(),
-    name: model.text().searchable(),
+    name: model.text().searchable().translatable(),
     is_default: model.boolean().default(false),
     is_combinable: model.boolean().default(false),
     tax_region: model.belongsTo(() => TaxRegion, {

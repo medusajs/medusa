@@ -1,5 +1,10 @@
 import type { OrderDetailDTO } from "@medusajs/framework/types"
-import { isDefined, MathBN, MEDUSA_EPSILON } from "@medusajs/framework/utils"
+import {
+  defaultCurrencies,
+  getEpsilonFromDecimalPrecision,
+  isDefined,
+  MathBN,
+} from "@medusajs/framework/utils"
 
 export const getLastPaymentStatus = (order: OrderDetailDTO) => {
   const PaymentStatus = {
@@ -14,6 +19,11 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
     AUTHORIZED: "authorized",
     PARTIALLY_AUTHORIZED: "partially_authorized",
   }
+
+  const upperCurCode = order.currency_code?.toUpperCase() as string
+  const currencyEpsilon = getEpsilonFromDecimalPrecision(
+    defaultCurrencies[upperCurCode]?.decimal_digits
+  )
 
   let paymentStatus = {}
   for (const status in PaymentStatus) {
@@ -31,7 +41,7 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
           paymentCollection.amount,
           paymentCollection.captured_amount as number
         ),
-        MEDUSA_EPSILON
+        currencyEpsilon
       )
       paymentStatus[PaymentStatus.CAPTURED] += isGte ? 1 : 0.5
     }
@@ -42,7 +52,7 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
           paymentCollection.amount,
           paymentCollection.refunded_amount as number
         ),
-        MEDUSA_EPSILON
+        currencyEpsilon
       )
       paymentStatus[PaymentStatus.REFUNDED] += isGte ? 1 : 0.5
     }

@@ -638,7 +638,7 @@ export class Order {
    * This method updates an order change. It sends a request to the
    * [Update Order Change](https://docs.medusajs.com/api/admin#order-changes_postorder-changesid)
    * API route.
-   * 
+   *
    * @since 2.12.0
    *
    * @param id - The order change's ID.
@@ -670,6 +670,41 @@ export class Order {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  /**
+   * This method starts an order export process to retrieve a CSV of exported orders. It sends
+   * a request to the [Export Orders](https://docs.medusajs.com/api/admin#orders_postordersexport) API route.
+   *
+   * You'll receive in the response the transaction ID of the workflow generating the CSV file.
+   * To check the status of the execution, send a `GET` request to
+   * `/admin/workflows-executions/export-orders/:transaction-id`.
+   *
+   * Once the execution finishes successfully, a notification is created for the export.
+   * You can retrieve the notifications using the `/admin/notification` API route to
+   * retrieve the file's download URL.
+   * 
+   * @since 2.12.3
+   *
+   * @param query - Filters to specify which orders to export.
+   * @param headers - Headers to pass in the request.
+   * @returns The export's details.
+   *
+   * @example
+   * sdk.admin.order.export()
+   * .then(({ transaction_id }) => {
+   *   console.log(transaction_id)
+   * })
+   */
+  async export(query?: HttpTypes.AdminOrderFilters, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminExportOrderResponse>(
+      `/admin/orders/export`,
+      {
+        method: "POST",
+        headers,
         query,
       }
     )

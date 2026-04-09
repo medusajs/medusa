@@ -5,6 +5,7 @@ import {
   MedusaAppMigrateGenerate,
   MedusaAppMigrateUp,
   MedusaAppOutput,
+  MedusaModule,
   ModulesDefinition,
   RegisterModuleJoinerConfig,
 } from "@medusajs/modules-sdk"
@@ -12,6 +13,7 @@ import {
   CommonTypes,
   ConfigModule,
   ILinkMigrationsPlanner,
+  IModuleService,
   InternalModuleDeclaration,
   LoadedModule,
   ModuleDefinition,
@@ -155,17 +157,15 @@ export class MedusaAppLoader {
    * @param action
    */
   async runModulesMigrations(
-    {
-      moduleNames,
-      action = "run",
-    }:
+    options:
       | {
-          moduleNames?: never
           action: "run"
+          allOrNothing?: boolean
         }
       | {
-          moduleNames: string[]
           action: "revert" | "generate"
+          moduleNames: string[]
+          allOrNothing?: never
         } = {
       action: "run",
     }
@@ -183,14 +183,15 @@ export class MedusaAppLoader {
       injectedDependencies,
       medusaConfigPath: this.#medusaConfigPath,
       cwd: this.#cwd,
+      allOrNothing: options.allOrNothing,
     }
 
-    if (action === "revert") {
-      await MedusaAppMigrateDown(moduleNames!, migrationOptions)
-    } else if (action === "run") {
+    if (options.action === "revert") {
+      await MedusaAppMigrateDown(options.moduleNames!, migrationOptions)
+    } else if (options.action === "run") {
       await MedusaAppMigrateUp(migrationOptions)
-    } else {
-      await MedusaAppMigrateGenerate(moduleNames!, migrationOptions)
+    } else if (options.action === "generate") {
+      await MedusaAppMigrateGenerate(options.moduleNames!, migrationOptions)
     }
   }
 
@@ -236,16 +237,98 @@ export class MedusaAppLoader {
   }
 
   /**
+   * Reload a single module by its key
+   * @param moduleKey - The key of the module to reload (e.g., 'contactUsModuleService')
+   */
+  async reloadSingleModule({
+    moduleKey,
+    serviceName,
+  }: {
+    /**
+     * the key of the module to reload in the medusa config (either infered or specified)
+     */
+    moduleKey: string
+    /**
+     * Registration name of the service to reload in the container
+     */
+    serviceName: string
+  }): Promise<LoadedModule | null> {
+    const configModule: ConfigModule = this.#container.resolve(
+      ContainerRegistrationKeys.CONFIG_MODULE
+    )
+    MedusaModule.unregisterModuleResolution(moduleKey)
+    if (serviceName) {
+      this.#container.cache.delete(serviceName)
+    }
+
+    const moduleConfig = configModule.modules?.[moduleKey]
+    if (!moduleConfig) {
+      return null
+    }
+
+    const { sharedResourcesConfig, injectedDependencies } =
+      this.prepareSharedResourcesAndDeps()
+
+    const mergedModules = this.mergeDefaultModules({
+      [moduleKey]: moduleConfig,
+    })
+    const moduleDefinition = mergedModules[moduleKey]
+
+    const result = await MedusaApp({
+      modulesConfig: { [moduleKey]: moduleDefinition },
+      sharedContainer: this.#container,
+      linkModules: this.#customLinksModules,
+      sharedResourcesConfig,
+      injectedDependencies,
+      workerMode: configModule.projectConfig?.workerMode,
+      medusaConfigPath: this.#medusaConfigPath,
+      cwd: this.#cwd,
+    })
+
+    const loadedModule = result.modules[moduleKey] as LoadedModule &
+      IModuleService
+    if (loadedModule) {
+      this.#container.register({
+        [loadedModule.__definition.key]: asValue(loadedModule),
+      })
+    }
+
+    if (loadedModule?.__hooks?.onApplicationStart) {
+      await loadedModule.__hooks.onApplicationStart
+        .bind(loadedModule)()
+        .catch((error: any) => {
+          injectedDependencies[ContainerRegistrationKeys.LOGGER].error(
+            `Error starting module "${loadedModule.__definition.key}": ${error.message}`
+          )
+        })
+    }
+
+    return loadedModule
+  }
+
+  /**
    * Load all modules and bootstrap all the modules and links to be ready to be consumed
    * @param config
    */
-  async load(config = { registerInContainer: true }): Promise<MedusaAppOutput> {
+  async load(
+    config: {
+      registerInContainer?: boolean
+      schemaOnly?: boolean
+      migrationOnly?: boolean
+    } = {
+      registerInContainer: true,
+      schemaOnly: false,
+      migrationOnly: false,
+    }
+  ): Promise<MedusaAppOutput> {
     const configModule: ConfigModule = this.#container.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
     )
 
     const { sharedResourcesConfig, injectedDependencies } =
-      this.prepareSharedResourcesAndDeps()
+      !config.migrationOnly && !config.schemaOnly
+        ? this.prepareSharedResourcesAndDeps()
+        : {}
 
     this.#container.register(
       ContainerRegistrationKeys.REMOTE_QUERY,
@@ -272,6 +355,8 @@ export class MedusaAppLoader {
       injectedDependencies,
       medusaConfigPath: this.#medusaConfigPath,
       cwd: this.#cwd,
+      migrationOnly: config.migrationOnly,
+      schemaOnly: config.schemaOnly,
     })
 
     if (!config.registerInContainer) {

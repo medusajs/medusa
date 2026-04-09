@@ -1,3 +1,4 @@
+import "./types"
 import { Module, Modules } from "@medusajs/framework/utils"
 import { WorkflowsModuleService } from "@services"
 import { loadUtils, redisConnection } from "./loaders"

@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useSearch } from "../../providers"
+import { useSearch } from "../../providers/Search"
 import { useEffect, useState } from "react"
 import { HitType } from "../../components"
 

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../../packages/modules/translation/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/translation/src"],
+  "exclude": [
+    "../../../../packages/modules/translation/dist", 
+    "../../../../packages/modules/translation/node_modules"
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/translation/src"
+  }
+}

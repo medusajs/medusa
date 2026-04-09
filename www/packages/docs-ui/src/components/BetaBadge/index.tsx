@@ -1,5 +1,6 @@
 import React from "react"
-import { Badge, Tooltip } from "../.."
+import { Badge } from "@/components/Badge"
+import { Tooltip } from "@/components/Tooltip"
 
 type BetaBadgeProps = {
   text?: string

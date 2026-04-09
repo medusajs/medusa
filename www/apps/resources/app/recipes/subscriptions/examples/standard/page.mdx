@@ -71,7 +71,7 @@ This guide provides an example of an approach to implement subscriptions. You're
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -393,7 +393,7 @@ This defines a list link to the `Order` data model since a subscription has mult
 
 To create a table for the `Subscription` data model in the database, start by generating the migrations for the Subscription Module with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate subscriptionModuleService
 ```
 
@@ -401,7 +401,7 @@ This generates a migration in the `src/modules/subscriptions/migrations` directo
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -722,10 +722,14 @@ The compensation function receives the subscription as a parameter. It cancels t
 Create the file `src/workflows/create-subscription/index.ts` with the following content:
 
 export const createSubscriptionWorkflowHighlights = [
-  ["26", "completeCartWorkflow", "Complete the cart and create the order."],
-  ["32", "useQueryGraphStep", "Retrieve the order's details."],
-  ["87", "createSubscriptionStep", "Create the subscription."],
-  ["94", "createRemoteLinkStep", "Create the links returned by the previous step."]
+  ["29", "acquireLockStep", "Acquire a lock on the cart to prevent race conditions."],
+  ["34", "completeCartWorkflow", "Complete the cart and create the order."],
+  ["40", "useQueryGraphStep", "Retrieve the order's details."],
+  ["95", "useQueryGraphStep", "Retrieve any existing subscription links for the order."],
+  ["101", "when", "Check if a subscription already exists for the order."],
+  ["108", "createSubscriptionStep", "Create the subscription."],
+  ["115", "createRemoteLinkStep", "Create the links returned by the previous step."],
+  ["120", "releaseLockStep", "Release the lock on the cart."]
 ]
 
 ```ts title="src/workflows/create-subscription/index.ts" highlights={createSubscriptionWorkflowHighlights} collapsibleLines="1-13" expandMoreLabel="Show Imports"

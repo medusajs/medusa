@@ -94,6 +94,11 @@ export interface RemoteJoinerOptions {
   throwIfRelationNotFound?: boolean | string[]
   initialData?: object | object[]
   initialDataOnly?: boolean
+  /**
+   * The locale to use for the query.
+   * Translation will be applied to the query result based on the locale.
+   */
+  locale?: string
   cache?: {
     /**
      * Whether to enable the cache. This is only useful if you want to enable without providing any

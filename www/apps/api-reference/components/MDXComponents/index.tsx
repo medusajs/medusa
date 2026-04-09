@@ -1,3 +1,4 @@
+import React from "react"
 import type { MDXComponents } from "mdx/types"
 import Security from "./Security"
 import type { OpenAPI } from "types"

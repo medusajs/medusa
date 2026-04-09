@@ -1,3 +1,4 @@
+import React from "react"
 import clsx from "clsx"
 import { Badge, Tooltip } from "docs-ui"
 
@@ -15,7 +16,10 @@ const TagsOperationDescriptionSectionDeprecationNotice = ({
   }
 
   return (
-    <div className={clsx("inline-block", className)}>
+    <div
+      className={clsx("inline-block", className)}
+      data-testid="deprecation-notice"
+    >
       {deprecationMessage && (
         <Tooltip text={deprecationMessage}>{getBadge()}</Tooltip>
       )}

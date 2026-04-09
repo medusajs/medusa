@@ -1,4 +1,4 @@
-import { CodeTabs, CodeTab, Table } from "docs-ui"
+import { CodeTabs, CodeTab, Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Medusa JS SDK`,
@@ -646,6 +646,48 @@ In the example above, you pass the `x-no-compression` header in the request to d
 <Note title="Tip">
 
 The JS SDK appends request-specific headers to authentication headers and headers configured in the `globalHeaders` configuration. So, in the example above, the `x-no-compression` header is passed in the request along with the authentication headers and any headers configured in the `globalHeaders` configuration.
+
+</Note>
+
+---
+
+## Localization with JS SDK
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+If you support [localization](../storefront-development/localization/page.mdx) in your storefront, you can use the `setLocale` method of the JS SDK. 
+
+The `setLocale` method stores the locale in the JS SDK to pass the it as a `x-medusa-locale` header in all subsequent requests. Also, if your application supports `localStorage`, the method sets the locale in the `medusa_locale` key of the `localStorage`.
+
+For example, to set the locale to French (France):
+
+```ts
+sdk.setLocale("fr-FR")
+// products content is fetched in French
+const { products } = await sdk.store.product.list()
+```
+
+The `setLocale` method accepts the locale string in the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1). All subsequent requests sent using the JS SDK will include the specified locale in the `x-medusa-locale` header.
+
+In the above example, the product content, such as title and description, is fetched in French and falls back to the original content if translations aren't available.
+
+You can also retrieve the currently set locale using the `getLocale` method:
+
+```ts
+const currentLocale = sdk.getLocale()
+console.log(currentLocale) // "fr-FR"
+```
+
+<Note>
+
+Learn more about localization and translations in the [Translation Module](../commerce-modules/translation/page.mdx) guide.
 
 </Note>
 

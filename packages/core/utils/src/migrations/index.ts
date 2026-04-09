@@ -210,7 +210,8 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     )
 
     if (snapshotFile) {
-      const absoluteName = join(snapshotFile.path, snapshotFile.name)
+      const absoluteName = join(snapshotFile.parentPath || snapshotFile.path, snapshotFile.name)
+
       if (absoluteName !== snapshotPath) {
         await rename(absoluteName, snapshotPath)
       }

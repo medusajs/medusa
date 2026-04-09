@@ -5,7 +5,11 @@ import { useProduct, useUpdateProduct } from "../../../hooks/api"
 export const ProductMetadata = () => {
   const { id } = useParams()
 
-  const { product, isPending, isError, error } = useProduct(id!)
+  const { product, isPending, isError, error } = useProduct(id!, {
+    // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+    fields:
+      "-type,-collection,-options,-tags,-images,-variants,-sales_channels",
+  })
 
   const { mutateAsync, isPending: isMutating } = useUpdateProduct(product?.id!)
 

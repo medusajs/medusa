@@ -1,9 +1,9 @@
-import { HttpTypes } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreProductTypeListParams>,
@@ -11,12 +11,17 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: product_types, metadata } = await query.graph({
-    entity: "product_type",
-    filters: req.filterableFields,
-    pagination: req.queryConfig.pagination,
-    fields: req.queryConfig.fields,
-  })
+  const { data: product_types, metadata } = await query.graph(
+    {
+      entity: "product_type",
+      filters: req.filterableFields,
+      pagination: req.queryConfig.pagination,
+      fields: req.queryConfig.fields,
+    },
+    {
+      locale: req.locale,
+    }
+  )
 
   res.json({
     product_types,

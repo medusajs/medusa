@@ -33,25 +33,3 @@ export const customModulesOptions: Record<string, Partial<TypeDocOptions>> = {
     ),
   },
 }
-
-// a list of modules that now support DML
-export const dmlModules = [
-  "currency",
-  "region",
-  "product",
-  "user",
-  "auth",
-  "pricing",
-  "cart",
-  "sales-channel",
-  "api-key",
-  "store",
-  "customer",
-  "inventory-next",
-  "payment",
-  "promotion",
-  "stock-location-next",
-  "tax",
-  "fulfillment",
-  "order",
-]

@@ -3,11 +3,11 @@ import {
   CodeBlock,
   CodeBlockMetaFields,
   CodeBlockProps,
-  InlineCode,
-  InlineCodeProps,
-  MermaidDiagram,
-} from "@/components"
+} from "@/components/CodeBlock"
+import { InlineCode, InlineCodeProps } from "@/components/InlineCode"
+import { MermaidDiagram } from "@/components/MermaidDiagram"
 import { Npm2YarnCode } from "../Npm2YarnCode"
+import { Npx2YarnCode } from "../Npx2YarnCode"
 
 export type CodeMdxProps = {
   className?: string
@@ -40,6 +40,14 @@ export const CodeMdx = ({
   if (match) {
     if (rest.npm2yarn) {
       return <Npm2YarnCode npmCode={codeContent} {...rest} />
+    } else if (rest.npx2yarn || rest.npx2yarnExec) {
+      return (
+        <Npx2YarnCode
+          npxCode={codeContent}
+          {...rest}
+          isExecutable={!!rest.npx2yarnExec}
+        />
+      )
     } else if (match[1] === "mermaid") {
       return <MermaidDiagram diagramContent={codeContent} />
     }

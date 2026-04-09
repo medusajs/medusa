@@ -65,7 +65,24 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Projects",
             "path": "/projects",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Prerequisites",
+                "path": "/projects/prerequisites",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Rename Repository",
+                "path": "/projects/rename-repo-branch",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -111,11 +128,27 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "title": "Access Deployment",
+                "path": "/deployments/access",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "title": "Troubleshooting",
                 "path": "/deployments/troubleshooting",
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Account",
+            "path": "/user",
+            "children": []
           }
         ]
       },
@@ -126,6 +159,14 @@ export const generatedSidebars = [
         "title": "Resources",
         "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Storefront",
+            "path": "/storefront",
+            "children": []
+          },
           {
             "loaded": true,
             "isPathHref": true,

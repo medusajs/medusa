@@ -13,6 +13,7 @@ import {
   prerequisitesLinkFixerPlugin,
   remarkAttachFrontmatterDataPlugin,
   recmaInjectMdxDataPlugin,
+  validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
@@ -25,6 +26,9 @@ const withMDX = mdx({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -50,6 +54,9 @@ const withMDX = mdx({
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",
@@ -79,6 +86,7 @@ const withMDX = mdx({
           tagName: "code",
         },
       ],
+      [validateHighlightsPlugin, { verbose: false }],
       [rehypeSlug],
       [
         cloudinaryImgRehypePlugin,

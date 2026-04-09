@@ -139,6 +139,11 @@ export interface CreateOrderDTO {
   currency_code?: string
 
   /**
+   * The locale of the order.
+   */
+  locale?: string | null
+
+  /**
    * The associated shipping address's ID.
    */
   shipping_address_id?: string
@@ -233,6 +238,11 @@ export interface UpdateOrderDTO {
    * Whether the order is a draft order.
    */
   is_draft_order?: boolean
+
+  /**
+   * The locale of the order.
+   */
+  locale?: string | null
 
   /**
    * The items of the order.

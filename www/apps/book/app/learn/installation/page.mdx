@@ -1,4 +1,4 @@
-import { Prerequisites } from "docs-ui"
+import { Prerequisites, CodeTab, CodeTabs } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Install Medusa`,
@@ -10,7 +10,7 @@ In this chapter, you'll learn how to install and run a Medusa application.
 
 ## Get Started with Cloud
 
-[Cloud](!cloud!) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, and GitHub integration to streamline your development workflow.
+[Cloud](!cloud!) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, storefront hosting, and GitHub integration to streamline your development workflow.
 
 [Sign up](http://cloud.medusajs.com/signup) with Cloud and create your first Medusa project in minutes.
 
@@ -43,11 +43,45 @@ While this is the recommended way to create a Medusa application, you can altern
 
 To create a Medusa application, use the `create-medusa-app` command:
 
+<Note title="Tip">
+
+Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+
+</Note>
+
+<CodeTabs group="npm2yarn">
+  <CodeTab label="yarn" value="yarn">
+
+```bash
+yarn dlx create-medusa-app@latest my-medusa-store
+# npx create-medusa-app@latest my-medusa-store --use-yarn
+```
+
+  </CodeTab>
+  <CodeTab label="pnpm" value="pnpm">
+
+```bash
+pnpm dlx create-medusa-app@latest my-medusa-store
+# npx create-medusa-app@latest my-medusa-store --use-pnpm
+```
+
+  </CodeTab>
+  <CodeTab label="npm" value="npm">
+
 ```bash
 npx create-medusa-app@latest my-medusa-store
 ```
 
+  </CodeTab>
+</CodeTabs>
+
 Where `my-medusa-store` is the name of the project's directory and PostgreSQL database created for the project. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
+
+<Note title="Installations with Next.js Starter Storefront">
+
+If you choose to install the Next.js Starter Storefront, note that it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
+
+</Note>
 
 <Note>
 
@@ -116,13 +150,107 @@ The application will restart if you make any changes to code under the `src` dir
 
 ---
 
+## Start Building with Claude Code
+
+Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
+
+This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](../introduction/build-with-llms-ai/page.mdx) chapter for more details on using Medusa with AI tools.
+
+### Interactive Learning
+
+If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="other-agents">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - learning-medusa
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Then, start the learning experience with this prompt:
+
+```bash title="Claude Code Prompt"
+I want to learn Medusa.
+```
+
+<Note title="Tip">
+
+You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
+
+</Note>
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](../customization/custom-features/page.mdx). You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. Link brands to products to associate products with brands.
+3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+
+### Medusa Development Assistance
+
+If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-dev@medusa
+```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="other-agents">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skills:
+# - building-with-medusa
+# - building-admin-dashboard-customizations
+# - building-storefronts
+# - db-generate
+# - db-migrate
+# - new-user
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
+
+Examples of prompts you can use:
+
+```bash title="Claude Code Prompts"
+Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
+Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
+Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
+Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
+```
+
+---
+
 ## Create Medusa Admin User
 
 Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
 
 Run the following command in your Medusa application's directory to create a new admin user:
 
-```bash
+```bash npx2yarn
 npx medusa user -e admin@medusajs.com -p supersecret
 ```
 

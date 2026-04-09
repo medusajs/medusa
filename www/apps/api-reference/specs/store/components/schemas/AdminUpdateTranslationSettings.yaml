@@ -1,0 +1,25 @@
+type: object
+description: The translation settings to update.
+x-schemaName: AdminUpdateTranslationSettings
+required:
+  - id
+properties:
+  id:
+    type: string
+    title: id
+    description: The ID of the translation settings to update.
+  entity_type:
+    type: string
+    title: entity_type
+    description: The entity type to update the translation settings for.
+  fields:
+    type: array
+    description: The fields to update translations for.
+    items:
+      type: string
+      title: fields
+      description: A field to update translations for.
+  is_active:
+    type: boolean
+    title: is_active
+    description: Whether translations are active for the given entity type.

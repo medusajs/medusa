@@ -39,6 +39,16 @@ export interface StoreCreateCart {
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown>
+
+  /**
+   * The BCP 47 language tag code of the locale.
+   * 
+   * @since 2.12.3
+   * 
+   * @example
+   * "en-US"
+   */
+  locale?: string
 }
 
 export interface StoreUpdateCart {
@@ -71,6 +81,15 @@ export interface StoreUpdateCart {
    * The promotion codes to apply on the cart.
    */
   promo_codes?: string[]
+  /**
+   * The BCP 47 language tag code of the locale.
+   * 
+   * @since 2.12.3
+   * 
+   * @example
+   * "en-US"
+   */
+  locale?: string
 }
 
 export interface StoreUpdateCartCustomer {}

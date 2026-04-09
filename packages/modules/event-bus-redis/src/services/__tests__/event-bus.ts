@@ -103,10 +103,11 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" } },
+            data: { data: { hi: "1234" }, metadata: undefined },
             opts: {
               attempts: 1,
               removeOnComplete: true,
+              priority: 100,
             },
           },
         ])
@@ -125,12 +126,13 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" } },
+            data: { data: { hi: "1234" }, metadata: undefined },
             opts: {
               attempts: 3,
               backoff: 5000,
               delay: 1000,
               removeOnComplete: true,
+              priority: 100,
             },
           },
         ])
@@ -168,7 +170,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" } },
+            data: { data: { hi: "1234" }, metadata: undefined },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -176,6 +178,7 @@ describe("RedisEventBusService", () => {
               removeOnComplete: {
                 age: 5,
               },
+              priority: 100,
             },
           },
         ])
@@ -210,11 +213,12 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" } },
+            data: { data: { hi: "1234" }, metadata: undefined },
             opts: {
               attempts: 1,
               removeOnComplete: 5,
               delay: 1000,
+              priority: 100,
             },
           },
         ])
@@ -328,6 +332,536 @@ describe("RedisEventBusService", () => {
         ])
         expect(redis.unlink).toHaveBeenCalledTimes(1)
         expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-2")
+      })
+    })
+
+    describe("Priority levels", () => {
+      beforeEach(async () => {
+        jest.clearAllMocks()
+
+        eventBus = new RedisEventBusService(moduleDeps, {}, moduleDeclaration)
+
+        queue = (eventBus as any).queue_
+        queue.addBulk = jest.fn()
+        redis = (eventBus as any).eventBusRedisConnection_
+        redis.rpush = jest.fn()
+      })
+
+      it("should add job to queue with default priority (100) for normal events", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit([
+          {
+            name: "eventName",
+            data: { hi: "1234" },
+          },
+        ])
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 100,
+            },
+          },
+        ])
+      })
+
+      it("should add job to queue with lowest priority (2097152) for internal events", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit(
+          [
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+            },
+          ],
+          { internal: true }
+        )
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 2097152,
+              internal: true,
+            },
+          },
+        ])
+      })
+
+      it("should add job to queue with custom priority override at emit time", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit(
+          [
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+            },
+          ],
+          { priority: 50 }
+        )
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 50,
+            },
+          },
+        ])
+      })
+
+      it("should add job to queue with custom priority via module job options", async () => {
+        eventBus = new RedisEventBusService(
+          {
+            ...moduleDeps,
+            eventBusRedisJobOptions: {
+              priority: 200,
+            },
+          },
+          {},
+          moduleDeclaration
+        )
+
+        queue = (eventBus as any).queue_
+        queue.addBulk = jest.fn()
+
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit([
+          {
+            name: "eventName",
+            data: { hi: "1234" },
+          },
+        ])
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 200,
+            },
+          },
+        ])
+      })
+
+      it("should override module priority with emit options priority", async () => {
+        eventBus = new RedisEventBusService(
+          {
+            ...moduleDeps,
+            eventBusRedisJobOptions: {
+              priority: 200,
+            },
+          },
+          {},
+          moduleDeclaration
+        )
+
+        queue = (eventBus as any).queue_
+        queue.addBulk = jest.fn()
+
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit(
+          [
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+            },
+          ],
+          { priority: 25 }
+        )
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 25,
+            },
+          },
+        ])
+      })
+
+      it("should allow module priority to override internal flag default", async () => {
+        eventBus = new RedisEventBusService(
+          {
+            ...moduleDeps,
+            eventBusRedisJobOptions: {
+              priority: 200,
+            },
+          },
+          {},
+          moduleDeclaration
+        )
+
+        queue = (eventBus as any).queue_
+        queue.addBulk = jest.fn()
+
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit(
+          [
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+            },
+          ],
+          { internal: true }
+        )
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 200,
+              internal: true,
+            },
+          },
+        ])
+      })
+
+      it("should allow explicit priority to override internal flag default", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit(
+          [
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+            },
+          ],
+          { internal: true, priority: 50 }
+        )
+
+        expect(queue.addBulk).toHaveBeenCalledTimes(1)
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          {
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: undefined },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
+              priority: 50,
+              internal: true,
+            },
+          },
+        ])
+      })
+
+      describe("Message-level options", () => {
+        it("should allow message-level priority to override emit-level priority", async () => {
+          eventBus.subscribe("eventName", () => Promise.resolve())
+
+          await eventBus.emit(
+            [
+              {
+                name: "eventName",
+                data: { hi: "1234" },
+                options: { priority: 10 },
+              },
+            ],
+            { priority: 100 }
+          )
+
+          expect(queue.addBulk).toHaveBeenCalledTimes(1)
+          expect(queue.addBulk).toHaveBeenCalledWith([
+            {
+              name: "eventName",
+              data: { data: { hi: "1234" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 10,
+              },
+            },
+          ])
+        })
+
+        it("should allow different priorities per message in same emit call", async () => {
+          eventBus.subscribe("eventName1", () => Promise.resolve())
+          eventBus.subscribe("eventName2", () => Promise.resolve())
+          eventBus.subscribe("eventName3", () => Promise.resolve())
+
+          await eventBus.emit(
+            [
+              {
+                name: "eventName1",
+                data: { id: "1" },
+                options: { priority: 10 },
+              },
+              {
+                name: "eventName2",
+                data: { id: "2" },
+                options: { priority: 50 },
+              },
+              {
+                name: "eventName3",
+                data: { id: "3" },
+                // No options - should use emit-level priority
+              },
+            ],
+            { priority: 200 }
+          )
+
+          expect(queue.addBulk).toHaveBeenCalledTimes(1)
+          expect(queue.addBulk).toHaveBeenCalledWith([
+            {
+              name: "eventName1",
+              data: { data: { id: "1" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 10,
+              },
+            },
+            {
+              name: "eventName2",
+              data: { data: { id: "2" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 50,
+              },
+            },
+            {
+              name: "eventName3",
+              data: { data: { id: "3" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 200,
+              },
+            },
+          ])
+        })
+
+        it("should allow message-level priority to override module-level priority", async () => {
+          eventBus = new RedisEventBusService(
+            {
+              ...moduleDeps,
+              eventBusRedisJobOptions: {
+                priority: 300,
+              },
+            },
+            {},
+            moduleDeclaration
+          )
+
+          queue = (eventBus as any).queue_
+          queue.addBulk = jest.fn()
+
+          eventBus.subscribe("eventName", () => Promise.resolve())
+
+          await eventBus.emit([
+            {
+              name: "eventName",
+              data: { hi: "1234" },
+              options: { priority: 5 },
+            },
+          ])
+
+          expect(queue.addBulk).toHaveBeenCalledTimes(1)
+          expect(queue.addBulk).toHaveBeenCalledWith([
+            {
+              name: "eventName",
+              data: { data: { hi: "1234" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 5,
+              },
+            },
+          ])
+        })
+
+        it("should allow message-level priority to override internal flag", async () => {
+          eventBus.subscribe("eventName", () => Promise.resolve())
+
+          await eventBus.emit(
+            [
+              {
+                name: "eventName",
+                data: { hi: "1234" },
+                options: { priority: 15 },
+              },
+            ],
+            { internal: true }
+          )
+
+          expect(queue.addBulk).toHaveBeenCalledTimes(1)
+          expect(queue.addBulk).toHaveBeenCalledWith([
+            {
+              name: "eventName",
+              data: { data: { hi: "1234" }, metadata: undefined },
+              opts: {
+                attempts: 1,
+                removeOnComplete: true,
+                priority: 15,
+                internal: true,
+              },
+            },
+          ])
+        })
+      })
+
+      describe("Grouped events priority", () => {
+        it("should stage grouped events with default priority (100)", async () => {
+          const event = {
+            name: "grouped-event",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-priority" },
+          }
+
+          await eventBus.emit(event)
+
+          expect(redis.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = redis.rpush.mock.calls[0]
+          const stagedEvent = JSON.parse(calledWith[1])
+
+          expect(stagedEvent.opts.priority).toBe(100)
+        })
+
+        it("should stage grouped events with lowest priority (2097152) for internal events", async () => {
+          const event = {
+            name: "grouped-event",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-priority" },
+          }
+
+          await eventBus.emit(event, { internal: true })
+
+          expect(redis.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = redis.rpush.mock.calls[0]
+          const stagedEvent = JSON.parse(calledWith[1])
+
+          expect(stagedEvent.opts.priority).toBe(2097152)
+          expect(stagedEvent.opts.internal).toBe(true)
+        })
+
+        it("should stage grouped events with custom priority", async () => {
+          const event = {
+            name: "grouped-event",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-priority" },
+          }
+
+          await eventBus.emit(event, { priority: 50 })
+
+          expect(redis.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = redis.rpush.mock.calls[0]
+          const stagedEvent = JSON.parse(calledWith[1])
+
+          expect(stagedEvent.opts.priority).toBe(50)
+        })
+
+        it("should preserve priority when releasing grouped events", async () => {
+          const event = {
+            name: "grouped-event",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-priority" },
+          }
+
+          const [builtEvent] = (eventBus as any).buildEvents([event], {
+            priority: 75,
+          })
+
+          eventBus.subscribe("grouped-event", () => Promise.resolve())
+
+          redis.lrange = jest.fn((key) => {
+            if (key === "staging:test-group-priority") {
+              return Promise.resolve([JSON.stringify(builtEvent)])
+            }
+            return Promise.resolve([])
+          })
+          redis.unlink = jest.fn()
+
+          await eventBus.releaseGroupedEvents("test-group-priority")
+
+          expect(queue.addBulk).toHaveBeenCalledTimes(1)
+          expect(queue.addBulk).toHaveBeenCalledWith([builtEvent])
+          expect(builtEvent.opts.priority).toBe(75)
+        })
+
+        it("should stage grouped events with message-level priority overriding emit-level priority", async () => {
+          const event = {
+            name: "grouped-event",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-priority" },
+            options: { priority: 20 },
+          }
+
+          await eventBus.emit(event, { priority: 100 })
+
+          expect(redis.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = redis.rpush.mock.calls[0]
+          const stagedEvent = JSON.parse(calledWith[1])
+
+          expect(stagedEvent.opts.priority).toBe(20)
+        })
+
+        it("should allow different priorities per grouped message in same emit call", async () => {
+          const events = [
+            {
+              name: "grouped-event-1",
+              data: { id: "1" },
+              metadata: { eventGroupId: "test-group-multi" },
+              options: { priority: 10 },
+            },
+            {
+              name: "grouped-event-2",
+              data: { id: "2" },
+              metadata: { eventGroupId: "test-group-multi" },
+              options: { priority: 50 },
+            },
+            {
+              name: "grouped-event-3",
+              data: { id: "3" },
+              metadata: { eventGroupId: "test-group-multi" },
+              // No options - should use emit-level priority
+            },
+          ]
+
+          await eventBus.emit(events, { priority: 200 })
+
+          expect(redis.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = redis.rpush.mock.calls[0]
+
+          // First argument is the key, rest are the events
+          const stagedEvent1 = JSON.parse(calledWith[1])
+          const stagedEvent2 = JSON.parse(calledWith[2])
+          const stagedEvent3 = JSON.parse(calledWith[3])
+
+          expect(stagedEvent1.opts.priority).toBe(10)
+          expect(stagedEvent2.opts.priority).toBe(50)
+          expect(stagedEvent3.opts.priority).toBe(200)
+        })
       })
     })
 

@@ -1,5 +1,6 @@
 import React from "react"
-import { Badge, Tooltip } from "@/components"
+import { Badge } from "@/components/Badge"
+import { Tooltip } from "@/components/Tooltip"
 
 export type DeprecatedNoticeProps = {
   description?: string

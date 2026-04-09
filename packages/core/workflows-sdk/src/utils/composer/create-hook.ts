@@ -1,5 +1,5 @@
 import { OrchestrationUtils } from "@medusajs/utils"
-import { type ZodSchema } from "zod"
+import { type ZodSchema } from "@medusajs/deps/zod"
 import {
   CompensateFn,
   createStep,

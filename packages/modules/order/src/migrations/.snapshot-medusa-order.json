@@ -304,6 +304,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "locale": {
+          "name": "locale",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "no_notification": {
           "name": "no_notification",
           "type": "boolean",
@@ -2004,15 +2013,6 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_deleted_at\" ON \"order_item\" (\"deleted_at\") WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_unique_order_item_version_item_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_unique_order_item_version_item_id\" ON \"order_item\" (\"version\", \"item_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "order_item_pkey",

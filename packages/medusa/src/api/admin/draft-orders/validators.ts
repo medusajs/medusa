@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   AddressPayload,
   applyAndAndOrOperators,
@@ -83,6 +83,7 @@ const CreateDraftOrder = z
     currency_code: z.string().nullish(),
     no_notification_order: z.boolean().optional(),
     shipping_methods: z.array(ShippingMethod).optional(),
+    locale: z.string().optional(),
     metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
@@ -111,6 +112,7 @@ export const AdminUpdateDraftOrder = z.object({
   shipping_address: AddressPayload.optional(),
   billing_address: AddressPayload.optional(),
   metadata: z.record(z.unknown()).nullish(),
+  locale: z.string().optional(),
 })
 
 export type AdminAddDraftOrderPromotionsType = z.infer<

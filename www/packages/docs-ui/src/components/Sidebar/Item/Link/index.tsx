@@ -4,15 +4,13 @@
 
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import { Sidebar } from "types"
-import {
-  Badge,
-  checkSidebarItemVisibility,
-  SidebarItem,
-  useMobile,
-  useSidebar,
-} from "../../../.."
+import { Badge } from "@/components/Badge"
+import { checkSidebarItemVisibility } from "@/utils/check-sidebar-item-visibility"
+import { useSidebar } from "@/providers/Sidebar"
+import { SidebarItem } from "@/components/Sidebar/Item"
 import clsx from "clsx"
 import Link from "next/link"
+import { useMobile } from "@/providers/Mobile"
 
 export type SidebarItemLinkProps = {
   item: Sidebar.SidebarItemLink
@@ -144,6 +142,7 @@ export const SidebarItemLink = ({
               isTitleOneWord && "truncate",
               nested && "inline-block pl-docs_1.5"
             )}
+            data-testid="sidebar-item-title"
           >
             {item.title}
           </span>

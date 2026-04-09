@@ -845,7 +845,9 @@ function processEntity(
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
-          if (!intermediateEntityObjectRepresentationRef.fields.includes("id")) {
+          if (
+            !intermediateEntityObjectRepresentationRef.fields.includes("id")
+          ) {
             intermediateEntityObjectRepresentationRef.fields.push("id")
           }
 
@@ -1185,7 +1187,10 @@ function buildSchemaFromFilterableLinks(
     const fieldType = fieldRef.type.toString()
     const isArray = fieldType.startsWith("[")
     let currentType = fieldType.replace(/\[|\]|\!/g, "")
-    const isEnum = currentType.endsWith("Enum")
+    const isEnum =
+      fieldRef.type?.ofType?.astNode?.kind ===
+      GraphQLUtils.Kind.ENUM_TYPE_DEFINITION
+
     if (isEnum) {
       currentType = "String"
     }

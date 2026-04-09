@@ -1654,4 +1654,33 @@ export class Store {
       )
     },
   }
+
+  /**
+   * @tags locale
+   */
+  public locale = {
+    /**
+     * This method retrieves the list of supported locales in the store. It sends a request to the
+     * [List Locales](https://docs.medusajs.com/api/store#locales_getlocales) API route.
+     * 
+     * @param headers - Headers to pass in the request.
+     * @returns The list of supported locales.
+     * 
+     * @example
+     * sdk.store.locale.list()
+     * .then(({ locales }) => {
+     *   console.log(locales)
+     * })
+     */
+    list: async (
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreLocaleListResponse>(
+        `/store/locales`,
+        {
+          headers,
+        }
+      )
+    },
+  }
 }

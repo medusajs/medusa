@@ -43,6 +43,23 @@ medusaIntegrationTestRunner({
 
       it("should load endpoint when feature flag is enabled", async () => {
         expect((await api.get("/custom")).status).toBe(200)
+        expect(
+          (
+            await api.post("/custom", {
+              foo: "test",
+            })
+          ).status
+        ).toBe(200)
+      })
+
+      it("should return 400 for POST route with invalid body when feature flag is enabled", async () => {
+        const response = await api
+          .post("/custom", {
+            invalid: 1,
+          })
+          .catch((e) => e)
+
+        expect(response.status).toBe(400)
       })
     })
   },

@@ -28,11 +28,22 @@ export const PaginationCard = ({
         "hover:shadow-elevation-card-hover dark:shadow-elevation-card-hover-dark",
         className
       )}
+      data-testid="pagination-card"
     >
-      <Link href={link} className="absolute top-0 left-0 w-full h-full" />
-      <div className={clsx("h-[40px] flex gap-docs_0.75 items-center")}>
+      <Link
+        href={link}
+        className="absolute top-0 left-0 w-full h-full"
+        data-testid="pagination-card-link"
+      />
+      <div
+        className={clsx("h-[40px] flex gap-docs_0.75 items-center")}
+        data-testid="pagination-card-content"
+      >
         {type === "previous" && (
-          <TriangleLeftMini className="text-medusa-fg-muted" />
+          <TriangleLeftMini
+            className="text-medusa-fg-muted"
+            data-testid="pagination-card-previous-icon"
+          />
         )}
         <div
           className={clsx(
@@ -40,18 +51,28 @@ export const PaginationCard = ({
             type === "previous" && "text-left",
             type === "next" && "text-right"
           )}
+          data-testid="pagination-card-title-wrapper"
         >
           {parentTitle && (
-            <span className="block text-compact-small text-medusa-fg-subtle">
+            <span
+              className="block text-compact-small text-medusa-fg-subtle"
+              data-testid="pagination-card-parent-title"
+            >
               {parentTitle}
             </span>
           )}
-          <span className="block text-compact-small-plus text-medusa-fg-base">
+          <span
+            className="block text-compact-small-plus text-medusa-fg-base"
+            data-testid="pagination-card-title"
+          >
             {title}
           </span>
         </div>
         {type === "next" && (
-          <TriangleRightMini className="text-medusa-fg-muted" />
+          <TriangleRightMini
+            className="text-medusa-fg-muted"
+            data-testid="pagination-card-next-icon"
+          />
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import {
   RuleOperator,
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,

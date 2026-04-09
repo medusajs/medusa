@@ -4,7 +4,10 @@
 
 import React, { useEffect, useMemo, useState } from "react"
 import { Sidebar } from "types"
-import { Badge, Loading, SidebarItem, useSidebar } from "../../../.."
+import { Badge } from "@/components/Badge"
+import { Loading } from "@/components/Loading"
+import { SidebarItem } from "@/components/Sidebar/Item"
+import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
 import { TriangleDownMini, TriangleUpMini } from "@medusajs/icons"
 
@@ -81,6 +84,7 @@ export const SidebarItemCategory = ({
   return (
     <div
       className={clsx("my-docs_0.75 first:!mt-0 w-full relative", className)}
+      data-testid="sidebar-item-category-container"
     >
       <div className="px-docs_0.75">
         <div
@@ -94,12 +98,14 @@ export const SidebarItemCategory = ({
           )}
           tabIndex={-1}
           onClick={handleOpen}
+          data-testid="sidebar-item-category"
         >
           <span
             className={clsx(
               "text-compact-x-small-plus",
               isTitleOneWord && "truncate"
             )}
+            data-testid="sidebar-item-title"
           >
             {item.title}
           </span>
@@ -123,6 +129,7 @@ export const SidebarItemCategory = ({
             "z-[1] relative",
             !open && "overflow-hidden m-0 h-0"
           )}
+          data-testid="sidebar-item-category-children"
         >
           {item.children?.map((childItem, index) => (
             <SidebarItem

@@ -1,4 +1,5 @@
 import { AdminProduct } from "../../product"
+import { AdminTranslation } from "../../translations"
 import { BaseProductCategory } from "../common"
 
 export interface AdminProductCategory
@@ -18,4 +19,8 @@ export interface AdminProductCategory
    * The products that belong to this category.
    */
   products?: AdminProduct[]
+  /**
+   * The category's translations.
+   */
+  translations?: AdminTranslation[] | null
 }

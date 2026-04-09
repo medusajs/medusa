@@ -174,6 +174,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a gift card's update date.
@@ -313,6 +314,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -435,27 +437,6 @@ post:
   description: Create a gift card.
   x-authenticated: true
   x-ignoreCleanup: true
-  parameters:
-    - name: fields
-      in: query
-      description: >-
-        Comma-separated fields that should be included in the returned data.
-
-        if a field is prefixed with `+` it will be added to the default fields,
-        using `-` will remove it from the default fields.
-
-        without prefix it will replace the entire default fields.
-      required: false
-      schema:
-        type: string
-        title: fields
-        description: >-
-          Comma-separated fields that should be included in the returned data.
-          If a field is prefixed with `+` it will be added to the default
-          fields, using `-` will remove it from the default fields. Without
-          prefix it will replace the entire default fields.
-        externalDocs:
-          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []

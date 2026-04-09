@@ -15,12 +15,17 @@ export const storefrontDevelopmentSidebar = [
       {
         type: "link",
         path: "/storefront-development/tips",
-        title: "Tips",
+        title: "Connect to Medusa",
       },
       {
         type: "link",
         path: "/storefront-development/publishable-api-keys",
         title: "Publishable API Key",
+      },
+      {
+        type: "link",
+        path: "/storefront-development/localization",
+        title: "Localization",
       },
       {
         type: "link",

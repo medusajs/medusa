@@ -12,6 +12,14 @@ export interface AdminUpdateOrder {
    */
   billing_address?: OrderAddress
   /**
+   * The order's locale code. Items in the 
+   * order will be translated to the given locale,
+   * if translations are available.
+   * 
+   * @since 2.12.3
+   */
+  locale?: string | null
+  /**
    * The order's metadata.
    */
   metadata?: Record<string, unknown> | null

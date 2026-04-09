@@ -1,9 +1,22 @@
 get:
   operationId: GetProductsId
   summary: Get a Product
-  description: >-
+  description: >
     Retrieve a product by its ID. You can expand the product's relations or
     select the fields that should be returned.
+
+
+    You can retrieve the content of the product translated to a specific locale
+    either by passing the `locale` query parameter or by setting the
+    `x-medusa-locale` header to the desired locale code in BCP 47 format. If you
+    don't pass a locale, and your store has a default locale, the default locale
+    will be used.
+
+
+    With localization, the product's content like title and description will be
+    in the specified locale if a translation is available,  and fallback to the
+    original content otherwise. Learn more in the [Localization](#localization)
+    section.
   x-authenticated: false
   externalDocs:
     url: https://docs.medusajs.com/resources/storefront-development/products/price
@@ -23,6 +36,17 @@ get:
         type: string
         externalDocs:
           url: https://docs.medusajs.com/api/store#publishable-api-key
+    - name: x-medusa-locale
+      in: header
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
       description: >-
@@ -101,6 +125,17 @@ get:
           The ID of the customer's cart. If set, the cart's region and shipping
           address's country code and province are used instead of the
           `region_id`, `country_code`, and `province` properties.
+    - name: locale
+      in: query
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK

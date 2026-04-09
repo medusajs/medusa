@@ -5,7 +5,10 @@ sidebar_description: Create default data for a Medusa application.
 tags:
   - sales channel
   - store
+  - query
+  - api key
   - workflow
+  - link
 ---
 
 import { TypeList, WorkflowDiagram } from "docs-ui"
@@ -21,7 +24,7 @@ to create the default data, if not existing, when the application is first start
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 create default data within your custom flows, such as seed scripts.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/da5d0e3a1430979ab9cda7f239ea7066ded1f7ab/packages/core/core-flows/src/defaults/workflows/create-defaults.ts#L25" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/defaults/workflows/create-defaults.ts#L32" />
 
 ## Examples
 
@@ -114,7 +117,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createDefaultsWorkflow","steps":[{"type":"step","name":"createDefaultSalesChannelStep","description":"This step creates a default sales channel if none exist in the application. \nThis is useful when creating seed scripts.","link":"../../../../Sales_Channel/Steps_Sales_Channel/functions/core_flows.Sales_Channel.Steps_Sales_Channel.createDefaultSalesChannelStep/page.mdx","depth":1},{"type":"step","name":"createDefaultStoreStep","description":"This step creates a default store. Useful if creating a workflow\nthat seeds data into Medusa.","link":"../../../Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createDefaultsWorkflow","steps":[{"type":"step","name":"createDefaultSalesChannelStep","description":"This step creates a default sales channel if none exist in the application. \nThis is useful when creating seed scripts.","link":"../../../../Sales_Channel/Steps_Sales_Channel/functions/core_flows.Sales_Channel.Steps_Sales_Channel.createDefaultSalesChannelStep/page.mdx","depth":1},{"type":"step","name":"createDefaultStoreStep","description":"This step creates a default store. Useful if creating a workflow\nthat seeds data into Medusa.","link":"../../../Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep/page.mdx","depth":2},{"type":"step","name":"useQueryGraphStep","description":"This step fetches data across modules using the Query.\n\nLearn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx","depth":3},{"type":"when","condition":"!publishableApiKey?.data","depth":"4","steps":[{"type":"step","name":"createApiKeysStep","description":"This step creates one or more API keys.","link":"../../../../Api_Key/Steps_Api_Key/functions/core_flows.Api_Key.Steps_Api_Key.createApiKeysStep/page.mdx","depth":4},{"type":"workflow","name":"linkSalesChannelsToApiKeyWorkflow","description":"Manage the sales channels of a publishable API key.","link":"../../../../Api_Key/Workflows_Api_Key/functions/core_flows.Api_Key.Workflows_Api_Key.linkSalesChannelsToApiKeyWorkflow/page.mdx","depth":4}]}]}} />
 
 ## Output
 

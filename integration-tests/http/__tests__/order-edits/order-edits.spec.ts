@@ -487,6 +487,31 @@ medusaIntegrationTestRunner({
           }),
         ])
 
+        // Update item with decimal quantity
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/items/item/${item.id}`,
+            {
+              quantity: 2.5,
+              unit_price: 30,
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        expect(result.summary.current_order_total).toEqual(111.4)
+        expect(result.summary.original_order_total).toEqual(60)
+
+        const decimalUpdatedItem = result.items.find((i) => i.id === item.id)
+        expect(decimalUpdatedItem.actions[3]).toEqual(
+          expect.objectContaining({
+            details: expect.objectContaining({
+              quantity: 2.5,
+              unit_price: 30,
+              quantity_diff: 0.5,
+            }),
+          })
+        )
         // Remove the item by setting the quantity to 0
         result = (
           await api.post(
@@ -542,7 +567,7 @@ medusaIntegrationTestRunner({
           )
         ).data.order_changes
 
-        expect(result[0].actions).toHaveLength(5)
+        expect(result[0].actions).toHaveLength(6)
         expect(result[0].status).toEqual("confirmed")
         expect(result[0].confirmed_by).toEqual(expect.stringContaining("user_"))
       })
@@ -861,8 +886,7 @@ medusaIntegrationTestRunner({
 
         // Remove item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${
-            order.items.find((i) => i.subtitle === "M shirt").id
+          `/admin/order-edits/${order.id}/items/item/${order.items.find((i) => i.subtitle === "M shirt").id
           }`,
           { quantity: 0 },
           adminHeaders
@@ -870,8 +894,7 @@ medusaIntegrationTestRunner({
 
         // Update item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${
-            order.items.find((i) => i.subtitle === "L shirt").id
+          `/admin/order-edits/${order.id}/items/item/${order.items.find((i) => i.subtitle === "L shirt").id
           }`,
           { quantity: 2 },
           adminHeaders
@@ -1371,6 +1394,172 @@ medusaIntegrationTestRunner({
 
         expect(orderResult2.total).toEqual(21.78)
         expect(orderResult2.original_total).toEqual(24.2)
+      })
+
+      it("should apply customer group and collection rules on new items", async () => {
+        const customerGroup = (
+          await api.post(
+            "/admin/customer-groups",
+            {
+              name: "VIP Customers",
+            },
+            adminHeaders
+          )
+        ).data.customer_group
+
+        const customer = (
+          await api.post(
+            "/admin/customers",
+            {
+              first_name: "Group",
+              last_name: "Customer",
+              email: "group.customer@admin.com",
+            },
+            adminHeaders
+          )
+        ).data.customer
+
+        await api.post(
+          `/admin/customer-groups/${customerGroup.id}/customers`,
+          { add: [customer.id] },
+          adminHeaders
+        )
+
+        const collection = (
+          await api.post(
+            "/admin/collections",
+            {
+              title: "Promo Collection",
+            },
+            adminHeaders
+          )
+        ).data.collection
+
+        await api.post(
+          `/admin/products/${productExtra.id}`,
+          {
+            collection_id: collection.id,
+          },
+          adminHeaders
+        )
+
+        const promotion = (
+          await api.post(
+            "/admin/promotions",
+            {
+              code: "GROUP_COLLECTION_RULE",
+              type: PromotionType.STANDARD,
+              status: PromotionStatus.ACTIVE,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 5,
+                max_quantity: 10,
+                currency_code: "usd",
+                target_rules: [
+                  {
+                    attribute: "items.product.collection_id",
+                    operator: RuleOperator.IN,
+                    values: [collection.id],
+                  },
+                ],
+              },
+              rules: [
+                {
+                  attribute: "customer.groups.id",
+                  operator: RuleOperator.IN,
+                  values: [customerGroup.id],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.promotion
+
+        const orderForPromotion = await orderModule.createOrders({
+          email: "group.customer@admin.com",
+          region_id: region.id,
+          sales_channel_id: salesChannel.id,
+          items: [
+            {
+              variant_id: buyRuleProduct.variants[0].id,
+              title: "original item",
+              quantity: 1,
+              unit_price: 10,
+            },
+          ],
+          shipping_address: {
+            first_name: "Group",
+            last_name: "Customer",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+          },
+          billing_address: {
+            first_name: "Group",
+            last_name: "Customer",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+          },
+          currency_code: "usd",
+          customer_id: customer.id,
+        })
+
+        await remoteLink.create({
+          [Modules.ORDER]: { order_id: orderForPromotion.id },
+          [Modules.PROMOTION]: { promotion_id: promotion.id },
+        })
+
+        let result = await api.post(
+          "/admin/order-edits",
+          {
+            order_id: orderForPromotion.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const orderChangeId = result.data.order_change.id
+        await api.post(
+          `/admin/order-changes/${orderChangeId}`,
+          {
+            carry_over_promotions: true,
+          },
+          adminHeaders
+        )
+
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderForPromotion.id}/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        const collectionItem = result.items.find(
+          (item) => item.variant_id === productExtra.variants[0].id
+        )
+        const nonCollectionItem = result.items.find(
+          (item) => item.variant_id === buyRuleProduct.variants[0].id
+        )
+
+        expect(collectionItem.adjustments).toEqual([
+          expect.objectContaining({
+            amount: 5,
+          }),
+        ])
+        expect(nonCollectionItem.adjustments).toEqual([])
       })
 
       it("should update adjustments when updating an item", async () => {

@@ -1,10 +1,10 @@
 import React from "react"
-import { CollapsibleReturn } from "../../../../hooks"
+import { CollapsibleReturn } from "../../../../hooks/use-collapsible"
 
 export type CodeBlockCollapsibleLinesProps = {
   children: React.ReactNode
   type: "start" | "end"
-} & Omit<CollapsibleReturn, "setCollapsed">
+} & Pick<CollapsibleReturn, "collapsed">
 
 export const CodeBlockCollapsibleLines = ({
   children,

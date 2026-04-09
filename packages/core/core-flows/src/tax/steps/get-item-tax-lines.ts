@@ -91,6 +91,7 @@ function normalizeTaxModuleContext(
     },
     customer,
     is_return: isReturn ?? false,
+    locale: orderOrCart.locale,
     shipping_methods: orderOrCart.shipping_methods?.map((method) => ({
       id: method.id,
       name: method.name,

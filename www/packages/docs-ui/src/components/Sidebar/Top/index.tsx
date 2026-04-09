@@ -3,7 +3,8 @@
 import React from "react"
 import { SidebarChild } from "../Child"
 import { SidebarTopMobileClose } from "./MobileClose"
-import { DottedSeparator, useSidebar } from "../../.."
+import { useSidebar } from "@/providers/Sidebar"
+import { DottedSeparator } from "@/components/DottedSeparator"
 import clsx from "clsx"
 
 export const SidebarTop = React.forwardRef<HTMLDivElement>(

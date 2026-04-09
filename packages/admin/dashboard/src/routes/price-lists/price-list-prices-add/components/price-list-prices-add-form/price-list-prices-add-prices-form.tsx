@@ -36,7 +36,9 @@ export const PriceListPricesAddPricesForm = ({
   const { products, isLoading, isError, error } = useProducts({
     id: ids.map((id) => id.id),
     limit: ids.length,
-    fields: "title,thumbnail,*variants",
+    // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+    fields:
+      "title,thumbnail,*variants,-type,-collection,-options,-tags,-images,-sales_channels",
   })
 
   const { setValue } = form

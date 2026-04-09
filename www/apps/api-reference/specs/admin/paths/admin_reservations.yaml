@@ -328,6 +328,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a reservation's update date.
@@ -467,6 +468,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: deleted_at
       in: query
       description: Filter by a reservation's deletion date.
@@ -606,6 +608,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: with_deleted
       in: query
       description: Whether to include deleted records in the result.
@@ -721,46 +724,44 @@ get:
               Filter by values less than or equal to this parameter. Useful for
               numbers and dates only.
           $like:
-            type: string
+            type: number
             title: $like
             description: Apply a `like` filter. Useful for strings only.
           $re:
-            type: string
+            type: number
             title: $re
             description: Apply a regex filter. Useful for strings only.
           $ilike:
-            type: string
+            type: number
             title: $ilike
             description: Apply a case-insensitive `like` filter. Useful for strings only.
           $fulltext:
-            type: string
+            type: number
             title: $fulltext
             description: Filter to apply on full-text properties.
           $overlap:
             type: array
             description: Filter arrays that have overlapping values with this parameter.
             items:
-              type: string
-              title: $overlap
+              type: number
               description: Filter arrays that have overlapping values with this parameter.
           $contains:
             type: array
             description: Filter arrays that contain some of the values of this parameter.
             items:
-              type: string
-              title: $contains
+              type: number
               description: Filter arrays that contain some of the values of this parameter.
           $contained:
             type: array
             description: Filter arrays that contain all values of this parameter.
             items:
-              type: string
-              title: $contained
+              type: number
               description: Filter arrays that contain all values of this parameter.
           $exists:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: quantity
   security:
     - api_token: []
     - cookie_auth: []

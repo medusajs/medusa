@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import React, { Suspense, lazy } from "react"
-import { Loading } from "@/components"
+import { Loading } from "@/components/Loading"
 
 export type CommonProps = {
   expandUrl?: string
@@ -13,6 +13,7 @@ export type Type = {
   type: string
   optional?: boolean
   defaultValue?: string
+  example?: string
   description?: string
   featureFlag?: string
   expandable: boolean

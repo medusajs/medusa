@@ -102,6 +102,12 @@ Similar to regular orders, draft orders can be [edited](../edit/page.mdx), allow
 
 When the order edit is confirmed on the draft order, the changes are applied directly to the draft order and its [version](../order-versioning/page.mdx) is incremented.
 
+### Draft Order Locale
+
+A draft order's `locale` can be set and updated before converting it to a regular order. All item details in the draft order, such as product titles and descriptions, will be presented in the correct language if translations are available.
+
+When the draft order is converted to a regular order, it retains its `locale` property. The details of the order items will remain in the specified locale.
+
 ### Converting Draft Orders to Regular Orders
 
 Once a draft order is finalized and ready for processing, it can be converted to a regular order. This involves:
