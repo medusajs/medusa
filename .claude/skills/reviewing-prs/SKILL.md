@@ -16,7 +16,7 @@ Reviews GitHub pull requests for Medusa. Checks template compliance, contributio
 
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
-- **Writing a review comment?** → MUST load `reference/comment-guidelines.md` first
+- **Writing a review comment?** → MUST load `reference/comment-guidelines.md` first (includes bug reporting format)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
 
@@ -150,7 +150,27 @@ For mixed PRs, apply all relevant types.
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
-### Step 8 — Contextual Assessment
+### Step 8 — Bug Detection
+
+Read the actual code diff carefully and look for potential bugs. Focus on:
+
+- **Logic errors** — off-by-one, wrong conditionals, inverted boolean checks
+- **Null / undefined access** — accessing properties on values that may be null/undefined without guards
+- **Async issues** — missing `await`, unhandled promise rejections, race conditions
+- **Type mismatches** — passing wrong types, unsafe casts, implicit coercions
+- **Resource leaks** — unclosed DB connections, missing transaction rollbacks, unhandled errors in cleanup paths
+- **Edge cases not handled** — empty arrays, zero values, missing input validation
+- **Mutation side-effects** — mutating shared state or function arguments unexpectedly
+- **Incorrect error handling** — swallowed errors, rethrowing without context, wrong error types
+
+For each potential bug found:
+- Note the **file and approximate location**
+- Briefly explain **why it's a bug or risk**
+- Suggest a **concrete fix** if one is obvious
+
+> **CRITICAL:** Distinguish between confirmed bugs (clear logic/runtime errors) and code smell / style issues. Only flag something as a bug if it would plausibly cause incorrect behaviour at runtime.
+
+### Step 9 — Contextual Assessment
 
 Before writing the review, assess whether the changes make sense in the broader context of the PR. Load `reference/comment-guidelines.md` (Contextual Assessment section) for the full checklist. Key questions:
 
@@ -162,7 +182,7 @@ Before writing the review, assess whether the changes make sense in the broader 
 
 Note any concerns to include in the review comment.
 
-### Step 9 — Compose and Post Review
+### Step 10 — Compose and Post Review
 
 Load `reference/comment-guidelines.md` for comment templates and tone guidance.
 

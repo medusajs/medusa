@@ -73,6 +73,34 @@ If concerns are found, include them in the review comment under a **"Concerns"**
 
 Keep concerns concise and factual — describe the problem, not a lecture. If unsure whether something is actually a bug, phrase it as a question: *"Should `X` also handle the case where `Y` is null?"*
 
+## Potential Bugs Section
+
+When bugs are found in Step 8, include a **"Potential Bugs"** section in the review comment. This section is **always required** when bugs are found — for both `initial-approval` and `requires-more`.
+
+- Confirmed bugs (will cause incorrect runtime behaviour) → add to **Required changes** and apply `requires-more`
+- Uncertain / possible bugs → include under **"Potential Bugs"** as a flagged concern, even on `initial-approval`
+
+**Format:**
+
+```
+**Potential Bugs:**
+
+⚠️ **`path/to/file.ts`** — <one-line description of the bug>
+```typescript
+// the problematic snippet
+```
+<Explanation of why this is a problem and what could go wrong. If a fix is obvious, suggest it.>
+
+⚠️ **`path/to/other-file.ts`** — <another bug>
+...
+```
+
+**Rules:**
+- Always quote the relevant code snippet in a fenced code block so the author knows exactly what line is flagged
+- Be specific about the failure scenario — *"this will throw if `items` is empty"* not *"this looks wrong"*
+- If unsure, phrase as a question: *"Should this also handle the case where X is undefined?"*
+- Do not flag style issues or code smell here — only actual correctness/runtime concerns
+
 ## Security Risk Comment Template
 
 Use when a potential (non-malicious) security risk is found. Include it as part of the review, not as a standalone comment.
