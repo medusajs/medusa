@@ -56,41 +56,41 @@ jobs:
         with:
           extension: cli-database
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
       - name: Install Medusa cli
-        run: npm i -g @medusajs/cli@preview
+        run: pnpm add -g @medusajs/cli@preview
 
       - name: Create Medusa project
         working-directory: ..
         run: |
-          medusa new cli-test --skip-db --skip-migrations --v2 --branch ci-custom
-
-      - name: Enable Corepack
-        run: corepack enable
+          medusa new cli-test --skip-db --skip-migrations --branch ci-custom
 
       - name: Install new app dependencies (via resolutions)
-        run: rm -f package-lock.json && yarn install --inline-builds --silent
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+        run: rm -f pnpm-lock.yaml && pnpm install --prefer-frozen-lockfile=false
         working-directory: ../cli-test
 
       - name: Run migrations
         run: npx medusa db:migrate
-        working-directory: ../cli-test
+        working-directory: ../cli-test/apps/backend
 
       - name: Create admin user
         run: npx medusa user -e test@test.com -p password -i admin_123
-        working-directory: ../cli-test
+        working-directory: ../cli-test/apps/backend
 
       - name: Run development server
         run: npx medusa develop &
-        working-directory: ../cli-test
+        working-directory: ../cli-test/apps/backend
 
       - name: Testing development server
         uses: ./.github/actions/test-server
 
       - name: Starting medusa
         run: npx medusa start &
-        working-directory: ../cli-test
+        working-directory: ../cli-test/apps/backend
 
       - name: Testing server
         uses: ./.github/actions/test-server
