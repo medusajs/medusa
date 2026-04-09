@@ -78,7 +78,11 @@ export const metadata = {
 - [ ] Documenting any option, method, or parameter tagged with `@ignore` in its TSDoc — skip these entirely
 - [ ] Touching `references/` or `specs/components/` directories
 - [ ] Using `we`, `us`, `let's`, `our` in prose (use "you" or imperative)
-- [ ] Using passive voice ("is created", "was updated") — write active
+- [ ] Using "Medusa API" to mean the backend — use "Medusa backend" instead
+- [ ] Writing "Medusa Cloud" — use "Medusa" (noun form) or "Cloud" (location/service)
+- [ ] Using `e.g.,` — write `for example` instead
+- [ ] Using em dashes (`—`) — rewrite sentence to avoid them
+- [ ] Using passive voice ("is created", "can be configured") — write active ("you can configure", "call X to create")
 - [ ] Writing code lines longer than 64 characters
 - [ ] Forgetting to add a new page to the sidebar file
 - [ ] Removing `${pageNumber}` from book page titles
