@@ -109,7 +109,7 @@ If the PR has more than 500 changed lines (additions + deletions) **or** more th
 ```bash
 bash scripts/get_linked_issues.sh <pr_number>
 ```
-Check whether any linked issue carries a `help wanted` label. If not, apply `requires-more` and comment explaining that large contributions should be scoped and pre-approved via an issue first (reference `CONTRIBUTING.md`).
+Check whether any linked issue carries a `help-wanted` label. If not, apply `requires-more` and comment explaining that large contributions should be scoped and pre-approved via an issue first (reference `CONTRIBUTING.md`).
 
 **4b. Security scan:**
 
