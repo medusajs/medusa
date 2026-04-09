@@ -31,6 +31,9 @@ import { fieldsForPricingContext } from "../../common/utils/fields"
  */
 export type OrderAddLineItemWorkflowOutput = OrderLineItemDTO[]
 
+/**
+ * Workflow ID for adding line items to an order
+ */
 export const addOrderLineItemsWorkflowId = "order-add-line-items"
 /**
  * This workflow adds line items to an order. This is useful when making edits to
