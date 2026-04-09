@@ -41,9 +41,9 @@ jobs:
         run: yarn build:docs
         env:
           NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
-          NEXT_PUBLIC_DOCS_URL: "https://docs.medusajs.com"
-          NEXT_PUBLIC_RESOURCES_URL: "https://docs.medusajs.com"
-          NEXT_PUBLIC_USER_GUIDE_URL: "https://docs.medusajs.com"
+          NEXT_PUBLIC_DOCS_URL: "http://localhost:3000"
+          NEXT_PUBLIC_RESOURCES_URL: "http://localhost:3000"
+          NEXT_PUBLIC_USER_GUIDE_URL: "http://localhost:3000"
           NEXT_PUBLIC_ENV: CI
           NODE_ENV: production
 
