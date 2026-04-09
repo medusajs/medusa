@@ -3,4 +3,4 @@
 "@medusajs/order": patch
 ---
 
-fix(core-flows,order): update order.email on accepted customer transfer
+feat(core-flows,order,medusa,types): allow to update the original order.email on order customer transfer requests
