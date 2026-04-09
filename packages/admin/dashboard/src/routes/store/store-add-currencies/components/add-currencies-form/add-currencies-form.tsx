@@ -275,7 +275,7 @@ const useColumns = (
       }),
       ...base,
       columnHelper.display({
-        id: "select",
+        id: "is_tax_inclusive",
         header: () => (
           <div className="whitespace-nowrap">
             {t("fields.taxInclusivePricing")}

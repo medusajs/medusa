@@ -175,6 +175,29 @@ export const useTranslationSettings = (
   return { ...data, ...rest }
 }
 
+export const useBatchTranslationSettings = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminBatchTranslationSettingsResponse,
+    FetchError,
+    HttpTypes.AdminBatchTranslationSettings
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminBatchTranslationSettings) =>
+      sdk.admin.translation.batchSettings(payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: translationSettingsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: translationStatisticsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useTranslationEntities = (
   query: HttpTypes.AdminTranslationEntitiesParams,
   options?: Omit<

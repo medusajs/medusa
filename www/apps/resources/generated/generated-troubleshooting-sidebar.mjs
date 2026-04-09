@@ -308,6 +308,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/troubleshooting/nextjs-node-25",
+              "title": "Errors with Node v25+",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/troubleshooting/nextjs-starter-rewrites",
               "title": "Google Cloud Run Error",
               "children": []

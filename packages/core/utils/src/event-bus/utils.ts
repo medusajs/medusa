@@ -2,30 +2,42 @@ import { KebabCase, SnakeCase } from "@medusajs/types"
 import { camelToSnakeCase, kebabCase, lowerCaseFirst } from "../common"
 import { CommonEvents } from "./common-events"
 
-type ReturnType<TNames extends string[]> = {
+type ReturnType<TNames extends string[], TPrefix extends string = ""> = {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_CREATED`]: `${KebabCase<K & string>}.created`
+  >}_CREATED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.created`
+    : `${TPrefix}.${KebabCase<K & string>}.created`
 } & {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_UPDATED`]: `${KebabCase<K & string>}.updated`
+  >}_UPDATED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.updated`
+    : `${TPrefix}.${KebabCase<K & string>}.updated`
 } & {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_DELETED`]: `${KebabCase<K & string>}.deleted`
+  >}_DELETED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.deleted`
+    : `${TPrefix}.${KebabCase<K & string>}.deleted`
 } & {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_RESTORED`]: `${KebabCase<K & string>}.restored`
+  >}_RESTORED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.restored`
+    : `${TPrefix}.${KebabCase<K & string>}.restored`
 } & {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_ATTACHED`]: `${KebabCase<K & string>}.attached`
+  >}_ATTACHED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.attached`
+    : `${TPrefix}.${KebabCase<K & string>}.attached`
 } & {
   [K in TNames[number] as `${Uppercase<
     SnakeCase<K & string>
-  >}_DETACHED`]: `${KebabCase<K & string>}.detached`
+  >}_DETACHED`]: TPrefix extends ""
+    ? `${KebabCase<K & string>}.detached`
+    : `${TPrefix}.${KebabCase<K & string>}.detached`
 }
 
 /**
@@ -64,10 +76,10 @@ export function buildModuleResourceEventName({
  * @param names
  * @param prefix
  */
-export function buildEventNamesFromEntityName<TNames extends string[]>(
-  names: TNames,
-  prefix?: string
-): ReturnType<TNames> {
+export function buildEventNamesFromEntityName<
+  TNames extends string[],
+  TPrefix extends string = ""
+>(names: TNames, prefix?: TPrefix): ReturnType<TNames, TPrefix> {
   const events = {}
 
   for (let i = 0; i < names.length; i++) {
@@ -85,7 +97,7 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
     }
   }
 
-  return events as ReturnType<TNames>
+  return events as ReturnType<TNames, TPrefix>
 }
 
 export const EventPriority = {

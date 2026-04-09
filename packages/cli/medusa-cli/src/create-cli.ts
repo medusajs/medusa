@@ -2,6 +2,7 @@ import { setTelemetryEnabled } from "@medusajs/telemetry"
 import { sync as existsSync } from "fs-exists-cached"
 import path from "path"
 import resolveCwd from "resolve-cwd"
+import { getCodemod, listCodemods } from "./codemods/index"
 import { newStarter } from "./commands/new"
 import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
@@ -32,8 +33,11 @@ function buildLocalCommands(cli, isLocalProject) {
   }
 
   function resolveLocalCommand(command) {
-    if (!isLocalProject) {
-      cli.showHelp((s: string) => console.log(s))
+    if (!isLocalProject && command !== "new") {
+      console.error(
+        `The "${command}" command must be run inside a Medusa project. Make sure you are in the root directory of a Medusa project and try again.`
+      )
+      process.exit(1)
     }
 
     try {
@@ -296,7 +300,7 @@ function buildLocalCommands(cli, isLocalProject) {
       command: "plugin:build",
       desc: "Build plugin source for publishing to a package registry",
       handler: handlerP(
-        getCommandHandler("plugin/build", (args, cmd) => {
+        getCommandHandler("plugin/build", async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           return new Promise((resolve) => {})
@@ -307,7 +311,7 @@ function buildLocalCommands(cli, isLocalProject) {
       command: "plugin:develop",
       desc: "Start plugin development process in watch mode. Changes will be re-published to the local packages registry",
       handler: handlerP(
-        getCommandHandler("plugin/develop", (args, cmd) => {
+        getCommandHandler("plugin/develop", async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           return new Promise(() => {})
@@ -318,7 +322,7 @@ function buildLocalCommands(cli, isLocalProject) {
       command: "plugin:publish",
       desc: "Publish the plugin to the local packages registry",
       handler: handlerP(
-        getCommandHandler("plugin/publish", (args, cmd) => {
+        getCommandHandler("plugin/publish", async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           return new Promise(() => {})
@@ -336,7 +340,7 @@ function buildLocalCommands(cli, isLocalProject) {
         },
       },
       handler: handlerP(
-        getCommandHandler("plugin/add", (args, cmd) => {
+        getCommandHandler("plugin/add", async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           return new Promise(() => {})
@@ -366,6 +370,62 @@ function buildLocalCommands(cli, isLocalProject) {
       }),
     })
     .command({
+      command: `codemod <codemod-name>`,
+      desc: `Run automated code transformations`,
+      builder: (yargs) =>
+        yargs
+          .positional("codemod-name", {
+            type: "string",
+            describe: "Name of the codemod to run",
+            demandOption: true,
+          })
+          .option(`dry-run`, {
+            type: `boolean`,
+            description: `Preview changes without modifying files`,
+            default: false,
+          }),
+      handler: handlerP(async ({ codemodName, dryRun }) => {
+        const codemod = getCodemod(codemodName)
+
+        if (!codemod) {
+          const available = listCodemods()
+          reporter.error(`Unknown codemod: ${codemodName}`)
+          reporter.info(
+            `\nAvailable codemods:\n${available
+              .map((n) => `  - ${n}`)
+              .join("\n")}`
+          )
+          process.exit(1)
+        }
+
+        reporter.info(`Running codemod: ${codemod.name}`)
+        reporter.info(codemod.description)
+
+        if (dryRun) {
+          reporter.info(`\n  DRY RUN MODE - No files will be modified\n`)
+        }
+
+        const result = await codemod.run({ dryRun })
+
+        reporter.info(`\n Summary:`)
+        reporter.info(`   Files scanned: ${result.filesScanned}`)
+        reporter.info(`   Files modified: ${result.filesModified}`)
+        reporter.info(`   Errors: ${result.errors}`)
+
+        if (dryRun && result.filesModified > 0) {
+          reporter.info(`\n Run without --dry-run to apply changes`)
+        } else if (result.filesModified > 0) {
+          reporter.info(`\n Codemod completed successfully!`)
+          reporter.info(`\n Next steps:`)
+          reporter.info(`   1. Review changes: git diff`)
+          reporter.info(`   2. Run tests to verify`)
+          reporter.info(`   3. Commit if satisfied`)
+        } else {
+          reporter.info(`\n No modifications needed`)
+        }
+      }),
+    })
+    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
@@ -392,7 +452,7 @@ function buildLocalCommands(cli, isLocalProject) {
               : `Set port. Defaults to ${defaultPort}`,
           }),
       handler: handlerP(
-        getCommandHandler(`develop`, (args, cmd) => {
+        getCommandHandler(`develop`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
 
           cmd(args)
@@ -447,7 +507,7 @@ function buildLocalCommands(cli, isLocalProject) {
               "Number of server processes in cluster mode or a percentage of cluster size (e.g., 25%).",
           }),
       handler: handlerP(
-        getCommandHandler(`start`, (args, cmd) => {
+        getCommandHandler(`start`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `production`
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
@@ -468,7 +528,7 @@ function buildLocalCommands(cli, isLocalProject) {
             "Only build the admin to serve it separately (outDir .medusa/admin)",
         }),
       handler: handlerP(
-        getCommandHandler(`build`, (args, cmd) => {
+        getCommandHandler(`build`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
 
@@ -501,7 +561,7 @@ function buildLocalCommands(cli, isLocalProject) {
             default: false,
           }),
       handler: handlerP(
-        getCommandHandler(`user`, (args, cmd) => {
+        getCommandHandler(`user`, async (args, cmd) => {
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
@@ -514,7 +574,7 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `exec [file] [args..]`,
       desc: `Run a function defined in a file.`,
       handler: handlerP(
-        getCommandHandler(`exec`, (args, cmd) => {
+        getCommandHandler(`exec`, async (args, cmd) => {
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
@@ -532,9 +592,14 @@ function isLocalMedusaProject() {
     const { dependencies, devDependencies } = require(path.resolve(
       `./package.json`
     ))
+    // Draft order plugin can't have @medusajs/medusa as dependency,
+    // so we also check for @medusajs/cli 
     inMedusaProject = !!(
-      (dependencies && dependencies["@medusajs/medusa"]) ||
-      (devDependencies && devDependencies["@medusajs/medusa"])
+      (dependencies &&
+        (dependencies["@medusajs/medusa"] || dependencies["@medusajs/cli"])) ||
+      (devDependencies &&
+        (devDependencies["@medusajs/medusa"] ||
+          devDependencies["@medusajs/cli"]))
     )
   } catch (err) {
     // ignore

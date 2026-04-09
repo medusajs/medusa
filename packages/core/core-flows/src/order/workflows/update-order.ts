@@ -29,6 +29,7 @@ import {
 } from "../steps"
 import { throwIfOrderIsCancelled } from "../utils/order-validation"
 import { findOrCreateCustomerStep } from "../../cart"
+import { updateOrderTaxLinesTranslationsStep } from "../steps/update-order-tax-lines-translations"
 
 /**
  * The data to validate the order update.
@@ -288,6 +289,10 @@ export const updateOrderWorkflow = createWorkflow(
         updateOrderShippingMethodsTranslationsStep({
           locale: input.locale!,
           shippingMethods: order.shipping_methods,
+        }),
+        updateOrderTaxLinesTranslationsStep({
+          order_id: input.id,
+          locale: input.locale!,
         })
       )
     })

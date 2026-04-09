@@ -1,5 +1,10 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules, ProductStatus, PromotionStatus, PromotionType } from "@medusajs/utils"
+import {
+  Modules,
+  ProductStatus,
+  PromotionStatus,
+  PromotionType,
+} from "@medusajs/utils"
 import {
   createAdminUser,
   generatePublishableKey,
@@ -7,6 +12,11 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures/tax"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
+import {
+  updateCampaignsWorkflow,
+  updatePromotionRulesWorkflow,
+  updatePromotionsWorkflow,
+} from "@medusajs/core-flows"
 
 jest.setTimeout(500000)
 
@@ -53,8 +63,12 @@ const standardPromotionPayload = {
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let appContainer
+    beforeAll(async () => {
+      appContainer = getContainer()
+    })
+
     describe("Admin Promotions API", () => {
-      let appContainer
       let promotion
       let standardPromotion
       let shippingProfile
@@ -64,10 +78,6 @@ medusaIntegrationTestRunner({
         attribute: "old_attr",
         values: ["old value"],
       }
-
-      beforeAll(async () => {
-        appContainer = getContainer()
-      })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -4113,6 +4123,55 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+      })
+    })
+
+    describe("Promotions Workflows", () => {
+      it("updateCampaignsWorkflow - should not call listCampaigns when campaignsData is empty", async () => {
+        const promotionService = appContainer.resolve(Modules.PROMOTION)
+        const listCampaignsSpy = jest.spyOn(promotionService, "listCampaigns")
+
+        const { result } = await updateCampaignsWorkflow(appContainer).run({
+          input: { campaignsData: [] },
+        })
+
+        expect(result).toEqual([])
+        expect(listCampaignsSpy).not.toHaveBeenCalled()
+
+        listCampaignsSpy.mockRestore()
+      })
+
+      it("updatePromotionRulesWorkflow - should not call listPromotionRules when data is empty", async () => {
+        const promotionService = appContainer.resolve(Modules.PROMOTION)
+        const listPromotionRulesSpy = jest.spyOn(
+          promotionService,
+          "listPromotionRules"
+        )
+
+        const { result } = await updatePromotionRulesWorkflow(appContainer).run(
+          {
+            input: { data: [] },
+          }
+        )
+
+        expect(result).toEqual([])
+        expect(listPromotionRulesSpy).not.toHaveBeenCalled()
+
+        listPromotionRulesSpy.mockRestore()
+      })
+
+      it("updatePromotionsWorkflow - should not call listPromotions when promotionsData is empty", async () => {
+        const promotionService = appContainer.resolve(Modules.PROMOTION)
+        const listPromotionsSpy = jest.spyOn(promotionService, "listPromotions")
+
+        const { result } = await updatePromotionsWorkflow(appContainer).run({
+          input: { promotionsData: [] },
+        })
+
+        expect(result).toEqual([])
+        expect(listPromotionsSpy).not.toHaveBeenCalled()
+
+        listPromotionsSpy.mockRestore()
       })
     })
   },

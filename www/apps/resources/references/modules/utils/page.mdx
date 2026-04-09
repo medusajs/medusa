@@ -10,6 +10,10 @@ import { TypeList } from "docs-ui"
 - [PaymentSessionStatus](../../utils/enums/utils.PaymentSessionStatus/page.mdx)
 - [PaymentWebhookEvents](../../utils/enums/utils.PaymentWebhookEvents/page.mdx)
 
+## Functions
+
+- [discoverPoliciesFromDir](page.mdx#discoverpoliciesfromdir)
+
 ## Interfaces
 
 - [Argument](../../utils/interfaces/utils.Argument/page.mdx)
@@ -64,6 +68,22 @@ import { TypeList } from "docs-ui"
 
 ___
 
+## Functions
+
+### discoverPoliciesFromDir
+
+Discover policy definitions from a directory and subdirectories
+
+#### Parameters
+
+<TypeList types={[{"name":"maxDepth","type":"`number`","description":"","optional":false,"defaultValue":"2","expandable":false,"children":[]},{"name":"sourcePath","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="discoverPoliciesFromDir"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Discover policy definitions from a directory and subdirectories","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="discoverPoliciesFromDir"/>
+
+___
+
 ## Variables
 
 ### MedusaModuleProviderType
@@ -76,4 +96,4 @@ ___
 
 ### NotificationEvents
 
- `Const` **NotificationEvents**: ReturnType&#60;["notification"]&#62;
+ `Const` **NotificationEvents**: ReturnType&#60;["notification"], "notification"&#62;

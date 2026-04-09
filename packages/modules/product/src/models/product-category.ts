@@ -4,8 +4,8 @@ import Product from "./product"
 const ProductCategory = model
   .define("ProductCategory", {
     id: model.id({ prefix: "pcat" }).primaryKey(),
-    name: model.text().searchable(),
-    description: model.text().searchable().default(""),
+    name: model.text().searchable().translatable(),
+    description: model.text().searchable().translatable().default(""),
     handle: model.text().searchable(),
     mpath: model.text(),
     is_active: model.boolean().default(false),

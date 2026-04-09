@@ -24,6 +24,9 @@ medusaIntegrationTestRunner({
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
+      const translationModule = container.resolve(Modules.TRANSLATION)
+      await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
+
       // Set up supported locales in the store
       const storeModule = container.resolve(Modules.STORE)
       const [defaultStore] = await storeModule.listStores(

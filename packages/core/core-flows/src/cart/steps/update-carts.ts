@@ -30,6 +30,13 @@ export const updateCartsStep = createStep(
   async (data: UpdateCartsStepInput, { container }) => {
     const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
+    if (!data.length) {
+      return new StepResponse([], {
+        cartsBeforeUpdate: [],
+        addressesBeforeUpdate: [],
+      })
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       requiredFields: [
         "id",
@@ -81,18 +88,18 @@ export const updateCartsStep = createStep(
       return
     }
 
-	const { cartsBeforeUpdate, addressesBeforeUpdate } = dataToCompensate
+    const { cartsBeforeUpdate, addressesBeforeUpdate } = dataToCompensate
 
     const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
-	const addressesToUpdate: UpdateAddressDTO[] = []
-	for (const address of addressesBeforeUpdate) {
-		addressesToUpdate.push({
-			...address,
-			metadata: address.metadata ?? undefined
-		})
-	}
-	await cartModule.updateAddresses(addressesToUpdate)
+    const addressesToUpdate: UpdateAddressDTO[] = []
+    for (const address of addressesBeforeUpdate) {
+      addressesToUpdate.push({
+        ...address,
+        metadata: address.metadata ?? undefined,
+      })
+    }
+    await cartModule.updateAddresses(addressesToUpdate)
 
     const dataToUpdate: UpdateCartDTO[] = []
 

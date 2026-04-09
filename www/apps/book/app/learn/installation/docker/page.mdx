@@ -1,4 +1,4 @@
-import { 
+import {
   Prerequisites,
   CodeTabs,
   CodeTab
@@ -164,13 +164,29 @@ Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Win
 
 # Run migrations and start server
 echo "Running database migrations..."
-npx medusa db:migrate
+yarn medusa db:migrate
 
 echo "Seeding database..."
 yarn seed || echo "Seeding failed, continuing..."
 
 echo "Starting Medusa development server..."
 yarn dev
+```
+
+  </CodeTab>
+  <CodeTab value="pnpm" label="pnpm">
+```shell title="start.sh"
+#!/bin/sh
+
+# Run migrations and start server
+echo "Running database migrations..."
+pnpm medusa db:migrate
+
+echo "Seeding database..."
+pnpm seed || echo "Seeding failed, continuing..."
+
+echo "Starting Medusa development server..."
+pnpm dev
 ```
 
   </CodeTab>
@@ -213,6 +229,7 @@ Create a file named `Dockerfile` with the following content:
 
 <CodeTabs group="npm2yarn" defaultValue="yarn">
   <CodeTab value="yarn" label="Yarn">
+
 ```dockerfile title="Dockerfile"
 # Development Dockerfile for Medusa
 FROM node:20-alpine
@@ -222,6 +239,7 @@ WORKDIR /server
 
 # Copy package files and yarn config
 COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases .yarn/releases
 
 # Install all dependencies using yarn
 RUN yarn install
@@ -230,13 +248,41 @@ RUN yarn install
 COPY . .
 
 # Expose the port Medusa runs on
-EXPOSE 9000
+EXPOSE 9000 5173
 
 # Start with migrations and then the development server
 CMD ["./start.sh"]
 ```
   </CodeTab>
+  <CodeTab value="pnpm" label="pnpm">
+```dockerfile title="Dockerfile"
+# Development Dockerfile for Medusa
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /server
+
+# Install pnpm globally
+RUN npm install pnpm -g
+
+# Copy package files and yarn config
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies using pnpm
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Expose the port Medusa runs on
+EXPOSE 9000 5173
+
+# Start with migrations and then the development server
+ENTRYPOINT ["./start.sh"]
+```
+  </CodeTab>
   <CodeTab value="npm" label="NPM">
+
 ```dockerfile title="Dockerfile"
 # Development Dockerfile for Medusa
 FROM node:20-alpine
@@ -254,10 +300,10 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Expose the port Medusa runs on
-EXPOSE 9000
+EXPOSE 9000 5173
 
 # Start with migrations and then the development server
-CMD ["./start.sh"]
+ENTRYPOINT ["./start.sh"]
 ```
   </CodeTab>
 </CodeTabs>
@@ -306,7 +352,7 @@ pnpm install
   </CodeTab>
 </CodeTabs>
 
-This will update `yarn.lock` or generate a `package-lock.json` file, depending on your package manager.
+This will update `yarn.lock` or generate a `package-lock.json` or `pnpm-lock.yaml` files, depending on your package manager.
 
 ---
 
@@ -369,9 +415,7 @@ module.exports = defineConfig({
   admin: {
     vite: (config) => {
       return {
-        ...config,
         server: {
-          ...config.server,
           host: "0.0.0.0",
           // Allow all hosts when running in Docker (development mode)
           // In production, this should be more restrictive
@@ -381,9 +425,8 @@ module.exports = defineConfig({
             "127.0.0.1",
           ],
           hmr: {
-            ...config.server?.hmr,
             // HMR websocket port inside container
-            port: 5173, 
+            port: 5173,
             // Port browser connects to (exposed in docker-compose.yml)
             clientPort: 5173,
           },
@@ -450,7 +493,7 @@ docker compose logs -f
 Once you see the following message, the Medusa server and admin are ready:
 
 ```shell
-✔ Server is ready on port: 9000 – 3ms
+✔ Server is ready on port: 9000 - 3ms
 info:    Admin URL → http://localhost:9000/app
 ```
 
@@ -470,9 +513,29 @@ You can now access the Medusa server at `http://localhost:9000` and the Medusa A
 
 To create an admin user, run the following command:
 
+<CodeTabs group="npm2yarn">
+  <CodeTab value="yarn" label="yarn">
+
 ```bash
-docker compose run --rm medusa npx medusa user -e admin@example.com -p supersecret
+docker compose run --rm medusa yarn medusa user -e admin@example.com -p supersecret
 ```
+
+  </CodeTab>
+  <CodeTab value="pnpm" label="pnpm">
+
+```bash
+docker compose run --rm medusa pnpm medusa user -e admin@example.com -p supersecret
+```
+
+  </CodeTab>
+  <CodeTab value="npm" label="npm">
+
+```bash
+docker compose exec medusa npx medusa user -e admin@example.com -p supersecret
+```
+
+  </CodeTab>
+</CodeTabs>
 
 Make sure to replace `admin@example.com` and `supersecret` with your desired email and password.
 

@@ -34,9 +34,11 @@ The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa
 
 ## Usage
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest [project-name]
 ```
+
+The command will use the package manager you run it with to create a new Medusa project in a directory named after the provided `project-name`.
 
 ### Arguments
 
@@ -240,6 +242,57 @@ npx create-medusa-app@latest [project-name]
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--use-npm`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Uses `npm` as the package manager to create the project, regardless of the package manager used to run the command.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        The package manager used to run the command.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--use-yarn`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Uses `yarn` as the package manager to create the project, regardless of the package manager used to run the command.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        The package manager used to run the command.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--use-pnpm`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Uses `pnpm` as the package manager to create the project, regardless of the package manager used to run the command.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        The package manager used to run the command.
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -249,7 +302,7 @@ npx create-medusa-app@latest [project-name]
 
 To use a PostgreSQL database hosted on Vercel, use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
 ```
 
@@ -263,7 +316,7 @@ If the database already has the necessary migrations and you don't need the comm
 
 To connect to a Supabase database, use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 ```
 
@@ -279,7 +332,7 @@ If the database already has the necessary migrations and you don't need the comm
 
 The `create-medusa-app` tool can also be used to create a Medusa Plugin Project. You can do that by passing the `--plugin` option:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest my-plugin --plugin
 ```
 
@@ -291,7 +344,7 @@ Learn more about how to create a plugin in [this documentation](!docs!/learn/fun
 
 To install a specific version of Medusa, use the `--version` option. This will install the specified version for every `@medusajs/*` package in the Medusa and Next.js Starter projects. For example:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest my-medusa-store --version 2.3.0
 ```
 

@@ -163,35 +163,35 @@ async function prepareDataFixtures({ container }) {
   ])
 
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
-    {
-      name: "Return shipping option",
-      price_type: "flat",
-      service_zone_id: serviceZone.id,
-      shipping_profile_id: shippingProfile.id,
-      provider_id: providerId,
-      type: {
-        code: "manual-type",
-        label: "Manual Type",
-        description: "Manual Type Description",
+  {
+    name: "Return shipping option",
+    price_type: "flat",
+    service_zone_id: serviceZone.id,
+    shipping_profile_id: shippingProfile.id,
+    provider_id: providerId,
+    type: {
+      code: "manual-type",
+      label: "Manual Type",
+      description: "Manual Type Description",
+    },
+    prices: [
+      {
+        currency_code: "usd",
+        amount: 10,
       },
-      prices: [
-        {
-          currency_code: "usd",
-          amount: 10,
-        },
-        {
-          region_id: region.id,
-          amount: 100,
-        },
-      ],
-      rules: [
-        {
-          attribute: "is_return",
-          operator: RuleOperator.EQ,
-          value: "true",
-        },
-      ],
-    }
+      {
+        region_id: region.id,
+        amount: 100,
+      },
+    ],
+    rules: [
+      {
+        attribute: "is_return",
+        operator: RuleOperator.EQ,
+        value: "true",
+      },
+    ],
+  }
 
   const { result } = await createShippingOptionsWorkflow(container).run({
     input: [shippingOptionData],
@@ -332,7 +332,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Create order fulfillment workflow", () => {
+    describe("Create order shipment workflow", () => {
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
       let location: StockLocationDTO
@@ -353,21 +353,21 @@ medusaIntegrationTestRunner({
         orderService = container.resolve(Modules.ORDER)
       })
 
-      it("should create a order fulfillment", async () => {
+      it("should create an order shipment", async () => {
         const order = await createOrderFixture({ container, product, location })
         const createReturnOrderData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
-          {
-            order_id: order.id,
-            created_by: "user_1",
-            items: [
-              {
-                id: order.items![0].id,
-                quantity: 1,
-              },
-            ],
-            no_notification: false,
-            location_id: undefined,
-          }
+        {
+          order_id: order.id,
+          created_by: "user_1",
+          items: [
+            {
+              id: order.items![0].id,
+              quantity: 1,
+            },
+          ],
+          no_notification: false,
+          location_id: undefined,
+        }
 
         const { result: fulfillment } = await createOrderFulfillmentWorkflow(
           container
@@ -376,23 +376,24 @@ medusaIntegrationTestRunner({
         })
 
         const createShipmentData: OrderWorkflow.CreateOrderShipmentWorkflowInput =
-          {
-            order_id: order.id,
-            fulfillment_id: fulfillment.id,
-            items: [
-              {
-                id: order.items![0].id,
-                quantity: 1,
-              },
-            ],
-            labels: [
-              {
-                tracking_number: "123456",
-                tracking_url: "abcdef-xpress.com/track/123456",
-                label_url: "http://abcdef-xpress.com/label/123456",
-              },
-            ],
-          }
+        {
+          order_id: order.id,
+          fulfillment_id: fulfillment.id,
+          created_by: "user_1",
+          items: [
+            {
+              id: order.items![0].id,
+              quantity: 1,
+            },
+          ],
+          labels: [
+            {
+              tracking_number: "123456",
+              tracking_url: "abcdef-xpress.com/track/123456",
+              label_url: "http://abcdef-xpress.com/label/123456",
+            },
+          ],
+        }
 
         await createOrderShipmentWorkflow(container).run({
           input: createShipmentData,
@@ -420,6 +421,7 @@ medusaIntegrationTestRunner({
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
         expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
+        expect(orderFulfill.fulfillments[0].marked_shipped_by).toEqual("user_1")
 
         const inventoryModule = container.resolve(Modules.INVENTORY)
         const reservation = await inventoryModule.listReservationItems({

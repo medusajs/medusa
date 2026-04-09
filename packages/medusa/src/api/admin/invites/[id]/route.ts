@@ -5,8 +5,8 @@ import {
 import { MedusaError } from "@medusajs/framework/utils"
 
 import { deleteInvitesWorkflow } from "@medusajs/core-flows"
-import { refetchInvite } from "../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
+import { refetchInvite } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
@@ -42,5 +42,3 @@ export const DELETE = async (
     deleted: true,
   })
 }
-
-export const AUTHENTICATE = false

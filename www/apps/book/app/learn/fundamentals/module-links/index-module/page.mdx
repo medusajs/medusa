@@ -28,13 +28,9 @@ The Index Module solves this problem by ingesting data into a central data store
 
 ### Ingested Data Models
 
-Data models are ingested if they're linked to other data models with the `filterable` property set, as you'll learn in the [Ingest Custom Data Models](#how-to-ingest-custom-data-models) section. Medusa also ingests some core data models by default, such as `Product`, `ProductVariant`, `Price`, and `SalesChannel`.
+By default, Medusa only ingests the `Product`, `ProductVariant`, `Price`, `PriceSet`, and `SalesChannel` data models into the Index Module's data store.
 
-<Note>
-
-Prior to [Medusa v2.10.2](https://github.com/medusajs/medusa/releases/tag/v2.10.2), only the `Product`, `ProductVariant`, `Price`, and `SalesChannel` data models were ingested. Make sure to update to the latest version to ingest all core data models.
-
-</Note>
+You can also ingest custom data models into the Index Module, as explained in the [How to Ingest Custom Data Models](#how-to-ingest-custom-data-models) section. Medusa will then ingest the custom and core data models into the Index Module's data store.
 
 ---
 
@@ -62,7 +58,7 @@ module.exports = defineConfig({
 
 Finally, run the migrations to create the necessary tables for the Index Module in your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -177,7 +173,7 @@ The `index` method accepts an object with the same properties as the `graph` met
 
 ## How to Ingest Custom Data Models
 
-You can ingest core and custom data models into the Index Module. You can do so by defining a link between your custom data model and one of the core data models, and setting the `filterable` property in the link definition.
+You can ingest core and custom data models into the Index Module by defining a link between them and setting the `filterable` property in the link definition.
 
 <Note>
 
@@ -210,10 +206,15 @@ export default defineLink(
 
 The `filterable` property is an array of property names in the data model that can be filtered using the `index` method. When the `filterable` property is set, the Index Module will ingest into its data store the custom data model.
 
-But first, you must run the migrations to sync the link, then start the Medusa application:
+But first, you must run the migrations to sync the link:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+Then, start the Medusa application:
 
 ```bash npm2yarn
-npx medusa db:migrate
 npm run dev
 ```
 

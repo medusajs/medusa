@@ -7,6 +7,7 @@ import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "../node-version.js"
 import { ProjectCreator, ProjectOptions } from "./creator.js"
 import { PluginProjectCreator } from "./medusa-plugin-creator.js"
 import { MedusaProjectCreator } from "./medusa-project-creator.js"
+import terminalLink from "terminal-link"
 
 const slugify = slugifyType.default
 
@@ -32,7 +33,10 @@ export class ProjectCreatorFactory {
     const nodeVersion = getNodeVersion()
     if (nodeVersion < MIN_SUPPORTED_NODE_VERSION) {
       logMessage({
-        message: `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`,
+        message: `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please ${terminalLink(
+          "install Node.js",
+          "https://nodejs.org/en/download"
+        )} at least v20 and try again.`,
         type: "error",
       })
     }

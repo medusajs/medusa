@@ -21,7 +21,7 @@ export const generatedEditDates = {
   "app/products/page.mdx": "2025-05-30T13:29:49.292Z",
   "app/inventory/inventory/page.mdx": "2025-05-30T13:27:17.017Z",
   "app/customers/groups/page.mdx": "2025-05-30T13:26:56.820Z",
-  "app/orders/manage/page.mdx": "2025-09-09T06:46:05.439Z",
+  "app/orders/manage/page.mdx": "2026-04-08T09:01:04.465Z",
   "app/orders/returns/page.mdx": "2025-10-09T07:33:10.189Z",
   "app/inventory/page.mdx": "2025-05-30T13:27:31.179Z",
   "app/orders/claims/page.mdx": "2025-05-30T13:27:39.540Z",
@@ -61,6 +61,6 @@ export const generatedEditDates = {
   "app/orders/draft-orders/page.mdx": "2025-08-26T09:31:53.784Z",
   "app/settings/locations-and-shipping/shipping-option-types/page.mdx": "2025-08-28T14:03:13.999Z",
   "app/settings/refund-reasons/page.mdx": "2025-10-09T07:29:52.837Z",
-  "app/settings/translations/page.mdx": "2025-12-16T13:44:48.166Z",
+  "app/settings/translations/page.mdx": "2026-01-20T10:27:20.421Z",
   "app/orders/export/page.mdx": "2025-12-18T11:43:04.911Z"
 }

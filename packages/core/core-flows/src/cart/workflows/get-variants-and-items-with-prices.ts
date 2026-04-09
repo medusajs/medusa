@@ -125,6 +125,7 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
               context: {
                 ...baseContext,
                 quantity: item.quantity,
+                is_custom_price: !!item.unit_price,
               },
             }
           })
@@ -180,7 +181,10 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
             calculatedPriceSet = calculatedPriceSets[item_.variant_id!]
           }
 
-          if (!calculatedPriceSet && item_.variant_id) {
+          const isCustomPrice =
+            item_.is_custom_price ?? isDefined(item?.unit_price)
+
+          if (!calculatedPriceSet && item_.variant_id && !isCustomPrice) {
             priceNotFound.push(item_.variant_id)
           }
 
@@ -197,9 +201,6 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
           if (variant) {
             variant.calculated_price = calculatedPriceSet
           }
-
-          const isCustomPrice =
-            item_.is_custom_price ?? isDefined(item?.unit_price)
 
           const input: PrepareLineItemDataInput = {
             item: item_,

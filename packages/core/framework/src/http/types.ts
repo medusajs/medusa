@@ -1,5 +1,10 @@
+import type {
+  ZodNullable,
+  ZodObject,
+  ZodOptional,
+  ZodRawShape,
+} from "@medusajs/deps/zod"
 import type { NextFunction, Request, Response } from "express"
-import type { ZodNullable, ZodObject, ZodOptional, ZodRawShape } from "@medusajs/deps/zod"
 
 import {
   FindConfig,
@@ -7,6 +12,7 @@ import {
   RequestQueryFields,
 } from "@medusajs/types"
 import { MedusaContainer } from "../container"
+import { PolicyAction } from "./middlewares/check-permissions"
 import { RestrictedFields } from "./utils/restricted-fields"
 
 /**
@@ -62,6 +68,10 @@ export type MiddlewareRoute = {
   bodyParser?: ParserConfig
   additionalDataValidator?: ZodRawShape
   middlewares?: MiddlewareFunction[]
+  /** @ignore */
+  policies?:
+    | { resource: string; operation: string }
+    | Array<{ resource: string; operation: string | string[] }>
 }
 
 export type MiddlewaresConfig = {
@@ -95,6 +105,9 @@ export type MiddlewareDescriptor = {
   matcher: string
   methods?: MiddlewareVerb | MiddlewareVerb[]
   handler: MiddlewareFunction
+  policies?:
+    | { resource: string; operation: string }
+    | Array<{ resource: string; operation: string | string[] }>
 }
 
 export type BodyParserConfigRoute = {
@@ -206,12 +219,18 @@ export interface PublishableKeyContext {
   sales_channel_ids: string[]
 }
 
+export interface SecretKeyContext {
+    created_by: string
+}
+
 export interface AuthenticatedMedusaRequest<
   Body = unknown,
   QueryFields = Record<string, unknown>
 > extends MedusaRequest<Body, QueryFields> {
   auth_context: AuthContext
   publishable_key_context?: PublishableKeyContext
+  secret_key_context?: SecretKeyContext
+  policies?: PolicyAction[]
 }
 
 export interface MedusaStoreRequest<
@@ -220,6 +239,7 @@ export interface MedusaStoreRequest<
 > extends MedusaRequest<Body, QueryFields> {
   auth_context?: AuthContext
   publishable_key_context: PublishableKeyContext
+  policies?: PolicyAction | PolicyAction[]
 }
 
 export type MedusaResponse<Body = unknown> = Response<Body>

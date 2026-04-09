@@ -72,7 +72,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -263,7 +263,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate migrations for you. To generate a migration for the Product Media Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productMedia
 ```
 
@@ -271,7 +271,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -613,6 +613,12 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) documentation to
 
 Create the file `src/api/admin/categories/[category_id]/images/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 export const createApiRouteHighlights = [
   ["5", "CreateCategoryImagesSchema", "Zod schema to validate request body."],
   ["17", "POST", "POST API route to create category images."],
@@ -622,7 +628,7 @@ export const createApiRouteHighlights = [
 ```ts title="src/api/admin/categories/[category_id]/images/route.ts" highlights={createApiRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createCategoryImagesWorkflow } from "../../../../../workflows/create-category-images"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateCategoryImagesSchema = z.object({
   images: z.array(
@@ -1694,7 +1700,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   updateCategoryImagesWorkflow,
 } from "../../../../../../workflows/update-category-images"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const UpdateCategoryImagesSchema = z.object({
   updates: z.array(z.object({

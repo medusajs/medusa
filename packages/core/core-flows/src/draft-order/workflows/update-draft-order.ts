@@ -25,6 +25,7 @@ import {
   updateOrderShippingMethodsTranslationsStep,
 } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
+import { updateOrderTaxLinesTranslationsStep } from "../../order/steps/update-order-tax-lines-translations"
 
 export const updateDraftOrderWorkflowId = "update-draft-order"
 
@@ -349,6 +350,10 @@ export const updateDraftOrderWorkflow = createWorkflow(
         updateOrderShippingMethodsTranslationsStep({
           locale: input.locale!,
           shippingMethods: order.shipping_methods,
+        }),
+        updateOrderTaxLinesTranslationsStep({
+          order_id: input.id,
+          locale: input.locale!,
         }),
         updateOrderItemsTranslationsStep({
           order_id: input.id,

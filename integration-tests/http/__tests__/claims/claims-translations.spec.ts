@@ -1,7 +1,9 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { MedusaContainer } from "@medusajs/types"
 import {
   ClaimReason,
   ClaimType,
+  ContainerRegistrationKeys,
   Modules,
   ProductStatus,
   RuleOperator,
@@ -10,6 +12,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import { setupTaxStructure } from "../../../modules/__tests__/fixtures"
 
 jest.setTimeout(60000)
 
@@ -17,36 +20,36 @@ process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let appContainer: MedusaContainer
     let order
-    let customer
-    let returnShippingOption
-    let outboundShippingOption
-    let shippingProfile
-    let fulfillmentSet
-    let inventoryItem
-    let location
-    let salesChannel
-    let region
     let product
     let productExtra
+    let shippingProfile
+    let stockLocation
+    let location
+    let fulfillmentSet
+    let inventoryItem
+    let inventoryItemExtra
+    let taxRate
+    let salesChannel
+    let region
+    let customer
+    let shippingOption
+    let returnShippingOption
+    let outboundShippingOption
+    const shippingProviderId = "manual_test-provider"
 
     beforeEach(async () => {
-      const container = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, container)
+      appContainer = getContainer()
+      const translationModule = appContainer.resolve(Modules.TRANSLATION)
+      await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
+      await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-      customer = (
-        await api.post(
-          "/admin/customers",
-          {
-            first_name: "joe",
-            email: "joe@admin.com",
-          },
-          adminHeaders
-        )
-      ).data.customer
+      const taxStructure = await setupTaxStructure(
+        appContainer.resolve(Modules.TAX)
+      )
 
-      // Set up supported locales in the store
-      const storeModule = container.resolve(Modules.STORE)
+      const storeModule = appContainer.resolve(Modules.STORE)
       const [defaultStore] = await storeModule.listStores(
         {},
         { select: ["id"], take: 1 }
@@ -59,10 +62,34 @@ medusaIntegrationTestRunner({
         ],
       })
 
+      region = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "test-region",
+            currency_code: "usd",
+          },
+          adminHeaders
+        )
+      ).data.region
+
+      customer = (
+        await api.post(
+          "/admin/customers",
+          {
+            first_name: "joe",
+            email: "joe@admin.com",
+          },
+          adminHeaders
+        )
+      ).data.customer
+
       salesChannel = (
         await api.post(
           "/admin/sales-channels",
-          { name: "Webshop", description: "channel" },
+          {
+            name: "Test channel",
+          },
           adminHeaders
         )
       ).data.sales_channel
@@ -70,21 +97,13 @@ medusaIntegrationTestRunner({
       shippingProfile = (
         await api.post(
           `/admin/shipping-profiles`,
-          { name: "Test", type: "default" },
-          adminHeaders
-        )
-      ).data.shipping_profile
-
-      region = (
-        await api.post(
-          "/admin/regions",
           {
-            name: "Test Region",
-            currency_code: "usd",
+            name: "Test",
+            type: "default",
           },
           adminHeaders
         )
-      ).data.region
+      ).data.shipping_profile
 
       location = (
         await api.post(
@@ -154,7 +173,6 @@ medusaIntegrationTestRunner({
                 title: "Extra variant",
                 sku: "extra-variant",
                 options: { size: "large" },
-                manage_inventory: false,
                 prices: [{ currency_code: "usd", amount: 50 }],
               },
             ],
@@ -163,7 +181,7 @@ medusaIntegrationTestRunner({
         )
       ).data.product
 
-      location = (
+      stockLocation = (
         await api.post(
           `/admin/stock-locations/${location.id}/fulfillment-sets?fields=*fulfillment_sets`,
           { name: "Test", type: "test-type" },
@@ -173,7 +191,7 @@ medusaIntegrationTestRunner({
 
       fulfillmentSet = (
         await api.post(
-          `/admin/fulfillment-sets/${location.fulfillment_sets[0].id}/service-zones`,
+          `/admin/fulfillment-sets/${stockLocation.fulfillment_sets[0].id}/service-zones`,
           {
             name: "Test",
             geo_zones: [{ type: "country", country_code: "us" }],
@@ -182,11 +200,54 @@ medusaIntegrationTestRunner({
         )
       ).data.fulfillment_set
 
+      inventoryItemExtra = (
+        await api.get(`/admin/inventory-items?sku=extra-variant`, adminHeaders)
+      ).data.inventory_items[0]
+
       await api.post(
-        `/admin/stock-locations/${location.id}/fulfillment-providers`,
-        { add: ["manual_test-provider"] },
+        `/admin/inventory-items/${inventoryItemExtra.id}/location-levels`,
+        {
+          location_id: location.id,
+          stocked_quantity: 10,
+        },
         adminHeaders
       )
+
+      const remoteLink = appContainer.resolve(
+        ContainerRegistrationKeys.REMOTE_LINK
+      )
+
+      await api.post(
+        `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+        { add: [shippingProviderId] },
+        adminHeaders
+      )
+
+      shippingOption = (
+        await api.post(
+          "/admin/shipping-options",
+          {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: shippingProviderId,
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 10,
+              },
+            ],
+            rules: [],
+          },
+          adminHeaders
+        )
+      ).data.shipping_option
 
       returnShippingOption = (
         await api.post(
@@ -222,7 +283,7 @@ medusaIntegrationTestRunner({
             name: "Outbound shipping",
             service_zone_id: fulfillmentSet.service_zones[0].id,
             shipping_profile_id: shippingProfile.id,
-            provider_id: "manual_test-provider",
+            provider_id: shippingProviderId,
             price_type: "flat",
             type: {
               label: "Test type",
@@ -242,11 +303,78 @@ medusaIntegrationTestRunner({
         )
       ).data.shipping_option
 
-      // Create translations for shipping options
+      await remoteLink.create([
+        {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: stockLocation.id,
+          },
+          [Modules.FULFILLMENT]: {
+            fulfillment_provider_id: shippingProviderId,
+          },
+        },
+        {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: stockLocation.id,
+          },
+          [Modules.FULFILLMENT]: {
+            fulfillment_set_id: fulfillmentSet.id,
+          },
+        },
+        {
+          [Modules.SALES_CHANNEL]: {
+            sales_channel_id: salesChannel.id,
+          },
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: stockLocation.id,
+          },
+        },
+        {
+          [Modules.PRODUCT]: {
+            variant_id: product.variants[0].id,
+          },
+          [Modules.INVENTORY]: {
+            inventory_item_id: inventoryItem.id,
+          },
+        },
+        {
+          [Modules.PRODUCT]: {
+            variant_id: productExtra.variants[0].id,
+          },
+          [Modules.INVENTORY]: {
+            inventory_item_id: inventoryItemExtra.id,
+          },
+        },
+      ])
+
+      const taxRatesResponse = await api.get(
+        `/admin/tax-rates?tax_region_id=${taxStructure.us.children.cal.province.id}`,
+        adminHeaders
+      )
+      taxRate = taxRatesResponse.data.tax_rates.find(
+        (rate: { code: string }) => rate.code === "CADEFAULT"
+      )
+
+      // Create translations for tax rates and shipping options
       await api.post(
         "/admin/translations/batch",
         {
           create: [
+            {
+              reference_id: taxRate.id,
+              reference: "tax_rate",
+              locale_code: "fr-FR",
+              translations: {
+                name: "Taux par défaut CA",
+              },
+            },
+            {
+              reference_id: taxRate.id,
+              reference: "tax_rate",
+              locale_code: "de-DE",
+              translations: {
+                name: "CA Standardsteuersatz",
+              },
+            },
             {
               reference_id: returnShippingOption.id,
               reference: "shipping_option",
@@ -278,9 +406,8 @@ medusaIntegrationTestRunner({
     })
 
     const createOrderWithLocale = async (locale?: string) => {
-      const container = getContainer()
-      const orderModule = container.resolve(Modules.ORDER)
-      const inventoryModule = container.resolve(Modules.INVENTORY)
+      const orderModule = appContainer.resolve(Modules.ORDER)
+      const inventoryModule = appContainer.resolve(Modules.INVENTORY)
 
       const createdOrder = await orderModule.createOrders({
         region_id: region.id,
@@ -302,6 +429,7 @@ medusaIntegrationTestRunner({
           address_1: "Test",
           city: "Test",
           country_code: "US",
+          province: "CA",
           postal_code: "12345",
           phone: "12345",
         },
@@ -312,6 +440,7 @@ medusaIntegrationTestRunner({
           address_1: "Test",
           city: "Test",
           country_code: "US",
+          province: "CA",
           postal_code: "12345",
         },
         shipping_methods: [
@@ -319,6 +448,7 @@ medusaIntegrationTestRunner({
             name: "Test shipping method",
             amount: 10,
             data: {},
+            shipping_option_id: shippingOption.id,
           },
         ],
         currency_code: "usd",
@@ -334,7 +464,7 @@ medusaIntegrationTestRunner({
       await inventoryModule.createReservationItems([
         {
           inventory_item_id: inventoryItem.id,
-          location_id: location.id,
+          location_id: stockLocation.id,
           quantity: 2,
           line_item_id: createdOrder.items![0].id,
         },
@@ -356,6 +486,288 @@ medusaIntegrationTestRunner({
 
       return createdOrder
     }
+
+    describe("Claims tax line translations", () => {
+      describe("when adding outbound items to a claim", () => {
+        it("should translate tax lines based on order locale when adding new items", async () => {
+          order = await createOrderWithLocale("fr-FR")
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Test claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const newItem = updatedOrder.items.find(
+            (item) => item.title === "Extra product"
+          )
+
+          expect(newItem).toBeDefined()
+          expect(newItem.tax_lines).toBeDefined()
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine).toBeDefined()
+          expect(taxLine.description).toEqual("Taux par défaut CA")
+        })
+
+        it("should use original tax line description when order has no locale", async () => {
+          order = await createOrderWithLocale()
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Test claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const newItem = updatedOrder.items.find(
+            (item) => item.title === "Extra product"
+          )
+
+          expect(newItem).toBeDefined()
+          expect(newItem.tax_lines).toBeDefined()
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine).toBeDefined()
+          expect(taxLine.description).toEqual("CA Default Rate")
+        })
+      })
+
+      describe("when adding outbound shipping methods to a claim", () => {
+        it("should translate shipping method tax lines based on order locale", async () => {
+          order = await createOrderWithLocale("fr-FR")
+
+          await api.post(
+            `/admin/orders/${order.id}`,
+            { locale: "fr-FR" },
+            adminHeaders
+          )
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Test claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine.description).toEqual("Taux par défaut CA")
+        })
+
+        it("should use original tax line description when order has no locale", async () => {
+          order = await createOrderWithLocale()
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Test claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine.description).toEqual("CA Default Rate")
+        })
+      })
+
+      describe("when updating outbound items in a claim", () => {
+        it("should preserve tax line translations when updating item quantity", async () => {
+          order = await createOrderWithLocale("fr-FR")
+
+          await api.post(
+            `/admin/orders/${order.id}`,
+            { locale: "fr-FR" },
+            adminHeaders
+          )
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Test claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          const addItemResponse = await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const actionId = addItemResponse.data.order_preview.items.find(
+            (item) =>
+              !!item.actions?.find((action) => action.action === "ITEM_ADD")
+          ).actions[0].id
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items/${actionId}`,
+            {
+              quantity: 2,
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const newItem = updatedOrder.items.find(
+            (item) => item.title === "Extra product"
+          )
+
+          expect(newItem).toBeDefined()
+          expect(newItem.tax_lines).toBeDefined()
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine).toBeDefined()
+          expect(taxLine.description).toEqual("Taux par défaut CA")
+        })
+      })
+    })
 
     describe("Claim shipping method translation", () => {
       describe("Inbound (return) shipping method", () => {

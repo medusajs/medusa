@@ -45,7 +45,7 @@ export async function generateJwtTokenForAuthIdentity(
         (identity) => identity.provider === authProvider
       )[0]
 
-  let roles: string[] = []
+  let roles: string[] | undefined
 
   if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
     if (container && entityId) {

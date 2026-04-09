@@ -13,7 +13,8 @@
     "check:release-commit": "node ./dist/check-release-commit.js",
     "generate:changeset": "node ./dist/run-changeset.js",
     "check:pr-files-count": "node ./dist/check-pr-files-count.js",
-    "update:config-version": "node ./dist/change-config-version.js"
+    "update:config-version": "node ./dist/change-config-version.js",
+    "create:cloud-announcement": "node ./dist/create-cloud-announcement.js"
   },
   "version": "0.0.0",
   "type": "module",
@@ -22,7 +23,7 @@
     "@linear/sdk": "^52.0.0",
     "@octokit/core": "^4.0.5",
     "chalk": "^5.3.0",
-    "glob": "11.1.0",
+    "glob": "13.0.6",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.6.2",

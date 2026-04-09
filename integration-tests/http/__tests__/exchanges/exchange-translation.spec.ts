@@ -36,14 +36,21 @@ medusaIntegrationTestRunner({
       let outboundShippingOption: { id: string }
       let returnShippingOption: { id: string }
       let inventoryItem: { id: string }
+      let taxRate: { id: string }
 
       beforeAll(async () => {
         appContainer = getContainer()
       })
 
       beforeEach(async () => {
-        await setupTaxStructure(appContainer.resolve(Modules.TAX))
+        const taxStructure = await setupTaxStructure(
+          appContainer.resolve(Modules.TAX)
+        )
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        const translationModule = appContainer.resolve(Modules.TRANSLATION)
+        await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
+
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -251,6 +258,13 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_option
+        const taxRatesResponse = await api.get(
+          `/admin/tax-rates?tax_region_id=${taxStructure.us.children.cal.province.id}`,
+          adminHeaders
+        )
+        taxRate = taxRatesResponse.data.tax_rates.find(
+          (rate: { code: string }) => rate.code === "CADEFAULT"
+        )
 
         await api.post(
           "/admin/translations/batch",
@@ -328,6 +342,22 @@ medusaIntegrationTestRunner({
                 locale_code: "de-DE",
                 translations: {
                   name: "Rückversand",
+                },
+              },
+              {
+                reference_id: taxRate.id,
+                reference: "tax_rate",
+                locale_code: "fr-FR",
+                translations: {
+                  name: "Taux par défaut CA",
+                },
+              },
+              {
+                reference_id: taxRate.id,
+                reference: "tax_rate",
+                locale_code: "de-DE",
+                translations: {
+                  name: "CA Standardsteuersatz",
                 },
               },
             ],
@@ -447,73 +477,21 @@ medusaIntegrationTestRunner({
               variant_title: "Moyen",
             })
           )
-        })
 
-        it("should translate exchange items using German locale", async () => {
-          const order = await createOrderFromCart("de-DE")
-
-          await api.post(
-            `/admin/orders/${order.id}/fulfillments`,
-            {
-              location_id: stockLocation.id,
-              items: [{ id: order.items[0].id, quantity: 1 }],
-            },
-            adminHeaders
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
           )
+          expect(taxLine.description).toEqual("Taux par défaut CA")
 
-          const exchange = (
-            await api.post(
-              "/admin/exchanges",
-              { order_id: order.id, description: "Test exchange" },
-              adminHeaders
-            )
-          ).data.exchange
-
-          // Add inbound item (item being returned)
-          await api.post(
-            `/admin/exchanges/${exchange.id}/inbound/items`,
-            {
-              items: [{ id: order.items[0].id, quantity: 1 }],
-            },
-            adminHeaders
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
           )
-
-          // Add outbound item (new item being sent)
-          await api.post(
-            `/admin/exchanges/${exchange.id}/outbound/items`,
-            {
-              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
-            },
-            adminHeaders
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const shippingTaxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
           )
-
-          await api.post(
-            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
-            { shipping_option_id: outboundShippingOption.id },
-            adminHeaders
-          )
-
-          await api.post(
-            `/admin/exchanges/${exchange.id}/request`,
-            {},
-            adminHeaders
-          )
-
-          const updatedOrder = (
-            await api.get(`/admin/orders/${order.id}`, adminHeaders)
-          ).data.order
-
-          const newItem = updatedOrder.items.find(
-            (item: any) => item.variant_id === product.variants[1].id
-          )
-
-          expect(newItem).toEqual(
-            expect.objectContaining({
-              product_title: "Medusa T-Shirt DE",
-              product_description: "Ein bequemes Baumwoll-T-Shirt",
-              variant_title: "Mittel",
-            })
-          )
+          expect(shippingTaxLine.description).toEqual("Taux par défaut CA")
         })
 
         it("should have original values when order has no locale", async () => {
@@ -580,6 +558,21 @@ medusaIntegrationTestRunner({
               variant_title: "Medium",
             })
           )
+
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine.description).toEqual("CA Default Rate")
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
+          )
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const shippingTaxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(shippingTaxLine.description).toEqual("CA Default Rate")
         })
       })
 

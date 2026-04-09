@@ -3,7 +3,7 @@ import RegionCountry from "./country"
 
 export default model.define("region", {
   id: model.id({ prefix: "reg" }).primaryKey(),
-  name: model.text().searchable(),
+  name: model.text().searchable().translatable(),
   currency_code: model.text().searchable(),
   automatic_taxes: model.boolean().default(true),
   countries: model.hasMany(() => RegionCountry),

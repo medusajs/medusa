@@ -360,4 +360,21 @@ describe("applyTranslations", () => {
     expect(inputObjects[0].category.name).toBe("Translated Category")
     expect(inputObjects[0].category.parent.name).toBe("Translated Parent")
   })
+
+  it("should gracefully handle arrays of primitives without crashing", async () => {
+    const data = [
+      {
+        id: "obj_1",
+        documents: ["/path/to/file.pdf", "/path/to/other.pdf"],
+      },
+    ]
+
+    await applyTranslations({
+      localeCode: "ar",
+      objects: data,
+      container: mockContainer as any,
+    })
+
+    expect(data[0].documents).toHaveLength(2)
+  })
 })

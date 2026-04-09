@@ -89,7 +89,12 @@ export const Notifications = () => {
           >
             responseKey="notifications"
             queryKey={notificationQueryKeys.all}
-            queryFn={(params) => sdk.admin.notification.list(params)}
+            queryFn={(params) =>
+              sdk.admin.notification.list({
+                ...params,
+                channel: "feed",
+              })
+            }
             queryOptions={{ enabled: open }}
             renderEmpty={() => <NotificationsEmptyState t={t} />}
             renderItem={(notification) => {

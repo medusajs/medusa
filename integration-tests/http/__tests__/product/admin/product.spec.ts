@@ -1,4 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -952,6 +953,36 @@ medusaIntegrationTestRunner({
             }),
           ])
         })
+
+        it("should return products filtered by external_id", async () => {
+
+          const newProduct = (
+            await api.post(
+              "/admin/products",
+              getProductFixture({
+                title: "Test saleschannel",
+                external_id: "test-external-id",
+                shipping_profile_id: shippingProfile.id,
+              }),
+              adminHeaders
+            )
+          ).data.product
+
+          const res = await api.get(
+            `/admin/products?external_id[]=test-external-id`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products.length).toEqual(1)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: newProduct.id,
+            }),
+          ])
+        })
+
+
 
         it("returns a list of products filtered by variants[ean]", async () => {
           const productWithEan = await api.post(
@@ -3205,6 +3236,110 @@ medusaIntegrationTestRunner({
           expect(item2Response.data.inventory_item).toEqual(
             expect.objectContaining({ id: inventoryItem2.id })
           )
+        })
+
+        it("successfully deletes a product when a linked inventory item was already deleted", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "loc" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-orphan-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-orphan-2" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          const productWithInventory = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Product with orphan link",
+                handle: "product-orphan-link",
+                options: [{ title: "size", values: ["m"] }],
+                shipping_profile_id: shippingProfile.id,
+                variants: [
+                  {
+                    title: "Variant with orphan inventory link",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                    manage_inventory: true,
+                    options: { size: "m" },
+                    inventory_items: [
+                      {
+                        inventory_item_id: inventoryItem1.id,
+                        required_quantity: 1,
+                      },
+                      {
+                        inventory_item_id: inventoryItem2.id,
+                        required_quantity: 1,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          // Delete one inventory item directly via the module service,
+          // bypassing the workflow that would clean up the link.
+          // This creates an orphan link (variant still references a
+          // deleted inventory item).
+          const inventoryModule = getContainer().resolve(Modules.INVENTORY)
+          await inventoryModule.deleteInventoryItems(inventoryItem1.id)
+
+          // Deleting the product should succeed despite the orphan link
+          const response = await api.delete(
+            `/admin/products/${productWithInventory.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({ deleted: true })
+          )
+
+          // The remaining inventory item should also be deleted since it
+          // was only associated with this product's variant
+          const item2Response = await api
+            .get(
+              `/admin/inventory-items/${inventoryItem2.id}`,
+              adminHeaders
+            )
+            .catch((err) => err.response)
+
+          expect(item2Response.status).toEqual(404)
         })
 
         it("should throw if product that has a reservation is being deleted", async () => {

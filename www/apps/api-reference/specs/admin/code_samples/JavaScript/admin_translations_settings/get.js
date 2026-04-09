@@ -11,6 +11,6 @@ export const sdk = new Medusa({
 sdk.admin.translation.settings({
   entity_type: "product"
 })
-.then(({ translatable_fields }) => {
-  console.log(translatable_fields)
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
 })
