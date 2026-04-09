@@ -55386,7 +55386,7 @@ By default, the Medusa application provides standard commerce features for order
 
 By building quote management features, you allow customers to request a quote for a set of products and, once the merchant and customer reach an agreement, you create an order for that quote. Quote management is useful in many use cases, including B2B stores.
 
-This guide is based on the [B2B starter](https://github.com/medusajs/b2b-starter-medusa) explaining how to implement some of its quote management features. You can refer to the B2B starter for other features not covered in this guide.
+This guide is based on the [B2B starter](https://github.com/medusajs/b2b-starter) explaining how to implement some of its quote management features. You can refer to the B2B starter for other features not covered in this guide.
 
 ## Summary
 
@@ -59246,7 +59246,7 @@ The changes can now be previewed from the quote's details page. The customer can
 
 You've now implemented quote management features in Medusa. There's still more that you can implement to enhance the quote management experience:
 
-- Refer to the [B2B starter](https://github.com/medusajs/b2b-starter-medusa) for more quote-management related features, including how to add or remove items from a quote, and how to allow messages between the customer and the merchant.
+- Refer to the [B2B starter](https://github.com/medusajs/b2b-starter) for more quote-management related features, including how to add or remove items from a quote, and how to allow messages between the customer and the merchant.
 - To build a storefront, refer to the [Storefront development guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development). You can also add to the storefront features related to quote-management using the APIs you implemented in this guide.
 
 If you're new to Medusa, check out the [main documentation](undefined/docs/learn), where you'll get a more in-depth learning of all the concepts you've used in this guide and more.
@@ -141753,7 +141753,7 @@ clx([
 
 This recipe provides the general steps to implement a B2B store with Medusa.
 
-Medusa has a ready-to-use B2B starter that you install and use in [this GitHub repository](https://github.com/medusajs/b2b-starter-medusa).
+Medusa has a ready-to-use B2B starter that you can install and use. Refer to the [B2B Starter GitHub repository](https://github.com/medusajs/b2b-starter) for more details.
 
 ## Overview
 
