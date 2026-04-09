@@ -299,6 +299,14 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
           source: "/:path*",
           has: [
             {

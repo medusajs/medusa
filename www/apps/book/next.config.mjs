@@ -130,6 +130,14 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
+          source: "/:path((?!resources|api|ui|user-guide|cloud).*)index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!resources|api|ui|user-guide|cloud).*).md",
+          destination: "/md-content/:path*",
+        },
+        {
           source: "/:path((?!resources|api|ui|user-guide|cloud).*)*",
           has: [
             {
@@ -226,6 +234,19 @@ const nextConfig = {
         },
       ],
     }
+  },
+  async headers() {
+    return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+    ]
   },
   redirects: async () => {
     const result = await redirects()
