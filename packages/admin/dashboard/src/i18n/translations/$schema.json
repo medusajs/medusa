@@ -6022,8 +6022,7 @@
               "additionalProperties": false
             }
           },
-          "required": ["noRecordsMessage", "description", "filtered"],
-          "additionalProperties": false
+          "required": ["noRecordsMessage", "description", "filtered"]
         },
         "validation": {
           "type": "object",
@@ -9543,8 +9542,7 @@
               "type": "string"
             }
           },
-          "required": ["manage", "manageEntities", "manageLocales"],
-          "additionalProperties": false
+          "required": ["manage", "manageEntities", "manageLocales"]
         },
         "subtitle": {
           "type": "string"
@@ -9556,8 +9554,7 @@
               "type": "string"
             }
           },
-          "required": ["metrics"],
-          "additionalProperties": false
+          "required": ["metrics"]
         },
         "edit": {
           "type": "object",
@@ -9575,12 +9572,10 @@
                   "type": "string"
                 }
               },
-              "required": ["title", "description"],
-              "additionalProperties": false
+              "required": ["title", "description"]
             }
           },
-          "required": ["successToast", "unsavedChanges"],
-          "additionalProperties": false
+          "required": ["successToast", "unsavedChanges"]
         },
         "bulk": {
           "type": "object",
@@ -9592,8 +9587,7 @@
               "type": "string"
             }
           },
-          "required": ["header", "mainColumn"],
-          "additionalProperties": false
+          "required": ["header", "mainColumn"]
         },
         "activeLocales": {
           "type": "object",
@@ -9635,8 +9629,7 @@
               "type": "string"
             }
           },
-          "required": ["heading", "translated", "toTranslate", "footer"],
-          "additionalProperties": false
+          "required": ["heading", "translated", "toTranslate", "footer"]
         }
       },
       "required": [
@@ -9649,8 +9642,7 @@
         "bulk",
         "activeLocales",
         "completion"
-      ],
-      "additionalProperties": false
+      ]
     },
     "store": {
       "type": "object",
@@ -9760,8 +9752,7 @@
             "currenciesRemoved",
             "localesRemoved",
             "updatedTaxInclusivitySuccessfully"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
@@ -11347,8 +11338,7 @@
               "type": "string"
             }
           },
-          "required": ["header", "successToast"],
-          "additionalProperties": false
+          "required": ["header", "successToast"]
         },
         "delete": {
           "type": "object",

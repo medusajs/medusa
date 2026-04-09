@@ -1398,7 +1398,7 @@
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
       "awaitingShipping": "Awaiting shipping",
       "awaitingPickup": "Awaiting pickup",
-      "awaitingDelivery": "Awaiting Delivery",
+      "awaitingDelivery": "Awaiting delivery",
       "requiresShipping": "Requires shipping",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
