@@ -59,6 +59,7 @@ medusaIntegrationTestRunner({
           `/admin/orders/${order.id}/transfer`,
           {
             customer_id: customer.id,
+            update_order_email: true,
           },
           adminHeaders
         )
@@ -369,11 +370,10 @@ medusaIntegrationTestRunner({
                 action: "TRANSFER_CUSTOMER",
                 reference: "customer",
                 reference_id: customer.id,
-                details: expect.objectContaining({
+                details: {
                   token: expect.any(String),
                   original_email: "tony@stark-industries.com",
-                  new_email: "test@email.com",
-                }),
+                },
               }),
             ]),
           })
@@ -388,8 +388,8 @@ medusaIntegrationTestRunner({
           )
         ).data.order
 
-        // 4. Customer account is now associated with the order and email is updated to the customer's email
-        expect(finalOrder.email).toEqual("test@email.com")
+        // 4. Customer account is now associated with the order and email is still the original email, since update_order_email is not true on the request
+        expect(finalOrder.email).toEqual("tony@stark-industries.com")
         expect(finalOrder.customer_id).toEqual(customer.id)
       })
 

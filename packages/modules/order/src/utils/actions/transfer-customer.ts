@@ -5,7 +5,11 @@ import { setActionReference } from "../set-action-reference"
 OrderChangeProcessing.registerActionType(ChangeActionType.TRANSFER_CUSTOMER, {
   operation({ action, currentOrder, options }) {
     currentOrder.customer_id = action.reference_id
-    currentOrder.email = action.details?.new_email || null
+
+    const newEmail = action.details?.new_email
+    if (newEmail) {
+      currentOrder.email = newEmail
+    }
 
     setActionReference(currentOrder, action, options)
   },

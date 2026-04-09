@@ -155,7 +155,7 @@ export const requestOrderTransferWorkflow = createWorkflow(
           details: {
             token: uid(),
             original_email: order.email,
-            new_email: customer.email,
+            ...(input.update_order_email ? { new_email: customer.email } : {}),
           },
         },
       ]
