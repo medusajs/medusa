@@ -20,14 +20,15 @@ export async function GET(req: NextRequest, { params }: Params) {
   const { slug = ["/"] } = await params
 
   if (slug[0] === "/") {
-    const llmsFile = readFileSync(
-      path.join(process.cwd(), "public", "llms.txt"),
+    const homepageFile = readFileSync(
+      path.join(process.cwd(), "public", "homepage.md"),
       "utf-8"
     )
 
-    return new NextResponse(llmsFile + PLAINTEXT_DOC_MESSAGE, {
+    return new NextResponse(homepageFile + PLAINTEXT_DOC_MESSAGE, {
       headers: {
         "Content-Type": "text/markdown",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
       },
       status: 200,
     })
@@ -97,6 +98,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
       "Content-Type": "text/markdown",
+      "Cache-Control": "public, max-age=3600, must-revalidate",
     },
     status: 200,
   })
