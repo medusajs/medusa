@@ -829,7 +829,7 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Unauthorized")
+          expect(error.message).toContain("Forbidden")
         })
 
         it("should prevent user from assigning policies they don't have access to", async () => {
@@ -915,7 +915,7 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Unauthorized")
+          expect(error.message).toContain("Forbidden")
         })
 
         it("should allow user to create roles with policies they have access to", async () => {

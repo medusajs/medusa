@@ -1,3 +1,7 @@
+export enum Entities {
+  fulfillment = "fulfillment",
+}
+
 export const defaultAdminFulfillmentsFields = [
   "id",
   "location_id",
@@ -23,9 +27,11 @@ export const defaultAdminFulfillmentsFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminFulfillmentsFields,
   isList: false,
+  entity: Entities.fulfillment,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.fulfillment,
 }

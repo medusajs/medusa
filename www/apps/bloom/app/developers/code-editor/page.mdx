@@ -1,0 +1,192 @@
+import { InlineIcon, InProductAction, getOsShortcut, Kbd } from "docs-ui"
+import { Collapse } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Code Editor`,
+}
+
+# {metadata.title}
+
+Access your project's source code directly in Bloom with the built-in <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "developer" }}>Code Editor</InProductAction>. Inspect implementations, make quick fixes, and understand how Bloom builds features.
+
+<Note title="Tip">
+
+The Code Editor is designed for quick edits and code inspection. For larger development tasks that require full IDE features, consider [exporting your project to GitHub](../export-to-github/page.mdx) to make changes in your local development environment.
+
+</Note>
+
+{/* TODO: Screenshot of Code Editor interface */}
+
+## When to Use Code Editor
+
+The <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "developer" }}>Code Editor</InProductAction> feature is designed for quick edits and code inspection. Use it to make small changes, fix bugs, or review how Bloom implemented features.
+
+For larger development tasks that require full IDE features, debugging tools, and advanced workflows, [export your project to GitHub](../export-to-github/page.mdx) instead.
+
+### Quick Fixes
+
+If you notice an issue in your store and know exactly how to fix it, use the Code Editor to make the change manually. This is useful for typos, small styling adjustments, or to save credits.
+
+For example, if you notice some elements overlap due to incorrect `z-index` values, you can use the Code Editor to quickly adjust the CSS without needing to prompt Bloom for a fix.
+
+### Point Out Issues to Bloom
+
+If Bloom gets stuck in an error loop, the Code Editor allows you to directly point out the issue in the code. This can help Bloom understand the problem and fix it more effectively.
+
+For example, if Bloom is trying to fix a bug but keeps making the same mistake, you can open the Code Editor, find the relevant code, and tell Bloom exactly what's wrong with file and line references.
+
+<Note>
+
+Bloom shouldn't be stuck in an error loop. If you find yourself in this situation, consider [sending feedback](../../help-and-feedback/page.mdx) with details about the issue. Our team is actively monitoring feedback to improve Bloom's performance and reduce error loops.
+
+</Note>
+
+### Inspect Implementation
+
+If you're curious about how Bloom built a specific feature, or want to make sure it aligns with your expectations, use the Code Editor to review the implementation.
+
+The Code Editor allows you to see the code for the backend, storefront, and admin dashboard. You can review how Bloom structured the code, integrated third-party services, composed workflows, and implemented API routes.
+
+---
+
+## Project Structure
+
+Your Bloom project is a pnpm workspace with two main apps:
+
+![Diagram showing project structure](https://res.cloudinary.com/dza7lstvk/image/upload/v1770966949/Bloom/bloom-proj-dir_xx3p5d.jpg)
+
+- `app/backend`: Contains the [Medusa](!docs!) backend and admin dashboard customizations.
+- `app/storefront`: Contains the storefront application, typically built with [Tanstack Start](https://tanstack.com/start/latest).
+
+The workspace is configured with [Turborepo](https://turborepo.dev/) for efficient builds and task orchestration.
+
+### Medusa Application (Backend + Admin)
+
+The `backend` directory contains your Medusa backend application and admin dashboard customizations. Medusa is a digital commerce platform with a built-in [Framework](!docs!/learn/fundamentals/framework) for customization.
+
+<Note title="Tip">
+
+Check out the [Medusa documentation](!docs!) to learn more about Medusa's architecture, development patterns, and how to customize the backend and admin dashboard.
+
+</Note>
+
+The `app/backend` directory includes the following key files and directories:
+
+- `src`: the source code for your backend and admin dashboard customizations. Based on the customizations you asked Bloom to make, you may find subdirectories here such as:
+    - `admin`: [admin dashboard customizations](!docs!/learn/fundamentals/admin) that add new sections or pages to the Medusa Admin dashboard.
+    - `api`: custom [API routes](!docs!/learn/fundamentals/api-routes) that Bloom created to interact with your Medusa backend.
+    - `modules`: custom [modules](!docs!/learn/fundamentals/modules) that Bloom created to implement new features or integrate third-party services.
+    - `workflows`: custom [workflows](!docs!/learn/fundamentals/workflows) that Bloom created to compose your custom business logic.
+- `medusa-config.ts`: the [Medusa configuration file](!docs!/learn/configurations/medusa-config) where you can configure your Medusa application, including modules, plugins, and other settings.
+
+When you make changes to the backend or admin dashboard code, Bloom automatically restarts the Medusa server to apply your changes. You can see the changes in the store or admin preview.
+
+### Storefront Directory
+
+The `storefront` directory contains your storefront application's code, typically built with [Tanstack Start](https://tanstack.com/start/latest), React, and [Vite](https://vitejs.dev/).
+
+The `app/storefront` directory includes the following key files and directories:
+
+- `src`: the source code for your storefront application, including routes, components, and styles.
+- `vite.config.ts`: the Vite configuration file where you can configure plugins, aliases, and other build settings.
+
+When you make changes to the storefront code, Bloom automatically restarts the storefront application to apply your changes. You can see the changes in the store preview.
+
+### Root Configuration
+
+The root level contains workspace configuration and build orchestration:
+
+- `package.json`: the root package file that defines workspace dependencies and scripts.
+- `turbo.json`: the Turborepo configuration file that defines how to build and orchestrate tasks across the workspace.
+
+To ensure your project works as expected with Bloom, avoid making changes to the root configuration files and `package.json` scripts. Otherwise, you may encounter unexpected behavior in Bloom's ability to build and run your project.
+
+---
+
+## Access Code Editor
+
+To access the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "developer" }}>Code Editor</InProductAction> in a Bloom project:
+
+1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
+2. Select the "Code" tab from the list.
+
+This will show a file tree on the left and a code editor on the right. You can browse your project files, open them in the editor, and make changes directly in Bloom.
+
+{/* TODO: Screenshot showing Code Editor interface */}
+
+### Navigate Files
+
+In the left sidebar of the Code Editor, you'll find a file tree that represents your project's directory structure.
+
+You can click through the folders to expand and collapse them. To open a file's content, click on the file name in the tree. The file will open in the editor on the right where you can view and edit its content.
+
+<Note title="Tip">
+
+To collapse all open folders in the file tree, click the <InlineIcon Icon={Collapse} alt="Collapse" /> button at the top right of the file tree.
+
+</Note>
+
+### Search Files
+
+To quickly find a specific file, use the search bar at the top of the file tree. The file tree is updated as you type, showing only files that match your search query.
+
+For example, if you're looking for the component showing product cards, you can search for "product-card" to quickly find the relevant file in the storefront directory.
+
+<Note title="Tip">
+
+Bloom uses the kebab-case convention for file names. When searching, use kebab-case formatting to find files more easily.
+
+</Note>
+
+---
+
+## Edit Code
+
+When you open a file in the Code Editor, you can see its content on the right side and make changes directly in the editor.
+
+The Code Editor supports simple text editing. You can change and add lines of code, but it's only recommended for small edits or quick fixes. It doesn't support shortcuts, code completion, compile-time error checking, or other advanced IDE features.
+
+For larger development tasks that require more flexibility and advanced features, consider [exporting your project to GitHub](../export-to-github/page.mdx) and using a full IDE like VS Code or Cursor.
+
+### Save Changes
+
+Once you're done making changes in the Code Editor, click the **Save** button at the bottom center of the editor. This is necessary to apply your changes and see them reflected in the store or admin preview.
+
+When you save, Bloom creates a Git commit with your changes. You can see an "Applied code changes" message in the Bloom chat confirming that your changes have been saved and applied to the project.
+
+Code changes do not consume credits. You can make as many edits as you want without worrying about credit usage. However, you also can't [restore changes](../../features/restore-changes/page.mdx) made in the Code Editor since they are saved as Git commits. You can only restore changes made by Bloom.
+
+### Reset Changes
+
+If you've made changes in the Code Editor that you want to discard, you can click the **Reset** button next to the Save button. This will undo all unsaved changes and revert the file to its last saved state.
+
+---
+
+## Files to Avoid Editing
+
+While you have complete ownership over your Bloom project's code, if you want to continue using Bloom to build features and make changes, it's highly recommended to avoid making changes to the following files:
+
+1. Root configuration files: `package.json`, `turbo.json`, and any other configuration files at the root level of the project. Changes to these files can affect how Bloom builds and runs your project, potentially causing unexpected behavior.
+2. `package.json` scripts: Avoid changing the scripts in `package.json`, especially those related to building and running the project. These scripts are used by Bloom to execute tasks, and changes can interfere with Bloom's ability to manage your project effectively.
+3. `vite.config.ts` plugins: The default Vite configuration includes plugins that Bloom relies on to build and deploy your storefront. Avoid removing or changing these plugins to ensure Bloom can continue to build and deploy your storefront correctly.
+4. `medusa-config.ts` admin configurations: The `medusa-config.ts` file includes configurations for the Medusa Admin dashboard to ensure it works correctly with Bloom's features. Avoid changing admin-related configurations to prevent issues with previewing the admin dashboard.
+
+---
+
+## FAQ
+
+### Can I use the Code Editor for large development tasks?
+
+The Code Editor is designed for quick edits and code inspection. For larger development tasks that require full IDE features, debugging tools, and advanced workflows, it's recommended to [export your project to GitHub](../export-to-github/page.mdx) and use a full IDE like VS Code or Cursor.
+
+### Do code changes in the Code Editor consume credits?
+
+No, code changes made in the Code Editor do not consume credits. You can make as many edits as you want without worrying about credit usage. However, keep in mind that you also can't [restore changes](../../features/restore-changes/page.mdx) made in the Code Editor since they are saved as Git commits. You can only restore changes made by Bloom.
+
+### Can I undo changes made in the Code Editor?
+
+You can undo unsaved changes by clicking the **Reset** button, which will revert the file to its last saved state. However, once you save changes, they are committed to Git and cannot be undone through Bloom's interface. You would need to use Git commands in a local development environment to revert those commits if necessary.
+
+### What should I do if I accidentally break something in the code?
+
+If you accidentally break something in the code, provide Bloom with the changes you made and the issue you're facing. Bloom can help identify the problem and suggest fixes. If the issue is complex, consider [exporting your project to GitHub](../export-to-github/page.mdx) to make changes in a local development environment where you have more control and tools to debug effectively.

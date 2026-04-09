@@ -51,7 +51,12 @@ export const Breadcrumbs = () => {
       })
     })
 
-    return items
+    // make sure items are unique (no duplicate links)
+    const uniqueItems = items.filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => t.link === item.link)
+    )
+    return uniqueItems
   }, [sidebarHistory, breadcrumbOptions])
 
   const jsonLd = useMemo(() => {

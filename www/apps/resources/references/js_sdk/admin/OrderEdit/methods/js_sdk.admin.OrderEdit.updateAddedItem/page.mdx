@@ -4,7 +4,7 @@ import { TypeList } from "docs-ui"
 
 This method updates an added item in the order edit by the ID of the item's `ITEM_ADD` action.
 
-Every item has an `actions` property, whose value is an array of actions. 
+Every item has an `actions` property, whose value is an array of actions.
 You can check the action's name using its `action` property, and use the value of the `id` property.
 
 It sends a request
@@ -15,7 +15,7 @@ API route.
 
 ```ts
 sdk.admin.orderEdit.updateAddedItem(
-  "ordch_123", 
+  "order_123",
   "orli_123",
   {
     quantity: 1
@@ -28,7 +28,7 @@ sdk.admin.orderEdit.updateAddedItem(
 
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAddedItem"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that is being edited.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actionId","type":"`string`","description":"The id of the new item's `ITEM_ADD` action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateOrderEditItem](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateOrderEditItem/page.mdx)","description":"The data to update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The item's quantity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`null` \\| `string`","description":"An internal note viewed by admin users only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the order preview.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAddedItem"/>
 
 ## Returns
 

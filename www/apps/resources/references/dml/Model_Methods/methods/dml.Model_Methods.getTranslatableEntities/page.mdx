@@ -1,0 +1,21 @@
+---
+slug: /references/data-model/model-methods/gettranslatableentities
+sidebar_label: getTranslatableEntities
+---
+
+import { TypeList } from "docs-ui"
+
+# getTranslatableEntities Method - DML Reference
+
+Returns all registered translatable entities with their translatable fields.
+Each entry contains the entity name (PascalCase) and an array
+of field names that are marked as translatable.
+
+## Example
+
+```ts
+import { DmlEntity } from "@medusajs/framework/utils"
+
+const translatables = DmlEntity.getTranslatableEntities()
+// Returns: [{ entity: "Store", fields: ["name"] }]
+```

@@ -69,7 +69,7 @@ This guide provides an example of an approach to implement marketplaces. You're 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -279,7 +279,7 @@ Learn more about migrations in [this documentation](!docs!/learn/fundamentals/mo
 
 Medusa's CLI tool generates the migrations for you. To generate a migration for the Marketplace Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate marketplace
 ```
 
@@ -287,7 +287,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -362,7 +362,7 @@ In the next steps, you'll see how these link allows you to retrieve and manage a
 
 Medusa represents the links you define in link tables similar to pivot tables. So, to sync the defined links to the database, run the `db:migrate` command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -709,13 +709,19 @@ export const vendorRouteSchemaHighlights = [
   ["11", "PostVendorCreateSchema", "Define the fields expected in the request body."],
 ]
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/vendors/route.ts" highlights={vendorRouteSchemaHighlights}
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import createVendorWorkflow, { 
   CreateVendorWorkflowInput,
 } from "../../workflows/marketplace/create-vendor"

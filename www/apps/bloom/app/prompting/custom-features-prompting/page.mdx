@@ -1,0 +1,123 @@
+export const metadata = {
+  title: `Custom Features Prompting`,
+}
+
+# {metadata.title}
+
+Custom features make your store unique. Add product reviews, wishlists, size guides, or any feature your business needs. This guide shows you how to describe your requirements clearly to Bloom, then refine the design to match your vision.
+
+## Start with Clear Business Requirements
+
+Ecommerce features are complex with many details. They often require specific data, features, and design elements based on your business needs. They also require changes across your store and admin dashboard.
+
+When asking Bloom to build a custom feature, start by describing all the business requirements in your first prompt. This way, Bloom can build the complete feature based on your requirements and meet your expectations from the start.
+
+Then, use follow-up prompts to adjust the design and styling. This two-phase approach leads to better results, saves tokens, and gives you more control over the final outcome.
+
+### Example: Adding Product Reviews
+
+For example, consider you're adding product reviews to your store. Don't use vague prompts like:
+
+```bash title="Bad Prompt Example"
+Add product reviews to my store
+```
+
+While Bloom can build this, it may not meet your specific needs. You might get a basic review section that doesn't include all the details you want.
+
+Instead, provide all the business requirements in your first prompt:
+
+```bash title="Good Prompt Example"
+Add a product reviews feature that allows customers to submit reviews with a star rating,
+customer name, comment, and date. Display the average rating at the top of the reviews section, 
+and show a list of existing reviews below. Allow admin users to manage reviews in the dashboard, 
+including approving, editing, and deleting reviews.
+```
+
+This prompt gives Bloom a clear understanding of the feature you need. Bloom can meet your business expectations with less back-and-forth and fewer tokens spent on iterations.
+
+Once Bloom builds the feature, use follow-up prompts to refine the design and styling to match your brand and vision.
+
+For example, to adjust the design of the reviews section, you can say:
+
+```bash title="Design Refinement Prompt Example"
+Change the review cards to have a light gray background, rounded corners, and a shadow effect.
+```
+
+Continue refining the design with specific prompts until it matches your vision.
+
+<Note title="Tip">
+
+See the [Store Design Prompting](../store-design-prompting/page.mdx) guide for tips on writing better prompts for design changes.
+
+</Note>
+
+---
+
+## Automate the Admin Side
+
+After adding a custom feature, you often need to manage it from the admin dashboard, or add sample data to test it.
+
+Instead of doing this manually, ask Bloom to perform admin tasks for you. Bloom can add sample or demo data and perform admin operations.
+
+For example, after adding the product reviews feature, ask Bloom to add sample reviews:
+
+```bash
+Add 3 sample reviews for the "Classic White T-Shirt" product. 
+Make them range from 4 to 5 stars and include customer names and comments.
+```
+
+Bloom will add demo reviews to the product in your store. You can then test the reviews feature in your store and admin dashboard.
+
+You can also ask Bloom to perform admin operations related to your custom features. For example, after adding a review as a customer, ask Bloom to approve it:
+
+```bash
+I just added a new review for the "Classic White T-Shirt" product. Please approve it.
+```
+
+This way, you can test your custom features without needing to switch to the admin dashboard and do manual work.
+
+<Note title="Tip">
+
+See the [Ecommerce Operations Prompting](../ecommerce-operations-prompting/page.mdx) guide for tips on writing better prompts for admin operations and managing your store.
+
+</Note>
+
+---
+
+## Change Custom Features
+
+After Bloom builds a custom feature, you can make changes to it at any time. Bloom is flexible and can adjust your custom features as your business needs evolve.
+
+For example, if you want to change the product reviews feature to include photo uploads, ask Bloom:
+
+```bash
+Add the ability for customers to upload a photo with their review. Display the photo below the comment
+in the review card.
+```
+
+Bloom will update the product reviews feature it previously built to include the new photo upload feature.
+
+---
+
+## Customize Existing Features
+
+[Commerce features](../../features/commerce-features/page.mdx) that come with your Bloom store are highly customizable. You can ask Bloom to build on top of those features and make adjustments to fit your specific needs.
+
+For example, you can ask Bloom to customize the checkout flow to add a gift message option for customers:
+
+```bash
+Add a gift message option to the checkout flow. Allow customers to enter a message that will be
+included in the order confirmation email and displayed in the admin dashboard with the order details.
+```
+
+Bloom will customize the checkout flow to include the gift message option as you described.
+
+Another example is adding custom attributes to products that can be managed in the admin dashboard:
+
+```bash
+Add an "Is Featured" attribute to products that can be turned on or off. 
+Allow me to toggle this attribute in the admin dashboard, and if it's enabled, 
+display a "Featured" badge on the product card in the store.
+```
+
+Bloom will customize the product details page in the admin dashboard to support managing the "Is Featured" attribute. It'll also update the product card design in the store to show a "Featured" badge when the attribute is enabled.

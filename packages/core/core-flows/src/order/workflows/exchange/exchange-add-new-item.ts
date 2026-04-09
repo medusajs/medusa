@@ -25,6 +25,7 @@ import { createOrderChangeActionsWorkflow } from "../create-order-change-actions
 import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { refreshExchangeShippingWorkflow } from "./refresh-shipping"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 
 /**
  * The data to validate that new or outbound items can be added to an exchange.
@@ -126,12 +127,9 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
-        "id",
+        ...fieldsToComputeAdjustmentsForPreview,
         "status",
         "canceled_at",
-        "currency_code",
-        "items.*",
-        "promotions.*",
       ],
       variables: { id: orderExchange.order_id },
       list: false,

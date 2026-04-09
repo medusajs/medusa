@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/currency/dist", 
     "../../../../packages/modules/currency/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/currency/src"
+  }
 }

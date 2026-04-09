@@ -11,7 +11,7 @@
  * parameters:
  *   - name: id
  *     in: path
- *     description: The order edit's ID.
+ *     description: The ID of the order that is being edited.
  *     required: true
  *     schema:
  *       type: string
@@ -45,7 +45,7 @@
  *       })
  * 
  *       sdk.admin.orderEdit.updateAddedItem(
- *         "ordch_123", 
+ *         "order_123",
  *         "orli_123",
  *         {
  *           quantity: 1

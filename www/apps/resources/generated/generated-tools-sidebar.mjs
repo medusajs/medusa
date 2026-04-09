@@ -133,6 +133,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "title": "telemetry",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/medusa-cli/commands/codemod",
+                  "title": "codemod",
+                  "description": "",
+                  "children": []
                 }
               ]
             }

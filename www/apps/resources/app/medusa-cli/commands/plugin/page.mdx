@@ -23,7 +23,7 @@ These commands are available starting from [Medusa v2.3.0](https://github.com/me
 
 Publish a plugin into the local packages registry. The command uses [Yalc](https://github.com/wclr/yalc) under the hood to publish the plugin to a local package registry. You can then install the plugin in a local Medusa project using the [plugin\:add](#pluginadd) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:publish
 ```
 
@@ -33,7 +33,7 @@ npx medusa plugin:publish
 
 Install the specified plugins from the local package registry into a local Medusa application. Plugins can be added to the local package registry using the [plugin\:publish](#pluginpublish) command.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:add [names...]
 ```
 
@@ -74,7 +74,7 @@ npx medusa plugin:add [names...]
 
 Start a development server for a plugin. The command will watch for changes in the plugin's source code and automatically re-publish the changes into the local package registry.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:develop
 ```
 
@@ -84,7 +84,7 @@ npx medusa plugin:develop
 
 Generate migrations for all modules in a plugin.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:db:generate
 ```
 
@@ -94,7 +94,7 @@ npx medusa plugin:db:generate
 
 Build a plugin before publishing it to NPM. The command will compile the output in the `.medusa/server` directory.
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
 ```
 

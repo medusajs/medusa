@@ -119,6 +119,22 @@ export interface AdminOptions {
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
+
+  /**
+   * The maximum file size for media uploads in bytes. The default value is `1048576` (1MB).
+   * Set to `Infinity` to disable the file size limit.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     maxUploadFileSize: 10 * 1024 * 1024, // 10MB
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  maxUploadFileSize?: number
 }
 
 /**
@@ -887,7 +903,7 @@ export type ProjectConfigOptions = {
      * This configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actors).
      * For example, you only want to allow SSO logins for `users`, while you want to allow email/password logins for `customers` to the storefront.
      *
-     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
+     * `authMethodsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
      *
      * @example
      * Some example values of common use cases:

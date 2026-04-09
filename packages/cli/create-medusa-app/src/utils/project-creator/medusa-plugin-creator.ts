@@ -13,6 +13,7 @@ import {
   ProjectCreator,
   ProjectOptions,
 } from "./creator.js"
+import terminalLink from "terminal-link"
 
 // Plugin Project Creator
 export class PluginProjectCreator
@@ -91,7 +92,15 @@ export class PluginProjectCreator
     logMessage({
       message: boxen(
         chalk.green(
-          `Change to the \`${this.projectName}\` directory to explore your Medusa plugin.${EOL}${EOL}Check out the Medusa plugin documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/learn/fundamentals/plugins${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+          `Change to the \`${
+            this.projectName
+          }\` directory to explore your Medusa plugin.${EOL}${EOL}Check out the ${terminalLink(
+            "Medusa plugin documentation",
+            "https://docs.medusajs.com/learn/fundamentals/plugins"
+          )} to start your development.${EOL}${EOL}Star us on ${terminalLink(
+            "GitHub",
+            "https://github.com/medusajs/medusa/stargazers"
+          )} if you like what we're building.`
         ),
         {
           titleAlignment: "center",

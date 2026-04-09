@@ -20,6 +20,8 @@ const Settings = model
     fields: model.json(),
     /**
      * Wether the entity translatable status is enabled.
+     * 
+     * @since 2.13.0
      */
     is_active: model.boolean().default(true),
   })

@@ -6,30 +6,22 @@ import { npxToYarn } from "@/utils/npx-to-yarn"
 
 type Npx2YarnCodeProps = {
   npxCode: string
+  isExecutable?: boolean
 } & Omit<CodeBlockMetaFields, "npx2yarn">
 
 export const Npx2YarnCode = ({
   npxCode,
+  isExecutable = false,
   ...codeOptions
 }: Npx2YarnCodeProps) => {
   // convert npx code
-  const yarnCode = npxToYarn(npxCode, "yarn")
-  const pnpmCode = npxToYarn(npxCode, "pnpm")
+  const yarnCode = npxToYarn(npxCode, "yarn", isExecutable)
+  const pnpmCode = npxToYarn(npxCode, "pnpm", isExecutable)
   const lang = "bash"
 
   codeOptions.hasTabs = true
 
   const tabs = [
-    {
-      label: "npx",
-      // keep it npm so it matches the tab name in Npm2YarnCode
-      value: "npm",
-      code: {
-        source: npxCode,
-        lang,
-        ...codeOptions,
-      },
-    },
     {
       label: "yarn",
       value: "yarn",
@@ -44,6 +36,16 @@ export const Npx2YarnCode = ({
       value: "pnpm",
       code: {
         source: pnpmCode,
+        lang,
+        ...codeOptions,
+      },
+    },
+    {
+      label: "npx",
+      // keep it npm so it matches the tab name in Npm2YarnCode
+      value: "npm",
+      code: {
+        source: npxCode,
         lang,
         ...codeOptions,
       },

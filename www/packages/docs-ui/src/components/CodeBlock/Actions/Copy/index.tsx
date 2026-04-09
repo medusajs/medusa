@@ -31,6 +31,9 @@ export const CodeBlockCopyAction = ({
     track({
       event: {
         event: DocsTrackingEvents.CODE_BLOCK_COPY,
+        options: {
+          text: source.substring(0, 150),
+        },
       },
     })
   }, [copied])

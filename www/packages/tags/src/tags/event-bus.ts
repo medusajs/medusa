@@ -92,6 +92,10 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshInviteTokensWorkflow"
   },
   {
+    "title": "deleteLineItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
+  },
+  {
     "title": "archiveOrderWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/archiveOrderWorkflow"
   },

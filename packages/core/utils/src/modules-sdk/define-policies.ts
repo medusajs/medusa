@@ -15,38 +15,43 @@ export interface definePoliciesExport {
   policies: PolicyDefinition[]
 }
 
-declare global {
-  // eslint-disable-next-line no-var
-  var Resource: Record<string, string>
-  // eslint-disable-next-line no-var
-  var Operation: Record<string, string>
-  // eslint-disable-next-line no-var
-  var Policy: Record<
-    string,
-    { resource: string; operation: string; description?: string }
-  >
-}
+// This will be overridden by the actual interface when medusa types are loaded
+type DefaultPolicyResources = Record<string, string>
 
 /**
  * Global registry for all unique resources.
  */
-export const PolicyResource = global.PolicyResource ?? {}
+const PolicyResource: DefaultPolicyResources & Record<string, string> =
+  global.PolicyResource ?? {}
+
 global.PolicyResource ??= PolicyResource
 
 /**
  * Global registry for all unique operations.
  */
-const defaultOperations = ["read", "write", "update", "delete", "*"]
+const defaultOperations = ["read", "create", "update", "delete", "*"]
 
-export const PolicyOperation = global.PolicyOperation ?? {}
-global.PolicyOperation ??= PolicyOperation
+const PolicyOperation: Record<string, string> & {
+  readonly read: "read"
+  readonly create: "create"
+  readonly update: "update"
+  readonly delete: "delete"
+  readonly "*": "*"
+  readonly ALL: "*"
+} = global.PolicyOperation ?? { ALL: "*" }
 
 for (const operation of defaultOperations) {
   const operationKey = operation === "*" ? "*" : toSnakeCase(operation)
   PolicyOperation[operationKey] = operation
 }
 
-export const Policy = global.Policy ?? {}
+global.PolicyOperation ??= PolicyOperation
+
+const Policy: Record<
+  string,
+  { resource: string; operation: string; description?: string }
+> = global.Policy ?? {}
+
 global.Policy ??= Policy
 
 /**
@@ -71,9 +76,9 @@ global.Policy ??= Policy
  *     operation: "read"
  *   },
  *   {
- *     name: "WriteBrands",
+ *     name: "CreateBrands",
  *     resource: "brand",
- *     operation: "write"
+ *     operation: "create"
  *   }
  * ])
  * ```
@@ -101,13 +106,16 @@ export function definePolicies(
   }
 
   for (const policy of policiesArray) {
-    policy.resource = policy.resource.toLowerCase()
-    policy.operation = policy.operation.toLowerCase()
+    const resourceKey =
+      policy.resource === "*" ? "*" : toSnakeCase(policy.resource)
+    const operationKey =
+      policy.operation === "*" ? "*" : toSnakeCase(policy.operation)
 
-    const resourceKey = toSnakeCase(policy.resource)
+    policy.resource = resourceKey
+    policy.operation = operationKey
+
     PolicyResource[resourceKey] = policy.resource
 
-    const operationKey = toSnakeCase(policy.operation)
     PolicyOperation[operationKey] = policy.operation
 
     // Register in Policy object with name as key
@@ -121,3 +129,5 @@ export function definePolicies(
 
   return output
 }
+
+export { Policy, PolicyOperation, PolicyResource }

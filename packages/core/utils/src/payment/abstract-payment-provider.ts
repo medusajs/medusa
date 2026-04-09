@@ -537,7 +537,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * This method retrieves the payment's data from the third-party payment provider.
    *
    * @param input - The input to retrieve the payment. The `data` field should contain the data from the payment provider when the payment was created.
-   * @returns The payment's data as found in the the payment provider.
+   * @returns The payment's data as found in the payment provider.
    *
    * @example
    * // other imports...

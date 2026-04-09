@@ -30,6 +30,7 @@ interface S3FileServiceConfig {
   fileUrl: string
   accessKeyId?: string
   secretAccessKey?: string
+  sessionToken?: string
   authenticationMethod?: "access-key" | "s3-iam-role"
   region: string
   bucket: string
@@ -67,6 +68,7 @@ export class S3FileService extends AbstractFileProviderService {
       fileUrl: options.file_url,
       accessKeyId: options.access_key_id,
       secretAccessKey: options.secret_access_key,
+      sessionToken: options.session_token,
       authenticationMethod: authenticationMethod,
       region: options.region,
       bucket: options.bucket,
@@ -85,9 +87,10 @@ export class S3FileService extends AbstractFileProviderService {
     const credentials =
       this.config_.authenticationMethod === "access-key"
         ? {
-            accessKeyId: this.config_.accessKeyId!,
-            secretAccessKey: this.config_.secretAccessKey!,
-          }
+          accessKeyId: this.config_.accessKeyId!,
+          secretAccessKey: this.config_.secretAccessKey!,
+          sessionToken: this.config_.sessionToken,
+        }
         : undefined
 
     const config: S3ClientConfigType = {
@@ -117,9 +120,8 @@ export class S3FileService extends AbstractFileProviderService {
     const parsedFilename = path.parse(file.filename)
 
     // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${
-      parsedFilename.ext
-    }`
+    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+      }`
 
     let content: Buffer
     try {
@@ -180,9 +182,8 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const parsedFilename = path.parse(fileData.filename)
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${
-      parsedFilename.ext
-    }`
+    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+      }`
 
     const pass = new PassThrough()
     const upload = new Upload({

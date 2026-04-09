@@ -1,9 +1,10 @@
-import { getCleanMd } from "docs-utils"
+import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
 import { existsSync, readFileSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
+import { PostHog } from "posthog-node"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest, { params }: Params) {
       "utf-8"
     )
 
-    return new NextResponse(llmsFile, {
+    return new NextResponse(llmsFile + PLAINTEXT_DOC_MESSAGE, {
       headers: {
         "Content-Type": "text/markdown",
       },
@@ -72,7 +73,28 @@ export async function GET(req: NextRequest, { params }: Params) {
     ] as unknown as Plugin[],
   })
 
-  return new NextResponse(cleanMdContent, {
+  const acceptHeader = req.headers.get("accept") || ""
+  if (
+    acceptHeader.includes("text/plain") ||
+    acceptHeader.includes("text/markdown")
+  ) {
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
+
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
+        $current_url: req.url,
+        $raw_user_agent: req.headers.get("user-agent") || undefined,
+      },
+    })
+
+    await client.shutdown()
+  }
+
+  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
       "Content-Type": "text/markdown",
     },

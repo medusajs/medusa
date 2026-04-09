@@ -23,6 +23,7 @@ import {
   ProjectCreator,
   ProjectOptions,
 } from "./creator.js"
+import terminalLink from "terminal-link"
 
 const slugify = slugifyType.default
 
@@ -232,7 +233,13 @@ export class MedusaProjectCreator
             this.nextjsDirectory?.length
               ? `The Next.js Starter Storefront was installed in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
               : ""
-          }Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+          }Check out the Medusa ${terminalLink(
+            "documentation",
+            "https://docs.medusajs.com/"
+          )} to start your development:${EOL}${EOL}Star us on ${terminalLink(
+            "GitHub",
+            "https://github.com/medusajs/medusa/stargazers"
+          )} if you like what we're building.`
         ),
         {
           titleAlignment: "center",
