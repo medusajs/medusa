@@ -21,10 +21,11 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",
-    "turbo": "latest"
+    "turbo": "1.10.16"
   },
   "resolutions": {
     "docs-generator/eslint": "8.56.0",
     "docs-generator/@types/eslint": "8.56.0"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }

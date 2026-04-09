@@ -6,7 +6,7 @@ export const generatedEditDates = {
   "app/starters/page.mdx": "2026-02-24T08:58:17.126Z",
   "app/credits-and-plans/page.mdx": "2026-02-24T08:53:20.566Z",
   "app/manage-projects/page.mdx": "2026-02-24T08:55:18.423Z",
-  "app/going-live/page.mdx": "2026-02-24T08:54:26.761Z",
+  "app/going-live/page.mdx": "2026-03-18T08:44:33.015Z",
   "app/custom-domains/page.mdx": "2026-02-13T14:54:19.235Z",
   "app/profile-management/page.mdx": "2026-02-13T14:54:19.241Z",
   "app/organization-management/page.mdx": "2026-02-16T08:12:50.174Z",
@@ -28,11 +28,10 @@ export const generatedEditDates = {
   "app/prompting/custom-features-prompting/page.mdx": "2026-02-11T14:09:49.737Z",
   "app/prompting/ecommerce-operations-prompting/page.mdx": "2026-02-13T14:54:19.232Z",
   "app/prompting/store-design-prompting/page.mdx": "2026-02-11T14:07:44.963Z",
-  "app/prompting/service-integrations-prompting/page.mdx": "2026-02-13T14:54:19.234Z",
+  "app/prompting/service-integrations-prompting/page.mdx": "2026-03-18T08:34:31.914Z",
   "app/prompting/service-integrations-prompting/guides/algolia/page.mdx": "2026-02-13T15:07:19.150Z",
   "app/prompting/service-integrations-prompting/guides/avalara/page.mdx": "2026-02-13T15:07:12.572Z",
   "app/prompting/service-integrations-prompting/guides/shipstation/page.mdx": "2026-02-13T15:07:06.354Z",
-  "app/prompting/service-integrations-prompting/guides/stripe/page.mdx": "2026-02-13T15:06:52.578Z",
   "app/prompting/fix-errors-and-issues/page.mdx": "2026-02-13T14:55:01.147Z",
   "app/features/code-editor/page.mdx": "2026-02-13T08:04:00.240Z",
   "app/developers/code-editor/page.mdx": "2026-02-18T10:26:01.462Z",
@@ -43,5 +42,10 @@ export const generatedEditDates = {
   "app/features/team-collaboration/page.mdx": "2026-02-17T14:30:51.065Z",
   "app/preview-tabs/page.mdx": "2026-02-24T08:56:07.482Z",
   "app/developers/_email-templates/page.mdx": "2026-02-16T15:35:31.906Z",
-  "app/features/_emails/page.mdx": "2026-02-18T13:53:16.758Z"
+  "app/features/_emails/page.mdx": "2026-02-18T13:53:16.758Z",
+  "app/features/integrations/guides/cookiebot/page.mdx": "2026-03-18T08:23:24.558Z",
+  "app/features/integrations/guides/klaviyo/page.mdx": "2026-03-18T08:33:25.354Z",
+  "app/features/integrations/guides/slack/page.mdx": "2026-03-18T08:33:20.171Z",
+  "app/features/integrations/guides/stripe/page.mdx": "2026-03-18T08:34:10.941Z",
+  "app/features/integrations/page.mdx": "2026-03-18T08:45:24.081Z"
 }

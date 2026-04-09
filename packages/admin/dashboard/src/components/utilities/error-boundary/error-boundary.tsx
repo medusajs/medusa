@@ -34,13 +34,13 @@ export const ErrorBoundary = () => {
    */
   if (process.env.NODE_ENV === "development") {
     console.error(error)
-    const fileDetails = errorStack?.split("\n")[1].trim()
+    const fileDetails = errorStack?.split("\n")[1]?.trim()
     const filename = fileDetails?.match(/([^\/\\?]+)(?:\?[^:]*)?:\d+:\d+\)/)?.[1] || "unknown"
     const lineno = fileDetails?.match(/(?:\?[^:]*)?:(\d+):\d+\)/)?.[1] || "unknown"
     const colno = fileDetails?.match(/(?:\?[^:]*)?:\d+:(\d+)\)/)?.[1] || "unknown"
     window.parent.postMessage({
       data: {
-        type: "CONSOLE_OUTPUT",
+        type: "RUNTIME_ERROR",
         level: "error",
         message: errorMessage,
         stack: errorStack,
