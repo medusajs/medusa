@@ -6,7 +6,11 @@ export function middleware(req: NextRequest) {
   if (accept.includes("text/markdown") || accept.includes("text/plain")) {
     const { pathname } = req.nextUrl
     const url = req.nextUrl.clone()
-    url.pathname = `/md-content${pathname === "/" ? "" : pathname}`
+    const cleanPathname =
+      pathname !== "/" && pathname.endsWith("/")
+        ? pathname.slice(0, -1)
+        : pathname
+    url.pathname = `/md-content${cleanPathname === "/" ? "" : cleanPathname}`
     return NextResponse.rewrite(url)
   }
 }
