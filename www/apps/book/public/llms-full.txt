@@ -53060,18 +53060,19 @@ npx medusa exec [file] [args...]
 
 # new Command - Medusa CLI Reference
 
-Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project.
+Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project. It creates a monorepo structure with your Medusa backend in the `apps/backend` directory.
 
 ```bash
-medusa new [<dir_name> [<starter_url>]]
+medusa new [<dir_name>]
 ```
 
 ## Arguments
 
 |Argument|Description|Required|Default|
 |---|---|---|---|---|---|---|
-|\`dir\_name\`|The name of the directory to create the Medusa application in.|Yes|-|
-|\`starter\_url\`|The URL of the starter repository to create the project from.|No|\`https://github.com/medusajs/medusa-starter-default\`|
+|\`dir\_name\`|The name of the directory to create the Medusa application in. If not provided, you'll be prompted to enter a project name.|No|Prompted if not provided|
+
+The command always uses the `medusajs/dtc-starter` monorepo template and creates a project structure with your backend in `apps/backend`.
 
 ## Options
 
@@ -53085,6 +53086,22 @@ medusa new [<dir_name> [<starter_url>]]
 |\`--db-pass \<password>\`|The database password to use for database setup.|
 |\`--db-port \<port>\`|The database port to use for database setup.|
 |\`--db-host \<host>\`|The database host to use for database setup.|
+|\`--skip-migrations\`|Skip running migrations and seeding.|
+|\`--seed\`|Seed the database with demo data after setup.|
+|\`--branch \<branch>\`|The branch to clone from the starter repository.|
+
+## Example
+
+```bash
+medusa new my-medusa-store
+```
+
+After running the command, navigate to your project directory and start the development server:
+
+```bash
+cd my-medusa-store
+pnpm dev
+```
 
 
 # plugin Commands - Medusa CLI Reference
@@ -53485,18 +53502,19 @@ npx medusa exec [file] [args...]
 
 # new Command - Medusa CLI Reference
 
-Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project.
+Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project. It creates a monorepo structure with your Medusa backend in the `apps/backend` directory.
 
 ```bash
-medusa new [<dir_name> [<starter_url>]]
+medusa new [<dir_name>]
 ```
 
 ## Arguments
 
 |Argument|Description|Required|Default|
 |---|---|---|---|---|---|---|
-|\`dir\_name\`|The name of the directory to create the Medusa application in.|Yes|-|
-|\`starter\_url\`|The URL of the starter repository to create the project from.|No|\`https://github.com/medusajs/medusa-starter-default\`|
+|\`dir\_name\`|The name of the directory to create the Medusa application in. If not provided, you'll be prompted to enter a project name.|No|Prompted if not provided|
+
+The command always uses the `medusajs/dtc-starter` monorepo template and creates a project structure with your backend in `apps/backend`.
 
 ## Options
 
@@ -53510,6 +53528,22 @@ medusa new [<dir_name> [<starter_url>]]
 |\`--db-pass \<password>\`|The database password to use for database setup.|
 |\`--db-port \<port>\`|The database port to use for database setup.|
 |\`--db-host \<host>\`|The database host to use for database setup.|
+|\`--skip-migrations\`|Skip running migrations and seeding.|
+|\`--seed\`|Seed the database with demo data after setup.|
+|\`--branch \<branch>\`|The branch to clone from the starter repository.|
+
+## Example
+
+```bash
+medusa new my-medusa-store
+```
+
+After running the command, navigate to your project directory and start the development server:
+
+```bash
+cd my-medusa-store
+pnpm dev
+```
 
 
 # plugin Commands - Medusa CLI Reference
