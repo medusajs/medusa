@@ -3,6 +3,9 @@
 import { fieldsForPricingContext } from "../../common/utils/fields"
 
 // Always ensure that cartFieldsForCalculateShippingOptionsPrices is present in cartFieldsForRefreshSteps
+/**
+ * Fields required when fetching cart data for refresh steps in cart workflows
+ */
 export const cartFieldsForRefreshSteps = [
   "id",
   "email",
@@ -54,6 +57,9 @@ export const cartFieldsForRefreshSteps = [
   "payment_collection.payment_sessions.id",
 ]
 
+/**
+ * Complete set of cart fields including all related entities for full cart representation
+ */
 export const completeCartFields = [
   "metadata",
   "id",
@@ -137,8 +143,14 @@ export const completeCartFields = [
   "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
+/**
+ * Cart fields required for pricing context calculations
+ */
 export const cartFieldsForPricingContext = [...fieldsForPricingContext]
 
+/**
+ * Product variant fields including related product data and inventory information
+ */
 export const productVariantsFields = [
   "id",
   "title",
@@ -177,7 +189,9 @@ export const productVariantsFields = [
   "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
-// ensure that at least these fields are present when fetching cart for caluclating shipping options prices
+/**
+ * Required fields when fetching cart for calculating shipping option prices
+ */
 export const cartFieldsForCalculateShippingOptionsPrices = [
   "id",
   "locale",

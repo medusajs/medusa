@@ -1,3 +1,8 @@
+/**
+ * Common fields required for pricing context calculations across different entities
+ * 
+ * @since 2.13.7
+ */
 export const fieldsForPricingContext = [
   "id",
   "sales_channel_id",
