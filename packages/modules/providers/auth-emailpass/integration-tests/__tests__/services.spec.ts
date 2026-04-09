@@ -271,5 +271,81 @@ describe("Email password auth provider", () => {
     expect(authServiceSpies.retrieve).toHaveBeenCalled()
 
     expect(resp.error).toEqual("Invalid email or password")
+  
+    })
+
+  it("returns error if entity_id is not passed to update", async () => {
+    const resp = await emailpassService.update(
+      { entity_id: "" },
+      {} as any
+    )
+
+    expect(resp).toEqual({
+      success: false,
+      error: "Cannot update emailpass provider identity without entity_id",
+    })
+  })
+
+  it("updates password if password is passed", async () => {
+    const authServiceSpies = {
+      update: jest.fn().mockImplementation(() => {
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {},
+            },
+          ],
+        }
+      }),
+    }
+
+    const resp = await emailpassService.update(
+      { entity_id: "test@admin.com", password: "newpassword" },
+      authServiceSpies as any
+    )
+
+    expect(authServiceSpies.update).toHaveBeenCalledWith(
+      "test@admin.com",
+      expect.objectContaining({
+        provider_metadata: expect.objectContaining({
+          password: expect.any(String),
+        }),
+      })
+    )
+    expect(resp.success).toBe(true)
+  })
+
+  it("updates email if email is passed", async () => {
+    const authServiceSpies = {
+      update: jest.fn().mockImplementation(() => {
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {},
+            },
+          ],
+        }
+      }),
+    }
+
+    const resp = await emailpassService.update(
+      { entity_id: "test@admin.com", email: "newemail@admin.com" },
+      authServiceSpies as any
+    )
+
+    expect(authServiceSpies.update).toHaveBeenCalledWith(
+      "test@admin.com",
+      expect.objectContaining({
+        user_metadata: expect.objectContaining({
+          email: "newemail@admin.com",
+        }),
+      })
+    )
+    expect(resp.success).toBe(true)
   })
 })
+

@@ -46,40 +46,47 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
   }
 
   async update(
-    data: { password: string; entity_id: string },
-    authIdentityService: AuthIdentityProviderService
-  ) {
-    const { password, entity_id } = data ?? {}
+  data: { password?: string; email?: string; entity_id: string },
+  authIdentityService: AuthIdentityProviderService
+) {
+  const { password, email, entity_id } = data ?? {}
 
-    if (!entity_id) {
-      return {
-        success: false,
-        error: `Cannot update ${this.provider} provider identity without entity_id`,
-      }
-    }
-
-    if (!password || !isString(password)) {
-      return { success: true }
-    }
-
-    let authIdentity
-
-    try {
-      const passwordHash = await this.hashPassword(password)
-
-      authIdentity = await authIdentityService.update(entity_id, {
-        provider_metadata: {
-          password: passwordHash,
-        },
-      })
-    } catch (error) {
-      return { success: false, error: error.message }
-    }
-
+  if (!entity_id) {
     return {
-      success: true,
-      authIdentity,
+      success: false,
+      error: `Cannot update ${this.provider} provider identity without entity_id`,
     }
+  }
+
+  let authIdentity
+  const providerMetadataUpdate: Record<string, unknown> = {}
+  const userMetadataUpdate: Record<string, unknown> = {}
+
+  if (password && isString(password)) {
+    providerMetadataUpdate.password = await this.hashPassword(password)
+  }
+
+  if (email && isString(email)) {
+    userMetadataUpdate.email = email
+  }
+
+  try {
+    const updateData: {
+      provider_metadata?: Record<string, unknown>
+      user_metadata?: Record<string, unknown>
+    } = {}
+
+    if (Object.keys(providerMetadataUpdate).length > 0) {
+      updateData.provider_metadata = providerMetadataUpdate
+    }
+
+    if (Object.keys(userMetadataUpdate).length > 0) {
+      updateData.user_metadata = userMetadataUpdate
+    }
+
+    authIdentity = await authIdentityService.update(entity_id, updateData)
+  } catch (error) {
+    return { success: false, error: error.message }
   }
 
   async authenticate(
