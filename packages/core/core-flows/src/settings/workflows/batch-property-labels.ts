@@ -17,6 +17,8 @@ import { updatePropertyLabelsWorkflow } from "./update-property-label"
 
 /**
  * Input type for creating a property label in batch.
+ * 
+ * @since 2.13.7
  */
 export interface BatchPropertyLabelCreateInput {
   entity: string
@@ -27,6 +29,8 @@ export interface BatchPropertyLabelCreateInput {
 
 /**
  * Input type for updating a property label in batch.
+ * 
+ * @since 2.13.7
  */
 export interface BatchPropertyLabelUpdateInput {
   id: string
@@ -36,6 +40,8 @@ export interface BatchPropertyLabelUpdateInput {
 
 /**
  * The property labels to manage.
+ * 
+ * @since 2.13.7
  */
 export interface BatchPropertyLabelsWorkflowInput
   extends BatchWorkflowInput<
@@ -43,6 +49,11 @@ export interface BatchPropertyLabelsWorkflowInput
     BatchPropertyLabelUpdateInput
   > {}
 
+/**
+ * Output type for batch property labels workflow.
+ * 
+ * @since 2.13.7
+ */
 export type BatchPropertyLabelsWorkflowOutput =
   BatchWorkflowOutput<SettingsTypes.PropertyLabelDTO>
 
