@@ -8,7 +8,11 @@ on:
 
 jobs:
   triage:
-    if: false # temporarily disabled
+    if: |
+      false && (
+        github.event_name == 'issues' ||
+        (github.event_name == 'issue_comment' && github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot')
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
