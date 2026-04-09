@@ -1,4 +1,4 @@
-import { Note, InlineIcon } from "docs-ui"
+import { Note, InlineIcon, CodeTab, CodeTabs } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -44,11 +44,38 @@ To set up a backend custom domain:
 4. Navigate to the **Domains** section.
 5. Under the **Custom Backend Domain** section, click the **Add Domain** button.
 6. In the modal that opens:
-   - **Domain Step**: Enter your custom domain name (e.g., `api.acme.com`)
+   - **Domain Step**: Enter your custom domain name (for example, `api.acme.com`)
    - **DNS Setup**: Follow the instructions to add the required DNS records with your domain provider
 7. Click **Done** to complete the setup.
 
 You can track your domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+
+### Update Backend Domain in Storefront
+
+If you have a storefront deployed alongside your Medusa backend, you need to manually update the backend URL in your storefront's configuration to point to the new custom domain. This is essential to avoid downtime for your storefront before the backend custom domain is activated.
+
+Based on your storefront framework, update the backend environment variable:
+
+<CodeTabs group="storefront-framework">
+  <CodeTab label="Next.js" value="nextjs">
+
+```shell
+NEXT_PUBLIC_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+```
+
+  </CodeTab>
+  <CodeTab label="SvelteKit / Tanstack Start" value="sveltekit-tanstack">
+
+```shell
+VITE_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+```
+
+  </CodeTab>
+</CodeTabs>
+
+To learn how to update environment variables on Cloud, see the [Environment Variables](../environment-variables/page.mdx) guide.
+
+After updating the backend URL, [redeploy your environment](../../deployments/page.mdx#redeploy-a-deployment). Your live storefront will now connect to your Medusa backend through the new custom domain without any downtime.
 
 ---
 
@@ -76,7 +103,7 @@ To set up a storefront custom domain, you need:
 If no custom domain is configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
 
 1. Go to your project's dashboard in Cloud.
-2. In the environment card (e.g., Production), click the **Setup Custom Domain** link next to the health status.
+2. In the environment card (for example, Production), click the **Setup Custom Domain** link next to the health status.
 
 #### From Environment Settings
 
@@ -86,7 +113,7 @@ If no custom domain is configured for your storefront environment, you'll see a 
 4. Navigate to the **Domains** section.
 5. Click the **Add Domain** button.
 6. In the modal that opens:
-   - **Domain Step**: Enter your custom domain name (e.g., `shop.acme.com`)
+   - **Domain Step**: Enter your custom domain name (for example, `shop.acme.com`)
    - **DNS Setup**: Follow the instructions to add the required DNS records with your domain provider
 7. Click **Done** to complete the setup.
 
@@ -123,10 +150,18 @@ To remove a custom domain:
 3. In the confirmation dialog, type the domain name exactly as shown to confirm the removal.
 4. Click **Remove Domain** to complete the action.
 
-### Domain Verification Troubleshooting
+---
+
+## Troubleshooting
+
+### Domain Verification
 
 If your domain remains in **Pending** or **Configured** status:
 
 1. **Check DNS records**: Verify that you've added all required DNS records exactly as provided in the DNS setup instructions.
 2. **Wait for propagation**: DNS changes can take up to 48 hours to propagate globally.
 3. **Contact support**: If your domain hasn't verified after 48 hours, contact support for assistance.
+
+### Storefront Not Connecting to Backend After Custom Domain Setup
+
+If your storefront isn't connecting to the backend after setting up a backend custom domain, make sure you [updated the backend URL in your storefront's environment variables](#update-backend-domain-in-storefront) and redeployed your environment.
