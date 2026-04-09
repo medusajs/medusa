@@ -1490,10 +1490,7 @@ medusaIntegrationTestRunner({
             storeHeaders
           )
 
-          let response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           // Cart should have 2 items: original (qty 1, no metadata) and new (qty 1, with metadata)
           expect(response.data.cart.items).toHaveLength(2)
@@ -1546,10 +1543,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          let response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           // Should have 2 items: original (variant price) + custom price item
           expect(response.data.cart.items).toHaveLength(2)
@@ -1568,10 +1562,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           // Should now have 3 items: original + custom price 999 + custom price 500
           expect(response.data.cart.items).toHaveLength(3)
@@ -1608,10 +1599,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          let response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           expect(response.data.cart.items).toHaveLength(2)
 
@@ -1629,10 +1617,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           // Should still be 2 items, custom price item quantity updated to 3
           expect(response.data.cart.items).toHaveLength(2)
@@ -1666,10 +1651,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          let response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           expect(response.data.cart.items).toHaveLength(2)
 
@@ -1689,10 +1671,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          response = await api.get(
-            `/store/carts/${cart.id}`,
-            storeHeaders
-          )
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
 
           // Should have 3 items: original + custom price 999 + custom price 500
           expect(response.data.cart.items).toHaveLength(3)
@@ -1708,6 +1687,62 @@ medusaIntegrationTestRunner({
                 variant_id: variantId,
                 unit_price: 500,
                 quantity: 1,
+                metadata: { note: "gift" },
+              }),
+            ])
+          )
+        })
+
+        it("should accumulate quantity when adding same variant with same metadata and same custom price", async () => {
+          const variantId = product.variants[0].id
+          const metadata = { note: "gift" }
+
+          // Add item with custom price and metadata
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should have 2 items: original + custom price with metadata
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Add same variant with same metadata and same custom price
+          // Should accumulate quantity on the existing line item, not create a duplicate
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 2,
+                  unit_price: 999,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should still have 2 items, with the custom price item's quantity accumulated
+          expect(response.data.cart.items).toHaveLength(2)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 999,
+                quantity: 3,
                 metadata: { note: "gift" },
               }),
             ])
