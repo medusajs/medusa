@@ -42,7 +42,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
       <div
         className={clsx(
           "flex justify-between items-center px-docs_1 w-full gap-docs_0.5",
-          collapseNavbar && "border-b border-medusa-border-base"
+          "border-b border-medusa-border-base"
         )}
         data-testid="main-nav-content"
       >

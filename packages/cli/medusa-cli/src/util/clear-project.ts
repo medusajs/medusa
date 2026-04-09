@@ -21,5 +21,6 @@ export function clearProject(directory: string) {
     })
   )
   // add empty typescript file to avoid build errors
-  fs.openSync(path.join(directory, "src", "index.ts"), "w")
+  // writeFileSync creates, writes, and closes in one call -- no fd leak.
+  fs.writeFileSync(path.join(directory, "src", "index.ts"), "")
 }

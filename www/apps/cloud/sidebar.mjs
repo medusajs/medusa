@@ -51,6 +51,11 @@ export const sidebar = [
                 title: "Prerequisites",
                 path: "/projects/prerequisites",
               },
+              {
+                type: "link",
+                title: "Rename Repository",
+                path: "/projects/rename-repo-branch",
+              },
             ],
           },
           {
