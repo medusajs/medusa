@@ -29,7 +29,7 @@ If you need to refer to an existing implementation as an example, check the [Str
 
 ## Understanding Payment Module Provider Implementation
 
-The Payment Module Provider handles processing payment with a third-party provirder. However, it's not responsible for managing payment concepts within Medusa, such as payment sessions or collections. These concepts are handled by the Payment Module which uses your Payment Module Provider within core operations.
+The Payment Module Provider handles processing payment with a third-party provider. However, it's not responsible for managing payment concepts within Medusa, such as payment sessions or collections. These concepts are handled by the Payment Module which uses your Payment Module Provider within core operations.
 
 For example, when the merchant captures an order's payment, the Payment Module uses the Payment Module Provider to capture the payment, the makes updates to the `Payment` record associated with the order. So, you only have to implement the third-party payment processing logic in your Payment Module Provider.
 
@@ -628,7 +628,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`object`","description":"The webhook event's data","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getWebhookActionAndData"/>
+<TypeList types={[{"name":"data","type":"`object`","description":"The webhook event's data","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| Buffer&#60;ArrayBufferLike&#62;","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getWebhookActionAndData"/>
 
 #### Returns
 

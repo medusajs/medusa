@@ -1,9 +1,10 @@
-import { getCleanMd } from "docs-utils"
+import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
 import { existsSync, readFileSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
+import { PostHog } from "posthog-node"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -19,14 +20,15 @@ export async function GET(req: NextRequest, { params }: Params) {
   const { slug = ["/"] } = await params
 
   if (slug[0] === "/") {
-    const llmsFile = readFileSync(
-      path.join(process.cwd(), "public", "llms.txt"),
+    const homepageFile = readFileSync(
+      path.join(process.cwd(), "public", "homepage.md"),
       "utf-8"
     )
 
-    return new NextResponse(llmsFile, {
+    return new NextResponse(homepageFile + PLAINTEXT_DOC_MESSAGE, {
       headers: {
-        "Content-Type": "text/markdown",
+        "content-type": "text/markdown",
+        "cache-control": "public, max-age=3600, must-revalidate",
       },
       status: 200,
     })
@@ -72,9 +74,31 @@ export async function GET(req: NextRequest, { params }: Params) {
     ] as unknown as Plugin[],
   })
 
-  return new NextResponse(cleanMdContent, {
+  const acceptHeader = req.headers.get("accept") || ""
+  if (
+    acceptHeader.includes("text/plain") ||
+    acceptHeader.includes("text/markdown")
+  ) {
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
+
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
+        $current_url: req.url,
+        $raw_user_agent: req.headers.get("user-agent") || undefined,
+      },
+    })
+
+    await client.shutdown()
+  }
+
+  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
-      "Content-Type": "text/markdown",
+      "content-type": "text/markdown",
+      "cache-control": "public, max-age=3600, must-revalidate",
     },
     status: 200,
   })

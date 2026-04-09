@@ -291,7 +291,7 @@ export const sidebars = [
               },
               {
                 type: "link",
-                path: "/learn/fundamentals/data-models/index",
+                path: "/learn/fundamentals/data-models/indexes",
                 title: "Define Index",
               },
               {
@@ -484,7 +484,7 @@ export const sidebars = [
                 type: "link",
                 path: "/learn/fundamentals/events-and-subscribers/event-priority",
                 title: "Event Priority",
-              }
+              },
             ],
           },
           {

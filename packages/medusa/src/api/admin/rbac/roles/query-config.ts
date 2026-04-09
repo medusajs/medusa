@@ -1,5 +1,6 @@
 export enum Entities {
   user = "user",
+  rbac_role = "rbac_role",
 }
 
 export const defaultAdminRbacRoleFields = [

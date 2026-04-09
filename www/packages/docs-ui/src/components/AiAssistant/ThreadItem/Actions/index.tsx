@@ -1,8 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
-import { Badge } from "@/components/Badge"
 import { Button, type ButtonProps } from "@/components/Button"
-import { Link } from "@/components/Link"
 import {
   ThumbDown,
   ThumbUp,
@@ -14,6 +12,7 @@ import { useSiteConfig } from "../../../../providers/SiteConfig"
 import { AiAssistantThreadItem as AiAssistantThreadItemType } from "../../../../providers/AiAssistant"
 import { Reaction, useChat } from "@kapaai/react-sdk"
 import { useCopy } from "../../../../hooks/use-copy"
+import Link from "next/link"
 
 export type AiAssistantThreadItemActionsProps = {
   item: AiAssistantThreadItemType
@@ -68,12 +67,19 @@ export const AiAssistantThreadItemActions = ({
         <>
           {item.sources !== undefined && item.sources.length > 0 && (
             <div className="flex gap-[6px] items-center flex-wrap">
-              {item.sources.map((source) => (
-                <Badge key={source.source_url} variant="neutral">
-                  <Link href={source.source_url} className="!text-inherit">
-                    {source.title}
-                  </Link>
-                </Badge>
+              {item.sources.map((source, index) => (
+                <Link
+                  key={index}
+                  href={source.source_url}
+                  className={clsx(
+                    "flex items-center justify-center px-[6px] py-px",
+                    "rounded-docs_xs bg-medusa-tag-neutral-bg font-monospace",
+                    "text-medusa-fg-subtle hover:text-medusa-fg-base",
+                    "text-code-paragraph-2xsmall"
+                  )}
+                >
+                  {source.title}
+                </Link>
               ))}
             </div>
           )}

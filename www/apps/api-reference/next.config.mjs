@@ -42,6 +42,9 @@ const withMDX = createMDX({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -69,6 +72,9 @@ const withMDX = createMDX({
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",
+            },
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
             },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,

@@ -609,6 +609,153 @@ medusaIntegrationTestRunner({
           expect(response.data.users).toHaveLength(0)
         })
       })
+
+      describe("POST /admin/rbac/roles/:id/users", () => {
+        it("should assign multiple users to a role", async () => {
+          const userModule = container.resolve(Modules.USER)
+
+          // Create test users
+          const testUser1 = await userModule.createUsers({
+            email: "testuser1@example.com",
+            first_name: "Test",
+            last_name: "User1",
+          })
+          const testUser2 = await userModule.createUsers({
+            email: "testuser2@example.com",
+            first_name: "Test",
+            last_name: "User2",
+          })
+
+          // Create a role
+          const roleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Batch Test Role",
+              description: "Role for batch user assignment",
+            },
+            adminHeaders
+          )
+          const testRole = roleResponse.data.role
+
+          // Assign multiple users to the role
+          const response = await api.post(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            { users: [testUser1.id, testUser2.id] },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.users).toHaveLength(2)
+          expect(response.data.users).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: testUser1.id }),
+              expect.objectContaining({ id: testUser2.id }),
+            ])
+          )
+
+          // Verify users were assigned
+          const verifyResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(verifyResponse.data.count).toEqual(2)
+        })
+
+        it("should return 404 for non-existent role", async () => {
+          const error = await api
+            .post(
+              `/admin/rbac/roles/non_existent_id/users`,
+              { users: ["user_123"] },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+        })
+      })
+
+      describe("DELETE /admin/rbac/roles/:id/users", () => {
+        it("should remove multiple users from a role", async () => {
+          const userModule = container.resolve(Modules.USER)
+          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+
+          // Create test users
+          const testUser1 = await userModule.createUsers({
+            email: "removeuser1@example.com",
+            first_name: "Remove",
+            last_name: "User1",
+          })
+          const testUser2 = await userModule.createUsers({
+            email: "removeuser2@example.com",
+            first_name: "Remove",
+            last_name: "User2",
+          })
+
+          // Create a role
+          const roleResponse = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Batch Remove Test Role",
+              description: "Role for batch user removal",
+            },
+            adminHeaders
+          )
+          const testRole = roleResponse.data.role
+
+          // Assign users to the role
+          await remoteLink.create([
+            {
+              [Modules.USER]: { user_id: testUser1.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+            {
+              [Modules.USER]: { user_id: testUser2.id },
+              [Modules.RBAC]: { rbac_role_id: testRole.id },
+            },
+          ])
+
+          // Verify users were assigned
+          const beforeResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(beforeResponse.data.count).toEqual(2)
+
+          // Remove multiple users from the role
+          const deleteResponse = await api.delete(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            {
+              ...adminHeaders,
+              data: { users: [testUser1.id, testUser2.id] },
+            }
+          )
+
+          expect(deleteResponse.status).toEqual(200)
+          expect(deleteResponse.data).toEqual({
+            ids: [testUser1.id, testUser2.id],
+            object: "role_user",
+            deleted: true,
+          })
+
+          // Verify users were removed
+          const afterResponse = await api.get(
+            `/admin/rbac/roles/${testRole.id}/users`,
+            adminHeaders
+          )
+          expect(afterResponse.data.count).toEqual(0)
+        })
+
+        it("should return 404 for non-existent role", async () => {
+          const error = await api
+            .delete(`/admin/rbac/roles/non_existent_id/users`, {
+              ...adminHeaders,
+              data: { users: ["user_123"] },
+            })
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+        })
+      })
     })
   },
 })

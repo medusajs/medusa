@@ -354,7 +354,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         }
       )
     } catch (e) {
-      throw this.buildError("An error occurred in refundPayment", e)
+      if (e.code !== ErrorCodes.CHARGE_ALREADY_REFUNDED) {
+        throw this.buildError("An error occurred in refundPayment", e)
+      }
     }
 
     return { data }

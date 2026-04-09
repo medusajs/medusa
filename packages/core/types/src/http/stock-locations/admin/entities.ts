@@ -12,6 +12,7 @@ export interface AdminStockLocationAddress {
   phone: string | null
   postal_code: string | null
   province: string | null
+  metadata: Record<string, unknown> | null
 }
 
 export interface AdminStockLocation {

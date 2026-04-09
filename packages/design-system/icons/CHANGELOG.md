@@ -1,5 +1,19 @@
 # @medusajs/icons
 
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14700](https://github.com/medusajs/medusa/pull/14700) [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e) Thanks [@fPolic](https://github.com/fPolic)! - fix(icons): default viewBox
+
 ## 2.13.1
 
 ## 2.13.0

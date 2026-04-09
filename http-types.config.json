@@ -1,0 +1,13 @@
+{
+  "outputBase": "packages/core/types/src/http",
+  "tsconfig": "_tsconfig.base.json",
+  "importSources": {
+    "commonRequest": "packages/core/types/src/http/common",
+    "dal": "packages/core/types/src/dal"
+  },
+  "validatorGlobs": {
+    "admin": "packages/medusa/src/api/admin/*/validators.ts",
+    "store": "packages/medusa/src/api/store/*/validators.ts"
+  },
+  "validatorPathPattern": "/api/(admin|store)/([^/]+)/validators\\.ts$"
+}

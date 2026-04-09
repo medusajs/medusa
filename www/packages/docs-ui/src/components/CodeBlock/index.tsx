@@ -155,10 +155,7 @@ export const CodeBlock = ({
         overrideColors.bg,
         !overrideColors.bg && [
           blockStyle === "loud" && "bg-medusa-contrast-bg-base",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "bg-medusa-bg-subtle",
-            colorMode === "dark" && "bg-medusa-code-bg-base",
-          ],
+          blockStyle === "subtle" && "bg-medusa-bg-component",
         ]
       ),
     [blockStyle, colorMode, overrideColors]
@@ -170,27 +167,14 @@ export const CodeBlock = ({
         overrideColors.lineNumbersBg,
         !overrideColors.lineNumbersBg && [
           blockStyle === "loud" && "text-medusa-contrast-fg-secondary",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "text-medusa-fg-muted",
-            colorMode === "dark" && "text-medusa-contrast-fg-secondary",
-          ],
+          blockStyle === "subtle" && "text-medusa-fg-muted",
         ]
       ),
     [blockStyle, colorMode, overrideColors]
   )
 
   const borderColor = useMemo(
-    () =>
-      clsx(
-        overrideColors.border,
-        !overrideColors.border && [
-          blockStyle === "loud" && "border-0",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "border-medusa-border-base",
-            colorMode === "dark" && "border-medusa-code-border",
-          ],
-        ]
-      ),
+    () => clsx(overrideColors.border, !overrideColors.border && "border-0"),
     [blockStyle, colorMode, overrideColors]
   )
 
@@ -275,6 +259,7 @@ export const CodeBlock = ({
           lineNumberBgClassName={innerBgColor}
           isTerminal={isTerminalCode}
           animateTokenHighlights={animateTokenHighlights}
+          codeBlockStyle={blockStyle}
           {...highlightProps}
         />
       )
@@ -345,6 +330,10 @@ export const CodeBlock = ({
         ? themes.vsDark
         : themes.vsLight
 
+    if (blockStyle === "subtle") {
+      return prismTheme
+    }
+
     return {
       ...prismTheme,
       plain: {
@@ -369,9 +358,7 @@ export const CodeBlock = ({
           !hasInnerCodeBlock && "rounded-docs_DEFAULT",
           !hasTabs && boxShadow,
           blockStyle === "loud" && "code-block-highlight",
-          blockStyle === "subtle" &&
-            colorMode === "light" &&
-            "code-block-highlight-light",
+          blockStyle === "subtle" && "code-block-highlight-light",
           wrapperClassName
         )}
         data-testid="code-block"

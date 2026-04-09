@@ -29,6 +29,9 @@ const withMDX = mdx({
           },
           hasGeneratedSlugs: true,
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -296,7 +299,15 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path*",
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!md-content).+)/",
           has: [
             {
               type: "header",
@@ -304,7 +315,29 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path*",
+          destination: "/md-content/:path",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:path((?!md-content).+)",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
         },
       ],
     }
