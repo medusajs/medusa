@@ -4,13 +4,34 @@ import CreditLine from "./credit-line"
 import LineItem from "./line-item"
 import ShippingMethod from "./shipping-method"
 
+/**
+ * Represents a shopping cart containing items and associated data.
+ */
 const Cart = model
   .define("Cart", {
+    /**
+     * The unique identifier of the cart.
+     */
     id: model.id({ prefix: "cart" }).primaryKey(),
+    /**
+     * The ID of the region the cart belongs to.
+     */
     region_id: model.text().nullable(),
+    /**
+     * The ID of the customer the cart belongs to.
+     */
     customer_id: model.text().nullable(),
+    /**
+     * The ID of the sales channel the cart is associated with.
+     */
     sales_channel_id: model.text().nullable(),
+    /**
+     * The email address associated with the cart.
+     */
     email: model.text().nullable(),
+    /**
+     * The currency code used for the cart.
+     */
     currency_code: model.text(),
     /**
      * The BCP 47 language tag code of the locale
@@ -21,37 +42,103 @@ const Cart = model
      * "en-US"
      */
     locale: model.text().nullable(),
+    /**
+     * Additional metadata for the cart.
+     */
     metadata: model.json().nullable(),
+    /**
+     * The timestamp when the cart was completed/converted to an order.
+     */
     completed_at: model.dateTime().nullable(),
+    /**
+     * The shipping address for the cart.
+     */
     shipping_address: model
       .hasOne(() => Address, {
         mappedBy: undefined,
         foreignKey: true,
       })
       .nullable(),
+    /**
+     * The billing address for the cart.
+     */
     billing_address: model
       .hasOne(() => Address, {
         mappedBy: undefined,
         foreignKey: true,
       })
       .nullable(),
+    /**
+     * The line items in the cart.
+     */
     items: model.hasMany(() => LineItem, {
       mappedBy: "cart",
     }),
+    /**
+     * The credit lines associated with the cart.
+     */
     credit_lines: model.hasMany(() => CreditLine, {
       mappedBy: "cart",
     }),
+    /**
+     * The shipping methods selected for the cart.
+     */
     shipping_methods: model.hasMany(() => ShippingMethod, {
       mappedBy: "cart",
     }),
+    /**
+     * The original total amount of all items in the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_item_total: model.bigNumber().computed(),
+    /**
+     * The original subtotal amount of all items in the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_item_subtotal: model.bigNumber().computed(),
+    /**
+     * The original tax total amount of all items in the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_item_tax_total: model.bigNumber().computed(),
+    /**
+     * The total amount of all items in the cart after discounts.
+     *
+     * @since 2.13.7
+     */
     item_total: model.bigNumber().computed(),
+    /**
+     * The subtotal amount of all items in the cart after discounts.
+     *
+     * @since 2.13.7
+     */
     item_subtotal: model.bigNumber().computed(),
+    /**
+     * The tax total amount of all items in the cart after discounts.
+     *
+     * @since 2.13.7
+     */
     item_tax_total: model.bigNumber().computed(),
+    /**
+     * The original total amount of the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_total: model.bigNumber().computed(),
+    /**
+     * The original subtotal amount of the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_subtotal: model.bigNumber().computed(),
+    /**
+     * The original tax total amount of the cart before any discounts.
+     *
+     * @since 2.13.7
+     */
     original_tax_total: model.bigNumber().computed(),
     total: model.bigNumber().computed(),
     subtotal: model.bigNumber().computed(),
