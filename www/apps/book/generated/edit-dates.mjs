@@ -48,7 +48,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/admin/ui-routes/page.mdx": "2025-07-25T06:58:26.149Z",
   "app/learn/fundamentals/api-routes/middlewares/page.mdx": "2025-10-16T11:23:37.787Z",
   "app/learn/fundamentals/modules/isolation/page.mdx": "2025-05-21T15:10:15.499Z",
-  "app/learn/fundamentals/data-models/index/page.mdx": "2025-03-18T07:59:07.798Z",
   "app/learn/fundamentals/custom-cli-scripts/page.mdx": "2025-12-23T07:33:58.063Z",
   "app/learn/debugging-and-testing/testing-tools/integration-tests/api-routes/page.mdx": "2025-12-23T07:53:58.179Z",
   "app/learn/debugging-and-testing/testing-tools/integration-tests/page.mdx": "2025-12-23T07:54:27.757Z",
@@ -132,7 +131,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/scheduled-jobs/interval/page.mdx": "2025-09-02T08:36:12.714Z",
   "app/learn/debugging-and-testing/feature-flags/create/page.mdx": "2025-09-02T08:36:12.714Z",
   "app/learn/debugging-and-testing/feature-flags/page.mdx": "2025-09-02T08:36:12.714Z",
-  "app/learn/fundamentals/workflows/locks/page.mdx": "2025-12-09T11:20:25.011Z",
+  "app/learn/fundamentals/workflows/locks/page.mdx": "2026-04-03T09:29:55.646Z",
   "app/learn/codemods/page.mdx": "2025-09-29T15:40:03.620Z",
   "app/learn/codemods/replace-imports/page.mdx": "2025-10-09T11:37:44.754Z",
   "app/learn/fundamentals/admin/translations/page.mdx": "2025-12-16T13:56:21.400Z",
@@ -140,6 +139,7 @@ export const generatedEditDates = {
   "app/learn/best-practices/third-party-sync/page.mdx": "2025-12-03T11:48:58.209Z",
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-01-06T15:51:48.131Z",
   "app/learn/codemods/replace-zod-imports/page.mdx": "2026-01-12T13:51:52.324Z",
-  "app/learn/configurations/pnpm/page.mdx": "2026-01-12T13:39:17.549Z",
-  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z"
+  "app/learn/configurations/pnpm/page.mdx": "2026-03-16T14:36:36.335Z",
+  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
+  "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z"
 }
