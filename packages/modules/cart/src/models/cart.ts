@@ -14,9 +14,9 @@ const Cart = model
     currency_code: model.text(),
     /**
      * The BCP 47 language tag code of the locale
-     * 
+     *
      * @since 2.12.3
-     * 
+     *
      * @example
      * "en-US"
      */
@@ -44,6 +44,28 @@ const Cart = model
     shipping_methods: model.hasMany(() => ShippingMethod, {
       mappedBy: "cart",
     }),
+    original_item_total: model.bigNumber().computed(),
+    original_item_subtotal: model.bigNumber().computed(),
+    original_item_tax_total: model.bigNumber().computed(),
+    item_total: model.bigNumber().computed(),
+    item_subtotal: model.bigNumber().computed(),
+    item_tax_total: model.bigNumber().computed(),
+    original_total: model.bigNumber().computed(),
+    original_subtotal: model.bigNumber().computed(),
+    original_tax_total: model.bigNumber().computed(),
+    total: model.bigNumber().computed(),
+    subtotal: model.bigNumber().computed(),
+    tax_total: model.bigNumber().computed(),
+    discount_total: model.bigNumber().computed(),
+    discount_tax_total: model.bigNumber().computed(),
+    gift_card_total: model.bigNumber().computed(),
+    gift_card_tax_total: model.bigNumber().computed(),
+    shipping_total: model.bigNumber().computed(),
+    shipping_subtotal: model.bigNumber().computed(),
+    shipping_tax_total: model.bigNumber().computed(),
+    original_shipping_total: model.bigNumber().computed(),
+    original_shipping_subtotal: model.bigNumber().computed(),
+    original_shipping_tax_total: model.bigNumber().computed(),
   })
   .cascades({
     delete: [
