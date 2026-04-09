@@ -30,6 +30,10 @@ interface AdminClaimAddItems {
      * An internal note viewed by admin users only.
      */
     internal_note?: string
+    /**
+     * Key-value pairs of custom data.
+     */
+    metadata?: Record<string, unknown> | null
   }[]
 }
 
@@ -120,13 +124,15 @@ export interface AdminCreateClaim {
 }
 
 export interface AdminAddClaimItems extends AdminClaimAddItems {}
-export interface AdminUpdateClaimItem extends Omit<AdminClaimUpdateItem, "description"> {}
+export interface AdminUpdateClaimItem
+  extends Omit<AdminClaimUpdateItem, "description"> {}
 
 export interface AdminAddClaimInboundItems extends AdminClaimAddItems {}
 export interface AdminUpdateClaimInboundItem extends AdminClaimUpdateItem {}
 
 export interface AdminAddClaimOutboundItems extends AdminClaimAddItems {}
-export interface AdminUpdateClaimOutboundItem extends Omit<AdminClaimUpdateItem, "description"> {}
+export interface AdminUpdateClaimOutboundItem
+  extends Omit<AdminClaimUpdateItem, "description"> {}
 
 export interface AdminClaimAddInboundShipping
   extends AdminClaimAddShippingMethod {}

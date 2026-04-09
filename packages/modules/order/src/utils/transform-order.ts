@@ -55,7 +55,10 @@ export function formatOrder<T = any>(
         raw_compare_at_unit_price:
           detail.raw_compare_at_unit_price ??
           orderItem.item.raw_compare_at_unit_price,
-        metadata: detail.metadata ?? orderItem.item.metadata,
+        metadata:
+          detail.metadata !== undefined
+            ? detail.metadata
+            : orderItem.item.metadata,
         detail,
       }
     })
