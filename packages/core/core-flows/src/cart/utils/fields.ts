@@ -1,4 +1,7 @@
 // Always ensure that cartFieldsForPricingContext is present in cartFieldsForRefreshSteps
+
+import { fieldsForPricingContext } from "../../common/utils/fields"
+
 // Always ensure that cartFieldsForCalculateShippingOptionsPrices is present in cartFieldsForRefreshSteps
 export const cartFieldsForRefreshSteps = [
   "id",
@@ -134,22 +137,7 @@ export const completeCartFields = [
   "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
-export const cartFieldsForPricingContext = [
-  "id",
-  "sales_channel_id",
-  "currency_code",
-  "region_id",
-  "shipping_address.city",
-  "shipping_address.country_code",
-  "shipping_address.province",
-  "shipping_address.postal_code",
-  "item_total",
-  "total",
-  "locale",
-  "customer.id",
-  "email",
-  "customer.groups.id",
-]
+export const cartFieldsForPricingContext = [...fieldsForPricingContext]
 
 export const productVariantsFields = [
   "id",
