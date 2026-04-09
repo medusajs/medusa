@@ -67,7 +67,7 @@ const clone = async (rootPath: string, inputBranch?: string) => {
     url = hostedInfo.https({ noCommittish: true, noGitPlus: true })
   }
 
-  const branch = [`-b`, inputBranch || "master"]
+  const branch = [`-b`, inputBranch || "main"]
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)
 
