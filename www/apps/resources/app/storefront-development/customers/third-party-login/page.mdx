@@ -598,6 +598,130 @@ const validateCallback = async () => {
 
 ---
 
+## Next.js: Server Actions with HttpOnly Cookies
+
+The client-side flow shown in [Step 2](#step-2-callback-page-in-storefront) stores the authentication token in the JS SDK's memory. This works for most storefronts, but Next.js applications using [Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) with HttpOnly cookies face a problem: `sdk.auth.refresh()` runs before the browser receives the authentication cookie, and the client-side SDK cannot read HttpOnly cookies at all.
+
+To solve this, implement the callback as a [Route Handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) that runs entirely server-side:
+
+1. Validate the OAuth callback server-side.
+2. Decode the returned token to detect whether the customer already exists.
+3. If the customer is new, create them by passing the identity token explicitly in the `Authorization` header — the HttpOnly cookie does not exist yet at this point.
+4. Refresh the token server-side to obtain a full customer token.
+5. Set the refreshed token as an HttpOnly cookie.
+
+### Install jwt-decode
+
+Install [jwt-decode](https://www.npmjs.com/package/jwt-decode) to decode the token server-side:
+
+```bash npm2yarn
+npm install jwt-decode
+```
+
+### Create the Route Handler
+
+Create a Next.js Route Handler at the callback URL you configured in your OAuth provider:
+
+export const nextjsCallbackHighlights = [
+  ["13", "", "Validate the OAuth callback with Medusa"],
+  ["27", "actor_id", "Empty means this is a new customer"],
+  ["32", "Authorization", "Pass the identity token explicitly — no cookie yet"],
+  ["44", "", "Refresh server-side to get a full customer token"],
+  ["52", "httpOnly", "Set the final token as an HttpOnly cookie"],
+]
+
+```ts title="app/auth/google/callback/route.ts" highlights={nextjsCallbackHighlights}
+import { cookies } from "next/headers"
+import { jwtDecode } from "jwt-decode"
+
+const MEDUSA_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const queryParams = Object.fromEntries(
+    searchParams.entries()
+  )
+
+  // Validate the OAuth callback with Medusa
+  const callbackRes = await fetch(
+    `${MEDUSA_URL}/auth/customer/google/callback`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(queryParams),
+    }
+  )
+
+  const { token } = await callbackRes.json()
+  type Decoded = {
+    actor_id: string
+    user_metadata: { email: string }
+  }
+  const decoded = jwtDecode<Decoded>(token)
+
+  let finalToken = token
+
+  if (!decoded.actor_id) {
+    // New customer — create them, passing the identity
+    // token explicitly since no cookie exists yet
+    await fetch(`${MEDUSA_URL}/store/customers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email: decoded.user_metadata.email,
+      }),
+    })
+
+    // Refresh server-side to get a full customer token
+    const refreshRes = await fetch(
+      `${MEDUSA_URL}/auth/token/refresh`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      }
+    )
+    const { token: refreshed } = await refreshRes.json()
+    finalToken = refreshed
+  }
+
+  // Set the final token as an HttpOnly cookie
+  const cookieStore = await cookies()
+  cookieStore.set("_medusa_jwt", finalToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  })
+
+  return Response.redirect(new URL("/", request.url))
+}
+```
+
+The Route Handler:
+
+1. Sends the OAuth query parameters to the [Validate Authentication Callback API route](!api!/store#auth_postactor_typeauth_providercallback) and receives an identity token.
+2. Decodes the token to check `actor_id`.
+    - If `actor_id` is empty, the customer does not exist yet. Follow steps 3 and 4.
+    - If `actor_id` is set, the customer is already registered. Skip to step 5.
+3. Creates the customer using the [Create Customer API route](!api!/store#customers_postcustomers), passing the identity token in the `Authorization` header. The HttpOnly cookie has not been set yet, so the token must be passed explicitly.
+4. Refreshes the token server-side using the [Refresh Token API route](!api!/store#auth_postadminauthtokenrefresh). The refreshed token contains the customer's details and can be used for authenticated requests.
+5. Sets the final token as an HttpOnly cookie. Subsequent Server Actions and Route Handlers carry this cookie automatically.
+
+<Note title="Tip">
+
+Make your login button redirect to a server-side route that calls `/auth/customer/google` on the Medusa backend and redirects to the returned `location`, rather than calling `sdk.auth.login` in client code. This keeps the entire authentication flow server-side and consistent with the HttpOnly cookie approach.
+
+</Note>
+
+---
+
 ## Deep Dive: Third-Party Login Flow in Storefront
 
 In this section, you'll find a general overview of the third-party login flow in the storefront. This is useful if you're not using the JS SDK or want to understand the flow better.
