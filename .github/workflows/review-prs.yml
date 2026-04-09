@@ -5,7 +5,13 @@ on:
     types: [opened, reopened, synchronize, edited]
   issue_comment:
     types: [created]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      skip_reviewed:
+        description: 'Skip PRs that already have initial-approval or requires-more labels'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   # Runs only on workflow_dispatch: collects all open non-draft PRs for the matrix below
@@ -22,8 +28,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          matrix=$(gh pr list --repo ${{ github.repository }} --state open --json number,isDraft,author \
-            --jq '[.[] | select(.isDraft == false and .author.is_bot == false) | {number: .number}]')
+          SKIP_REVIEWED="${{ inputs.skip_reviewed }}"
+          matrix=$(gh pr list --repo ${{ github.repository }} --state open --limit 200 --json number,isDraft,author,labels \
+            --jq "[.[] | select(
+              .isDraft == false and
+              .author.is_bot == false and
+              (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not) else true end)
+            ) | {number: .number}]")
+
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
