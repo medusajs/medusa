@@ -3,52 +3,75 @@ name: PR Review
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
+  issue_comment:
+    types: [created]
+  workflow_dispatch: {}
 
 jobs:
-  review:
-    # Skip draft PRs
-    if: github.event.pull_request.draft == false
+  # Runs only on workflow_dispatch: collects all open non-draft PRs for the matrix below
+  get-open-prs:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      id-token: write
+      pull-requests: read
+    outputs:
+      matrix: ${{ steps.get-prs.outputs.matrix }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Review PR
-        uses: anthropics/claude-code-action@v1
+      - name: Get open non-draft PRs
+        id: get-prs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          base_branch: develop
-          show_full_output: true
-          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
-          plugins: "medusa-dev@medusa"
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          matrix=$(gh pr list --repo ${{ github.repository }} --state open --json number,isDraft \
+            --jq '[.[] | select(.isDraft == false) | {number: .number}]')
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
-          prompt: |
-            PR NUMBER: ${{ github.event.pull_request.number }}
-            PR TITLE: ${{ github.event.pull_request.title }}
-            PR AUTHOR: ${{ github.event.pull_request.user.login }}
+  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
+  review-all:
+    needs: get-open-prs
+    if: needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
+    strategy:
+      matrix:
+        pr: ${{ fromJson(needs.get-open-prs.outputs.matrix) }}
+      max-parallel: 5
+      fail-fast: false
+    uses: ./.github/workflows/review-pr-action.yml
+    with:
+      pr_number: '${{ matrix.pr.number }}'
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
 
-            Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
+  # Runs on pull_request and issue_comment (@medusaBot review) events: determines PR number
+  prepare:
+    if: |
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.draft == false &&
+       github.event.pull_request.user.login != 'github-actions[bot]') ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request.url != '' &&
+       contains(github.event.comment.body, '@medusaBot review'))
+    runs-on: ubuntu-latest
+    outputs:
+      pr_number: ${{ steps.set.outputs.pr_number }}
+    steps:
+      - name: Set PR number
+        id: set
+        run: |
+          if [ "${{ github.event_name }}" == "issue_comment" ]; then
+            echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          fi
 
-            /reviewing-prs ${{ github.event.pull_request.number }} "${{ github.event.pull_request.title }}" "${{ github.event.pull_request.user.login }}"
-
-          claude_args: >-
-            --allowedTools
-            "Bash(bash scripts/get_pr.sh:*),
-            Bash(bash scripts/get_pr_files.sh:*),
-            Bash(bash scripts/get_linked_issues.sh:*),
-            Bash(bash scripts/get_comments.sh:*),
-            Bash(bash scripts/add_comment.sh:*),
-            Bash(bash scripts/labels.sh:*),
-            Bash(bash scripts/get_labels.sh:*),
-            Bash(bash scripts/get_issue.sh:*),
-            Bash(bash scripts/close_issue.sh:*),
-            Read"
+  # Runs on pull_request and issue_comment: calls the reusable review workflow
+  review:
+    needs: prepare
+    uses: ./.github/workflows/review-pr-action.yml
+    with:
+      pr_number: ${{ needs.prepare.outputs.pr_number }}
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
