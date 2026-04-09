@@ -4562,7 +4562,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/removePriceListPricesWorkflow",
                   "title": "removePriceListPricesWorkflow",
-                  "description": "Remove prices in price lists.",
+                  "description": "Remove prices.",
                   "children": []
                 },
                 {

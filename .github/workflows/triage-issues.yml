@@ -1,0 +1,66 @@
+name: Issue Triage
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  triage:
+    if: |
+      false && (
+        github.event_name == 'issues' ||
+        (github.event_name == 'issue_comment' && github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      discussions: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Triage issue
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          base_branch: develop
+          show_full_output: true
+          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
+          plugins: "medusa-dev@medusa"
+
+          prompt: |
+            ISSUE NUMBER: ${{ github.event.issue.number }}
+            ISSUE TITLE: ${{ github.event.issue.title }}
+            ISSUE BODY: ${{ github.event.issue.body }}
+            ISSUE AUTHOR: ${{ github.event.issue.user.login }}
+
+            Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
+
+            /triaging-issues ${{ github.event.issue.number }} "${{ github.event.issue.title }}" "${{ github.event.issue.body }}" "${{ github.event.issue.user.login }}"
+
+          claude_args: >-
+            --allowedTools
+            "Bash(bash scripts/get_issue.sh:*),
+            Bash(bash scripts/get_comments.sh:*),
+            Bash(bash scripts/get_labels.sh:*),
+            Bash(bash scripts/add_comment.sh:*),
+            Bash(bash scripts/labels.sh:*),
+            Bash(bash scripts/close_issue.sh:*),
+            Bash(bash scripts/convert_to_discussion.sh:*),
+            Bash(bash scripts/search_issues.sh:*),
+            Bash(gh search issues:*)"

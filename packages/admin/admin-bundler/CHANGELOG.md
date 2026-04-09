@@ -1,5 +1,16 @@
 # @medusajs/admin-bundler
 
+## 2.13.6
+
+### Patch Changes
+
+- [#15005](https://github.com/medusajs/medusa/pull/15005) [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update glob version
+
+- Updated dependencies [[`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac)]:
+  - @medusajs/dashboard@2.13.6
+  - @medusajs/admin-shared@2.13.6
+  - @medusajs/admin-vite-plugin@2.13.6
+
 ## 2.13.5
 
 ### Patch Changes
