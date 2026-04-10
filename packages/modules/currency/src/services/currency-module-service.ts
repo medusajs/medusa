@@ -10,7 +10,7 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
 
-import { MedusaService } from "@medusajs/framework/utils"
+import { MedusaService, normalizeCurrencyCode } from "@medusajs/framework/utils"
 import { Currency } from "@models"
 
 type InjectedDependencies = {
@@ -86,7 +86,7 @@ export default class CurrencyModuleService
       FilterableCurrencyProps
     >(filters, (fieldName, value) => {
       if (fieldName === "code" && !!value) {
-        return value.toLowerCase()
+        return normalizeCurrencyCode(value)
       }
 
       return value

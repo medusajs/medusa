@@ -41,7 +41,7 @@ export const generatedEditDates = {
   "app/organization-management/team/page.mdx": "2026-02-18T10:24:38.994Z",
   "app/features/team-collaboration/page.mdx": "2026-02-17T14:30:51.065Z",
   "app/preview-tabs/page.mdx": "2026-02-24T08:56:07.482Z",
-  "app/developers/email-templates/page.mdx": "2026-03-16T13:19:23.033Z",
+  "app/developers/email-templates/page.mdx": "2026-04-10T14:00:44.848Z",
   "app/features/emails/page.mdx": "2026-03-16T13:10:48.784Z",
   "app/features/integrations/guides/cookiebot/page.mdx": "2026-03-18T08:23:24.558Z",
   "app/features/integrations/guides/klaviyo/page.mdx": "2026-03-18T08:33:25.354Z",
