@@ -82,7 +82,7 @@ export interface AdminUpdateStockLocation {
   /**
    * Custom key-value pairs that can be added to the stock location.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateStockLocationSalesChannels {

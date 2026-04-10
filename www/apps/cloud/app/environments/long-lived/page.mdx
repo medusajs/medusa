@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -49,6 +49,12 @@ git push origin staging # push branch to remote
 ### Steps to Create a Long-Lived Environment
 
 To create a long-lived environment:
+
+<Note title="Tip">
+
+You can also navigate to the environment creation form from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Create Environment**, then choose a project.
+
+</Note>
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the "Add environment" button at the top right.
 2. In the side window that opens:

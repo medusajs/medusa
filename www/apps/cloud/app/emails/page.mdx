@@ -11,7 +11,7 @@ keywords:
   - medusa emails
 ---
 
-import { CodeTabs, CodeTab, Prerequisites, InlineIcon } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -95,13 +95,13 @@ module.exports = defineConfig({
 
 In this setup, the Local Notification Module Provider is used for the `email` channel only in the development environment. In other environments, it uses the `feed` channel.
 
-### (Optional) Verify Your Email Sender Domain
+### (Optional) Add Email Sender Domain to Cloud
 
 By default, Medusa Emails sends emails using a randomly generated email address at the domain `medusajsemails.com`.
 
-If you don't verify an email sender domain, you can only send emails to addresses of users in your Cloud organization.
+If you don't add an email sender domain, you can only send emails to addresses of users in your Cloud organization.
 
-To send emails to external email addresses, [verify your email sender domain](#verify-email-sender-domain-on-cloud).
+To send emails to external email addresses, [add an email sender domain](#add-email-sender-domain-to-cloud).
 
 ---
 
@@ -126,7 +126,7 @@ const myWorkflow = createWorkflow(
   "my-workflow",
   (input: Input) => {
     const data = sendNotificationsStep({
-      // must either have a verified sender domain or use an email
+      // must either have an added sender domain or use an email
       // address that belongs to your Cloud organization
       to: input.email,
       channel: "email",
@@ -152,7 +152,7 @@ const notificationModuleService = container.resolve(
 )
 
 await notificationModuleService.createNotifications({
-  // must either have a verified sender domain or use an email
+  // must either have an added sender domain or use an email
   // address that belongs to your Cloud organization
   to: "user@example.com",
   channel: "email",
@@ -176,7 +176,7 @@ Refer to the [Set Up React Email Templates](./react-email/page.mdx) guide to lea
 
 ---
 
-## Verify Email Sender Domain on Cloud
+## Add Email Sender Domain to Cloud
 
 <Prerequisites
   items={[
@@ -192,9 +192,15 @@ Verified email sender domains are available for Launch, Scale, and Enterprise pl
 
 </Note>
 
-To send emails to external email addresses using Medusa Emails, you need to verify your email sender domain in your Cloud organization. You can verify multiple sender domains if needed.
+To send emails to external email addresses using Medusa Emails, you need to add an email sender domain in your Cloud organization. You can add multiple sender domains if needed.
 
-To verify your email sender domain:
+To add your email sender domain:
+
+<Note title="Tip">
+
+You can also navigate to the sender domains form from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Add Sender Domain**.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
@@ -205,7 +211,7 @@ To verify your email sender domain:
 4. Click Emails -> Sender Domains from the sidebar.
 5. Click the "Add sender domain" button.
 6. In the form that opens, perform these two steps:
-    - **Domain**: Enter the domain you want to verify (for example, `yourdomain.com`).
+    - **Domain**: Enter the domain you want to add (for example, `yourdomain.com`).
     - **DNS Records**: Add the provided DNS records to your domain's DNS settings. These records are necessary for verifying domain ownership and setting up email authentication.
         - If you're unsure how to add DNS records, refer to your domain registrar's documentation or support.
 7. Once you're done, click the "I've added the records" button.
@@ -216,7 +222,7 @@ The domain will then be added, and the system will periodically check the DNS re
 
 ### Specify From Email
 
-After verifying your email sender domain, specify a `from` property in the notification to set the sender email address.
+After adding your email sender domain, specify a `from` property in the notification to set the sender email address.
 
 For example:
 
@@ -282,6 +288,12 @@ The email will be sent from the `no-reply@yourdomain.com` address, assuming it b
 You can monitor email sending activity like sent emails, delivery rates, open rates, and click rates for your Cloud organization using the Email Activity page in your Cloud dashboard.
 
 To view email sending activity:
+
+<Note title="Tip">
+
+You can also navigate to the sender domains form from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Sender Domains**.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.

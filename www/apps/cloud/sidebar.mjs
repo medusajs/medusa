@@ -29,6 +29,11 @@ export const sidebar = [
             path: "/comparison",
             title: "Cloud vs Self Hosting",
           },
+          {
+            type: "link",
+            title: "Command Palette",
+            path: "/command-palette",
+          },
         ],
       },
       {
