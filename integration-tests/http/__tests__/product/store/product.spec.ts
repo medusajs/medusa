@@ -532,6 +532,10 @@ medusaIntegrationTestRunner({
             {
               title: "test variant 1",
               manage_inventory: true,
+              sku: 'test-sku',
+              ean: 'test-ean',
+              upc: 'test-upc',
+              barcode: 'test-barcode',
               options: {
                 size: "large",
                 color: "green",
@@ -891,6 +895,65 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
+
+
+
+
+      it("can filter products by ean", async () => {
+        const response = await api.get(
+          `/store/products?variants[ean]=${product.variants[0].ean}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("can filter products by upc", async () => {
+        const response = await api.get(
+          `/store/products?variants[upc]=${product.variants[0].upc}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("can filter products by barcode", async () => {
+        const response = await api.get(
+          `/store/products?variants[barcode]=${product.variants[0].barcode}`,
+          storeHeaders
+        )
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+
+      it("can filter products by sku", async () => {
+        const response = await api.get(
+          `/store/products?variants[sku]=${product.variants[0].sku}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+
+
+
 
       it("returns a list of products with one of the given handles", async () => {
         const response = await api.get(

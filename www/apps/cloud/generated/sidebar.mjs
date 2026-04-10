@@ -41,6 +41,14 @@ export const generatedSidebars = [
             "path": "/comparison",
             "title": "Cloud vs Self Hosting",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Command Palette",
+            "path": "/command-palette",
+            "children": []
           }
         ]
       },
