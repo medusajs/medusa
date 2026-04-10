@@ -3,6 +3,8 @@ import { HttpTypes } from "@medusajs/types"
 import {
   ApiKeyType,
   ModuleRegistrationName,
+  PriceListStatus,
+  PriceListType,
   ProductStatus,
   PromotionStatus,
   PromotionType,
@@ -776,7 +778,8 @@ medusaIntegrationTestRunner({
 
         // Remove item
         await api.post(
-          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${edit.items.find((i) => i.subtitle === "M shirt").id
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${
+            edit.items.find((i) => i.subtitle === "M shirt").id
           }`,
           { quantity: 0 },
           adminHeaders
@@ -784,7 +787,8 @@ medusaIntegrationTestRunner({
 
         // Update item
         await api.post(
-          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${edit.items.find((i) => i.subtitle === "L shirt").id
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${
+            edit.items.find((i) => i.subtitle === "L shirt").id
           }`,
           { quantity: 2 },
           adminHeaders
@@ -1383,10 +1387,12 @@ medusaIntegrationTestRunner({
         ).data.draft_order_preview
 
         const response = await api.delete(
-          `/admin/draft-orders/${testDraftOrder.id
-          }/edit/shipping-methods/method/${edit.shipping_methods.find(
-            (sm) => sm.shipping_option_id === shippingOptionHeavy.id
-          ).id
+          `/admin/draft-orders/${
+            testDraftOrder.id
+          }/edit/shipping-methods/method/${
+            edit.shipping_methods.find(
+              (sm) => sm.shipping_option_id === shippingOptionHeavy.id
+            ).id
           }`,
           adminHeaders
         )
@@ -1437,6 +1443,164 @@ medusaIntegrationTestRunner({
               }),
             ]),
           })
+        )
+      })
+    })
+
+    describe("POST /draft-orders/:id/edit/items", () => {
+      let customer
+      let customerGroup
+      let draftOrder
+      let product
+
+      beforeEach(async () => {
+        const inventoryItem = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "shirt" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+          {
+            location_id: stockLocation.id,
+            stocked_quantity: 10,
+          },
+          adminHeaders
+        )
+
+        product = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Shirt",
+              status: ProductStatus.PUBLISHED,
+              options: [{ title: "size", values: ["large"] }],
+              variants: [
+                {
+                  title: "L shirt",
+                  options: { size: "large" },
+                  manage_inventory: true,
+                  inventory_items: [
+                    {
+                      inventory_item_id: inventoryItem.id,
+                      required_quantity: 1,
+                    },
+                  ],
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 10,
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        customer = (
+          await api.post(
+            "/admin/customers",
+            {
+              first_name: "Tony",
+              last_name: "Stark",
+              email: "tony@stark-industries.com",
+            },
+            adminHeaders
+          )
+        ).data.customer
+
+        customerGroup = (
+          await api.post(
+            "/admin/customer-groups",
+            { name: "VIP" },
+            adminHeaders
+          )
+        ).data.customer_group
+
+        await api.post(
+          `/admin/customer-groups/${customerGroup.id}/customers`,
+          { add: [customer.id] },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/price-lists`,
+          {
+            title: "VIP price list",
+            description: "test",
+            status: PriceListStatus.ACTIVE,
+            type: PriceListType.SALE,
+            prices: [
+              {
+                amount: 2,
+                currency_code: "usd",
+                variant_id: product.variants[0].id,
+              },
+            ],
+            rules: {
+              "customer.groups.id": [customerGroup.id],
+            },
+          },
+          adminHeaders
+        )
+
+        draftOrder = (
+          await api.post(
+            "/admin/draft-orders",
+            {
+              customer_id: customer.id,
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              shipping_address: {
+                address_1: "123 Main St",
+                city: "Anytown",
+                country_code: "US",
+                postal_code: "12345",
+                first_name: "Tony",
+              },
+            },
+            adminHeaders
+          )
+        ).data.draft_order
+      })
+
+      it("should apply price from price list associated to a customer group when customer rules match", async () => {
+        await api.post(
+          `/admin/draft-orders/${draftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        const response = await api.post(
+          `/admin/draft-orders/${draftOrder.id}/edit/items`,
+          {
+            items: [
+              {
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        const preview = response.data.draft_order_preview
+
+        expect(response.status).toBe(200)
+        expect(preview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variant_id: product.variants[0].id,
+              unit_price: 2,
+              compare_at_unit_price: 10,
+              quantity: 1,
+            }),
+          ])
         )
       })
     })

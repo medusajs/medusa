@@ -480,6 +480,11 @@ const redirects = async () => {
       destination: "/learn/debugging-and-testing/testing-tools/modules-tests",
       permanent: true,
     },
+    {
+      source: "/learn/fundamentals/data-models/index",
+      destination: "/learn/fundamentals/data-models/indexes",
+      permanent: true,
+    },
   ]
 }
 
