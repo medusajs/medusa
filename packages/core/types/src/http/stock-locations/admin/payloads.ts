@@ -1,3 +1,6 @@
+/**
+ * Address details for creating or updating a stock location address.
+ */
 interface AdminUpsertStockLocationAddress {
   /**
    * The first line of the address.
@@ -41,6 +44,9 @@ interface AdminUpsertStockLocationAddress {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * Data for creating a stock location.
+ */
 export interface AdminCreateStockLocation {
   /**
    * The name of the stock location.
@@ -63,6 +69,9 @@ export interface AdminCreateStockLocation {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * Data for updating a stock location.
+ */
 export interface AdminUpdateStockLocation {
   /**
    * The name of the stock location.
