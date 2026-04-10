@@ -26,5 +26,13 @@ export default async function migrateNormalizeCurrencyCodes({
           currency_code: knex.raw("LOWER(currency_code)"),
         })
     }
+
+    await trx.raw(`
+      UPDATE index_data
+      SET data = jsonb_set(data, '{currency_code}', to_jsonb(LOWER(data->>'currency_code')))
+      WHERE name = 'Price'
+        AND data->>'currency_code' IS NOT NULL
+        AND data->>'currency_code' <> LOWER(data->>'currency_code')
+    `)
   })
 }
