@@ -3495,11 +3495,14 @@ __metadata:
     "@mikro-orm/knex": 6.6.12
     "@mikro-orm/migrations": 6.6.12
     "@mikro-orm/postgresql": 6.6.12
-    "@opentelemetry/api": ^1.9.0
-    "@opentelemetry/instrumentation-pg": ^0.52.0
-    "@opentelemetry/resources": ^2.0.0
-    "@opentelemetry/sdk-node": ^0.200.0
-    "@opentelemetry/sdk-trace-node": ^2.0.0
+    "@opentelemetry/api": ^1.9.1
+    "@opentelemetry/exporter-metrics-otlp-http": ^0.214.0
+    "@opentelemetry/exporter-trace-otlp-http": ^0.214.0
+    "@opentelemetry/instrumentation-pg": ^0.56.0
+    "@opentelemetry/resources": ^2.6.1
+    "@opentelemetry/sdk-metrics": ^2.6.1
+    "@opentelemetry/sdk-node": ^0.214.0
+    "@opentelemetry/sdk-trace-node": ^2.6.1
     awilix: ^8.0.1
     pg: ^8.16.3
     zod: 3.25.76
@@ -28458,7 +28461,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.0.0":
+"yaml@npm:^2.0.0, yaml@npm:^2.8.3":
   version: 2.8.3
   resolution: "yaml@npm:2.8.3"
   bin:
@@ -28473,15 +28476,6 @@ __metadata:
   bin:
     yaml: bin.mjs
   checksum: 703e4dc1e34b324aa66876d63618dcacb9ed49f7e7fe9b70f1e703645be8d640f68ab84f12b86df8ac960bac37acf5513e115de7c970940617ce0343c8c9cd96
-  languageName: node
-  linkType: hard
-
-"yaml@npm:^2.8.3":
-  version: 2.8.3
-  resolution: "yaml@npm:2.8.3"
-  bin:
-    yaml: bin.mjs
-  checksum: ddff0e11c1b467728d7eb4633db61c5f5de3d8e9373cf84d08fb0cdee03e1f58f02b9f1c51a4a8a865751695addbd465a77f73f1079be91fe5493b29c305fd77
   languageName: node
   linkType: hard
 
