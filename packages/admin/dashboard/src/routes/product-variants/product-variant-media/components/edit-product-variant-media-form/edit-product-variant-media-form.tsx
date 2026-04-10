@@ -44,11 +44,11 @@ export const EditProductVariantMediaForm = ({
 
   const allProductImages = variant.product?.images || []
   const allVariantImages = (variant.images || []).filter((image) =>
-    image.variants?.some((variant) => variant.id === variant.id)
+    image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
 
   const unassociatedImages = allProductImages.filter(
-    (image) => !image.variants?.some((variant) => variant.id === variant.id)
+    (image) => !image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
 
   const [selection, setSelection] = useState<Record<string, true>>({})
