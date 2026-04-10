@@ -30,7 +30,7 @@ export async function validateReturnReasons(
       "parent_return_reason",
       "return_reason_children.id",
     ],
-    variables: { id: [inputItems.map((item) => item.reason_id)], limit: null },
+    variables: { id: inputItems.map((item) => item.reason_id), limit: null },
   })
 
   const returnReasons = await remoteQuery(remoteQueryObject)

@@ -21,7 +21,7 @@ export const generatedEditDates = {
   "app/products/page.mdx": "2025-05-30T13:29:49.292Z",
   "app/inventory/inventory/page.mdx": "2025-05-30T13:27:17.017Z",
   "app/customers/groups/page.mdx": "2025-05-30T13:26:56.820Z",
-  "app/orders/manage/page.mdx": "2025-09-09T06:46:05.439Z",
+  "app/orders/manage/page.mdx": "2026-04-08T09:01:04.465Z",
   "app/orders/returns/page.mdx": "2025-10-09T07:33:10.189Z",
   "app/inventory/page.mdx": "2025-05-30T13:27:31.179Z",
   "app/orders/claims/page.mdx": "2025-05-30T13:27:39.540Z",

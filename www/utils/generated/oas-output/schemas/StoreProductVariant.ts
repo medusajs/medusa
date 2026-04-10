@@ -140,7 +140,6 @@
  *   - hs_code
  *   - mid_code
  *   - material
- *   - images
  *   - deleted_at
  *   - manage_inventory
  *   - allow_backorder

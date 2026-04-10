@@ -19,11 +19,11 @@ export const developersSidebar = [
         title: "Environment Variables",
         path: "/developers/environment-variables",
       },
-      {
-        type: "link",
-        title: "Email Templates",
-        path: "/developers/email-templates",
-      },
+      // {
+      //   type: "link",
+      //   title: "Email Templates",
+      //   path: "/developers/email-templates",
+      // },
     ],
   },
 ]

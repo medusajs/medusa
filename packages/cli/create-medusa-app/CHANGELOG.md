@@ -1,5 +1,47 @@
 # Change Log
 
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1)]:
+  - @medusajs/deps@2.13.6
+  - @medusajs/telemetry@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.5
+  - @medusajs/telemetry@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.4
+  - @medusajs/telemetry@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.3
+  - @medusajs/telemetry@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14681](https://github.com/medusajs/medusa/pull/14681) [`94fc900582bc11213edbea7b5dfd88c167233ae5`](https://github.com/medusajs/medusa/commit/94fc900582bc11213edbea7b5dfd88c167233ae5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix installations with storefronts for pnpm
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.2
+  - @medusajs/telemetry@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

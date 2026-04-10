@@ -1168,8 +1168,6 @@ paths:
     $ref: paths/admin_store-credit-accounts.yaml
   /admin/store-credit-accounts/{id}:
     $ref: paths/admin_store-credit-accounts_{id}.yaml
-  /admin/store-credit-accounts/{id}/credit:
-    $ref: paths/admin_store-credit-accounts_{id}_credit.yaml
   /admin/store-credit-accounts/{id}/transactions:
     $ref: paths/admin_store-credit-accounts_{id}_transactions.yaml
   /admin/stores:

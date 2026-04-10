@@ -174,9 +174,42 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Emails",
-            "path": "/features/emails",
-            "children": []
+            "title": "Integrations",
+            "path": "/features/integrations",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Cookiebot",
+                "path": "/features/integrations/guides/cookiebot",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Klaviyo",
+                "path": "/features/integrations/guides/klaviyo",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Slack",
+                "path": "/features/integrations/guides/slack",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Stripe",
+                "path": "/features/integrations/guides/stripe",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -308,15 +341,6 @@ export const generatedSidebars = [
             "path": "/prompting/service-integrations-prompting/guides/shipstation",
             "description": "Add shipping and fulfillment features",
             "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "title": "Stripe",
-            "path": "/prompting/service-integrations-prompting/guides/stripe",
-            "description": "Add payment processing features",
-            "children": []
           }
         ]
       }
@@ -348,14 +372,6 @@ export const generatedSidebars = [
         "type": "link",
         "title": "Environment Variables",
         "path": "/developers/environment-variables",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "title": "Email Templates",
-        "path": "/developers/email-templates",
         "children": []
       }
     ]

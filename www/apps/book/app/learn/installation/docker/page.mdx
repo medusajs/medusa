@@ -531,7 +531,7 @@ docker compose run --rm medusa pnpm medusa user -e admin@example.com -p supersec
   <CodeTab value="npm" label="npm">
 
 ```bash
-docker compose run --rm medusa npx medusa user -e admin@example.com -p supersecret
+docker compose exec medusa npx medusa user -e admin@example.com -p supersecret
 ```
 
   </CodeTab>
