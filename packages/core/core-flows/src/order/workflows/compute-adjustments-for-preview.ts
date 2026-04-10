@@ -41,6 +41,9 @@ export type ComputeAdjustmentsForPreviewWorkflowInput = {
   orderChange: OrderChangeDTO
 }
 
+/**
+ * The ID of the compute adjustments for preview workflow.
+ */
 export const computeAdjustmentsForPreviewWorkflowId =
   "compute-adjustments-for-preview"
 /**

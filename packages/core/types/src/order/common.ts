@@ -31,8 +31,16 @@ export type ChangeActionType =
   | "PROMOTION_ADD"
   | "PROMOTION_REMOVE"
   | "ITEM_ADJUSTMENTS_REPLACE"
-  | "SHIPPING_ADJUSTMENTS_REPLACE"
+  | /**
+   * Replace shipping method adjustments.
+   *
+   * @since 2.13.7
+   */
+  "SHIPPING_ADJUSTMENTS_REPLACE"
 
+/**
+ * The order change's status.
+ */
 export type OrderChangeStatus =
   | "confirmed"
   | "declined"
@@ -134,6 +142,8 @@ export interface OrderShippingMethodAdjustmentDTO
 
   /**
    * The version of the adjustment.
+   *
+   * @since 2.13.7
    */
   version: number
 }
@@ -156,6 +166,8 @@ export interface OrderLineItemAdjustmentDTO extends OrderAdjustmentLineDTO {
 
   /**
    * The version of the adjustment.
+   *
+   * @since 2.13.7
    */
   version: number
 }

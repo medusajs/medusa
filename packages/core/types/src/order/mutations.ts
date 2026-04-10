@@ -843,6 +843,8 @@ export interface CreateOrderShippingMethodAdjustmentDTO {
 
   /**
    * The version of the adjustment.
+   *
+   * @since 2.13.7
    */
   version?: number
 }
