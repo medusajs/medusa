@@ -25,6 +25,11 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 - Query usages
 - Database queries and operations
 
+It also supports metrics collection for:
+
+- Node.js event loop performance
+- Runtime metrics (memory usage, garbage collection)
+
 ---
 
 ## How to Configure Instrumentation in Medusa?
@@ -42,14 +47,14 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 
 <Note>
 
-As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), OpenTelemetry dependencies are installed by default in new Medusa projects. If you're using an older version of Medusa, you need to install the `@opentelemetry/sdk-node`, `@opentelemetry/resources`, `@opentelemetry/sdk-trace-node`, and `@opentelemetry/instrumentation-pg` dependencies.
+As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), OpenTelemetry dependencies are installed by default in new Medusa projects. If you're using an older version of Medusa, you need to install the `@opentelemetry/sdk-node`, `@opentelemetry/sdk-metrics`, `@opentelemetry/resources`, `@opentelemetry/sdk-trace-node`, and `@opentelemetry/instrumentation-pg` dependencies.
 
 </Note>
 
 Before you start, you must install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
 
 ```bash npm2yarn
-npm install @opentelemetry/exporter-zipkin
+npm install @opentelemetry/exporter-zipkin @opentelemetry/exporter-prometheus
 ```
 
 ### Add instrumentation.ts
@@ -59,10 +64,16 @@ Next, create the file `instrumentation.ts` with the following content:
 ```ts title="instrumentation.ts"
 import { registerOtel } from "@medusajs/medusa"
 import { ZipkinExporter } from "@opentelemetry/exporter-zipkin"
+import { PrometheusExporter } from "@opentelemetry/exporter-prometheus"
 
 // If using an exporter other than Zipkin, initialize it here.
 const exporter = new ZipkinExporter({
   serviceName: "my-medusa-project",
+})
+
+// Optional: metrics exporter for runtime and event loop metrics
+const metricsExporter = new PrometheusExporter({
+  port: 9090,
 })
 
 export function register() {
@@ -70,10 +81,14 @@ export function register() {
     serviceName: "medusajs",
     // pass exporter
     exporter,
+    // pass metrics exporter (optional)
+    metricsExporter,
     instrument: {
       http: true,
       workflows: true,
       query: true,
+      runtime: true,     // Enable Node.js runtime metrics
+      eventLoop: true,   // Enable event loop monitoring
     },
   })
 }
@@ -103,6 +118,12 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
       description: "An instance of an exporter, such as Zipkin."
     },
     {
+      name: "metricsExporter",
+      type: "[PushMetricExporter](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-metrics.PushMetricExporter.html)",
+      description: "An instance of a metrics exporter, such as Prometheus.",
+      optional: true
+    },
+    {
       name: "instrument",
       type: "`object`",
       description: "Options specifying what to trace.",
@@ -127,6 +148,21 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
           name: "db",
           type: "`boolean`",
           description: "Whether to trace database queries and operations."
+        },
+        {
+          name: "cache",
+          type: "`boolean`",
+          description: "Whether to trace cache operations."
+        },
+        {
+          name: "runtime",
+          type: "`boolean`",
+          description: "Whether to collect Node.js runtime metrics (memory, garbage collection)."
+        },
+        {
+          name: "eventLoop",
+          type: "`boolean`",
+          description: "Whether to monitor event loop performance metrics."
         }
       ]
     },
@@ -138,6 +174,47 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
     }
   ]}
 />
+
+---
+
+## Runtime Metrics
+
+When you enable `runtime` and `eventLoop` instrumentation, Medusa collects the following metrics:
+
+### Runtime Metrics
+
+- `nodejs_memory_heap_used_bytes`: V8 heap memory used
+- `nodejs_memory_heap_total_bytes`: V8 heap memory total
+- `nodejs_memory_rss_bytes`: Resident Set Size
+- `nodejs_memory_external_bytes`: Memory used by C++ objects bound to JavaScript
+- `nodejs_memory_array_buffers_bytes`: Memory allocated for ArrayBuffers and SharedArrayBuffers
+- `nodejs_gc_duration_seconds`: Garbage collection duration
+
+### Event Loop Metrics
+
+- `nodejs_eventloop_delay_min_ms`: Minimum event loop delay
+- `nodejs_eventloop_delay_mean_ms`: Mean event loop delay
+- `nodejs_eventloop_delay_max_ms`: Maximum event loop delay
+- `nodejs_eventloop_delay_stddev_ms`: Standard deviation of event loop delay
+- `nodejs_eventloop_delay_p50_ms`: 50th percentile event loop delay
+- `nodejs_eventloop_delay_p95_ms`: 95th percentile event loop delay
+- `nodejs_eventloop_delay_p99_ms`: 99th percentile event loop delay
+- `nodejs_eventloop_utilization_ratio`: Event loop utilization ratio (0-1)
+
+---
+
+## Medusa Cloud Integration
+
+If you're using Medusa Cloud, instrumentation can be automatically configured using environment variables. Medusa will detect the cloud environment and export telemetry data to the configured endpoints.
+
+The following environment variables are used for cloud configuration:
+
+- `MEDUSA_CLOUD_OTLP_TRACES_EXPORTER_URL`: URL for exporting trace data
+- `MEDUSA_CLOUD_OTLP_TRACES_EXPORTER_HEADERS`: JSON string of headers for trace export
+- `MEDUSA_CLOUD_OTLP_METRICS_EXPORTER_URL`: URL for exporting metrics data  
+- `MEDUSA_CLOUD_OTLP_METRICS_EXPORTER_HEADERS`: JSON string of headers for metrics export
+
+When these environment variables are set in a Medusa Cloud environment, traces and metrics are automatically exported without additional configuration.
 
 ---
 
