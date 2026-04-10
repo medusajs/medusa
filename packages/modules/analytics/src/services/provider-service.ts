@@ -43,11 +43,11 @@ export default class AnalyticsProviderService {
   }
 
   async track(data: ProviderTrackAnalyticsEventDTO): Promise<void> {
-    this.analyticsProvider_.track(data)
+    await this.analyticsProvider_.track(data)
   }
 
   async identify(data: ProviderIdentifyAnalyticsEventDTO): Promise<void> {
-    this.analyticsProvider_.identify(data)
+    await this.analyticsProvider_.identify(data)
   }
 
   async shutdown(): Promise<void> {

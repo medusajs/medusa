@@ -11,6 +11,24 @@ enum ShippingOptionPriceType {
   flat
 }
 
+type FulfillmentAddress {
+  id: ID!
+  company: String
+  first_name: String
+  last_name: String
+  address_1: String
+  address_2: String
+  city: String
+  country_code: String
+  province: String
+  postal_code: String
+  phone: String
+  metadata: JSON
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+}
+
 type FulfillmentItem {
   id: ID!
   title: String!
@@ -40,8 +58,7 @@ type FulfillmentLabel {
 
 type FulfillmentProvider {
   id: ID!
-  name: String!
-  metadata: JSON
+  is_enabled: Boolean!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
@@ -68,6 +85,7 @@ type Fulfillment {
   marked_shipped_by: String
   created_by: String
   data: JSON
+  requires_shipping: Boolean!
   provider_id: String!
   shipping_option_id: String
   metadata: JSON
@@ -89,6 +107,8 @@ type GeoZone {
   city: String
   postal_expression: JSON
   metadata: JSON
+  service_zone: ServiceZone!
+  service_zone_id: String!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
@@ -124,8 +144,7 @@ type ShippingOptionType {
   label: String!
   description: String!
   code: String!
-  shipping_option_id: String!
-  shipping_option: ShippingOption!
+  shipping_options: [ShippingOption!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime

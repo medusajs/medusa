@@ -2,7 +2,7 @@ import { TypeList } from "docs-ui"
 
 # KnownModuleConfigs
 
- **KnownModuleConfigs**: &#123; [K in keyof ModuleOptions]: Partial&#60;Omit&#60;InternalModuleDeclaration, "options"&#62; & &#123; key?: string; disable?: boolean; resolve: K; options?: ModuleOptions[K] &#125;&#62; &#125;[keyof [ModuleOptions](../../CommonTypes/interfaces/types.CommonTypes.ModuleOptions/page.mdx)]
+ **KnownModuleConfigs**: [ModuleConfigForResolve](../types.ModuleConfigForResolve/page.mdx)&#60;keyof [ModuleOptions](../../CommonTypes/interfaces/types.CommonTypes.ModuleOptions/page.mdx) & string&#62;
 
 Generates a union of typed module configs for all known modules in the ModuleOptions registry.
-This enables automatic type inference when using registered module resolve strings.
+This distributes over all keys in ModuleOptions to create specific config types for each.

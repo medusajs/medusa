@@ -1,3 +1,7 @@
+export enum Entities {
+  notification = "notification",
+}
+
 export const defaultAdminNotificationFields = [
   "id",
   "to",
@@ -15,9 +19,11 @@ export const defaultAdminNotificationFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminNotificationFields,
   isList: false,
+  entity: Entities.notification,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.notification,
 }

@@ -31,6 +31,7 @@ export type FeedbackProps = {
   extraData?: ExtraData
   vertical?: boolean
   showDottedSeparator?: boolean
+  questionClassName?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const feedbackOptions = {
@@ -65,6 +66,7 @@ export const Feedback = ({
   extraData = {},
   vertical = false,
   showDottedSeparator = true,
+  questionClassName,
 }: FeedbackProps) => {
   const {
     config: { reportIssueLink },
@@ -169,7 +171,10 @@ export const Feedback = ({
                 data-testid="feedback-form"
               >
                 <Label
-                  className={"text-compact-small text-medusa-fg-base"}
+                  className={clsx(
+                    "text-compact-small text-medusa-fg-base",
+                    questionClassName
+                  )}
                   data-testid="question-label"
                 >
                   {question}

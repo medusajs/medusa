@@ -1,0 +1,505 @@
+import { InProductAction } from "docs-ui"
+
+export const metadata = {
+  title: `Create Email Templates Manually`,
+}
+
+# {metadata.title}
+
+Create custom email templates manually for your Bloom store to send branded, professional emails to customers.
+
+<Note>
+
+This guide is for developers who want to create email templates programmatically in their Bloom project. If you want Bloom to create and send emails for you, check out the [Emails](../../features/emails/page.mdx) feature guide instead.
+
+</Note>
+
+## How Emails Work in Bloom
+
+Bloom provides an email previewer in your project. You can use it to preview email templates that Bloom creates and ask Bloom to make changes to them. These templates can be used in your store to send emails for order confirmations, account confirmation, password resets, and more.
+
+Under the hood, Bloom uses:
+
+- [React Email](https://react.email/) to create email templates as React components.
+- [Medusa Emails](!cloud!/emails) to send emails from your live store, which is a zero-configuration service built for Medusa stores.
+
+Aside from asking Bloom to create email templates for you, you can create email templates manually in your Bloom project, preview them in Bloom, and implement the logic to send them when certain events happen in your store.
+
+---
+
+## Create Email Template
+
+This section explains how to create a new email template in your codebase so that you can preview it in Bloom and use it to send emails.
+
+### 1. Create Template File
+
+Bloom stores email templates in the `app/backend/src/email-templates` directory of your project. Each template is a `.tsx` file that exports a React component.
+
+<Note title="Tip">
+
+Learn about your project's directory structure in the [Code Editor](../code-editor/page.mdx) guide.
+
+</Note>
+
+For example, if you want to create an email template for order confirmation, create a file at `app/backend/src/email-templates/order-confirmation.tsx`.
+
+### 2. Define Template Component
+
+In the template file, define a React component that returns the HTML structure of your email using [React Email components](https://react.email/docs/components/html). The component should accept props for any dynamic data you want to include in the email.
+
+For example, to create an order confirmation email template:
+
+```tsx title="app/backend/src/email-templates/order-confirmation.tsx" collapsibleLines="40-257"
+import { CustomerDTO, OrderDTO } from "@medusajs/framework/types"
+import {
+  Body,
+  Column,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Preview,
+  Row,
+  Section,
+  Tailwind,
+  Text,
+} from "@react-email/components"
+
+type OrderPlacedEmailProps = {
+  order: OrderDTO & { customer: CustomerDTO }
+  storeName: string
+}
+
+function Template({ order, storeName }: OrderPlacedEmailProps) {
+  const getLocaleAmount = (amount: number) => {
+    const formatter = new Intl.NumberFormat([], {
+      style: "currency",
+      currencyDisplay: "narrowSymbol",
+      currency: order.currency_code,
+    })
+
+    return formatter.format(amount)
+  }
+
+  const items = order.items?.map((item) => {
+    const itemTotal = item.unit_price * item.quantity
+
+    return (
+      <Section key={item.id} className="border-b border-gray-200 py-4 px-0">
+        <Row className="px-0">
+          <Column className="w-1/6">
+            <Img
+              src={item.thumbnail ?? ""}
+              alt={""}
+              className="rounded-lg"
+              width="100%"
+            />
+          </Column>
+          <Column className="w-7/8 pl-4">
+            <Text className="text-sm text-black my-2">
+              {item.product_title}
+            </Text>
+            <Text className="text-xs text-black my-2">
+              {item.variant_title}
+            </Text>
+            <Text className="text-xs text-black my-2">
+              <span className="font-semibold">
+                {item.quantity} x {getLocaleAmount(item.unit_price)}
+              </span>
+            </Text>
+            <Text className="text-xs text-black font-bold my-2">
+              {getLocaleAmount(itemTotal)}
+            </Text>
+          </Column>
+        </Row>
+      </Section>
+    )
+  })
+
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Head />
+        <Preview>Thank you for your order from {storeName}</Preview>
+        <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+          {/* Greeting and Order Confirmation */}
+          <Container className="p-6">
+            <Heading className="text-lg font-normal text-black mb-6">
+              Dear{" "}
+              {order.customer?.first_name || order.shipping_address?.first_name}
+              ,
+            </Heading>
+
+            <Text className="text-sm text-black leading-relaxed mb-6">
+              Thank you for your order. Below you will find the details for your
+              purchase.
+            </Text>
+
+            <div className="mb-6">
+              <Text className="text-sm text-black m-0 mb-1">
+                Order number:{" "}
+                <span className="font-semibold">{order.display_id}</span>
+              </Text>
+              <Text className="text-sm text-black m-0">
+                Order date:{" "}
+                <span className="font-semibold">
+                  {new Date(order.created_at).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </Text>
+            </div>
+
+            <Text className="text-sm text-black leading-relaxed">
+              We're getting your order ready to be shipped. We will notify you
+              when it has been sent. If you have any questions, please don't
+              hesitate to contact us.
+            </Text>
+          </Container>
+
+          {/* Order Items */}
+          <Container className="px-6">
+            <Heading className="text-base font-semibold text-black mb-2">
+              Your Items
+            </Heading>
+
+            {items}
+
+            {/* Order Summary */}
+            <Section className="mt-8 border-t border-gray-200 pt-6">
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Subtotal (incl. VAT)</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.item_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Shipping Total</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.shipping_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              {Number(order.discount_total) > 0 ? (
+                <Row className="text-black">
+                  <Column className="w-1/2">
+                    <Text className="text-sm m-0 mb-2">Discount</Text>
+                  </Column>
+                  <Column className="w-1/2 text-right">
+                    <Text className="text-sm m-0 mb-2">
+                      -{getLocaleAmount(order.discount_total as number)}
+                    </Text>
+                  </Column>
+                </Row>
+              ) : null}
+              <Row className="text-black font-bold">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Total</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 italic">VAT Amount</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 italic">
+                    {getLocaleAmount(order.tax_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+            </Section>
+
+            {/* Shipping Address */}
+            <Section className="mt-8 mb-8">
+              <Heading className="text-base font-semibold text-black mb-2">
+                Shipping Address
+              </Heading>
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.first_name}{" "}
+                {order.shipping_address?.last_name}
+              </Text>
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.address_1}
+              </Text>
+              {order.shipping_address?.address_2 && (
+                <Text className="text-sm text-black m-0 mb-1">
+                  {order.shipping_address?.address_2}
+                </Text>
+              )}
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.postal_code}{" "}
+                {order.shipping_address?.city}
+              </Text>
+              <Text className="text-sm text-black m-0">
+                {order.shipping_address?.country_code?.toUpperCase()}
+              </Text>
+            </Section>
+          </Container>
+
+          {/* Footer */}
+          <Section className="bg-gray-50 p-6 mt-10">
+            <Text className="text-center text-black text-sm">
+              Order ID: {order.id}
+            </Text>
+            <Text className="text-center text-black text-xs mt-4">
+              © {new Date().getFullYear()} {storeName}, Inc. All rights reserved.
+            </Text>
+          </Section>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getOrderPlacedTemplate(props?: OrderPlacedEmailProps) {
+  const demoData: OrderDTO & { customer: CustomerDTO } = {
+    id: "order_01J5K6M8N9P0Q1R2S3T4U5V6W7",
+    display_id: 1234,
+    created_at: new Date().toISOString(),
+    currency_code: "usd",
+    item_total: 5999,
+    shipping_total: 500,
+    discount_total: 0,
+    tax_total: 840,
+    total: 6499,
+    items: [
+      {
+        id: "item_01",
+        product_title: "Premium Wireless Headphones",
+        variant_title: "Black / Standard",
+        thumbnail: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb",
+        unit_price: 2999,
+        quantity: 2,
+      },
+    ],
+    customer: {
+      id: "cust_01",
+      email: "customer@example.com",
+      first_name: "John",
+      last_name: "Doe",
+    },
+    shipping_address: {
+      first_name: "John",
+      last_name: "Doe",
+      address_1: "123 Main Street",
+      address_2: "Apt 4B",
+      city: "New York",
+      postal_code: "10001",
+      country_code: "us",
+    },
+  } as OrderDTO & { customer: CustomerDTO }
+
+  return <Template order={props?.order ?? demoData} storeName={props?.storeName ?? "Demo Store"} />
+}
+```
+
+This template component uses React Email components to structure the email and accepts `order` and `storeName` as props to populate dynamic content. It displays order details, items, totals, and shipping address in a clean format.
+
+### 3. Preview in Bloom
+
+If you're using the [Code Editor](../code-editor/page.mdx) feature, save the template's file to commit it to the GitHub repository of the project. If you've [exported your project to GitHub](../export-to-github/page.mdx) and you created the template locally, make sure to push it to GitHub.
+
+Then, in your Bloom project's interface, click on <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "emails" }}>**Emails**</InProductAction> at the top of the preview. This will open the email previewer where you can switch between your email templates and see how they look with demo data.
+
+{/* TODO: add screenshot */}
+
+You can also ask Bloom to make changes to the templates with prompts like:
+
+```bash
+Add the logo of the store at the top of the email
+```
+
+Bloom will update the template code based on your prompt, and you can see the changes in the preview.
+
+---
+
+## Send Emails with Templates
+
+You can send emails using your templates when an event occurs in your store. For example, you can send an order confirmation email when an order is placed.
+
+The simplest way to implement this is to ask Bloom to do it for you. However, if you want to implement it manually, you can:
+
+1. Create a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that sends the email whenever a customer places an order.
+2. In the subscriber:
+    - Fetch the data relevant for the email, such as order details. You can use [Query](!docs!/learn/fundamentals/module-links/query) to fetch the necessary data.
+    - Render the email template with the `render` and `pretty` functions from `@react-email/render`, passing the relevant data as props to the template:
+
+```ts title="Render Email Template"
+import { render, pretty } from "@react-email/render"
+// import the template
+import OrderConfirmationEmail from "../email-templates/order-confirmation"
+
+// ...
+const html = await pretty(
+  await render(
+    OrderConfirmationEmail({
+      order,
+      storeName: store.name,
+    })
+  )
+)
+```
+
+    - Use Medusa's [Notification Module](!resources!/infrastructure-modules/notification) to send the email, passing the rendered HTML as the content:
+
+```ts title="Send Email with Notification Module"
+const notificationModule = container.resolve("notification")
+await notificationModule.createNotifications({
+  to: order.customer.email,
+  // optional: set from email
+  // from: "no-reply@yourdomain.com"
+  channel: "email",
+  content: {
+    html,
+    subject: `Order Confirmation - ${store.name}`,
+  },
+})
+```
+
+### Example: Order Confirmation Subscriber
+
+For example, to send an order confirmation email when an order is placed, create the file `app/backend/src/subscribers/order-placed.ts` with the following content:
+
+```ts title="app/backend/src/subscribers/order-placed.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { render, pretty } from "@react-email/render"
+import getOrderPlacedTemplate from "../email-templates/order-confirmation"
+
+export default async function orderPlacedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const query = container.resolve("query")
+
+  const {
+    data: [store],
+  } = await query.graph({
+    entity: "store",
+    fields: ["name"],
+  })
+
+  const {
+    data: [order],
+  } = await query.graph({
+    entity: "order",
+    fields: [
+      "id",
+      "email",
+      "display_id",
+      "created_at",
+
+      // Customer
+      "customer.first_name",
+      "customer.email",
+
+      // Items
+      "items.id",
+      "items.product_title",
+      "items.variant_title",
+      "items.quantity",
+      "items.unit_price",
+
+      // Shipping address
+      "shipping_address.first_name",
+      "shipping_address.last_name",
+      "shipping_address.address_1",
+      "shipping_address.address_2",
+      "shipping_address.city",
+      "shipping_address.postal_code",
+      "shipping_address.country_code",
+
+      // Totals
+      "item_total",
+      "shipping_total",
+      "discount_total",
+      "tax_total",
+      "total",
+    ],
+    filters: {
+      id: data.id,
+    },
+  })
+
+  if (!order.customer?.email) {
+    console.warn(`Order ${order.id} has no customer email, skipping notification`)
+    return
+  }
+
+  const notificationModule = container.resolve("notification")
+
+  const html = await pretty(
+    await render(getOrderPlacedTemplate({
+      order: order as any,
+      storeName: store.name,
+    }))
+  )
+
+  await notificationModule.createNotifications({
+    to: order.customer.email,
+    // optional: set from email
+    // from: "no-reply@yourdomain.com"
+    channel: "email",
+    content: {
+      html,
+      subject: `Order Confirmation - ${store.name}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+This subscriber:
+
+1. Listens to the `order.placed` event, which is emitted when an order is placed in your store.
+2. Fetches the order details and store name using [Query](!docs!/learn/fundamentals/module-links/query).
+3. Renders the email template to HTML, passing it the order and store name as props.
+4. Uses the Notification Module to send the email to the customer's email address.
+
+Once you publish this subscriber to your live store, customers will receive an order confirmation email whenever they place an order.
+
+---
+
+## Development Resources
+
+<CardList
+  items={[
+    {
+      title: "React Email Documentation",
+      text: "Learn about available components, styling, and best practices for email templates.",
+      href: "https://react.email/docs/introduction",
+    },
+    {
+      title: "Medusa Subscribers Documentation",
+      text: "Learn how to create subscribers to listen for events and send emails.",
+      href: "!docs!/learn/fundamentals/events-and-subscribers",
+    },
+    {
+      title: "Medusa Notification Module",
+      text: "Learn how to use the Notification Module to send emails and other notifications.",
+      href: "!resources!/infrastructure-modules/notification",
+    },
+  ]}
+  itemsPerRow={1}
+/>

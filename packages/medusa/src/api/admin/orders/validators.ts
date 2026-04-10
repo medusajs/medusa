@@ -6,11 +6,12 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { isString } from "@medusajs/framework/utils"
 
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     version: z.preprocess((val) => {
-      if (val && typeof val === "string") {
+      if (isString(val) && val) {
         return parseInt(val)
       }
       return val
@@ -26,7 +27,12 @@ export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     item_id: z.union([z.string(), z.array(z.string())]).optional(),
-    version: z.number().optional(),
+    version: z.preprocess((val) => {
+      if (isString(val) && val) {
+        return parseInt(val)
+      }
+      return val
+    }, z.number().optional()),
   })
 )
 
@@ -40,10 +46,7 @@ export type AdminGetOrderShippingOptionListType = z.infer<
   typeof AdminGetOrderShippingOptionList
 >
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
-export const AdminGetOrdersParams = createFindParams({
+const AdminGetOrdersParamsBase = createFindParams({
   limit: 15,
   offset: 0,
 }).merge(
@@ -61,7 +64,22 @@ export const AdminGetOrdersParams = createFindParams({
     q: z.string().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
+    total: createOperatorMap().optional(),
   })
+)
+
+type AdminGetOrdersParamsInput = z.infer<typeof AdminGetOrdersParamsBase>
+
+const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
+  const { total, ...rest } = v
+  return {
+    ...rest,
+    ...(total ? { summary: { totals: { current_order_total: total } } } : {}),
+  }
+}
+
+export const AdminGetOrdersParams = AdminGetOrdersParamsBase.transform(
+  AdminGetOrdersParamsTransform
 )
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
@@ -136,6 +154,7 @@ export const AdminTransferOrder = z.object({
   customer_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
 
 export type AdminCancelOrderTransferRequestType = z.infer<

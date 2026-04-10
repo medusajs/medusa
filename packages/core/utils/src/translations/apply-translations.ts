@@ -12,11 +12,18 @@ const excludedKeys = [
 ]
 
 function canApplyTranslationTo(object: Record<string, any>) {
-  return "id" in object && !!object.id
+  return isObject(object) && "id" in object && !!object.id
 }
 
 function gatherIds(object: Record<string, any>, gatheredIds: Set<string>) {
-  gatheredIds.add(object.id)
+  if (!isObject(object)) {
+    return
+  }
+
+  if (object.id) {
+    gatheredIds.add(object.id)
+  }
+
   Object.entries(object).forEach(([, value]) => {
     if (Array.isArray(value)) {
       value.forEach((item) => item && gatherIds(item, gatheredIds))

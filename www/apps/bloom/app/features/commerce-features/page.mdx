@@ -1,0 +1,335 @@
+export const metadata = {
+  title: `Commerce Features`,
+}
+
+# {metadata.title}
+
+Your Bloom store comes with powerful ecommerce features built on [Medusa](https://medusajs.com/)'s commerce platform. These features help you sell products, manage orders, serve customers, and grow your business.
+
+This guide lists the commerce features available out-of-the-box in your Bloom store.
+
+<Note title="Managing your store">
+
+Learn how to use these features in your admin dashboard with the [Medusa Admin User Guide](!user-guide!).
+
+</Note>
+
+## Products & Catalog
+
+Build and organize your product catalog with flexible options for variants, collections, and categories:
+
+- Create products with multiple variants (size, color, etc...).
+- Organize products into collections and categories.
+- Add product tags for better organization and search.
+- Set images for products and variants to showcase your items.
+- Manage product types to group similar items.
+- Create bundled products and multi-part products.
+- Track product availability and stock levels.
+
+<Note title="Developer?">
+
+Learn about the [Product Module](!resources!/commerce-modules/product) for technical implementation details.
+
+</Note>
+
+---
+
+## Shopping Cart and Checkout
+
+Give customers a smooth shopping experience with a cart that saves their selections. The checkout process is flexible and supports multiple payment and shipping options:
+
+- Add products with selected variants to cart.
+- Update quantities and remove items from cart.
+- Save cart items between sessions.
+- Apply promotions and discounts automatically or with promo codes.
+- Calculate totals including taxes and shipping costs.
+- Provide region-specific payment and shipping options at checkout.
+- Support guest checkout and registered customers.
+
+<Note title="Developer?">
+
+Learn about the [Cart Module](!resources!/commerce-modules/cart) for technical implementation details.
+
+</Note>
+
+---
+
+## Orders & Fulfillment
+
+Manage the complete order lifecycle from purchase to delivery:
+
+- Process customer orders with automatic order numbers.
+- Create draft orders for phone or in-person sales.
+- Track order status from pending to delivered.
+- Handle returns and exchanges with built-in workflows.
+- Process order edits and changes.
+- Manage claims for damaged or incorrect items.
+- View complete order history and timeline.
+- Send order confirmation emails to customers.
+
+<Note title="Developer?">
+
+Learn about the [Order Module](!resources!/commerce-modules/order) for technical implementation details.
+
+</Note>
+
+---
+
+## Customers
+
+Build lasting relationships with your customers and manage their information securely:
+
+- Support customer accounts with registration and login.
+- Store customer contact and shipping information.
+- View customer order history.
+- Create customer groups for targeted marketing, promotions, and dedicated pricing.
+- Manage customer addresses for faster checkout.
+
+<Note title="Developer?">
+
+Learn about the [Customer Module](!resources!/commerce-modules/customer) for technical implementation details.
+
+</Note>
+
+---
+
+## Payments
+
+Accept payments securely with support for multiple payment methods and providers:
+
+- Integrate popular payment providers (Stripe, PayPal, etc...).
+- Accept any payment method supported by your providers (credit cards, digital wallets, etc...).
+- Process refunds and partial refunds.
+- Save payment methods for returning customers.
+- Handle payment authorization and capture separately.
+- Support for manual payment methods.
+- Automatic payment notifications and confirmations.
+
+<Note title="Developer?">
+
+Learn about the [Payment Module](!resources!/commerce-modules/payment) for technical implementation details.
+
+</Note>
+
+---
+
+## Pricing & Currencies
+
+Set flexible pricing strategies to sell globally and maximize revenue:
+
+- Support multiple currencies for product variants and shipping options.
+- Set different prices per region or customer group.
+- Create price lists for seasonal sales or promotions.
+- Implement tiered pricing (bulk discounts).
+- Set up pricing rules based on quantity, customer type, or date.
+- Display prices in customer's local currency.
+
+<Note title="Developer?">
+
+Learn about the [Pricing Module](!resources!/commerce-modules/pricing) for technical implementation details.
+
+</Note>
+
+---
+
+## Promotions & Discounts
+
+Drive sales with flexible promotions and discount campaigns:
+
+- Create percentage or fixed-amount discounts.
+- Set up buy-one-get-one (BOGO) offers.
+- Offer free shipping promotions.
+- Target specific products, categories, or customer groups.
+- Schedule promotions with start and end dates.
+- Apply automatic discounts or require promo codes.
+- Set up campaigns for seasonal sales, holidays, or special events.
+- Track campaign usage and budget.
+
+<Note title="Developer?">
+
+Learn about the [Promotion Module](!resources!/commerce-modules/promotion) for technical implementation details.
+
+</Note>
+
+---
+
+## Shipping & Fulfillment
+
+Deliver products to customers with flexible shipping options and fulfillment integrations:
+
+- Integrate popular shipping providers (DHL, ShipStation, etc...)
+- Offer multiple shipping methods and speeds.
+- Calculate shipping costs automatically.
+- Configure shipping options by inventory locations, sales channels, and product types.
+- Set up free shipping rules.
+- Support for in-store pickup.
+- Split shipments across multiple packages.
+- Track shipments with carrier information.
+- Disable shipping requirement for digital products.
+
+<Note title="Developer?">
+
+Learn about the [Fulfillment Module](!resources!/commerce-modules/fulfillment) for technical implementation details.
+
+</Note>
+
+---
+
+## Inventory Management
+
+Keep track of your stock across multiple locations and warehouses:
+
+- Track inventory levels for all product variants.
+- Manage stock across multiple warehouses or locations.
+- Reserve inventory when orders are placed to prevent overselling.
+- Manually reserve or release stock for specific items.
+- View inventory history and movements.
+- Create inventory kits and bundles.
+
+<Note title="Developer?">
+
+Learn about the [Inventory Module](!resources!/commerce-modules/inventory) and [Stock Location Module](!resources!/commerce-modules/stock-location) for technical implementation details.
+
+</Note>
+
+---
+
+## Taxes
+
+Handle sales tax calculations automatically for any region:
+
+- Set up tax rates by region, state, and country.
+- Create tax rules based on product type.
+- Integrate tax calculation providers (for example, Avalara).
+- Support for inclusive and exclusive tax pricing.
+- Handle tax exemptions for specific customer groups.
+- Calculate taxes automatically at checkout.
+
+<Note title="Developer?">
+
+Learn about the [Tax Module](!resources!/commerce-modules/tax) for technical implementation details.
+
+</Note>
+
+---
+
+## Regions & Markets
+
+Sell to customers worldwide with regional customization:
+
+- Define sales regions by country or geographical area.
+- Set currencies per region.
+- Configure payment providers by region.
+- Set tax rates for each market.
+- Display region-specific pricing.
+- Enable or disable regions as needed.
+
+<Note title="Developer?">
+
+Learn about the [Region Module](!resources!/commerce-modules/region) for technical implementation details.
+
+</Note>
+
+---
+
+## Sales Channels
+
+Sell through multiple channels and manage them from one place:
+
+- Create separate sales channels (web, mobile app, B2B portal).
+- Control which products appear in each channel.
+- Set channel-specific pricing and inventory availability.
+- Support for wholesale and retail channels.
+- Manage B2B and B2C sales separately.
+
+<Note title="Developer?">
+
+Learn about the [Sales Channel Module](!resources!/commerce-modules/sales-channel) for technical implementation details.
+
+</Note>
+
+---
+
+## Multi-Language Support
+
+<Note>
+
+Multi-language support is in beta. Ask Bloom to enable it for your store to start using these features.
+
+</Note>
+
+Reach customers in their preferred language:
+
+- Translate any information in your store, including products, categories, and custom data.
+- Support multiple languages for a global customer base.
+- Manage translations directly in the admin dashboard.
+- Fallback to default language when needed.
+
+<Note title="Developer?">
+
+Learn about the [Translation Module](!resources!/commerce-modules/translation) for technical implementation details.
+
+</Note>
+
+---
+
+## Store Settings
+
+Configure your store's basic information and preferences:
+
+- Set store name and contact information.
+- Configure default currency, region, and sales channel.
+- Manage store metadata.
+
+<Note title="Developer?">
+
+Learn about the [Store Module](!resources!/commerce-modules/store) for technical implementation details.
+
+</Note>
+
+---
+
+## Admin Users
+
+<Note>
+
+This feature refers to admin users who can access your store's admin dashboard to manage products, orders, customers, and settings.
+
+</Note>
+
+Invite team members to manage your store:
+
+- Invite staff members to access admin dashboard.
+- Manage user accounts and profiles.
+- Track which team member made changes.
+- Secure authentication for admin access.
+
+<Note title="Developer?">
+
+Learn about the [User Module](!resources!/commerce-modules/user) and [Auth Module](!resources!/commerce-modules/auth) for technical implementation details.
+
+</Note>
+
+---
+
+## API Keys & Security
+
+Secure your store and integrate with other systems safely:
+
+- Generate API keys for integrations.
+- Revoke keys when needed.
+- Secure authentication for admin users.
+
+<Note title="Developer?">
+
+Learn about the [API Key Module](!resources!/commerce-modules/api-key) and [Auth Module](!resources!/commerce-modules/auth) for technical implementation details.
+
+</Note>
+
+---
+
+## Implement Custom Features
+
+If you need a custom feature that isn't available out-of-the-box, ask Bloom to implement it for you. Bloom has the commerce expertise to build custom features on top of your store's existing features.
+
+See [Custom Features Prompting](../../prompting/custom-features-prompting/page.mdx) guide to learn more.

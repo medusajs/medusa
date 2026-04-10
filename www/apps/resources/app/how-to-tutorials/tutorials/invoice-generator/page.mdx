@@ -74,7 +74,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -303,15 +303,15 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Invoice Generator Module, run the following command in your Medusa application's directory:
 
-```bash
-npx medusa db:generate invoice-generator
+```bash npx2yarn
+npx medusa db:generate invoiceGenerator
 ```
 
 The `db:generate` command of the Medusa CLI accepts the name of the module to generate the migration for. You'll now have a `migrations` directory under `src/modules/invoice-generator` that holds the generated migration.
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -617,7 +617,7 @@ Next, you'll add the API route to update the invoice configurations.
 In the same file, add the following imports at the top of the file:
 
 ```ts title="src/api/admin/invoice-config/route.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   updateInvoiceConfigWorkflow,
 } from "../../../workflows/update-invoice-config"
@@ -743,6 +743,12 @@ export const invoiceConfigPageHighlights = [
   ["32", "InvoiceConfigPage", "React component that renders the invoice configuration settings page."],
   ["36", "defineRouteConfig", "Define the route configuration."]
 ]
+
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
 
 ```tsx title="src/admin/routes/settings/invoice-config/page.tsx" highlights={invoiceConfigPageHighlights}
 import { defineRouteConfig } from "@medusajs/admin-sdk"

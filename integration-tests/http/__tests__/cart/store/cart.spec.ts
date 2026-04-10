@@ -1,7 +1,11 @@
-import { createCartCreditLinesWorkflow } from "@medusajs/core-flows"
+import {
+  createCartCreditLinesWorkflow,
+  updateCartsStep,
+} from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   Modules,
+  PaymentSessionStatus,
   PriceListStatus,
   PriceListType,
   ProductStatus,
@@ -18,6 +22,10 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 
 jest.setTimeout(100000)
 
@@ -36,8 +44,13 @@ const shippingAddressData = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let appContainer
+
+    beforeAll(async () => {
+      appContainer = getContainer()
+    })
+
     describe("Store Carts API", () => {
-      let appContainer
       let storeHeaders
       let storeHeadersWithCustomer
       let region,
@@ -49,10 +62,6 @@ medusaIntegrationTestRunner({
         promotion,
         shippingProfile,
         taxSeedData
-
-      beforeAll(async () => {
-        appContainer = getContainer()
-      })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -1992,6 +2001,68 @@ medusaIntegrationTestRunner({
                     reference_id: "test",
                   }),
                 ],
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    unit_price: 1500,
+                    compare_at_unit_price: null,
+                    quantity: 1,
+                  }),
+                ]),
+              })
+            )
+          })
+
+          it("should successfully complete cart with pre existing captured payment session", async () => {
+            const paymentModule = appContainer.resolve(Modules.PAYMENT)
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            const paymentSession = await api
+              .post(
+                `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+                { provider_id: "pp_system_default" },
+                storeHeaders
+              )
+              .then((res) => res.data.payment_collection.payment_sessions[0])
+
+            // Authorize the payment session (creates a payment)
+            const payment = await paymentModule.authorizePaymentSession(
+              paymentSession.id,
+              {}
+            )
+
+            // Capture the payment
+            await paymentModule.capturePayment({
+              payment_id: payment.id,
+            })
+
+            const updatedPaymentSession =
+              await paymentModule.retrievePaymentSession(paymentSession.id, {
+                relations: ["payment", "payment.captures"],
+              })
+            expect(updatedPaymentSession.payment.captures).toHaveLength(1)
+            expect(updatedPaymentSession.status).toBe(
+              PaymentSessionStatus.AUTHORIZED
+            )
+
+            // Complete the cart
+            const response = await api.post(
+              `/store/carts/${cart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                currency_code: "usd",
                 items: expect.arrayContaining([
                   expect.objectContaining({
                     unit_price: 1500,
@@ -5854,6 +5925,26 @@ medusaIntegrationTestRunner({
             message: "Shipping Options are invalid for cart.",
           })
         })
+      })
+    })
+
+    describe("workflows", () => {
+      it("updateCartsStep - should not call listCarts when data is empty", async () => {
+        const cartService = appContainer.resolve(Modules.CART)
+        const listCartsSpy = jest.spyOn(cartService, "listCarts")
+
+        const workflow = createWorkflow("test-workflow", () => {
+          return new WorkflowResponse(updateCartsStep([]))
+        })
+
+        const { result } = await workflow(appContainer).run({
+          input: [],
+        })
+
+        expect(result).toEqual([])
+        expect(listCartsSpy).not.toHaveBeenCalled()
+
+        listCartsSpy.mockRestore()
       })
     })
   },

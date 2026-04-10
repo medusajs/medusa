@@ -17,6 +17,17 @@ get:
         type: string
         externalDocs:
           url: https://docs.medusajs.com/api/store#publishable-api-key
+    - name: x-medusa-locale
+      in: header
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
     - name: currency_code
       in: query
       description: Filter by the store credit account's currency code.
@@ -165,6 +176,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a store credit account's update date.
@@ -304,6 +316,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -385,6 +398,17 @@ get:
         items:
           type: object
         title: $or
+    - name: locale
+      in: query
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
     - lang: Shell
       label: cURL

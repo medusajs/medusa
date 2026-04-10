@@ -1,3 +1,8 @@
+export enum Entities {
+  translation = "translation",
+  translation_setting = "translation_setting",
+}
+
 export const defaultAdminTranslationFields = [
   "id",
   "reference_id",

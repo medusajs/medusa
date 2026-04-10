@@ -353,7 +353,7 @@ export const useDataGridKeydownEvent = <
         setSingleRange(pos)
         scrollToCoordinates(pos, "vertical")
       } else {
-        // If the the user is at the last cell, we want to focus the container of the cell.
+        // If the user is at the last cell, we want to focus the container of the cell.
         const container = queryTool?.getContainer(anchor)
 
         container?.focus()

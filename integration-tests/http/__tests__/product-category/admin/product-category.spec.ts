@@ -53,6 +53,7 @@ medusaIntegrationTestRunner({
               name: "category-0",
               parent_category_id: productCategoryParent.id,
               rank: 0,
+              external_id: "ext-id-0",
               description: "category-0",
             },
             adminHeaders
@@ -110,6 +111,7 @@ medusaIntegrationTestRunner({
             id: productCategory.id,
             name: productCategory.name,
             handle: productCategory.handle,
+            external_id: productCategory.external_id,
             parent_category_id: productCategoryParent.id,
             category_children: [
               expect.objectContaining({
@@ -226,6 +228,7 @@ medusaIntegrationTestRunner({
             "/admin/product-categories",
             {
               name: "sweater",
+              external_id: "ext-id-sweater",
               parent_category_id: productCategoryParent.id,
               is_internal: true,
             },
@@ -364,6 +367,8 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.product_categories).toHaveLength(7) // created in beforeEach
       })
+
+
 
       it("gets list of product category with immediate children and parents", async () => {
         // BREAKING: To get the children tree, the query param include_descendants_tree must be used
@@ -638,6 +643,18 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it('filters based on external id', async () => {  
+
+        const response = await api.get(
+          `/admin/product-categories?external_id=${productCategory.external_id}`,
+          adminHeaders
+        ) 
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_categories).toHaveLength(1)
+        expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+      });
+
       it("filters based on parent category", async () => {
         const response = await api.get(
           `/admin/product-categories?parent_category_id=${productCategoryParent.id}&limit=7`,
@@ -838,6 +855,46 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("successfully creates a product category with an external id", async () => {
+        const payload = {
+          name: "test",
+          handle: "test",
+          is_internal: true,
+          parent_category_id: productCategory.id,
+          description: "test",
+          external_id: "ext-id-0",
+        }
+
+        const response = await api.post(
+          `/admin/product-categories`,
+          payload,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            product_category: expect.objectContaining({
+              name: payload.name,
+              description: payload.description,
+              handle: payload.handle,
+              is_internal: payload.is_internal,
+              is_active: false,
+              external_id: payload.external_id,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              parent_category: expect.objectContaining({
+                id: productCategory.id,
+              }),
+              category_children: [],
+              rank: 0,
+            }),
+          })
+        )
+      })
+
+
 
       it("successfully creates a product category with a rank", async () => {
         const payload = {
@@ -1202,6 +1259,7 @@ medusaIntegrationTestRunner({
             handle: "test",
             is_internal: true,
             is_active: true,
+            external_id: "ext-id-2",
             parent_category_id: productCategory.id,
           },
           adminHeaders
@@ -1220,6 +1278,7 @@ medusaIntegrationTestRunner({
               parent_category_id: productCategory.id,
               category_children: [],
               rank: 1,
+              external_id: "ext-id-2",
             }),
           })
         )

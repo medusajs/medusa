@@ -2,13 +2,25 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type SetRoleParentStepInput = Array<{
   role_id: string
   parent_ids: string[]
 }>
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const setRoleParentStepId = "set-role-parent"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const setRoleParentStep = createStep(
   setRoleParentStepId,
   async (data: SetRoleParentStepInput, { container }) => {

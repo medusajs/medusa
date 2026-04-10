@@ -1,3 +1,7 @@
+export enum Entities {
+  tax_region = "tax_region",
+}
+
 export const defaults = [
   "id",
   "country_code",
@@ -20,9 +24,11 @@ export const defaults = [
 export const retrieveTransformQueryConfig = {
   defaults,
   isList: false,
+  entity: Entities.tax_region,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.tax_region,
 }

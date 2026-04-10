@@ -22,6 +22,11 @@ export const updateRefundReasonsStep = createStep(
   updateRefundReasonStepId,
   async (data: UpdateRefundReasonStepInput, { container }) => {
     const ids = data.map((d) => d.id)
+
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
     const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 

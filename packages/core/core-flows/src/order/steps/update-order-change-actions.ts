@@ -23,6 +23,10 @@ export const updateOrderChangeActionsStep = createStep(
   async (data: UpdateOrderChangeActionsStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata", "details"],
     })

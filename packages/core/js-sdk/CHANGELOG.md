@@ -1,5 +1,33 @@
 # @medusajs/js-sdk
 
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14712](https://github.com/medusajs/medusa/pull/14712) [`6e994dcd6559ece5e79cb5375965f69c640d56b1`](https://github.com/medusajs/medusa/commit/6e994dcd6559ece5e79cb5375965f69c640d56b1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(js-sdk): fix return type of listAddresses
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+### Patch Changes
+
+- [#14541](https://github.com/medusajs/medusa/pull/14541) [`a9b5797e2de093e26286808876262b724e26671a`](https://github.com/medusajs/medusa/commit/a9b5797e2de093e26286808876262b724e26671a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,translation,js-sdk,medusa,types): Translation settings management UI
+
 ## 2.12.5
 
 ## 2.12.4

@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.20",
-    "next": "15.3.8",
+    "next": "15.3.9",
     "rimraf": "^5.0.5",
     "tsconfig": "*",
     "types": "*",

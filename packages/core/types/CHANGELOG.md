@@ -1,5 +1,60 @@
 # @medusajs/types
 
+## 2.13.6
+
+### Patch Changes
+
+- [#14935](https://github.com/medusajs/medusa/pull/14935) [`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,types): improve order timeline UI
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- [#14802](https://github.com/medusajs/medusa/pull/14802) [`9fecbd2b0487b10736879507cf11ed426d9523d5`](https://github.com/medusajs/medusa/commit/9fecbd2b0487b10736879507cf11ed426d9523d5) Thanks [@asgerjensen](https://github.com/asgerjensen)! - chore(types): add external_id to product list params type
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14658](https://github.com/medusajs/medusa/pull/14658) [`495b823a370c86c25142e02a5daabfeccdc6e518`](https://github.com/medusajs/medusa/commit/495b823a370c86c25142e02a5daabfeccdc6e518) Thanks [@webgodo](https://github.com/webgodo)! - feat(types): Add `completed_at` filterable property to `FilterableCartProps` interface to enable filtering carts by completion date.
+
+- [#14720](https://github.com/medusajs/medusa/pull/14720) [`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363) Thanks [@arjusmoon860](https://github.com/arjusmoon860)! - feat(dashboard, admin-bundler, utils, types): add configurable maximum file upload size
+
+- [#14557](https://github.com/medusajs/medusa/pull/14557) [`42322f44eaaf997e9ab7af2ca1e8621a08a8ca01`](https://github.com/medusajs/medusa/commit/42322f44eaaf997e9ab7af2ca1e8621a08a8ca01) Thanks [@bouazzaayyoub](https://github.com/bouazzaayyoub)! - feat(medusa,types): add metadata field to AdminUpsertStockLocationAddress and validators
+
+- [#14725](https://github.com/medusajs/medusa/pull/14725) [`69ff277f1d2cbf148f432747474b134520b2addb`](https://github.com/medusajs/medusa/commit/69ff277f1d2cbf148f432747474b134520b2addb) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): fix item type for shipping option price calculation
+
+- [#14689](https://github.com/medusajs/medusa/pull/14689) [`6c0990afa9c7df80a8a4da9c3c63f04e02fd5cbb`](https://github.com/medusajs/medusa/commit/6c0990afa9c7df80a8a4da9c3c63f04e02fd5cbb) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): make images of product variant optional
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+### Patch Changes
+
+- [#14478](https://github.com/medusajs/medusa/pull/14478) [`13476988763368b3b333fa5bc3f613e8eb174fdf`](https://github.com/medusajs/medusa/commit/13476988763368b3b333fa5bc3f613e8eb174fdf) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/enable event configuration in medusa config
+  enables event priority configuration through the Medusa config, allowing users to configure event processing options (like priority) for specific events at the module level.
+
+- [#14541](https://github.com/medusajs/medusa/pull/14541) [`a9b5797e2de093e26286808876262b724e26671a`](https://github.com/medusajs/medusa/commit/a9b5797e2de093e26286808876262b724e26671a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,translation,js-sdk,medusa,types): Translation settings management UI
+
+- [#14536](https://github.com/medusajs/medusa/pull/14536) [`d60ea7268a00f386f803f0f9e6ffeec4bced50bf`](https://github.com/medusajs/medusa/commit/d60ea7268a00f386f803f0f9e6ffeec4bced50bf) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(translation,fulfillment,customer,product,region,tax,core-flows,medusa,types): Implement dynamic translation settings management
+
+- [#14359](https://github.com/medusajs/medusa/pull/14359) [`cec8b8e428131d4743d6da98cd5fa0974b8ab9e1`](https://github.com/medusajs/medusa/commit/cec8b8e428131d4743d6da98cd5fa0974b8ab9e1) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,types,utils,medusa): Translate tax lines
+
+- [#14597](https://github.com/medusajs/medusa/pull/14597) [`b615b71a8e4e273018a09528a8b61116fca6de8b`](https://github.com/medusajs/medusa/commit/b615b71a8e4e273018a09528a8b61116fca6de8b) Thanks [@fPolic](https://github.com/fPolic)! - fix(core-flows, types): ensure promotion calculation context has required rules data
+
+- [#14598](https://github.com/medusajs/medusa/pull/14598) [`89e6e3e5cbe96f1f64e2cdb33cc2e0d6a221f7a2`](https://github.com/medusajs/medusa/commit/89e6e3e5cbe96f1f64e2cdb33cc2e0d6a221f7a2) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows, types): improve product exports memory consumption
+
 ## 2.12.5
 
 ### Patch Changes
