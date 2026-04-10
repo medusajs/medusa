@@ -1152,6 +1152,7 @@ export default class OrderModuleService
           version: toCreate.version ?? 1,
           item_id: item.id,
           quantity: toCreate.quantity,
+          metadata: toCreate.metadata,
         })
       }
     }
