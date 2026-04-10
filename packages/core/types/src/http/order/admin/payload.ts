@@ -122,6 +122,8 @@ export interface AdminRequestOrderTransfer {
   description?: string
   /**
    * Whether to update the order.email to the transferred customer email.
+   *
+   * @since 2.13.7
    */
   update_order_email?: boolean
 }

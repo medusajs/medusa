@@ -1,3 +1,6 @@
+/**
+ * The input to the request order transfer workflow.
+ */
 export interface RequestOrderTransferWorkflowInput {
   /**
    * The ID of the order to transfer.
@@ -23,6 +26,8 @@ export interface RequestOrderTransferWorkflowInput {
   internal_note?: string
   /**
    * Whether to update the order.email to the transferred customer email.
+   *
+   * @since 2.13.7
    */
   update_order_email?: boolean
 }
