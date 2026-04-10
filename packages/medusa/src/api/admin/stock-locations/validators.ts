@@ -48,7 +48,7 @@ export const AdminUpsertStockLocationAddress = z.object({
   phone: z.string().nullish(),
   postal_code: z.string().nullish(),
   province: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminCreateStockLocationType = z.infer<
