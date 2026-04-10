@@ -757,14 +757,14 @@ export class Store {
      * The method sends a request to the [Add Promotion Code](https://docs.medusajs.com/api/store#carts_postcartsidpromotions) API route.
      * 
      * @example
-     * sdk.store.cart.addPromotionCodes("cart_123", {
+     * sdk.store.cart.addPromotions("cart_123", {
      *   promo_codes: ["20OFF"]
      * })
      * .then(({ cart }) => {
      *   console.log(cart)
      * })
      */
-    addPromotionCodes: async (
+    addPromotions: async (
       cartId: string,
       body: HttpTypes.StoreCartAddPromotion,
       query?: SelectParams,
@@ -786,14 +786,14 @@ export class Store {
      * The method sends a request to the [Remove Promotion Code](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions) API route.
      * 
      * @example
-     * sdk.store.cart.removePromotionCodes("cart_123", {
+     * sdk.store.cart.removePromotions("cart_123", {
      *   promo_codes: ["20OFF"]
      * })
      * .then(({ cart }) => {
      *   console.log(cart)
      * })
      */
-    removePromotionCodes: async (
+    removePromotions: async (
       cartId: string,
       body: HttpTypes.StoreCartRemovePromotion,
       query?: SelectParams,
