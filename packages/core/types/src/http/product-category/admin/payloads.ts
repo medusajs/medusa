@@ -31,6 +31,10 @@ export interface AdminCreateProductCategory {
    */
   rank?: number
   /**
+   * An external identifier for the product category.
+   */
+  external_id?: string | null
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown>
@@ -68,6 +72,10 @@ export interface AdminUpdateProductCategory {
    * The category's ranking among its sibling categories.
    */
   rank?: number
+  /**
+   * An external identifier for the product category.
+   */
+  external_id?: string | null
   /**
    * Key-value pairs of custom data.
    */
