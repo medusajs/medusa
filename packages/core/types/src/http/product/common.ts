@@ -6,7 +6,13 @@ import { BaseProductCategory } from "../product-category/common"
 import { BaseProductTag } from "../product-tag/common"
 import { BaseProductType } from "../product-type/common"
 
+/**
+ * The product's status.
+ */
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
+/**
+ * The product's details.
+ */
 export interface BaseProduct {
   /**
    * The product's ID.
@@ -134,6 +140,9 @@ export interface BaseProduct {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product variant's details.
+ */
 export interface BaseProductVariant {
   /**
    * The variant's ID.
@@ -255,6 +264,9 @@ export interface BaseProductVariant {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product option's details.
+ */
 export interface BaseProductOption {
   /**
    * The option's ID.
@@ -294,6 +306,9 @@ export interface BaseProductOption {
   deleted_at?: string | null
 }
 
+/**
+ * The product image's details.
+ */
 export interface BaseProductImage {
   /**
    * The image's ID.
@@ -325,6 +340,9 @@ export interface BaseProductImage {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product option value's details.
+ */
 export interface BaseProductOptionValue {
   /**
    * The option value's ID.
@@ -360,6 +378,9 @@ export interface BaseProductOptionValue {
   deleted_at?: string | null
 }
 
+/**
+ * The filters to apply on the retrieved products.
+ */
 export interface BaseProductListParams
   extends FindParams,
     BaseFilterable<BaseProductListParams> {
@@ -429,29 +450,91 @@ export interface BaseProductListParams
   deleted_at?: OperatorMap<string>
 }
 
+/**
+ * The filters to apply on the retrieved product options.
+ */
 export interface BaseProductOptionParams
   extends FindParams,
     BaseFilterable<BaseProductOptionParams> {
+  /**
+   * Query or keywords to filter the option's searchable fields.
+   */
   q?: string
+  /**
+   * Filter by option ID(s).
+   */
   id?: string | string[]
+  /**
+   * Filter by option title(s).
+   */
   title?: string | string[]
+  /**
+   * Filter by product ID(s).
+   */
   product_id?: string | string[]
 }
 
+/**
+ * The filters to apply on the retrieved product variants.
+ */
 export interface BaseProductVariantParams
   extends FindParams,
     BaseFilterable<BaseProductVariantParams> {
+  /**
+   * Query or keywords to filter the variant's searchable fields.
+   */
   q?: string
+  /**
+   * Filter by variant ID(s).
+   */
   id?: string | string[]
+  /**
+   * Apply filters on the variant's options.
+   */
   options?: {
+    /**
+     * Filter by option value.
+     */
     value: string
+    /**
+     * Filter by option ID.
+     */
     option_id: string
   },
+  /**
+   * Filter by variant sku(s).
+   *
+   * @since 2.13.7
+   */
   sku?: string | string[]
+  /**
+   * Filter by variant ean(s).
+   *
+   * @since 2.13.7
+   */
   ean?: string | string[]
+  /**
+   * Filter by variant upc(s).
+   *
+   * @since 2.13.7
+   */
   upc?: string | string[]
+  /**
+   * Filter by variant barcode(s).
+   *
+   * @since 2.13.7
+   */
   barcode?: string | string[]
+  /**
+   * Apply filters on the variant's creation date.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Apply filters on the variant's update date.
+   */
   updated_at?: OperatorMap<string>
+  /**
+   * Apply filters on the variant's deletion date.
+   */
   deleted_at?: OperatorMap<string>
 }
