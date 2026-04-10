@@ -65,7 +65,7 @@ const Item = z.object({
   variant_id: z.string().nullish(),
   unit_price: BigNumberInput.nullish(),
   quantity: z.number(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminCreateDraftOrderType = z.infer<typeof CreateDraftOrder>
@@ -84,7 +84,7 @@ const CreateDraftOrder = z
     no_notification_order: z.boolean().optional(),
     shipping_methods: z.array(ShippingMethod).optional(),
     locale: z.string().optional(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -111,7 +111,7 @@ export const AdminUpdateDraftOrder = z.object({
   sales_channel_id: z.string().optional(),
   shipping_address: AddressPayload.optional(),
   billing_address: AddressPayload.optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
   locale: z.string().optional(),
 })
 
@@ -160,7 +160,7 @@ export const AdminAddDraftOrderItems = z.object({
         compare_at_unit_price: z.number().nullish(),
         internal_note: z.string().nullish(),
         allow_backorder: z.boolean().optional(),
-        metadata: z.record(z.unknown()).optional(),
+        metadata: z.record(z.string(), z.unknown()).optional(),
       })
     )
     .refine(
@@ -181,7 +181,7 @@ export const AdminAddDraftOrderShippingMethod = z.object({
   custom_amount: z.number().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 export type AdminAddDraftOrderShippingMethodType = z.infer<
   typeof AdminAddDraftOrderShippingMethod
@@ -192,7 +192,7 @@ export const AdminUpdateDraftOrderActionShippingMethod = z.object({
   custom_amount: z.number().nullish(),
   description: z.string().nullish(),
   internal_note: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminUpdateDraftOrderActionShippingMethodType = z.infer<
   typeof AdminUpdateDraftOrderActionShippingMethod

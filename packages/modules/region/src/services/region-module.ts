@@ -23,6 +23,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
+  normalizeCurrencyCode,
   promiseAll,
   removeUndefined,
 } from "@medusajs/framework/utils"
@@ -307,7 +308,7 @@ export default class RegionModuleService
     return regions.map((region) =>
       removeUndefined({
         ...region,
-        currency_code: region.currency_code?.toLowerCase(),
+        currency_code: normalizeCurrencyCode(region.currency_code ?? ""),
         name: region.name?.trim(),
         countries: region.countries?.map((country) => country.toLowerCase()),
       })
