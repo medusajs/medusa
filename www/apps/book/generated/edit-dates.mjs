@@ -138,7 +138,7 @@ export const generatedEditDates = {
   "app/learn/configurations/medusa-config/asymmetric-encryption/page.mdx": "2025-10-31T09:53:38.607Z",
   "app/learn/best-practices/third-party-sync/page.mdx": "2025-12-03T11:48:58.209Z",
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-01-06T15:51:48.131Z",
-  "app/learn/codemods/replace-zod-imports/page.mdx": "2026-01-12T13:51:52.324Z",
+  "app/learn/codemods/replace-zod-imports/page.mdx": "2026-04-10T15:03:03.064Z",
   "app/learn/configurations/pnpm/page.mdx": "2026-03-16T14:36:36.335Z",
   "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
   "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z"

@@ -4810,7 +4810,7 @@ export const AddBuilderProductSchema = z.object({
   product_id: z.string(),
   variant_id: z.string(),
   quantity: z.number().optional().default(1),
-  custom_field_values: z.record(z.any()).optional().default({}),
+  custom_field_values: z.record(z.string(), z.any()).optional().default({}),
   complementary_product_variants: z.array(z.string()).optional().default([]),
   addon_variants: z.array(z.string()).optional().default([]),
 })
