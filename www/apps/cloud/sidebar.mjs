@@ -78,6 +78,11 @@ export const sidebar = [
                 title: "Environment Variables",
                 path: "/environments/environment-variables",
               },
+              {
+                type: "link",
+                title: "Custom Domains",
+                path: "/environments/custom-domains",
+              },
             ],
           },
           {
