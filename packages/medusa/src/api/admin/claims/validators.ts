@@ -164,7 +164,7 @@ export const AdminPostClaimItemsReqSchema = z.object({
       reason: z.nativeEnum(ClaimReason).optional(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
-      metadata: z.record(z.unknown()).nullish(),
+      metadata: z.record(z.string(), z.unknown()).nullish(),
     })
   ),
 })
