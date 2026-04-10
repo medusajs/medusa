@@ -23,7 +23,7 @@ export interface ProjectOptions {
 }
 
 export interface ProjectCreator {
-  create(): Promise<void>
+  create({ verbose }: { verbose?: boolean }): Promise<void>
 }
 
 // Base class for common project functionality
