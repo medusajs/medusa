@@ -6,7 +6,21 @@ import {
 } from "@medusajs/framework/types"
 import { MedusaError, upperCaseFirst } from "@medusajs/framework/utils"
 
-// We want to have one row per variant, so we need to normalize the data
+/**
+ * Normalizes product data for export, creating one row per product variant.
+ * Products without variants will have a single row, while products with variants
+ * will have one row per variant containing both product and variant data.
+ *
+ * @param product - The array of products to normalize for export.
+ * @param regions - Object containing an array of region data used for price formatting.
+ * @returns An array of normalized objects ready for export, with flattened product and variant data.
+ *
+ * @example
+ * const normalizedData = normalizeForExport(
+ *   [productA, productB],
+ *   { regions: [region1, region2] }
+ * )
+ */
 export const normalizeForExport = (
   product: HttpTypes.AdminProduct[],
   { regions }: { regions: RegionTypes.RegionDTO[] }
