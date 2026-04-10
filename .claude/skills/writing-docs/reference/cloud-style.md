@@ -1,6 +1,6 @@
 # Cloud Style Guide
 
-The `cloud` project (`www/apps/cloud/`) covers how developers and technical users manage their Medusa applications on Medusa Cloud — creating projects, managing environments and deployments, configuring resources, and monitoring usage.
+The `cloud` project (`www/apps/cloud/`) covers how developers and technical users manage their Medusa applications on Cloud: creating projects, managing environments and deployments, configuring resources, and monitoring usage.
 
 ## Constraints
 
@@ -53,6 +53,7 @@ In this guide, you'll learn about <topic>.
 
 ## Writing Style
 
+- **Cloud naming**: Never write "Medusa Cloud". Use **"Medusa"** when referring to it as a noun/subject ("Medusa allows you to..."), and **"Cloud"** when referring to it as a location or service ("Deploy to Cloud", "the Cloud dashboard")
 - **Second person**: "You create a project..." not "We create..." or "One can create..."
 - **Task-based H2 titles**: "Create a Project", "Manage Environment Variables", "Delete an Environment"
 - **Imperative numbered steps**: "Click **Save**", "Enter the environment name", "Select a region"
@@ -216,7 +217,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to configure a custom domain for your Medusa Cloud project.
+In this guide, you'll learn how to configure a custom domain for your Cloud project.
 
 ## What is a Custom Domain?
 

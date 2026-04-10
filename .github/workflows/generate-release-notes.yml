@@ -1,0 +1,64 @@
+name: Generate Release Notes
+
+on:
+  # repository_dispatch:
+  #   types: [release-published]
+  workflow_dispatch:
+    inputs:
+      published_packages:
+        description: 'JSON array of published packages (e.g. [{"name":"@medusajs/medusa","version":"2.13.5"}])'
+        required: true
+        type: string
+
+jobs:
+  create-github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Determine release version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            PACKAGES='${{ github.event.inputs.published_packages }}'
+          else
+            PACKAGES='${{ toJson(github.event.client_payload.published_packages) }}'
+          fi
+          VERSION=$(echo "$PACKAGES" | jq -r '.[0].version')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Find previous release tag
+        id: previous
+        run: |
+          CURRENT_TAG="${{ steps.version.outputs.tag }}"
+          # Fetch all tags
+          git fetch --tags
+          # Find the previous stable release tag (exclude pre-releases)
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -v "$CURRENT_TAG" | head -1)
+          echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release with auto-generated notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+
+          ARGS=(
+            "$TAG"
+            --title "$TAG"
+            --generate-notes
+            --target "${{ github.sha }}"
+          )
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            ARGS+=(--notes-start-tag "$PREVIOUS_TAG")
+          fi
+
+          gh release create "${ARGS[@]}"

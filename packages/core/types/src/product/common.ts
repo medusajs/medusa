@@ -751,6 +751,12 @@ export interface FilterableProductProps
    * Filters on a product's variant properties.
    */
   variants?: {
+
+    sku?: string | string[] | OperatorMap<string | string[]>
+    ean?: string | string[] | OperatorMap<string | string[]>
+    upc?: string | string[] | OperatorMap<string | string[]>
+    barcode?: string | string[] | OperatorMap<string | string[]>
+
     options?: {
       value?: string
       option_id?: string
@@ -943,6 +949,23 @@ export interface FilterableProductVariantProps
    * The SKUs to filter product variants by.
    */
   sku?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The EANs to filter product variants by.
+   */
+  ean?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The UPCs to filter product variants by.
+   */
+  upc?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The barcodes to filter product variants by.
+   */
+  barcode?: string | string[] | OperatorMap<string | string[]>    
+   
+
   /**
    * Filter the product variants by their associated products' IDs.
    */

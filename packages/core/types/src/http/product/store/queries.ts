@@ -47,7 +47,7 @@ export interface StoreProductListParams
   /**
    * Filter by the product's variants.
    */
-  variants?: Pick<StoreProductVariantParams, "options">
+  variants?: Pick<StoreProductVariantParams, "options" | "sku" | "ean" | "upc" | "barcode">
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.

@@ -25,6 +25,10 @@ export interface AdminProductVariantParams
    */
   allow_backorder?: boolean
   /**
+   * Filter by sku(s).
+   */
+  sku?: string | string[]
+  /**
    * Filter by variant ean(s).
    */
   ean?: string | string[]
@@ -66,6 +70,12 @@ export interface AdminProductExportParams extends Omit<AdminProductListParams, "
     id?: string[]
   }
   variants?: { 
+
+    sku?: string | string[] | OperatorMap<string | string[]>
+    ean?: string | string[] | OperatorMap<string | string[]>
+    upc?: string | string[] | OperatorMap<string | string[]>
+    barcode?: string | string[] | OperatorMap<string | string[]>
+    
     options?: { 
       value?: string
       option_id?: string
