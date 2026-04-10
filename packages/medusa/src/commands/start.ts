@@ -69,6 +69,7 @@ export async function registerInstrumentation(directory: string) {
     skipDbConnection: true,
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
   const fileSystem = new FileSystem(directory)
   const exists =
     (await fileSystem.exists(`${INSTRUMENTATION_FILE}.ts`)) ||
