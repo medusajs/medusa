@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ArrowDownTray, ArrowPath, Brackets } from "@medusajs/icons"
 
 export const metadata = {
@@ -102,6 +102,12 @@ Runtime logs are useful for debugging the live deployment of an environment's ba
 You can only view the runtime logs of an environment's live deployment, as older deployments are no longer running and do not produce runtime logs.
 
 To view the runtime logs for an environment's live deployment:
+
+<Note title="Tip">
+
+You can also navigate to an environment's runtime logs from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **View Logs**, then choose a project.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the project that the environment belongs to.

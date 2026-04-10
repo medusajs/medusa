@@ -547,7 +547,7 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/index",
+                "path": "/learn/fundamentals/data-models/indexes",
                 "title": "Define Index",
                 "children": [],
                 "chapterTitle": "3.5.6. Define Index",
