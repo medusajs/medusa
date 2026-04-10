@@ -5,7 +5,13 @@ import {
   BaseProductVariantParams,
 } from "../common"
 
+/**
+ * The product option's details.
+ */
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
+/**
+ * The filters to apply on the retrieved product variants.
+ */
 export interface StoreProductVariantParams extends BaseProductVariantParams {}
 export interface StoreProductPricingContext {
   /**
