@@ -360,6 +360,74 @@ The following table lists the possible `action` values that Medusa uses and the 
     <Table.Row>
       <Table.Cell>
       
+      `PROMOTION_ADD`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Add a promotion to an order. The promotion is not added to the original order until the change is confirmed.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      No details added. The ID to the promotion is added in the `reference_id` property of the action.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `PROMOTION_REMOVE`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Remove a promotion from an order. The promotion is not removed from the original order until the change is confirmed.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      No details added. The ID to the promotion is added in the `reference_id` property of the action.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `ITEM_ADJUSTMENTS_REPLACE`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Replace item adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object containing the new adjustment data.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `SHIPPING_ADJUSTMENTS_REPLACE` (v2.13.7+)
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Replace shipping method adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      `details` is an object containing the new adjustment data.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
       `CREDIT_LINE_ADD`
 
       </Table.Cell>
