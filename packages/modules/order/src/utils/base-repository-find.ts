@@ -1,7 +1,12 @@
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import { MikroOrmBaseRepository, toMikroORMEntity } from "@medusajs/framework/utils"
 import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
-import { Order, OrderClaim, OrderLineItemAdjustment } from "@models"
+import {
+  Order,
+  OrderClaim,
+  OrderLineItemAdjustment,
+  OrderShippingMethodAdjustment,
+} from "@models"
 
 import { mapRepositoryToOrderModel } from "."
 
@@ -82,6 +87,9 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
       if (strategy === LoadStrategy.JOINED) {
         config.options.populate.push("order.shipping_methods")
+        config.options.populate.push(
+          "order.shipping_methods.shipping_method.adjustments"
+        )
         config.options.populate.push("order.summary")
         config.options.populate.push("shipping_methods")
       }
@@ -124,10 +132,12 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       manager
     )
 
-    let loadAdjustments = false
+    let shouldLoadItemAdjustments = false
+    let shouldLoadShippingAdjustments = false
     if (config.options.populate.includes("items.item.adjustments")) {
       // TODO: handle if populate is an object
-      loadAdjustments = true
+      shouldLoadItemAdjustments = true
+
       config.options.populate.splice(
         config.options.populate.indexOf("items.item.adjustments"),
         1
@@ -140,6 +150,37 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       if (config.options.fields?.some((f) => f.includes("items.item."))) {
         config.options.fields.push(
           isRelatedEntity ? "order.items.version" : "items.version"
+        )
+      }
+    }
+
+    if (
+      config.options.populate.includes(
+        "shipping_methods.shipping_method.adjustments"
+      )
+    ) {
+      // TODO: handle if populate is an object
+      shouldLoadShippingAdjustments = true
+
+      config.options.populate.splice(
+        config.options.populate.indexOf(
+          "shipping_methods.shipping_method.adjustments"
+        ),
+        1
+      )
+
+      config.options.populate.push("shipping_methods")
+      config.options.populate.push("shipping_methods.shipping_method")
+
+      if (
+        config.options.fields?.some((f) =>
+          f.includes("shipping_methods.shipping_method.")
+        )
+      ) {
+        config.options.fields.push(
+          isRelatedEntity
+            ? "order.shipping_methods.version"
+            : "shipping_methods.version"
         )
       }
     }
@@ -159,12 +200,18 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     const result = await manager.find(this.entity, config.where, config.options)
 
-    if (loadAdjustments) {
+    if (shouldLoadItemAdjustments || shouldLoadShippingAdjustments) {
       const orders = !isRelatedEntity
         ? [...result]
         : [...result].map((r) => r.order).filter(Boolean)
 
-      await loadItemAdjustments(manager, orders)
+      if (shouldLoadItemAdjustments) {
+        await loadItemAdjustments(manager, orders)
+      }
+
+      if (shouldLoadShippingAdjustments) {
+        await loadShippingAdjustments(manager, orders)
+      }
     }
 
     return result
@@ -283,7 +330,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 }
 
 /**
- * Load adjustment for the lates items/order version
+ * Load adjustment for the latest items/order version
  * @param manager MikroORM manager
  * @param orders Orders to load adjustments for
  */
@@ -318,6 +365,50 @@ async function loadItemAdjustments(manager, orders) {
     const item = itemsIdMap.get(adjustment.item_id)
     if (item) {
       item.adjustments.add(adjustment)
+    }
+  }
+}
+
+/**
+ * Load adjustment for the latest shipping methods/order version
+ * @param manager MikroORM manager
+ * @param orders Orders to load adjustments for
+ */
+async function loadShippingAdjustments(manager, orders) {
+  const shippingMethods = orders.flatMap((r) => [...(r.shipping_methods ?? [])])
+  const shippingMethodsIdMap = new Map<string, any>(
+    shippingMethods.map((s) => [s.shipping_method.id, s.shipping_method])
+  )
+
+  if (!shippingMethods.length) {
+    return
+  }
+
+  const params = shippingMethods.map((s) => {
+    // preinitialise all shipping methods so an empty array is returned for ones without adjustments
+    if (!s.shipping_method.adjustments.isInitialized()) {
+      s.shipping_method.adjustments.initialized = true
+    }
+
+    if (!s.version) {
+      throw new Error("Shipping method version is required to load adjustments")
+    }
+    return {
+      shipping_method_id: s.shipping_method.id,
+      version: s.version,
+    }
+  })
+
+  const adjustments = await manager.find(OrderShippingMethodAdjustment, {
+    $or: params,
+  })
+
+  for (const adjustment of adjustments) {
+    const shippingMethod = shippingMethodsIdMap.get(
+      adjustment.shipping_method_id
+    )
+    if (shippingMethod) {
+      shippingMethod.adjustments.add(adjustment)
     }
   }
 }
