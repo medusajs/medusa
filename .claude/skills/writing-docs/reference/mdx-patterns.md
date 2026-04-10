@@ -143,6 +143,64 @@ Something to be careful about.
 </Note>
 ```
 
+## Version Notes
+
+When documenting a new option, method, parameter, or behavior change, add a version note so readers know when it became available.
+
+**Get the current version** from `www/packages/docs-ui/src/global-config.ts` → `version.number`. The next version is the patch increment (e.g. `2.13.5` → `2.13.6`). Use the next version when the change is being introduced now (i.e. not yet released).
+
+**Release URL pattern:** `https://github.com/medusajs/medusa/releases/tag/v{version}`
+
+### New option/method/parameter — `<Note>` block
+
+Place immediately after the heading for the new item:
+
+```mdx
+### myNewOption
+
+<Note>
+
+This option is available since Medusa [v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6).
+
+</Note>
+
+Description of the option...
+```
+
+### Changed behavior — "Before Medusa v..." inside `<Note>`
+
+Use when existing behavior changed and users may have old code:
+
+```mdx
+<Note>
+
+Before [Medusa v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6), you did X. Now, you must do Y instead.
+
+</Note>
+```
+
+### Table cell — inline version annotation
+
+For new or deprecated entries in `<Table>` components, annotate inside the cell:
+
+```mdx
+<Table.Cell>
+
+`myOption` (v2.13.6+)
+
+</Table.Cell>
+```
+
+For deprecated entries:
+
+```mdx
+<Table.Cell>
+
+`oldOption` (Deprecated v2.13.6+, use `newOption` instead)
+
+</Table.Cell>
+```
+
 ## Prerequisites Component
 
 Use at the top of pages that require existing knowledge or setup:
@@ -229,3 +287,29 @@ If you don't have the URL, leave a placeholder comment:
 ```
 
 Never invent a Cloudinary URL.
+
+## Keyboard Shortcuts
+
+### Keys to press — `Kbd` component
+
+Wrap any key name the user must press in the `Kbd` component from `docs-ui`:
+
+```mdx
+import { Kbd } from "docs-ui"
+
+Press <Kbd>Enter</Kbd> to confirm, or <Kbd>Escape</Kbd> to cancel.
+```
+
+### OS-dependent shortcuts (CMD vs CTRL) — `getOsShortcut`
+
+When a shortcut differs between macOS (⌘ Cmd) and Windows/Linux (Ctrl), use the `getOsShortcut` utility from `docs-ui` so the correct key is shown automatically based on the user's OS:
+
+```mdx
+import { Kbd, getOsShortcut } from "docs-ui"
+
+Press <Kbd>{getOsShortcut()}</Kbd>+<Kbd>S</Kbd> to save.
+```
+
+`getOsShortcut()` returns `"Cmd"` on macOS and `"Ctrl"` on other platforms.
+
+> **Rule:** Never hard-code `Cmd` or `Ctrl` alone. If the shortcut uses the primary modifier key, always use `getOsShortcut()` so both platforms are covered.

@@ -70,7 +70,7 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
     {
       type: "link",
       title: "Homepage",
-      link: "https://bloom.medusajs.com",
+      link: "https://bloom.chat",
     },
   ]
 

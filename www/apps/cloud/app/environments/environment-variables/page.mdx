@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -48,6 +48,12 @@ The following environment variable names are reserved by Cloud and you can't use
 
 To add environment variables to an environment:
 
+<Note title="Tip">
+
+You can also navigate to an environment's variables from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Edit Variables**, then choose a project.
+
+</Note>
+
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
 3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
@@ -75,6 +81,12 @@ After adding the environment variables, you must [redeploy the environment](../l
 
 To edit an environment variable:
 
+<Note title="Tip">
+
+You can also navigate to an environment's variables from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Edit Variables**, then choose a project.
+
+</Note>
+
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
 3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
@@ -101,6 +113,12 @@ After editing the environment variable, you must [redeploy the environment](../l
 
 To delete an environment variable:
 
+<Note title="Tip">
+
+You can also navigate to an environment's variables from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Edit Variables**, then choose a project.
+
+</Note>
+
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.
 3. If you deployed both the Medusa backend and storefront in the environment, use the toggle at the top to switch between managing the backend and storefront environment variables.
@@ -123,6 +141,12 @@ After deleting the environment variable, you must [redeploy the environment](../
 You can export an environment's variables as a `.env` file. This is useful for debugging issues that require you to have the same environment variables.
 
 To export an environment's variables:
+
+<Note title="Tip">
+
+You can also navigate to an environment's variables from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Edit Variables**, then choose a project.
+
+</Note>
 
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
 2. Choose the "Environment Variables" tab from the sidebar.

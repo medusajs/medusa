@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.13.5",
+  "version": "2.13.6",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -42,11 +42,11 @@
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build"
   },
   "dependencies": {
-    "@mikro-orm/cli": "6.4.16",
-    "@mikro-orm/core": "6.4.16",
-    "@mikro-orm/knex": "6.4.16",
-    "@mikro-orm/migrations": "6.4.16",
-    "@mikro-orm/postgresql": "6.4.16",
+    "@mikro-orm/cli": "6.6.12",
+    "@mikro-orm/core": "6.6.12",
+    "@mikro-orm/knex": "6.6.12",
+    "@mikro-orm/migrations": "6.6.12",
+    "@mikro-orm/postgresql": "6.6.12",
     "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.214.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.214.0",

@@ -43,3 +43,27 @@ export interface AnalyzeOptions {
   output?: string
   dryRun?: boolean
 }
+
+export interface CloudDispatchPayload {
+  /** Natural language prose describing user-facing dashboard changes — no source code */
+  descriptions: string
+  /**
+   * Short plain-language names of features that appear to be gated by a feature flag.
+   * Populated by the cloud deployment analyzer; may be empty or absent.
+   */
+  featureFlaggedFeatures?: string[]
+}
+
+export interface CloudAnalysisResult {
+  affectedProjects: Array<{ project: "cloud"; reason: string }>
+  /** The prompt to pass to Claude Code Action */
+  claudePrompt: string
+  /** Carried through from the dispatch payload for PR body generation */
+  featureFlaggedFeatures: string[]
+}
+
+export interface AnalyzeCloudOptions {
+  dispatchFile: string
+  output?: string
+  dryRun?: boolean
+}

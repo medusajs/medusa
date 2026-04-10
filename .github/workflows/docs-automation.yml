@@ -6,9 +6,20 @@ on:
       - develop
     paths:
       - "packages/**"
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to analyze and generate docs for"
+        required: true
+        type: string
+
+concurrency:
+  group: docs-release-staging
+  cancel-in-progress: false
 
 jobs:
   docs-automation:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.head_commit.author.name != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -33,6 +44,14 @@ jobs:
         with:
           extension: docs-automation
 
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build www packages
+        working-directory: www
+        run: yarn build:packages
+
       - name: Install www/utils dependencies
         working-directory: www/utils
         run: yarn install
@@ -44,7 +63,7 @@ jobs:
       - name: Analyze commit diff
         id: analyze
         working-directory: www/utils/packages/docs-automator
-        run: yarn analyze --commit-sha ${{ github.sha }} --output /tmp/analysis.json
+        run: yarn analyze --commit-sha ${{ inputs.commit_sha || github.sha }} --output /tmp/analysis.json
         env:
           MONOREPO_ROOT_PATH: ${{ github.workspace }}
         continue-on-error: true
@@ -72,9 +91,11 @@ jobs:
       - name: Checkout or create release docs branch
         if: steps.check.outputs.needs_docs == 'true'
         run: |
-          git fetch origin docs/release-docs-staging 2>/dev/null || true
-          if git checkout docs/release-docs-staging 2>/dev/null; then
-            echo "Checked out existing branch docs/release-docs-staging"
+          git fetch origin
+          if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
+            git checkout docs/release-docs-staging
+            git merge origin/develop -m "chore: sync docs/release-docs-staging with develop"
+            echo "Checked out and synced existing branch docs/release-docs-staging"
           else
             git checkout -b docs/release-docs-staging
             echo "Created new branch docs/release-docs-staging"
@@ -87,10 +108,11 @@ jobs:
           node --input-type=module << 'EOF'
             import { readFileSync, appendFileSync } from "fs"
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
             const delimiter = "CLAUDE_PROMPT_EOF"
             appendFileSync(
               process.env.GITHUB_OUTPUT,
-              `CLAUDE_PROMPT<<${delimiter}\n${a.claudePrompt}\n${delimiter}\n`
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
             )
           EOF
 
@@ -98,7 +120,7 @@ jobs:
         if: steps.check.outputs.needs_docs == 'true'
         uses: anthropics/claude-code-base-action@beta
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
           max_turns: 40
@@ -158,18 +180,17 @@ jobs:
       - name: Commit documentation changes
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         run: |
-          git commit -m "chore(docs): automated documentation update for ${{ github.sha }}"
+          git commit -m "chore(docs): automated documentation update for ${{ inputs.commit_sha || github.sha }}"
 
       - name: Push release docs branch
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         run: git push origin docs/release-docs-staging
 
-      - name: Build PR body
-        id: pr-body
+      - name: Create or update Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
-          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
           REPO: ${{ github.repository }}
         run: |
           node --input-type=module << 'EOF'
@@ -194,8 +215,9 @@ jobs:
 
             let existingBody = ""
             try {
+              const owner = repo.split("/")[0]
               const out = execSync(
-                `gh pr view docs/release-docs-staging --repo ${repo} --json body --jq '.body'`,
+                `gh api "repos/${repo}/pulls?head=${owner}:docs/release-docs-staging&state=open" --jq '.[0].body'`,
                 { encoding: "utf8" }
               ).trim()
               if (out !== "null" && out !== "") existingBody = out
@@ -218,23 +240,22 @@ jobs:
             writeFileSync("/tmp/pr-body.md", body)
           EOF
 
-      - name: Read PR body
-        id: pr-body-content
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          {
-            echo 'BODY<<PR_BODY_EOF'
-            cat /tmp/pr-body.md
-            echo 'PR_BODY_EOF'
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Create or update Pull Request
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.REFERENCE_PAT }}
-          base: develop
-          branch: docs/release-docs-staging
-          title: "chore(docs): automated documentation updates"
-          labels: "type: chore"
-          body: ${{ steps.pr-body-content.outputs.BODY }}
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:docs/release-docs-staging&state=open" --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --method PATCH \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)"
+          else
+            PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+              --method POST \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)" \
+              --field base="develop" \
+              --field head="docs/release-docs-staging" \
+              --jq '.number')
+            gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+              --method POST \
+              --field 'labels[]=type: chore'
+          fi

@@ -18,8 +18,9 @@ export class RedisLockingProvider implements ILockingProvider {
   }
   protected keyNamePrefix: string
   protected waitLockingTimeout: number = 5
-  protected defaultRetryInterval: number = 5
-  protected maximumRetryInterval: number = 200
+  protected defaultRetryInterval: number = 20
+  protected maximumRetryInterval: number = 1000
+  protected backoffFactor: number = 2
 
   constructor({ redisClient, prefix }, options: RedisCacheModuleOptions) {
     this.redisClient = redisClient
@@ -35,6 +36,10 @@ export class RedisLockingProvider implements ILockingProvider {
 
     if (!isNaN(+options?.maximumRetryInterval!)) {
       this.maximumRetryInterval = +options.maximumRetryInterval!
+    }
+
+    if (!isNaN(+options?.backoffFactor!)) {
+      this.backoffFactor = +options.backoffFactor!
     }
 
     // Define the custom command for acquiring locks
@@ -160,7 +165,7 @@ export class RedisLockingProvider implements ILockingProvider {
 
     const timeout = Math.max(args?.expire ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
-    let retryTimes = 0
+    let retryDelay = this.defaultRetryInterval
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
@@ -186,15 +191,13 @@ export class RedisLockingProvider implements ILockingProvider {
             break
           } else {
             if (awaitQueue) {
-              // Wait for a short period before retrying
-              await setTimeout(
-                Math.min(
-                  this.defaultRetryInterval +
-                    (retryTimes / 10) * this.defaultRetryInterval,
-                  this.maximumRetryInterval
-                )
+              // Wait before retrying with exponential backoff
+              await setTimeout(retryDelay)
+
+              retryDelay = Math.min(
+                retryDelay * this.backoffFactor,
+                this.maximumRetryInterval
               )
-              retryTimes++
             } else {
               throw new Error(errMessage)
             }

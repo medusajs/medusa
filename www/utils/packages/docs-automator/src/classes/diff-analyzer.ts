@@ -2,7 +2,7 @@ import { execSync } from "child_process"
 import { ChangedPackage, PackageKind } from "../types/index.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 
-const MAX_DIFF_LINES_PER_FILE = 200
+const MAX_DIFF_LINES_PER_FILE = 500
 const MAX_FILES_PER_PACKAGE = 10
 
 // File patterns that are not doc-relevant regardless of content

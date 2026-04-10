@@ -1,3 +1,5 @@
+import { getOsShortcut, Kbd } from "docs-ui"
+
 export const metadata = {
   title: `S3 Storage`,
 }
@@ -35,6 +37,12 @@ Since Cloud is a managed service, you can't directly access your S3 bucket.
 You can, however, access the S3 bucket details of your environment. This is useful when setting remote patterns in your storefront to allow loading assets from the S3 bucket.
 
 To access the S3 bucket details of an environment:
+
+<Note title="Tip">
+
+You can also navigate to a project's S3 details from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Storage**, then choose a project.
+
+</Note>
 
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
