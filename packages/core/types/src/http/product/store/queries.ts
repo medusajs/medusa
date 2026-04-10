@@ -13,6 +13,9 @@ export interface StoreProductOptionParams extends BaseProductOptionParams {}
  * The filters to apply on the retrieved product variants.
  */
 export interface StoreProductVariantParams extends BaseProductVariantParams {}
+/**
+ * The product pricing context to apply when calculating product prices.
+ */
 export interface StoreProductPricingContext {
   /**
    * The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
@@ -31,6 +34,9 @@ export interface StoreProductPricingContext {
    */
   cart_id?: string
 }
+/**
+ * The filters to apply on the retrieved product.
+ */
 export interface StoreProductParams extends SelectParams, StoreProductPricingContext {
   /**
    * The locale code in BCP 47 format. Information of the
@@ -44,6 +50,9 @@ export interface StoreProductParams extends SelectParams, StoreProductPricingCon
   locale?: string
 }
 
+/**
+ * The filters to apply on the retrieved products.
+ */
 export interface StoreProductListParams
   extends Omit<BaseProductListParams, "tags" | "status" | "categories" | "deleted_at" | "with_deleted">, StoreProductPricingContext {
   /**
