@@ -1,6 +1,6 @@
 import type { ProductTypes } from "@medusajs/framework/types"
 import type { HttpTypes, RegionTypes } from "@medusajs/framework/types"
-import { MedusaError, lowerCaseFirst } from "@medusajs/framework/utils"
+import { MedusaError, lowerCaseFirst, normalizeCurrencyCode } from "@medusajs/framework/utils"
 
 // We want to convert the csv data format to a standard DTO format.
 export const normalizeForImport = (
@@ -183,7 +183,7 @@ const normalizeVariantForImport = (
       if (!priceKey.endsWith("]")) {
         response["prices"] = [
           ...(response["prices"] || []),
-          { currency_code: priceKey.toLowerCase(), amount: normalizedValue },
+          { currency_code: normalizeCurrencyCode(priceKey), amount: normalizedValue },
         ]
       } else {
         const regionName = priceKey.split("_").slice(0, -1).join(" ")

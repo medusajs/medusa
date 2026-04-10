@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -27,6 +27,12 @@ When you change your organization's plan, the following will happen:
 ### Change Your Organization's Plan
 
 To change your organization's plan:
+
+<Note title="Tip">
+
+You can also navigate to plan management from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Upgrade Plan**.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
 2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
