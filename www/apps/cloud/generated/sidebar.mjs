@@ -149,6 +149,14 @@ export const generatedSidebars = [
             "title": "Account",
             "path": "/user",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Command Palette",
+            "path": "/command-palette",
+            "children": []
           }
         ]
       },
