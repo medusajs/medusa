@@ -81,7 +81,7 @@ export const generatedEditDates = {
   "app/commerce-modules/sales-channel/page.mdx": "2025-04-17T08:48:22.065Z",
   "app/commerce-modules/stock-location/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/stock-location/_events/page.mdx": "2024-07-03T19:27:13+03:00",
-  "app/commerce-modules/stock-location/concepts/page.mdx": "2025-09-01T15:25:14.233Z",
+  "app/commerce-modules/stock-location/concepts/page.mdx": "2026-04-10T11:36:06.163Z",
   "app/commerce-modules/stock-location/page.mdx": "2025-04-17T08:48:26.441Z",
   "app/commerce-modules/store/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/store/_events/page.mdx": "2024-07-03T19:27:13+03:00",
