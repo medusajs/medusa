@@ -44,12 +44,39 @@ After reviewing this PR, we need a few things addressed before we can move forwa
 - [ ] <specific change 2>
 
 <Optional: brief explanation of why each change is needed>
+
+<Include one or more of the sections below when applicable — omit sections that have nothing to report>
+
+**Security Issues:**
+
+🔒 **`path/to/file.ts`** — <vulnerability class>
+```typescript
+// problematic snippet
+```
+<Attack scenario + fix>
+
+**Performance Issues:**
+
+⚡ **`path/to/file.ts`** — <issue description>
+```typescript
+// problematic snippet
+```
+<Impact + fix>
+
+**Potential Bugs:**
+
+⚠️ **`path/to/file.ts`** — <bug description>
+```typescript
+// problematic snippet
+```
+<Why it fails + fix>
 ```
 
 **Rules for the required changes list:**
 - Each item must be actionable — the contributor should know exactly what to do
 - Reference specific files or line numbers when relevant
 - Group related items together
+- Security issues and blocking performance issues **must** appear in Required changes AND in their dedicated section with code snippets
 
 ## Contextual Assessment
 
@@ -75,10 +102,7 @@ Keep concerns concise and factual — describe the problem, not a lecture. If un
 
 ## Potential Bugs Section
 
-When bugs are found in Step 8, include a **"Potential Bugs"** section in the review comment. This section is **always required** when bugs are found — for both `initial-approval` and `requires-more`.
-
-- Confirmed bugs (will cause incorrect runtime behaviour) → add to **Required changes** and apply `requires-more`
-- Uncertain / possible bugs → include under **"Potential Bugs"** as a flagged concern, even on `initial-approval`
+When bugs are found in Step 10, include a **"Potential Bugs"** section in the review comment. **All bugs — confirmed or suspected — are required changes.** Always apply `requires-more` when this section is present.
 
 **Format:**
 
@@ -89,21 +113,79 @@ When bugs are found in Step 8, include a **"Potential Bugs"** section in the rev
 ```typescript
 // the problematic snippet
 ```
-<Explanation of why this is a problem and what could go wrong. If a fix is obvious, suggest it.>
+<Specific failure scenario — "this will throw if `items` is empty", not "this looks wrong". Suggest the fix.>
 
 ⚠️ **`path/to/other-file.ts`** — <another bug>
 ...
 ```
 
 **Rules:**
-- Always quote the relevant code snippet in a fenced code block so the author knows exactly what line is flagged
-- Be specific about the failure scenario — *"this will throw if `items` is empty"* not *"this looks wrong"*
-- If unsure, phrase as a question: *"Should this also handle the case where X is undefined?"*
-- Do not flag style issues or code smell here — only actual correctness/runtime concerns
+- Every bug goes into **Required changes** as a checkbox item AND in this section with the code snippet
+- Always quote the relevant code snippet in a fenced code block
+- Be specific about the failure scenario
+- If uncertain, phrase as a question (*"Should this handle the case where X is undefined?"*) but still list it as a required change — the author must confirm or disprove it
+- Do not flag style issues or code smell — only correctness/runtime concerns
 
-## Security Risk Comment Template
+## Security Issues Section
 
-Use when a potential (non-malicious) security risk is found. Include it as part of the review, not as a standalone comment.
+When security issues are found in Step 8, include a **"Security Issues"** section in the review comment.
+
+- Confirmed security vulnerabilities → add to **Required changes** and always apply `requires-more`
+- Suspected / uncertain risks → include under **"Security Issues"** with a question framing
+
+**Format:**
+
+```
+**Security Issues:**
+
+🔒 **`path/to/file.ts`** — <vulnerability class, e.g., "Missing authorization check">
+```typescript
+// the problematic snippet
+```
+<Explain the attack scenario in one sentence. What can an attacker do? What data is exposed or operation is possible? Suggest the fix.>
+
+🔒 **`path/to/file.ts`** — <another issue>
+...
+```
+
+**Rules:**
+- Always name the vulnerability class (e.g., "SQL injection", "Missing auth", "Path traversal", "SSRF", "Sensitive data exposure")
+- Always include the relevant code snippet in a fenced code block
+- Describe the concrete attack scenario — *"an authenticated user could access another store's orders by passing a different `store_id`"* not *"this looks insecure"*
+- If unsure, phrase as a question: *"Should this route require `isAdmin` middleware?"*
+- Security issues are always **blocking** — do not apply `initial-approval` with a security issue in the Notes section
+
+## Performance Issues Section
+
+When performance issues are found in Step 9, include a **"Performance Issues"** section in the review comment.
+
+- Blocking performance issues (N+1 queries, unbounded queries on large tables, missing pagination) → add to **Required changes** and apply `requires-more`
+- Non-blocking performance observations → include under **"Performance Issues"** as notes only
+
+**Format:**
+
+```
+**Performance Issues:**
+
+⚡ **`path/to/file.ts`** — <one-line description, e.g., "N+1 query inside order item loop">
+```typescript
+// the problematic snippet
+```
+<Explain why this is a problem in production terms — e.g., "for a cart with 50 items, this executes 50 separate DB queries instead of one". Suggest the fix — e.g., "batch-load with `findMany({ where: { id: In(ids) } })` before the loop".>
+
+⚡ **`path/to/file.ts`** — <another issue>
+...
+```
+
+**Rules:**
+- Always include the relevant code snippet in a fenced code block
+- Quantify the impact where possible — *"N queries for N items"*, *"no LIMIT means entire table is fetched"*
+- Suggest a concrete fix
+- Do not flag theoretical micro-optimizations — only issues that would plausibly cause measurable degradation
+
+## Security Risk Comment Template (non-malicious, simple case)
+
+Use for a single, brief security concern when no full Security Issues section is needed:
 
 ```
 **Security note:** <brief description of the potential risk and which file/change introduces it>

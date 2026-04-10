@@ -82,9 +82,12 @@ export interface AdminUpdateStockLocation {
   /**
    * Custom key-value pairs that can be added to the stock location.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * Sales channels to associate or disassociate from a stock location.
+ */
 export interface AdminUpdateStockLocationSalesChannels {
   /**
    * The IDs of the sales channels to add to the stock location.
@@ -96,6 +99,9 @@ export interface AdminUpdateStockLocationSalesChannels {
   remove?: string[]
 }
 
+/**
+ * Data for creating a fulfillment set for a stock location.
+ */
 export interface AdminCreateStockLocationFulfillmentSet {
   /**
    * The name of the fulfillment set.

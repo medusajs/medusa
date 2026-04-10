@@ -12,7 +12,7 @@ export type StoreCreatePaymentSessionType = z.infer<
 export const StoreCreatePaymentSession = z
   .object({
     provider_id: z.string(),
-    data: z.record(z.unknown()).optional(),
+    data: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
 
