@@ -44,5 +44,9 @@ module.exports = {
       borderRadius: modifiedRadius,
       spacing: modifiedSpacing,
     },
+    backgroundImage: {
+      "bg-stripes": "url('/ui/images/bg-stripes.png')",
+      "bg-stripes-dark": "url('/ui/images/bg-stripes-dark.png')",
+    },
   },
 }

@@ -27,7 +27,12 @@ export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     item_id: z.union([z.string(), z.array(z.string())]).optional(),
-    version: z.number().optional(),
+    version: z.preprocess((val) => {
+      if (isString(val) && val) {
+        return parseInt(val)
+      }
+      return val
+    }, z.number().optional()),
   })
 )
 
@@ -149,6 +154,7 @@ export const AdminTransferOrder = z.object({
   customer_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
 
 export type AdminCancelOrderTransferRequestType = z.infer<

@@ -1,5 +1,49 @@
 # @medusajs/dashboard
 
+## 2.13.6
+
+### Patch Changes
+
+- [#14935](https://github.com/medusajs/medusa/pull/14935) [`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,types): improve order timeline UI
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.13.6
+  - @medusajs/admin-shared@2.13.6
+  - @medusajs/icons@2.13.6
+  - @medusajs/ui@4.1.6
+
+## 2.13.5
+
+### Patch Changes
+
+- [#14837](https://github.com/medusajs/medusa/pull/14837) [`150e25c1e969ea2e0b00faa5d9a0eae8c49e76d0`](https://github.com/medusajs/medusa/commit/150e25c1e969ea2e0b00faa5d9a0eae8c49e76d0) Thanks [@bittoby](https://github.com/bittoby)! - fix: replace hardcoded fulfillment status strings with i18n translation keys in order detail page
+
+- [#14914](https://github.com/medusajs/medusa/pull/14914) [`0324e4f6254866bfac56b4a6b4938df8bef5412c`](https://github.com/medusajs/medusa/commit/0324e4f6254866bfac56b4a6b4938df8bef5412c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): handle single-line errors (without file details)
+
+- [#14931](https://github.com/medusajs/medusa/pull/14931) [`c97973e60e7a8e3961d79f483b9ef46aee8568ca`](https://github.com/medusajs/medusa/commit/c97973e60e7a8e3961d79f483b9ef46aee8568ca) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): use product default fields on Admin dashboard exports
+
+- [#14898](https://github.com/medusajs/medusa/pull/14898) [`991e61fbda7d6096e2ce1b4f713cf55aee2e9404`](https://github.com/medusajs/medusa/commit/991e61fbda7d6096e2ce1b4f713cf55aee2e9404) Thanks [@sradevski](https://github.com/sradevski)! - Improved filtering support for workflow executions
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.5
+  - @medusajs/js-sdk@2.13.5
+  - @medusajs/icons@2.13.5
+  - @medusajs/ui@4.1.5
+
+## 2.13.4
+
+### Patch Changes
+
+- [#14875](https://github.com/medusajs/medusa/pull/14875) [`fc80b23c73fa856f753a3cfa469bb4081d0f61ca`](https://github.com/medusajs/medusa/commit/fc80b23c73fa856f753a3cfa469bb4081d0f61ca) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard): show error details in development mode
+
+- [#14842](https://github.com/medusajs/medusa/pull/14842) [`d07f70750362e6c78298aba673de4c9db96d3ad6`](https://github.com/medusajs/medusa/commit/d07f70750362e6c78298aba673de4c9db96d3ad6) Thanks [@fPolic](https://github.com/fPolic)! - feat(core-flows,dashboard): carry over promotions flag on claims
+
+- Updated dependencies [[`4efa4a6d8f10d1864156b575c7d867048deb6e93`](https://github.com/medusajs/medusa/commit/4efa4a6d8f10d1864156b575c7d867048deb6e93)]:
+  - @medusajs/ui@4.1.4
+  - @medusajs/admin-shared@2.13.4
+  - @medusajs/js-sdk@2.13.4
+  - @medusajs/icons@2.13.4
+
 ## 2.13.3
 
 ### Patch Changes

@@ -29,6 +29,19 @@ vi.mock("@kapaai/react-sdk", () => ({
 vi.mock("next/navigation", () => ({
   usePathname: () => mockUsePathname(),
 }))
+vi.mock("@/components/ContentMenu/Section", () => ({
+  ContentMenuSection: ({
+    title,
+    children,
+  }: {
+    title: string
+    children: React.ReactNode
+  }) => (
+    <div data-testid="content-menu-section" data-title={title}>
+      {children}
+    </div>
+  ),
+}))
 
 import { ContentMenuActions } from "../../Actions"
 
@@ -45,6 +58,15 @@ beforeEach(() => {
 })
 
 describe("render", () => {
+  test("renders inside Shortcuts section", () => {
+    const { container } = render(<ContentMenuActions />)
+    const section = container.querySelector(
+      "[data-testid='content-menu-section']"
+    )
+    expect(section).toBeInTheDocument()
+    expect(section).toHaveAttribute("data-title", "Shortcuts")
+  })
+
   test("does not render ai assistant button when ai assistant feature is disabled", () => {
     mockUseSiteConfig.mockReturnValueOnce({
       config: {
