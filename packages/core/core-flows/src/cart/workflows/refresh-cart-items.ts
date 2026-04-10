@@ -68,6 +68,8 @@ export type RefreshCartItemsWorkflowInput = {
 
 /**
  * The ID of the {@link refreshCartItemsWorkflow}.
+ * 
+ * @since 2.13.7
  */
 export const refreshCartItemsWorkflowId = "refresh-cart-items"
 /**
