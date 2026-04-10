@@ -78,6 +78,7 @@ export type VirtualOrder = {
   total: BigNumberInput
 
   customer_id?: string
+  email?: string
 
   transactions?: OrderTransaction[]
   metadata?: Record<string, unknown>

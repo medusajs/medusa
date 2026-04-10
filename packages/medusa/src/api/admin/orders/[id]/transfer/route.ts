@@ -27,6 +27,7 @@ export const POST = async (
       logged_in_user: req.auth_context.actor_id,
       description: req.validatedBody.description,
       internal_note: req.validatedBody.internal_note,
+      update_order_email: req.validatedBody.update_order_email,
     },
   })
 

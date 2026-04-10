@@ -2536,7 +2536,7 @@ export default class OrderModuleService
     const order = await this.retrieveOrder(
       orderId,
       {
-        select: ["id", "version", "items.detail", "summary", "total"],
+        select: ["id", "version", "items.detail", "summary", "total", "email"],
         relations: ["transactions", "credit_lines"],
       },
       sharedContext
@@ -3557,7 +3557,7 @@ export default class OrderModuleService
     let orders = await this.listOrders_(
       { id: deduplicate(ordersIds) },
       {
-        select: ["id", "version", "items.detail", "summary", "total"],
+        select: ["id", "version", "items.detail", "summary", "total", "email"],
         relations: ["transactions", "credit_lines"],
       },
       sharedContext

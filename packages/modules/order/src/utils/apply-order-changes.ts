@@ -59,6 +59,7 @@ export async function applyChangesToOrder(
     const orderAttributes: {
       version?: number
       customer_id?: string
+      email?: string
     } = {}
 
     // Editable attributes that have changed
