@@ -10,6 +10,7 @@
  *   - created_at
  *   - order_id
  *   - canceled_at
+ *   - created_by
  *   - received_at
  * properties:
  *   items:
@@ -67,6 +68,10 @@
  *     type: string
  *     title: received_at
  *     description: The date the return items were received.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the return.
  * 
 */
 

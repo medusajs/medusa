@@ -311,6 +311,10 @@ export interface ProductCategoryDTO {
    */
   rank: number
   /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id: string | null
+  /**
    * The ranking of the product category among sibling categories.
    */
   metadata?: MetadataType
@@ -385,6 +389,10 @@ export interface CreateProductCategoryDTO {
    */
   parent_category_id?: string | null
   /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id?: string | null
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: MetadataType
@@ -431,6 +439,10 @@ export interface UpdateProductCategoryDTO {
    * The ID of the parent product category, if it has any.
    */
   parent_category_id?: string | null
+  /**
+   * An external identifier for the product category, such as an ID from a third-party system.
+   */
+  external_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
@@ -739,6 +751,12 @@ export interface FilterableProductProps
    * Filters on a product's variant properties.
    */
   variants?: {
+
+    sku?: string | string[] | OperatorMap<string | string[]>
+    ean?: string | string[] | OperatorMap<string | string[]>
+    upc?: string | string[] | OperatorMap<string | string[]>
+    barcode?: string | string[] | OperatorMap<string | string[]>
+
     options?: {
       value?: string
       option_id?: string
@@ -931,6 +949,23 @@ export interface FilterableProductVariantProps
    * The SKUs to filter product variants by.
    */
   sku?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The EANs to filter product variants by.
+   */
+  ean?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The UPCs to filter product variants by.
+   */
+  upc?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The barcodes to filter product variants by.
+   */
+  barcode?: string | string[] | OperatorMap<string | string[]>    
+   
+
   /**
    * Filter the product variants by their associated products' IDs.
    */
@@ -989,6 +1024,10 @@ export interface FilterableProductCategoryProps
    * Filter product categories by whether they're internal.
    */
   is_internal?: boolean
+  /**
+   * Filter product categories by external ID.
+   */
+  external_id?: string | string[] | null
   /**
    * Whether to include children of retrieved product categories.
    */

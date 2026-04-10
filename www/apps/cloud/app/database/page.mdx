@@ -1,3 +1,5 @@
+import { getOsShortcut, Kbd } from "docs-ui"
+
 export const metadata = {
   title: `Database`,
 }
@@ -40,13 +42,19 @@ Medusa gives you read access to your Cloud project's database, which is useful w
 
 To get the read-only connection string for an environment's database:
 
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
 3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Database" tab from the sidebar.
-5. Copy the read-only connection string in the code block.
+4. Choose the "Storage" tab from the sidebar.
+5. In the "Database connection string" section, copy the read-only connection string in the code block.
 
-![Read-only connection string in Database settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755271713/Cloud/CleanShot_2025-08-15_at_18.27.58_2x_fqlync.png)
+![Read-only connection string in Storage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755271713/Cloud/CleanShot_2025-08-15_at_18.27.58_2x_fqlync.png)
 
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
 
@@ -64,10 +72,16 @@ Medusa allows you to export and import database dumps for any environment on Clo
 
 To import or export a database dump for an environment:
 
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
 3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Database" tab from the sidebar and find the "Database dump" section.
+4. Choose the "Storage" tab from the sidebar and find the "Database dump" section.
 
 ![Database dump section highlighted in the environment settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750169625/Cloud/CleanShot_2025-06-17_at_17.13.21_2x_l7vw3w.png)
 
