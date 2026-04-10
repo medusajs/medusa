@@ -16,7 +16,7 @@ Reviews GitHub pull requests for Medusa. Checks template compliance, contributio
 
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
-- **Writing a review comment?** → MUST load `reference/comment-guidelines.md` first (includes bug reporting format)
+- **Writing a review comment?** → MUST load `reference/comment-guidelines.md` first (includes bug, security, and performance reporting formats)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
 
@@ -112,21 +112,6 @@ bash scripts/get_linked_issues.sh <pr_number>
 ```
 Check whether any linked issue carries a `help-wanted` label. If not, apply `requires-more` and comment explaining that large contributions should be scoped and pre-approved via an issue first (reference `CONTRIBUTING.md`).
 
-**4b. Security scan:**
-
-Review the changed file paths and PR body for:
-- Credentials, secrets, or API keys in code
-- Remote code execution vectors (`eval`, dynamic imports of remote URLs)
-- Suspicious package additions (`package.json` changes with unknown packages, unusual `scripts` entries)
-- Tampered lock files or build scripts
-
-If **malicious code** is found → close the PR immediately with a clear explanation:
-```bash
-bash scripts/close_issue.sh <pr_number>
-```
-
-If **potential security risks** (not clearly malicious) → include them as a concern in the review comment.
-
 ### Step 5 — Fetch Linked Issues
 
 ```bash
@@ -151,9 +136,87 @@ For mixed PRs, apply all relevant types.
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
-### Step 8 — Bug Detection
+### Step 8 — Security Analysis (ALL PRs)
 
-Read the actual code diff carefully and look for potential bugs. Focus on:
+> **CRITICAL:** This step applies to **all PRs**, including team members. Read the actual diff — do not rely only on file path inspection.
+
+Check for the following security issues:
+
+**Authentication & Authorization:**
+- Missing or bypassed authentication middleware on new routes
+- Authorization checks missing — any route that accesses or mutates data scoped to a user/store must verify ownership
+- Privilege escalation — e.g., a non-admin route accepting admin-level operations
+
+**Injection & Execution:**
+- Raw SQL constructed from user input (SQL injection)
+- Use of `eval()`, `new Function()`, or `vm.runInContext()` with untrusted data
+- Dynamic `require()`/`import()` with user-controlled paths
+- Shell command construction with user input (`exec`, `spawn`, `execSync`)
+
+**Input Validation:**
+- User-controlled input passed to filesystem operations (`fs.readFile`, `path.join`) without sanitization → path traversal
+- Missing size/length limits on inputs that could cause DoS
+- Unvalidated external URLs used in server-side fetches → SSRF
+
+**Data Exposure:**
+- Sensitive fields (passwords, secrets, internal IDs, PII) included in API responses or logs
+- Error messages leaking internal stack traces, SQL queries, or file paths to the client
+- Credentials, API keys, or secrets hardcoded or committed in any file
+
+**Dependencies & Supply Chain:**
+- New packages added to `package.json` — verify they're well-known, not typosquats, and have a clear purpose
+- Unusual `scripts` entries in `package.json` (e.g., `postinstall`, `preinstall`) that execute commands
+- Lock file changes inconsistent with `package.json` changes
+
+**Malicious code:**
+If clearly malicious code is found → close the PR immediately:
+```bash
+bash scripts/close_issue.sh <pr_number>
+```
+
+For each confirmed or suspected security issue:
+- Note the **file, line/function, and the exact vulnerability class**
+- Explain the **attack scenario** in one sentence
+- Suggest a **concrete fix**
+
+Security issues are always **blocking** — apply `requires-more` even if everything else looks good. Load `reference/comment-guidelines.md` for the Security Issues comment format.
+
+### Step 9 — Performance Analysis (ALL PRs)
+
+> **CRITICAL:** This step applies to **all PRs**. Only flag issues that would plausibly cause measurable degradation in production — not theoretical micro-optimizations.
+
+Check for:
+
+**Database / Query Performance:**
+- **N+1 queries** — a `query.graph()`, `query.index()`, or service call inside a loop over a result set. Flag the loop location and the repeated call.
+- **Unbounded queries** — `query.graph()` / `remoteQueryObjectFromString()` / service list calls missing `pagination: req.queryConfig.pagination`. A missing pagination object means a full-table scan.
+- **Missing pagination in response** — list routes that omit `count`, `offset` (`metadata.skip`), and `limit` (`metadata.take`) from the response body, breaking client-side pagination.
+- **Missing database indexes** — new fields used in `filters` or `order` in a query call without a corresponding index in the entity decorator or migration.
+
+**Async & Concurrency:**
+- Sequential `await` in a loop where `Promise.all()` would work
+- Heavy synchronous computation (sorting, transforming large arrays) on the main event loop in a hot path
+- Unthrottled parallel operations that could overwhelm the DB connection pool
+
+**Memory & Payload:**
+- Loading large datasets entirely into memory before filtering/transforming
+- API responses including deeply nested or large objects that could be paginated or trimmed
+- Accumulating results in memory across paginated batches without streaming
+
+For each performance issue found:
+- Note the **file and function/line**
+- Explain **why it's a problem** (e.g., "this query runs once per order item, which means N DB roundtrips for a cart with N items")
+- Suggest a **concrete fix**
+
+Performance issues severity:
+- **Blocking (requires-more):** N+1 queries, unbounded queries on large tables, missing pagination on list endpoints
+- **Non-blocking (note only):** Suggestions that are improvements but don't introduce clear production risk
+
+### Step 10 — Bug Detection (ALL PRs)
+
+> **CRITICAL:** This step applies to **all PRs** including team members. Any potential bug — confirmed or suspected — is a **required change** and must result in `requires-more`. Do not leave bugs as notes.
+
+Read the actual code diff carefully. Flag anything that would plausibly cause incorrect runtime behaviour. Focus on:
 
 - **Logic errors** — off-by-one, wrong conditionals, inverted boolean checks
 - **Null / undefined access** — accessing properties on values that may be null/undefined without guards
@@ -163,15 +226,18 @@ Read the actual code diff carefully and look for potential bugs. Focus on:
 - **Edge cases not handled** — empty arrays, zero values, missing input validation
 - **Mutation side-effects** — mutating shared state or function arguments unexpectedly
 - **Incorrect error handling** — swallowed errors, rethrowing without context, wrong error types
+- **Wrong HTTP status codes** — returning 200 for errors, 201 for non-creation responses, etc.
+- **Workflow compensation gaps** — `createStep` with side effects but no compensation function, meaning failed workflows leave orphaned data
 
 For each potential bug found:
 - Note the **file and approximate location**
-- Briefly explain **why it's a bug or risk**
-- Suggest a **concrete fix** if one is obvious
+- Quote the **relevant code snippet** in a fenced code block
+- Briefly explain **why it's a bug or risk** — describe the failure scenario specifically
+- Suggest a **concrete fix**
 
-> **CRITICAL:** Distinguish between confirmed bugs (clear logic/runtime errors) and code smell / style issues. Only flag something as a bug if it would plausibly cause incorrect behaviour at runtime.
+> Do NOT flag style issues, code smell, or naming preferences here. Only flag things that would plausibly cause incorrect behaviour at runtime. If you're uncertain, phrase it as a question but still add it to **Required changes** — it is the author's responsibility to confirm or disprove it.
 
-### Step 9 — Contextual Assessment
+### Step 11 — Contextual Assessment
 
 Before writing the review, assess whether the changes make sense in the broader context of the PR. Load `reference/comment-guidelines.md` (Contextual Assessment section) for the full checklist. Key questions:
 
@@ -179,11 +245,10 @@ Before writing the review, assess whether the changes make sense in the broader 
 - Could the change break or alter behaviour in other parts of the codebase?
 - Is the scope right — no unrelated changes included?
 - Are edge cases and potential regressions covered?
-- Are there obvious performance or correctness concerns?
 
 Note any concerns to include in the review comment.
 
-### Step 10 — Compose and Post Review
+### Step 12 — Compose and Post Review
 
 Load `reference/comment-guidelines.md` for comment templates and tone guidance.
 
@@ -191,8 +256,10 @@ Decide the outcome:
 
 | Label | When |
 |-------|------|
-| `initial-approval` | PR follows all guidelines; team will do the final review |
+| `initial-approval` | PR follows all guidelines, no security/performance blockers; team will do the final review |
 | `requires-more` | PR needs changes — list exactly what must change |
+
+> **CRITICAL:** Any security issue, any potential bug, or any blocking performance issue (N+1, unbounded query) **must** result in `requires-more`, even if all other checks pass. Do not apply `initial-approval` with bugs or security issues as notes — they are always required changes.
 
 Post the comment then apply the label:
 ```bash
@@ -208,6 +275,11 @@ bash scripts/labels.sh <pr_number> add <label>
 - [ ] Forgetting the docs-ui test requirement for `www/packages/docs-ui/` changes
 - [ ] Skipping the integration test check for API route changes in `packages/medusa/src/api/`
 - [ ] Not fetching PR details when they weren't passed as arguments
+- [ ] Skipping security analysis for team member PRs — security analysis applies to ALL PRs
+- [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries
+- [ ] Applying `initial-approval` when a confirmed security or blocking performance issue was found
+- [ ] Flagging style/code smell as bugs — only flag correctness/runtime issues in the Potential Bugs section
+- [ ] Omitting the code snippet when flagging a bug, security issue, or performance issue — always quote the relevant code
 
 ## Reference Files
 

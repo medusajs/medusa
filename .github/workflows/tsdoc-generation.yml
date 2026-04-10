@@ -17,7 +17,11 @@ on:
 
 jobs:
   generate-tsdocs:
-    if: ${{ !contains(github.event.head_commit.message, 'Version Packages') }}
+    if: |
+      !contains(github.event.head_commit.message, 'Version Packages') &&
+      github.actor != 'github-actions[bot]' &&
+      github.actor != 'dependabot[bot]' &&
+      !startsWith(github.ref, 'refs/heads/docs/add-tsdocs')
     runs-on: ubuntu-latest
     permissions:
       contents: write
