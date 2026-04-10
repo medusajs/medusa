@@ -446,7 +446,11 @@ export interface BaseProductVariantParams
   options?: {
     value: string
     option_id: string
-  }
+  },
+  sku?: string | string[]
+  ean?: string | string[]
+  upc?: string | string[]
+  barcode?: string | string[]
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
   deleted_at?: OperatorMap<string>
