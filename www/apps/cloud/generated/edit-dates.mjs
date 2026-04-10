@@ -2,13 +2,13 @@ export const generatedEditDates = {
   "app/page.mdx": "2026-01-08T09:12:42.756Z",
   "app/organization/page.mdx": "2025-06-12T14:43:20.772Z",
   "app/projects/page.mdx": "2026-04-10T08:04:44.633Z",
-  "app/environments/page.mdx": "2026-04-10T08:12:51.978Z",
+  "app/environments/page.mdx": "2026-04-10T10:24:07.265Z",
   "app/deployments/page.mdx": "2026-04-10T08:03:45.605Z",
-  "app/organizations/page.mdx": "2026-04-10T08:17:12.762Z",
+  "app/organizations/page.mdx": "2026-04-10T10:23:58.130Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
   "app/database/page.mdx": "2026-04-10T08:08:09.643Z",
   "app/redis/page.mdx": "2025-10-15T15:22:34.997Z",
-  "app/s3/page.mdx": "2026-04-10T08:16:03.403Z",
+  "app/s3/page.mdx": "2026-04-10T10:23:43.523Z",
   "app/loyalty-plugin/page.mdx": "2025-10-15T15:27:40.303Z",
   "app/logs/page.mdx": "2026-04-10T08:04:30.515Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
@@ -18,7 +18,7 @@ export const generatedEditDates = {
   "app/environments/preview/page.mdx": "2026-02-05T15:06:26.801Z",
   "app/faq/page.mdx": "2026-01-08T08:43:23.224Z",
   "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",
-  "app/usage/page.mdx": "2026-04-10T08:17:02.373Z",
+  "app/usage/page.mdx": "2026-04-10T10:22:15.211Z",
   "app/billing/manage/page.mdx": "2025-10-08T14:40:23.629Z",
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
   "app/sign-up/page.mdx": "2026-03-27T09:49:44.526Z",
@@ -34,5 +34,5 @@ export const generatedEditDates = {
   "app/storefront/page.mdx": "2026-04-08T16:19:50.391Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
   "app/environments/custom-domains/page.mdx": "2026-04-08T16:19:33.834Z",
-  "app/command-palette/page.mdx": "2026-04-10T08:03:06.966Z"
+  "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z"
 }
