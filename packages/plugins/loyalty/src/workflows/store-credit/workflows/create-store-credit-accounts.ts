@@ -3,7 +3,7 @@ import {
   createStep,
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { ModuleCreateStoreCreditAccount } from "../../../types/store-credit";
 import { createStoreCreditAccountsStep } from "../steps/create-store-credit-accounts";
 import { generateCode } from "../../../utils/code-generator";

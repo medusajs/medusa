@@ -5,7 +5,7 @@ import {
   refreshCartItemsWorkflow,
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows";
-import { createStep, createWorkflow, transform } from "@medusajs/workflows-sdk";
+import { createStep, createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 import { PluginCartDTO } from "../../../types/cart";
 import { ModuleGiftCard } from "../../../types/loyalty";

@@ -1,5 +1,5 @@
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
-import { createWorkflow } from "@medusajs/workflows-sdk";
+import { createWorkflow } from "@medusajs/framework/workflows-sdk";
 import { deleteGiftCardsStep } from "../steps/delete-gift-cards";
 
 /*

@@ -12,7 +12,7 @@ import {
   parallelize,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { PluginCartDTO } from "src/types/cart";
 import { ModuleStoreCreditAccount } from "../../../types/store-credit";
 

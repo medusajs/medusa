@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { MathBN, MedusaError } from "@medusajs/framework/utils";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
-import { createStep, createWorkflow, transform } from "@medusajs/workflows-sdk";
+import { createStep, createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
 
 import { ModuleCreditStoreCreditAccount } from "src/types/store-credit";
 import { creditAccountStep } from "../steps/credit-account";

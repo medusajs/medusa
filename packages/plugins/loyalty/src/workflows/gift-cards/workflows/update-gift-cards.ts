@@ -1,4 +1,4 @@
-import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk";
+import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
 import { ModuleGiftCard, ModuleUpdateGiftCard } from "../../../types";
 import { updateGiftCardsStep } from "../steps/update-gift-cards";
 

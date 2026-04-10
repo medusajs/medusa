@@ -12,7 +12,7 @@ import {
   StepResponse,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 import { PluginCartDTO } from "../../../types/cart";
 import { ModuleGiftCard } from "../../../types/loyalty";

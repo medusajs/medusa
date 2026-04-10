@@ -1,5 +1,5 @@
 import { refreshCartItemsWorkflow } from "@medusajs/medusa/core-flows";
-import { StepResponse } from "@medusajs/workflows-sdk";
+import { StepResponse } from "@medusajs/framework/workflows-sdk";
 import { refreshCartGiftCardsWorkflow } from "../carts/workflows/refresh-cart-gift-cards";
 
 (refreshCartItemsWorkflow.hooks as any).beforeRefreshingPaymentCollection(

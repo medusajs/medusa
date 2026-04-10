@@ -11,7 +11,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 import { retrieveGiftCardsBalanceStep } from "../../gift-cards/steps/retrieve-gift-card-balance";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";

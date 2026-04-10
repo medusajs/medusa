@@ -1,4 +1,4 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk";
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 
 export const deleteGiftCardsStep = createStep(

@@ -8,7 +8,7 @@ import {
   transform,
   when,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { CustomerDTO } from "@medusajs/framework/types";
 
 import { ModuleStoreCreditAccount } from "../../../types";

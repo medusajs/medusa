@@ -11,7 +11,7 @@ import {
   StepResponse,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import crypto from "crypto"
 import {
   IStoreCreditModuleService,

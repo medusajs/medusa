@@ -1,5 +1,5 @@
 import { MathBN, MedusaError } from "@medusajs/framework/utils";
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/framework/workflows-sdk";
 import { ModuleAccountStats, ModuleGiftCard } from "src/types";
 
 export const validateGiftCardBalancesStep = createStep(

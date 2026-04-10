@@ -2,7 +2,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { createLinksWorkflow } from "@medusajs/medusa/core-flows";
 
 import { createGiftCardsStep } from "../steps/create-gift-cards";

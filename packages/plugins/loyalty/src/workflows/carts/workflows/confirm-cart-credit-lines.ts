@@ -5,7 +5,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/framework/workflows-sdk";
 import { ModuleGiftCard } from "../../../types/loyalty";
 import { ModuleAccountStats } from "../../../types/store-credit";
 import { debitAccountsWorkflow } from "../../store-credit/workflows/debit-accounts";
