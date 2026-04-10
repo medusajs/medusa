@@ -98,18 +98,35 @@ jobs:
             - Use @since ${{ steps.version.outputs.next_version }} ONLY on symbols that are demonstrably new in this commit's diff
             - If a symbol was in the file before this commit, omit @since
 
-      - name: Build PR body
-        id: pr-body
+      - name: Build PR metadata
+        id: pr-meta
         if: steps.changed-files.outputs.has_files == 'true'
         run: |
           SHORT_SHA="${{ github.sha }}"
           SHORT_SHA="${SHORT_SHA:0:7}"
           COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          COMMIT_SUBJECT=$(git log --format="%s" -1 ${{ github.sha }})
+
+          # Build a concise title from the commit subject (strip conventional commit prefix if present)
+          CLEAN_SUBJECT=$(echo "$COMMIT_SUBJECT" | sed 's/^[a-z]*([^)]*): //' | sed 's/^[a-z]*: //')
+          # Truncate to 60 chars to leave room for the prefix
+          CLEAN_SUBJECT=$(echo "$CLEAN_SUBJECT" | cut -c1-60)
+          PR_TITLE="docs: add TSDocs for \"${CLEAN_SUBJECT}\""
+
+          echo "pr_title=${PR_TITLE}" >> "$GITHUB_OUTPUT"
+
           {
             echo 'BODY<<PR_BODY_EOF'
             echo "## Automated TSDoc Additions"
             echo ""
             echo "This PR adds TSDoc comments to TypeScript source files changed in commit [\`${SHORT_SHA}\`](${COMMIT_URL})."
+            echo ""
+            echo "**Triggered by:** ${COMMIT_SUBJECT}"
+            echo ""
+            echo "**Files updated:**"
+            echo "${{ steps.changed-files.outputs.files }}" | while IFS= read -r f; do
+              [ -n "$f" ] && echo "- \`$f\`"
+            done
             echo ""
             echo "> Review carefully before merging. Claude may have missed context or used incorrect descriptions."
             printf '\n'
@@ -125,7 +142,7 @@ jobs:
           base: develop
           branch: docs/add-tsdocs
           branch-suffix: timestamp
-          title: "docs: add TSDocs for ${{ github.sha }}"
+          title: ${{ steps.pr-meta.outputs.pr_title }}
           labels: "type: chore"
           add-paths: packages/**
-          body: ${{ steps.pr-body.outputs.BODY }}
+          body: ${{ steps.pr-meta.outputs.BODY }}
