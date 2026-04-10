@@ -49,7 +49,7 @@ To create an order claim:
         - Click on the "Add items" button in the "Inbound" section.
         - In the list that opens, click on the checkbox next to the items you want the customer to return.
         - Once done, click on the "Save" button.
-        - You can then change the quantity to return or manage the item's details by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to it.
+        - You can then change the quantity to return or manage the item's details by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to it. When managing item details, you can also add custom metadata fields to store additional information about the claim item.
     - For the inbound items:
         - For the Location field, choose the location to return the items to.
         - For the Return Shipping field, you can optionally choose the shipping method to return the items with.
@@ -69,6 +69,30 @@ To create an order claim:
 ![Create Claim Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739803985/User%20Guide/Screenshot_2025-02-17_at_4.52.40_PM_drn24m.png)
 
 The claim will be created and you can see it in the Activity section of the order’s details page. If you added outbound items, they will also be added to the "Unfulfilled Items" section.
+
+---
+
+## Manage Claim Item Metadata
+
+<Note>
+
+This feature is available since Medusa [v2.13.7](https://github.com/medusajs/medusa/releases/tag/v2.13.7).
+
+</Note>
+
+When adding items to a claim (both inbound items for returns and outbound items for replacements), you can add custom metadata to store additional information about specific claim items.
+
+To manage claim item metadata:
+
+1. When creating or managing a claim, add your items as described above.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to a claim item.
+3. Choose "Edit" or "Manage details" from the dropdown.
+4. In the form that opens, you'll find a "Metadata" section where you can:
+   - Add custom key-value pairs to store additional information
+   - Edit existing metadata entries
+   - Remove metadata entries you no longer need
+
+This metadata is stored with the claim item and can be useful for tracking special handling instructions, internal notes, or integration with external systems.
 
 ---
 
