@@ -1,3 +1,5 @@
+export const revalidate = 3600
+
 import clsx from "clsx"
 import { AiAssistantChatWindow, MainNav, RootProviders } from "docs-ui"
 import Providers from "../providers"
