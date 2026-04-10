@@ -15,7 +15,8 @@ export type HeroPricingFields = {
       link: {
         _type: "link"
         label: string
-        path: string
+        path?: string
+        url?: string
         type: string
       }
       size: string

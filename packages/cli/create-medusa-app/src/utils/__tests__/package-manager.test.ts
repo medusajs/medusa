@@ -1,18 +1,23 @@
 import PackageManager from "../package-manager"
 import ProcessManager from "../process-manager"
 import execute from "../execute"
-import { existsSync, rmSync } from "fs"
+import { existsSync, readFileSync, rmSync, writeFileSync } from "fs"
+import { parse as parseYaml } from "yaml"
 import logMessage from "../log-message"
 
 // Mock dependencies
 jest.mock("../execute")
 jest.mock("fs")
+jest.mock("yaml")
 jest.mock("../log-message")
 
 const mockExecute = execute as jest.MockedFunction<typeof execute>
 const mockExistsSync = existsSync as jest.MockedFunction<typeof existsSync>
 const mockRmSync = rmSync as jest.MockedFunction<typeof rmSync>
 const mockLogMessage = logMessage as jest.MockedFunction<typeof logMessage>
+const mockReadFileSync = readFileSync as jest.Mock
+const mockWriteFileSync = writeFileSync as jest.Mock
+const mockParseYaml = parseYaml as jest.MockedFunction<typeof parseYaml>
 
 describe("PackageManager", () => {
   let processManager: ProcessManager
@@ -22,6 +27,9 @@ describe("PackageManager", () => {
     processManager = new ProcessManager()
     originalEnv = { ...process.env }
     jest.clearAllMocks()
+    // Default setup so transformWorkspaceConfig doesn't throw in unrelated tests
+    mockReadFileSync.mockReturnValue(JSON.stringify({ name: "test", scripts: {} }))
+    mockParseYaml.mockReturnValue({ packages: [] })
   })
 
   afterEach(() => {
@@ -303,6 +311,182 @@ describe("PackageManager", () => {
     })
   })
 
+  describe("transformWorkspaceConfig", () => {
+    const YAML_CONTENT = "packages:\n  - 'apps/*'\n  - 'apps/storefront'"
+    const makePackageJson = (extra: Record<string, unknown> = {}) =>
+      JSON.stringify({
+        name: "test",
+        scripts: { dev: "pnpm dev", build: "pnpm build" },
+        ...extra,
+      })
+
+    const getWrittenPackageJson = () => {
+      const call = mockWriteFileSync.mock.calls.find(
+        ([filePath]: [string]) => filePath === "/test/path/package.json"
+      )
+      return call ? JSON.parse(call[1] as string) : null
+    }
+
+    beforeEach(() => {
+      mockExistsSync.mockReturnValue(true)
+      mockReadFileSync
+        .mockReturnValueOnce(YAML_CONTENT)
+        .mockReturnValueOnce(makePackageJson())
+      mockParseYaml.mockReturnValue({ packages: ["apps/*", "apps/storefront"] })
+    })
+
+    it("should do nothing when package manager is pnpm", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "pnpm"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      expect(mockExistsSync).not.toHaveBeenCalled()
+      expect(mockReadFileSync).not.toHaveBeenCalled()
+      expect(mockWriteFileSync).not.toHaveBeenCalled()
+    })
+
+    it("should do nothing when pnpm-workspace.yaml does not exist", async () => {
+      mockExistsSync.mockReturnValue(false)
+
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      expect(mockReadFileSync).not.toHaveBeenCalled()
+      expect(mockWriteFileSync).not.toHaveBeenCalled()
+    })
+
+    it("should add workspaces from pnpm-workspace.yaml to package.json", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.workspaces).toEqual(["apps/*", "apps/storefront"])
+    })
+
+    it("should replace pnpm references in scripts", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.scripts.dev).toBe("yarn dev")
+      expect(written.scripts.build).toBe("yarn build")
+    })
+
+    it("should replace pnpm references in scripts with npm when using npm", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "npm"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.scripts.dev).toBe("npm dev")
+      expect(written.scripts.build).toBe("npm build")
+    })
+
+    it("should delete pnpm-workspace.yaml", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      expect(mockRmSync).toHaveBeenCalledWith(
+        "/test/path/pnpm-workspace.yaml",
+        { force: true }
+      )
+    })
+
+    describe("yarn-specific changes", () => {
+      it("should create an empty yarn.lock", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        expect(mockWriteFileSync).toHaveBeenCalledWith(
+          "/test/path/yarn.lock",
+          ""
+        )
+      })
+
+      it("should create .yarnrc.yml with nodeLinker: node-modules", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        expect(mockWriteFileSync).toHaveBeenCalledWith(
+          "/test/path/.yarnrc.yml",
+          "nodeLinker: node-modules\n"
+        )
+      })
+
+      it("should not add npm overrides", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        const written = getWrittenPackageJson()
+        expect(written.overrides).toBeUndefined()
+      })
+    })
+
+    describe("npm-specific changes", () => {
+      it("should add ajv override to package.json", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "npm"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        const written = getWrittenPackageJson()
+        expect(written.overrides).toEqual(expect.objectContaining({ ajv: "^8.0.0" }))
+      })
+
+      it("should preserve existing overrides when adding ajv", async () => {
+        mockReadFileSync
+          .mockReset()
+          .mockReturnValueOnce(YAML_CONTENT)
+          .mockReturnValueOnce(
+            makePackageJson({ overrides: { someOtherPackage: "^1.0.0" } })
+          )
+
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "npm"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        const written = getWrittenPackageJson()
+        expect(written.overrides).toEqual({
+          someOtherPackage: "^1.0.0",
+          ajv: "^8.0.0",
+        })
+      })
+
+      it("should not create yarn.lock or .yarnrc.yml", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "npm"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        expect(mockWriteFileSync).not.toHaveBeenCalledWith(
+          "/test/path/yarn.lock",
+          expect.anything()
+        )
+        expect(mockWriteFileSync).not.toHaveBeenCalledWith(
+          "/test/path/.yarnrc.yml",
+          expect.anything()
+        )
+      })
+    })
+  })
+
   describe("installDependencies", () => {
     it("should set package manager before installing if not set", async () => {
       process.env.npm_config_user_agent = "yarn/1.22.0"
@@ -313,7 +497,7 @@ describe("PackageManager", () => {
       expect(pm.getPackageManager()).toBe("yarn")
     })
 
-    it("should remove lock files before installing", async () => {
+    it("should run transformWorkspaceConfig and removeLockFiles before installing", async () => {
       mockExecute.mockResolvedValue({ stdout: "", stderr: "" })
       mockExistsSync.mockReturnValue(true)
 
@@ -322,6 +506,9 @@ describe("PackageManager", () => {
 
       await pm.installDependencies({ cwd: "/test/path" })
 
+      // transformWorkspaceConfig ran (checked pnpm-workspace.yaml)
+      expect(mockExistsSync).toHaveBeenCalledWith("/test/path/pnpm-workspace.yaml")
+      // removeLockFiles ran
       expect(mockRmSync).toHaveBeenCalled()
     })
 
@@ -372,6 +559,23 @@ describe("PackageManager", () => {
       expect(mockExecute).toHaveBeenCalledTimes(2)
     })
 
+    it("should append --legacy-peer-deps to npm install when installLegacyPeerDeps is true", async () => {
+      mockExecute.mockResolvedValue({ stdout: "", stderr: "" })
+
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "npm"
+
+      await pm.installDependencies(
+        { cwd: "/test/path" },
+        { installLegacyPeerDeps: true }
+      )
+
+      expect(mockExecute).toHaveBeenCalledWith(
+        ["npm install --legacy-peer-deps", { cwd: "/test/path" }],
+        { verbose: false }
+      )
+    })
+
     it("should re-run npm install if npm ci fails", async () => {
       mockExecute
         .mockResolvedValueOnce({ stdout: "", stderr: "" }) // npm install succeeds
@@ -391,7 +595,6 @@ describe("PackageManager", () => {
         ["npm ci", { cwd: "/test/path" }],
         { verbose: false }
       )
-      // Second npm install call
       expect(mockExecute).toHaveBeenCalledTimes(3)
     })
 

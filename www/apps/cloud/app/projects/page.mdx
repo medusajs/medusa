@@ -1,4 +1,4 @@
-import { Prerequisites, InlineIcon } from "docs-ui"
+import { Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -34,6 +34,12 @@ If you've reached the limit of projects allowed in your organization's plan, you
 In this section, you'll learn how to create a project in Cloud to deploy your Medusa application.
 
 To create a project:
+
+<Note title="Tip">
+
+You can also start the project creation flow from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Create Project**.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the **Create Project** button in your organization's dashboard.
@@ -142,7 +148,7 @@ When you choose a subdomain for your project, it must be at least five character
 - `development`
 - `proxy`
 
-If you also deployed a storefront with your Medusa application, its URL will be a subdomain of `medusajs.site`. For example, if your backend's subdomain is `my-store`, your storefront's URL will be `my-store.medusajs.site`. You can also add a custom domain, as explained in the [Storefront Custom Domain](../storefront/page.mdx#storefront-custom-domain) guide.
+If you also deployed a storefront with your Medusa application, its URL will be a subdomain of `medusajs.site`. For example, if your backend's subdomain is `my-store`, your storefront's URL will be `my-store.medusajs.site`. You can also add a custom domain, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 
 ---
 
@@ -243,7 +249,7 @@ Then, to add a storefront to an existing project:
 
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
 
-You can also set a custom domain for the storefront, as explained in the [Storefront](../storefront/page.mdx#storefront-custom-domain) guide.
+You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 
 ---
 
