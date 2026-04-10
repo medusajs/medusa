@@ -3195,7 +3195,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
-    "@medusajs/admin-shared": 2.12.5
+    "@medusajs/admin-shared": 2.13.6
     zod: 4.2.0
   languageName: unknown
   linkType: soft
@@ -3483,7 +3483,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
-    react-router-dom: 6.20.1
+    react-router-dom: 6.30.3
     zod: 4.2.0
   languageName: unknown
   linkType: soft
@@ -17761,9 +17761,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:11.1.0, glob@npm:^11.0.0":
-  version: 11.1.0
-  resolution: "glob@npm:11.1.0"
+"glob@npm:13.0.6":
+  version: 13.0.6
+  resolution: "glob@npm:13.0.6"
   dependencies:
     minimatch: ^10.2.2
     minipass: ^7.1.3
