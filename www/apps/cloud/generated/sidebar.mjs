@@ -114,6 +114,14 @@ export const generatedSidebars = [
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Custom Domains",
+                "path": "/environments/custom-domains",
+                "children": []
               }
             ]
           },
