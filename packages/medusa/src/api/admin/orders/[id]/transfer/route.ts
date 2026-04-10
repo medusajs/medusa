@@ -9,6 +9,9 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 
+/**
+ * Request a transfer of an order to a customer.
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminRequestOrderTransfer,
