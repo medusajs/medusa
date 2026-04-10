@@ -148,13 +148,23 @@ const normalizeVariantForExport = (
     {}
   )
 
+  const flattenedImages = variant.images?.reduce(
+    (acc: Record<string, string>, image, idx) => {
+      acc[beautifyKey(`variant_image_${idx + 1}`)] = image.url
+      return acc
+    },
+    {}
+  )
+
   const res = {
     ...prefixFields(variant, "variant"),
     ...flattenedPrices,
     ...flattenedOptions,
+    ...flattenedImages,
   } as any
   delete res["Variant Price Set"]
   delete res["Variant Options"]
+  delete res["Variant Images"]
 
   return res
 }
