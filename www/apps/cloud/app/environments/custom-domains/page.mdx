@@ -62,14 +62,20 @@ Based on your storefront framework, update the backend environment variable:
   <CodeTab label="Next.js" value="nextjs">
 
 ```shell
-NEXT_PUBLIC_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+NEXT_PUBLIC_MEDUSA_BACKEND_URL= # Your Medusa backend's URL
+# Update any other envionment variable that uses the Medusa backend URL
+# For example:
+MEDUSA_BACKEND_URL= # Your Medusa backend's URL
 ```
 
   </CodeTab>
   <CodeTab label="SvelteKit / Tanstack Start" value="sveltekit-tanstack">
 
 ```shell
-VITE_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+VITE_MEDUSA_BACKEND_URL= # Your Medusa backend's URL
+# Update any other envionment variable that uses the Medusa backend URL
+# For example:
+MEDUSA_BACKEND_URL= # Your Medusa backend's URL
 ```
 
   </CodeTab>
