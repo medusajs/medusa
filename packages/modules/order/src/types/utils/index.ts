@@ -4,6 +4,8 @@ import {
   LineItemAdjustmentDTO,
   LineItemTaxLineDTO,
   OrderCreditLineDTO,
+  OrderShippingMethodAdjustmentDTO,
+  OrderShippingMethodTaxLineDTO,
 } from "@medusajs/framework/types"
 
 export type VirtualOrder = {
@@ -60,6 +62,8 @@ export type VirtualOrder = {
     }
 
     amount: BigNumberInput
+    adjustments?: (OrderShippingMethodAdjustmentDTO & { version: number })[]
+    tax_lines?: OrderShippingMethodTaxLineDTO[]
   }[]
 
   credit_lines: (OrderCreditLineDTO | CreateOrderCreditLineDTO)[]
