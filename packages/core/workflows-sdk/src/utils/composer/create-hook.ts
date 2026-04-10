@@ -9,6 +9,12 @@ import { StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
 import type { CreateWorkflowComposerContext } from "./type"
 
+/**
+ * A zod-like validator interface that defines a parse method.
+ * This allows for flexible validation without depending on zod directly.
+ * 
+ * @since 2.13.7
+ */
 type ZodLike<T = any> = {
   parse(data: unknown): T
 }

@@ -7,8 +7,14 @@ import {
 } from "../../utils/validators"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 
+/**
+ * Validation schema for retrieving a single campaign.
+ */
 export const AdminGetCampaignParams = createSelectParams()
 
+/**
+ * Validation schema for campaign query parameters.
+ */
 export const AdminGetCampaignsParamsFields = z
   .object({
     q: z.string().optional(),
@@ -21,9 +27,16 @@ export const AdminGetCampaignsParamsFields = z
   })
   .strict()
 
+/**
+ * Type definition for campaign listing query parameters.
+ */
 export type AdminGetCampaignsParamsType = z.infer<
   typeof AdminGetCampaignsParams
 >
+
+/**
+ * Validation schema for listing campaigns with pagination and filtering support.
+ */
 export const AdminGetCampaignsParams = createFindParams({
   offset: 0,
   limit: 50,
@@ -31,6 +44,9 @@ export const AdminGetCampaignsParams = createFindParams({
   .merge(AdminGetCampaignsParamsFields)
   .merge(applyAndAndOrOperators(AdminGetCampaignsParamsFields).strict())
 
+/**
+ * Validation schema for creating campaign budget with type-specific validation rules.
+ */
 const CreateCampaignBudget = z
   .object({
     type: z.nativeEnum(CampaignBudgetType),
@@ -68,13 +84,23 @@ const CreateCampaignBudget = z
     }
   )
 
+/**
+ * Validation schema for updating campaign budget.
+ */
 export const UpdateCampaignBudget = z
   .object({
     limit: z.number().nullish(),
   })
   .strict()
 
+/**
+ * Type definition for creating a campaign.
+ */
 export type AdminCreateCampaignType = z.infer<typeof CreateCampaign>
+
+/**
+ * Validation schema for creating a campaign.
+ */
 export const CreateCampaign = z
   .object({
     name: z.string(),
@@ -85,9 +111,20 @@ export const CreateCampaign = z
     ends_at: z.coerce.date().nullish(),
   })
   .strict()
+
+/**
+ * Extended validation schema for creating a campaign with additional data support.
+ */
 export const AdminCreateCampaign = WithAdditionalData(CreateCampaign)
 
+/**
+ * Type definition for updating a campaign.
+ */
 export type AdminUpdateCampaignType = z.infer<typeof UpdateCampaign>
+
+/**
+ * Validation schema for updating a campaign.
+ */
 export const UpdateCampaign = z.object({
   name: z.string().optional(),
   campaign_identifier: z.string().optional(),
@@ -96,4 +133,8 @@ export const UpdateCampaign = z.object({
   starts_at: z.coerce.date().nullish(),
   ends_at: z.coerce.date().nullish(),
 })
+
+/**
+ * Extended validation schema for updating a campaign with additional data support.
+ */
 export const AdminUpdateCampaign = WithAdditionalData(UpdateCampaign)

@@ -6,6 +6,9 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
+/**
+ * Validation schema for retrieving orders within claims context.
+ */
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -16,6 +19,9 @@ export const AdminGetOrdersOrderParams = createSelectParams().merge(
   })
 )
 
+/**
+ * Type definition for order query parameters in claims context.
+ */
 export type AdminGetOrdersOrderParamsType = z.infer<
   typeof AdminGetOrdersOrderParams
 >
@@ -37,8 +43,14 @@ export const AdminGetOrdersParams = createFindParams({
   })
 )
 
+/**
+ * Type definition for orders listing parameters.
+ */
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
+/**
+ * Validation schema for creating order claims.
+ */
 export const AdminPostOrderClaimsReqSchema = z.object({
   type: z.nativeEnum(ClaimType),
   order_id: z.string(),
@@ -47,6 +59,10 @@ export const AdminPostOrderClaimsReqSchema = z.object({
   reason_id: z.string().nullish(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
+
+/**
+ * Type definition for creating order claims.
+ */
 export type AdminPostOrderClaimsReqSchemaType = z.infer<
   typeof AdminPostOrderClaimsReqSchema
 >
@@ -210,6 +226,12 @@ export type AdminPostClaimsConfirmRequestReqSchemaType = z.infer<
   typeof AdminPostClaimsConfirmRequestReqSchema
 >
 
+/**
+ * Validation schema for deleting claim item actions.
+ */
 export const AdminDeleteClaimItemActionSchema = createSelectParams()
 
+/**
+ * Type definition for deleting claim item actions.
+ */
 export type AdminDeleteClaimItemActionSchemaType = z.infer<typeof AdminDeleteClaimItemActionSchema>
