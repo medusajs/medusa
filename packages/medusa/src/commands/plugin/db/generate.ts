@@ -77,7 +77,7 @@ async function getEntitiesForModule(path: string) {
       (potentialEntity) => {
         return (
           DmlEntity.isDmlEntity(potentialEntity) ||
-          !!MetadataStorage.getMetadataFromDecorator(potentialEntity as any)
+          typeof potentialEntity === "function"
         )
       }
     )
