@@ -4,7 +4,7 @@ export const AdminPostOrderEditsReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostOrderEditsReqSchemaType = z.infer<
   typeof AdminPostOrderEditsReqSchema
@@ -15,7 +15,7 @@ export const AdminPostOrderEditsShippingReqSchema = z.object({
   custom_amount: z.number().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminPostOrderEditsShippingReqSchemaType = z.infer<
@@ -25,7 +25,7 @@ export type AdminPostOrderEditsShippingReqSchemaType = z.infer<
 export const AdminPostOrderEditsShippingActionReqSchema = z.object({
   custom_amount: z.number().nullish().optional(),
   internal_note: z.string().nullish().optional(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostOrderEditsShippingActionReqSchemaType = z.infer<
@@ -41,7 +41,7 @@ export const AdminPostOrderEditsAddItemsReqSchema = z.object({
       compare_at_unit_price: z.number().nullish(),
       internal_note: z.string().nullish(),
       allow_backorder: z.boolean().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     })
   ),
 })

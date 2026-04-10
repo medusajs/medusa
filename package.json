@@ -132,7 +132,8 @@
     "vite-plugin-turbosnap": "^1.0.2",
     "vitest": "^3.0.5",
     "yalc": "^1.0.0-pre.53",
-    "zod": "3.25.76"
+    "zod": "4.2.0",
+    "zod-validation-error": "5.0.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "yarn run lint",

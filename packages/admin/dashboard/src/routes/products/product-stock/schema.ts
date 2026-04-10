@@ -7,18 +7,18 @@ const LocationQuantitySchema = z.object({
   disabledToggle: z.boolean(),
 })
 
-const ProductStockLocationsSchema = z.record(LocationQuantitySchema)
+const ProductStockLocationsSchema = z.record(z.string(), LocationQuantitySchema)
 
 const ProductStockInventoryItemSchema = z.object({
   locations: ProductStockLocationsSchema,
 })
 
 const ProductStockVariantSchema = z.object({
-  inventory_items: z.record(ProductStockInventoryItemSchema),
+  inventory_items: z.record(z.string(), ProductStockInventoryItemSchema),
 })
 
 export const ProductStockSchema = z.object({
-  variants: z.record(ProductStockVariantSchema),
+  variants: z.record(z.string(), ProductStockVariantSchema),
 })
 
 export type ProductStockLocationSchema = z.infer<
