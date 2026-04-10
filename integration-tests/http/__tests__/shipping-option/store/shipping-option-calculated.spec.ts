@@ -401,6 +401,109 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should recompute shipping promotion adjustments after shipping price changes due to item update", async () => {
+          // Create an automatic promotion targeting shipping_methods
+          // 100% off shipping (percentage) when applied
+          await api.post(
+            `/admin/promotions`,
+            {
+              code: "FREE_SHIPPING",
+              type: "standard",
+              status: "active",
+              is_automatic: true,
+              application_method: {
+                type: "percentage",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: 100,
+                max_quantity: 1,
+                currency_code: "usd",
+              },
+            },
+            adminHeaders
+          )
+
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 2,
+                  },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Add calculated shipping method to cart
+          // With 2 items (quantity 2), price = 2 * 1.5 = 3
+          let response = await api.post(
+            `/store/carts/${cart.id}/shipping-methods`,
+            {
+              option_id: shippingOptionCalculated.id,
+              data: { pin_id: "test" },
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  shipping_option_id: shippingOptionCalculated.id,
+                  amount: 3,
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      code: "FREE_SHIPPING",
+                      amount: 3,
+                    }),
+                  ]),
+                }),
+              ]),
+              shipping_total: 0,
+            })
+          )
+
+          // Now add more items to the cart, which changes item quantity to 3
+          // New shipping price should be 3 * 1.5 = 4.5
+          // The promotion should adjust to 4.5 (100% off the NEW shipping amount)
+          response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  shipping_option_id: shippingOptionCalculated.id,
+                  amount: 4.5,
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      code: "FREE_SHIPPING",
+                      amount: 4.5, // Must match the NEW shipping amount, not the old one (3)
+                    }),
+                  ]),
+                }),
+              ]),
+              shipping_total: 0, // Still fully discounted
+            })
+          )
+        })
       })
     })
   },

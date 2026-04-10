@@ -1,5 +1,66 @@
 # Change Log
 
+## 2.13.6
+
+### Patch Changes
+
+- [#14935](https://github.com/medusajs/medusa/pull/14935) [`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,types): improve order timeline UI
+
+- Updated dependencies [[`19839a44d6551038890c41e02cdff7cf0b45e268`](https://github.com/medusajs/medusa/commit/19839a44d6551038890c41e02cdff7cf0b45e268), [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d), [`6442b3274e51b97b14a43e5a0674dfee1cea1a49`](https://github.com/medusajs/medusa/commit/6442b3274e51b97b14a43e5a0674dfee1cea1a49)]:
+  - @medusajs/core-flows@2.13.6
+  - @medusajs/admin-bundler@2.13.6
+  - @medusajs/framework@2.13.6
+  - @medusajs/locking-redis@2.13.6
+  - @medusajs/event-bus-redis@2.13.6
+  - @medusajs/draft-order@2.13.6
+  - @medusajs/analytics@2.13.6
+  - @medusajs/api-key@2.13.6
+  - @medusajs/auth@2.13.6
+  - @medusajs/cache-inmemory@2.13.6
+  - @medusajs/cache-redis@2.13.6
+  - @medusajs/caching@2.13.6
+  - @medusajs/cart@2.13.6
+  - @medusajs/currency@2.13.6
+  - @medusajs/customer@2.13.6
+  - @medusajs/event-bus-local@2.13.6
+  - @medusajs/file@2.13.6
+  - @medusajs/fulfillment@2.13.6
+  - @medusajs/index@2.13.6
+  - @medusajs/inventory@2.13.6
+  - @medusajs/link-modules@2.13.6
+  - @medusajs/locking@2.13.6
+  - @medusajs/notification@2.13.6
+  - @medusajs/order@2.13.6
+  - @medusajs/payment@2.13.6
+  - @medusajs/pricing@2.13.6
+  - @medusajs/product@2.13.6
+  - @medusajs/promotion@2.13.6
+  - @medusajs/analytics-local@2.13.6
+  - @medusajs/analytics-posthog@2.13.6
+  - @medusajs/auth-emailpass@2.13.6
+  - @medusajs/auth-github@2.13.6
+  - @medusajs/auth-google@2.13.6
+  - @medusajs/caching-redis@2.13.6
+  - @medusajs/file-local@2.13.6
+  - @medusajs/file-s3@2.13.6
+  - @medusajs/fulfillment-manual@2.13.6
+  - @medusajs/locking-postgres@2.13.6
+  - @medusajs/notification-local@2.13.6
+  - @medusajs/notification-sendgrid@2.13.6
+  - @medusajs/payment-stripe@2.13.6
+  - @medusajs/rbac@2.13.6
+  - @medusajs/region@2.13.6
+  - @medusajs/sales-channel@2.13.6
+  - @medusajs/settings@2.13.6
+  - @medusajs/stock-location@2.13.6
+  - @medusajs/store@2.13.6
+  - @medusajs/tax@2.13.6
+  - @medusajs/translation@2.13.6
+  - @medusajs/user@2.13.6
+  - @medusajs/workflow-engine-inmemory@2.13.6
+  - @medusajs/workflow-engine-redis@2.13.6
+  - @medusajs/telemetry@2.13.6
+
 ## 2.13.5
 
 ### Patch Changes

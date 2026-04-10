@@ -83,7 +83,7 @@ const HomepageLinksSection = () => {
       tag: "Agentic Development",
       links: [
         {
-          link: "https://bloom.medusajs.com",
+          link: "https://bloom.chat",
           text: "Build with Bloom",
         },
         {

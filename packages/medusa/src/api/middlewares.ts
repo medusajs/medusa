@@ -27,6 +27,7 @@ import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlew
 import { adminProductVariantRoutesMiddlewares } from "./admin/product-variants/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
+import { adminPropertyLabelsMiddlewares } from "./admin/property-labels/middlewares"
 import { adminRbacRoutesMiddlewares } from "./admin/rbac/middlewares"
 import { adminRefundReasonsRoutesMiddlewares } from "./admin/refund-reasons/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
@@ -45,6 +46,7 @@ import { adminUploadRoutesMiddlewares } from "./admin/uploads/middlewares"
 import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { columnRoutesMiddlewares } from "./admin/views/[entity]/columns/middlewares"
 import { viewConfigurationRoutesMiddlewares } from "./admin/views/[entity]/configurations/middlewares"
+import { entitiesRoutesMiddlewares } from "./admin/views/entities/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { cloudRoutesMiddlewares } from "./cloud/middlewares"
@@ -79,6 +81,7 @@ export default defineMiddlewares([
   },
   ...adminCustomerGroupRoutesMiddlewares,
   ...adminCustomerRoutesMiddlewares,
+  ...adminPropertyLabelsMiddlewares,
   ...adminPromotionRoutesMiddlewares,
   ...adminCampaignRoutesMiddlewares,
   ...storeCartRoutesMiddlewares,
@@ -145,6 +148,7 @@ export default defineMiddlewares([
   ...adminOrderEditRoutesMiddlewares,
   ...adminPaymentCollectionsMiddlewares,
   ...viewConfigurationRoutesMiddlewares,
+  ...entitiesRoutesMiddlewares,
   ...columnRoutesMiddlewares,
   ...adminIndexRoutesMiddlewares,
   ...cloudRoutesMiddlewares,

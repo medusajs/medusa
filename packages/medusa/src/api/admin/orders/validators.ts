@@ -154,6 +154,7 @@ export const AdminTransferOrder = z.object({
   customer_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
 
 export type AdminCancelOrderTransferRequestType = z.infer<

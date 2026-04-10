@@ -1,5 +1,14 @@
 # @medusajs/locking-redis
 
+## 2.13.6
+
+### Patch Changes
+
+- [#14954](https://github.com/medusajs/medusa/pull/14954) [`6442b3274e51b97b14a43e5a0674dfee1cea1a49`](https://github.com/medusajs/medusa/commit/6442b3274e51b97b14a43e5a0674dfee1cea1a49) Thanks [@peterlgh7](https://github.com/peterlgh7)! - use exponential factor in Redis lock acquisition retries
+
+- Updated dependencies [[`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/framework@2.13.6
+
 ## 2.13.5
 
 ### Patch Changes

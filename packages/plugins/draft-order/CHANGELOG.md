@@ -1,5 +1,18 @@
 # @medusajs/draft-order
 
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`7c5e5e37f632716e5c6846c12d0dee7efe1e0b96`](https://github.com/medusajs/medusa/commit/7c5e5e37f632716e5c6846c12d0dee7efe1e0b96), [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/cli@2.13.6
+  - @medusajs/framework@2.13.6
+  - @medusajs/js-sdk@2.13.6
+  - @medusajs/test-utils@2.13.6
+  - @medusajs/admin-sdk@2.13.6
+  - @medusajs/icons@2.13.6
+  - @medusajs/ui@4.1.6
+
 ## 2.13.5
 
 ### Patch Changes

@@ -19,7 +19,7 @@ export const ContentMenu = () => {
       className={clsx(
         "hidden lg:flex w-full max-w-sidebar-lg",
         "flex-col gap-docs_2 pb-docs_1.5",
-        "fixed top-[57px] right-docs_0.25 z-10",
+        "fixed top-[57px] right-[21px] z-10",
         "border-l border-medusa-border-base h-full",
         showCollapsedNavbar && "max-h-[calc(100%-112px)]",
         !showCollapsedNavbar && "max-h-[calc(100%-56px)]"
