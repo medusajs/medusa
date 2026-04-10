@@ -45,8 +45,9 @@ To create a product category:
       1. Enter the category's name in the Title field. This is the only required field.
       2. The value of the Handle field is used in the category's URL on the storefront. It allows you to create a human-readable URL for the category. The handle must be unique across all categories, and it must contain lowercase letters, numbers, and hyphens (`-`). If not specified, Medusa will generate a handle from the title.
       3. Optionally set the category's description in the Description field.
-      4. In the Status field, you can change the status to "Inactive" if you don't want the category to be shown on the storefront.
-      5. In the Visibility field, you can change the visibility to "Private" if you’re creating an internal category that shouldn’t be shown to the customer.
+      4. Optionally set an External ID in the External ID field. This allows you to reference the category using an identifier from an external system, such as a third-party PIM or ERP.
+      5. In the Status field, you can change the status to "Inactive" if you don't want the category to be shown on the storefront.
+      6. In the Visibility field, you can change the visibility to "Private" if you're creating an internal category that shouldn't be shown to the customer.
       6. Once you're done, click the "Continue" button.
     2. In the second step, you can organize the category's ranking among other categories:
       - To move the category around, use the <InlineIcon Icon={DotsSix} alt="drag" /> icon to drag categories to their correct position.
@@ -87,7 +88,7 @@ To edit a product category:
 2. Click on the category to edit. If the category is nested in another, you may need to expand the parent category by clicking the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon.
 3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section of the category page.
 4. Choose Edit from the dropdown.
-4. In the side window that opens, you can edit the category's title, handle, description, status, and visibility.
+4. In the side window that opens, you can edit the category's title, handle, description, external ID, status, and visibility.
 5. Once you’re done, click the Save button.
 
 ![Edit category details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739875051/User%20Guide/Screenshot_2025-02-18_at_12.37.20_PM_onbpgn.png)

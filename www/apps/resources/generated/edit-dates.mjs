@@ -154,7 +154,7 @@ export const generatedEditDates = {
   "app/storefront-development/customers/register/page.mdx": "2025-12-04T13:42:00.322Z",
   "app/storefront-development/customers/retrieve/page.mdx": "2025-03-27T14:41:39.996Z",
   "app/storefront-development/customers/page.mdx": "2024-06-13T12:21:54+03:00",
-  "app/storefront-development/products/categories/list/page.mdx": "2025-03-27T14:46:51.437Z",
+  "app/storefront-development/products/categories/list/page.mdx": "2026-04-10T10:19:20.210Z",
   "app/storefront-development/products/categories/nested-categories/page.mdx": "2025-03-27T14:46:51.437Z",
   "app/storefront-development/products/categories/products/page.mdx": "2025-03-27T14:46:51.450Z",
   "app/storefront-development/products/categories/retrieve/page.mdx": "2025-03-27T14:46:51.450Z",
