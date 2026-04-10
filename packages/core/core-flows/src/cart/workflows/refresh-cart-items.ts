@@ -66,6 +66,11 @@ export type RefreshCartItemsWorkflowInput = {
   locale?: string
 }
 
+/**
+ * The ID of the {@link refreshCartItemsWorkflow}.
+ * 
+ * @since 2.13.7
+ */
 export const refreshCartItemsWorkflowId = "refresh-cart-items"
 /**
  * This workflow refreshes a cart to ensure its prices, promotion codes, taxes, and other details are applied correctly. It's useful
