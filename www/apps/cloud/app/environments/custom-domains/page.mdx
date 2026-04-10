@@ -52,7 +52,9 @@ You can track your domain's setup progress with the [Domain Status Indicators](#
 
 ### Update Backend Domain in Storefront
 
-If you have a storefront deployed alongside your Medusa backend, you need to manually update the backend URL in your storefront's configuration to point to the new custom domain. This is essential to avoid downtime for your storefront before the backend custom domain is activated.
+To avoid downtime in you storefront while DNS changes propagate for your backend's custom domain, Medusa doesn't update the backend URL set in the storefront automatically. The storefront will still point to the backend's original subdomain.
+
+Once you've verified that DNS changes have propagated and the custom domain is correctly pointing to the Medusa backend, you need to manually update the backend URL in your storefront's configuration to point to the new custom domain.
 
 Based on your storefront framework, update the backend environment variable:
 
