@@ -1,4 +1,5 @@
-import { BaseFilterable } from "../dal"
+import { BaseFilterable, OperatorMap } from "../dal"
+import { AdminColumn } from "../http/view-configuration/admin/columns"
 
 /**
  * The view configuration data model.
@@ -143,11 +144,15 @@ export interface ViewConfigurationFilterableFields {
 /**
  * The filters to apply on the retrieved view configurations.
  */
-export interface FilterableViewConfigurationProps extends ViewConfigurationFilterableFields {
+export interface FilterableViewConfigurationProps
+  extends ViewConfigurationFilterableFields {
   /**
    * An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
    */
-  $and?: (ViewConfigurationFilterableFields | FilterableViewConfigurationProps)[]
+  $and?: (
+    | ViewConfigurationFilterableFields
+    | FilterableViewConfigurationProps
+  )[]
 
   /**
    * An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
@@ -158,7 +163,8 @@ export interface FilterableViewConfigurationProps extends ViewConfigurationFilte
 /**
  * The filters to apply on the retrieved user preferences.
  */
-export interface FilterableUserPreferenceProps extends BaseFilterable<UserPreferenceDTO> {
+export interface FilterableUserPreferenceProps
+  extends BaseFilterable<UserPreferenceDTO> {
   /**
    * The IDs to filter by.
    */
@@ -174,3 +180,68 @@ export interface FilterableUserPreferenceProps extends BaseFilterable<UserPrefer
    */
   key?: string | string[]
 }
+
+/**
+ * The property label data model.
+ * Stores custom display labels for entity properties.
+ * Labels are global (shared across all admin users).
+ */
+export interface PropertyLabelDTO {
+  /**
+   * The ID of the property label.
+   */
+  id: string
+
+  /**
+   * The entity this label applies to (e.g., "Order", "Product").
+   */
+  entity: string
+
+  /**
+   * The property path (e.g., "display_id", "customer.email").
+   */
+  property: string
+
+  /**
+   * Custom display name for the property.
+   */
+  label: string
+
+  /**
+   * Optional description providing context about the property.
+   */
+  description: string | null
+
+  /**
+   * The date the label was created.
+   */
+  created_at: Date
+
+  /**
+   * The date the label was last updated.
+   */
+  updated_at: Date
+}
+
+/**
+ * Partial filters for property label fields.
+ */
+export interface PropertyLabelFilterableFields
+  extends BaseFilterable<PropertyLabelFilterableFields> {
+  /**
+   * The IDs to filter by.
+   */
+  id?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * Filter by entity name.
+   */
+  entity?: string | string[] | OperatorMap<string>
+
+  /**
+   * Filter by property name.
+   */
+  property?: string | string[] | OperatorMap<string>
+}
+
+export interface ViewConfigurationColumnDTO extends AdminColumn {}
