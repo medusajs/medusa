@@ -73,6 +73,14 @@ export const generatedSidebars = [
                 "title": "Prerequisites",
                 "path": "/projects/prerequisites",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Rename Repository",
+                "path": "/projects/rename-repo-branch",
+                "children": []
               }
             ]
           },
@@ -105,6 +113,14 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Custom Domains",
+                "path": "/environments/custom-domains",
                 "children": []
               }
             ]

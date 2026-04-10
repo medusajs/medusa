@@ -2656,6 +2656,186 @@ medusaIntegrationTestRunner({
         expect(orderResult2.total).toEqual(20)
         expect(orderResult2.original_total).toEqual(20)
       })
+
+      it("should maintain shipping method adjustments when adding a new item with promotion targeting shipping methods", async () => {
+        // Create a promotion that targets shipping methods
+        const shippingPromotion = await promotionModule.createPromotions({
+          code: "SHIPPING_PROMO",
+          type: PromotionType.STANDARD,
+          status: PromotionStatus.ACTIVE,
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: 2,
+            max_quantity: 1,
+            currency_code: "usd",
+            target_rules: [
+              {
+                attribute: "name",
+                operator: "in",
+                values: ["Test shipping method"],
+              },
+            ],
+          },
+        })
+
+        // Create an order with shipping method
+        // @ts-ignore
+        const orderWithShipping = await orderModule.createOrders({
+          email: "foo@bar.com",
+          region_id: region.id,
+          sales_channel_id: salesChannel.id,
+          items: [
+            {
+              // @ts-ignore
+              id: "item-shipping-1",
+              title: "Custom Item",
+              quantity: 1,
+              unit_price: 10,
+            },
+          ],
+          shipping_address: {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+            phone: "12345",
+          },
+          billing_address: {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+          },
+          shipping_methods: [
+            {
+              name: "Test shipping method",
+              amount: 5,
+            },
+          ],
+          currency_code: "usd",
+        })
+
+        // Create shipping method adjustment for the promotion
+        if (orderWithShipping.shipping_methods?.[0]) {
+          await orderModule.createOrderShippingMethodAdjustments(
+            orderWithShipping.id,
+            [
+              {
+                shipping_method_id: orderWithShipping.shipping_methods[0].id,
+                code: shippingPromotion.code!,
+                amount: 2,
+              },
+            ]
+          )
+        }
+
+        // Link promotion to order
+        await remoteLink.create({
+          [Modules.ORDER]: { order_id: orderWithShipping.id },
+          [Modules.PROMOTION]: { promotion_id: shippingPromotion.id },
+        })
+
+        // Create order edit
+        let result = await api.post(
+          "/admin/order-edits",
+          {
+            order_id: orderWithShipping.id,
+            description: "Test shipping promotion",
+          },
+          adminHeaders
+        )
+
+        const orderChangeId = result.data.order_change.id
+        const orderId = result.data.order_change.order_id
+
+        // Enable carry over promotions
+        await api.post(
+          `/admin/order-changes/${orderChangeId}`,
+          {
+            carry_over_promotions: true,
+          },
+          adminHeaders
+        )
+
+        result = (await api.get(`/admin/orders/${orderId}`, adminHeaders)).data
+          .order
+
+        // Original order: $10 item + $5 shipping - $2 shipping discount = $13
+        expect(result.total).toEqual(13)
+        expect(result.shipping_methods[0].adjustments).toEqual([
+          expect.objectContaining({
+            code: shippingPromotion.code!,
+            amount: 2,
+          }),
+        ])
+
+        // Add item with price $12
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        // After adding item: $22 items + $5 shipping - $2 shipping discount + $1.2 tax = $26.2
+        expect(result.total).toEqual(26.2)
+        expect(result.original_total).toEqual(28.2) // +$2 shipping discount
+
+        // Shipping method adjustment should still be present
+        expect(result.shipping_methods[0].adjustments).toEqual([
+          expect.objectContaining({
+            code: shippingPromotion.code!,
+            amount: 2,
+          }),
+        ])
+
+        // Confirm original order is not updated
+        const orderResult = (
+          await api.get(`/admin/orders/${orderId}`, adminHeaders)
+        ).data.order
+
+        expect(orderResult.total).toEqual(13)
+        expect(orderResult.shipping_methods[0].adjustments).toEqual([
+          expect.objectContaining({
+            code: shippingPromotion.code!,
+            amount: 2,
+          }),
+        ])
+
+        // Confirm the order edit
+        await api.post(
+          `/admin/order-edits/${orderId}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const orderResult2 = (
+          await api.get(`/admin/orders/${orderId}`, adminHeaders)
+        ).data.order
+
+        expect(orderResult2.total).toEqual(26.2)
+        expect(orderResult2.original_total).toEqual(28.2)
+        expect(orderResult2.shipping_methods[0].adjustments).toEqual([
+          expect.objectContaining({
+            code: shippingPromotion.code!,
+            amount: 2,
+          }),
+        ])
+      })
     })
   },
 })

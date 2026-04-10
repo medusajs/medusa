@@ -1,6 +1,7 @@
 import {
   Context,
   DAL,
+  HttpTypes,
   InferEntityType,
   InternalModuleDeclaration,
   ModulesSdkTypes,
@@ -14,41 +15,60 @@ import {
   MedusaError,
   MedusaService,
 } from "@medusajs/framework/utils"
-import { ViewConfiguration, UserPreference } from "@/models"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { ViewConfiguration, UserPreference, PropertyLabel } from "@/models"
+import {
+  EntityDiscoveryService,
+  generateEntityColumns,
+  hasEntityOverride,
+  PropertyLabel as PropertyLabelType,
+} from "@/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   viewConfigurationService: ModulesSdkTypes.IMedusaInternalService<any>
-  userPreferenceService: ModulesSdkTypes.IMedusaInternalService<any>
+  propertyLabelService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class SettingsModuleService
   extends MedusaService<{
     ViewConfiguration: { dto: SettingsTypes.ViewConfigurationDTO }
     UserPreference: { dto: SettingsTypes.UserPreferenceDTO }
-  }>({ ViewConfiguration, UserPreference })
+    PropertyLabel: { dto: SettingsTypes.PropertyLabelDTO }
+  }>({ ViewConfiguration, UserPreference, PropertyLabel })
   implements SettingsTypes.ISettingsModuleService
 {
   protected baseRepository_: DAL.RepositoryService
+  // viewConfigurationService_ is needed for special JSON update handling (upsertWithReplace)
   protected readonly viewConfigurationService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof ViewConfiguration>
   >
-  protected readonly userPreferenceService_: ModulesSdkTypes.IMedusaInternalService<
-    InferEntityType<typeof UserPreference>
+  protected readonly propertyLabelService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof PropertyLabel>
   >
+  protected entityDiscoveryService_: EntityDiscoveryService
 
   constructor(
     {
       baseRepository,
       viewConfigurationService,
-      userPreferenceService,
+      propertyLabelService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.viewConfigurationService_ = viewConfigurationService
-    this.userPreferenceService_ = userPreferenceService
+    this.propertyLabelService_ = propertyLabelService
+    this.entityDiscoveryService_ = new EntityDiscoveryService()
+  }
+
+  __hooks = {
+    onApplicationStart: async () => {
+      // Initialize entity discovery with joiner configs
+      const joinerConfigs = MedusaModule.getAllJoinerConfigs()
+      this.entityDiscoveryService_.initialize(joinerConfigs)
+    },
   }
 
   @InjectManager()
@@ -207,19 +227,12 @@ export default class SettingsModuleService
     key: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SettingsTypes.UserPreferenceDTO | null> {
-    const prefs = await this.userPreferenceService_.list(
+    const prefs = await this.listUserPreferences(
       { user_id: userId, key },
-      {},
+      { take: 1 },
       sharedContext
     )
-
-    if (prefs.length === 0) {
-      return null
-    }
-
-    return await this.baseRepository_.serialize<SettingsTypes.UserPreferenceDTO>(
-      prefs[0]
-    )
+    return prefs.length > 0 ? prefs[0] : null
   }
 
   @InjectManager()
@@ -230,31 +243,25 @@ export default class SettingsModuleService
     value: any,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SettingsTypes.UserPreferenceDTO> {
-    const existing = await this.userPreferenceService_.list(
+    const existing = await this.listUserPreferences(
       { user_id: userId, key },
-      { select: ["id"] },
+      { take: 1, select: ["id"] },
       sharedContext
     )
 
-    let result: InferEntityType<typeof UserPreference>
-
     if (existing.length > 0) {
-      const updated = await this.userPreferenceService_.update(
+      const [updated] = await this.updateUserPreferences(
         [{ id: existing[0].id, value }],
         sharedContext
       )
-      result = updated[0]
+      return updated
     } else {
-      const created = await this.userPreferenceService_.create(
+      const created = await this.createUserPreferences(
         { user_id: userId, key, value },
         sharedContext
       )
-      result = created[0]
+      return Array.isArray(created) ? created[0] : created
     }
-
-    return await this.baseRepository_.serialize<SettingsTypes.UserPreferenceDTO>(
-      result
-    )
   }
 
   @InjectManager()
@@ -371,13 +378,102 @@ export default class SettingsModuleService
     userId: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    // Instead of deleting, set the preference to null
-    // This ensures we're using the same transaction pattern as setActiveViewConfiguration
     await this.setUserPreference(
       userId,
       `active_view.${entity}`,
       { viewConfigurationId: null },
       sharedContext
     )
+  }
+
+  @InjectManager()
+  async upsertPropertyLabels(
+    data: SettingsTypes.UpsertPropertyLabelDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<SettingsTypes.PropertyLabelDTO[]> {
+    const upserted = await this.propertyLabelService_.upsert(
+      data,
+      sharedContext
+    )
+    return await this.baseRepository_.serialize<
+      SettingsTypes.PropertyLabelDTO[]
+    >(upserted)
+  }
+
+  /**
+   * Check if entity discovery has been initialized.
+   */
+  isEntityDiscoveryInitialized(): boolean {
+    return this.entityDiscoveryService_.isInitialized()
+  }
+
+  /**
+   * List all discoverable entities.
+   */
+  listDiscoverableEntities(): HttpTypes.AdminEntityInfo[] {
+    if (!this.entityDiscoveryService_.isInitialized()) {
+      return []
+    }
+
+    const entities = this.entityDiscoveryService_.discoverEntities()
+
+    return entities.map((entity) =>
+      this.entityDiscoveryService_.getEntityInfo(
+        entity,
+        hasEntityOverride(entity.name)
+      )
+    )
+  }
+
+  /**
+   * Check if an entity exists by name.
+   */
+  hasEntity(name: string): boolean {
+    return this.entityDiscoveryService_.hasEntity(name)
+  }
+
+  /**
+   * Generate columns for an entity.
+   */
+  @InjectManager()
+  async generateEntityColumns(
+    entityKey: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<SettingsTypes.ViewConfigurationColumnDTO[] | null> {
+    if (!this.entityDiscoveryService_.isInitialized()) {
+      return null
+    }
+
+    const entity = this.entityDiscoveryService_.getEntity(entityKey)
+    if (!entity) {
+      return null
+    }
+
+    const labels = await this.propertyLabelService_.list(
+      { entity: entity.name },
+      {},
+      sharedContext
+    )
+
+    const propertyLabelsMap = new Map<string, PropertyLabelType>()
+    for (const label of labels) {
+      propertyLabelsMap.set(label.property, {
+        id: label.id,
+        entity: label.entity,
+        property: label.property,
+        label: label.label,
+        description: label.description,
+      })
+    }
+
+    const columns = generateEntityColumns(
+      this.entityDiscoveryService_,
+      entityKey,
+      propertyLabelsMap
+    )
+
+    return await this.baseRepository_.serialize<
+      SettingsTypes.ViewConfigurationColumnDTO[]
+    >(columns)
   }
 }

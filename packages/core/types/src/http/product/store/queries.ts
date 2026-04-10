@@ -5,7 +5,13 @@ import {
   BaseProductVariantParams,
 } from "../common"
 
+/**
+ * The product option's details.
+ */
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
+/**
+ * The filters to apply on the retrieved product variants.
+ */
 export interface StoreProductVariantParams extends BaseProductVariantParams {}
 export interface StoreProductPricingContext {
   /**
@@ -47,7 +53,7 @@ export interface StoreProductListParams
   /**
    * Filter by the product's variants.
    */
-  variants?: Pick<StoreProductVariantParams, "options">
+  variants?: Pick<StoreProductVariantParams, "options" | "sku" | "ean" | "upc" | "barcode">
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.
