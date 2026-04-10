@@ -48,3 +48,42 @@ Conventions to verify when reviewing code contributions. Focus on areas relevant
 - Unit tests: `__tests__/` directories alongside source, `.spec.ts` or `.test.ts` suffix.
 - Integration tests for HTTP routes: `integration-tests/http/__tests__/`.
 - New functionality must have tests. Minor bug fixes may omit tests if the fix is trivial and clear, but tests are always preferred.
+
+## Security Requirements
+
+- **Authentication**: All new admin routes must include `authenticate("user", ["bearer", "session", "api-key"])` middleware. Store routes that require authentication must use `authenticate("customer", ...)`.
+- **Input validation**: All fields accepted from request bodies must be declared in the Zod schema. Unknown fields should be stripped, not passed through.
+- **No raw SQL**: Use the ORM query builder. Do not construct SQL strings from user-provided values.
+- **No sensitive fields in responses**: Passwords, secrets, and internal tokens must not appear in HTTP type definitions or serialized responses.
+- **No hardcoded secrets**: Credentials, API keys, and tokens must come from environment variables via `configModule` — never committed to source.
+- **Filesystem operations**: Paths constructed from user input must be normalized and validated to prevent path traversal (e.g., reject paths containing `..`).
+
+## Performance Requirements
+
+- **Pagination required**: List routes must pass `pagination: req.queryConfig.pagination` (which contains `{ skip, take, order? }`) to every query. Never omit pagination. The framework enforces a default `take` of 50; custom defaults must be set in the route's `queryConfig` — not hardcoded in the handler.
+
+- **No unbounded queries**: Any call to `query.graph()`, `query.index()`, `remoteQueryObjectFromString()`, or a direct service method that fetches a list must include pagination. Omitting it means a full-table scan. Example of correct usage:
+
+  ```typescript
+  // ✅ Correct
+  const { data, metadata } = await query.graph({
+    entity: "order",
+    fields: req.queryConfig.fields,
+    filters: req.filterableFields,
+    pagination: req.queryConfig.pagination,
+  })
+
+  // ❌ Wrong — no pagination
+  const { data } = await query.graph({
+    entity: "order",
+    fields: req.queryConfig.fields,
+  })
+  ```
+
+- **Response must include count/offset/limit**: List route responses must always return `count`, `offset` (`metadata.skip`), and `limit` (`metadata.take`) alongside the items array so clients can paginate. Omitting these is a bug.
+
+- **No N+1 queries**: Do not call `query.graph()` or any service method inside a loop over a result set. Instead, batch-fetch all related records in a single query before the loop using `filters: { id: ids }`.
+
+- **Async parallelism**: Use `Promise.all()` when multiple independent async operations can run concurrently. Sequential `await` in a loop is a red flag.
+
+- **Database indexes**: New fields used in `filters` or `order` inside a `query.graph()` / `remoteQueryObjectFromString()` call must have a corresponding index in the entity decorator or migration.
