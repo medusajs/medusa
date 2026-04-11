@@ -21,6 +21,12 @@ const customFulfillmentProviderCalculated = {
   id: "test-provider-calculated",
 }
 
+const customPendingAuthPaymentProvider = {
+  resolve: require("./dist/utils/providers/payment-pending-authorization")
+    .default,
+  id: "pending-auth",
+}
+
 const modules = {
   [Modules.FULFILLMENT]: {
     /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
@@ -29,6 +35,11 @@ const modules = {
         customFulfillmentProvider,
         customFulfillmentProviderCalculated,
       ],
+    },
+  },
+  [Modules.PAYMENT]: {
+    options: {
+      providers: [customPendingAuthPaymentProvider],
     },
   },
   [Modules.NOTIFICATION]: {
