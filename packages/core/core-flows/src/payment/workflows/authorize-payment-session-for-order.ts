@@ -78,44 +78,40 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       id: input.payment_session_id,
     })
 
-    when("create-order-transactions", { payment }, ({ payment }) => {
-      return !!payment
-    }).then(() => {
-      const { data: orderPaymentCollection } = useQueryGraphStep({
-        entity: "order_payment_collection",
-        fields: ["order.id"],
-        filters: {
-          payment_collection_id: input.payment_collection_id,
-        },
-        options: { isList: false },
-      }).config({ name: "get-order-payment-collection" })
+    const { data: orderPaymentCollection } = useQueryGraphStep({
+      entity: "order_payment_collection",
+      fields: ["order.id"],
+      filters: {
+        payment_collection_id: input.payment_collection_id,
+      },
+      options: { isList: false },
+    }).config({ name: "get-order-payment-collection" })
 
-      when(
-        "add-transactions",
-        { orderPaymentCollection },
-        ({ orderPaymentCollection }) => {
-          return !!orderPaymentCollection?.order?.id
+    when(
+      "add-order-transactions",
+      { payment, orderPaymentCollection },
+      ({ payment, orderPaymentCollection }) => {
+        return !!payment && !!orderPaymentCollection?.order?.id
+      }
+    ).then(() => {
+      const orderTransactions = transform(
+        { payment, orderPaymentCollection },
+        ({ payment, orderPaymentCollection }) => {
+          return (
+            payment?.captures?.map((capture) => {
+              return {
+                order_id: orderPaymentCollection.order.id,
+                amount: capture.amount,
+                currency_code: payment.currency_code,
+                reference_id: capture.id,
+                reference: "capture",
+              }
+            }) ?? []
+          )
         }
-      ).then(() => {
-        const orderTransactions = transform(
-          { payment, orderPaymentCollection },
-          ({ payment, orderPaymentCollection }) => {
-            return (
-              payment?.captures?.map((capture) => {
-                return {
-                  order_id: orderPaymentCollection.order.id,
-                  amount: capture.amount,
-                  currency_code: payment.currency_code,
-                  reference_id: capture.id,
-                  reference: "capture",
-                }
-              }) ?? []
-            )
-          }
-        )
+      )
 
-        addOrderTransactionStep(orderTransactions)
-      })
+      addOrderTransactionStep(orderTransactions)
     })
 
     return new WorkflowResponse(payment)
