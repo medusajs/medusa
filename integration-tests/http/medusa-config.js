@@ -40,6 +40,8 @@ const modules = {
   [Modules.PAYMENT]: {
     options: {
       providers: [customPendingAuthPaymentProvider],
+      webhook_delay: 0,
+      webhook_retries: 0,
     },
   },
   [Modules.NOTIFICATION]: {

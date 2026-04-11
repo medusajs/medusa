@@ -1,5 +1,6 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules, ProductStatus } from "@medusajs/utils"
+import { Modules, PaymentActions, ProductStatus } from "@medusajs/utils"
+import { setTimeout } from "timers/promises"
 import {
   createAdminUser,
   generatePublishableKey,
@@ -404,6 +405,186 @@ medusaIntegrationTestRunner({
         ).data.order
 
         expect(orderAfter.payment_status).toBe("awaiting")
+      })
+    })
+
+    describe("POST /hooks/payment/:provider — webhook authorize for existing order", () => {
+      const webhookProviderPath = "pending-auth_pending-auth"
+
+      async function waitForPaymentStatus(
+        orderId: string,
+        expectedStatus: string,
+        maxWaitMs = 10000
+      ) {
+        const start = Date.now()
+        while (Date.now() - start < maxWaitMs) {
+          const order = (
+            await api.get(
+              `/admin/orders/${orderId}?fields=+payment_status`,
+              adminHeaders
+            )
+          ).data.order
+
+          if (order.payment_status === expectedStatus) {
+            return order
+          }
+
+          await setTimeout(500)
+        }
+
+        throw new Error(
+          `Timed out waiting for payment_status to become "${expectedStatus}"`
+        )
+      }
+
+      it("should authorize payment via webhook when order exists with pending_authorization", async () => {
+        // 1. Complete cart with pending_authorization provider
+        const paymentCollection = (
+          await api.post(
+            "/store/payment-collections",
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: pendingAuthProviderId },
+          storeHeaders
+        )
+
+        const completedCart = (
+          await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {},
+            storeHeaders
+          )
+        ).data
+
+        expect(completedCart.type).toBe("order")
+        const orderId = completedCart.order.id
+
+        // 2. Get the session ID and verify initial state
+        const orderBefore = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections,*payment_collections.payment_sessions,*payment_collections.payments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderBefore.payment_status).toBe("awaiting")
+        const sessionId =
+          orderBefore.payment_collections[0].payment_sessions[0].id
+        expect(orderBefore.payment_collections[0].payments).toHaveLength(0)
+
+        // 3. Update session data so provider returns AUTHORIZED on next authorize call
+        const paymentModule = appContainer.resolve(Modules.PAYMENT)
+        await paymentModule.updatePaymentSession({
+          id: sessionId,
+          data: { payment_received: true },
+        })
+
+        // 4. Send webhook — the provider's getWebhookActionAndData reads the body
+        //    and returns the action. The subscriber + processPaymentWorkflow handle the rest.
+        const webhookRes = await api.post(
+          `/hooks/payment/${webhookProviderPath}`,
+          {
+            action: PaymentActions.AUTHORIZED,
+            session_id: sessionId,
+            amount: orderBefore.payment_collections[0].amount,
+          }
+        )
+
+        expect(webhookRes.status).toBe(200)
+
+        // 5. Wait for async webhook processing and verify payment is authorized
+        await waitForPaymentStatus(orderId, "authorized")
+
+        const orderAfter = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections,*payment_collections.payments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderAfter.payment_status).toBe("authorized")
+        expect(orderAfter.payment_collections[0].payments).toHaveLength(1)
+        expect(orderAfter.payment_collections[0].status).toBe("authorized")
+      })
+
+      it("should capture payment via webhook when order exists with pending_authorization and action is SUCCESSFUL", async () => {
+        // 1. Complete cart with pending_authorization provider
+        const paymentCollection = (
+          await api.post(
+            "/store/payment-collections",
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: pendingAuthProviderId },
+          storeHeaders
+        )
+
+        const completedCart = (
+          await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {},
+            storeHeaders
+          )
+        ).data
+
+        expect(completedCart.type).toBe("order")
+        const orderId = completedCart.order.id
+
+        // 2. Get session ID
+        const orderBefore = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections,*payment_collections.payment_sessions`,
+            adminHeaders
+          )
+        ).data.order
+
+        const sessionId =
+          orderBefore.payment_collections[0].payment_sessions[0].id
+
+        // 3. Update session data so provider returns AUTHORIZED
+        const paymentModule = appContainer.resolve(Modules.PAYMENT)
+        await paymentModule.updatePaymentSession({
+          id: sessionId,
+          data: { payment_received: true },
+        })
+
+        // 4. Send webhook with SUCCESSFUL (autocapture) action
+        const webhookRes = await api.post(
+          `/hooks/payment/${webhookProviderPath}`,
+          {
+            action: PaymentActions.SUCCESSFUL,
+            session_id: sessionId,
+            amount: orderBefore.payment_collections[0].amount,
+          }
+        )
+
+        expect(webhookRes.status).toBe(200)
+
+        // 5. Wait for async webhook processing and verify payment is captured
+        await waitForPaymentStatus(orderId, "captured")
+
+        const orderAfter = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections,*payment_collections.payments,*payment_collections.payments.captures`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderAfter.payment_status).toBe("captured")
+        expect(orderAfter.payment_collections[0].payments).toHaveLength(1)
+        expect(
+          orderAfter.payment_collections[0].payments[0].captures
+        ).toHaveLength(1)
+        expect(orderAfter.payment_collections[0].status).toBe("completed")
       })
     })
   },

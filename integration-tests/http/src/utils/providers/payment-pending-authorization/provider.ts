@@ -112,7 +112,19 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
   async getWebhookActionAndData(
     data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult> {
-    return { action: PaymentActions.NOT_SUPPORTED }
+    const body = data.data as Record<string, unknown>
+
+    if (!body?.action || !body?.session_id) {
+      return { action: PaymentActions.NOT_SUPPORTED }
+    }
+
+    return {
+      action: body.action as PaymentActions,
+      data: {
+        session_id: body.session_id as string,
+        amount: body.amount as number,
+      },
+    }
   }
 }
 
