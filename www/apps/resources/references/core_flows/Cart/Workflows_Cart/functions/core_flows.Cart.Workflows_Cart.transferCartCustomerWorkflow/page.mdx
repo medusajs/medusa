@@ -35,7 +35,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/e4513fab88f5ba7d5c078d3e251e04b104268a56/packages/core/core-flows/src/cart/workflows/transfer-cart-customer.ts#L54" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/transfer-cart-customer.ts#L54" />
 
 ## Examples
 
@@ -133,6 +133,7 @@ const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
     // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cart.id,  timeout: 2,  ttl: 10,  })
     const result = transferCartCustomerWorkflow
       .runAsStep({
         input: {
@@ -141,6 +142,7 @@ const myWorkflow = createWorkflow(
         }
       })
     // Release lock here
+    // releaseLockStep({ key: cart.id })
   }
 )
 ```
@@ -182,7 +184,7 @@ transferCartCustomerWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-15)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[TransferCartCustomerWorkflowInput](../../../../types/core_flows.TransferCartCustomerWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer to transfer the cart to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-14)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[TransferCartCustomerWorkflowInput](../../../../types/core_flows.TransferCartCustomerWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer to transfer the cart to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
 
 ## Emitted Events
 

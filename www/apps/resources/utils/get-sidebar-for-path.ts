@@ -105,6 +105,7 @@ const sidebarMappings: {
       "/references/stock-location",
       "/references/store",
       "/references/tax",
+      "/references/translation",
       "/references/user",
     ],
   },

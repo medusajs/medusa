@@ -1,7 +1,11 @@
-import { createCartCreditLinesWorkflow } from "@medusajs/core-flows"
+import {
+  createCartCreditLinesWorkflow,
+  updateCartsStep,
+} from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   Modules,
+  PaymentSessionStatus,
   PriceListStatus,
   PriceListType,
   ProductStatus,
@@ -18,6 +22,10 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 
 jest.setTimeout(100000)
 
@@ -36,8 +44,13 @@ const shippingAddressData = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let appContainer
+
+    beforeAll(async () => {
+      appContainer = getContainer()
+    })
+
     describe("Store Carts API", () => {
-      let appContainer
       let storeHeaders
       let storeHeadersWithCustomer
       let region,
@@ -49,10 +62,6 @@ medusaIntegrationTestRunner({
         promotion,
         shippingProfile,
         taxSeedData
-
-      beforeAll(async () => {
-        appContainer = getContainer()
-      })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -1992,6 +2001,68 @@ medusaIntegrationTestRunner({
                     reference_id: "test",
                   }),
                 ],
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    unit_price: 1500,
+                    compare_at_unit_price: null,
+                    quantity: 1,
+                  }),
+                ]),
+              })
+            )
+          })
+
+          it("should successfully complete cart with pre existing captured payment session", async () => {
+            const paymentModule = appContainer.resolve(Modules.PAYMENT)
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            const paymentSession = await api
+              .post(
+                `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+                { provider_id: "pp_system_default" },
+                storeHeaders
+              )
+              .then((res) => res.data.payment_collection.payment_sessions[0])
+
+            // Authorize the payment session (creates a payment)
+            const payment = await paymentModule.authorizePaymentSession(
+              paymentSession.id,
+              {}
+            )
+
+            // Capture the payment
+            await paymentModule.capturePayment({
+              payment_id: payment.id,
+            })
+
+            const updatedPaymentSession =
+              await paymentModule.retrievePaymentSession(paymentSession.id, {
+                relations: ["payment", "payment.captures"],
+              })
+            expect(updatedPaymentSession.payment.captures).toHaveLength(1)
+            expect(updatedPaymentSession.status).toBe(
+              PaymentSessionStatus.AUTHORIZED
+            )
+
+            // Complete the cart
+            const response = await api.post(
+              `/store/carts/${cart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                currency_code: "usd",
                 items: expect.arrayContaining([
                   expect.objectContaining({
                     unit_price: 1500,
@@ -5299,6 +5370,154 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("POST /store/carts/:id/promotions", () => {
+        it("should add promotions and refresh payment collection", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              { cart_id: cart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+
+          cart = (await api.get(`/store/carts/${cart.id}`, storeHeaders)).data
+            .cart
+          expect(cart.total).toEqual(1500)
+          expect(cart.payment_collection.amount).toEqual(1500)
+
+          const cartAfterPromotion = (
+            await api.post(
+              `/store/carts/${cart.id}/promotions`,
+              { promo_codes: [promotion.code] },
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(cartAfterPromotion).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              total: 1395,
+              discount_total: 105,
+              payment_collection: expect.objectContaining({
+                amount: 1395,
+              }),
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      code: "PROMOTION_APPLIED",
+                      promotion_id: promotion.id,
+                      amount: 100,
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("DELETE /store/carts/:id/promotions", () => {
+        it("should remove promotions and recalculate payment_collection amount", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                promo_codes: [promotion.code],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = await api
+            .post(
+              `/store/payment-collections`,
+              { cart_id: cart.id },
+              storeHeaders
+            )
+            .then((response) => response.data.payment_collection)
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+
+          cart = (await api.get(`/store/carts/${cart.id}`, storeHeaders)).data
+            .cart
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              total: 1395,
+              discount_total: 105,
+              payment_collection: expect.objectContaining({
+                amount: 1395,
+              }),
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      code: "PROMOTION_APPLIED",
+                      promotion_id: promotion.id,
+                      amount: 100,
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+
+          const cartAfterDeletion = await api
+            .delete(`/store/carts/${cart.id}/promotions`, {
+              data: { promo_codes: [promotion.code] },
+              ...storeHeaders,
+            })
+            .then((response) => response.data.cart)
+
+          expect(cartAfterDeletion).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              total: 1500,
+              discount_total: 0,
+              payment_collection: expect.objectContaining({
+                amount: 1500,
+              }),
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  adjustments: [],
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
       describe("POST /store/carts/:id/customer", () => {
         beforeEach(async () => {
           cart = (
@@ -5706,6 +5925,26 @@ medusaIntegrationTestRunner({
             message: "Shipping Options are invalid for cart.",
           })
         })
+      })
+    })
+
+    describe("workflows", () => {
+      it("updateCartsStep - should not call listCarts when data is empty", async () => {
+        const cartService = appContainer.resolve(Modules.CART)
+        const listCartsSpy = jest.spyOn(cartService, "listCarts")
+
+        const workflow = createWorkflow("test-workflow", () => {
+          return new WorkflowResponse(updateCartsStep([]))
+        })
+
+        const { result } = await workflow(appContainer).run({
+          input: [],
+        })
+
+        expect(result).toEqual([])
+        expect(listCartsSpy).not.toHaveBeenCalled()
+
+        listCartsSpy.mockRestore()
       })
     })
   },

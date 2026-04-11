@@ -214,61 +214,62 @@ properties:
     type: number
     title: original_total
     description: >-
-      The shipping method's total including taxes, excluding promotions. This
-      field is only available if you expand the `shipping_methods.*` relation.
-      Learn more in the [Cart
+      The shipping method's original total before discounts, including taxes.
+      This field is only available if you expand the `shipping_methods.*`
+      relation. Learn more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   original_subtotal:
     type: number
     title: original_subtotal
     description: >-
-      The shipping method's total excluding taxes, including promotions. This
-      field is only available if you expand the `shipping_methods.*` relation.
-      Learn more in the [Cart
+      The shipping method's original subtotal before discounts, excluding taxes.
+      This field is only available if you expand the `shipping_methods.*`
+      relation. Learn more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   original_tax_total:
     type: number
     title: original_tax_total
     description: >-
-      The total taxes applied on the shipping method's amount including
-      promotions. This field is only available if you expand the
-      `shipping_methods.*` relation. Learn more in the [Cart
+      The shipping method's original tax total before discounts. This field is
+      only available if you expand the `shipping_methods.*` relation. Learn more
+      in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   total:
     type: number
     title: total
     description: >-
-      The shipping method's total amount including taxes and promotions. This
-      field is only available if you expand the `shipping_methods.*` relation.
-      Learn more in the [Cart
+      The shipping method's total after discounts, including taxes. This field
+      is only available if you expand the `shipping_methods.*` relation. Learn
+      more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   subtotal:
     type: number
     title: subtotal
     description: >-
-      The shipping method's total amount excluding taxes, including promotions.
-      This field is only available if you expand the `shipping_methods.*`
-      relation. Learn more in the [Cart
+      The shipping method's subtotal before discounts, excluding taxes. This
+      field is only available if you expand the `shipping_methods.*` relation.
+      Learn more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   tax_total:
     type: number
     title: tax_total
     description: >-
-      The total taxes applied on the shipping method's amount including
-      promotions. This field is only available if you expand the
-      `shipping_methods.*` relation. Learn more in the [Cart
+      The shipping method's tax total after discounts. This field is only
+      available if you expand the `shipping_methods.*` relation. Learn more in
+      the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
   discount_total:
     type: number
     title: discount_total
     description: >-
-      The total amount discounted. This field is only available if you expand
+      The total amount of discounts applied to the shipping method, including
+      the tax portion of discounts. This field is only available if you expand
       the `shipping_methods.*` relation. Learn more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.
@@ -276,7 +277,8 @@ properties:
     type: number
     title: discount_tax_total
     description: >-
-      The taxes applied on the discounted amount. This field is only available
-      if you expand the `shipping_methods.*` relation. Learn more in the [Cart
+      The total amount of discounts applied to the shipping method's tax.
+      Represents the tax portion of discounts. This field is only available if
+      you expand the `shipping_methods.*` relation. Learn more in the [Cart
       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals)
       guide.

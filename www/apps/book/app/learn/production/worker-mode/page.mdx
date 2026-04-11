@@ -124,7 +124,7 @@ The `--servers` and `--workers` options were introduced in [Medusa v2.11.0](http
 
 When running Medusa in [cluster mode](!resources!/medusa-cli/commands/start#starting-medusa-in-cluster-mode), you can specify the number or percentage of instances that are servers or workers by passing the `--servers` and `--workers` options:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
 npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
 npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)

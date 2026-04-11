@@ -1,0 +1,41 @@
+---
+slug: /references/medusa-workflows/steps/createTranslationSettingsStep
+sidebar_label: createTranslationSettingsStep
+tags:
+  - translation
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createTranslationSettingsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `createTranslationSettingsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates translation settings based on the provided input.
+It supports both single and multiple translation settings creation.
+In case of failure, it compensates by deleting the created translation settings.
+
+:::note
+
+This is available starting from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+:::
+
+## Example
+
+```ts
+const result = createTranslationSettingsStep({
+  entity_type: "product",
+  fields: ["title", "description", "material"],
+  is_active: true
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"CreateTranslationSettingsStepInput","type":"[CreateTranslationSettingsStepInput](../../../../types/core_flows.CreateTranslationSettingsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"entity_type","type":"`string`","description":"The entity type.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields.","optional":false,"defaultValue":"","example":"[\"title\", \"description\", \"material\"]","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationSettingsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"TranslationSettingsDTO[]","type":"[TranslationSettingsDTO](../../../../../translation/interfaces/translation.TranslationSettingsDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings record.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type these settings apply to (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields for this entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the settings were created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the settings were last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the settings were deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationSettingsStep"/>

@@ -6,6 +6,7 @@ import { AdminProductTag } from "../../product-tag"
 import { AdminProductType } from "../../product-type"
 import { AdminSalesChannel } from "../../sales-channel"
 import { AdminShippingProfile } from "../../shipping-profile"
+import { AdminTranslation } from "../../translations"
 import {
   BaseProduct,
   BaseProductImage,
@@ -55,6 +56,10 @@ export interface AdminProductVariant extends BaseProductVariant {
    * The product that this variant belongs to.
    */
   product?: AdminProduct | null
+  /**
+   * The product variant's translations.
+   */
+  translations?: AdminTranslation[] | null
   /**
    * The variant's inventory items.
    */
@@ -108,6 +113,10 @@ export interface AdminProduct
    * The product's variants.
    */
   variants: AdminProductVariant[] | null
+  /**
+   * The product's translations.
+   */
+  translations?: AdminTranslation[] | null
   /**
    * The product's type.
    */

@@ -1,0 +1,30 @@
+import { TypeList } from "docs-ui"
+
+# TranslationsUtils
+
+## Functions
+
+- [applyTranslations](page.mdx#applytranslations)
+- [applyTranslationsToTaxLines](page.mdx#applytranslationstotaxlines)
+
+## Functions
+
+### applyTranslations
+
+#### Parameters
+
+<TypeList types={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"localeCode","type":"`undefined` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"objects","type":"`Record<string, any>`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"container","type":"[MedusaContainer](../../medusa/types/medusa.MedusaContainer/page.mdx)","description":"The Medusa Container extends [Awilix](https://github.com/jeffijoe/awilix) to\nprovide dependency injection functionalities.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="applyTranslations"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="applyTranslations"/>
+
+### applyTranslationsToTaxLines
+
+#### Parameters
+
+<TypeList types={[{"name":"taxLines","type":"[ItemTaxLineDTO](../../tax/interfaces/tax.ItemTaxLineDTO/page.mdx)[] \\| [ShippingTaxLineDTO](../../tax/interfaces/tax.ShippingTaxLineDTO/page.mdx)[]","description":"The tax lines to apply translations to.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"rate","type":"`number`","description":"The rate of the tax line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"The code of the tax line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the tax line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The ID of the tax provider used to calculate and retrieve the tax line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string`","description":"The associated line item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_line_id","type":"`string`","description":"The associated shipping line's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate_id","type":"`string`","description":"The associated rate's ID.\nWhen integrating with a third-party, you don't need to provide it.\nThis is mainly used for the built-in rates.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"locale","type":"`undefined` \\| `string`","description":"The locale to apply translations to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"container","type":"[MedusaContainer](../../medusa/types/medusa.MedusaContainer/page.mdx)","description":"The container to use for the translations.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="applyTranslationsToTaxLines"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ItemTaxLineDTO](../../tax/interfaces/tax.ItemTaxLineDTO/page.mdx)[] \\| [ShippingTaxLineDTO](../../tax/interfaces/tax.ShippingTaxLineDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The tax lines with translations applied.","expandable":false,"children":[{"name":"ItemTaxLineDTO[] \\| ShippingTaxLineDTO[]","type":"[ItemTaxLineDTO](../../tax/interfaces/tax.ItemTaxLineDTO/page.mdx)[] \\| [ShippingTaxLineDTO](../../tax/interfaces/tax.ShippingTaxLineDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="applyTranslationsToTaxLines"/>

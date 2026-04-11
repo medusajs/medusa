@@ -1,0 +1,137 @@
+---
+slug: /references/translation/events
+sidebar_label: Events Reference
+generate_toc: true
+---
+
+import { TypeList } from "docs-ui"
+
+# Translation Module Events Reference
+
+This reference shows all the events emitted by the Medusa application related to the Translation Module. If you use the module outside the Medusa application, these events aren't emitted.
+
+## Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[translation.created](#translationcreated)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are created.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[translation.updated](#translationupdated)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are updated.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[translation.deleted](#translationdeleted)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are deleted.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="2" headerProps={{ id: "translationcreated", children: (<>translation.created
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.created" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are created.
+
+### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createTranslationsWorkflow](/references/medusa-workflows/createTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)
+
+---
+
+<EventHeader headerLvl="2" headerProps={{ id: "translationupdated", children: (<>translation.updated
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.updated" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are updated.
+
+### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateTranslationsWorkflow](/references/medusa-workflows/updateTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)
+
+---
+
+<EventHeader headerLvl="2" headerProps={{ id: "translationdeleted", children: (<>translation.deleted
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.deleted" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are deleted.
+
+### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteTranslationsWorkflow](/references/medusa-workflows/deleteTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)

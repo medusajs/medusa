@@ -86,7 +86,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -628,7 +628,7 @@ const StripeSavedPaymentMethodsContainer = ({
     await initiatePaymentSession(cart, {
       provider_id: method.provider_id,
       data: {
-        payment_method_id: method.id,
+        payment_method: method.id,
       },
     }).catch((error) => {
       setError(error.message)

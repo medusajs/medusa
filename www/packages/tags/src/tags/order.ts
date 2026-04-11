@@ -24,6 +24,10 @@ export const order = [
     "path": "https://docs.medusajs.com/user-guide/orders/exchanges"
   },
   {
+    "title": "Export Orders",
+    "path": "https://docs.medusajs.com/user-guide/orders/export"
+  },
+  {
     "title": "Manage Order Fulfillments",
     "path": "https://docs.medusajs.com/user-guide/orders/fulfillments"
   },
@@ -322,6 +326,10 @@ export const order = [
   {
     "title": "updateOrderShippingMethodsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsStep"
+  },
+  {
+    "title": "updateOrderShippingMethodsTranslationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsTranslationsStep"
   },
   {
     "title": "updateOrdersStep",

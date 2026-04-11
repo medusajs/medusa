@@ -3,10 +3,10 @@ import {
   AbstractFileProviderService,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { createReadStream } from "fs"
+import { createReadStream, createWriteStream } from "fs"
 import fs from "fs/promises"
 import path from "path"
-import type { Readable } from "stream"
+import type { Readable, Writable } from "stream"
 
 export class LocalFileService extends AbstractFileProviderService {
   static identifier = "localfs"
@@ -75,6 +75,59 @@ export class LocalFileService extends AbstractFileProviderService {
     return {
       key: fileKey,
       url: fileUrl,
+    }
+  }
+
+  async getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    if (!fileData.filename) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `No filename provided`
+      )
+    }
+
+    const parsedFilename = path.parse(fileData.filename)
+    const baseDir =
+      fileData.access === "public" ? this.uploadDir_ : this.privateUploadDir_
+    await this.ensureDirExists(baseDir, parsedFilename.dir)
+
+    const fileKey = path.join(
+      parsedFilename.dir,
+      // We prepend "private" to the file key so deletions and presigned URLs can know which folder to look into
+      `${fileData.access === "public" ? "" : "private-"}${Date.now()}-${
+        parsedFilename.base
+      }`
+    )
+
+    const filePath = this.getUploadFilePath(baseDir, fileKey)
+    const fileUrl = this.getUploadFileUrl(fileKey)
+
+    const writeStream = createWriteStream(filePath)
+
+    const promise = new Promise<FileTypes.ProviderFileResultDTO>(
+      (resolve, reject) => {
+        writeStream.on("finish", () => {
+          resolve({
+            url: fileUrl,
+            key: fileKey,
+          })
+        })
+        writeStream.on("error", (err) => {
+          reject(err)
+        })
+      }
+    )
+
+    return {
+      writeStream,
+      promise,
+      url: fileUrl,
+      fileKey,
     }
   }
 

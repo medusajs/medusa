@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
-import { Badge, Button, Link, type ButtonProps } from "@/components"
+import { Button, type ButtonProps } from "@/components/Button"
 import {
   ThumbDown,
   ThumbUp,
@@ -8,12 +8,11 @@ import {
   CheckCircle,
   SquareTwoStack,
 } from "@medusajs/icons"
-import {
-  AiAssistantThreadItem as AiAssistantThreadItemType,
-  useSiteConfig,
-} from "../../../../providers"
+import { useSiteConfig } from "../../../../providers/SiteConfig"
+import { AiAssistantThreadItem as AiAssistantThreadItemType } from "../../../../providers/AiAssistant"
 import { Reaction, useChat } from "@kapaai/react-sdk"
-import { useCopy } from "../../../../hooks"
+import { useCopy } from "../../../../hooks/use-copy"
+import Link from "next/link"
 
 export type AiAssistantThreadItemActionsProps = {
   item: AiAssistantThreadItemType
@@ -59,7 +58,7 @@ export const AiAssistantThreadItemActions = ({
     >
       {item.type === "question" && (
         <div className="flex gap-docs_0.25 items-center text-medusa-fg-muted">
-          <ActionButton onClick={handleLinkCopy}>
+          <ActionButton onClick={handleLinkCopy} data-testid="link-copy-button">
             {isLinkCopied ? <CheckCircle /> : <LinkIcon />}
           </ActionButton>
         </div>
@@ -68,22 +67,33 @@ export const AiAssistantThreadItemActions = ({
         <>
           {item.sources !== undefined && item.sources.length > 0 && (
             <div className="flex gap-[6px] items-center flex-wrap">
-              {item.sources.map((source) => (
-                <Badge key={source.source_url} variant="neutral">
-                  <Link href={source.source_url} className="!text-inherit">
-                    {source.title}
-                  </Link>
-                </Badge>
+              {item.sources.map((source, index) => (
+                <Link
+                  key={index}
+                  href={source.source_url}
+                  className={clsx(
+                    "flex items-center justify-center px-[6px] py-px",
+                    "rounded-docs_xs bg-medusa-tag-neutral-bg font-monospace",
+                    "text-medusa-fg-subtle hover:text-medusa-fg-base",
+                    "text-code-paragraph-2xsmall"
+                  )}
+                >
+                  {source.title}
+                </Link>
               ))}
             </div>
           )}
           <div className="flex gap-docs_0.25 items-center text-medusa-fg-muted">
-            <ActionButton onClick={handleAnswerCopy}>
+            <ActionButton
+              onClick={handleAnswerCopy}
+              data-testid="answer-copy-button"
+            >
               {isAnswerCopied ? <CheckCircle /> : <SquareTwoStack />}
             </ActionButton>
             {(feedback === null || feedback === "upvote") && (
               <ActionButton
                 onClick={async () => handleFeedback("upvote", item.question_id)}
+                data-testid="upvote-button"
                 className={clsx(
                   feedback === "upvote" && "!text-medusa-fg-muted"
                 )}
@@ -96,6 +106,7 @@ export const AiAssistantThreadItemActions = ({
                 onClick={async () =>
                   handleFeedback("downvote", item.question_id)
                 }
+                data-testid="downvote-button"
                 className={clsx(
                   feedback === "downvote" && "!text-medusa-fg-muted"
                 )}

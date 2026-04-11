@@ -6,9 +6,9 @@ required:
   - type
   - options
   - images
-  - length
   - title
   - status
+  - length
   - id
   - created_at
   - updated_at
@@ -171,3 +171,8 @@ properties:
     description: The date the product was deleted.
   shipping_profile:
     $ref: ./AdminShippingProfile.yaml
+  translations:
+    type: array
+    description: The product's translations.
+    items:
+      $ref: ./AdminTranslation.yaml

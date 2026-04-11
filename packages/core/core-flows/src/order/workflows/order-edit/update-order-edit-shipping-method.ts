@@ -18,6 +18,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import { useQueryGraphStep, useRemoteQueryStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import {
   updateOrderChangeActionsStep,
   updateOrderShippingMethodsStep,
@@ -162,6 +163,12 @@ export const updateOrderEditShippingMethodWorkflow = createWorkflow(
       OrderWorkflow.UpdateOrderEditShippingMethodWorkflowInput & AdditionalData
     >
   ) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -274,11 +281,16 @@ export const updateOrderEditShippingMethodWorkflow = createWorkflow(
       updateOrderShippingMethodsStep([updateData.shippingMethod!])
     )
 
-    return new WorkflowResponse(
-      previewOrderChangeStep(input.order_id) as OrderPreviewDTO,
-      {
-        hooks: [setPricingContext] as const,
-      }
-    )
+    const previewOrderChange = previewOrderChangeStep(
+      input.order_id
+    ) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange, {
+      hooks: [setPricingContext] as const,
+    })
   }
 )

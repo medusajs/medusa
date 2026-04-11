@@ -91,72 +91,72 @@ export interface BaseCart {
   updated_at?: string | Date
 
   /**
-   * The original item total of the cart.
+   * The sum of all line items' original totals before discounts, including taxes.
    */
   original_item_total: number
 
   /**
-   * The original item subtotal of the cart.
+   * The sum of all line items' original subtotals before discounts, excluding taxes.
    */
   original_item_subtotal: number
 
   /**
-   * The original item tax total of the cart.
+   * The sum of all line items' original tax totals before discounts.
    */
   original_item_tax_total: number
 
   /**
-   * The item total of the cart.
+   * The sum of all line items' totals after discounts, including taxes.
    */
   item_total: number
 
   /**
-   * The item subtotal of the cart.
+   * The sum of all line items' subtotals before discounts, excluding taxes.
    */
   item_subtotal: number
 
   /**
-   * The item tax total of the cart.
+   * The sum of all line items' tax totals after discounts.
    */
   item_tax_total: number
 
   /**
-   * The original total of the cart.
+   * The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
    */
   original_total: number
 
   /**
-   * The original subtotal of the cart.
+   * The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
    */
   original_subtotal: number
 
   /**
-   * The original tax total of the cart.
+   * The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
    */
   original_tax_total: number
 
   /**
-   * The total of the cart.
+   * The cart's final total after discounts and credit lines, including taxes.
    */
   total: number
 
   /**
-   * The subtotal of the cart. (Excluding taxes)
+   * The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
    */
   subtotal: number
 
   /**
-   * The tax total of the cart.
+   * The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
    */
   tax_total: number
 
   /**
-   * The discount total of the cart.
+   * The total amount of discounts applied to the cart, including the tax portion of discounts.
    */
   discount_total: number
 
   /**
-   * The discount tax total of the cart.
+   * The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
    */
   discount_tax_total: number
 
@@ -171,34 +171,39 @@ export interface BaseCart {
   gift_card_tax_total: number
 
   /**
-   * The shipping total of the cart.
+   * The sum of all shipping methods' totals after discounts, including taxes.
    */
   shipping_total: number
 
   /**
-   * The shipping subtotal of the cart.
+   * The sum of all shipping methods' subtotals before discounts, excluding taxes.
    */
   shipping_subtotal: number
 
   /**
-   * The shipping tax total of the cart.
+   * The sum of all shipping methods' tax totals after discounts.
    */
   shipping_tax_total: number
 
   /**
-   * The original shipping total of the cart.
+   * The sum of all shipping methods' original totals before discounts, including taxes.
    */
   original_shipping_total: number
 
   /**
-   * The original shipping subtotal of the cart.
+   * The sum of all shipping methods' original subtotals before discounts, excluding taxes.
    */
   original_shipping_subtotal: number
 
   /**
-   * The original shipping tax total of the cart.
+   * The sum of all shipping methods' original tax totals before discounts.
    */
   original_shipping_tax_total: number
+
+  /**
+   * The date the cart was completed.
+   */
+  completed_at?: string | Date
 }
 
 export interface BaseCartAddress {
@@ -352,56 +357,56 @@ export interface BaseCartShippingMethod {
   updated_at: Date | string
 
   /**
-   * The original total of the cart shipping method.
+   * The shipping method's original total before discounts, including taxes.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   original_total?: number
 
   /**
-   * The original subtotal of the cart shipping method.
+   * The shipping method's original subtotal before discounts, excluding taxes.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   original_subtotal?: number
 
   /**
-   * The original tax total of the cart shipping method.
+   * The shipping method's original tax total before discounts.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   original_tax_total?: number
 
   /**
-   * The total of the cart shipping method.
+   * The shipping method's total after discounts, including taxes.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   total?: number
 
   /**
-   * The subtotal of the cart shipping method.
+   * The shipping method's subtotal before discounts, excluding taxes.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   subtotal?: number
 
   /**
-   * The tax total of the cart shipping method.
+   * The shipping method's tax total after discounts.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   tax_total?: number
 
   /**
-   * The discount total of the cart shipping method.
+   * The total amount of discounts applied to the shipping method, including the tax portion of discounts.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
   discount_total?: number
 
   /**
-   * The discount tax total of the cart shipping method.
+   * The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
    * This field is only available if you expand the `shipping_methods.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
    */
@@ -588,77 +593,77 @@ export interface BaseCartLineItem extends BaseCartLineItemTotals {
  */
 export interface BaseCartLineItemTotals {
   /**
-   * The original total of the cart line item.
+   * The line item's original total before discounts, including taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   original_total?: number
 
   /**
-   * The original subtotal of the cart line item.
+   * The line item's original subtotal before discounts, excluding taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   original_subtotal?: number
 
   /**
-   * The original tax total of the cart line item.
+   * The line item's original tax total before discounts.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   original_tax_total?: number
 
   /**
-   * The item total of the cart line item.
+   * The line item's total after discounts, including taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   item_total?: number
 
   /**
-   * The item subtotal of the cart line item.
+   * The line item's subtotal before discounts, excluding taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   item_subtotal?: number
 
   /**
-   * The item tax total of the cart line item.
+   * The line item's tax total after discounts.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   item_tax_total?: number
 
   /**
-   * The total of the cart line item.
+   * The line item's total after discounts, including taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   total?: number
 
   /**
-   * The subtotal of the cart line item.
+   * The line item's subtotal before discounts, excluding taxes.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   subtotal?: number
 
   /**
-   * The tax total of the cart line item.
+   * The line item's tax total after discounts.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   tax_total?: number
 
   /**
-   * The discount total of the cart line item.
+   * The total amount of discounts applied to the line item, including the tax portion of discounts.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */
   discount_total?: number
 
   /**
-   * The discount tax total of the cart line item.
+   * The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
    * This field is only available if you expand the `items.*` relation. Learn more in the
    * [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
    */

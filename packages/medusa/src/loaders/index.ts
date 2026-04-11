@@ -1,4 +1,5 @@
-import { container, MedusaAppLoader } from "@medusajs/framework"
+import { container, MedusaAppLoader, policiesLoader } from "@medusajs/framework"
+import { asValue } from "@medusajs/framework/awilix"
 import { configLoader } from "@medusajs/framework/config"
 import { pgConnectionLoader } from "@medusajs/framework/database"
 import { featureFlagsLoader } from "@medusajs/framework/feature-flags"
@@ -22,7 +23,6 @@ import {
   validateModuleName,
 } from "@medusajs/framework/utils"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
-import { asValue } from "@medusajs/framework/awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { join } from "path"
 import requestIp from "request-ip"
@@ -91,14 +91,6 @@ async function loadEntrypoints(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
-  // Subscribers should be loaded no matter the worker mode, simply they will never handle anything
-  // since worker/shared instances only will have a running worker to process events.
-  await subscribersLoader(plugins, container)
-
-  if (shouldLoadBackgroundProcessors(configModule)) {
-    await jobsLoader(plugins, container)
-  }
-
   if (isWorkerMode(configModule)) {
     return async () => {}
   }
@@ -142,11 +134,18 @@ export async function initializeContainer(
   rootDirectory: string,
   options?: {
     skipDbConnection?: boolean
+    throwOnError?: boolean
   }
 ): Promise<MedusaContainer> {
   await featureFlagsLoader(rootDirectory)
-  const configDir = await configLoader(rootDirectory, "medusa-config")
+  const configDir = await configLoader(rootDirectory, "medusa-config", {
+    throwOnError: options?.throwOnError,
+  })
   await featureFlagsLoader(join(__dirname, ".."))
+
+  // Load policies from core medusa package and project root
+  await policiesLoader(join(__dirname, ".."))
+  await policiesLoader(rootDirectory)
 
   const customLogger = configDir.logger ?? defaultLogger
   container.register({
@@ -190,6 +189,11 @@ export default async ({
   )
   await new LinkLoader(linksSourcePaths, logger).load()
 
+  // Load policies from all plugins (rootDirectory already loaded in initializeContainer)
+  for (const plugin of plugins) {
+    await policiesLoader(plugin.resolve)
+  }
+
   const {
     onApplicationStart,
     onApplicationShutdown,
@@ -201,6 +205,14 @@ export default async ({
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths, container)
   await workflowLoader.load()
+
+  // Subscribers should be loaded no matter the worker mode, simply they will never handle anything
+  // since worker/shared instances only will have a running worker to process events.
+  await subscribersLoader(plugins, container)
+
+  if (shouldLoadBackgroundProcessors(configModule)) {
+    await jobsLoader(plugins, container)
+  }
 
   const entrypointsShutdown = skipLoadingEntryPoints
     ? () => {}

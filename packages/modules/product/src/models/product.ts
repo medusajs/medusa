@@ -11,10 +11,10 @@ import ProductVariant from "./product-variant"
 const Product = model
   .define("Product", {
     id: model.id({ prefix: "prod" }).primaryKey(),
-    title: model.text().searchable(),
+    title: model.text().searchable().translatable(),
     handle: model.text(),
-    subtitle: model.text().searchable().nullable(),
-    description: model.text().searchable().nullable(),
+    subtitle: model.text().searchable().translatable().nullable(),
+    description: model.text().searchable().translatable().nullable(),
     is_giftcard: model.boolean().default(false),
     status: model
       .enum(ProductUtils.ProductStatus)
@@ -27,7 +27,7 @@ const Product = model
     origin_country: model.text().nullable(),
     hs_code: model.text().nullable(),
     mid_code: model.text().nullable(),
-    material: model.text().nullable(),
+    material: model.text().translatable().nullable(),
     discountable: model.boolean().default(true),
     external_id: model.text().nullable(),
     metadata: model.json().nullable(),

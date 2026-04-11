@@ -20,7 +20,7 @@ export interface ValidateCartPaymentsStepInput {
 export const validateCartPaymentsStepId = "validate-cart-payments"
 /**
  * This step validates a cart's payment sessions. Their status must
- * be `pending` or `requires_more`. If not valid, the step throws an error.
+ * be `pending`, `requires_more`, `authorized`, or `captured`. If not valid, the step throws an error.
  *
  * :::tip
  *
@@ -62,6 +62,7 @@ export const validateCartPaymentsStep = createStep(
       PaymentSessionStatus.PENDING,
       PaymentSessionStatus.REQUIRES_MORE,
       PaymentSessionStatus.AUTHORIZED, // E.g. payment was authorized, but the cart was not completed
+      PaymentSessionStatus.CAPTURED, // E.g. payment was captured, but the cart was not completed
     ]
 
     const paymentsToProcess = paymentCollection.payment_sessions?.filter((ps) =>

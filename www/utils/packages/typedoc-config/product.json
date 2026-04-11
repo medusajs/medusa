@@ -10,5 +10,8 @@
   "exclude": [
     "../../../../packages/modules/product/dist", 
     "../../../../packages/modules/product/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages"
+  }
 }

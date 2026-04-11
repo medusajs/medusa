@@ -4,7 +4,7 @@ import React from "react"
 import { Sidebar } from "types"
 import { SidebarItemLink } from "./Link"
 import { SidebarItemSubCategory } from "./SubCategory"
-import { DottedSeparator } from "../.."
+import { DottedSeparator } from "@/components/DottedSeparator"
 import { SidebarItemCategory } from "./Category"
 import { SidebarItemSidebar } from "./Sidebar"
 

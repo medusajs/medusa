@@ -1,11 +1,15 @@
 import { MEDUSA_CLI_PATH } from "@medusajs/framework"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  FeatureFlag,
+} from "@medusajs/framework/utils"
 import { Store } from "@medusajs/telemetry"
 import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"
 import { EOL } from "os"
 import path from "path"
+import BackendHmrFeatureFlag from "../feature-flags/backend-hmr"
 import { initializeContainer } from "../loaders"
 
 const defaultConfig = {
@@ -17,6 +21,23 @@ const defaultConfig = {
 export default async function ({ types, directory }) {
   const container = await initializeContainer(directory)
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  const isBackendHmrEnabled = FeatureFlag.isFeatureEnabled(
+    BackendHmrFeatureFlag.key
+  )
+
+  const reloadActionVerb = isBackendHmrEnabled ? "reloading" : "restarting"
+  const logSource = isBackendHmrEnabled ? "[HMR]" : "[Watcher]"
+
+  if (isBackendHmrEnabled) {
+    logger.info(
+      `${logSource} Using backend HMR dev server (reload on file change)`
+    )
+  } else {
+    logger.info(
+      `${logSource} Using standard dev server (restart on file change)`
+    )
+  }
 
   const args = process.argv
 
@@ -53,19 +74,66 @@ export default async function ({ types, directory }) {
      * restart the dev server instead of asking the user to re-run
      * the command.
      */
-    start() {
-      this.childProcess = fork(cliPath, ["start", ...args], {
+    async start() {
+      const forkOptions: any = {
         cwd: directory,
         env: {
           ...process.env,
           NODE_ENV: "development",
+          ...(isBackendHmrEnabled && { MEDUSA_HMR_ENABLED: "true" }),
         },
         execArgv: argv,
-      })
+      }
+
+      // Enable IPC for HMR mode to communicate reload requests
+      if (isBackendHmrEnabled) {
+        forkOptions.stdio = ["inherit", "inherit", "inherit", "ipc"]
+      }
+
+      this.childProcess = fork(cliPath, ["start", ...args], forkOptions)
+
       this.childProcess.on("error", (error) => {
         // @ts-ignore
-        logger.error("Dev server failed to start", error)
-        logger.info("The server will restart automatically after your changes")
+        logger.error(`${logSource} Dev server failed to start`, error)
+        logger.info(
+          `${logSource} The server will restart automatically after your changes`
+        )
+      })
+    },
+
+    /**
+     * Sends an HMR reload request to the child process and waits for result.
+     * Returns true if reload succeeded, false if it failed.
+     */
+    async sendHmrReload(
+      action: "add" | "change" | "unlink",
+      file: string
+    ): Promise<boolean> {
+      return new Promise((resolve) => {
+        if (!this.childProcess) {
+          resolve(false)
+          return
+        }
+
+        const timeout = setTimeout(() => {
+          resolve(false)
+        }, 30000) // 30s timeout
+
+        const messageHandler = (msg: any) => {
+          if (msg?.type === "hmr-result") {
+            clearTimeout(timeout)
+            this.childProcess?.off("message", messageHandler)
+            resolve(msg.success === true)
+          }
+        }
+
+        this.childProcess.on("message", messageHandler)
+        this.childProcess.send({
+          type: "hmr-reload",
+          action,
+          file: path.resolve(directory, file),
+          rootDirectory: directory,
+        })
       })
     },
 
@@ -73,7 +141,18 @@ export default async function ({ types, directory }) {
      * Restarts the development server by cleaning up the existing
      * child process and forking a new one
      */
-    restart() {
+    async restart(action: "add" | "change" | "unlink", file: string) {
+      if (isBackendHmrEnabled && this.childProcess) {
+        const success = await this.sendHmrReload(action, file)
+
+        if (success) {
+          return
+        }
+
+        // HMR reload failed, kill the process and restart
+        logger.info(`${logSource} HMR reload failed, restarting server...`)
+      }
+
       if (this.childProcess) {
         this.childProcess.removeAllListeners()
         if (process.platform === "win32") {
@@ -82,7 +161,7 @@ export default async function ({ types, directory }) {
           this.childProcess.kill("SIGINT")
         }
       }
-      this.start()
+      await this.start()
     },
 
     /**
@@ -94,41 +173,60 @@ export default async function ({ types, directory }) {
      * - src/admin/**
      */
     watch() {
-      this.watcher = chokidar.watch(["."], {
+      this.watcher = chokidar.watch(".", {
         ignoreInitial: true,
-        cwd: process.cwd(),
+        cwd: directory,
         ignored: [
           /(^|[\\/\\])\../,
           "node_modules",
           "dist",
           "static",
           "private",
-          "src/admin/**/*",
-          ".medusa/**/*",
+          "src/admin",
+          ".medusa",
         ],
       })
 
-      this.watcher.on("add", (file) => {
+      async function handleFileChange(
+        this: typeof devServer,
+        action: "add" | "change" | "unlink",
+        file: string
+      ) {
+        const actionVerb =
+          action === "add"
+            ? "created"
+            : action === "change"
+            ? "modified"
+            : "removed"
+
+        const now = performance.now()
         logger.info(
-          `${path.relative(directory, file)} created: Restarting dev server`
+          `${logSource} ${actionVerb} ${path.relative(
+            directory,
+            file
+          )} ${actionVerb}: ${reloadActionVerb} dev server`
         )
-        this.restart()
+
+        await this.restart(action, file)
+
+        const duration = performance.now() - now
+        logger.info(`${logSource} Reloaded in ${duration.toFixed(2)}ms`)
+      }
+
+      this.watcher.on("add", async (file) => {
+        handleFileChange.call(this, "add", file)
       })
-      this.watcher.on("change", (file) => {
-        logger.info(
-          `${path.relative(directory, file)} modified: Restarting dev server`
-        )
-        this.restart()
+      this.watcher.on("change", async (file) => {
+        handleFileChange.call(this, "change", file)
       })
-      this.watcher.on("unlink", (file) => {
-        logger.info(
-          `${path.relative(directory, file)} removed: Restarting dev server`
-        )
-        this.restart()
+      this.watcher.on("unlink", async (file) => {
+        handleFileChange.call(this, "unlink", file)
       })
 
       this.watcher.on("ready", function () {
-        logger.info(`Watching filesystem to reload dev server on file change`)
+        logger.info(
+          `${logSource} Watching filesystem to reload dev server on file change`
+        )
       })
     },
   }
@@ -152,6 +250,6 @@ export default async function ({ types, directory }) {
     process.exit(0)
   })
 
-  devServer.start()
+  await devServer.start()
   devServer.watch()
 }

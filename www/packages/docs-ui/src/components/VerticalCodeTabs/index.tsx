@@ -29,6 +29,7 @@ export const VerticalCodeTabs = ({
         "shadow-elevation-modal dark:shadow-elevation-modal-dark",
         className
       )}
+      data-testid="vertical-code-tabs-container"
     >
       <div
         className={clsx(
@@ -50,6 +51,7 @@ export const VerticalCodeTabs = ({
                 "bg-medusa-contrast-border-bot border border-medusa-contrast-border-bot"
               )}
               key={index}
+              data-testid="vertical-code-tabs-dot"
             />
           ))}
         </div>

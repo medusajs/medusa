@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -75,14 +76,16 @@ const TagOperation = ({
   }, [nodeRef, isBrowser, scrollToTop])
 
   useEffect(() => {
-    if (nodeRef && nodeRef.current) {
-      removeLoading()
-      const currentHash = location.hash.replace("#", "")
-      if (currentHash === path) {
-        setTimeout(scrollIntoView, 200)
-      } else if (currentHash.split("_")[0] === path.split("_")[0]) {
-        setShow(true)
-      }
+    if (!nodeRef.current) {
+      return
+    }
+
+    removeLoading()
+    const currentHash = location.hash.replace("#", "")
+    if (currentHash === path) {
+      setTimeout(scrollIntoView, 200)
+    } else if (currentHash.split("_")[0] === path.split("_")[0]) {
+      setShow(true)
     }
   }, [nodeRef, path, scrollIntoView])
 
@@ -129,6 +132,7 @@ const TagOperation = ({
             style={{
               animationFillMode: "forwards",
             }}
+            data-testid="operation-container"
           >
             <DividedLayout
               mainContent={

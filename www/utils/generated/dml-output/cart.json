@@ -156,7 +156,8 @@
 			"billing_address": "The associated billing_address.\n\n@expandable",
 			"items": "The associated items.\n\n@expandable",
 			"shipping_methods": "The associated shipping_methods.\n\n@expandable",
-			"credit_lines": "The associated credit_lines.\n\n@expandable"
+			"credit_lines": "The associated credit lines.\n\n@expandable",
+			"locale": "The locale of the cart"
 		},
 		"deprecated": {
 			"is_deprecated": false

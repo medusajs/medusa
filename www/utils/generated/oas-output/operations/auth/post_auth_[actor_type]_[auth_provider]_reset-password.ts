@@ -75,6 +75,7 @@
  *         entity_id, // The identifier of the user or customer. For example, an email address.
  *         actor_type, // The type of actor. For example, "customer", "user", or custom.
  *         token, // The generated token.
+ *         metadata, // Optional custom metadata passed from the request.
  *       }
  *       ```
  *     description: |-

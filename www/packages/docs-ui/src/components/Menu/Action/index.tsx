@@ -24,13 +24,17 @@ export const MenuAction = ({ item, onClick }: MenuActionProps) => {
           item.action()
           onClick?.(item)
         }}
+        data-testid="menu-action"
       >
         <span className="text-medusa-fg-subtle mt-[2.5px] block">
           {item.icon}
         </span>
         <span className="text-compact-small flex-1">{item.title}</span>
         {item.shortcut && (
-          <span className="text-medusa-fg-subtle text-compact-small">
+          <span
+            className="text-medusa-fg-subtle text-compact-small"
+            data-testid="menu-action-shortcut"
+          >
             {item.shortcut}
           </span>
         )}

@@ -19,3 +19,21 @@ export async function ensureDbExists(container: MedusaContainer) {
     process.exit(1)
   }
 }
+
+export async function isPgstreamEnabled(
+  container: MedusaContainer
+): Promise<boolean> {
+  const pgConnection = container.resolve(
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
+
+  try {
+    const result = await pgConnection.raw(
+      "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'pgstream'"
+    )
+    return result.rows.length > 0
+  } catch (error) {
+    // If there's an error checking, assume pgstream is not enabled
+    return false
+  }
+}

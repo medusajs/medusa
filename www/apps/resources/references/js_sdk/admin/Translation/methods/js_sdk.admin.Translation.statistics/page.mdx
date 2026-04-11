@@ -1,0 +1,37 @@
+import { TypeList } from "docs-ui"
+
+# statistics
+
+This method retrieves the statistics for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Statistics](https://docs.medusajs.com/api/admin#translations\_gettranslationsstatistics) API route.
+
+## Example
+
+To retrieve the statistics for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.statistics({
+  entity_type: "product"
+})
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+To retrieve the statistics for all entity types:
+
+```ts
+sdk.admin.translation.statistics()
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationStatisticsParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationStatisticsParams/page.mdx)","description":"The query parameters which can optionally include the entity type to get the statistics for.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"locales","type":"`string`[]","description":"The locales to check translations for.","optional":false,"defaultValue":"","example":"[\"en-US\", \"fr-FR\"]","expandable":false,"children":[]},{"name":"entity_types","type":"`string`[]","description":"The entity types to get statistics for.","optional":false,"defaultValue":"","example":"[\"product\", \"product_variant\"]","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="statistics"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationStatisticsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationStatisticsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation statistics.","expandable":false,"children":[{"name":"statistics","type":"`Record<string, [AdminTranslationEntityStatistics](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntityStatistics/page.mdx)>`","description":"Statistics by entity type.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"expected","type":"`number`","description":"Expected number of translated fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translated","type":"`number`","description":"Actual number of translated fields. This doesn't count\ntranslations that are null or empty.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"missing","type":"`number`","description":"Number of missing translations for expected translatable\nfields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"by_locale","type":"`Record<string, [AdminTranslationLocaleStatistics](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics/page.mdx)>`","description":"Breakdown of statistics by locale.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="statistics"/>

@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { OpenAPI } from "types"
 import { ReactNode, createContext, useContext, useEffect, useMemo } from "react"
 import getTagChildSidebarItems from "../utils/get-tag-child-sidebar-items"
@@ -68,7 +69,8 @@ const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
           children: childItems,
           loaded: childItems.length > 0,
           onOpen: () => {
-            if (location.hash !== tagPathName) {
+            const currentHash = location.hash.replace("#", "")
+            if (currentHash !== tagPathName) {
               router.push(`#${tagPathName}`, {
                 scroll: false,
               })

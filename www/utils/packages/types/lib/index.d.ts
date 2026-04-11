@@ -313,6 +313,7 @@ export declare type DmlFile = {
       description?: string
     }
     featureFlag?: string
+    example?: string
   }
 }
 

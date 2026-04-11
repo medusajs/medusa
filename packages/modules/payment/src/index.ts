@@ -1,3 +1,4 @@
+import "./types"
 import { PaymentModuleService } from "@services"
 import loadProviders from "./loaders/providers"
 import { Module, Modules } from "@medusajs/framework/utils"

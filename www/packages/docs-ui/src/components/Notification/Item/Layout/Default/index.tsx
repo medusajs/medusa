@@ -1,5 +1,5 @@
 import React from "react"
-import { NotificationItemProps } from "../.."
+import { NotificationItemProps } from "@/components/Notification/Item"
 import clsx from "clsx"
 import {
   CheckCircleSolid,
@@ -7,7 +7,7 @@ import {
   InformationCircleSolid,
   XCircleSolid,
 } from "@medusajs/icons"
-import { Button } from "@/components"
+import { Button } from "@/components/Button"
 
 export type NotificationItemLayoutDefaultProps = NotificationItemProps & {
   handleClose: () => void
@@ -27,7 +27,10 @@ export const NotificationItemLayoutDefault: React.FC<
   closeButtonText = "Close",
 }) => {
   return (
-    <div className="bg-medusa-bg-base w-full h-full shadow-elevation-flyout dark:shadow-elevation-flyout-dark rounded-docs_DEFAULT">
+    <div
+      className="bg-medusa-bg-base w-full h-full shadow-elevation-flyout dark:shadow-elevation-flyout-dark rounded-docs_DEFAULT"
+      data-testid="default-layout"
+    >
       <div className={clsx("flex gap-docs_1 p-docs_1")}>
         {type !== "none" && (
           <div
@@ -52,6 +55,7 @@ export const NotificationItemLayoutDefault: React.FC<
         )}
         <span
           className={clsx("text-compact-medium-plus", "text-medusa-fg-base")}
+          data-testid="layout-title"
         >
           {title}
         </span>
@@ -62,6 +66,7 @@ export const NotificationItemLayoutDefault: React.FC<
             "flex pt-0 pr-docs_1 pb-docs_1.5 pl-docs_1 gap-docs_1",
             "border-0 border-b border-solid border-medusa-border-base"
           )}
+          data-testid="layout-content"
         >
           <div className="w-docs_2 flex-none"></div>
           <div className={clsx("flex flex-col", children && "gap-docs_1")}>

@@ -1,5 +1,6 @@
 import React from "react"
-import { Badge, Tooltip } from "@/components"
+import { Badge } from "@/components/Badge"
+import { Tooltip } from "@/components/Tooltip"
 
 export type VersionNoticeProps = {
   version: string
@@ -18,8 +19,7 @@ export const VersionNotice = ({
     <Tooltip
       tooltipChildren={
         <span className={tooltipTextClassName}>
-          This is available starting from
-          <br />
+          This is available starting from <br />
           <a
             href={`https://github.com/medusajs/medusa/releases/tag/${version}`}
           >

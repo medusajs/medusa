@@ -8,7 +8,7 @@ export const sdk = new Medusa({
   },
 })
 
-sdk.admin.orderEdit.request("ordch_123")
+sdk.admin.orderEdit.request("order_123")
 .then(({ order_preview }) => {
   console.log(order_preview)
 })

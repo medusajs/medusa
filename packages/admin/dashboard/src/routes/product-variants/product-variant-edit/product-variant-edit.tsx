@@ -33,7 +33,8 @@ export const ProductVariantEdit = () => {
   } = useProduct(
     variant?.product_id!,
     {
-      fields: "-variants",
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields: "-type,-collection,-tags,-images,-variants,-sales_channels",
     },
     {
       enabled: !!variant?.product_id,

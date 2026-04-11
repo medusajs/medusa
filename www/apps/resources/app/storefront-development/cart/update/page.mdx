@@ -7,7 +7,7 @@ products:
   - customer
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Update Cart in Storefront`,
@@ -86,3 +86,33 @@ Learn more about authenticating customers with the JS SDK in the [Login Customer
 When using the Fetch API to send the request, either use `credentials: include` if the customer is already authenticated with a cookie session, or pass the Authorization Bearer token in the request's header.
 
 </Note>
+
+---
+
+## Set Cart's Locale
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+By default, items in the cart will have their associated product's original content. If your storefront supports [localization](../../localization/page.mdx), you can set the cart's locale to ensure that the item contents are in the customer's preferred language.
+
+You can set the cart's locale by passing the `locale` request body parameter to the [Update Cart API route](!api!/store#carts_postcarts). For example:
+
+```ts
+sdk.store.cart.update(cartId, {
+  // you can also retrieve the locale from sdk.getLocale()
+  locale: "fr-FR",
+})
+.then(({ cart }) => {
+  // TODO use the cart...
+  console.log(cart)
+})
+```
+
+When the cart's locale is set, existing and new items in the cart will have their content in the specified locale if translations are available.

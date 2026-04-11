@@ -12,6 +12,14 @@ export interface AdminUpdateOrder {
    */
   billing_address?: OrderAddress
   /**
+   * The order's locale code. Items in the
+   * order will be translated to the given locale,
+   * if translations are available.
+   *
+   * @since 2.12.3
+   */
+  locale?: string | null
+  /**
    * The order's metadata.
    */
   metadata?: Record<string, unknown> | null
@@ -112,6 +120,12 @@ export interface AdminRequestOrderTransfer {
    * A description for the transfer request.
    */
   description?: string
+  /**
+   * Whether to update the order.email to the transferred customer email.
+   *
+   * @since 2.13.7
+   */
+  update_order_email?: boolean
 }
 
 export interface OrderAddress {

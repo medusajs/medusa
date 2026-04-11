@@ -1,0 +1,35 @@
+---
+slug: /references/medusa-workflows/steps/updateOrderItemsTranslationsStep
+sidebar_label: updateOrderItemsTranslationsStep
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateOrderItemsTranslationsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `updateOrderItemsTranslationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step re-translates all order line items when the order's locale changes.
+It fetches items and their variants in batches to handle large orders gracefully.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateOrderItemsTranslationsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = updateOrderItemsTranslationsStep({
+      "order_id": "order_123",
+      "locale": "{value}"
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"UpdateOrderItemsTranslationsStepInput","type":"[UpdateOrderItemsTranslationsStepInput](../../../../interfaces/core_flows.UpdateOrderItemsTranslationsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`object`[]","description":"Pre-loaded items to avoid re-fetching.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateOrderItemsTranslationsStep"/>

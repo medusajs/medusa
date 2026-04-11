@@ -23,6 +23,7 @@ import {
   requiredOrderFieldsForInventoryConfirmation,
 } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { emitEventStep, useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { deleteReservationsByLineItemsStep } from "../../../reservation"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -120,6 +121,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
   function (
     input: ConfirmOrderEditRequestWorkflowInput
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -284,6 +291,10 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
     emitEventStep({
       eventName: OrderEditWorkflowEvents.CONFIRMED,
       data: eventData,
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(orderPreview)

@@ -18,7 +18,7 @@ This workflow deletes draft orders. It's used by the [Delete Draft Order API rou
 
 You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around deleting a draft order.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/e4513fab88f5ba7d5c078d3e251e04b104268a56/packages/core/core-flows/src/draft-order/workflows/delete-draft-order.ts#L59" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/draft-order/workflows/delete-draft-order.ts#L59" />
 
 ## Examples
 
@@ -127,7 +127,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteDraftOrdersWorkflow","steps":[{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":1},{"type":"step","name":"deleteDraftOrdersStep","description":"This step deletes one or more draft orders.","link":"../../../Steps_Draft_Order/functions/core_flows.Draft_Order.Steps_Draft_Order.deleteDraftOrdersStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteDraftOrdersWorkflow","steps":[{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":1},{"type":"step","name":"deleteDraftOrdersStep","description":"This step deletes one or more draft orders.","link":"../../../Steps_Draft_Order/functions/core_flows.Draft_Order.Steps_Draft_Order.deleteDraftOrdersStep/page.mdx","depth":2}]}} />
 
 ## Input
 

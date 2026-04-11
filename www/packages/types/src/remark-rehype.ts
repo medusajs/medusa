@@ -41,12 +41,43 @@ export type LiteralExpression = {
 export type JSXElementExpression = {
   type: "JSXElement" | "JSXFragment"
   children: Expression[]
+  openingElement: {
+    type: "JSXOpeningElement"
+    attributes: UnistJSXAttributeNode[]
+  }
 }
 
 export type JSXTextExpression = {
   type: "JSXText"
   value: string
   raw: string
+}
+
+export type VariableDeclaration = {
+  type: "VariableDeclaration"
+  declarations: VariableDeclarator[]
+}
+export type VariableDeclarator = {
+  type: "VariableDeclarator"
+  id: Identifier
+  init: Expression
+}
+
+export type Identifier = {
+  type: "Identifier"
+  name: string
+}
+
+export type TemplateLiteralExpression = {
+  type: "TemplateLiteral"
+  expressions: Expression[]
+  quasis: {
+    type: "TemplateElement"
+    value: {
+      raw: string
+      cooked: string
+    }
+  }[]
 }
 
 export type Expression =
@@ -60,10 +91,28 @@ export type Expression =
   | JSXTextExpression
 
 export interface Estree {
-  body?: {
-    type?: string
-    expression?: Expression
-  }[]
+  body?: (
+    | {
+        type?: "ExpressionStatement"
+        expression?: Expression
+      }
+    | {
+        type?: "ExportNamedDeclaration"
+        declaration?: VariableDeclaration
+      }
+  )[]
+}
+
+export interface UnistJSXAttributeNode {
+  type: "JSXAttribute"
+  name: {
+    type: "JSXIdentifier"
+    name: string
+  }
+  value: {
+    type: "JSXExpressionContainer"
+    expression: Identifier | Expression
+  }
 }
 
 export interface UnistNodeWithData extends UnistNode {
@@ -244,3 +293,8 @@ export type ExpressionJsVarObj = {
 }
 
 export type ExpressionJsVar = ExpressionJsVarObj | ExpressionJsVarLiteral
+
+export type JSXExpressionContainer = {
+  type: "JSXExpressionContainer"
+  expression: Expression
+}

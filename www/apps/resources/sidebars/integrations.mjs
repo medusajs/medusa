@@ -40,6 +40,11 @@ export const integrationsSidebar = [
         path: "/commerce-modules/auth/auth-providers/github",
         title: "GitHub",
       },
+      {
+        type: "link",
+        path: "/integrations/guides/okta",
+        title: "Okta",
+      },
     ],
   },
   {
@@ -170,6 +175,11 @@ export const integrationsSidebar = [
         type: "ref",
         path: "/commerce-modules/payment/payment-provider/stripe",
         title: "Stripe",
+      },
+      {
+        type: "link",
+        path: "/integrations/guides/paypal",
+        title: "PayPal",
       },
     ],
   },

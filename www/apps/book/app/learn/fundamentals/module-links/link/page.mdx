@@ -1,3 +1,5 @@
+import { CodeTab, CodeTabs } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Link`,
 }
@@ -41,6 +43,17 @@ export async function POST(
 
 You can use its methods to manage links, such as create or delete links.
 
+### Link Usage in Workflows
+
+To perform link operations in a [workflow](../../workflows/page.mdx), Medusa provides the following steps out-of-the-box:
+
+- [createRemoteLinkStep](!resources!/references/helper-steps/createRemoteLinkStep): Creates a link between records of two data models.
+- [dismissRemoteLinkStep](!resources!/references/helper-steps/dismissRemoteLinkStep): Removes a link between records of two data models.
+- [removeRemoteLinkStep](!resources!/references/helper-steps/removeRemoteLinkStep): Deletes all linked records whose links are defined with cascade deletion.
+- [updateRemoteLinksStep](!resources!/references/helper-steps/updateRemoteLinksStep): Updates links between records of two data models.
+
+The rest of this chapter provides examples using the Link class and the workflow steps.
+
 ---
 
 ## Create Link
@@ -48,6 +61,9 @@ You can use its methods to manage links, such as create or delete links.
 To create a link between records of two data models, use the `create` method of Link.
 
 For example:
+
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
 
 ```ts
 import { Modules } from "@medusajs/framework/utils"
@@ -58,11 +74,49 @@ await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_123",
+  blog: {
+    post_id: "post_123",
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="createRemoteLinkStep" value="createRemoteLinkStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "prod_123",
+          },
+          blog: {
+            post_id: "post_123",
+          },
+        },
+      ]
+    })
+    createRemoteLinkStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>
 
 The `create` method accepts as a parameter an object. The object’s keys are the names of the linked modules.
 
@@ -74,7 +128,7 @@ The keys (names of linked modules) must be in the same [direction](../directions
 
 The value of each module’s property is an object, whose keys are of the format `{data_model_snake_name}_id`, and values are the IDs of the linked record.
 
-So, in the example above, you link a record of the `MyCustom` data model in a `hello` module to a `Product` record in the Product Module.
+So, in the example above, you link a record of the `Post` data model in a `blog` module to a `Product` record in the Product Module.
 
 ### Enforced Integrity Constraints on Link Creation
 
@@ -88,23 +142,23 @@ await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_123",
+  blog: {
+    post_id: "post_123",
   },
 })
 
-// throws an error because `prod_123` already has a link to `mc_123`
+// throws an error because `prod_123` already has a link to `post_123`
 await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_456",
+  blog: {
+    post_id: "mc_456",
   },
 })
 ```
 
-- If the link is one-to-many and the "one" side already has a link to another record of the same data model. For example, if a product can have many `MyCustom` records, but a `MyCustom` record can only have one product:
+- If the link is one-to-many and the "one" side already has a link to another record of the same data model. For example, if a product can have many `Post` records, but a `Post` record can only have one product:
 
 ```ts
 // no error
@@ -112,8 +166,8 @@ await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_123",
+  blog: {
+    post_id: "post_123",
   },
 })
 
@@ -122,18 +176,18 @@ await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_456",
+  blog: {
+    post_id: "mc_456",
   },
 })
 
-// throws an error because `mc_123` already has a link to `prod_123`
+// throws an error because `post_123` already has a link to `prod_123`
 await link.create({
   [Modules.PRODUCT]: {
     product_id: "prod_456",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_123",
+  blog: {
+    post_id: "post_123",
   },
 })
 ```
@@ -148,6 +202,9 @@ To remove a link between records of two data models, use the `dismiss` method of
 
 For example:
 
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
+
 ```ts
 import { Modules } from "@medusajs/framework/utils"
 
@@ -157,11 +214,49 @@ await link.dismiss({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "helloModuleService": {
-    my_custom_id: "mc_123",
+  blog: {
+    post_id: "post_123",
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="dismissRemoteLinkStep" value="dismissRemoteLinkStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { dismissRemoteLinkStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "prod_123",
+          },
+          blog: {
+            post_id: "post_123",
+          },
+        },
+      ]
+    })
+    dismissRemoteLinkStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>
 
 The `dismiss` method accepts the same parameter type as the [create method](#create-link).
 
@@ -179,6 +274,9 @@ If you delete a record using a workflow or its module's service, use the `delete
 
 For example:
 
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
+
 ```ts
 import { Modules } from "@medusajs/framework/utils"
 
@@ -192,6 +290,41 @@ await link.delete({
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="removeRemoteLinkStep" value="removeRemoteLinkStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { removeRemoteLinkStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "prod_123",
+          },
+        },
+      ]
+    })
+    removeRemoteLinkStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>
 
 This deletes all records linked to the deleted product.
 
@@ -216,3 +349,83 @@ await link.restore({
   },
 })
 ```
+
+---
+
+## Update Links
+
+Links may have [custom columns](../custom-columns/page.mdx) to store additional information, such as a `metadata` column to store JSON data about the link.
+
+You can update the custom columns of existing links by calling the `create` method again with the same linked records and the new values for the custom columns.
+
+For example:
+
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await link.create({
+  [Modules.PRODUCT]: {
+    product_id: "prod_123",
+  },
+  blog: {
+    post_id: "post_123",
+  },
+  data: {
+    metadata: {
+      featured: true,
+    },
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="updateRemoteLinksStep" value="updateRemoteLinksStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { updateRemoteLinksStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "prod_123",
+          },
+          blog: {
+            post_id: "post_123",
+          },
+          data: {
+            metadata: {
+              featured: true,
+            },
+          },
+        },
+      ]
+    })
+    updateRemoteLinksStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The object parameter you pass to the `create` method (or the `updateRemoteLinksStep` step) accepts an optional `data` property. The value of this property is an object whose keys are the names of the custom columns to update, and values are the new values for those columns.
+
+Learn more in the [Custom Columns](../custom-columns/page.mdx) chapter.

@@ -1,0 +1,77 @@
+get:
+  operationId: GetTranslationsStatistics
+  summary: Retrieve Translation Statistics
+  x-sidebar-summary: Get Statistics
+  description: >-
+    Get statistics on translations for specified locales and entity types. This
+    includes overall translation progress for each entity type, and statistics
+    for each locale within those entity types.
+  x-authenticated: true
+  parameters:
+    - name: locales
+      in: query
+      description: >-
+        The locale codes to retrieve translation statistics for. Locale codes
+        are in [BCP
+        47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1)
+        format.
+      required: true
+      schema:
+        type: array
+        description: The locale codes to retrieve translation statistics for.
+        items:
+          type: string
+          title: locales
+          description: >-
+            A locale code in [BCP
+            47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1)
+            format.
+          example: fr-FR
+    - name: entity_types
+      in: query
+      description: The table names of entities to retrieve translation statistics for.
+      required: true
+      schema:
+        type: array
+        description: The table names of entities to retrieve translation statistics for.
+        items:
+          type: string
+          title: entity_types
+          description: The table name of an entity.
+          example: products
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_translations_statistics/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_translations_statistics/get.sh
+  tags:
+    - Translations
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTranslationStatisticsResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.12.3
+  x-featureFlag: translation

@@ -94,6 +94,7 @@ function setRefundableTotal(
   )
 
   const taxTotal = calculateTaxTotal({
+    isTaxInclusive: item.is_tax_inclusive,
     taxLines: item.tax_lines || [],
     taxableAmount: refundableSubTotal,
   })

@@ -1,3 +1,7 @@
+export enum Entities {
+  invite = "invite",
+}
+
 export const defaultAdminInviteFields = [
   "id",
   "email",
@@ -13,9 +17,11 @@ export const defaultAdminInviteFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminInviteFields,
   isList: false,
+  entity: Entities.invite,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.invite,
 }

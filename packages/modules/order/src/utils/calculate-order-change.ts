@@ -164,7 +164,7 @@ export class OrderChangeProcessing {
   private processAction_(
     action: InternalOrderChangeEvent,
     isReplay = false
-  ): BigNumberInput | void {
+  ): void {
     const definedType = OrderChangeProcessing.typeDefinition[action.action]
 
     if (!isPresent(definedType)) {
@@ -204,10 +204,11 @@ export class OrderChangeProcessing {
         action.amount = calculatedAmount ?? 0
       }
     }
-
-    return calculatedAmount
   }
 
+  /**
+   * Only used for order creation.
+   */
   public getSummary(): OrderSummaryDTO {
     const summary = this.summary
     const orderSummary = {
@@ -224,17 +225,17 @@ export class OrderChangeProcessing {
     return orderSummary
   }
 
-  // Returns the order summary from a calculated order including taxes
+  // Returns the order summary from a calculated order including taxes <- this is used for order preview flow
   public getSummaryFromOrder(order: OrderDTO): OrderSummaryDTO {
     const summary_ = this.summary
     const total = order.total
-    // const pendingDifference = MathBN.sub(total, summary_.transaction_total)
+    const pendingDifference = MathBN.sub(total, summary_.transaction_total)
 
     const orderSummary = {
       transaction_total: new BigNumber(summary_.transaction_total),
       original_order_total: new BigNumber(summary_.original_order_total),
       current_order_total: new BigNumber(total),
-      pending_difference: new BigNumber(summary_.pending_difference),
+      pending_difference: new BigNumber(pendingDifference),
       paid_total: new BigNumber(summary_.paid_total),
       refunded_total: new BigNumber(summary_.refunded_total),
       credit_line_total: new BigNumber(summary_.credit_line_total),
@@ -272,7 +273,7 @@ export function calculateOrderChange({
 
   return {
     instance: calc,
-    summary: calc.getSummary(),
+    summary: calc.getSummary(), // used for order creation, in other flows we call `getSummaryFromOrder` to get values from calculated totals
     getSummaryFromOrder: (order: OrderDTO) => calc.getSummaryFromOrder(order),
     order: calc.getCurrentOrder(),
   }

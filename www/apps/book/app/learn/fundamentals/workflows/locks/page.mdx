@@ -122,7 +122,7 @@ In this example, the `chargeCustomerStep` step acquires a lock on the order usin
 
 <Note title="Tip">
 
-The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out.
+The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out by default, with exponential backoff retry intervals.
 
 </Note>
 
@@ -134,9 +134,15 @@ Refer to the [Locking Module reference](!resources!/references/locking-service) 
 
 ## Locks in Nested Workflows
 
-[Nested workflows](../execute-another-workflow/page.mdx) can't acquire locks. So, if you're using a workflow that acquires locks within another workflow, the parent workflow must handle the locking mechanism.
+When a [Nested workflows](../execute-another-workflow/page.mdx) acquires a lock with `acquireLockStep`, the lock is not acquired. So, if you're using a workflow that acquires locks with `acquireLockStep` within another workflow, the parent workflow must handle the locking mechanism.
 
-For example, consider a custom workflow that executes Medusa's [completeCartWorkflow](!resources!/references/medusa-workflows/completeCartWorkflow). The `completeCartWorkflow` acquires locks on the cart to prevent race conditions.
+<Note>
+
+If the nested workflow acquires a lock in a step using the Locking Module's service, the lock will be acquired as expected.
+
+</Note>
+
+For example, consider a custom workflow that executes Medusa's [completeCartWorkflow](!resources!/references/medusa-workflows/completeCartWorkflow). The `completeCartWorkflow` acquires locks on the cart with `acquireLockStep` to prevent race conditions.
 
 Therefore, the custom workflow must acquire and release the locks around the `completeCartWorkflow` execution. For example:
 
@@ -151,7 +157,7 @@ import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { 
   acquireLockStep, 
   releaseLockStep,
-  completeCartWorkflow
+  completeCartWorkflow,
 } from "@medusajs/medusa/core-flows"
 
 type WorkflowInput = {
@@ -172,7 +178,7 @@ export const customCompleteCartWorkflow = createWorkflow(
     completeCartWorkflow.runAsStep({
       input: {
         id: input.cart_id,
-      }
+      },
     })
 
     // release the lock after the nested workflow is complete

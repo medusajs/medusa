@@ -1,11 +1,12 @@
 "use client"
 
+import React from "react"
 import {
   Feedback as UiFeedback,
   FeedbackProps,
   DocsTrackingEvents,
 } from "docs-ui"
-import { useArea } from "../../providers/area"
+import { useArea } from "@/providers/area"
 
 export const Feedback = (props: Partial<FeedbackProps>) => {
   const { area } = useArea()

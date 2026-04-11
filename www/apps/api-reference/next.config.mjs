@@ -5,6 +5,7 @@ import rehypeSlug from "rehype-slug"
 import {
   brokenLinkCheckerPlugin,
   crossProjectLinksPlugin,
+  validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import path from "path"
 import { catchBadRedirects } from "build-scripts"
@@ -41,6 +42,9 @@ const withMDX = createMDX({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -69,6 +73,9 @@ const withMDX = createMDX({
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",
             },
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
             },
@@ -93,6 +100,7 @@ const withMDX = createMDX({
           tagName: "code",
         },
       ],
+      [validateHighlightsPlugin, { verbose: false }],
       [rehypeSlug],
     ],
     development: process.env.NODE_ENV === "development",

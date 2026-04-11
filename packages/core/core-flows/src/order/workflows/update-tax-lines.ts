@@ -1,4 +1,8 @@
-import type { OrderWorkflowDTO } from "@medusajs/framework/types"
+import type {
+  ItemTaxLineDTO,
+  OrderWorkflowDTO,
+  ShippingTaxLineDTO,
+} from "@medusajs/framework/types"
 import {
   createWorkflow,
   transform,
@@ -9,11 +13,13 @@ import {
 import { useQueryGraphStep } from "../../common"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setOrderTaxLinesForItemsStep } from "../steps"
+import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
 
 const completeOrderFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region.id",
   "region.automatic_taxes",
   "items.id",
@@ -65,6 +71,7 @@ const orderFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region.id",
   "region.automatic_taxes",
   "shipping_methods.tax_lines.id",
@@ -248,10 +255,17 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       )
     )
 
+    const translatedTaxLines = getTranslatedTaxLinesStep({
+      itemTaxLines: taxLineItems.lineItemTaxLines,
+      shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
+      locale: order.locale,
+    })
+
     setOrderTaxLinesForItemsStep({
       order,
-      item_tax_lines: taxLineItems.lineItemTaxLines,
-      shipping_tax_lines: taxLineItems.shippingMethodsTaxLines,
+      item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
+      shipping_tax_lines:
+        translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
     })
 
     return new WorkflowResponse({

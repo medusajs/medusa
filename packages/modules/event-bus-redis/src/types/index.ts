@@ -1,3 +1,10 @@
+// TODO: Comment temporarely and we will re enable it in the near future #14478
+// import type { EventBusEventsOptions } from "@medusajs/types"
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type { ModuleOptions } from "@medusajs/types"
+
 import {
   BulkJobOptions,
   Job,
@@ -26,12 +33,31 @@ export type BullJob<T> = {
 export type EmitOptions = JobsOptions
 
 export type EventBusRedisModuleOptions = {
+  /**
+   * Queue name for the event bus
+   */
   queueName?: string
-  queueOptions?: QueueOptions
 
-  workerOptions?: WorkerOptions
+  /**
+   * Options for BullMQ Queue instance
+   * @see https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html
+   */
+  queueOptions?: Omit<QueueOptions, "connection">
 
+  /**
+   * Options for BullMQ Worker instance
+   * @see https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html
+   */
+  workerOptions?: Omit<WorkerOptions, "connection">
+
+  /**
+   * Redis connection string
+   */
   redisUrl?: string
+
+  /**
+   * Redis client options
+   */
   redisOptions?: RedisOptions
 
   /**
@@ -49,4 +75,13 @@ export type EventBusRedisModuleOptions = {
    * @see https://api.docs.bullmq.io/interfaces/BaseJobOptions.html
    */
   jobOptions?: EmitOptions
+
+  // eventOptions?: EventBusEventsOptions
+}
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/event-bus-redis": EventBusRedisModuleOptions
+    "@medusajs/medusa/event-bus-redis": EventBusRedisModuleOptions
+  }
 }

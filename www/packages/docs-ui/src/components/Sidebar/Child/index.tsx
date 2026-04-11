@@ -3,7 +3,7 @@
 import React, { useMemo } from "react"
 import clsx from "clsx"
 import { ArrowUturnLeft } from "@medusajs/icons"
-import { useSidebar } from "../../../providers"
+import { useSidebar } from "@/providers/Sidebar"
 
 export const SidebarChild = () => {
   const { goBack, shownSidebar } = useSidebar()
@@ -23,7 +23,7 @@ export const SidebarChild = () => {
   }
 
   return (
-    <div className="px-docs_0.75">
+    <div className="px-docs_0.75" data-testid="sidebar-child">
       <div
         onClick={goBack}
         className={clsx(
@@ -32,9 +32,12 @@ export const SidebarChild = () => {
           "!text-medusa-fg-base !text-compact-small-plus"
         )}
         tabIndex={-1}
+        data-testid="sidebar-child-back-button"
       >
         <ArrowUturnLeft />
-        <span className="truncate flex-1">{title}</span>
+        <span className="truncate flex-1" data-testid="sidebar-child-title">
+          {title}
+        </span>
       </div>
     </div>
   )

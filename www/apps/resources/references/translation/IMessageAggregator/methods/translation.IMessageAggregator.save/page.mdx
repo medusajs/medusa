@@ -1,0 +1,11 @@
+---
+displayed_sidebar: translationReference
+---
+
+import { TypeList } from "docs-ui"
+
+# save
+
+## Parameters
+
+<TypeList types={[{"name":"msg","type":"[Message](../../../types/translation.Message/page.mdx) \\| [Message](../../../types/translation.Message/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The event's name.","optional":false,"defaultValue":"","example":"user.created","expandable":false,"children":[]},{"name":"data","type":"TData","description":"The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. &#123; id: \"123\" &#125; or &#123; ids: [\"123\", \"456\"] &#125;)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[EventMetadata](../../../types/translation.EventMetadata/page.mdx)","description":"Additional meadata to pass with the event.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"eventGroupId","type":"`string`","description":"The ID of the event's group. Grouped events are useful when you have distributed transactions\nwhere you need to explicitly group, release and clear events upon lifecycle events of a transaction.\n\nWhen set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="save"/>

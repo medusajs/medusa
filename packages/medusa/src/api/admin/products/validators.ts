@@ -1,6 +1,6 @@
 import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import { ProductStatus } from "@medusajs/framework/utils"
-import { z, ZodType } from "zod"
+import { z, type ZodType } from "@medusajs/framework/zod"
 import {
   applyAndAndOrOperators,
   booleanString,
@@ -13,35 +13,13 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { AdminGetProductVariantsParamsFields } from "../product-variants/validators"
 
 const statusEnum = z.nativeEnum(ProductStatus)
 
 export const AdminGetProductParams = createSelectParams()
 export const AdminGetProductVariantParams = createSelectParams()
 export const AdminGetProductOptionParams = createSelectParams()
-
-export const AdminGetProductVariantsParamsFields = z.object({
-  q: z.string().optional(),
-  id: z.union([z.string(), z.array(z.string())]).optional(),
-  manage_inventory: booleanString().optional(),
-  allow_backorder: booleanString().optional(),
-  ean: z.union([z.string(), z.array(z.string())]).optional(),
-  upc: z.union([z.string(), z.array(z.string())]).optional(),
-  barcode: z.union([z.string(), z.array(z.string())]).optional(),
-  created_at: createOperatorMap().optional(),
-  updated_at: createOperatorMap().optional(),
-  deleted_at: createOperatorMap().optional(),
-})
-
-export type AdminGetProductVariantsParamsType = z.infer<
-  typeof AdminGetProductVariantsParams
->
-export const AdminGetProductVariantsParams = createFindParams({
-  offset: 0,
-  limit: 50,
-})
-  .merge(AdminGetProductVariantsParamsFields)
-  .merge(applyAndAndOrOperators(AdminGetProductVariantsParamsFields))
 
 export const AdminGetProductsParamsDirectFields = z.object({
   variants: AdminGetProductVariantsParamsFields.omit({ q: true })
@@ -163,9 +141,9 @@ export const CreateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     prices: z.array(AdminCreateVariantPrice),
-    options: z.record(z.string()).optional(),
+    options: z.record(z.string(), z.string()).optional(),
     inventory_items: z
       .array(
         z.object({
@@ -201,8 +179,8 @@ export const UpdateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
-    options: z.record(z.string()).optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+    options: z.record(z.string(), z.string()).optional(),
   })
   .strict()
 
@@ -249,7 +227,7 @@ export const CreateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -286,7 +264,7 @@ export const UpdateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

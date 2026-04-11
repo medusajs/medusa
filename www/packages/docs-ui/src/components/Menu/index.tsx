@@ -20,6 +20,7 @@ export const Menu = ({ items, className, itemsOnClick }: MenuProps) => {
         "shadow-elevation-flyout dark:shadow-elevation-flyout-dark",
         className
       )}
+      data-testid="menu"
     >
       {items.map((item, index) => (
         <React.Fragment key={index}>

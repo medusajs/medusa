@@ -7,7 +7,6 @@ import { WorkflowDiagramLine } from "../../Common/Line"
 
 export type WorkflowDiagramListDepthProps = {
   cluster: WorkflowStepUi[]
-  next: WorkflowStepUi[]
 }
 
 export const WorkflowDiagramListDepth = ({

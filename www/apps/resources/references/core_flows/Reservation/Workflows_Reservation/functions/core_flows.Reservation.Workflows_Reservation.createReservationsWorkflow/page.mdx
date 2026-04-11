@@ -20,13 +20,7 @@ This workflow creates one or more reservations. It's used by the
 You can use this workflow within your own customizations or custom workflows, allowing you
 to create reservations in your custom flows.
 
-:::note
-
-If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
-
-:::
-
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/e4513fab88f5ba7d5c078d3e251e04b104268a56/packages/core/core-flows/src/reservation/workflows/create-reservations.ts#L36" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/reservation/workflows/create-reservations.ts#L36" />
 
 ## Examples
 
@@ -132,7 +126,6 @@ import { createReservationsWorkflow } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    // Acquire lock from nested workflow here
     const result = createReservationsWorkflow
       .runAsStep({
         input: {
@@ -143,7 +136,6 @@ const myWorkflow = createWorkflow(
           }]
         }
       })
-    // Release lock here
   }
 )
 ```

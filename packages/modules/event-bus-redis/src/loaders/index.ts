@@ -1,5 +1,5 @@
-import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
+import { LoaderOptions } from "@medusajs/framework/types"
 import Redis from "ioredis"
 import { EOL } from "os"
 import { EventBusRedisModuleOptions } from "../types"
@@ -9,7 +9,14 @@ export default async ({
   logger,
   options,
 }: LoaderOptions): Promise<void> => {
-  const { redisUrl, redisOptions } = options as EventBusRedisModuleOptions
+  const {
+    redisUrl,
+    redisOptions,
+    queueName,
+    queueOptions,
+    workerOptions,
+    jobOptions,
+  } = options as EventBusRedisModuleOptions
 
   if (!redisUrl) {
     throw Error(
@@ -39,5 +46,9 @@ export default async ({
 
   container.register({
     eventBusRedisConnection: asValue(connection),
+    eventBusRedisQueueName: asValue(queueName ?? "events-queue"),
+    eventBusRedisQueueOptions: asValue(queueOptions ?? {}),
+    eventBusRedisWorkerOptions: asValue(workerOptions ?? {}),
+    eventBusRedisJobOptions: asValue(jobOptions ?? {}),
   })
 }

@@ -6,18 +6,18 @@ import {
   PlannerActionLinkDescriptor,
 } from "@medusajs/framework/types"
 
-import {
-  arrayDifference,
-  DALUtils,
-  ModulesSdkUtils,
-  normalizeMigrationSQL,
-  promiseAll,
-} from "@medusajs/framework/utils"
 import { EntitySchema, MikroORM } from "@medusajs/framework/mikro-orm/core"
 import {
   DatabaseSchema,
   PostgreSqlDriver,
 } from "@medusajs/framework/mikro-orm/postgresql"
+import {
+  arrayDifference,
+  DALUtils,
+  executeWithConcurrency,
+  ModulesSdkUtils,
+  normalizeMigrationSQL,
+} from "@medusajs/framework/utils"
 import { generateEntity } from "../utils"
 
 /**
@@ -195,7 +195,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       
       INSERT INTO "${
         this.tableName
-      }" (table_name, link_descriptor) VALUES (?, ?);
+      }" (table_name, link_descriptor) VALUES (?, ?) ON CONFLICT DO NOTHING;
 
       ${sql}
     `,
@@ -513,22 +513,30 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
-    await promiseAll(
-      actionPlan.map(async (action) => {
-        switch (action.action) {
-          case "delete":
-            return await this.dropLinkTable(orm, action.tableName)
-          case "create":
-            return await this.createLinkTable(orm, action)
-          case "update":
-            const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
-              action.sql
-            }`
-            return await orm.em.getDriver().getConnection().execute(sql)
-          default:
-            return
-        }
-      })
-    ).finally(() => orm.close(true))
+    try {
+      const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
+      await executeWithConcurrency(
+        actionPlan.map((action) => {
+          return async () => {
+            switch (action.action) {
+              case "delete":
+                return await this.dropLinkTable(orm, action.tableName)
+              case "create":
+                return await this.createLinkTable(orm, action)
+              case "update":
+                const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
+                  action.sql
+                }`
+                return await orm.em.getDriver().getConnection().execute(sql)
+              default:
+                return
+            }
+          }
+        }),
+        concurrency
+      )
+    } finally {
+      await orm.close(true)
+    }
   }
 }

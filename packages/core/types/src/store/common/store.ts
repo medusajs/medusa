@@ -31,6 +31,33 @@ export interface StoreCurrencyDTO {
   deleted_at: string | null
 }
 
+export interface StoreLocaleDTO {
+  /**
+   * The ID of the store locale.
+   */
+  id: string
+  /**
+   * The locale code of the store locale.
+   */
+  locale_code: string
+  /**
+   * The store ID associated with the locale.
+   */
+  store_id: string
+  /**
+   * The created date of the locale.
+   */
+  created_at: string
+  /**
+   * The updated date of the locale.
+   */
+  updated_at: string
+  /**
+   * The deleted date of the locale.
+   */
+  deleted_at: string | null
+}
+
 /**
  * The store details.
  */
@@ -49,6 +76,11 @@ export interface StoreDTO {
    * The supported currency codes of the store.
    */
   supported_currencies?: StoreCurrencyDTO[]
+
+  /**
+   * The supported locale codes of the store.
+   */
+  supported_locales?: StoreLocaleDTO[]
 
   /**
    * The associated default sales channel's ID.

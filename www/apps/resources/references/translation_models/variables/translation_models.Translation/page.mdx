@@ -1,0 +1,15 @@
+---
+displayed_sidebar: translationModelReference
+slug: /references/translation/models/Translation
+sidebar_label: Translation
+---
+
+import { TypeList } from "docs-ui"
+
+# Translation - Translation Module Data Models Reference
+
+This documentation provides a reference to the Translation data model. It belongs to the Translation Module.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/modules/translation/src/models/translation.ts#L3" />
+
+<TypeList types={[{"name":"id","type":"PrimaryKeyModifier&#60;IdProperty&#62;","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`TextProperty`","description":"The ID of the entity that the translation belongs to. For example, the ID of a product or a product variant.The ID of the resource that this translation belongs to. For example, the product ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`TextProperty`","description":"The name of the table that the translation belongs to. For example, \"product\" or \"product\\_variant\".The name of the table that the resource belongs to. For example, `product`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale_code","type":"`TextProperty`","description":"The BCP 47 language tag code of the localeThe translation's locale code in BCP 47 format. For example, `en-US`.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`JSONProperty`","description":"The translations of the entity.\nThe object's keys are the field names of the entity, and its value is the translated value.The key-value pairs of the translated fields. The key is a property in the referenced resource, and the value is the translated value for that property.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]},{"name":"translated_field_count","type":"`NumberProperty`","description":"Precomputed count of translated fields of a resource.\nUseful for optimization purposes.The translated field count of the translation","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="Translation"/>

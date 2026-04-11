@@ -27,6 +27,11 @@ export type UpdateOrderWorkflowInput = {
    */
   email?: string
   /**
+   * The new locale of the order. When changed, all line items
+   * will be re-translated to the new locale.
+   */
+  locale?: string | null
+  /**
    * The new metadata of the order.
    */
   metadata?: Record<string, unknown> | null

@@ -24,7 +24,7 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "isPathHref": true,
           "type": "link",
           "path": "/storefront-development/tips",
-          "title": "Tips",
+          "title": "Connect to Medusa",
           "children": []
         },
         {
@@ -33,6 +33,14 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "type": "link",
           "path": "/storefront-development/publishable-api-keys",
           "title": "Publishable API Key",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/storefront-development/localization",
+          "title": "Localization",
           "children": []
         },
         {

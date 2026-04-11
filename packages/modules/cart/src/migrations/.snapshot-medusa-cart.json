@@ -166,7 +166,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_address_deleted_at\" ON \"cart_address\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_address_deleted_at\" ON \"cart_address\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "cart_address_pkey",
@@ -237,6 +237,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "locale": {
+          "name": "locale",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "metadata": {
@@ -319,7 +328,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_deleted_at\" ON \"cart\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_deleted_at\" ON \"cart\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_region_id",
@@ -328,7 +337,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_region_id\" ON \"cart\" (region_id) WHERE deleted_at IS NULL AND region_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_region_id\" ON \"cart\" (\"region_id\") WHERE deleted_at IS NULL AND region_id IS NOT NULL"
         },
         {
           "keyName": "IDX_cart_customer_id",
@@ -337,7 +346,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_customer_id\" ON \"cart\" (customer_id) WHERE deleted_at IS NULL AND customer_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_customer_id\" ON \"cart\" (\"customer_id\") WHERE deleted_at IS NULL AND customer_id IS NOT NULL"
         },
         {
           "keyName": "IDX_cart_sales_channel_id",
@@ -346,7 +355,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_sales_channel_id\" ON \"cart\" (sales_channel_id) WHERE deleted_at IS NULL AND sales_channel_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_sales_channel_id\" ON \"cart\" (\"sales_channel_id\") WHERE deleted_at IS NULL AND sales_channel_id IS NOT NULL"
         },
         {
           "keyName": "IDX_cart_curency_code",
@@ -355,7 +364,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_curency_code\" ON \"cart\" (currency_code) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_curency_code\" ON \"cart\" (\"currency_code\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_shipping_address_id",
@@ -364,7 +373,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_address_id\" ON \"cart\" (shipping_address_id) WHERE deleted_at IS NULL AND shipping_address_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_address_id\" ON \"cart\" (\"shipping_address_id\") WHERE deleted_at IS NULL AND shipping_address_id IS NOT NULL"
         },
         {
           "keyName": "IDX_cart_billing_address_id",
@@ -373,7 +382,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_billing_address_id\" ON \"cart\" (billing_address_id) WHERE deleted_at IS NULL AND billing_address_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_billing_address_id\" ON \"cart\" (\"billing_address_id\") WHERE deleted_at IS NULL AND billing_address_id IS NOT NULL"
         },
         {
           "keyName": "cart_pkey",
@@ -525,7 +534,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_credit_line_cart_id\" ON \"credit_line\" (cart_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_credit_line_cart_id\" ON \"credit_line\" (\"cart_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_credit_line_deleted_at",
@@ -534,7 +543,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_credit_line_deleted_at\" ON \"credit_line\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_credit_line_deleted_at\" ON \"credit_line\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_credit_line_reference_reference_id",
@@ -543,7 +552,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_credit_line_reference_reference_id\" ON \"credit_line\" (reference, reference_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_credit_line_reference_reference_id\" ON \"credit_line\" (\"reference\", \"reference_id\") WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "credit_line_pkey",
@@ -884,7 +893,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_cart_id\" ON \"cart_line_item\" (cart_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_cart_id\" ON \"cart_line_item\" (\"cart_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_line_item_deleted_at",
@@ -893,7 +902,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_deleted_at\" ON \"cart_line_item\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_deleted_at\" ON \"cart_line_item\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_line_item_variant_id",
@@ -902,7 +911,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_variant_id\" ON \"cart_line_item\" (variant_id) WHERE deleted_at IS NULL AND variant_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_variant_id\" ON \"cart_line_item\" (\"variant_id\") WHERE deleted_at IS NULL AND variant_id IS NOT NULL"
         },
         {
           "keyName": "IDX_line_item_product_id",
@@ -911,7 +920,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_product_id\" ON \"cart_line_item\" (product_id) WHERE deleted_at IS NULL AND product_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_product_id\" ON \"cart_line_item\" (\"product_id\") WHERE deleted_at IS NULL AND product_id IS NOT NULL"
         },
         {
           "keyName": "IDX_line_item_product_type_id",
@@ -920,7 +929,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_product_type_id\" ON \"cart_line_item\" (product_type_id) WHERE deleted_at IS NULL AND product_type_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_product_type_id\" ON \"cart_line_item\" (\"product_type_id\") WHERE deleted_at IS NULL AND product_type_id IS NOT NULL"
         },
         {
           "keyName": "cart_line_item_pkey",
@@ -1087,7 +1096,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_adjustment_item_id\" ON \"cart_line_item_adjustment\" (item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_adjustment_item_id\" ON \"cart_line_item_adjustment\" (\"item_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_line_item_adjustment_deleted_at",
@@ -1096,7 +1105,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_adjustment_deleted_at\" ON \"cart_line_item_adjustment\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_adjustment_deleted_at\" ON \"cart_line_item_adjustment\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_line_item_adjustment_promotion_id",
@@ -1105,7 +1114,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_adjustment_promotion_id\" ON \"cart_line_item_adjustment\" (promotion_id) WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_adjustment_promotion_id\" ON \"cart_line_item_adjustment\" (\"promotion_id\") WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
         },
         {
           "keyName": "cart_line_item_adjustment_pkey",
@@ -1259,7 +1268,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_tax_line_item_id\" ON \"cart_line_item_tax_line\" (item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_tax_line_item_id\" ON \"cart_line_item_tax_line\" (\"item_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_line_item_tax_line_deleted_at",
@@ -1268,7 +1277,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_tax_line_deleted_at\" ON \"cart_line_item_tax_line\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_tax_line_deleted_at\" ON \"cart_line_item_tax_line\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_line_item_tax_line_tax_rate_id",
@@ -1277,7 +1286,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_tax_line_tax_rate_id\" ON \"cart_line_item_tax_line\" (tax_rate_id) WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_tax_line_tax_rate_id\" ON \"cart_line_item_tax_line\" (\"tax_rate_id\") WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL"
         },
         {
           "keyName": "cart_line_item_tax_line_pkey",
@@ -1444,7 +1453,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_cart_id\" ON \"cart_shipping_method\" (cart_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_cart_id\" ON \"cart_shipping_method\" (\"cart_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_shipping_method_deleted_at",
@@ -1453,7 +1462,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_deleted_at\" ON \"cart_shipping_method\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_deleted_at\" ON \"cart_shipping_method\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_method_option_id",
@@ -1462,7 +1471,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_option_id\" ON \"cart_shipping_method\" (shipping_option_id) WHERE deleted_at IS NULL AND shipping_option_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_option_id\" ON \"cart_shipping_method\" (\"shipping_option_id\") WHERE deleted_at IS NULL AND shipping_option_id IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_pkey",
@@ -1625,7 +1634,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_adjustment_shipping_method_id\" ON \"cart_shipping_method_adjustment\" (shipping_method_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_adjustment_shipping_method_id\" ON \"cart_shipping_method_adjustment\" (\"shipping_method_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_shipping_method_adjustment_deleted_at",
@@ -1634,7 +1643,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_adjustment_deleted_at\" ON \"cart_shipping_method_adjustment\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_adjustment_deleted_at\" ON \"cart_shipping_method_adjustment\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_method_adjustment_promotion_id",
@@ -1643,7 +1652,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_adjustment_promotion_id\" ON \"cart_shipping_method_adjustment\" (promotion_id) WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_adjustment_promotion_id\" ON \"cart_shipping_method_adjustment\" (\"promotion_id\") WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_adjustment_pkey",
@@ -1790,7 +1799,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_shipping_method_id\" ON \"cart_shipping_method_tax_line\" (shipping_method_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_shipping_method_id\" ON \"cart_shipping_method_tax_line\" (\"shipping_method_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_cart_shipping_method_tax_line_deleted_at",
@@ -1799,7 +1808,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_deleted_at\" ON \"cart_shipping_method_tax_line\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_deleted_at\" ON \"cart_shipping_method_tax_line\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_method_tax_line_tax_rate_id",
@@ -1808,7 +1817,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_tax_line_tax_rate_id\" ON \"cart_shipping_method_tax_line\" (tax_rate_id) WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_tax_line_tax_rate_id\" ON \"cart_shipping_method_tax_line\" (\"tax_rate_id\") WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_tax_line_pkey",

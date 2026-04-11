@@ -133,6 +133,7 @@ export function reflectionComponentFormatter({
     reflection.flags.isOptional ||
     reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
+  const example = comments?.blockTags.find((tag) => tag.tag === "@example")
   const deprecatedTag = comments?.blockTags.find(
     (tag) => tag.tag === "@deprecated"
   )
@@ -159,6 +160,8 @@ export function reflectionComponentFormatter({
       : "",
     optional,
     defaultValue,
+    example:
+      example?.content?.map((c) => stripCode(c.text)).join("") || undefined,
     expandable: reflection.comment?.hasModifier(`@expandable`) || false,
     featureFlag: Handlebars.helpers.featureFlag(reflection.comment),
     children: [],

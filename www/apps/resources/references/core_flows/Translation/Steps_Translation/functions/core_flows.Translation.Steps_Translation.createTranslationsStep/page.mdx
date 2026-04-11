@@ -1,0 +1,48 @@
+---
+slug: /references/medusa-workflows/steps/createTranslationsStep
+sidebar_label: createTranslationsStep
+tags:
+  - translation
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createTranslationsStep - Medusa Core Workflows Reference
+
+:::note
+
+To use this resource, make sure to [enable its feature flag: translation](https://docs.medusajs.com/development/feature-flags/toggle)
+
+:::
+
+This documentation provides a reference to the `createTranslationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more translations.
+
+:::note
+
+This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+:::
+
+## Example
+
+```ts
+const data = createTranslationsStep([
+  {
+    reference_id: "prod_123",
+    reference: "product",
+    locale: "fr-FR",
+    translations: { title: "Produit", description: "Description du produit" }
+  }
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"CreateTranslationsStepInput","type":"[CreateTranslationsStepInput](../../../../types/core_flows.CreateTranslationsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The translations to create.","expandable":false,"children":[{"name":"reference_id","type":"`string`","description":"The ID of the data model being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"TranslationDTO[]","type":"[TranslationDTO](../../../../../translation/interfaces/translation.TranslationDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The type of entity being translated (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation (e.g., \"en-US\", \"fr-FR\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the translation was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the translation was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the translation was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationsStep"/>

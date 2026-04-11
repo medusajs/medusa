@@ -4,12 +4,12 @@ import { getAbortError } from "./create-abort-controller.js"
 
 const promiseExec = util.promisify(exec)
 
-type ExecuteOptions = {
+export type ExecuteResult = {
   stdout?: string
   stderr?: string
 }
 
-type VerboseOptions = {
+export type VerboseOptions = {
   verbose?: boolean
   // Since spawn doesn't allow us to both retrieve the
   // output and output it live without using events,
@@ -26,21 +26,27 @@ type SpawnParams = [string, SpawnSyncOptions]
 const execute = async (
   command: SpawnParams | PromiseExecParams,
   { verbose = false, needOutput = false }: VerboseOptions
-): Promise<ExecuteOptions> => {
+): Promise<ExecuteResult> => {
   if (verbose) {
     const [commandStr, options] = command as SpawnParams
     const childProcess = spawnSync(commandStr, {
       ...options,
       shell: true,
-      stdio: needOutput ? 
-        "pipe" : 
-        [process.stdin, process.stdout, process.stderr],
+      stdio: needOutput
+        ? "pipe"
+        : [process.stdin, process.stdout, process.stderr],
+      env: {
+        ...process.env,
+        ...(options.env || {}),
+      },
     })
 
     if (childProcess.error || childProcess.status !== 0) {
-      throw childProcess.error || 
-        childProcess.stderr?.toString() || 
+      throw (
+        childProcess.error ||
+        childProcess.stderr?.toString() ||
         `${commandStr} failed with status ${childProcess.status}`
+      )
     }
 
     if (
@@ -61,7 +67,14 @@ const execute = async (
       stderr: childProcess.stderr?.toString() || "",
     }
   } else {
-    const childProcess = await promiseExec(...(command as PromiseExecParams))
+    const [commandStr, options] = command as PromiseExecParams
+    const childProcess = await promiseExec(commandStr, {
+      ...options,
+      env: {
+        ...process.env,
+        ...(options?.env || {}),
+      },
+    })
 
     return {
       stdout: childProcess.stdout as string,

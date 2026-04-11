@@ -1,3 +1,7 @@
+export enum Entities {
+  product_category = "product_category",
+}
+
 export const defaults = [
   "id",
   "name",
@@ -6,6 +10,7 @@ export const defaults = [
   "is_active",
   "is_internal",
   "rank",
+  "external_id",
   "parent_category_id",
   "created_at",
   "updated_at",
@@ -22,6 +27,7 @@ export const allowed = [
   "is_active",
   "is_internal",
   "rank",
+  "external_id",
   "parent_category_id",
   "created_at",
   "updated_at",
@@ -29,12 +35,14 @@ export const allowed = [
   "category_children",
   "parent_category",
   "products",
+  "translations",
 ]
 
 export const retrieveProductCategoryConfig = {
   defaults,
   allowed,
   isList: false,
+  entity: Entities.product_category,
 }
 
 export const listProductCategoryConfig = {
@@ -42,4 +50,5 @@ export const listProductCategoryConfig = {
   allowed,
   defaultLimit: 50,
   isList: true,
+  entity: Entities.product_category,
 }

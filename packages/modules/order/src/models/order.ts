@@ -20,6 +20,7 @@ const _Order = model
     is_draft_order: model.boolean().default(false),
     email: model.text().searchable().nullable(),
     currency_code: model.text(),
+    locale: model.text().nullable(),
     no_notification: model.boolean().nullable(),
     metadata: model.json().nullable(),
     canceled_at: model.dateTime().nullable(),

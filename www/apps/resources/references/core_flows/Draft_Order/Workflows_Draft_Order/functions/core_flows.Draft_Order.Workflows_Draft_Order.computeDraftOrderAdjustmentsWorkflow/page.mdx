@@ -30,7 +30,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/e4513fab88f5ba7d5c078d3e251e04b104268a56/packages/core/core-flows/src/draft-order/workflows/compute-draft-order-adjustments.ts#L61" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/draft-order/workflows/compute-draft-order-adjustments.ts#L61" />
 
 ## Examples
 
@@ -125,6 +125,7 @@ const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
     // Acquire lock from nested workflow here
+    // acquireLockStep({  key: input.order_id,  timeout: 2,  ttl: 10,  })
     const result = computeDraftOrderAdjustmentsWorkflow
       .runAsStep({
         input: {
@@ -132,6 +133,7 @@ const myWorkflow = createWorkflow(
         }
       })
     // Release lock here
+    // releaseLockStep({ key: input.order_id })
   }
 )
 ```

@@ -23,13 +23,35 @@ Medusa automatically generates TypeScript types for:
 
 ## How to Trigger Type Generation?
 
-The Medusa application generates these types automatically when you run the application with the `dev` command:
+<Note>
+
+As of [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4), types are generated when you run the `build` command. Prior versions only generated types when running the `dev` command.
+
+</Note>
+
+The Medusa application generates these types automatically when you run the `build` or `dev` commands:
 
 ```bash npm2yarn
+npm run build
+```
+
+So, if you add a new data model or module and you don't find it in auto-completion or type checking, you can run the `build` command to regenerate the types.
+
+### How to Generate Types for Local Plugins?
+
+<Note>
+
+This feature is available as of [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+
+</Note>
+
+Local plugins are plugins installed in your Medusa application with the `plugin:develop` command. To generate types for those plugins, run the `dev` command in the Medusa application:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
 npm run dev
 ```
 
-So, if you add a new data model or module and you don't find it in auto-completion or type checking, you can run the `dev` command to regenerate the types.
+Medusa will copy the generated types under the `.medusa/types` directory of the application to the local plugin's directory.
 
 ---
 

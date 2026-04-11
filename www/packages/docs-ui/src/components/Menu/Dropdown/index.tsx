@@ -2,7 +2,9 @@
 
 import React from "react"
 import { useRef, useState } from "react"
-import { Button, Menu, useClickOutside } from "../../.."
+import { Button } from "@/components/Button"
+import { Menu } from "@/components/Menu"
+import { useClickOutside } from "@/hooks/use-click-outside"
 import { MenuItem } from "types"
 import clsx from "clsx"
 
@@ -48,7 +50,7 @@ export const DropdownMenu = ({
   }
 
   return (
-    <div className={clsx("relative", className)}>
+    <div className={clsx("relative", className)} data-testid="dropdown-wrapper">
       <Button
         variant="transparent"
         onClick={() => changeOpenState(!open)}
@@ -57,6 +59,7 @@ export const DropdownMenu = ({
           dropdownButtonClassName
         )}
         buttonRef={ref}
+        data-testid="dropdown-button"
       >
         {dropdownButtonContent}
       </Button>

@@ -1,0 +1,19 @@
+import { TypeList } from "docs-ui"
+
+# ModuleOptions
+
+Registry for module options types. Modules can augment this interface
+using declaration merging to provide typed options in defineConfig.
+
+## Example
+
+```ts
+// In @medusajs/translation module:
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/translation": {
+      entities?: { type: string; fields: string[] }[]
+    }
+  }
+}
+```

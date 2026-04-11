@@ -31,7 +31,16 @@ export type ChangeActionType =
   | "PROMOTION_ADD"
   | "PROMOTION_REMOVE"
   | "ITEM_ADJUSTMENTS_REPLACE"
+  | /**
+   * Replace shipping method adjustments.
+   *
+   * @since 2.13.7
+   */
+  "SHIPPING_ADJUSTMENTS_REPLACE"
 
+/**
+ * The order change's status.
+ */
 export type OrderChangeStatus =
   | "confirmed"
   | "declined"
@@ -130,6 +139,13 @@ export interface OrderShippingMethodAdjustmentDTO
    * The ID of the associated shipping method.
    */
   shipping_method_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -147,6 +163,13 @@ export interface OrderLineItemAdjustmentDTO extends OrderAdjustmentLineDTO {
    * The ID of the associated line item.
    */
   item_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -1132,6 +1155,11 @@ export interface OrderDTO {
    * Whether the order is a draft order.
    */
   is_draft_order?: boolean
+
+  /**
+   * The locale of the order.
+   */
+  locale?: string
 
   /**
    * Holds custom data in key-value pairs.

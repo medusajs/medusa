@@ -10,14 +10,14 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory, TQueryKey } from "../../lib/query-key-factory"
-import { reservationItemsQueryKeys } from "./reservations"
 import { inventoryItemsQueryKeys } from "./inventory"
+import { reservationItemsQueryKeys } from "./reservations"
 
 const ORDERS_QUERY_KEY = "orders" as const
 const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<"orders"> & {
   preview: (orderId: string) => any
   changes: (orderId: string) => any
-  lineItems: (orderId: string) => any
+  lineItems: (orderId: string, query?: any) => any
   shippingOptions: (orderId: string) => any
 }
 
@@ -29,8 +29,10 @@ _orderKeys.changes = function (id: string) {
   return [this.detail(id), "changes"]
 }
 
-_orderKeys.lineItems = function (id: string) {
-  return [this.detail(id), "lineItems"]
+_orderKeys.lineItems = function (id: string, query?: any) {
+  return [this.detail(id), query ? { query } : undefined, "lineItems"].filter(
+    (k) => !!k
+  )
 }
 
 _orderKeys.shippingOptions = function (id: string) {
@@ -189,7 +191,7 @@ export const useOrderLineItems = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.listLineItems(id, query),
-    queryKey: ordersQueryKeys.lineItems(id),
+    queryKey: ordersQueryKeys.lineItems(id, query),
     ...options,
   })
 
@@ -433,6 +435,23 @@ export const useUpdateOrderChange = (
         queryKey: ordersQueryKeys.changes(orderId),
       })
 
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useExportOrders = (
+  query?: HttpTypes.AdminOrderFilters,
+  options?: UseMutationOptions<
+    { transaction_id: string },
+    FetchError,
+    HttpTypes.AdminOrderFilters
+  >
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.order.export(query),
+    onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

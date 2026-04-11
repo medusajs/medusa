@@ -14,6 +14,7 @@ import {
 import {
   Cached,
   MedusaError,
+  applyTranslations,
   isObject,
   remoteQueryObjectFromString,
   unflattenObjectKeys,
@@ -238,7 +239,17 @@ export class Query {
       )
     }
 
-    return this.#unwrapRemoteQueryResponse(response)
+    const result = this.#unwrapRemoteQueryResponse(response)
+
+    if (options?.locale) {
+      await applyTranslations({
+        localeCode: options.locale,
+        objects: result.data,
+        container: this.container,
+      })
+    }
+
+    return result
   }
 
   /**
@@ -306,6 +317,14 @@ export class Query {
       finalResultset = await this.graph(graphOptions, {
         ...options,
         initialData: indexResponse.data,
+      })
+    }
+
+    if (options?.locale) {
+      await applyTranslations({
+        localeCode: options.locale,
+        objects: finalResultset.data,
+        container: this.container,
       })
     }
 

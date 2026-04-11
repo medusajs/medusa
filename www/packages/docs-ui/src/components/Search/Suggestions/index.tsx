@@ -3,9 +3,9 @@
 import React from "react"
 import { useInstantSearch } from "react-instantsearch"
 import { SearchHitGroupName } from "../Hits/GroupName"
-import { useSearch } from "@/providers"
+import { useSearch } from "@/providers/Search"
 import { SearchSuggestionItem } from "./Item"
-import { Badge } from "@/components"
+import { Badge } from "@/components/Badge"
 
 export type SearchSuggestionType = {
   title: string

@@ -3,6 +3,7 @@ import {
   isPresent,
   MedusaError,
   MikroOrmBase,
+  normalizeCurrencyCode,
   PriceListStatus,
 } from "@medusajs/framework/utils"
 
@@ -51,7 +52,7 @@ export class PricingRepository
     `
     )
     this.#availableAttributes.clear()
-    rows.forEach(({ attribute }) => {
+    rows.forEach(({ attribute }: { attribute: string }) => {
       this.#availableAttributes.add(attribute)
     })
   }
@@ -72,11 +73,11 @@ export class PricingRepository
     const context = { ...(pricingContext.context || {}) }
 
     // Extract quantity and currency from context
-    const quantity = context.quantity
+    const quantity = context.quantity as number | undefined
     delete context.quantity
 
     // Currency code is required
-    const currencyCode = context.currency_code
+    const currencyCode = context.currency_code as string | undefined
     delete context.currency_code
 
     if (!currencyCode) {
@@ -124,7 +125,10 @@ export class PricingRepository
       })
       .from("price")
       .whereIn("price.price_set_id", pricingFilters.id)
-      .andWhere("price.currency_code", currencyCode)
+      .andWhere(
+        "price.currency_code",
+        normalizeCurrencyCode(currencyCode ?? "")
+      )
       .whereNull("price.deleted_at")
 
     if (quantity !== undefined) {

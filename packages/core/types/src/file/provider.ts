@@ -1,4 +1,4 @@
-import { Readable } from "stream"
+import { Readable, Writable } from "stream"
 import { FileAccessPermission } from "./common"
 
 /**
@@ -109,6 +109,28 @@ export type ProviderGetPresignedUploadUrlDTO = {
   expiresIn?: number
 }
 
+/**
+ * @interface
+ *
+ * The details of the file to upload via a stream.
+ */
+export type ProviderUploadStreamDTO = {
+  /**
+   * The filename of the uploaded file
+   */
+  filename: string
+
+  /**
+   * The mimetype of the uploaded file
+   */
+  mimeType: string
+
+  /**
+   * The access level of the file. Defaults to private if not passed
+   */
+  access?: FileAccessPermission
+}
+
 export interface IFileProvider {
   /**
    * This method is used to upload a file
@@ -178,4 +200,14 @@ export interface IFileProvider {
    * Get the file contents as a Node.js Buffer
    */
   getAsBuffer(fileData: ProviderGetFileDTO): Promise<Buffer>
+
+  /**
+   * Get a writeable stream to upload a file.
+   */
+  getUploadStream(fileData: ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }>
 }

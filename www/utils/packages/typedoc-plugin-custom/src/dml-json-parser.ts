@@ -16,6 +16,7 @@ const FILE_NAME_REGEX = /packages\/modules\/(?<module>[a-z-]+)/
 const SINCE_REGEX = /@since\s+([\d.]+)/
 const DEPRECATED_REGEX = /@deprecated\s+(.+)/
 const FEATURE_FLAG_REGEX = /@featureFlag\s+(\S+)/
+const EXAMPLE_REGEX = /@example\s+([\s\S]+)/
 
 export function load(app: Application) {
   app.converter.on(
@@ -132,6 +133,7 @@ function getDescriptionsFromJson(
       const sinceMatch = description.match(SINCE_REGEX)
       const featureFlagMatch = description.match(FEATURE_FLAG_REGEX)
       const deprecatedMatch = description.match(DEPRECATED_REGEX)
+      const exampleMatch = description.match(EXAMPLE_REGEX)
 
       comment.summary.push({
         kind: "text",
@@ -140,6 +142,7 @@ function getDescriptionsFromJson(
           .replace(SINCE_REGEX, "")
           .replace(FEATURE_FLAG_REGEX, "")
           .replace(DEPRECATED_REGEX, "")
+          .replace(EXAMPLE_REGEX, "")
           .trim(),
       })
 
@@ -175,6 +178,17 @@ function getDescriptionsFromJson(
             {
               kind: "text",
               text: deprecatedMatch[1],
+            },
+          ])
+        )
+      }
+
+      if (exampleMatch) {
+        comment.blockTags.push(
+          new CommentTag("@example", [
+            {
+              kind: "text",
+              text: exampleMatch[1],
             },
           ])
         )

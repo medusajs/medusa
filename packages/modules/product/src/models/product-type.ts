@@ -4,7 +4,7 @@ import { Product } from "@models"
 const ProductType = model
   .define("ProductType", {
     id: model.id({ prefix: "ptyp" }).primaryKey(),
-    value: model.text().searchable(),
+    value: model.text().searchable().translatable(),
     metadata: model.json().nullable(),
     products: model.hasMany(() => Product, {
       mappedBy: "type",

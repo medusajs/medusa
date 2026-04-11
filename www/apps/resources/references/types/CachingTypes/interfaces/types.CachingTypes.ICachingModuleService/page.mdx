@@ -13,7 +13,7 @@ This method retrieves data from the cache. If neither `key` nor `tags` are provi
 To retrieve by key:
 
 ```ts
-const data = await cacheModuleService.get({
+const data = await cachingModuleService.get({
   key: "products", // this key would typically be a hash
 }) as { id: string; title: string; }
 ```
@@ -21,7 +21,7 @@ const data = await cacheModuleService.get({
 To retrieve by tags:
 
 ```ts
-const data = await cacheModuleService.get({
+const data = await cachingModuleService.get({
   tags: ["Product:list:*"],
 }) as { id: string; title: string; }[]
 ```
@@ -29,7 +29,7 @@ const data = await cacheModuleService.get({
 To retrieve by key from specific providers:
 
 ```ts
-const data = await cacheModuleService.get({
+const data = await cachingModuleService.get({
   key: "products", // this key would typically be a hash
   providers: ["caching-redis", "caching-memcached"]
 }) as { id: string; title: string; }
@@ -56,8 +56,8 @@ To store with key:
 
 ```ts
 const data = { id: "prod_123", title: "Product 123" }
-const key = await cacheModuleService.computeKey(data)
-await cacheModuleService.set({
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
   key,
   data
 })
@@ -73,8 +73,8 @@ Tags should follow [conventions](https://docs.medusajs.com/infrastructure-module
 
 ```ts
 const data = [{ id: "prod_123", title: "Product 123" }]
-const key = await cacheModuleService.computeKey(data)
-await cacheModuleService.set({
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
   key,
   data,
   tags: [`Product:${data[0].id}`, "Product:list:*"]
@@ -85,8 +85,8 @@ To disable auto-invalidation for the item:
 
 ```ts
 const data = [{ id: "prod_123", title: "Product 123" }]
-const key = await cacheModuleService.computeKey(data)
-await cacheModuleService.set({
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
   key,
   data,
   options: { autoInvalidate: false }
@@ -99,8 +99,8 @@ To store with specific providers:
 
 ```ts
 const data = { id: "prod_123", title: "Product 123" }
-const key = await cacheModuleService.computeKey(data)
-await cacheModuleService.set({
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
   key,
   data,
   providers: [
@@ -135,7 +135,7 @@ Items that were set with `options.autoInvalidate: false` are only cleared when y
 To invalidate cache by key:
 
 ```ts
-await cacheModuleService.clear({
+await cachingModuleService.clear({
  key: "products" // this key would typically be a hash
 })
 ```
@@ -145,7 +145,7 @@ This example will clear the item with the key `products` regardless of its `opti
 To invalidate cache by tags:
 
 ```ts
-await cacheModuleService.clear({
+await cachingModuleService.clear({
  tags: ["Product:list:*"]
 })
 ```
@@ -155,7 +155,7 @@ This example will clear all items with the tag `Product:list:*` regardless of th
 To invalidate only the cache data that were set to automatically invalidate:
 
 ```ts
-await cacheModuleService.clear({
+await cachingModuleService.clear({
  tags: ["Product:list:*"],
  options: { autoInvalidate: true }
 })
@@ -174,7 +174,7 @@ To clear items that were set with `options.autoInvalidate: false`, you must call
 To invalidate cache from specific providers:
 
 ```ts
-await cacheModuleService.clear({
+await cachingModuleService.clear({
  key: "products",
  providers: ["caching-redis", "caching-memcached"]
 })
@@ -197,7 +197,7 @@ This method computes a cache key based on the input object. It's useful to gener
 #### Example
 
 ```ts
-const key = await cacheModuleService.computeKey({
+const key = await cachingModuleService.computeKey({
   id: "prod_123",
   title: "Product 123"
 })
@@ -219,7 +219,7 @@ This method computes cache tags based on the input object. It's useful to genera
 #### Example
 
 ```ts
-const tags = await cacheModuleService.computeTags({
+const tags = await cachingModuleService.computeTags({
   products: [{ id: "prod_123" }, { id: "prod_456" }],
 }, {
   operation: "updated"

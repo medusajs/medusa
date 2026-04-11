@@ -14,6 +14,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps"
 import { updateOrderChangesStep } from "../../steps/update-order-changes"
 import {
@@ -128,6 +129,12 @@ export const requestOrderEditRequestWorkflow = createWorkflow(
   function (
     input: OrderEditRequestWorkflowInput
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -180,6 +187,12 @@ export const requestOrderEditRequestWorkflow = createWorkflow(
       data: eventData,
     })
 
-    return new WorkflowResponse(previewOrderChangeStep(order.id))
+    const previewOrderChange = previewOrderChangeStep(order.id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

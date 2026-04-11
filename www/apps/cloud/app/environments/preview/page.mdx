@@ -8,6 +8,8 @@ A preview environment is a short-lived Cloud environment that is automatically c
 
 Preview environments facilitate testing a PR's changes in a live environment before merging them. They allow you to test changes in an environment that closely resembles the target long-lived environment.
 
+Each preview environment has its own Medusa backend, admin dashboard, and storefront, along with separate resources like a database and server instance.
+
 <Note>
 
 Learn more about what environments are and their types in the [Environments](../page.mdx) guide.
@@ -33,7 +35,7 @@ So, if you're testing scheduled jobs or events, they may not work as expected in
 
 To view the preview environments for a project, go to the [project's dashboard](../../projects/page.mdx#open-project-dashboard). You'll see a "Previews" card with all the preview environments for the project.
 
-![Project dashboard with the Previews card highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1750081308/Cloud/CleanShot_2025-06-16_at_16.41.30_2x_ocwoqf.png)
+![Project dashboard with the Previews card highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788489/Cloud/CleanShot_2026-01-07_at_14.21.14_2x_mhlotb.png)
 
 ---
 
@@ -45,7 +47,7 @@ Medusa will automatically create a preview environment for the PR and deploy the
 
 You can also view the preview deployment and its status in the comment made on your PR in GitHub.
 
-![Preview environment deployment comment in GitHub PR](https://res.cloudinary.com/dza7lstvk/image/upload/v1749817407/Cloud/CleanShot_2025-06-13_at_15.23.10_2x_rbjorr.png)
+![Preview environment deployment comment in GitHub PR](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789702/Cloud/CleanShot_2026-01-07_at_14.41.31_2x_kc2dms.png)
 
 ---
 
@@ -70,32 +72,6 @@ This will increase the concurrent previews limit across projects in your organiz
 
 ---
 
-## Access Deployed Preview Environment
-
-Once the preview environment has finished deploying, you can access its Medusa Admin either through the comment in the PR or by clicking the "Preview" button in the [project's dashboard](../../projects/page.mdx#open-project-dashboard).
-
-![Preview button in the project's dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1750158423/Cloud/CleanShot_2025-06-17_at_14.06.41_2x_yaw699.png)
-
-This will open the preview environment's Medusa Admin in a new tab, where you can test the changes made in the PR.
-
-To log into the Medusa Admin of the preview environment, use the admin credentials of the Production environment. If you [configured the shared previews settings](#manage-shared-previews-settings) to use a different environment's database, you can log in with the admin credentials of that environment instead.
-
-You can also [send requests to the preview deployment's API](../../deployments/page.mdx#send-requests-to-the-deployment).
-
-### Preview URL Format
-
-Medusa generates the preview environment URL by:
-
-- Taking the first `42` characters of the PR's branch name.
-- Appending a dash (`-`) followed by the project's handle.
-    - You can find the project's handle in the project dashboard's URL, which is of the format `cloud.medusajs.com/:org_id/projects/:project_handle`.
-- Removing unsafe characters.
-- Adding the `medusajs.app` subdomain.
-
-For example, if your PR's branch name is `feat/product-review` and the project's handle is `m1234`, the URL of the deployed preview environment would be `https://featproduct-review-m1234.medusajs.app`.
-
----
-
 ## Open Preview Environment Dashboard
 
 Similar to long-lived environments, you can open a preview environment's dashboard to view its details, logs, and edit its settings.
@@ -105,9 +81,33 @@ To open a preview environment's dashboard:
 1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
 2. In the "Previews" card, click on the preview environment you want to view.
 
-Then, you can manage the preview environment just like any other long-lived environment, as mentioned throughout this guide. You can [manage its environment variables](../environment-variables/page.mdx) and [import/export its database dump](../../database/page.mdx).
+Then, you can manage the preview environment just like any other long-lived environment. You can [manage its environment variables](../environment-variables/page.mdx) and [import/export its database dump](../../database/page.mdx).
 
-![Preview environment dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1749817815/Cloud/CleanShot_2025-06-13_at_15.29.58_2x_h9vn34.png)
+![Preview environment dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789877/Cloud/CleanShot_2026-01-07_at_14.44.30_2x_uswpei.png)
+
+### Access Deployed Preview Environment
+
+Once the preview environment has finished deploying, you can access its Medusa Admin and storefront (if applicable) from the preview environment's dashboard. You can click on the URL of the backend or storefront to open them in a new tab.
+
+![Preview button in the project's dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789953/Cloud/CleanShot_2026-01-07_at_14.45.38_2x_bqe8k1.png)
+
+To log into the Medusa Admin of the preview environment, use the admin credentials of the Production or associated long-lived environment. If you [configured the shared previews settings](#manage-shared-previews-settings) to use a different environment's database, you can log in with the admin credentials of that environment instead.
+
+You can also [send requests to the preview deployment's API](../../deployments/page.mdx#send-requests-to-the-deployment).
+
+### Preview URL Format
+
+Medusa generates the preview environment URL for the Medusa application by:
+
+- Taking the first `42` characters of the PR's branch name.
+- Appending a dash (`-`) followed by the project's handle.
+    - You can find the project's handle in the project dashboard's URL, which is of the format `cloud.medusajs.com/:org_id/projects/:project_handle`.
+- Removing unsafe characters.
+- Adding the `medusajs.app` subdomain.
+
+For example, if your PR's branch name is `feat/product-review` and the project's handle is `m1234`, the URL of the deployed preview environment would be `https://featproduct-review-m1234.medusajs.app`.
+
+For the storefront, the same format is used, but with a `medusajs.site` subdomain. For example, the storefront URL could be `https://featproduct-review-m1234.medusajs.site`.
 
 ---
 
@@ -131,7 +131,7 @@ Making changes to the shared settings will affect all preview environments creat
 
 </Note>
 
-![Previews settings in the project's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749818069/Cloud/CleanShot_2025-06-13_at_15.34.15_2x_zdh3ha.png)
+![Previews settings in the project's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790182/Cloud/CleanShot_2026-01-07_at_14.49.36_2x_vn8hej.png)
 
 ---
 

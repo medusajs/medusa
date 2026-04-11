@@ -6,7 +6,8 @@
  *   Start a product export process to retrieve a CSV of exported products.
  * 
  * 
- *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-products/:transaction-id`.
+ *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to
+ *   `/admin/workflows-executions/export-products/:transaction-id`.
  * 
  *   Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
  * x-authenticated: true
@@ -245,6 +246,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a product's update date.
@@ -364,6 +366,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: handle
  *     in: query
  *     required: false
@@ -533,6 +536,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: order
  *     in: query
  *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
@@ -627,6 +631,20 @@
  *             type: string
  *             title: price_list_id
  *             description: A price list ID.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by the product's external ID.
+ *         - type: array
+ *           description: Filter by external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: The external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

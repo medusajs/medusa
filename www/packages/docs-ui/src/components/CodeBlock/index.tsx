@@ -3,15 +3,17 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import clsx from "clsx"
 import { Highlight, HighlightProps, themes, Token } from "prism-react-renderer"
-import { ApiRunner } from "@/components"
-import { useAnalytics, useColorMode } from "@/providers"
+import { ApiRunner } from "@/components/ApiRunner"
+import { useAnalytics } from "@/providers/Analytics"
+import { useColorMode } from "@/providers/ColorMode"
 import { CodeBlockHeader, CodeBlockHeaderMeta } from "./Header"
 import { CodeBlockLine } from "./Line"
 import { ApiAuthType, ApiDataOptions, ApiMethod } from "types"
 // @ts-expect-error can't install the types package because it doesn't support React v19
 import { CSSTransition } from "react-transition-group"
-import { DocsTrackingEvents, useCollapsibleCodeLines } from "../.."
-import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
+import { DocsTrackingEvents } from "@/constants"
+import { useCollapsibleCodeLines } from "@/hooks/use-collapsible-code-lines"
+import { HighlightProps as CollapsibleHighlightProps } from "@/hooks/use-collapsible-code-lines"
 import { CodeBlockActions, CodeBlockActionsProps } from "./Actions"
 import { CodeBlockCollapsibleButton } from "./Collapsible/Button"
 import { CodeBlockCollapsibleFade } from "./Collapsible/Fade"
@@ -27,6 +29,8 @@ export type CodeBlockMetaFields = {
   title?: string
   hasTabs?: boolean
   npm2yarn?: boolean
+  npx2yarn?: boolean
+  npx2yarnExec?: boolean
   highlights?: string[][]
   apiTesting?: boolean
   testApiMethod?: ApiMethod
@@ -151,10 +155,7 @@ export const CodeBlock = ({
         overrideColors.bg,
         !overrideColors.bg && [
           blockStyle === "loud" && "bg-medusa-contrast-bg-base",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "bg-medusa-bg-subtle",
-            colorMode === "dark" && "bg-medusa-code-bg-base",
-          ],
+          blockStyle === "subtle" && "bg-medusa-bg-component",
         ]
       ),
     [blockStyle, colorMode, overrideColors]
@@ -166,27 +167,14 @@ export const CodeBlock = ({
         overrideColors.lineNumbersBg,
         !overrideColors.lineNumbersBg && [
           blockStyle === "loud" && "text-medusa-contrast-fg-secondary",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "text-medusa-fg-muted",
-            colorMode === "dark" && "text-medusa-contrast-fg-secondary",
-          ],
+          blockStyle === "subtle" && "text-medusa-fg-muted",
         ]
       ),
     [blockStyle, colorMode, overrideColors]
   )
 
   const borderColor = useMemo(
-    () =>
-      clsx(
-        overrideColors.border,
-        !overrideColors.border && [
-          blockStyle === "loud" && "border-0",
-          blockStyle === "subtle" && [
-            colorMode === "light" && "border-medusa-border-base",
-            colorMode === "dark" && "border-medusa-code-border",
-          ],
-        ]
-      ),
+    () => clsx(overrideColors.border, !overrideColors.border && "border-0"),
     [blockStyle, colorMode, overrideColors]
   )
 
@@ -271,6 +259,7 @@ export const CodeBlock = ({
           lineNumberBgClassName={innerBgColor}
           isTerminal={isTerminalCode}
           animateTokenHighlights={animateTokenHighlights}
+          codeBlockStyle={blockStyle}
           {...highlightProps}
         />
       )
@@ -301,6 +290,9 @@ export const CodeBlock = ({
     track({
       event: {
         event: DocsTrackingEvents.CODE_BLOCK_COPY,
+        options: {
+          text: source.substring(0, 150),
+        },
       },
     })
   }
@@ -338,6 +330,10 @@ export const CodeBlock = ({
         ? themes.vsDark
         : themes.vsLight
 
+    if (blockStyle === "subtle") {
+      return prismTheme
+    }
+
     return {
       ...prismTheme,
       plain: {
@@ -362,11 +358,10 @@ export const CodeBlock = ({
           !hasInnerCodeBlock && "rounded-docs_DEFAULT",
           !hasTabs && boxShadow,
           blockStyle === "loud" && "code-block-highlight",
-          blockStyle === "subtle" &&
-            colorMode === "light" &&
-            "code-block-highlight-light",
+          blockStyle === "subtle" && "code-block-highlight-light",
           wrapperClassName
         )}
+        data-testid="code-block"
       >
         {codeTitle && (
           <CodeBlockHeader
@@ -393,6 +388,7 @@ export const CodeBlock = ({
             className
           )}
           style={style}
+          data-testid="code-block-inner"
         >
           <Highlight
             theme={codeTheme}

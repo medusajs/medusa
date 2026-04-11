@@ -42,6 +42,7 @@ export const sdk = new Medusa({
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
+  // add __BACKEND_URL__ to src/admin/vite-env.d.ts if you get type errors
   baseUrl: __BACKEND_URL__ || "/",
   auth: {
     type: "session",

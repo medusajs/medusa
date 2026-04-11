@@ -2,15 +2,18 @@ import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
+  UseInfiniteQueryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
+import { InfiniteData } from "@tanstack/query-core"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { inventoryItemsQueryKeys } from "./inventory.tsx"
+import { useInfiniteList } from "../use-infinite-list.tsx"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -310,6 +313,32 @@ export const useProducts = (
   return { ...data, ...rest }
 }
 
+export const useInfiniteProducts = (
+  query?: HttpTypes.AdminProductListParams,
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      HttpTypes.AdminProductListResponse,
+      FetchError,
+      InfiniteData<HttpTypes.AdminProductListResponse, number>,
+      HttpTypes.AdminProductListResponse,
+      QueryKey,
+      number
+    >,
+    "queryFn" | "queryKey" | "initialPageParam" | "getNextPageParam"
+  >
+) => {
+  return useInfiniteList<
+    HttpTypes.AdminProductListResponse,
+    HttpTypes.AdminProductListParams,
+    FetchError,
+    QueryKey
+  >({
+    queryKey: (params) => productsQueryKeys.list(params),
+    queryFn: (params) => sdk.admin.product.list(params),
+    query,
+    options,
+  })
+}
 export const useCreateProduct = (
   options?: UseMutationOptions<
     HttpTypes.AdminProductResponse,
@@ -340,7 +369,11 @@ export const useUpdateProduct = (
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.admin.product.update(id, payload),
+    mutationFn: (payload) =>
+      sdk.admin.product.update(id, payload, {
+        fields:
+          "-type,-collection,-options,-tags,-images,-variants,-sales_channels",
+      }),
     onSuccess: async (data, variables, context) => {
       await queryClient.invalidateQueries({
         queryKey: productsQueryKeys.lists(),

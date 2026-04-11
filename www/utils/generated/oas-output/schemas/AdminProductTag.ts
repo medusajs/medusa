@@ -38,6 +38,11 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   translations:
+ *     type: array
+ *     description: The tag's translations.
+ *     items:
+ *       $ref: "#/components/schemas/AdminTranslation"
  * 
 */
 

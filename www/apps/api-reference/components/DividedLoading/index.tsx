@@ -1,4 +1,5 @@
 import DividedLayout from "@/layouts/Divided"
+import React from "react"
 import { Loading } from "docs-ui"
 
 type DividedLoadingProps = {

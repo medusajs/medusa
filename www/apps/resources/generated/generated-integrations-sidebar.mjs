@@ -60,6 +60,14 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
           "path": "/commerce-modules/auth/auth-providers/github",
           "title": "GitHub",
           "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/integrations/guides/okta",
+          "title": "Okta",
+          "children": []
         }
       ]
     },
@@ -251,6 +259,14 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
           "type": "ref",
           "path": "/commerce-modules/payment/payment-provider/stripe",
           "title": "Stripe",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/integrations/guides/paypal",
+          "title": "PayPal",
           "children": []
         }
       ]

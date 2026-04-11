@@ -1,0 +1,40 @@
+{
+	"Locale": {
+		"filePath": "packages/modules/translation/src/models/locale.ts",
+		"properties": {
+			"id": "The ID of the locale.",
+			"code": "The code of the locale in BCP 47 format. For example, `en-US`.",
+			"name": "The display name of the locale"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"Translation": {
+		"filePath": "packages/modules/translation/src/models/translation.ts",
+		"properties": {
+			"id": "The ID of the translation.",
+			"reference_id": "The ID of the resource that this translation belongs to. For example, the product ID.",
+			"reference": "The name of the table that the resource belongs to. For example, `product`.",
+			"locale_code": "The translation's locale code in BCP 47 format. For example, `en-US`.",
+			"translations": "The key-value pairs of the translated fields. The key is a property in the referenced resource, and the value is the translated value for that property.",
+			"translated_field_count": "The translated field count of the translation"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"TranslationSettings": {
+		"filePath": "packages/modules/translation/src/models/settings.ts",
+		"properties": {
+			"id": "The ID of the translation settings.",
+			"entity_type": "The entity type of the translation settings",
+			"fields": "The fields of the translation settings\n\n@example [\"title\", \"description\", \"material\"]",
+			"is_active": "Whether the translation settings is active.\n\n@since 2.13.0"
+		},
+		"since": "2.12.4",
+		"deprecated": {
+			"is_deprecated": false
+		}
+	}
+}

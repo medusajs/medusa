@@ -99,6 +99,7 @@ export const updateCartWorkflow = createWorkflow(
         "email",
         "customer_id",
         "sales_channel_id",
+        "locale",
         "shipping_address.*",
         "region.*",
         "region.countries.*",
@@ -280,6 +281,17 @@ export const updateCartWorkflow = createWorkflow(
       }).config({ name: "emit-region-updated" })
     })
 
+    // Get the new locale code if it's being updated
+    const newLocaleCode = transform(
+      { input, cartToUpdate },
+      ({ input, cartToUpdate }) => {
+        if (isDefined(input.locale) && input.locale !== cartToUpdate?.locale) {
+          return input.locale
+        }
+        return undefined
+      }
+    )
+
     parallelize(
       updateCartsStep([cartInput]),
       emitEventStep({
@@ -314,6 +326,7 @@ export const updateCartWorkflow = createWorkflow(
         cart_id: cartInput.id,
         promo_codes: input.promo_codes,
         force_refresh: !!newRegion,
+        locale: newLocaleCode,
         additional_data: input.additional_data,
       },
     })

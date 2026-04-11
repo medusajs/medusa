@@ -19,6 +19,10 @@ export type AdminCreateInvite = {
    */
   email: string
   /**
+   * The RBAC roles to assign to the user when the invite is accepted.
+   */
+  roles?: string[]
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown>

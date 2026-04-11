@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/core/framework/dist", 
     "../../../../packages/core/framework/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/core/framework/src"
+  }
 }

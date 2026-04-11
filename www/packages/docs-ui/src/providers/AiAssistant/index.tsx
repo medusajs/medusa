@@ -1,6 +1,6 @@
 "use client"
 
-import { KapaProvider, useChat } from "@kapaai/react-sdk"
+import { KapaProvider, useChat, useDeepThinking } from "@kapaai/react-sdk"
 import React, {
   createContext,
   useCallback,
@@ -12,10 +12,37 @@ import React, {
 } from "react"
 import type { Source } from "@kapaai/react-sdk"
 import useResizeObserver from "@react-hook/resize-observer"
-import { AiAssistantSearchWindow } from "../../components"
+import { AiAssistantSearchWindow } from "../../components/AiAssistant/SearchWindow"
 import { useIsBrowser } from "../BrowserProvider"
 
 export type AiAssistantChatType = "default" | "popover"
+
+export type AiAssistantSuggestionType = {
+  title: string
+  items: string[]
+}
+
+const defaultSuggestions: AiAssistantSuggestionType[] = [
+  {
+    title: "FAQ",
+    items: [
+      "What is Medusa?",
+      "How can I create a module?",
+      "How can I create a data model?",
+      "How do I create a workflow?",
+      "How can I extend a data model in the Product Module?",
+    ],
+  },
+  {
+    title: "Recipes",
+    items: [
+      "How do I build a marketplace with Medusa?",
+      "How do I build digital products with Medusa?",
+      "How do I build subscription-based purchases with Medusa?",
+      "What other recipes are available in the Medusa documentation?",
+    ],
+  },
+]
 
 export type AiAssistantContextType = {
   chatOpened: boolean
@@ -25,6 +52,11 @@ export type AiAssistantContextType = {
   contentRef: React.RefObject<HTMLDivElement | null>
   loading: boolean
   isCaptchaLoaded: boolean
+  submitQuery: (q: string) => void
+  deepThinkingEnabled: boolean
+  toggleDeepThinking: () => void
+  suggestions: AiAssistantSuggestionType[]
+  hideAiToolsMessage?: boolean
 }
 
 export type AiAssistantThreadItem = {
@@ -32,6 +64,7 @@ export type AiAssistantThreadItem = {
   content: string
   question_id?: string | null
   sources?: Source[]
+  isGenerationAborted?: boolean
 }
 
 const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
@@ -39,8 +72,11 @@ const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
 export type AiAssistantProviderProps = {
   children?: React.ReactNode
   integrationId: string
+  groupIds?: string[]
   chatType?: AiAssistantChatType
   type?: "search" | "chat"
+  suggestions?: AiAssistantSuggestionType[]
+  hideAiToolsMessage?: boolean
 }
 
 type AiAssistantInnerProviderProps = Omit<
@@ -59,12 +95,16 @@ const AiAssistantInnerProvider = ({
   setPreventAutoScroll,
   setOnCompleteAction,
   type,
+  suggestions = defaultSuggestions,
+  hideAiToolsMessage = false,
 }: AiAssistantInnerProviderProps) => {
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   const [chatOpened, setChatOpened] = useState(false)
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const { isGeneratingAnswer, isPreparingAnswer } = useChat()
+  const { isGeneratingAnswer, isPreparingAnswer, submitQuery } = useChat()
+  const { active: deepThinkingEnabled, toggle: toggleDeepThinking } =
+    useDeepThinking()
   const loading = useMemo(
     () => isGeneratingAnswer || isPreparingAnswer,
     [isGeneratingAnswer, isPreparingAnswer]
@@ -76,6 +116,10 @@ const AiAssistantInnerProvider = ({
       return
     }
     const parent = contentRef.current?.parentElement as HTMLElement
+
+    if (!parent) {
+      return
+    }
 
     parent.scrollTop = parent.scrollHeight
   }
@@ -179,6 +223,11 @@ const AiAssistantInnerProvider = ({
         contentRef,
         loading,
         isCaptchaLoaded,
+        submitQuery,
+        deepThinkingEnabled,
+        toggleDeepThinking,
+        suggestions,
+        hideAiToolsMessage,
       }}
     >
       {children}
@@ -189,6 +238,7 @@ const AiAssistantInnerProvider = ({
 
 export const AiAssistantProvider = ({
   integrationId,
+  groupIds,
   ...props
 }: AiAssistantProviderProps) => {
   const [preventAutoScroll, setPreventAutoScroll] = useState(false)
@@ -199,6 +249,7 @@ export const AiAssistantProvider = ({
   return (
     <KapaProvider
       integrationId={integrationId}
+      sourceGroupIDsInclude={groupIds}
       callbacks={{
         askAI: {
           onAnswerGenerationCompleted: () => {

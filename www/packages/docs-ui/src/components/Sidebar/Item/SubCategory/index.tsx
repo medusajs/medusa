@@ -4,7 +4,8 @@
 
 import React, { useMemo, useRef } from "react"
 import { Sidebar } from "types"
-import { Badge, SidebarItem } from "../../../.."
+import { Badge } from "@/components/Badge"
+import { SidebarItem } from "@/components/Sidebar/Item"
 import clsx from "clsx"
 
 export type SidebarItemSubCategoryProps = {
@@ -43,12 +44,14 @@ export const SidebarItemSubCategory = ({
             "text-compact-small-plus",
             className
           )}
+          data-testid="sidebar-item-container"
         >
           <span
             className={clsx(
               isTitleOneWord && "truncate",
               nested && "pl-docs_1.5"
             )}
+            data-testid="sidebar-item-title"
           >
             {item.title}
           </span>
@@ -61,7 +64,7 @@ export const SidebarItemSubCategory = ({
       {hasChildren && (
         <ul
           className={clsx(
-            "ease-ease overflow-hidden",
+            "ease-ease",
             "flex flex-col gap-docs_0.125",
             "pb-docs_0.5 pt-docs_0.125"
           )}

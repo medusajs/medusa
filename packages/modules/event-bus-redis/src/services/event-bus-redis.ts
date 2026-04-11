@@ -1,21 +1,39 @@
 import {
   Event,
+  // TODO: Comment temporarely and we will re enable it in the near future #14478
+  // EventBusEventsOptions,
   InternalModuleDeclaration,
   Logger,
   Message,
 } from "@medusajs/framework/types"
 import {
   AbstractEventBusModuleService,
+  EventPriority,
   isPresent,
   promiseAll,
 } from "@medusajs/framework/utils"
-import { BulkJobOptions, Queue, Worker } from "bullmq"
+import {
+  BulkJobOptions,
+  Queue,
+  QueueOptions,
+  Worker,
+  WorkerOptions,
+} from "bullmq"
 import { Redis } from "ioredis"
-import { BullJob, EventBusRedisModuleOptions, Options } from "../types"
+import {
+  BullJob,
+  EmitOptions,
+  EventBusRedisModuleOptions,
+  Options,
+} from "../types"
 
 type InjectedDependencies = {
   logger: Logger
   eventBusRedisConnection: Redis
+  eventBusRedisQueueName: string
+  eventBusRedisQueueOptions: Omit<QueueOptions, "connection">
+  eventBusRedisWorkerOptions: Omit<WorkerOptions, "connection">
+  eventBusRedisJobOptions: EmitOptions
 }
 
 type IORedisEventType<T = unknown> = {
@@ -31,46 +49,60 @@ type IORedisEventType<T = unknown> = {
 // eslint-disable-next-line max-len
 export default class RedisEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_: Logger
-  protected readonly moduleOptions_: EventBusRedisModuleOptions
-  // eslint-disable-next-line max-len
-  protected readonly moduleDeclaration_: InternalModuleDeclaration
   protected readonly eventBusRedisConnection_: Redis
+
+  protected readonly queueName_: string
+  protected readonly queueOptions_: Omit<QueueOptions, "connection">
+  protected readonly workerOptions_: Omit<WorkerOptions, "connection">
+  protected readonly jobOptions_: EmitOptions
+  // TODO: Comment temporarely and we will re enable it in the near future #14478
+  // private readonly eventOptions_: EventBusEventsOptions
 
   protected queue_: Queue
   protected bullWorker_: Worker
 
   constructor(
-    { logger, eventBusRedisConnection }: InjectedDependencies,
-    moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: InternalModuleDeclaration
+    {
+      logger,
+      eventBusRedisConnection,
+      eventBusRedisQueueName,
+      eventBusRedisQueueOptions,
+      eventBusRedisWorkerOptions,
+      eventBusRedisJobOptions,
+    }: InjectedDependencies,
+    _moduleOptions: EventBusRedisModuleOptions = {},
+    _moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
     this.eventBusRedisConnection_ = eventBusRedisConnection
-
-    this.moduleOptions_ = moduleOptions
     this.logger_ = logger
 
-    this.queue_ = new Queue(moduleOptions.queueName ?? `events-queue`, {
+    this.queueName_ = eventBusRedisQueueName ?? "events-queue"
+    this.queueOptions_ = eventBusRedisQueueOptions ?? {}
+    this.workerOptions_ = eventBusRedisWorkerOptions ?? {}
+    this.jobOptions_ = eventBusRedisJobOptions ?? {}
+    // TODO: Comment temporarely and we will re enable it in the near future #14478
+    // this.eventOptions_ =
+    //   _moduleOptions.eventOptions ??
+    //   _moduleDeclaration.options?.eventOptions ??
+    //   {}
+
+    this.queue_ = new Queue(this.queueName_, {
       prefix: `${this.constructor.name}`,
-      ...(moduleOptions.queueOptions ?? {}),
+      ...this.queueOptions_,
       connection: eventBusRedisConnection,
     })
 
     // Register our worker to handle emit calls
     if (this.isWorkerMode) {
-      this.bullWorker_ = new Worker(
-        moduleOptions.queueName ?? "events-queue",
-        this.worker_,
-        {
-          prefix: `${this.constructor.name}`,
-          ...(moduleOptions.workerOptions ?? {}),
-          connection: eventBusRedisConnection,
-          autorun: false,
-        }
-      )
+      this.bullWorker_ = new Worker(this.queueName_, this.worker_, {
+        prefix: `${this.constructor.name}`,
+        ...this.workerOptions_,
+        connection: eventBusRedisConnection,
+        autorun: false,
+      })
     }
   }
 
@@ -88,6 +120,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     },
   }
 
+  /**
+   * Build events for queue processing with priority handling.
+   *
+   * Priority levels (lower number = higher priority):
+   * - 10: Critical business events (e.g., order placed)
+   * - 100: Default priority for normal events (default)
+   * - 2,097,152: Lowest priority for internal events
+   *
+   * Priority override hierarchy (highest to lowest precedence):
+   * 1. Message-level options (eventData.options.priority)
+   * 2. Emit-level options (options.priority)
+   * 3. Module-level job options (this.jobOptions_.priority)
+   * 4. Internal flag default (options.internal ? EventPriority.LOWEST : EventPriority.DEFAULT)
+   */
   private buildEvents<T>(
     eventsData: Message<T>[],
     options: Options = {}
@@ -96,8 +142,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       // default options
       removeOnComplete: true,
       attempts: 1,
+      priority: options.internal ? EventPriority.LOWEST : EventPriority.DEFAULT,
       // global options
-      ...(this.moduleOptions_.jobOptions ?? {}),
+      ...this.jobOptions_,
       ...options,
     }
 
@@ -110,16 +157,35 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         metadata: eventData.metadata,
       }
 
+      const finalOptions: IORedisEventType<T>["opts"] = {
+        ...opts,
+        ...eventData.options,
+      }
+
+      // TODO: Comment temporarely and we will re enable it in the near future #14478
+      // finalOptions.priority =
+      //   eventData.options?.priority ??
+      //   this.eventOptions_[eventData.name]?.priority
+
+      if (
+        finalOptions.priority != undefined &&
+        (finalOptions.priority < 1 ||
+          finalOptions.priority > EventPriority.LOWEST)
+      ) {
+        this.logger_.warn(
+          `Invalid priority value: ${finalOptions.priority} for event ${eventData.name}. Must be between 1 and ${EventPriority.LOWEST}`
+        )
+        finalOptions.priority = EventPriority.DEFAULT
+        this.logger_.warn(
+          `Setting priority to default value: ${EventPriority.DEFAULT} for event ${eventData.name}`
+        )
+      }
+
       return {
         data: event,
         name: eventData.name,
-        opts: {
-          // options for event group
-          ...opts,
-          // options for a particular event
-          ...eventData.options,
-        },
-      } as any
+        opts: finalOptions,
+      } as IORedisEventType<T>
     })
   }
 
@@ -336,8 +402,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           `Retrying ${name} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
         )
       } else {
+        const prioirityInfo =
+          opts.priority != undefined ? ` (priority: ${opts.priority})` : ""
         this.logger_.info(
-          `Processing ${name} which has ${eventSubscribers.length} subscribers`
+          `Processing ${name}${prioirityInfo} which has ${eventSubscribers.length} subscribers`
         )
       }
     }

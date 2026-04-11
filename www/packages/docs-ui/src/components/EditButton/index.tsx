@@ -21,6 +21,7 @@ export const EditButton = ({ filePath, editDate }: EditButtonProps) => {
           "text-medusa-fg-subtle hover:text-medusa-fg-base",
           "text-compact-small-plus"
         )}
+        data-testid="edit-button"
       >
         <span>Edit this page</span>
         <ArrowUpRightOnBox />

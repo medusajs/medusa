@@ -346,6 +346,24 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Locales",
+      "children": [
+        {
+          "type": "link",
+          "path": "locales_locale_schema",
+          "title": "Locale Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Notifications",
       "children": [
         {
@@ -875,12 +893,12 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
-      "title": "Transaction Groups",
+      "title": "Translations",
       "children": [
         {
           "type": "link",
-          "path": "transaction-groups_transactiongroup_schema",
-          "title": "TransactionGroup Object",
+          "path": "translations_translation_schema",
+          "title": "Translation Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",

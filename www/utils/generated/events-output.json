@@ -17,10 +17,12 @@
     "payload": "```ts\n{\n  id, // The ID of the cart\n}\n```",
     "description": "Emitted when a cart's details are updated.",
     "workflows": [
+      "deleteLineItemsWorkflow",
       "updateLineItemInCartWorkflow",
       "updateCartWorkflow",
       "addToCartWorkflow",
-      "addShippingMethodToCartWorkflow"
+      "addShippingMethodToCartWorkflow",
+      "updateLineItemInCartWorkflow"
     ],
     "deprecated": false
   },
@@ -294,7 +296,7 @@
     "name": "auth.password_reset",
     "parentName": "AuthWorkflowEvents",
     "propertyName": "PASSWORD_RESET",
-    "payload": "```ts\n{\n  entity_id, // The identifier of the user or customer. For example, an email address.\n  actor_type, // The type of actor. For example, \"customer\", \"user\", or custom.\n  token, // The generated token.\n}\n```",
+    "payload": "```ts\n{\n  entity_id, // The identifier of the user or customer. For example, an email address.\n  actor_type, // The type of actor. For example, \"customer\", \"user\", or custom.\n  token, // The generated token.\n  metadata, // Optional custom metadata passed from the request.\n}\n```",
     "description": "Emitted when a reset password token is generated. You can listen to this event\nto send a reset password email to the user or customer, for example.",
     "workflows": [
       "generateResetPasswordTokenWorkflow"
@@ -713,6 +715,42 @@
     "deprecated": false
   },
   {
+    "name": "shipping-option.created",
+    "parentName": "ShippingOptionWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the shipping option\n}\n```",
+    "description": "Emitted when shipping options are created.",
+    "workflows": [
+      "createShippingOptionsWorkflow"
+    ],
+    "since": "2.12.4",
+    "deprecated": false
+  },
+  {
+    "name": "shipping-option.updated",
+    "parentName": "ShippingOptionWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the shipping option\n}\n```",
+    "description": "Emitted when shipping options are updated.",
+    "workflows": [
+      "updateShippingOptionsWorkflow"
+    ],
+    "since": "2.12.4",
+    "deprecated": false
+  },
+  {
+    "name": "shipping-option.deleted",
+    "parentName": "ShippingOptionWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the shipping option\n}\n```",
+    "description": "Emitted when shipping options are deleted.",
+    "workflows": [
+      "deleteShippingOptionsWorkflow"
+    ],
+    "since": "2.12.4",
+    "deprecated": false
+  },
+  {
     "name": "payment.captured",
     "parentName": "PaymentEvents",
     "propertyName": "CAPTURED",
@@ -734,6 +772,45 @@
     "workflows": [
       "refundPaymentWorkflow"
     ],
+    "deprecated": false
+  },
+  {
+    "name": "translation.created",
+    "parentName": "TranslationWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the translation\n}\n```",
+    "description": "Emitted when translations are created.",
+    "workflows": [
+      "createTranslationsWorkflow",
+      "batchTranslationsWorkflow"
+    ],
+    "since": "2.12.3",
+    "deprecated": false
+  },
+  {
+    "name": "translation.updated",
+    "parentName": "TranslationWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the translation\n}\n```",
+    "description": "Emitted when translations are updated.",
+    "workflows": [
+      "updateTranslationsWorkflow",
+      "batchTranslationsWorkflow"
+    ],
+    "since": "2.12.3",
+    "deprecated": false
+  },
+  {
+    "name": "translation.deleted",
+    "parentName": "TranslationWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the translation\n}\n```",
+    "description": "Emitted when translations are deleted.",
+    "workflows": [
+      "deleteTranslationsWorkflow",
+      "batchTranslationsWorkflow"
+    ],
+    "since": "2.12.3",
     "deprecated": false
   }
 ]

@@ -1,5 +1,8 @@
+"use client"
+
 import React from "react"
 import { Pagination } from "../Pagination"
+import { useSiteConfig } from "../../providers/SiteConfig"
 
 export type FooterProps = {
   editComponent?: React.ReactNode
@@ -13,11 +16,13 @@ export const Footer = ({
   showPagination,
   feedbackComponent,
 }: FooterProps) => {
+  const { isInProduct } = useSiteConfig()
+
   return (
     <>
       {feedbackComponent}
       {showPagination && <Pagination />}
-      {editComponent}
+      {!isInProduct && editComponent}
     </>
   )
 }

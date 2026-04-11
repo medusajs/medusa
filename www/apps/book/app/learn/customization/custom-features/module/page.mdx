@@ -6,17 +6,11 @@ export const metadata = {
 
 In this chapter, you'll build a Brand Module that adds a `brand` table to the database and provides data-management features for it.
 
-A module is a reusable package of functionalities related to a single domain or integration. Medusa comes with multiple pre-built modules for core commerce needs, such as the [Cart Module](!resources!/commerce-modules/cart) that holds the data models and business logic for cart operations.
+A [module](../../../fundamentals/modules/page.mdx) is a reusable package of functionalities related to a single domain or integration. Medusa comes with multiple pre-built modules for core commerce needs, such as the [Cart Module](!resources!/commerce-modules/cart) that holds the data models and business logic for cart operations.
 
 In a module, you create data models and business logic to manage them. In the next chapters, you'll see how you use the module to build commerce features.
 
 ![Diagram showcasing an overview of the Brand Module](https://res.cloudinary.com/dza7lstvk/image/upload/v1746546820/Medusa%20Resources/brand-module_pg86gm.jpg)
-
-<Note>
-
-Learn more about modules in [this chapter](../../../fundamentals/modules/page.mdx).
-
-</Note>
 
 ## 1. Create Module Directory
 
@@ -28,13 +22,7 @@ Modules are created in a sub-directory of `src/modules`. So, start by creating t
 
 ## 2. Create Data Model
 
-A data model represents a table in the database. You create data models using Medusa's Data Model Language (DML). It simplifies defining a table's columns, relations, and indexes with straightforward methods and configurations.
-
-<Note>
-
-Learn more about data models in [this chapter](../../../fundamentals/modules/page.mdx#1-create-data-model).
-
-</Note>
+A [data model](../../../fundamentals/modules/page.mdx#1-create-data-model) represents a table in the database. You create data models using Medusa's Data Model Language (DML). It simplifies defining a table's columns, relations, and indexes with straightforward methods and configurations.
 
 You create a data model in a TypeScript or JavaScript file under the `models` directory of a module. So, to create a data model that represents a new `brand` table in the database, create the file `src/modules/brand/models/brand.ts` with the following content:
 
@@ -58,7 +46,7 @@ You define the data model using the `define` method of the DML. It accepts two p
 
 <Note title="Tip">
 
-Learn about other property types in [this chapter](../../../fundamentals/data-models/properties/page.mdx).
+Refer to the [Properties](../../../fundamentals/data-models/properties/page.mdx) chapter to learn more.
 
 </Note>
 
@@ -66,15 +54,9 @@ Learn about other property types in [this chapter](../../../fundamentals/data-mo
 
 ## 3. Create Module Service
 
-You perform database operations on your data models in a service, which is a class exported by the module and acts like an interface to its functionalities.
+You perform database operations on your data models in a [service](../../../fundamentals/modules/page.mdx#2-create-service), which is a class exported by the module and acts like an interface to its functionalities.
 
 In this step, you'll create the Brand Module's service that provides methods to manage the `Brand` data model. In the next chapters, you'll use this service when exposing custom features that involve managing brands.
-
-<Note>
-
-Learn more about services in [this chapter](../../../fundamentals/modules/page.mdx#2-create-service).
-
-</Note>
 
 You define a service in a `service.ts` or `service.js` file at the root of your module's directory. So, create the file `src/modules/brand/service.ts` with the following content:
 
@@ -105,7 +87,7 @@ You'll use these methods in the [next chapter](../workflow/page.mdx).
 
 <Note title="Tip">
 
-Find a reference of all generated methods in [this guide](!resources!/service-factory-reference).
+Refer to the [service factory reference](!resources!/service-factory-reference) to learn more about the generated methods.
 
 </Note>
 
@@ -166,17 +148,11 @@ The Brand Module is now added to your Medusa application. You'll start using it 
 
 ## 6. Generate and Run Migrations
 
-A migration is a TypeScript or JavaScript file that defines database changes made by a module. Migrations ensure that your module is re-usable and removes friction when working in a team, making it easy to reflect changes across team members' databases.
-
-<Note>
-
-Learn more about migrations in [this chapter](../../../fundamentals/modules/page.mdx#5-generate-migrations).
-
-</Note>
+A [migration](../../../fundamentals/modules/page.mdx#5-generate-migrations) is a TypeScript or JavaScript file that defines database changes made by a module. Migrations ensure that your module is re-usable and removes friction when working in a team, making it easy to reflect changes across team members' databases.
 
 [Medusa's CLI tool](!resources!/medusa-cli) allows you to generate migration files for your module, then run those migrations to reflect the changes in the database. So, run the following commands in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate brand
 npx medusa db:migrate
 ```

@@ -78,8 +78,6 @@ describe("LocalEventBusService", () => {
           name: "eventName",
         })
 
-        expect(loggerMock.info).toHaveBeenCalledTimes(0)
-
         await eventBus.emit(
           {
             name: "eventName",
@@ -99,7 +97,7 @@ describe("LocalEventBusService", () => {
           name: "eventName",
         })
 
-        expect(loggerMock.info).toHaveBeenCalledTimes(0)
+        expect(loggerMock.info).toHaveBeenCalledTimes(1)
       })
 
       it("should emit multiple events", async () => {

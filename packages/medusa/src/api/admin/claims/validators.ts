@@ -1,5 +1,5 @@
 import { ClaimReason, ClaimType } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -45,7 +45,7 @@ export const AdminPostOrderClaimsReqSchema = z.object({
   description: z.string().optional(),
   internal_note: z.string().optional(),
   reason_id: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostOrderClaimsReqSchemaType = z.infer<
   typeof AdminPostOrderClaimsReqSchema
@@ -55,7 +55,7 @@ export const AdminPostOrderExchangesReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostOrderExchangesReqSchemaType = z.infer<
   typeof AdminPostOrderExchangesReqSchema
@@ -64,7 +64,7 @@ export type AdminPostOrderExchangesReqSchemaType = z.infer<
 export const AdminPostReceiveClaimsReqSchema = z.object({
   internal_note: z.string().optional(),
   description: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostReceiveClaimsReqSchemaType = z.infer<
   typeof AdminPostReceiveClaimsReqSchema
@@ -94,7 +94,7 @@ export const AdminPostClaimsShippingReqSchema = z.object({
   custom_amount: z.number().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminPostClaimsShippingReqSchemaType = z.infer<
@@ -104,7 +104,7 @@ export type AdminPostClaimsShippingReqSchemaType = z.infer<
 export const AdminPostClaimsShippingActionReqSchema = z.object({
   custom_amount: z.number().nullish().optional(),
   internal_note: z.string().nullish().optional(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostClaimsShippingActionReqSchemaType = z.infer<
@@ -118,7 +118,7 @@ export const AdminPostClaimsAddItemsReqSchema = z.object({
       quantity: z.number(),
       unit_price: z.number().optional(),
       internal_note: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     })
   ),
 })
@@ -136,7 +136,7 @@ export const AdminPostClaimsRequestReturnItemsReqSchema = z.object({
       description: z.string().optional(),
       internal_note: z.string().optional(),
       reason_id: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     })
   ),
 })
@@ -149,7 +149,7 @@ export const AdminPostClaimsRequestItemsReturnActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish().optional(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostClaimsRequestItemsReturnActionReqSchemaType = z.infer<
@@ -164,6 +164,7 @@ export const AdminPostClaimItemsReqSchema = z.object({
       reason: z.nativeEnum(ClaimReason).optional(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
+      metadata: z.record(z.string(), z.unknown()).nullish(),
     })
   ),
 })
@@ -176,7 +177,7 @@ export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostClaimsRequestItemsActionReqSchemaType = z.infer<
@@ -212,4 +213,6 @@ export type AdminPostClaimsConfirmRequestReqSchemaType = z.infer<
 
 export const AdminDeleteClaimItemActionSchema = createSelectParams()
 
-export type AdminDeleteClaimItemActionSchemaType = z.infer<typeof AdminDeleteClaimItemActionSchema>
+export type AdminDeleteClaimItemActionSchemaType = z.infer<
+  typeof AdminDeleteClaimItemActionSchema
+>

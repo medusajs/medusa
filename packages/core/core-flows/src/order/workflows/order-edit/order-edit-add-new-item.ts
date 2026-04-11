@@ -13,16 +13,17 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
-import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 
 /**
  * The data to validate that new items can be added to an order edit.
@@ -103,6 +104,12 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.OrderEditAddNewItemWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -193,6 +200,14 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
       },
     })
 
-    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
+    const previewOrderChange = previewOrderChangeStep(
+      input.order_id
+    ) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

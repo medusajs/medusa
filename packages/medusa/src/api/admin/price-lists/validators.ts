@@ -1,5 +1,5 @@
 import { PriceListStatus, PriceListType } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -7,7 +7,12 @@ import {
 } from "../../utils/validators"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 
-export const AdminGetPriceListPricesParams = createSelectParams()
+export const AdminGetPriceListPriceParams = createSelectParams()
+
+export const AdminGetPriceListPricesParams = createFindParams({
+  offset: 0,
+  limit: 50,
+})
 
 export const AdminGetPriceListsParamsFields = z.object({
   q: z.string().optional(),

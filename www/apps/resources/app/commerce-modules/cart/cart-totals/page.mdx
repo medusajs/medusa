@@ -195,57 +195,57 @@ The returned `cart` object will look like this:
 
 The cart will include the following total fields:
 
-- `total`: The grand total of the cart, including all line items, shipping methods, taxes, and discounts.
-- `subtotal`: The cart's total excluding taxes, including promotions.
-- `tax_total`: The total tax amount applied to the cart.
-- `discount_total`: The total amount of discounts applied to the cart.
-- `discount_subtotal`: The total amount of discounts applied to the cart's subtotal.
-- `discount_tax_total`: The total amount of discounts applied to the cart's tax.
-- `original_total`: The cart's total including taxes, excluding promotions.
-- `original_tax_total`: The cart items' tax total including promotions.
-- `item_total`: The cart items' total including taxes and promotions.
-- `item_subtotal`: The cart items' total excluding taxes, including promotions.
-- `item_tax_total`: The cart items' tax total including promotions.
-- `original_item_total`: The cart items' total including taxes, excluding promotions.
-- `original_item_subtotal`: The cart items' total excluding taxes, including promotions.
-- `original_item_tax_total`: The cart items' tax total excluding promotions.
-- `shipping_total`: The cart's shipping total including taxes and promotions.
-- `shipping_subtotal`: The cart's shipping total excluding taxes, including promotions.
-- `shipping_tax_total`: The total taxes applied to the cart's shipping amount.
-- `original_shipping_tax_total`: The total taxes applied to the cart's shipping amount, excluding promotions.
-- `original_shipping_subtotal`: The cart's shipping total excluding taxes, including promotions.
-- `original_shipping_total`: The cart's shipping total including taxes, excluding promotions.
-- `credit_line_subtotal`: The subtotal of the credit line applied to the cart.
-- `credit_line_tax_total`: The total tax amount applied to the credit line.
-- `credit_line_total`: The total amount of the credit line applied to the cart.
+- `total`: The cart's final total after discounts and credit lines, including taxes.
+- `subtotal`: The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+- `tax_total`: The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+- `discount_total`: The total amount of discounts applied to the cart, including the tax portion of discounts.
+- `discount_subtotal`: The total amount of discounts applied to the cart's subtotal (excluding tax portion). Used in the final total calculation.
+- `discount_tax_total`: The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+- `original_total`: The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+- `original_tax_total`: The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+- `item_total`: The sum of all line items' totals after discounts, including taxes.
+- `item_subtotal`: The sum of all line items' subtotals before discounts, excluding taxes.
+- `item_tax_total`: The sum of all line items' tax totals after discounts.
+- `original_item_total`: The sum of all line items' original totals before discounts, including taxes.
+- `original_item_subtotal`: The sum of all line items' original subtotals before discounts, excluding taxes.
+- `original_item_tax_total`: The sum of all line items' original tax totals before discounts.
+- `shipping_total`: The sum of all shipping methods' totals after discounts, including taxes.
+- `shipping_subtotal`: The sum of all shipping methods' subtotals before discounts, excluding taxes.
+- `shipping_tax_total`: The sum of all shipping methods' tax totals after discounts.
+- `original_shipping_tax_total`: The sum of all shipping methods' original tax totals before discounts.
+- `original_shipping_subtotal`: The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+- `original_shipping_total`: The sum of all shipping methods' original totals before discounts, including taxes.
+- `credit_line_subtotal`: The subtotal of credit lines applied to the cart, excluding taxes.
+- `credit_line_tax_total`: The tax total of credit lines applied to the cart.
+- `credit_line_total`: The total amount of credit lines applied to the cart, including taxes. Subtracted from the final total.
 
 ### Cart Line Item Totals
 
 The `items` array in the `cart` object contains total fields for each line item:
 
 - `unit_price`: The price of a single unit of the line item. This field is not calculated and is stored in the database.
-- `subtotal`: The total price of the line item before any discounts or taxes.
-- `total`: The total price of the line item after applying discounts and taxes.
-- `original_total`: The total price of the line item before any discounts.
-- `discount_total`: The total amount of discounts applied to the line item.
-- `discount_subtotal`: The total amount of discounts applied to the line item's subtotal.
-- `discount_tax_total`: The total amount of discounts applied to the line item's tax.
-- `tax_total`: The total tax amount applied to the line item.
-- `original_tax_total`: The total tax amount applied to the line item before any discounts.
+- `subtotal`: The line item's subtotal before discounts, excluding taxes.
+- `total`: The line item's total after discounts, including taxes.
+- `original_total`: The line item's original total before discounts, including taxes.
+- `discount_total`: The total amount of discounts applied to the line item, including the tax portion of discounts.
+- `discount_subtotal`: The total amount of discounts applied to the line item's subtotal (excluding tax portion).
+- `discount_tax_total`: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
+- `tax_total`: The line item's tax total after discounts.
+- `original_tax_total`: The line item's original tax total before discounts.
 
 ### Cart Shipping Method Totals
 
 The `shipping_methods` array in the `cart` object contains total fields for each shipping method:
 
 - `amount`: The amount charged for the shipping method. This field is not calculated and is stored in the database.
-- `subtotal`: The total price of the shipping method before any discounts or taxes.
-- `total`: The total price of the shipping method after applying discounts and taxes.
-- `original_total`: The total price of the shipping method before any discounts.
-- `discount_total`: The total amount of discounts applied to the shipping method.
-- `discount_subtotal`: The total amount of discounts applied to the shipping method's subtotal.
-- `discount_tax_total`: The total amount of discounts applied to the shipping method's tax.
-- `tax_total`: The total tax amount applied to the shipping method.
-- `original_tax_total`: The total tax amount applied to the shipping method before any discounts.
+- `subtotal`: The shipping method's subtotal before discounts, excluding taxes.
+- `total`: The shipping method's total after discounts, including taxes.
+- `original_total`: The shipping method's original total before discounts, including taxes.
+- `discount_total`: The total amount of discounts applied to the shipping method, including the tax portion of discounts.
+- `discount_subtotal`: The total amount of discounts applied to the shipping method's subtotal (excluding tax portion).
+- `discount_tax_total`: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
+- `tax_total`: The shipping method's tax total after discounts.
+- `original_tax_total`: The shipping method's original tax total before discounts.
 
 ---
 

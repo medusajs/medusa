@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
@@ -7,14 +8,14 @@ import { Details, Loading } from "docs-ui"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("../Default"),
+    async () => import("@/components/Tags/Operation/Parameters/Types/Default"),
     {
       loading: () => <Loading />,
     }
   ) as React.FC<TagOperationParametersDefaultProps>
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../.."),
+  async () => import("@/components/Tags/Operation/Parameters"),
   {
     loading: () => <Loading />,
   }

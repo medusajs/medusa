@@ -274,6 +274,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a product's update date.
@@ -413,6 +414,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: handle
       in: query
       required: false
@@ -602,6 +604,7 @@ post:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: order
       in: query
       description: >-
@@ -709,6 +712,20 @@ post:
               type: string
               title: price_list_id
               description: A price list ID.
+    - name: external_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: external_id
+            description: Filter by the product's external ID.
+          - type: array
+            description: Filter by external IDs.
+            items:
+              type: string
+              title: external_id
+              description: The external ID.
   security:
     - api_token: []
     - cookie_auth: []

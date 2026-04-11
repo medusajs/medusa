@@ -44,7 +44,7 @@ For example, send the following request to retrieve the list of products with th
 
 ```bash
 curl 'http://localhost:9000/admin/products?fields=+brand.*' \
---header 'Authorization: Bearer {token}'
+-H 'Authorization: Bearer {token}'
 ```
 
 <Note title="Tip">
@@ -75,19 +75,13 @@ By using the `fields` query parameter, you don't have to re-create existing API 
 
 While you can retrieve linked records using the `fields` query parameter of an existing API route, you can't filter by linked records.
 
-Instead, you'll have to create a custom API route that uses Query to retrieve linked records with filters, as explained in the [Query documentation](../../../fundamentals/module-links/query/page.mdx#apply-filters-and-pagination-on-linked-records).
+Instead, you'll have to create a custom API route that uses [Query](../../../fundamentals/module-links/query/page.mdx#apply-filters-and-pagination-on-linked-records) to retrieve linked records with filters.
 
 ---
 
 ## Approach 2: Use Query to Retrieve Linked Records
 
-You can also retrieve linked records using Query. Query allows you to retrieve data across modules with filters, pagination, and more. You can resolve Query from the Medusa container and use it in your API route or workflow.
-
-<Note>
-
-Learn more about Query in [this chapter](../../../fundamentals/module-links/query/page.mdx).
-
-</Note>
+You can also retrieve linked records using [Query](../../../fundamentals/module-links/query/page.mdx). Query allows you to retrieve data across modules with filters, pagination, and more. You can resolve Query from the Medusa container and use it in your API route or workflow.
 
 For example, you can create an API route that retrieves brands and their products. If you followed the [Create Brands API route chapter](../../custom-features/api-route/page.mdx), you'll have the file `src/api/admin/brands/route.ts` with a `POST` API route. Add a new `GET` function to the same file:
 
@@ -183,6 +177,6 @@ By following the examples of the previous chapters, you:
 
 ## Next Steps: Customize Medusa Admin
 
-Clients, such as the Medusa Admin dashboard, can now use brand-related features, such as creating a brand or setting the brand of a product.
+Client applications, such as the Medusa Admin dashboard, can now use brand-related features, such as creating a brand or setting the brand of a product.
 
 In the next chapters, you'll learn how to customize the Medusa Admin to show a product's brand on its details page, and to show a new page with the list of brands in your store.

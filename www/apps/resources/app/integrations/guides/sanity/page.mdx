@@ -681,9 +681,9 @@ If you get a type error on resolving the Sanity Module, run the Medusa applicati
 </Note>
 
 export const syncStepHighlights = [
-  ["13", "createStep", "Create a step."],
-  ["15", "container", "The Medusa container to resolve resources."],
-  ["36", "graph", "Retrieve a paginated list of products with their sanity document."]
+  ["14", "createStep", "Create a step."],
+  ["16", "container", "The Medusa container to resolve resources."],
+  ["37", "graph", "Retrieve a paginated list of products with their sanity document."]
 ]
 
 ```ts title="src/workflows/sanity-sync-products/steps/sync.ts" highlights={syncStepHighlights}
@@ -1205,7 +1205,7 @@ Now that you're managing a product's content in Sanity, you want to show that co
 A product's details are retrieved in the file `src/app/[countryCode]/(main)/products/[handle]/page.tsx`. So, replace the `ProductPage` function with the following:
 
 export const sanityContentHighlights = [
-  ["19", "sanity", "Get the product's content from Sanity."]
+  ["24", "sanity", "Get the product's content from Sanity."]
 ]
 
 ```tsx title="src/app/[countryCode]/(main)/products/[handle]/page.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={sanityContentHighlights}

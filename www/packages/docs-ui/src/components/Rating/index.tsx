@@ -3,8 +3,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 import { Star, StarSolid } from "@medusajs/icons"
-import { Button, Label, TextArea } from "@/components"
-import { useAnalytics, useNotifications } from "@/providers"
+import { Button } from "@/components/Button"
+import { Label } from "@/components/Label"
+import { TextArea } from "@/components/TextArea"
+import { useAnalytics } from "@/providers/Analytics"
+import { useNotifications } from "@/providers/Notification"
 
 export type RatingProps = {
   event?: string

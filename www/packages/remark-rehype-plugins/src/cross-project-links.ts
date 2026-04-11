@@ -88,7 +88,7 @@ function componentFixer(
 
     const itemJsVar = estreeToJs(attribute.value.data.estree)
 
-    if (!itemJsVar) {
+    if (!itemJsVar || "name" in itemJsVar) {
       return
     }
 

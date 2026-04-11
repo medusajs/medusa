@@ -5,6 +5,7 @@ Thank you for considering contributing to Medusa! This document will outline how
 If you're contributing to our documentation, make sure to also check out the [contribution guidelines on our documentation website](https://docs.medusajs.com/resources/contribution-guidelines/docs).
 
 ### Important
+
 Our core maintainers prioritize pull requests (PRs) from within our organization. External contributions are regularly triaged, but not at any fixed cadence. It varies depending on how busy the maintainers are. This is applicable to all types of PRs, so we kindly ask for your patience.
 
 If you, as a community contributor, wish to work on more extensive features, please reach out to CODEOWNERS instead of directly submitting a PR with all the changes. This approach saves us both time, especially if the PR is not accepted (which will be the case if it does not align with our roadmap), and helps us effectively review and evaluate your contribution if it is accepted.
@@ -26,10 +27,9 @@ If you, as a community contributor, wish to work on more extensive features, ple
 ## Local development
 
 > Prerequisites:
+>
 > 1. [Forked Medusa repository cloned locally](https://github.com/medusajs/medusa).
 > 2. [A local Medusa application for testing](https://docs.medusajs.com/learn/installation).
-
-
 
 The code snippets in this section assume that your forked Medusa project and the test project are sibling directories, and you optionally setup the starter storefront as part of the installation. For example:
 
@@ -42,11 +42,10 @@ The code snippets in this section assume that your forked Medusa project and the
 |__ test-project_storefront // (optional) storefront to interact with medusa application
 ```
 
-
-1. Replace the @medusajs/* dependencies and devDependencies in you test project's `package.json` to point to the corresponding local packages in your forked Medusa repository. You will also need to add the medusa packages in the resolutions section of the `package.json`, so that every dependency is resolved locally. For example, assuming your forked Medusa project and the test project are sibling directories:
+1. Replace the @medusajs/\* dependencies and devDependencies in you test project's `package.json` to point to the corresponding local packages in your forked Medusa repository. You will also need to add the medusa packages in the resolutions section of the `package.json`, so that every dependency is resolved locally. For example, assuming your forked Medusa project and the test project are sibling directories:
 
 ```json
-// test project package.json
+// test project package.json (for npm/yarn)
 "dependencies": {
     // more deps
     "@medusajs/admin-sdk": "file:../medusa/packages/admin/admin-sdk",
@@ -84,6 +83,7 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/pricing": "file:../medusa/packages/modules/pricing",
     "@medusajs/product": "file:../medusa/packages/modules/product",
     "@medusajs/promotion": "file:../medusa/packages/modules/promotion",
+    "@medusajs/rbac": "file:../medusa/packages/modules/rbac",
     "@medusajs/region": "file:../medusa/packages/modules/region",
     "@medusajs/sales-channel": "file:../medusa/packages/modules/sales-channel",
     "@medusajs/stock-location": "file:../medusa/packages/modules/stock-location",
@@ -108,6 +108,7 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/cli": "file:../medusa/packages/cli/medusa-cli",
     "@medusajs/modules-sdk": "file:../medusa/packages/core/modules-sdk",
     "@medusajs/workflows-sdk": "file:../medusa/packages/core/workflows-sdk",
+    "@medusajs/js-sdk": "file:../../medusa/packages/core/js-sdk",
     "@medusajs/framework": "file:../medusa/packages/core/framework",
     "@medusajs/auth-emailpass": "file:../medusa/packages/modules/providers/auth-emailpass",
     "@medusajs/locking-redis": "file:../medusa/packages/modules/providers/locking-redis",
@@ -117,7 +118,91 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/draft-order": "file:../medusa/packages/plugins/draft-order",
     "@medusajs/deps": "file:../medusa/packages/deps",
     "@medusajs/caching-redis": "file:../medusa/packages/modules/providers/caching-redis",
-    "@medusajs/caching": "file:../medusa/packages/modules/caching"
+    "@medusajs/caching": "file:../medusa/packages/modules/caching",
+    "@medusajs/translation": "file:../medusa/packages/modules/translation",
+}
+```
+
+   If you're using `pnpm`, use `pnpm.overrides` instead of `resolutions`:
+
+```json
+// test project package.json (for pnpm)
+"dependencies": {
+    // more deps
+    "@medusajs/admin-sdk": "file:../medusa/packages/admin/admin-sdk",
+    "@medusajs/cli": "file:../medusa/packages/cli/medusa-cli",
+    "@medusajs/framework": "file:../medusa/packages/core/framework",
+    "@medusajs/medusa": "file:../medusa/packages/medusa",
+},
+"devDependencies": {
+    // more dev deps
+    "@medusajs/test-utils": "file:../medusa/packages/medusa-test-utils",
+},
+"pnpm": {
+  "overrides": {
+    // more overrides
+    "@medusajs/test-utils": "file:../medusa/packages/medusa-test-utils",
+    "@medusajs/api-key": "file:../medusa/packages/modules/api-key",
+    "@medusajs/auth": "file:../medusa/packages/modules/auth",
+    "@medusajs/cache-inmemory": "file:../medusa/packages/modules/cache-inmemory",
+    "@medusajs/cache-redis": "file:../medusa/packages/modules/cache-redis",
+    "@medusajs/cart": "file:../medusa/packages/modules/cart",
+    "@medusajs/locking": "file:../medusa/packages/modules/locking",
+    "@medusajs/currency": "file:../medusa/packages/modules/currency",
+    "@medusajs/customer": "file:../medusa/packages/modules/customer",
+    "@medusajs/event-bus-local": "file:../medusa/packages/modules/event-bus-local",
+    "@medusajs/file": "file:../medusa/packages/modules/file",
+    "@medusajs/file-local": "file:../medusa/packages/modules/providers/file-local",
+    "@medusajs/fulfillment": "file:../medusa/packages/modules/fulfillment",
+    "@medusajs/fulfillment-manual": "file:../medusa/packages/modules/providers/fulfillment-manual",
+    "@medusajs/index": "file:../medusa/packages/modules/index",
+    "@medusajs/inventory": "file:../medusa/packages/modules/inventory",
+    "@medusajs/medusa": "file:../medusa/packages/medusa",
+    "@medusajs/notification": "file:../medusa/packages/modules/notification",
+    "@medusajs/notification-local": "file:../medusa/packages/modules/providers/notification-local",
+    "@medusajs/order": "file:../medusa/packages/modules/order",
+    "@medusajs/payment": "file:../medusa/packages/modules/payment",
+    "@medusajs/pricing": "file:../medusa/packages/modules/pricing",
+    "@medusajs/product": "file:../medusa/packages/modules/product",
+    "@medusajs/promotion": "file:../medusa/packages/modules/promotion",
+    "@medusajs/rbac": "file:../medusa/packages/modules/rbac",
+    "@medusajs/region": "file:../medusa/packages/modules/region",
+    "@medusajs/sales-channel": "file:../medusa/packages/modules/sales-channel",
+    "@medusajs/stock-location": "file:../medusa/packages/modules/stock-location",
+    "@medusajs/store": "file:../medusa/packages/modules/store",
+    "@medusajs/tax": "file:../medusa/packages/modules/tax",
+    "@medusajs/user": "file:../medusa/packages/modules/user",
+    "@medusajs/workflow-engine-inmemory": "file:../medusa/packages/modules/workflow-engine-inmemory",
+    "@medusajs/link-modules": "file:../medusa/packages/modules/link-modules",
+    "@medusajs/admin-bundler": "file:../medusa/packages/admin/admin-bundler",
+    "@medusajs/admin-sdk": "file:../medusa/packages/admin/admin-sdk",
+    "@medusajs/admin-shared": "file:../medusa/packages/admin/admin-shared",
+    "@medusajs/dashboard": "file:../medusa/packages/admin/dashboard",
+    "@medusajs/admin-vite-plugin": "file:../medusa/packages/admin/admin-vite-plugin",
+    "@medusajs/ui": "file:../medusa/packages/design-system/ui",
+    "@medusajs/icons": "file:../medusa/packages/design-system/icons",
+    "@medusajs/toolbox": "file:../medusa/packages/design-system/toolbox",
+    "@medusajs/ui-preset": "file:../medusa/packages/design-system/ui-preset",
+    "@medusajs/utils": "file:../medusa/packages/core/utils",
+    "@medusajs/types": "file:../medusa/packages/core/types",
+    "@medusajs/core-flows": "file:../medusa/packages/core/core-flows",
+    "@medusajs/orchestration": "file:../medusa/packages/core/orchestration",
+    "@medusajs/cli": "file:../medusa/packages/cli/medusa-cli",
+    "@medusajs/modules-sdk": "file:../medusa/packages/core/modules-sdk",
+    "@medusajs/workflows-sdk": "file:../medusa/packages/core/workflows-sdk",
+    "@medusajs/js-sdk": "file:../../medusa/packages/core/js-sdk",
+    "@medusajs/framework": "file:../medusa/packages/core/framework",
+    "@medusajs/auth-emailpass": "file:../medusa/packages/modules/providers/auth-emailpass",
+    "@medusajs/locking-redis": "file:../medusa/packages/modules/providers/locking-redis",
+    "@medusajs/locking-postgres": "file:../medusa/packages/modules/providers/locking-postgres",
+    "@medusajs/telemetry": "file:../medusa/packages/medusa-telemetry",
+    "@medusajs/settings": "file:../medusa/packages/modules/settings",
+    "@medusajs/draft-order": "file:../medusa/packages/plugins/draft-order",
+    "@medusajs/deps": "file:../medusa/packages/deps",
+    "@medusajs/caching-redis": "file:../medusa/packages/modules/providers/caching-redis",
+    "@medusajs/caching": "file:../medusa/packages/modules/caching",
+    "@medusajs/translation": "file:../medusa/packages/modules/translation",
+  }
 }
 ```
 
@@ -129,8 +214,12 @@ yarn build # or yarn watch
 
 3. After building changes in the forked medusa repository, run the following command in the test project to regenerate the `node_modules` directory with the newly built contents from the previous step:
 
-```
+```bash
+# For npm/yarn
 rm -R node_modules && yarn && yarn dev
+
+# For pnpm
+rm -R node_modules && pnpm install && pnpm dev
 ```
 
 ## Workflow
@@ -138,6 +227,7 @@ rm -R node_modules && yarn && yarn dev
 ### Branches
 
 There are currently two base branches:
+
 - `develop` - development of Medusa 2.0
 - `v1.x` - development of Medusa v1.x
 
@@ -157,7 +247,7 @@ Strive towards keeping your commits small and isolated - this helps the reviewer
 
 **Base branch**
 
-If you wish to patch v1.x your base branch should be `v1.x`. 
+If you wish to patch v1.x your base branch should be `v1.x`.
 
 If your changes should result in a new version of Medusa, you will need to generate a **changelog**. Follow [this guide](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) on how to generate a changeset.
 
@@ -192,5 +282,6 @@ All PRs should include tests for the changes that are included. We have two type
 ### Release
 
 The Medusa team will regularly create releases from two release branches:
+
 - `develop` - preview releases of Medusa 2.0
 - `v1.x` - official releases of Medusa 1.x

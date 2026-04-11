@@ -1,0 +1,304 @@
+---
+slug: /references/js-sdk/admin/translation
+sidebar_label: translation
+tags:
+  - js sdk
+  - admin
+  - translations
+---
+
+import { TypeList } from "docs-ui"
+
+# translation - JS SDK Admin Reference
+
+This documentation provides a reference to the `sdk.admin.translation` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This method retrieves a paginated list of translations. It sends a request to the
+[List Translations](https://docs.medusajs.com/api/admin#translations\_gettranslations)
+API route.
+
+### Example
+
+To retrieve the list of translations:
+
+```ts
+sdk.admin.translation.list()
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.translation.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each translation:
+
+```ts
+sdk.admin.translation.list({
+  fields: "id,name"
+})
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)","description":"Filters and pagination configurations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","example":"-created_at","expandable":false,"children":[]},{"name":"with_deleted","type":"`boolean`","description":"Whether to include soft-deleted items in the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Query or keywords to search the translations searchable fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string` \\| `string`[]","description":"Filter by entity ID.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"Filter by the table of the resource being translated.","optional":true,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string` \\| `string`[]","description":"Filter by locale code in BCP 47 format.","optional":true,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]}]},{"name":"$or","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx) \\| [BaseFilterable](../../../../../types/DAL/interfaces/types.DAL.BaseFilterable/page.mdx)&#60;[AdminTranslationsListParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsListParams/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","example":"-created_at","expandable":false,"children":[]},{"name":"with_deleted","type":"`boolean`","description":"Whether to include soft-deleted items in the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Query or keywords to search the translations searchable fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string` \\| `string`[]","description":"Filter by entity ID.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"Filter by the table of the resource being translated.","optional":true,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string` \\| `string`[]","description":"Filter by locale code in BCP 47 format.","optional":true,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]}]},{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","example":"-created_at","expandable":false,"children":[]},{"name":"with_deleted","type":"`boolean`","description":"Whether to include soft-deleted items in the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Query or keywords to search the translations searchable fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string` \\| `string`[]","description":"Filter by entity ID.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"Filter by the table of the resource being translated.","optional":true,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string` \\| `string`[]","description":"Filter by locale code in BCP 47 format.","optional":true,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationsListResponse](../../../../../types/HttpTypes/types/types.HttpTypes.AdminTranslationsListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The paginated list of translations.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"estimate_count","type":"`number`","description":"The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.","optional":true,"defaultValue":"","expandable":false,"featureFlag":"index_engine","children":[],"since":"2.8.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="list"/>
+
+___
+
+## batch
+
+This method allows bulk operations on translations. It sends a request to the
+[Manage Translations](https://docs.medusajs.com/api/admin#translations\_posttranslationsbatch)
+API route.
+
+### Example
+
+```ts
+sdk.admin.translation.batch({
+  create: [
+    {
+      reference_id: "prod_123",
+      reference: "product",
+      locale_code: "en-US",
+      translations: { title: "Shirt" }
+    }
+  ],
+  update: [
+    {
+      id: "trans_123",
+      translations: { title: "Pants" }
+    }
+  ],
+  delete: ["trans_321"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AdminBatchTranslations](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslations/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"create","type":"[AdminCreateTranslation](../../../../../types/interfaces/types.AdminCreateTranslation/page.mdx)[]","description":"The translations to create.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The type of entity being translated (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation (e.g., \"en-US\", \"fr-FR\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"update","type":"[AdminUpdateTranslation](../../../../../types/interfaces/types.AdminUpdateTranslation/page.mdx)[]","description":"The translations to update.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"delete","type":"`string`[]","description":"The translations to delete.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batch"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationsBatchResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsBatchResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translations' details.","expandable":false,"children":[{"name":"created","type":"[AdminTranslation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation/page.mdx)[]","description":"The created translations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translations of the resource.\nThe object's keys are the field names of the data model, and its value is the translated value.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the translation was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the translation was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the translation was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated","type":"[AdminTranslation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation/page.mdx)[]","description":"The updated translations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translations of the resource.\nThe object's keys are the field names of the data model, and its value is the translated value.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the translation was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the translation was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the translation was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted","type":"`object`","description":"The deleted translations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the deleted translations.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"translation\"`","description":"The name of the deleted object.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the translations were deleted successfully.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batch"/>
+
+___
+
+## settings
+
+This method retrieves the settings for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Settings](https://docs.medusajs.com/api/admin#translations\_gettranslationssettings) API route.
+
+### Example
+
+To retrieve the settings for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.settings({
+  entity_type: "product"
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for all entity types:
+
+```ts
+sdk.admin.translation.settings()
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for active entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: true
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for inactive entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: false
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationSettingsParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettingsParams/page.mdx)","description":"The query parameters which can optionally include the entity type to get the settings for and whether to get the settings for active/inactive entities only.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"entity_type","type":"`string`","description":"The entity type to get the settings for (e.g., \"product\").","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether to get the settings for active/inactive entities only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="settings"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationSettingsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettingsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation settings.","expandable":false,"children":[{"name":"translation_settings","type":"`Record<string, Pick&#60;[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx), \"id\" \\| \"fields\" \\| \"is_active\"&#62; & object>`","description":"A mapping of entity types to their tranlsation settings.","optional":false,"defaultValue":"","example":"{ * \"product\": { * \"id\": \"trset_123\", * \"fields\": [\"title\", \"description\", \"subtitle\", \"status\"], * \"is_active\": true, * \"inactive_fields\": [] * }, * \"product_variant\": { * \"id\": \"trset_456\", * \"fields\": [\"title\", \"material\"], * \"is_active\": false, * \"inactive_fields\": [] * } * }","expandable":false,"children":[{"name":"inactive_fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="settings"/>
+
+___
+
+## batchSettings
+
+This method allows bulk operations on translation settings. It sends a request to the
+[Batch Translation Settings](https://docs.medusajs.com/api/admin#translations\_posttranslationssettingsbatch)
+API route.
+
+:::note
+
+This is available starting from [Medusa v2.12.6](https://github.com/medusajs/medusa/releases/tag/v2.12.6).
+
+:::
+
+### Example
+
+```ts
+sdk.admin.translation.batchSettings({
+  create: [
+    {
+      entity_type: "product",
+      fields: ["title", "description"],
+      is_active: true
+    }
+  ],
+  update: [
+    {
+      id: "trset_123",
+      fields: ["title", "description", "subtitle"],
+      is_active: true
+    }
+  ],
+  delete: ["trset_456"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AdminBatchTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettings/page.mdx)","description":"The translation settings to create, update, or delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"create","type":"[AdminCreateTranslationSettings](../../../../../types/interfaces/types.AdminCreateTranslationSettings/page.mdx)[]","description":"The translation settings to create.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"entity_type","type":"`string`","description":"The entity type (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields for this entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"update","type":"[AdminUpdateTranslationSettings](../../../../../types/interfaces/types.AdminUpdateTranslationSettings/page.mdx)[]","description":"The translation settings to update.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type (e.g., \"product\", \"product\\_variant\").","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields for this entity type.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"delete","type":"`string`[]","description":"The translation settings to delete (IDs).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSettings"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminBatchTranslationSettingsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminBatchTranslationSettingsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation settings' details.","expandable":false,"children":[{"name":"created","type":"[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx)[]","description":"The created settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the settings were created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the settings were last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the settings were deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated","type":"[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx)[]","description":"The updated settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the settings were created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the settings were last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the settings were deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"The entity type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"The translatable fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether the entity translatable status is enabled.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted","type":"`object`","description":"The deleted settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"translation_settings\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}],"since":"2.12.6"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchSettings"/>
+
+___
+
+## entities
+
+This method retrieves a paginated list of entities for a given entity type with only their
+translatable fields.
+It sends a request to the
+[Get Translation Entities](https://docs.medusajs.com/api/admin#translations\_gettranslationentities) API route.
+
+:::note
+
+This is available starting from [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+
+:::
+
+### Example
+
+To retrieve the entities for a given entity type:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product"
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product",
+  limit: 10,
+  offset: 10
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationEntitiesParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntitiesParams/page.mdx)","description":"The query parameters including the entity type and pagination configurations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`string`","description":"The entity type to retrieve (e.g., \"product\", \"product\\_variant\").\nThis determines which table to query and which translatable fields to return.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","example":"-created_at","expandable":false,"children":[]},{"name":"with_deleted","type":"`boolean`","description":"Whether to include soft-deleted items in the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"Filter by entity ID(s). Can be a single ID or an array of IDs.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="entities"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationEntitiesResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntitiesResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The paginated list of entities with their translatable fields.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>` & `object`[]","description":"The list of entities with their translatable fields.\nEach entity contains only the fields configured as translatable\nfor that entity type in the translation settings, plus all\ntranslations for all locales.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"[AdminTranslation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"count","type":"`number`","description":"The total count of entities.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The offset of the current page.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The limit of items per page.","optional":false,"defaultValue":"","expandable":false,"children":[]}],"since":"2.12.4"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="entities"/>
+
+___
+
+## statistics
+
+This method retrieves the statistics for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Statistics](https://docs.medusajs.com/api/admin#translations\_gettranslationsstatistics) API route.
+
+### Example
+
+To retrieve the statistics for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.statistics({
+  entity_type: "product"
+})
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+To retrieve the statistics for all entity types:
+
+```ts
+sdk.admin.translation.statistics()
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationStatisticsParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationStatisticsParams/page.mdx)","description":"The query parameters which can optionally include the entity type to get the statistics for.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"locales","type":"`string`[]","description":"The locales to check translations for.","optional":false,"defaultValue":"","example":"[\"en-US\", \"fr-FR\"]","expandable":false,"children":[]},{"name":"entity_types","type":"`string`[]","description":"The entity types to get statistics for.","optional":false,"defaultValue":"","example":"[\"product\", \"product_variant\"]","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="statistics"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationStatisticsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationStatisticsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation statistics.","expandable":false,"children":[{"name":"statistics","type":"`Record<string, [AdminTranslationEntityStatistics](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntityStatistics/page.mdx)>`","description":"Statistics by entity type.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"expected","type":"`number`","description":"Expected number of translated fields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translated","type":"`number`","description":"Actual number of translated fields. This doesn't count\ntranslations that are null or empty.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"missing","type":"`number`","description":"Number of missing translations for expected translatable\nfields.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"by_locale","type":"`Record<string, [AdminTranslationLocaleStatistics](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics/page.mdx)>`","description":"Breakdown of statistics by locale.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="statistics"/>

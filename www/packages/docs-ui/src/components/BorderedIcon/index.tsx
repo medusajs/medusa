@@ -23,6 +23,7 @@ export const BorderedIcon = ({
   wrapperClassName,
   iconWidth = 28,
   iconHeight = 28,
+  ...props
 }: BorderedIconProps) => {
   return (
     <span
@@ -31,6 +32,7 @@ export const BorderedIcon = ({
         "shadow-border-base dark:shadow-border-base-dark",
         iconWrapperClassName
       )}
+      {...props}
     >
       <span className={clsx("rounded-docs_xs", wrapperClassName)}>
         {!IconComponent && (

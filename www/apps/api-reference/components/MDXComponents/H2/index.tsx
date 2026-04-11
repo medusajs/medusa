@@ -1,8 +1,8 @@
 "use client"
 
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useScrollController, useSidebar, H2 as UiH2 } from "docs-ui"
 import { getSectionId } from "docs-utils"
-import { useEffect, useMemo, useRef, useState } from "react"
 
 type H2Props = React.HTMLAttributes<HTMLHeadingElement>
 

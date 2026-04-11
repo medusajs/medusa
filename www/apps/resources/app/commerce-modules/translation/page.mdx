@@ -1,0 +1,349 @@
+---
+generate_toc: true
+---
+
+import { CodeTabs, CodeTab, ChildDocs, Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Translation Module`,
+}
+
+# {metadata.title}
+
+In this section of the documentation, you will find resources to learn more about the Translation Module and how to use it in your application.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.12.3 or later",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.12.3"
+    },
+    {
+      text: "Translation Feature Flag Enabled",
+      link: "#configure-translation-module"
+    }
+  ]}
+/>
+
+<Note title="Looking for no-code docs?">
+
+Refer to the [Medusa Admin User Guide](!user-guide!/settings/translations) to learn how to manage translations in the dashboard.
+
+</Note>
+
+Medusa has translation features available out-of-the-box through the Translation Module. A [module](!docs!/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features is provided in Commerce Modules, such as the Translation Module.
+
+<Note>
+
+Refer to the [Module Isolation](!docs!/learn/fundamentals/modules/isolation) guide to learn more about why modules are isolated.
+
+</Note>
+
+## Translation Features
+
+- [Translation and Locale Management](./concepts/page.mdx): Manage locales and add translations for different resources in your store.
+- [Multi-Language Support](./storefront/page.mdx): Manage and serve resources like products in multiple languages to cater to a diverse customer base.
+- [Translation for Custom Models](./custom-data-models/page.mdx): Extend translation capabilities to custom data models in your Medusa application.
+- [Manage Translatable Resources from Medusa Admin](!user-guide!/settings/translations#manage-translatable-resources): Configure which resources and fields are translatable directly from the Medusa Admin dashboard.
+
+---
+
+## Configure Translation Module
+
+The Translation Module is currently behind a feature flag. To use it in your Medusa application, add it to the `modules` array and enable the `translation` feature flag.
+
+In your `medusa-config.ts` file, add the Translation Module to the `modules` array and enable the `translation` feature flag:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // other modules...
+    {
+      resolve: "@medusajs/medusa/translation",
+    },
+  ],
+  featureFlags: {
+    translation: true,
+  },
+})
+```
+
+Then, run the following command to make the necessary database changes for the Translation Module:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+You can then use the Translation Module in your Medusa application.
+
+---
+
+## How to Use the Translation Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](!docs!/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and a reliable rollback mechanism. 
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+export const highlights = [
+  ["12", "Modules.TRANSLATION", "Resolve the module in a step."]
+]
+
+```ts title="src/workflows/create-translation.ts" highlights={highlights}
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createTranslationStep = createStep(
+  "create-translation",
+  async ({}, { container }) => {
+    const translationModuleService = container.resolve(Modules.TRANSLATION)
+
+    const translation = await translationModuleService.createTranslations({
+      reference_id: "product_123",
+      reference: "product",
+      locale_code: "fr-FR",
+      translations: {
+        title: "Produit Exemple",
+        description: "Ceci est une description en français.",
+      },
+    })
+
+    return new StepResponse({ translation }, translation.id)
+  },
+  async (translationId, { container }) => {
+    const translationModuleService = container.resolve(Modules.TRANSLATION)
+
+    await translationModuleService.deleteTranslations([translationId])
+  }
+)
+
+export const createTranslationWorkflow = createWorkflow(
+  "create-translation",
+  () => {
+    const { translation } = createTranslationStep()
+
+    return new WorkflowResponse({
+      translation,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+<CodeTabs group="resource-types">
+  <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createTranslationWorkflow } from "../../workflows/create-translation"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createTranslationWorkflow(req.scope)
+    .run()
+
+  res.send(result)
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/user-created.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createTranslationWorkflow } from "../workflows/create-translation"
+
+export default async function handleUserCreated({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const { result } = await createTranslationWorkflow(container)
+    .run()
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "user.created",
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/run-daily.ts" highlights={[["7"], ["8"]]}
+import { MedusaContainer } from "@medusajs/framework/types"
+import { createTranslationWorkflow } from "../workflows/create-translation"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await createTranslationWorkflow(container)
+    .run()
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: `0 0 * * *`,
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Refer to the [Workflows](!docs!/learn/fundamentals/workflows) documentation to learn more.
+
+---
+
+## Supported Module Translations
+
+The Translation Module currently supports translations for the following data models:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Translatable Fields
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `CustomerGroup` ([Customer Module](../customer/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `Product` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `title`
+        - `description`
+        - `material`
+        - `subtitle`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductCategory` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `name`
+        - `description`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductCollection` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `title`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductOption` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `title`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductOptionValue` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductTag` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductType` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductVariant` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `title`
+        - `material`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `Region` ([Region Module](../region/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ShippingOption` ([Fulfillment Module](../fulfillment/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ShippingOptionType` ([Fulfillment Module](../fulfillment/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        - `label`
+        - `description`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `TaxRate` ([Tax Module](../tax/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Future versions of the Translation Module will include support for all Commerce Modules.
+
+---
+
+<CommerceModuleSections />

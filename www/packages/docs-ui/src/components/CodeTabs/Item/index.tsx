@@ -1,11 +1,13 @@
 "use client"
 
 import React from "react"
-import { BaseTabType, useScrollPositionBlocker } from "@/hooks"
-import { useColorMode } from "@/providers"
+import { useColorMode } from "@/providers/ColorMode"
 import clsx from "clsx"
+import { BaseTabType } from "../../../hooks/use-tabs"
+import { useScrollPositionBlocker } from "../../../hooks/use-scroll-utils"
 
 type CodeTabProps = BaseTabType & {
+  // Children are handled in MDX to allow for code blocks and inline code to be rendered
   children: React.ReactNode
   isSelected?: boolean
   blockStyle?: string

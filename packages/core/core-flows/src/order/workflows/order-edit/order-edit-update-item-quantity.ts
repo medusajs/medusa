@@ -18,13 +18,14 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
-import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
 
 /**
@@ -113,6 +114,12 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.OrderEditUpdateItemQuantityWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -175,6 +182,7 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
               unit_price: item.unit_price,
               compare_at_unit_price: item.compare_at_unit_price,
               quantity_diff: quantityDiff,
+              metadata: item.metadata,
             },
           }
         })
@@ -194,6 +202,12 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
       },
     })
 
-    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
+    const previewOrderChange = previewOrderChangeStep(input.order_id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

@@ -10,7 +10,7 @@ import { ShippingProfile } from "./shipping-profile"
 export const ShippingOption = model
   .define("shipping_option", {
     id: model.id({ prefix: "so" }).primaryKey(),
-    name: model.text().searchable(),
+    name: model.text().searchable().translatable(),
     price_type: model
       .enum(ShippingOptionPriceType)
       .default(ShippingOptionPriceType.FLAT),

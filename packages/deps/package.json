@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.12.1",
+  "version": "2.13.6",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -30,7 +30,8 @@
     "./mikro-orm/migrations": "./dist/mikro-orm-migrations.js",
     "./mikro-orm/postgresql": "./dist/mikro-orm-postgresql.js",
     "./awilix": "./dist/awilix.js",
-    "./pg": "./dist/pg.js"
+    "./pg": "./dist/pg.js",
+    "./zod": "./dist/zod.js"
   },
   "author": "Medusa",
   "license": "MIT",
@@ -38,18 +39,19 @@
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build"
   },
   "dependencies": {
-    "@mikro-orm/cli": "6.4.16",
-    "@mikro-orm/core": "6.4.16",
-    "@mikro-orm/knex": "6.4.16",
-    "@mikro-orm/migrations": "6.4.16",
-    "@mikro-orm/postgresql": "6.4.16",
+    "@mikro-orm/cli": "6.6.12",
+    "@mikro-orm/core": "6.6.12",
+    "@mikro-orm/knex": "6.6.12",
+    "@mikro-orm/migrations": "6.6.12",
+    "@mikro-orm/postgresql": "6.6.12",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation-pg": "^0.52.0",
     "@opentelemetry/resources": "^2.0.0",
     "@opentelemetry/sdk-node": "^0.200.0",
     "@opentelemetry/sdk-trace-node": "^2.0.0",
     "awilix": "^8.0.1",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "zod": "4.2.0"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

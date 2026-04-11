@@ -38,3 +38,8 @@ export interface AdminPriceListBatchResponse {
     deleted: boolean
   }
 }
+
+export interface AdminPriceListPriceListResponse
+  extends PaginatedResponse<{
+    prices: AdminPrice[]
+  }> {}

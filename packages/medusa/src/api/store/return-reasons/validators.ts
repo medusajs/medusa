@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export type StoreReturnReasonParamsType = z.infer<
