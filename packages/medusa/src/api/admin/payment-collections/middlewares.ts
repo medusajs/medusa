@@ -57,6 +57,23 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher:
+      "/admin/payment-collections/:id/payment-sessions/:session_id/authorize",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetPaymentCollectionParams,
+        queryConfig.retrievePaymentCollectionTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.payment_collection,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
     method: ["DELETE"],
     matcher: "/admin/payment-collections/:id",
     middlewares: [],
